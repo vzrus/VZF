@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9CF38B0-39CF-43C7-9589-166DCC665652}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YAF.Types</RootNamespace>
+    <AssemblyName>YAF.Types</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\YetAnotherForum.NET\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\YetAnotherForum.NET\Bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Annotations.cs" />
+    <Compile Include="Attributes\AltStringValueAttribute.cs" />
+    <Compile Include="Attributes\AssemblyModuleSortOrder.cs" />
+    <Compile Include="Attributes\ExcludeAttribute.cs" />
+    <Compile Include="Attributes\ExportServiceAttribute.cs" />
+    <Compile Include="Constants\MessageTypes.cs" />
+    <Compile Include="Attributes\InjectAttribute.cs" />
+    <Compile Include="Attributes\StringValueAttribute.cs" />
+    <Compile Include="Attributes\YafModule.cs" />
+    <Compile Include="BadWordReplaceItem.cs" />
+    <Compile Include="Interfaces\Data\IDataLoadable.cs" />
+    <Compile Include="Interfaces\Data\IDbAccessProvider.cs" />
+    <Compile Include="Interfaces\Data\IDbAccessV2.cs" />
+    <Compile Include="Interfaces\Data\IDbConnectionParam.cs" />
+    <Compile Include="Interfaces\Data\IDbFunction.cs" />
+    <Compile Include="Interfaces\Data\IDbSpecificFunction.cs" />
+    <Compile Include="Interfaces\Data\IDbUnitOfWork.cs" />
+    <Compile Include="Interfaces\Extensions\DbSpecificFunctionExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IDbAccessConnectionExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IDbFunctionExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IDbUnitOfWorkExtensions.cs" />
+    <Compile Include="Objects\MessageNotification.cs" />
+    <Compile Include="ThemeResources.cs" />
+    <Compile Include="CodeContracts.cs" />
+    <Compile Include="Constants\CollapsiblePanelState.cs" />
+    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Constants\DateTimeFormat.cs" />
+    <Compile Include="Constants\EventLogTypes.cs" />
+    <Compile Include="Constants\ForumPages.cs" />
+    <Compile Include="Constants\SearchFieldFlags.cs" />
+    <Compile Include="Constants\SearchWhatFlags.cs" />
+    <Compile Include="Constants\UserNotificationSetting.cs" />
+    <Compile Include="Constants\ViewPermissions.cs" />
+    <Compile Include="Constants\YafRssFeeds.cs" />
+    <Compile Include="Constants\YafSyndicationFormats.cs" />
+    <Compile Include="EventProxies\CacheItemRemovedEvent.cs" />
+    <Compile Include="EventProxies\EventPageLoad.cs" />
+    <Compile Include="EventProxies\EventPreRequestPageExecute.cs" />
+    <Compile Include="EventProxies\ForumPageEvents.cs" />
+    <Compile Include="EventProxies\HttpApplicationInitEvent.cs" />
+    <Compile Include="EventProxies\NewUserRegisteredEvent.cs" />
+    <Compile Include="EventProxies\SuccessfulUserLoginEvent.cs" />
+    <Compile Include="EventProxies\UpdateUserEvent.cs" />
+    <Compile Include="EventProxies\UpdateUserPrivateMessageEvent.cs" />
+    <Compile Include="EventProxies\UserLogoutEvent.cs" />
+    <Compile Include="Interfaces\Events\EventConverterArgs.cs" />
+    <Compile Include="Flags\AccessFlags.cs" />
+    <Compile Include="Flags\ActiveFlags.cs" />
+    <Compile Include="Flags\FlagsBase.cs" />
+    <Compile Include="Flags\ForumFlags.cs" />
+    <Compile Include="Flags\GroupFlags.cs" />
+    <Compile Include="Flags\MedalFlags.cs" />
+    <Compile Include="Flags\MessageFlags.cs" />
+    <Compile Include="Flags\PollFlags.cs" />
+    <Compile Include="Flags\PollGroupFlags.cs" />
+    <Compile Include="Flags\RankFlags.cs" />
+    <Compile Include="Flags\TopicFlags.cs" />
+    <Compile Include="Flags\UserFlags.cs" />
+    <Compile Include="Handlers\YafDBConnInfoMessageEventArgs.cs" />
+    <Compile Include="Handlers\YafDBConnInfoMessageEventHandler.cs" />
+    <Compile Include="EventProxies\SimpleEvent.cs" />
+    <Compile Include="Interfaces\Events\IAmEvent.cs" />
+    <Compile Include="Interfaces\Events\IRaiseEvent.cs" />
+    <Compile Include="Interfaces\Events\IFireEvent.cs" />
+    <Compile Include="Interfaces\Extensions\CollectionExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IDbAccessExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IHaveLocalizationExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\InjectServicesExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IObjectStoreExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IReadValueExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\IServiceLocatorExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\KeyValuePairExtensions.cs" />
+    <Compile Include="Interfaces\Extensions\LocatablePageExtension.cs" />
+    <Compile Include="Interfaces\Extensions\ReadTrackCurrentUserExtensions.cs" />
+    <Compile Include="Interfaces\IAvatars.cs" />
+    <Compile Include="Interfaces\IBackgroundTask.cs" />
+    <Compile Include="Interfaces\IBadWordReplace.cs" />
+    <Compile Include="Interfaces\IBBCode.cs" />
+    <Compile Include="Interfaces\IBuddy.cs" />
+    <Compile Include="Interfaces\IDataCache.cs" />
+    <Compile Include="Interfaces\IEditorModule.cs" />
+    <Compile Include="Interfaces\IBaseForumModule.cs" />
+    <Compile Include="Interfaces\IBaseModule.cs" />
+    <Compile Include="Interfaces\Data\IDataTableResultFilter.cs" />
+    <Compile Include="Interfaces\IDateTime.cs" />
+    <Compile Include="Interfaces\Data\IDBBroker.cs" />
+    <Compile Include="Interfaces\IDigest.cs" />
+    <Compile Include="Interfaces\IFavoriteTopic.cs" />
+    <Compile Include="Interfaces\Events\IHandleEvent.cs" />
+    <Compile Include="Interfaces\IFormatMessage.cs" />
+    <Compile Include="Interfaces\IHaveBoardId.cs" />
+    <Compile Include="Interfaces\IHaveLocalization.cs" />
+    <Compile Include="Interfaces\IHaveLockObject.cs" />
+    <Compile Include="Interfaces\IHaveServiceLocator.cs" />
+    <Compile Include="Interfaces\IInjectServices.cs" />
+    <Compile Include="Interfaces\ILocalization.cs" />
+    <Compile Include="Interfaces\ILocatablePage.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Interfaces\ILoggerProvider.cs" />
+    <Compile Include="Interfaces\IModuleManager.cs" />
+    <Compile Include="Interfaces\INavigatablePage.cs" />
+    <Compile Include="Interfaces\INewsReader.cs" />
+    <Compile Include="Interfaces\IObjectStore.cs" />
+    <Compile Include="Interfaces\IPanelSessionState.cs" />
+    <Compile Include="Interfaces\IPermissions.cs" />
+    <Compile Include="Interfaces\IProcessReplaceRules.cs" />
+    <Compile Include="Interfaces\IReadWriteProvider.cs" />
+    <Compile Include="Interfaces\IRaiseControlLifeCycles.cs" />
+    <Compile Include="Interfaces\IReadValue.cs" />
+    <Compile Include="Interfaces\IRemoveValue.cs" />
+    <Compile Include="Interfaces\IReplaceBlocks.cs" />
+    <Compile Include="Interfaces\IReplaceRule.cs" />
+    <Compile Include="Interfaces\IScriptBuilder.cs" />
+    <Compile Include="Interfaces\IScriptFunction.cs" />
+    <Compile Include="Interfaces\IScriptFunctionContext.cs" />
+    <Compile Include="Interfaces\IScriptStatement.cs" />
+    <Compile Include="Interfaces\IScriptStatementContext.cs" />
+    <Compile Include="Interfaces\ISendMail.cs" />
+    <Compile Include="Interfaces\ISendMailThreaded.cs" />
+    <Compile Include="Interfaces\ISendNotification.cs" />
+    <Compile Include="Interfaces\IServiceLocator.cs" />
+    <Compile Include="Interfaces\IReadOnlyProvider.cs" />
+    <Compile Include="Interfaces\IReadTrackCurrentUser.cs" />
+    <Compile Include="Interfaces\IStartTasks.cs" />
+    <Compile Include="Interfaces\IStartupService.cs" />
+    <Compile Include="Interfaces\IStopWatch.cs" />
+    <Compile Include="Interfaces\IStyleTransform.cs" />
+    <Compile Include="Interfaces\IRequireStartupServices.cs" />
+    <Compile Include="Interfaces\ITaskModuleManager.cs" />
+    <Compile Include="Interfaces\ITreatCacheKey.cs" />
+    <Compile Include="Interfaces\IUrlBuilder.cs" />
+    <Compile Include="Interfaces\IUserData.cs" />
+    <Compile Include="Interfaces\IUserDisplayName.cs" />
+    <Compile Include="Interfaces\IUserIgnored.cs" />
+    <Compile Include="Interfaces\Data\IDBAccess.cs" />
+    <Compile Include="Interfaces\Data\IDbConnectionManager.cs" />
+    <Compile Include="Interfaces\IWriteValue.cs" />
+    <Compile Include="Interfaces\IYafSession.cs" />
+    <Compile Include="Interfaces\ITheme.cs" />
+    <Compile Include="Interfaces\IYafUserProfile.cs" />
+    <Compile Include="MessageCleaned.cs" />
+    <Compile Include="LanguageResources.cs" />
+    <Compile Include="Interfaces\IServiceLocationParameter.cs" />
+    <Compile Include="Objects\NamedParameter.cs" />
+    <Compile Include="Objects\PollSaveList.cs" />
+    <Compile Include="Objects\SimpleForum.cs" />
+    <Compile Include="Objects\SimpleModerator.cs" />
+    <Compile Include="Objects\SimpleTopic.cs" />
+    <Compile Include="Objects\TwitterUser.cs" />
+    <Compile Include="Objects\TypedAllThanks.cs" />
+    <Compile Include="Objects\TypedBBCode.cs" />
+    <Compile Include="Objects\TypedForumListAll.cs" />
+    <Compile Include="Objects\TypedMailList.cs" />
+    <Compile Include="Objects\TypedMessageList.cs" />
+    <Compile Include="Objects\TypedNntpForum.cs" />
+    <Compile Include="Objects\TypedParameter.cs" />
+    <Compile Include="Objects\TypedPollGroup.cs" />
+    <Compile Include="Objects\TypedSmileyList.cs" />
+    <Compile Include="Objects\TypedTopicSimpleList.cs" />
+    <Compile Include="Objects\TypedUserList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocatorAccess.cs" />
+    <Compile Include="YafLifetimeScope.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
