@@ -458,7 +458,10 @@ namespace YAF.Pages.Admin
 
             if (row.Table.Columns.Contains("Timezone") && !string.IsNullOrEmpty((string)row["Timezone"]))
             {
-                int.TryParse((string)row["Timezone"], out timeZone);
+                if (!int.TryParse((string)row["Timezone"], out timeZone))
+                {
+                    timeZone = 0;
+                };
             }
 
             LegacyDb.user_save(

@@ -1350,7 +1350,7 @@ namespace YAF
         /// Yaf User Info
         /// </summary>
         [Serializable]
-        public class YafUserInfo
+        private class YafUserInfo
         {
             /// <summary>
             /// Gets or sets the name.

@@ -88,7 +88,7 @@ namespace YAF.Editors
       {
         this._typEditor = Type.GetType(classBinStr, true);
       }
-      catch (Exception x)
+      catch (Exception)
       {
         /*
 #if DEBUG

@@ -9238,8 +9238,8 @@ namespace YAF.Classes.Data
 		{
 			get
 			{
-				string dataEngine = string.Empty;
-                 string connectionString = string.Empty;
+				string dataEngine;
+                 string connectionString;
                  int connBoardOrObject = 1;  string namePattern = string.Empty;
                  CommonSqlDbAccess.GetConnectionData((int)connBoardOrObject, namePattern, out dataEngine, out connectionString);
                  

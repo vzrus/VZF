@@ -181,7 +181,7 @@ namespace YAF.Core
                     this.DataCache.Remove(Constants.Cache.UsersOnlineStatus);
                 }
             }
-            catch (Exception x)
+            catch (Exception)
             {
 #if !DEBUG
 

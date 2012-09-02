@@ -219,7 +219,7 @@ namespace YAF.Classes.Data
             connBuilder.AllowUserVariables = true;
             connBuilder.DefaultCommandTimeout = Convert.ToUInt32(parm5);
             
-            connBuilder.UseProcedureBodies = parm13;
+            connBuilder.CheckParameters = parm13;
 
             connBuilder.Pooling = parm14;
            

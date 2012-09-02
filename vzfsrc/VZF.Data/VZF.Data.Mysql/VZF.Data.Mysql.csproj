@@ -62,7 +62,6 @@
     <Compile Include="mysql\YafDBAccess.cs" />
     <Compile Include="mysql\YafDBConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypedUserFind.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="YetAnotherForum.NET.snk" />

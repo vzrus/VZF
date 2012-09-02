@@ -23,7 +23,11 @@ Thumbs.db
 [Dd]ebug*/
 *.lib
 *.sbr
+*.fdb
+*.mdf
+*.ldf
 obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+vzfsrc/_UpgradeReport_Files/UpgradeReport.xslt

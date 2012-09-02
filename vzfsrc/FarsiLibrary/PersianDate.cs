@@ -550,7 +550,7 @@ namespace FarsiLibrary
 
                     return new PersianDate(year, month, day, dt.Hour, dt.Minute, dt.Second, dt.Millisecond);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw new InvalidPersianDateFormatException("Can not parse the value. Format is incorrect.");
                 }

@@ -920,9 +920,12 @@ namespace YAF.Classes.Data.MySqlDb
                         }
                         
                         //We don't trigger AcceptChanges() as we need to return more 
+/*
                         dt1 = MySqlDbAccess.GetDataTableFromReader( cmd, false, false, connectionString);
+*/
                     }
                     //int firstColumnIndex = dt1.Columns.Count;
+/*
                     if (dt1.Columns.Count == 0) throw new ArgumentOutOfRangeException();
                     using ( MySqlCommand cmd1 = MySqlDbAccess.GetCommand( "vaccess_combo" ))
                     { 
@@ -932,6 +935,7 @@ namespace YAF.Classes.Data.MySqlDb
                         //We  trigger AcceptChanges() right now as we don't need to return more rows
                         return MySqlDbAccess.AddValuesToDataTableFromReader(cmd1, dt1, false, true, dt1.Columns.Count,connectionString).Rows[0];                        
                     }
+*/
                     
 				}
                 catch (ArgumentOutOfRangeException xx)
@@ -979,7 +983,6 @@ namespace YAF.Classes.Data.MySqlDb
 			string forumIDs = "";
             string limitString = "";
             string orderString = "";
-            String paramsString = "";
 
             //Search not in all forums
             if ( forumIDToStartAt != 0 )
@@ -7305,8 +7308,6 @@ namespace YAF.Classes.Data.MySqlDb
                     }
                     return MySqlDbAccess.GetData(cmd,connectionString);
                 }
-        
-            return null;
         }
 	/// <summary>
     /// The user_list.

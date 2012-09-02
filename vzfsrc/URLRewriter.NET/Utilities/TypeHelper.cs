@@ -54,7 +54,7 @@ namespace Intelligencia.UrlRewriter.Utilities
 				throw new ArgumentOutOfRangeException("typeName", typeName, MessageProvider.FormatString(Message.TypeNameRequired));
 			}
 
-			return AppDomain.CurrentDomain.CreateInstanceAndUnwrap(assemblyName, typeName, false, 0, null, args, null, null, null);
+			return AppDomain.CurrentDomain.CreateInstanceAndUnwrap(assemblyName,typeName, false, 0, null, args, null, null);
 		}
 	}
 }

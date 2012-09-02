@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -29,11 +30,15 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -2651,6 +2656,76 @@
     <Content Include="images\medals\medal_small.png" />
     <Content Include="images\twitter_signin.png" />
     <Content Include="images\YafLogo.png" />
+    <Content Include="install\firebird\domains.sql" />
+    <Content Include="install\firebird\exceptions.sql" />
+    <Content Include="install\firebird\exceptions_drop.sql" />
+    <Content Include="install\firebird\fkeys.sql" />
+    <Content Include="install\firebird\fkeys_drop.sql" />
+    <Content Include="install\firebird\functions.sql" />
+    <Content Include="install\firebird\functions_drop.sql" />
+    <Content Include="install\firebird\indexes.sql" />
+    <Content Include="install\firebird\maintenance.sql" />
+    <Content Include="install\firebird\nestedsets.sql" />
+    <Content Include="install\firebird\pkeys.sql" />
+    <Content Include="install\firebird\postinstall.sql" />
+    <Content Include="install\firebird\preinstall.sql" />
+    <Content Include="install\firebird\procedures.sql" />
+    <Content Include="install\firebird\procedures1.sql" />
+    <Content Include="install\firebird\procedures2.sql" />
+    <Content Include="install\firebird\procedures_drop.sql" />
+    <Content Include="install\firebird\providers\AspNetSecurity.sql" />
+    <Content Include="install\firebird\providers\fkeys.sql" />
+    <Content Include="install\firebird\providers\indexes.sql" />
+    <Content Include="install\firebird\providers\pkeys.sql" />
+    <Content Include="install\firebird\providers\procedures.sql" />
+    <Content Include="install\firebird\providers\procedures_drop.sql" />
+    <Content Include="install\firebird\providers\tables.sql" />
+    <Content Include="install\firebird\sequences.sql" />
+    <Content Include="install\firebird\tables.sql" />
+    <Content Include="install\firebird\tables_drop.sql" />
+    <Content Include="install\firebird\test_drop.sql" />
+    <Content Include="install\firebird\triggers.sql" />
+    <Content Include="install\firebird\triggers_drop.sql" />
+    <Content Include="install\firebird\ukeys.sql" />
+    <Content Include="install\firebird\vaccess.sql" />
+    <Content Include="install\firebird\views.sql" />
+    <Content Include="install\firebird\views_drop.sql" />
+    <Content Include="install\mysql\constraints.sql" />
+    <Content Include="install\mysql\fkeys.sql" />
+    <Content Include="install\mysql\functions.sql" />
+    <Content Include="install\mysql\indexes.sql" />
+    <Content Include="install\mysql\pkeys.sql" />
+    <Content Include="install\mysql\procedures.sql" />
+    <Content Include="install\mysql\providers\indexes.sql" />
+    <Content Include="install\mysql\providers\pkeys.sql" />
+    <Content Include="install\mysql\providers\procedures.sql" />
+    <Content Include="install\mysql\providers\tables.sql" />
+    <Content Include="install\mysql\providers\upgrade.sql" />
+    <Content Include="install\mysql\tables.sql" />
+    <Content Include="install\mysql\upgrade.sql" />
+    <Content Include="install\mysql\views.sql" />
+    <Content Include="install\pgsql\Copy of nestedsets.sql" />
+    <Content Include="install\pgsql\domains.sql" />
+    <Content Include="install\pgsql\fkeys.sql" />
+    <Content Include="install\pgsql\fulltext.sql" />
+    <Content Include="install\pgsql\functions.sql" />
+    <Content Include="install\pgsql\indexes.sql" />
+    <Content Include="install\pgsql\nestedsets.sql" />
+    <Content Include="install\pgsql\pkeys.sql" />
+    <Content Include="install\pgsql\postinstall.sql" />
+    <Content Include="install\pgsql\preinstall.sql" />
+    <Content Include="install\pgsql\procedures.sql" />
+    <Content Include="install\pgsql\providers\indexes.sql" />
+    <Content Include="install\pgsql\providers\pkeys.sql" />
+    <Content Include="install\pgsql\providers\procedures.sql" />
+    <Content Include="install\pgsql\providers\tables.sql" />
+    <Content Include="install\pgsql\providers\types.sql" />
+    <Content Include="install\pgsql\rules.sql" />
+    <Content Include="install\pgsql\sequences.sql" />
+    <Content Include="install\pgsql\tables.sql" />
+    <Content Include="install\pgsql\triggers.sql" />
+    <Content Include="install\pgsql\types.sql" />
+    <Content Include="install\pgsql\views.sql" />
     <Content Include="install\TopicStatusList.xml" />
     <Content Include="install\wizard.css" />
     <Content Include="languages\admin\english.xml">
@@ -2709,17 +2784,6 @@
       <SubType>Form</SubType>
     </Content>
     <Content Include="install\FileExtensions.xml" />
-    <Content Include="install\mssql\constraints.sql" />
-    <Content Include="install\mssql\fulltext.sql" />
-    <Content Include="install\mssql\functions.sql" />
-    <Content Include="install\mssql\indexes.sql" />
-    <Content Include="install\mssql\procedures.sql" />
-    <Content Include="install\mssql\providers\indexes.sql" />
-    <Content Include="install\mssql\providers\procedures.sql" />
-    <Content Include="install\mssql\providers\tables.sql" />
-    <Content Include="install\mssql\tables.sql" />
-    <Content Include="install\mssql\triggers.sql" />
-    <Content Include="install\mssql\views.sql" />
     <Content Include="languages\china.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -5842,6 +5906,10 @@
       <CachedSettingsPropName>YAF_RegisterV2_RegisterV2</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -5849,7 +5917,8 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

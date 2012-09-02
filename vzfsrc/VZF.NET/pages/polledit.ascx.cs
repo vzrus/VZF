@@ -572,8 +572,7 @@ namespace YAF.Pages
                 LegacyDb.poll_save(pollSaveList);
                 return true;
             }
-
-            return false; // A poll was not created for this topic.
+           
         }
 
         /// <summary>

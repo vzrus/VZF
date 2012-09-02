@@ -919,10 +919,11 @@ namespace YAF.Controls
             xw.WriteComment(" {0};{1} ".FormatWith(this.Get<YafBoardSettings>().Name, YafForumInfo.ForumURL));
             xw.WriteComment(
                 " Private Message Dump for User {0}; {1} ".FormatWith(this.PageContext.PageUserName, DateTime.Now));
+            
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(messageList.Table.DataSet.GetXml());
 
-            var xd = new XmlDataDocument(messageList.Table.DataSet);
-
-            foreach (XmlNode node in xd.ChildNodes)
+            foreach (XmlNode node in xmlDoc.ChildNodes)
             {
                 // nItemCount = node.ChildNodes.Count;
                 node.WriteTo(xw);
