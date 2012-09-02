@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VZF.Data.Common</RootNamespace>
+    <AssemblyName>VZF.Data.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\YetAnotherForum.NET\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=2.3.2.632, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.0.11.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VZF.Data.Firebird, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Firebird.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Data.Mysql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Mysql.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDataTableResultFilter.cs" />
+    <Compile Include="common\ConnectionStringsIndex.cs" />
+    <Compile Include="common\CurrentModule.cs" />
+    <Compile Include="common\DataModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="common\DBConnectionFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="common\GetConnectionData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="common\VzfDbFactory.cs" />
+    <Compile Include="common\YafDBConnManagerFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypedUserFind.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="YetAnotherForum.NET.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\VZF.Tools\VZF.Tools.csproj">
+      <Project>{EA5104B6-7370-4E64-B05C-858EB56D6DA7}</Project>
+      <Name>VZF.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
+      <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>
+      <Name>YAF.Classes.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YAF.Types\YAF.Types.csproj">
+      <Project>{B9CF38B0-39CF-43C7-9589-166DCC665652}</Project>
+      <Name>YAF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YAF.Utils\YAF.Utils.csproj">
+      <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
+      <Name>YAF.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.Postgre\VZF.Data.Postgre.csproj">
+      <Project>{26FC1FB1-9DCB-4ED9-9F74-EF453646E97E}</Project>
+      <Name>VZF.Data.Postgre</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3E9BE2C0-4AD7-4E58-A58A-24107CD5A7E9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

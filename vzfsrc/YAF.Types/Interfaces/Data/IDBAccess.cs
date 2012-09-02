@@ -30,7 +30,7 @@ namespace YAF.Types.Interfaces
         /// Gets the current connection manager.
         /// </summary>
         /// <returns></returns>
-        IDbConnectionManager GetConnectionManager();
+        IDbConnectionManager GetConnectionManager(string connectionString);
 
         /// <summary>
         /// Sets the connection manager adapter.
@@ -54,7 +54,7 @@ namespace YAF.Types.Interfaces
         /// </param>
         /// <returns>
         /// </returns>
-        DataSet GetDataset(IDbCommand cmd, bool transaction);
+        DataSet GetDataset(IDbCommand cmd, bool transaction, string connectionString);
 
         /// <summary>
         /// The get data.
@@ -67,7 +67,7 @@ namespace YAF.Types.Interfaces
         /// </param>
         /// <returns>
         /// </returns>
-        DataTable GetData(IDbCommand cmd, bool transaction);
+        DataTable GetData(IDbCommand cmd, bool transaction, string connectionString);
 
         /// <summary>
         /// The get data.
@@ -80,7 +80,7 @@ namespace YAF.Types.Interfaces
         /// </param>
         /// <returns>
         /// </returns>
-        DataTable GetData(string commandText, bool transaction);
+        DataTable GetData(string commandText, bool transaction, string connectionString);
 
         /// <summary>
         /// The execute non query.
@@ -91,7 +91,7 @@ namespace YAF.Types.Interfaces
         /// <param name="transaction">
         /// The transaction.
         /// </param>
-        void ExecuteNonQuery(IDbCommand cmd, bool transaction);
+        void ExecuteNonQuery(IDbCommand cmd, bool transaction, string connectionString);
 
         /// <summary>
         /// The execute scalar.
@@ -105,7 +105,7 @@ namespace YAF.Types.Interfaces
         /// <returns>
         /// The execute scalar.
         /// </returns> 
-        object ExecuteScalar(IDbCommand cmd, bool transaction);
+        object ExecuteScalar(IDbCommand cmd, bool transaction, string connectionString);
         /// <summary>
         /// Returns values from data reader. 
         /// </summary>
@@ -116,7 +116,7 @@ namespace YAF.Types.Interfaces
         /// <param name="firstColumnIndex"></param>
         /// <returns></returns>
         DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges,
-                                                int firstColumnIndex);
+                                                int firstColumnIndex, string connectionString);
         /// <summary>
         /// Returns values from data reader.
         /// </summary>
@@ -129,7 +129,7 @@ namespace YAF.Types.Interfaces
         /// <returns></returns>
 
         DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges,
-                                                 int firstColumnIndex, int currentRow);
+                                                 int firstColumnIndex, int currentRow, string connectionString);
         /// <summary>
         /// Returns values from data reader.
         /// </summary>
@@ -137,6 +137,6 @@ namespace YAF.Types.Interfaces
         /// <param name="transaction"></param>
         /// <param name="acceptChanges"></param>
         /// <returns></returns>
-        DataTable GetDataTableFromReader(IDbCommand cmd, bool transaction, bool acceptChanges);
+        DataTable GetDataTableFromReader(IDbCommand cmd, bool transaction, bool acceptChanges, string connectionString);
     }
 }

@@ -16,16 +16,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using YAF.Classes.Data;
+
 namespace YAF.Core
 {
   using YAF.Classes;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Classes.Data;
+
 
   /// <summary>
   /// The yaf dynamic db conn manager.
   /// </summary>
-  public class MsSqlDynamicDbConnectionManager : MsSqlDbConnectionManager
+    public class MsSqlDynamicDbConnectionManager : CommonSqlDbConnectionManager
   {
     /// <summary>
     /// Gets ConnectionString.

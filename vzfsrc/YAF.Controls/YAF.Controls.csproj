@@ -140,13 +140,17 @@
     <Compile Include="UserLink.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
+      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
+      <Name>VZF.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3E9BE2C0-4AD7-4E58-A58A-24107CD5A7E9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
       <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>
       <Name>YAF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YAF.Classes\YAF.Classes.Data\YAF.Classes.Data.csproj">
-      <Project>{9A454596-56DC-4834-A043-F3C1443F859B}</Project>
-      <Name>YAF.Classes.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\YAF.Core\YAF.Core.csproj">
       <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>

@@ -2664,6 +2664,7 @@
     <Content Include="languages\install\english.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="MANYDATABASES_HOWTO.txt" />
     <Content Include="pages\admin\eventloggroupaccess.ascx" />
     <Content Include="pages\admin\eventloggroups.ascx" />
     <Content Include="pages\admin\pageaccessedit.ascx" />
@@ -4129,6 +4130,18 @@
     <None Include="BuildScripts\YAF.Package.targets">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="app_pg.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="web_pg.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="app_fb.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="web_fb.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\GoogleSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\PSpell.php" />
@@ -5770,7 +5783,9 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web.config" />
     <Content Include="webconfigs\v191-upgrade-web.config" />
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">
@@ -5781,13 +5796,17 @@
       <Project>{F8516C67-92BE-43FF-A8A9-B71A3EA4BE0D}</Project>
       <Name>Intelligencia.UrlRewriter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
+      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
+      <Name>VZF.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Providers\VZF.Providers.Common\VZF.Providers.Common.csproj">
+      <Project>{E9ABBE0E-2961-4D7C-A7D9-8C114747E5C1}</Project>
+      <Name>VZF.Providers.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
       <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>
       <Name>YAF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YAF.Classes\YAF.Classes.Data\YAF.Classes.Data.csproj">
-      <Project>{9A454596-56DC-4834-A043-F3C1443F859B}</Project>
-      <Name>YAF.Classes.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\YAF.Controls\YAF.Controls.csproj">
       <Project>{C72A5FC8-4B1C-4A24-A306-FB550729DBF0}</Project>
@@ -5796,10 +5815,6 @@
     <ProjectReference Include="..\YAF.Core\YAF.Core.csproj">
       <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
       <Name>YAF.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\YAF.Providers\YAF.Providers.csproj">
-      <Project>{95A44CD9-4399-4DB9-823F-1A264083A390}</Project>
-      <Name>YAF.Providers</Name>
     </ProjectReference>
     <ProjectReference Include="..\YAF.Types\YAF.Types.csproj">
       <Project>{B9CF38B0-39CF-43C7-9589-166DCC665652}</Project>

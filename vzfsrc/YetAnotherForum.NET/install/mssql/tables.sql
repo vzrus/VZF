@@ -730,25 +730,6 @@ begin
 end
 GO
 
-if not exists (select top 1 1 from sysobjects where id = object_id(N'[{databaseOwner}].[{objectQualifier}Tag]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-begin
-	CREATE TABLE [{databaseOwner}].[{objectQualifier}Tag]
-	(
-		[TagID] [int] IDENTITY(1,1) NOT NULL,
-		[TagName] [nvarchar](255) NOT NULL
-	)
-end
-GO
-
-if not exists (select top 1 1 from sysobjects where id = object_id(N'[{databaseOwner}].[{objectQualifier}TopicTag]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-begin
-	CREATE TABLE [{databaseOwner}].[{objectQualifier}TopicTag]
-	(
-		[TopicID] int NOT NULL,
-		[TagID] int NOT NULL
-	)
-end
-GO
 
 if not exists (select top 1 1 from sysobjects where id = object_id(N'[{databaseOwner}].[{objectQualifier}ShoutboxMessage]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 begin
@@ -1692,10 +1673,6 @@ begin
 end
 GO
 
-if not exists (select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}Message]') and name='IsAnswer')
-	alter table [{databaseOwner}].[{objectQualifier}Message] add IsAnswer  AS (CONVERT([bit],sign([Flags]&(1024)),(0)))
-GO
-
 -- MessageHistory Table
 
 if exists (select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}MessageHistory]') and name='MessageHistoryID')
@@ -2358,4 +2335,8 @@ GO
 
 if not exists (select top 1 1 from syscolumns where id=object_id('[{databaseOwner}].[{objectQualifier}UserPMessage]') and name='IsReply')
     alter table [{databaseOwner}].[{objectQualifier}UserPMessage] ADD [IsReply] [bit] NOT NULL  DEFAULT (0)
+GO
+
+-- a deleted user was not previously deleted from here - clean-up possible needs a prefetch into temp table for perfomance 
+exec('delete from [{databaseOwner}].[{objectQualifier}UserMedal] where [UserID] NOT IN (select [UserID] from [{databaseOwner}].[{objectQualifier}User])')
 GO

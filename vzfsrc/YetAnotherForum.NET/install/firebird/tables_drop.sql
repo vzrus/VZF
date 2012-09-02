@@ -1,0 +1,134 @@
+﻿
+
+/* Yet Another Forum.NET Firebird data layer by vzrus
+ * Copyright (C) 2006-2012 Vladimir Zakharov
+ * https://github.com/vzrus
+ * http://sourceforge.net/projects/yaf-datalayers/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2 only
+ * General class structure is based on MS SQL Server code,
+ * created by YAF developers
+ *
+ * http://www.yetanotherforum.net/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation;version 2 only
+ * of the License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+CREATE PROCEDURE DP_DROP_TABLE_PROC
+  (TABLENAME VARCHAR(50))
+AS
+BEGIN
+  IF (EXISTS(
+    SELECT 1 FROM RDB$RELATIONS
+    WHERE (RDB$VIEW_BLR IS NULL) AND (RDB$RELATION_NAME = :TABLENAME)
+  )) THEN
+  EXECUTE STATEMENT 'DROP TABLE "' || :TABLENAME || '"';
+END;
+--GO
+
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERPROFILE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_WATCHTOPIC');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_WATCHFORUM');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERFORUM');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_TOPIC');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_NNTPTOPIC');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_NNTPFORUM');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_MESSAGE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_FORUMACCESS');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_FORUM');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_ATTACHMENT');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_ACTIVE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERPMESSAGE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERMEDAL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERGROUP');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_PMESSAGE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_EVENTLOG');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_CHECKEMAIL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USER');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_SMILEY');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_REPLACE_WORDS');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_REGISTRY');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_RANK');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_POLLVOTE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_CHOICE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_POLL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_NNTPSERVER');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_MESSAGEREPORTEDAUDIT');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_MESSAGEREPORTED');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_MEDAL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_MAIL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_GROUPMEDAL');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_GROUP');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_EXTENSION');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_CATEGORY');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_BBCODE');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_BANNEDIP');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_ACCESSMASK');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_BOARD');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_THANKS');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_FAVORITETOPIC');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_BUDDY');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERALBUM');
+--GO
+EXECUTE PROCEDURE DP_DROP_TABLE_PROC('objQual_USERALBUMIMAGE');
+--GO
+
+-- The procedure that drops all tables is not used anymore
+
+DROP PROCEDURE DP_DROP_TABLE_PROC;
+--GO
+

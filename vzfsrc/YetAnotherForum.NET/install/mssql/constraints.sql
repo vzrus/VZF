@@ -1043,7 +1043,7 @@ if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifi
 go
 
 if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}UserMedal_{objectQualifier}Medal' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}UserMedal]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
-	alter table [{databaseOwner}].[{objectQualifier}UserMedal] add constraint [FK_{objectQualifier}UserMedal_{objectQualifier}Medal] foreign key(MedalID) references [{databaseOwner}].[{objectQualifier}Medal] (MedalID) 
+	alter table [{databaseOwner}].[{objectQualifier}UserMedal] add constraint [FK_{objectQualifier}UserMedal_{objectQualifier}Medal] foreign key(MedalID) references [{databaseOwner}].[{objectQualifier}Medal] (MedalID)  on delete cascade
 go
 
 if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}UserProfile_{objectQualifier}User' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}UserProfile]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
@@ -1138,8 +1138,6 @@ go
 if not exists (select top 1 1 from  dbo.sysobjects where name=N'FK_{objectQualifier}MessageHistory_MessageID' and parent_obj=object_id(N'[{databaseOwner}].[{objectQualifier}MessageHistory]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
     ALTER TABLE [{databaseOwner}].[{objectQualifier}MessageHistory] ADD CONSTRAINT [FK_{objectQualifier}MessageHistory_MessageID] FOREIGN KEY([MessageID]) REFERENCES [{databaseOwner}].[{objectQualifier}Message] ([MessageID]) 
 
-
-
 if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}ForumReadTracking_{objectQualifier}User' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}ForumReadTracking]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
 	alter table [{databaseOwner}].[{objectQualifier}ForumReadTracking] add constraint [FK_{objectQualifier}ForumReadTracking_{objectQualifier}User] foreign key (UserID) references [{databaseOwner}].[{objectQualifier}User](UserID)
 go
@@ -1154,10 +1152,6 @@ go
 
 if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}TopicReadTracking_{objectQualifier}Topic' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}TopicReadTracking]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
 	alter table [{databaseOwner}].[{objectQualifier}TopicReadTracking] add constraint [FK_{objectQualifier}TopicReadTracking_{objectQualifier}Topic] foreign key (TopicID) references [{databaseOwner}].[{objectQualifier}Topic](TopicID)
-go
-
-if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}TopicTag_{objectQualifier}Topic' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}TopicTag]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)
-	alter table [{databaseOwner}].[{objectQualifier}TopicTag] add constraint [FK_{objectQualifier}TopicTag_{objectQualifier}Topic] foreign key (TopicID) references [{databaseOwner}].[{objectQualifier}Topic](TopicID) on delete cascade
 go
 
 if not exists (select top 1 1 from  dbo.sysobjects where name='FK_{objectQualifier}ReputationVote_{objectQualifier}User_From' and parent_obj=object_id('[{databaseOwner}].[{objectQualifier}ReputationVote]') and OBJECTPROPERTY(id,N'IsForeignKey')=1)

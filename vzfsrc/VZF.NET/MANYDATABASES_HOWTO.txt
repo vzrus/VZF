@@ -1,0 +1,17 @@
+﻿To switch between databases simply rename configs:
+
+For PostgreSQL 
+app_pg.conf -> app.conf
+web_pg.conf -> web.conf
+
+For Firebird
+app_fb.conf -> app.conf
+web_fb.conf -> web.conf
+
+For MySQL
+app_my.conf -> app.conf
+web_my.conf -> web.conf
+
+All default connection strings are in db.config file.
+
+

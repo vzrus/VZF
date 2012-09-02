@@ -221,7 +221,7 @@ namespace YAF.Core.Services
                     () =>
                         {
                             var catDt = LegacyDb.category_list(boardID, null);
-                            catDt.TableName = MsSqlDbAccess.GetObjectName("Category");
+                            catDt.TableName = CommonSqlDbAccess.GetObjectName("Category");
                             return catDt;
                         }, 
                     TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardCategoriesCacheTimeout));
@@ -229,7 +229,7 @@ namespace YAF.Core.Services
                 // add it to this dataset
                 ds.Tables.Add(category.Copy());
 
-                DataTable categoryTable = ds.Tables[MsSqlDbAccess.GetObjectName("Category")];
+                DataTable categoryTable = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
 
                 if (categoryID.HasValue)
                 {
@@ -246,18 +246,18 @@ namespace YAF.Core.Services
 
                 DataTable forum = LegacyDb.forum_listread(
                     boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
-                forum.TableName = MsSqlDbAccess.GetObjectName("Forum");
+                forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
                 ds.Tables.Add(forum.Copy());
 
                 ds.Relations.Add(
                     "FK_Forum_Category", 
-                    categoryTable.Columns["CategoryID"], 
-                    ds.Tables[MsSqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"], 
+                    categoryTable.Columns["CategoryID"],
+                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"], 
                     false);
                 ds.Relations.Add(
-                    "FK_Moderator_Forum", 
-                    ds.Tables[MsSqlDbAccess.GetObjectName("Forum")].Columns["ForumID"], 
-                    ds.Tables[MsSqlDbAccess.GetObjectName("Moderator")].Columns["ForumID"], 
+                    "FK_Moderator_Forum",
+                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["ForumID"],
+                    ds.Tables[CommonSqlDbAccess.GetObjectName("Moderator")].Columns["ForumID"], 
                     false);
 
                 bool deletedCategory = false;
@@ -473,7 +473,7 @@ namespace YAF.Core.Services
         public DataTable GetModerators()
         {
             DataTable moderator = LegacyDb.forum_moderators(this.Get<YafBoardSettings>().UseStyledNicks);
-            moderator.TableName = MsSqlDbAccess.GetObjectName("Moderator");
+            moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
 
             return moderator;
         }

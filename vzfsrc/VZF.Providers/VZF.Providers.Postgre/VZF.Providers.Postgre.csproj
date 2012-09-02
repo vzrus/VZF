@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A0DE0EE2-A248-43D3-939D-BD70EF10668D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VZF.Providers.Postgre</RootNamespace>
+    <AssemblyName>VZF.Providers.Postgre</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\YetAnotherForum.NET\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\YetAnotherForum.NET\Bin\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YAF.Classes.Config">
+      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Classes.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="YAF.Core">
+      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="YAF.Types">
+      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="YAF.Utils">
+      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="postgre\Membership\DB.cs" />
+    <Compile Include="postgre\Membership\PgMembershipProvider.cs" />
+    <Compile Include="postgre\Membership\UserPasswordInfo.cs" />
+    <Compile Include="postgre\Profile\DataAccess\DataAccess_Helpers\SchemaManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\DataAccess\DB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProviderOverridenMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProvider_Helpers\SettingsPropertyColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\ProfileProvider_Class\ProviderBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Profile\ProfileProvider_Class\SettingsProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="postgre\Roles\DB.cs" />
+    <Compile Include="postgre\Roles\PgRoleProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
+      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
+      <Name>VZF.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Postgre\VZF.Data.Postgre.csproj">
+      <Project>{26FC1FB1-9DCB-4ED9-9F74-EF453646E97E}</Project>
+      <Name>VZF.Data.Postgre</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Providers.Common\VZF.Providers.Common.csproj">
+      <Project>{E9ABBE0E-2961-4D7C-A7D9-8C114747E5C1}</Project>
+      <Name>VZF.Providers.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="YetAnotherForum.NET.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

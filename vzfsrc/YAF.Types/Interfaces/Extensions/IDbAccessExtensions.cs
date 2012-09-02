@@ -40,12 +40,12 @@ namespace YAF.Types.Interfaces
     /// <param name="cmd">
     /// The cmd.
     /// </param>
-    public static void ExecuteNonQuery([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd)
+      public static void ExecuteNonQuery([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
     {
       CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
       CodeContracts.ArgumentNotNull(cmd, "cmd");
 
-      dbAccess.ExecuteNonQuery(cmd, false);
+      dbAccess.ExecuteNonQuery(cmd, false,  connectionString);
     }
 
     /// <summary>
@@ -60,12 +60,12 @@ namespace YAF.Types.Interfaces
     /// <returns>
     /// The execute scalar.
     /// </returns>
-    public static object ExecuteScalar([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd)
+    public static object ExecuteScalar([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
     {
       CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
       CodeContracts.ArgumentNotNull(cmd, "cmd");
 
-      return dbAccess.ExecuteScalar(cmd, false);
+      return dbAccess.ExecuteScalar(cmd, false, connectionString);
     }
 
     /// <summary>
@@ -79,12 +79,12 @@ namespace YAF.Types.Interfaces
     /// </param>
     /// <returns>
     /// </returns>
-    public static DataTable GetData([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd)
+    public static DataTable GetData([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
     {
       CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
       CodeContracts.ArgumentNotNull(cmd, "cmd");
 
-      return dbAccess.GetData(cmd, false);
+      return dbAccess.GetData(cmd, false,  connectionString);
     }
 
     /// <summary>
@@ -98,12 +98,12 @@ namespace YAF.Types.Interfaces
     /// </param>
     /// <returns>
     /// </returns>
-    public static DataSet GetDataset([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd)
+    public static DataSet GetDataset([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
     {
       CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
       CodeContracts.ArgumentNotNull(cmd, "cmd");
 
-      return dbAccess.GetDataset(cmd, false);
+      return dbAccess.GetDataset(cmd, false,  connectionString);
     }
 
     /// <summary>

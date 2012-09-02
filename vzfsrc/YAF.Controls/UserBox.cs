@@ -475,7 +475,7 @@ namespace YAF.Controls
 
             if (this.Get<YafBoardSettings>().ShowGroups)
             {
-                var groupsText = new StringBuilder(500);
+                var groupsText = new StringBuilder();
 
                 bool bFirst = true;
                 bool hasRole = false;
@@ -485,7 +485,7 @@ namespace YAF.Controls
                                    ? UserMembershipHelper.GuestUserName
                                    : this.DataRow["UserName"].ToString();
 
-                foreach (string role in RoleMembershipHelper.GetRolesForUser(userName))
+                foreach (var role in RoleMembershipHelper.GetRolesForUser(userName))
                 {
                     string role1 = role;
 
