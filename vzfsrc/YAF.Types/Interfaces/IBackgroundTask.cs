@@ -34,6 +34,14 @@ namespace YAF.Types.Interfaces
     }
 
     /// <summary>
+    /// Sets Module
+    /// </summary>
+    object Module
+    {
+        set;
+    }
+
+    /// <summary>
     /// Gets Started.
     /// </summary>
     DateTime Started

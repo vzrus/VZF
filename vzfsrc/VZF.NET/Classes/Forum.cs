@@ -182,6 +182,22 @@ namespace YAF
         #region Public Properties
 
         /// <summary>
+        ///   Gets or sets the Module ID for this instance of the forum control.
+        /// </summary>
+        public int ModuleID
+        {
+            get
+            {
+                return YafControlSettings.Current.ModuleID;
+            }
+
+            set
+            {
+                YafControlSettings.Current.ModuleID = value;
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the Board ID for this instance of the forum control, overriding the value defined in app.config.
         /// </summary>
         public int BoardID
@@ -196,6 +212,7 @@ namespace YAF
                 YafControlSettings.Current.BoardID = value;
             }
         }
+
 
         /// <summary>
         ///   Gets or sets the CategoryID for this instance of the forum control

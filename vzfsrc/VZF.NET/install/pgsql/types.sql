@@ -2220,7 +2220,7 @@ CREATE TYPE databaseSchema.objectQualifier_shoutbox_getmessages_return_type AS
 "ShoutBoxMessageID" integer,	
 "UserID" integer,
 "UserName" varchar(255),
-"DisplayName" varchar(255),
+"UserDisplayName" varchar(255),
 "Message" text,
 "Date" timestampTZ,
 "Style"  varchar(255)

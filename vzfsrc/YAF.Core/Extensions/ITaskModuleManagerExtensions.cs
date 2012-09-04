@@ -72,11 +72,11 @@ namespace YAF.Core
     /// <returns>
     /// The start.
     /// </returns>
-    public static bool Start<T>([NotNull] this ITaskModuleManager taskModuleManager, [CanBeNull] object data) where T : IBackgroundTask, new()
+    public static bool Start<T>([NotNull] this ITaskModuleManager taskModuleManager, [CanBeNull] object data, [CanBeNull] object module) where T : IBackgroundTask, new()
     {
       CodeContracts.ArgumentNotNull(taskModuleManager, "taskModuleManager");
 
-      return Start(taskModuleManager, () => new T { Data = data });
+      return Start(taskModuleManager, () => new T { Data = data, Module = module });
     }
 
     #endregion

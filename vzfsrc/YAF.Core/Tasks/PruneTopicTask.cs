@@ -134,7 +134,7 @@ namespace YAF.Core.Tasks
     /// <returns>
     /// The start.
     /// </returns>
-    public static bool Start(int boardId, int forumId, int days, bool permDelete)
+    public static bool Start(int moduleId, int boardId, int forumId, int days, bool permDelete)
     {
       if (YafContext.Current.Get<ITaskModuleManager>() == null)
       {
@@ -142,7 +142,7 @@ namespace YAF.Core.Tasks
       }
 
     	YafContext.Current.Get<ITaskModuleManager>().StartTask(
-    		TaskName, () => new PruneTopicTask { Data = boardId, ForumId = forumId, Days = days, PermDelete = permDelete });
+    		TaskName, () => new PruneTopicTask { Module = moduleId, Data = boardId, ForumId = forumId, Days = days, PermDelete = permDelete });
 
       return true;
     }

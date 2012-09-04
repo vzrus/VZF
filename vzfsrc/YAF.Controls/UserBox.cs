@@ -467,7 +467,7 @@ namespace YAF.Controls
         [NotNull]
         private string MatchUserBoxGroups([NotNull] string userBox, [NotNull] DataTable roleStyleTable)
         {
-            const string StyledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
+            const string styledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
 
             string filler = string.Empty;
 
@@ -478,53 +478,59 @@ namespace YAF.Controls
                 var groupsText = new StringBuilder();
 
                 bool bFirst = true;
-                bool hasRole = false;
                 string roleStyle = null;
 
-                var userName = this.DataRow["IsGuest"].ToType<bool>()
+               /* var userName = this.DataRow["IsGuest"].ToType<bool>()
                                    ? UserMembershipHelper.GuestUserName
-                                   : this.DataRow["UserName"].ToString();
-
-                foreach (var role in RoleMembershipHelper.GetRolesForUser(userName))
+                                   : this.DataRow["UserName"].ToString(); */
+             
+                if (!this.DataRow["IsGuest"].ToType<bool>())
                 {
-                    string role1 = role;
 
-                    foreach (DataRow drow in
-                        roleStyleTable.Rows.Cast<DataRow>().Where(
-                            drow =>
-                            drow["LegendID"].ToType<int>() == 1 && drow["Style"] != null &&
-                            drow["Name"].ToString() == role1))
+                    // DataTable dtt = LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows;
+                    foreach (DataRow role in LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
-                        roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
-                        break;
-                    }
+                        // LegacyDb.eventlog_create(this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0) continue;
 
-                    if (bFirst)
-                    {
-                        groupsText.AppendLine(
-                            this.Get<YafBoardSettings>().UseStyledNicks ? StyledNick.FormatWith(role, roleStyle) : role);
+                        string role1 = role["Name"].ToString();
 
-                        bFirst = false;
-                    }
-                    else
-                    {
-                        if (this.Get<YafBoardSettings>().UseStyledNicks)
+                        foreach (DataRow drow in
+                            roleStyleTable.Rows)
                         {
-                            groupsText.AppendLine((@", " + StyledNick).FormatWith(role, roleStyle));
+                            if (drow["LegendID"].ToType<int>() != 1 || drow["Style"].IsNullOrEmptyDBField() ||
+                                drow["Name"].ToString() != role1) continue;
+                            roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
+                            break;
+                        }
+
+                        if (bFirst)
+                        {
+                            groupsText.AppendLine(
+                                this.Get<YafBoardSettings>().UseStyledNicks
+                                    ? styledNick.FormatWith(role1, roleStyle)
+                                    : role1);
+
+                            bFirst = false;
                         }
                         else
                         {
-                            groupsText.AppendFormat(", {0}", role);
+                            if (this.Get<YafBoardSettings>().UseStyledNicks)
+                            {
+                                groupsText.AppendLine((@", " + styledNick).FormatWith(role1, roleStyle));
+                            }
+                            else
+                            {
+                                groupsText.AppendFormat(", {0}", role1);
+                            }
                         }
+
+                        roleStyle = null;
                     }
-
-                    roleStyle = null;
-                    hasRole = true;
                 }
-
-                // vzrus: Only a guest normally has no role
-                if (!hasRole)
+                else
                 {
+                    // vzrus: Only a guest normally has no role
                     DataTable dt = this.Get<IDataCache>().GetOrSet(
                         Constants.Cache.GuestGroupsCache,
                         () => LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]),
@@ -537,19 +543,19 @@ namespace YAF.Controls
                         foreach (DataRow drow in
                             roleStyleTable.Rows.Cast<DataRow>().Where(
                                 drow =>
-                                drow["LegendID"].ToType<int>() == 1 && drow["Style"] != null &&
+                                drow["LegendID"].ToType<int>() == 1 && !drow["Style"].IsNullOrEmptyDBField() &&
                                 drow["Name"].ToString() == guestRole))
                         {
                             roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
-                            break;
                         }
 
                         groupsText.AppendLine(
                             this.Get<YafBoardSettings>().UseStyledNicks
-                                ? StyledNick.FormatWith(guestRole, roleStyle)
+                                ? styledNick.FormatWith(guestRole, roleStyle)
                                 : guestRole);
                         break;
                     }
+
                 }
 
                 filler = this.Get<YafBoardSettings>().UserBoxGroups.FormatWith(this.GetText("groups"), groupsText);
@@ -563,6 +569,106 @@ namespace YAF.Controls
             userBox = rx.Replace(userBox, filler);
             return userBox;
         }
+        /* private string MatchUserBoxGroups([NotNull] string userBox, [NotNull] DataTable roleStyleTable)  
+         {
+             const string StyledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
+
+             string filler = string.Empty;
+
+             Regex rx = this.GetRegex(Constants.UserBox.Groups);
+
+             if (this.Get<YafBoardSettings>().ShowGroups)
+             {
+                 var groupsText = new StringBuilder();
+
+                 bool bFirst = true;
+                 bool hasRole = false;
+                 string roleStyle = null;
+
+                 var userName = this.DataRow["IsGuest"].ToType<bool>()
+                                    ? UserMembershipHelper.GuestUserName
+                                    : this.DataRow["UserName"].ToString();
+
+                 foreach (var role in RoleMembershipHelper.GetRolesForUser(userName))
+                 {
+                     string role1 = role;
+
+                     foreach (DataRow drow in
+                         roleStyleTable.Rows.Cast<DataRow>().Where(
+                             drow =>
+                             drow["LegendID"].ToType<int>() == 1 && drow["Style"] != null &&
+                             drow["Name"].ToString() == role1))
+                     {
+                         roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
+                         break;
+                     }
+
+                     if (bFirst)
+                     {
+                         groupsText.AppendLine(
+                             this.Get<YafBoardSettings>().UseStyledNicks ? StyledNick.FormatWith(role, roleStyle) : role);
+
+                         bFirst = false;
+                     }
+                     else
+                     {
+                         if (this.Get<YafBoardSettings>().UseStyledNicks)
+                         {
+                             groupsText.AppendLine((@", " + StyledNick).FormatWith(role, roleStyle));
+                         }
+                         else
+                         {
+                             groupsText.AppendFormat(", {0}", role);
+                         }
+                     }
+
+                     roleStyle = null;
+                     hasRole = true;
+                 }
+
+                 // vzrus: Only a guest normally has no role
+                 if (!hasRole)
+                 {
+                     DataTable dt = this.Get<IDataCache>().GetOrSet(
+                         Constants.Cache.GuestGroupsCache,
+                         () => LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]),
+                         TimeSpan.FromMinutes(60));
+
+                     foreach (string guestRole in
+                         dt.Rows.Cast<DataRow>().Where(role => role["Member"].ToType<int>() > 0).Select(
+                             role => role["Name"].ToString()))
+                     {
+                         foreach (DataRow drow in
+                             roleStyleTable.Rows.Cast<DataRow>().Where(
+                                 drow =>
+                                 drow["LegendID"].ToType<int>() == 1 && drow["Style"] != null &&
+                                 drow["Name"].ToString() == guestRole))
+                         {
+                             roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
+                             break;
+                         }
+
+                         groupsText.AppendLine(
+                             this.Get<YafBoardSettings>().UseStyledNicks
+                                 ? StyledNick.FormatWith(guestRole, roleStyle)
+                                 : guestRole);
+                         break;
+                     }
+                 }
+
+                 filler = this.Get<YafBoardSettings>().UserBoxGroups.FormatWith(this.GetText("groups"), groupsText);
+
+                 // mddubs : 02/21/2009
+                 // Remove the space before the first comma when multiple groups exist.
+                 filler = filler.Replace("\r\n,", ",");
+             }
+
+             // replaces template placeholder with actual groups
+             userBox = rx.Replace(userBox, filler);
+             return userBox;
+         }*/
+
+
 
         /// <summary>
         /// The match user box joined date.

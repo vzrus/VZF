@@ -275,7 +275,7 @@ namespace YAF.Core
         /// <param name="pageBoardId">
         /// The page Board Id.
         /// </param>
-        public static void SyncAllMembershipUsers(int pageBoardId)
+        public static void SyncAllMembershipUsers(int pageModuleId,int pageBoardId)
         {
             int totalRecords;
 
@@ -294,7 +294,7 @@ namespace YAF.Core
         /// Syncs the ASP.NET roles with YAF group based on YAF (not bi-directional)
         /// </summary>
         /// <param name="pageBoardID">The page board ID.</param>
-        public static void SyncRoles(int pageBoardID)
+        public static void SyncRoles(int pageModuleID,int pageBoardID)
         {
             // get all the groups in YAF DB and create them if they do not exist as a role in membership
             using (DataTable dt = LegacyDb.group_list(pageBoardID, DBNull.Value))
@@ -329,7 +329,7 @@ namespace YAF.Core
         /// Takes all YAF users and creates them in the Membership Provider
         /// </summary>
         /// <param name="pageBoardID">The page board ID.</param>
-        public static void SyncUsers(int pageBoardID)
+        public static void SyncUsers(int moduleID, int pageBoardID)
         {
             // first sync unapproved users...
             using (DataTable dt = LegacyDb.user_list(pageBoardID, DBNull.Value, false))

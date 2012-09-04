@@ -76,7 +76,10 @@ namespace YAF.Core.Tasks
 
 	    /// <summary>
 	    /// Creates the Forum Delete Task
-	    /// </summary>
+        /// </summary>
+        /// <param name="moduleId">
+        /// The module id.
+        /// </param> 
 	    /// <param name="boardId">
 	    /// The board id.
 	    /// </param>
@@ -89,7 +92,7 @@ namespace YAF.Core.Tasks
 	    /// <returns>
 	    /// Returns if Task was Successfull
 	    /// </returns>
-	    public static bool Start(int boardId, int forumId, out string failureMessage)
+	    public static bool Start(int moduleId, int boardId, int forumId, out string failureMessage)
 		{
 
             failureMessage = string.Empty;
@@ -104,6 +107,7 @@ namespace YAF.Core.Tasks
                                                                        new ForumDeleteTask
                                                                            {
                                                                                Data = boardId,
+                                                                               Module = moduleId,
                                                                                ForumId = forumId,
                                                                                ForumNewId = -1
                                                                            });
@@ -121,6 +125,9 @@ namespace YAF.Core.Tasks
 		/// <summary>
 		/// Creates the Forum Delete Task and moves the Messages to a new Forum
 		/// </summary>
+        /// <param name="moduleId">
+        /// The module id.
+        /// </param>
 		/// <param name="boardId">
 		/// The board id.
 		/// </param>
@@ -136,7 +143,7 @@ namespace YAF.Core.Tasks
 		/// <returns>
 		/// Returns if Task was Successfull
 		/// </returns>
-        public static bool Start(int boardId, int forumOldId, int forumNewId, out string failureMessage)
+        public static bool Start(int moduleId, int boardId, int forumOldId, int forumNewId, out string failureMessage)
 		{
             failureMessage = string.Empty;
 			if (YafContext.Current.Get<ITaskModuleManager>() == null)
@@ -145,7 +152,7 @@ namespace YAF.Core.Tasks
 			}
             if (!YafContext.Current.Get<ITaskModuleManager>().IsTaskRunning("ForumSaveTask"))
             {
-			YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => new ForumDeleteTask { Data = boardId, ForumId = forumOldId, ForumNewId = forumNewId });
+			YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => new ForumDeleteTask { Data = boardId, Module = moduleId, ForumId = forumOldId, ForumNewId = forumNewId });
             }
             else
             {

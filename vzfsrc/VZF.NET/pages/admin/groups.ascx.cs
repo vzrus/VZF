@@ -186,7 +186,7 @@ namespace YAF.Pages.Admin
         this.NewGroup.Text = this.GetText("ADMIN_GROUPS", "NEW_ROLE");
 
         // sync roles just in case...
-        RoleMembershipHelper.SyncRoles(YafContext.Current.PageBoardID);
+        RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
 
         // bind data
         this.BindData();

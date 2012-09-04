@@ -260,7 +260,7 @@ namespace YAF.Pages.Admin
                 var forumId = this.GetQueryStringAsInt("f");
 
                 // schedule...
-                ForumDeleteTask.Start(this.PageContext.PageBoardID, forumId.Value, out errorMessage);
+                ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, forumId.Value, out errorMessage);
 
                 // enable timer...
                 this.UpdateStatusTimer.Enabled = true;

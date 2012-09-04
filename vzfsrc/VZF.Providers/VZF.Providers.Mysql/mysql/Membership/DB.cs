@@ -246,6 +246,7 @@ namespace YAF.Providers.Membership
 				cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
                 cmd.Parameters.Add( "i_UserKey", MySqlDbType.String ).Value = DBNull.Value;
                 cmd.Parameters.Add( "i_UserIsOnline", MySqlDbType.Byte ).Value = updateUser;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 				return MySqlDbAccess.GetData( cmd, connectionString) ;
 			}
 

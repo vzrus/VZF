@@ -23,9 +23,6 @@ Thumbs.db
 [Dd]ebug*/
 *.lib
 *.sbr
-*.fdb
-*.mdf
-*.ldf
 obj/
 [Rr]elease*/
 _ReSharper*/

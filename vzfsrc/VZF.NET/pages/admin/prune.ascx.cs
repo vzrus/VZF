@@ -148,6 +148,7 @@ namespace YAF.Pages.Admin
     private void commit_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
       PruneTopicTask.Start(
+        YafContext.Current.PageModuleID,
         this.PageContext.PageBoardID, 
         this.forumlist.SelectedValue.ToType<int>(), 
         this.days.Text.ToType<int>(), 

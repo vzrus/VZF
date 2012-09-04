@@ -42,6 +42,11 @@ namespace YAF.Core.Tasks
     protected int _boardId = YafControlSettings.Current.BoardID;
 
     /// <summary>
+    /// The _module id.
+    /// </summary>
+    protected int _moduleId = YafControlSettings.Current.ModuleID;
+
+    /// <summary>
     /// The _is running.
     /// </summary>
     protected bool _isRunning = false;
@@ -72,6 +77,22 @@ namespace YAF.Core.Tasks
       {
         this._boardId = (int)value;
       }
+    }
+
+    /// <summary>
+    /// Gets or sets ModuleID.
+    /// </summary>
+    public virtual object Module
+    {
+        protected get
+        {
+            return this._moduleId;
+        }
+
+        set
+        {
+            this._moduleId = (int)value;
+        }
     }
 
     /// <summary>

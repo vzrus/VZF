@@ -441,6 +441,17 @@ namespace YAF.Core
         }
 
         /// <summary>
+        ///   Gets PageModuleID.
+        /// </summary>
+        public int PageModuleID
+        {
+            get
+            {
+                return YafControlSettings.Current == null ? 0 : YafControlSettings.Current.ModuleID;
+            }
+        }
+
+        /// <summary>
         ///   Gets the CategoryID for the current page, or 0 if not in any category
         /// </summary>
         public int PageCategoryID

@@ -229,6 +229,23 @@ namespace YAF.Install
             }
         }
 
+        /// <summary>
+        ///   Gets PageModuleID.
+        /// </summary>
+        private int PageModuleID
+        {
+            get
+            {
+                try
+                {
+                    return 0;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -656,10 +673,10 @@ namespace YAF.Install
                     // migrate users/roles only if user does not want to skip
                     if (!this.skipMigration.Checked)
                     {
-                        RoleMembershipHelper.SyncRoles(this.PageBoardID);
+                        RoleMembershipHelper.SyncRoles(this.PageModuleID,this.PageBoardID);
 
                         // start the background migration task...
-                        this.Get<ITaskModuleManager>().Start<MigrateUsersTask>(this.PageBoardID);
+                        this.Get<ITaskModuleManager>().Start<MigrateUsersTask>(this.PageModuleID, this.PageBoardID);
                     }
 
                     e.Cancel = false;

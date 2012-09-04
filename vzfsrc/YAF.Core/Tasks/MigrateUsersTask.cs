@@ -70,14 +70,14 @@ namespace YAF.Core.Tasks
     /// <returns>
     /// The start.
     /// </returns>
-    public static bool Start(int boardId)
+    public static bool Start(int moduleId, int boardId)
     {
       if (YafContext.Current.Get<ITaskModuleManager>() == null)
       {
         return false;
       }
 
-      YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => new MigrateUsersTask { Data = boardId });
+      YafContext.Current.Get<ITaskModuleManager>().StartTask(TaskName, () => new MigrateUsersTask { Data = boardId,Module = moduleId});
 
 			return true;
     }
@@ -90,7 +90,7 @@ namespace YAF.Core.Tasks
       try
       {
         // attempt to run the migration code...
-        RoleMembershipHelper.SyncUsers((int)this.Data);
+        RoleMembershipHelper.SyncUsers((int)this.Module,(int)this.Data);
       }
       catch (Exception x)
       {

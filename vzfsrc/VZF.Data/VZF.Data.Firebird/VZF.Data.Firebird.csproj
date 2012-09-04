@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\YetAnotherForum.NET\Bin\</OutputPath>
+    <OutputPath>..\..\VZF.NET\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,7 +37,10 @@
     <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL" />
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -97,10 +100,6 @@
     <ProjectReference Include="..\..\YAF.Utils\YAF.Utils.csproj">
       <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
       <Name>YAF.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VZF.Data.Postgre\VZF.Data.Postgre.csproj">
-      <Project>{26FC1FB1-9DCB-4ED9-9F74-EF453646E97E}</Project>
-      <Name>VZF.Data.Postgre</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Utils\VZF.Data.Utils.csproj">
       <Project>{3E9BE2C0-4AD7-4E58-A58A-24107CD5A7E9}</Project>

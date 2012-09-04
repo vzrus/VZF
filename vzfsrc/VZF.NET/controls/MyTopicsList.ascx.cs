@@ -308,7 +308,7 @@ namespace YAF.Controls
             topicsNew.AcceptChanges();
             if (this.Get<YafBoardSettings>().UseStyledNicks)
             {
-                this.Get<IStyleTransform>().DecodeStyleByTable(ref topicsNew, false, "LastUserStyle", "StarterStyle");
+                this.Get<IStyleTransform>().DecodeStyleByTable(ref topicsNew, false, new[] { "LastUserStyle", "StarterStyle" });
             }
 
             // let's page the results
@@ -476,8 +476,8 @@ namespace YAF.Controls
             if (forumName != this._lastForumName)
             {
                 html =
-                    @"<tr><td class=""header2"" colspan=""6""><a href=""{1}"" alt=""{2}"" title=""{2}"" >{0}</a></td></tr>"
-                        .FormatWith(
+                     @"<tr><td class=""header2"" colspan=""6""><a href=""{1}"" title=""{2}"" >{0}</a></td></tr>"
+                     .FormatWith(
                             forumName,
                             YafBuildLink.GetLink(ForumPages.topics, "f={0}", row["ForumID"]),
                             this.GetText("COMMON", "VIEW_FORUM"));

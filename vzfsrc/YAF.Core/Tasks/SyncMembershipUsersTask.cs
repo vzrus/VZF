@@ -90,7 +90,7 @@ namespace YAF.Core.Tasks
       try
       {
         // attempt to run the sync code...
-        RoleMembershipHelper.SyncAllMembershipUsers((int)this.Data);
+        RoleMembershipHelper.SyncAllMembershipUsers((int)this.Module,(int)this.Data);
       }
       catch (Exception x)
       {

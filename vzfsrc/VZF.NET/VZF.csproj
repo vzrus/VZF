@@ -799,7 +799,6 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Content Include="advanced.aspx" />
-    <Content Include="App_Data\Database.mdf" />
     <Content Include="auth.aspx" />
     <Content Include="controls\AlbumImageList.ascx" />
     <Content Include="controls\AlbumList.ascx" />
@@ -4185,9 +4184,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -4214,7 +4210,9 @@
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -5847,9 +5845,16 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web.config" />
     <Content Include="webconfigs\v191-upgrade-web.config" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Deploy.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">
@@ -5890,6 +5895,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
     <Folder Include="uploads\" />
   </ItemGroup>
