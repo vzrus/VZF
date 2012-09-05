@@ -48,7 +48,7 @@ namespace YAF.Classes.Data.MySqlDb
     using YAF.Utils.Helpers.StringUtils;
     using MySql.Data.MySqlClient;
 
-    public static partial class LegacyDbb
+    public static partial class Db
 	{
         //added vzrus
         #region ConnectionStringOptions
@@ -711,7 +711,7 @@ namespace YAF.Classes.Data.MySqlDb
 
         static private bool GetBooleanRegistryValue(string connectionString, string name)
         {
-            using ( DataTable dt = LegacyDbb.registry_list(connectionString, name ) )
+            using ( DataTable dt = Db.registry_list(connectionString, name ) )
             {
                 foreach ( DataRow dr in dt.Rows )
                 {
@@ -987,7 +987,7 @@ namespace YAF.Classes.Data.MySqlDb
             //Search not in all forums
             if ( forumIDToStartAt != 0 )
 			{
-                DataTable dt = LegacyDbb.forum_listall_sorted(connectionString, boardId, userID, null, false, forumIDToStartAt);
+                DataTable dt = Db.forum_listall_sorted(connectionString, boardId, userID, null, false, forumIDToStartAt);
 				
                 foreach ( DataRow dr in dt.Rows )
 				forumIDs = forumIDs + Convert.ToInt32( dr ["ForumID"] ).ToString() + ",";
@@ -1299,7 +1299,7 @@ namespace YAF.Classes.Data.MySqlDb
 							dtForumListSorted.TableName = MySqlDbAccess.GetObjectName( "Forum" );
 							ds.Tables.Add( dtForumListSorted );
 							dtForumListSorted.Dispose();
-                            LegacyDbb.forum_list_sort_basic( ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")], ds.Tables[MySqlDbAccess.GetObjectName("Forum")], 0, 0);
+                            Db.forum_list_sort_basic( ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")], ds.Tables[MySqlDbAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove( MySqlDbAccess.GetObjectName( "ForumUnsorted" ) );
 							ds.Relations.Add( "FK_Forum_Category", ds.Tables [MySqlDbAccess.GetObjectName( "Category" )].Columns ["CategoryID"], ds.Tables [MySqlDbAccess.GetObjectName( "Forum" )].Columns ["CategoryID"] );
 							trans.Commit();
@@ -1313,16 +1313,6 @@ namespace YAF.Classes.Data.MySqlDb
 		#endregion
 
 		#region yaf_AccessMask
-        /// <summary>
-        /// Gets a list of access mask properities
-        /// </summary>
-        /// <param name="boardId">ID of Board</param>
-        /// <param name="accessMaskID">ID of access mask</param>
-        /// <returns></returns>
-        static public DataTable accessmask_list(string connectionString, object boardId, object accessMaskID)
-        {
-         return accessmask_list(connectionString,boardId, accessMaskID,0);
-        }
 		/// <summary>
 		/// Gets a list of access mask properities
 		/// </summary>
@@ -2781,7 +2771,7 @@ namespace YAF.Classes.Data.MySqlDb
 
 				using ( DataTable dt = MySqlDbAccess.GetData(cmd,connectionString) )
 				{
-                    return LegacyDbb.forum_sort_list(connectionString, dt, 0, intCategoryID, 0, null, emptyFirstRow);
+                    return Db.forum_sort_list(connectionString, dt, 0, intCategoryID, 0, null, emptyFirstRow);
 				}
 			}
 		}
@@ -2894,7 +2884,7 @@ namespace YAF.Classes.Data.MySqlDb
 							dtForumListSorted.TableName = MySqlDbAccess.GetObjectName( "Forum" );
 							ds.Tables.Add( dtForumListSorted );
 							dtForumListSorted.Dispose();
-                            LegacyDbb.forum_list_sort_basic( ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")], ds.Tables[MySqlDbAccess.GetObjectName("Forum")], 0, 0);
+                            Db.forum_list_sort_basic( ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")], ds.Tables[MySqlDbAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove( MySqlDbAccess.GetObjectName( "ForumUnsorted" ) );
                             // vzrus: Remove here all forums with no reports. Would be better to do it in query...
                             // Array to write categories numbers
@@ -7460,7 +7450,7 @@ namespace YAF.Classes.Data.MySqlDb
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -7501,7 +7491,7 @@ namespace YAF.Classes.Data.MySqlDb
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -7543,7 +7533,7 @@ namespace YAF.Classes.Data.MySqlDb
             if (spc != null && spc.Count > 0)
             {
                 // start saving...
-                LegacyDbb.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
+                Db.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
             }
         }
         /// <summary>
@@ -7564,7 +7554,7 @@ namespace YAF.Classes.Data.MySqlDb
         public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
         {
             string userName = string.Empty;
-            var dtu = LegacyDbb.UserList(connectionString, boardId, userID, true, null, null, true);
+            var dtu = Db.UserList(connectionString, boardId, userID, true, null, null, true);
             foreach (var typedUserList in dtu)
             {
                 userName = typedUserList.Name;
@@ -7810,7 +7800,7 @@ namespace YAF.Classes.Data.MySqlDb
             }
 
             // sync profile table structure with the db...
-            DataTable structure = LegacyDbb.GetProfileStructure(connectionString);
+            DataTable structure = Db.GetProfileStructure(connectionString);
 
             // verify all the columns are there...
             foreach (SettingsPropertyColumn column in settingsColumnsList)
@@ -7819,7 +7809,7 @@ namespace YAF.Classes.Data.MySqlDb
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it...
-                    LegacyDbb.AddProfileColumn(connectionString,column.Settings.Name, column.DataType, column.Size);
+                    Db.AddProfileColumn(connectionString,column.Settings.Name, column.DataType, column.Size);
                 }
             }
             return settingsColumnsList;
@@ -8578,7 +8568,7 @@ namespace YAF.Classes.Data.MySqlDb
 			}
 			catch ( Exception x )
 			{
-				LegacyDbb.eventlog_create(connectionString,null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error );
+				Db.eventlog_create(connectionString,null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error );
 				return 0;
 			}
 		}
@@ -9223,7 +9213,7 @@ namespace YAF.Classes.Data.MySqlDb
             int offset = 15;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("___________________________________________________________________________________      ");
-            DataTable tables = LegacyDbb.db_getstats_alltables(connectionString);
+            DataTable tables = Db.db_getstats_alltables(connectionString);
             foreach ( DataRow drtables in tables.Rows )
                 {
                     using ( MySqlCommand cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1};", Config.SchemaName,drtables[0] ) ) )
@@ -9572,7 +9562,7 @@ namespace YAF.Classes.Data.MySqlDb
             string redirect = "";
             try
             {
-                DataTable registry = LegacyDbb.registry_list(connectionString,"Version");
+                DataTable registry = Db.registry_list(connectionString,"Version");
 
                 if ( ( registry.Rows.Count == 0 ) || ( Convert.ToInt32(registry.Rows[0]["Value"] ) < appVersion ) )
                 {
@@ -10441,7 +10431,7 @@ namespace YAF.Classes.Data.MySqlDb
 
         public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
         {
-            var topics = LegacyDbb.topic_simplelist(connectionString,0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
+            var topics = Db.topic_simplelist(connectionString,0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
 
             foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
             {
@@ -10452,7 +10442,7 @@ namespace YAF.Classes.Data.MySqlDb
                     if (!decodedTopic.Equals(topic.Topic))
                     {
                         // unencode it and update.
-                        LegacyDbb.topic_updatetopic(connectionString,topic.TopicID.Value, decodedTopic);
+                        Db.topic_updatetopic(connectionString,topic.TopicID.Value, decodedTopic);
                     }
 
                 }

@@ -349,8 +349,7 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    LegacyDb.active_list(
-                        YafContext.Current.PageBoardID, 
+                    LegacyDb.active_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
                         guests, 
                         crawlers, 
                         activeTime, 

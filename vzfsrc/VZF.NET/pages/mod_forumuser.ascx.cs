@@ -76,7 +76,7 @@ namespace YAF.Pages
             }
             else
             {
-                dt = LegacyDb.accessmask_list(this.PageContext.PageBoardID, null);
+                dt = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             }
 
             // setup datasource for access masks dropdown

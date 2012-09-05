@@ -236,7 +236,7 @@ namespace YAF.Pages.Admin
             this.PostsCategory.DataSource = categories;
 
             // Access Mask Lists               
-            this.ForumsStartMask.DataSource = LegacyDb.accessmask_list(this.PageContext.PageBoardID, null);
+            this.ForumsStartMask.DataSource = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
             this.ForumsGroups.DataSource = LegacyDb.group_list(this.PageContext.PageBoardID, null);

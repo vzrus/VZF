@@ -52,7 +52,7 @@ namespace YAF.Classes.Data.Postgre
     /// <summary>
 	/// All the Database functions for YAF
 	/// </summary>
-	public static partial class LegacyDbb
+	public static partial class Db
     {
 
 		//added vzrus
@@ -572,7 +572,7 @@ namespace YAF.Classes.Data.Postgre
         {
             try
             {
-                using (DataTable dt = LegacyDbb.registry_list(connectionString,"version"))
+                using (DataTable dt = Db.registry_list(connectionString,"version"))
                 {
                     if (dt.Rows.Count > 0)
                     {
@@ -1148,7 +1148,7 @@ namespace YAF.Classes.Data.Postgre
 							dtForumListSorted.TableName = PostgreDBAccess.GetObjectName( "Forum" );
 							ds.Tables.Add( dtForumListSorted );
 							dtForumListSorted.Dispose();
-                            LegacyDbb.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
+                            Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove( PostgreDBAccess.GetObjectName( "ForumUnsorted" ) );
 							ds.Relations.Add( "FK_Forum_Category", ds.Tables [PostgreDBAccess.GetObjectName( "Category" )].Columns ["CategoryID"], ds.Tables [PostgreDBAccess.GetObjectName( "Forum" )].Columns ["CategoryID"] );
 							trans.Commit();
@@ -1162,17 +1162,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 
 		#region yaf_AccessMask
-		/// <summary>
-		/// Gets a list of access mask properities
-		/// </summary>
-		/// <param name="boardId">ID of Board</param>
-		/// <param name="accessMaskID">ID of access mask</param>
-		/// <returns></returns>
 
-        static public DataTable accessmask_list(string connectionString, object boardId, object accessMaskID)
-		{
-			return accessmask_list(connectionString,boardId, accessMaskID, 0);
-		}
 		/// <summary>
 		/// Gets a list of access mask properities
 		/// </summary>
@@ -2648,7 +2638,7 @@ namespace YAF.Classes.Data.Postgre
 
 				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
-                    return LegacyDbb.forum_sort_list(dt, 0, intCategoryID, 0, null, emptyFirstRow);
+                    return Db.forum_sort_list(dt, 0, intCategoryID, 0, null, emptyFirstRow);
 				}
 			}
 		}
@@ -2814,7 +2804,7 @@ namespace YAF.Classes.Data.Postgre
 							dtForumListSorted.TableName = PostgreDBAccess.GetObjectName("Forum");
 							ds.Tables.Add(dtForumListSorted);
 							dtForumListSorted.Dispose();
-                            LegacyDbb.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
+                            Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove(PostgreDBAccess.GetObjectName("ForumUnsorted"));
 							// vzrus: Remove here all forums with no reports. Would be better to do it in query..
 							// Array to write categories numbers
@@ -3675,7 +3665,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-		// <summary> Save message to LegacyDbb. </summary>
+		// <summary> Save message to Db. </summary>
         static public bool message_save(string connectionString,
             [NotNull] object topicId, 
             [NotNull] object userId, 
@@ -6474,7 +6464,7 @@ namespace YAF.Classes.Data.Postgre
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -6516,7 +6506,7 @@ namespace YAF.Classes.Data.Postgre
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -6557,7 +6547,7 @@ namespace YAF.Classes.Data.Postgre
             if (spc != null && spc.Count > 0)
             {
                 // start saving..
-                LegacyDbb.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
+                Db.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
             }
         }
         /// <summary>
@@ -6578,7 +6568,7 @@ namespace YAF.Classes.Data.Postgre
         public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
         {
             string userName = string.Empty;
-            var dtu = LegacyDbb.UserList(connectionString,boardId, userID, true, null, null, true);
+            var dtu = Db.UserList(connectionString,boardId, userID, true, null, null, true);
             foreach (var typedUserList in dtu)
             {
                 userName = typedUserList.Name;
@@ -6827,7 +6817,7 @@ namespace YAF.Classes.Data.Postgre
             }
 
             // sync profile table structure with the db..
-            DataTable structure = LegacyDbb.GetProfileStructure(connectionString);
+            DataTable structure = Db.GetProfileStructure(connectionString);
 
             // verify all the columns are there..
             foreach (SettingsPropertyColumn column in settingsColumnsList)
@@ -6836,7 +6826,7 @@ namespace YAF.Classes.Data.Postgre
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it..
-                    LegacyDbb.AddProfileColumn(connectionString, column.Settings.Name, column.DataType, column.Size);
+                    Db.AddProfileColumn(connectionString, column.Settings.Name, column.DataType, column.Size);
                 }
             }
             return settingsColumnsList;
@@ -7642,7 +7632,7 @@ namespace YAF.Classes.Data.Postgre
 					catch (Exception x)
 					{
 						trans.Rollback();
-						eventlog_create(null, "user_register in YAF.Classes.Data.LegacyDbb.cs", x, EventLogTypes.Error);
+						eventlog_create(null, "user_register in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
 						return false;
 					}
 				}
@@ -7671,7 +7661,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 			catch (Exception x)
 			{
-                LegacyDbb.eventlog_create( null, "user_aspnet in YAF.Classes.Data.LegacyDbb.cs", x, EventLogTypes.Error);
+                Db.eventlog_create( null, "user_aspnet in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
 				return 0;
 			}
 		}
@@ -8653,7 +8643,7 @@ namespace YAF.Classes.Data.Postgre
 
 			catch (Npgsql.NpgsqlException ex)
 			{
-				// unable to connect to the LegacyDbb..
+				// unable to connect to the Db..
 				if (debugging)
 				{
 					errorStr = "Unable to connect to the Database. Exception Message: " +
@@ -8679,7 +8669,7 @@ namespace YAF.Classes.Data.Postgre
             
 			try
 			{
-                var registry = LegacyDbb.registry_list(connectionString, "Version");
+                var registry = Db.registry_list(connectionString, "Version");
 
 				if ((registry.Rows.Count == 0) || (Convert.ToInt32(registry.Rows[0]["Value"]) < appVersion))
 				{
@@ -8727,7 +8717,7 @@ namespace YAF.Classes.Data.Postgre
         }
  static private bool GetBooleanRegistryValue(string connectionString, string name)
  {
-     using (DataTable dt = LegacyDbb.registry_list( connectionString, name))
+     using (DataTable dt = Db.registry_list( connectionString, name))
 	 {
 		 foreach (DataRow dr in dt.Rows)
 		 {
@@ -9571,7 +9561,7 @@ namespace YAF.Classes.Data.Postgre
 
         public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
     {
-        var topics = LegacyDbb.topic_simplelist(connectionString, 0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
+        var topics = Db.topic_simplelist(connectionString, 0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
 
       foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
       {
@@ -9582,7 +9572,7 @@ namespace YAF.Classes.Data.Postgre
           if (!decodedTopic.Equals(topic.Topic))
           {
             // unencode it and update.
-              LegacyDbb.topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
+              Db.topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
           }
 
         }

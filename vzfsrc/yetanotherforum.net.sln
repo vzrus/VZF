@@ -24,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarsiLibrary", "FarsiLibrary\FarsiLibrary.csproj", "{ED29E567-C801-49E9-8C33-CFB66042B07B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VZF.Data.Common", "VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj", "{80F590EA-CC91-4286-B8ED-B173FECF0D90}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BA564F6-EDCC-4A07-9CDC-125ABCA8160E} = {8BA564F6-EDCC-4A07-9CDC-125ABCA8160E}
+		{41C7A2FC-480D-4F44-9D04-FD318BE5B306} = {41C7A2FC-480D-4F44-9D04-FD318BE5B306}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VZF.Data.Firebird", "VZF.Data\VZF.Data.Firebird\VZF.Data.Firebird.csproj", "{8BA564F6-EDCC-4A07-9CDC-125ABCA8160E}"
 EndProject

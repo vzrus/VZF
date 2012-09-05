@@ -47,7 +47,7 @@ namespace YAF.Classes.Data.FirebirdDb
 	/// <summary>
 	/// All the Database functions for YAF
 	/// </summary>
-	public static partial class LegacyDbb
+	public static partial class Db
 	{
 		//added vzrus
 		#region ConnectionStringOptions
@@ -1036,16 +1036,6 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_AccessMask
-		/// <summary>
-		/// Gets a list of access mask properities
-		/// </summary>
-		/// <param name="boardID">ID of Board</param>
-		/// <param name="accessMaskID">ID of access mask</param>
-		/// <returns></returns>
-        static public DataTable accessmask_list(string connectionString, object boardID, object accessMaskID)
-		{
-            return accessmask_list(connectionString, boardID, accessMaskID, 0);
-		}
 		/// <summary>
 		/// Gets a list of access mask properities
 		/// </summary>
@@ -7338,7 +7328,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 			catch (Exception x)
 			{
-                LegacyDbb.eventlog_create(null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error);
+                Db.eventlog_create(null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error);
 				return 0;
 			}
 		}
@@ -8043,7 +8033,7 @@ namespace YAF.Classes.Data.FirebirdDb
                 {
                     connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(getStats_InfoMessage);
 
-                    DataTable indexList = LegacyDbb.db_index_simplelist(connectionString);
+                    DataTable indexList = Db.db_index_simplelist(connectionString);
                     foreach (DataRow indexName in indexList.Rows)
                     {
                         using (var cmd1 = new FbCommand(String.Format("SET STATISTICS INDEX {0}", indexName[0])))
@@ -8083,7 +8073,7 @@ namespace YAF.Classes.Data.FirebirdDb
         }
         static public void db_getstats(string connectionString, FbDbConnectionManager conn)
 		{
-			DataTable indexList = LegacyDbb.db_index_simplelist(connectionString);            
+			DataTable indexList = Db.db_index_simplelist(connectionString);            
 			foreach (DataRow indexName in indexList.Rows)
 			{
 				using (FbCommand cmd1 = new FbCommand(String.Format("SET STATISTICS INDEX {0}", indexName[0])))
@@ -8103,7 +8093,7 @@ namespace YAF.Classes.Data.FirebirdDb
         private static string reindexDbMessage;
         static public string db_reindex_new(string connectionString)
 		{
-            DataTable indexList = LegacyDbb.db_index_simplelist(connectionString);
+            DataTable indexList = Db.db_index_simplelist(connectionString);
             foreach (DataRow indexName in indexList.Rows)
             {
 
@@ -8324,7 +8314,7 @@ namespace YAF.Classes.Data.FirebirdDb
             string redirect = string.Empty;
 			try
 			{
-                DataTable registry = LegacyDbb.registry_list(connectionString, "Version");
+                DataTable registry = Db.registry_list(connectionString, "Version");
 
 				if ((registry.Rows.Count == 0) || (Convert.ToInt32(registry.Rows[0]["VALUE"]) < appVersion))
 				{
@@ -8406,7 +8396,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
         static private bool GetBooleanRegistryValue(string connectionString, string name)
  {
-     using (DataTable dt = LegacyDbb.registry_list(connectionString,name))
+     using (DataTable dt = Db.registry_list(connectionString,name))
 	 {
 		 foreach (DataRow dr in dt.Rows)
 		 {
@@ -8964,7 +8954,7 @@ namespace YAF.Classes.Data.FirebirdDb
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(connectionString,null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(connectionString,null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -9032,7 +9022,7 @@ namespace YAF.Classes.Data.FirebirdDb
             }
             catch (Exception e)
             {
-                LegacyDbb.eventlog_create(connectionString,null, e.Source, e.Message, EventLogTypes.Error);
+                Db.eventlog_create(connectionString,null, e.Source, e.Message, EventLogTypes.Error);
             }
 
             return null;
@@ -9073,7 +9063,7 @@ namespace YAF.Classes.Data.FirebirdDb
             if (spc != null && spc.Count > 0)
             {
                 // start saving...
-                LegacyDbb.SetProfileProperties(connectionString,  boardId, appname, userId, collection, spc, dirtyOnly);
+                Db.SetProfileProperties(connectionString,  boardId, appname, userId, collection, spc, dirtyOnly);
             }
         }
         /// <summary>
@@ -9094,7 +9084,7 @@ namespace YAF.Classes.Data.FirebirdDb
         public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
         {
             string userName = string.Empty;
-            var dtu = LegacyDbb.UserList(connectionString, boardId, userID, true, null, null, true);
+            var dtu = Db.UserList(connectionString, boardId, userID, true, null, null, true);
             foreach (var typedUserList in dtu)
             {
                 userName = typedUserList.Name;
@@ -9337,7 +9327,7 @@ namespace YAF.Classes.Data.FirebirdDb
                 }
 
                 // sync profile table structure with the FbDB...
-                DataTable structure = LegacyDbb.GetProfileStructure(connectionString);
+                DataTable structure = Db.GetProfileStructure(connectionString);
 
                 // verify all the columns are there...
                 foreach (SettingsPropertyColumn column in settingsColumnsList)
@@ -9346,7 +9336,7 @@ namespace YAF.Classes.Data.FirebirdDb
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        LegacyDbb.AddProfileColumn(connectionString,  column.Settings.Name, column.DataType, column.Size);
+                        Db.AddProfileColumn(connectionString,  column.Settings.Name, column.DataType, column.Size);
                     }
                 }
 
@@ -9677,7 +9667,7 @@ namespace YAF.Classes.Data.FirebirdDb
         public static void unencode_all_topics_subjects(string connectionString, 
      [NotNull]Func<string, string> decodeTopicFunc)
     {
-      var topics = LegacyDbb.topic_simplelist(connectionString,  0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
+      var topics = Db.topic_simplelist(connectionString,  0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
     
       foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
       {

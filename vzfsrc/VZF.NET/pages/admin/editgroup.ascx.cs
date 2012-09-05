@@ -389,7 +389,7 @@ namespace YAF.Pages.Admin
             {
                 this.AccessList.DataSource = LegacyDb.forumaccess_group(this.Request.QueryString.GetFirstOrDefault("i"));
             }
-            this.AccessMasksList = LegacyDb.accessmask_list(this.PageContext.PageBoardID, null);
+            this.AccessMasksList = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             // bind data to controls
             this.DataBind();
 

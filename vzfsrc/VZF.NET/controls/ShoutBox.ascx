@@ -32,7 +32,7 @@
     }
 
     function checkForNewMessages() {
-        <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'boardId', <%=this.PageContext.PageBoardID %>);
+        <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'mid', <%=this.PageContext.PageBoardID %>);
 
         setTimeout('checkForNewMessages()', 2000);
     }

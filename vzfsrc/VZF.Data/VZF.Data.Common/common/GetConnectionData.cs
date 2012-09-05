@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Text;
 // using VZF.Tools;
 // using VZF.Tools;
@@ -18,13 +19,13 @@ namespace YAF.Classes.Data
             Profile = 3,
             ForumBoard = 4
         }
-        public static bool GetConnectionData(int boardId, string namePattern, out string dataEngine, out string connectionString)
+        public static bool GetConnectionData(int? mid, string namePattern, out string dataEngine, out string connectionString)
         {
             // string [] patterns = new string[]{"",""};
             // Look for board special configs.
-             
+           
             string connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameBoard{0}", boardId));
+                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameBoard{0}", mid));
             // They were not found gte default.
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -33,6 +34,10 @@ namespace YAF.Classes.Data
 
             connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
             dataEngine = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            if (dataEngine.IsNotSet())
+            {
+                throw new ApplicationException("No data base engine name was supplied.");
+            }
 
             return true;
         }

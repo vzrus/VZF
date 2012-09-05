@@ -77,7 +77,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = LegacyDb.accessmask_list(this.PageContext.PageBoardID, null);
+      ((DropDownList)sender).DataSource = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }
