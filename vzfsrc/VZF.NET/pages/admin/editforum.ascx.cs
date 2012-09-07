@@ -506,7 +506,7 @@ namespace YAF.Pages.Admin
         this.Styles.Text, 
         false);
 
-      LegacyDb.activeaccess_reset();
+      LegacyDb.activeaccess_reset(PageContext.PageModuleID);
 
       // Access
       if (forumId.HasValue || forumCopyId.HasValue)

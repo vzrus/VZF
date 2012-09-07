@@ -149,7 +149,7 @@ namespace YAF.Controls
         LegacyDb.usergroup_save(this.CurrentUserID, roleID, isChecked);
 
         // empty out access table
-        LegacyDb.activeaccess_reset();
+        LegacyDb.activeaccess_reset(PageContext.PageModuleID);
 
         // update roles if this user isn't the guest
           if (UserMembershipHelper.IsGuestUser(this.CurrentUserID))

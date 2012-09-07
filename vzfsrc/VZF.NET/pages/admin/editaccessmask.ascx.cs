@@ -154,7 +154,7 @@ namespace YAF.Pages.Admin
                 sortOrder);
 
             // empty out access table
-            LegacyDb.activeaccess_reset();
+            LegacyDb.activeaccess_reset(PageContext.PageModuleID);
 
             // clear cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);

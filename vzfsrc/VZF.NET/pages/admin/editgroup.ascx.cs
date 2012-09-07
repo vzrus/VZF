@@ -296,7 +296,7 @@ namespace YAF.Pages.Admin
               this.UsrAlbumImages.Text.Trim());
 
             // empty out access table
-            LegacyDb.activeaccess_reset();
+            LegacyDb.activeaccess_reset(PageContext.PageModuleID);
 
             // see if need to rename an existing role...
             if (oldRoleName.IsSet() && roleName != oldRoleName && RoleMembershipHelper.RoleExists(oldRoleName) && !RoleMembershipHelper.RoleExists(roleName) && !this.IsGuestX.Checked)

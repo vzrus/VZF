@@ -205,7 +205,7 @@ namespace YAF.Controls
 
             var users = this.Get<IDataCache>().GetOrSet(
                 Constants.Cache.TodaysBirthdays,
-                () => LegacyDb.User_ListTodaysBirthdays(this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks),
+                () => LegacyDb.User_ListTodaysBirthdays(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks),
                 TimeSpan.FromHours(1));
 
             if (users == null || users.Rows.Count <= 0)
@@ -260,7 +260,7 @@ namespace YAF.Controls
             this.ActiveUsers1.ActiveUserTable = activeUsers;
 
             // "Active Users" Count and Most Users Count 
-            DataRow activeStats = LegacyDb.active_stats(this.PageContext.PageBoardID);
+            DataRow activeStats = LegacyDb.active_stats(PageContext.PageModuleID, this.PageContext.PageBoardID);
             this.ActiveUserCount.Text = this.FormatActiveUsers(activeStats);
 
             // Tommy MOD "Recent Users" Count.

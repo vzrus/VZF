@@ -52,11 +52,12 @@ namespace YAF.Core
         serviceLocator.Get<IEnumerable<IStartupService>>();
 
       // run critical first...
-      startupServices.Where(s => s.HasInterface<ICriticalStartupService>()).OrderByDescending(i => i.Priority).ForEach(
+        var enumerable = startupServices as List<IStartupService> ?? startupServices.ToList();
+        enumerable.Where(s => s.HasInterface<ICriticalStartupService>()).OrderByDescending(i => i.Priority).ForEach(
         service => service.Run());
 
       // run secondary...
-      startupServices.Where(s => !s.HasInterface<ICriticalStartupService>()).OrderByDescending(i => i.Priority).ForEach(
+      enumerable.Where(s => !s.HasInterface<ICriticalStartupService>()).OrderByDescending(i => i.Priority).ForEach(
         service => service.Run());
     }
 

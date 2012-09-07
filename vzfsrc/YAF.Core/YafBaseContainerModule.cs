@@ -75,7 +75,7 @@ namespace YAF.Core
             this.ComponentRegistry = componentRegistry;
 
             this.ExtensionAssemblies =
-                new YafModuleScanner().GetModules("YAF*.dll").OrderByDescending(x => x.GetAssemblySortOrder()).ToList();
+                new YafModuleScanner().GetModules("YAF*.dll,VZF*.dll").OrderByDescending(x => x.GetAssemblySortOrder()).ToList();
 
             // handle registration...
             this.RegisterExternalModules();

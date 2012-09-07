@@ -12,7 +12,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>YAF</AssemblyName>
+    <AssemblyName>VZF</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Flow</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -112,6 +112,9 @@
       <HintPath>..\packages\xmlrpcnet.3.0.0.266\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nStuff.UpdateControls, Version=1.2.0.0, Culture=neutral, PublicKeyToken=72f3f55dd4809977, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Bin\nStuff.UpdateControls.dll</HintPath>
@@ -4184,6 +4187,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
+    <Content Include="app_my.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -4200,6 +4204,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="web_fb.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="app.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
@@ -5845,16 +5855,7 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web.config" />
     <Content Include="webconfigs\v191-upgrade-web.config" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Deploy.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
+    <Content Include="web_my.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">

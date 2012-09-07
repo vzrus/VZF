@@ -104,10 +104,17 @@ namespace YAF.Core
     [NotNull]
     private static IEnumerable<string> GetMatchingFiles([NotNull] string pattern)
     {
-      string path = CleanPath(Path.GetDirectoryName(pattern));
-      string glob = Path.GetFileName(pattern);
-
-      return Directory.GetFiles(path, glob);
+        var outsa = new List<string>();
+        foreach(var s in pattern.Split(','))
+        {
+            string path = CleanPath(Path.GetDirectoryName(s));
+            string glob = Path.GetFileName(s);
+            if (glob.IsSet())
+            {
+                outsa.AddRange(Directory.GetFiles(path, searchPattern: glob));
+            }
+        }
+        return outsa;
     }
 
     /// <summary>

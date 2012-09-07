@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="YAF.ForumPageBase" %>
-<%@ Register TagPrefix="YAF" Assembly="YAF" Namespace="YAF" %>
+<%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <script runat="server">
     public void Page_PreRender(object sender, System.EventArgs e)

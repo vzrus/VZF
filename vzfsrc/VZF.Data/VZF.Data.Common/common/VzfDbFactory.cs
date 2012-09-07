@@ -94,21 +94,21 @@ namespace YAF.Classes.Data
         /// Saves changes to access mask.
         /// </summary>
         /// <param name="mid">The module id.</param>
-        /// <param name="accessMaskID"></param>
-        /// <param name="boardId"></param>
-        /// <param name="name"></param>
-        /// <param name="readAccess"></param>
-        /// <param name="postAccess"></param>
-        /// <param name="replyAccess"></param>
-        /// <param name="priorityAccess"></param>
-        /// <param name="pollAccess"></param>
-        /// <param name="voteAccess"></param>
-        /// <param name="moderatorAccess"></param>
-        /// <param name="editAccess"></param>
-        /// <param name="deleteAccess"></param>
-        /// <param name="uploadAccess"></param>
-        /// <param name="downloadAccess"></param>
-        /// <param name="sortOrder"></param>
+        /// <param name="accessMaskID">The access mask ID.</param>
+        /// <param name="boardId">The board ID.</param>
+        /// <param name="name">The access mask name.</param>
+        /// <param name="readAccess">The post read access.</param>
+        /// <param name="postAccess">The post write access.</param>
+        /// <param name="replyAccess">The reply topic access.</param>
+        /// <param name="priorityAccess">The priority access.</param>
+        /// <param name="pollAccess">The poll create access.</param>
+        /// <param name="voteAccess">The vote access.</param>
+        /// <param name="moderatorAccess">The moderator access.</param>
+        /// <param name="editAccess">The topic edit access.</param>
+        /// <param name="deleteAccess">The topic delete access.</param>
+        /// <param name="uploadAccess">The attachments upload access.</param>
+        /// <param name="downloadAccess">The attachments download access.</param>
+        /// <param name="sortOrder"> The access mask sort order. </param>
         public static void accessmask_save(int? mid, object accessMaskID, object boardId, object name, object readAccess, object postAccess, object replyAccess, object priorityAccess, object pollAccess, object voteAccess, object moderatorAccess, object editAccess, object deleteAccess, object uploadAccess, object downloadAccess, object sortOrder)
         {
             string dataEngine;
@@ -141,8 +141,7 @@ namespace YAF.Classes.Data
         {
             string dataEngine;
             string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
             
             switch (dataEngine)
             {
@@ -157,15 +156,26 @@ namespace YAF.Classes.Data
                     throw new ApplicationException("No return type");
             }
         }
-
-      public static DataTable active_list_user(int? mid, object boardId, object userID, object guests, object showCrawlers, int activeTime, object styledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
+        
+        /// <summary>
+        /// A data Table for active list for a specific user.
+        /// </summary>
+        /// <param name="mid"> The module ID.</param>
+        /// <param name="boardId"> The Board ID. </param>
+        /// <param name="userID"> The user ID.</param>
+        /// <param name="guests">Show guests, boolean</param>
+        /// <param name="showCrawlers">Show crawlers in the list.</param>
+        /// <param name="activeTime">The time to keep an active user in the active table.</param>
+        /// <param name="styledNicks">Use styled nicks for a user.</param>
+        /// <returns>A data Table for active list for a specific user.</returns>
+        public static DataTable active_list_user(int? mid, object boardId, object userID, object guests, object showCrawlers, int activeTime, object styledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
               // case "System.Data.SqlClient": return MsSql.LegacyDb.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               case "Npgsql": return Postgre.Db.active_list_user(connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
@@ -175,16 +185,14 @@ namespace YAF.Classes.Data
               // case "other": return othPostgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               default:
                   throw new ApplicationException("No return type");
+            }
+        }
 
-          }
-      }
-
-      public static DataTable active_listforum(object forumID, object styledNicks)
+      public static DataTable active_listforum(int? mid, object forumID, object styledNicks)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
           
           switch (dataEngine)
           {
@@ -197,17 +205,14 @@ namespace YAF.Classes.Data
               // case "other": return othPostgre.Db.active_listforum(connectionString,  forumID, styledNicks);
               default:
                   throw new ApplicationException("No return type");
-                  break;
-
           }
       }
 
-      public static DataTable active_listtopic(object topicID, object styledNicks)
+      public static DataTable active_listtopic(int? mid, object topicID, object styledNicks)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
           
           switch (dataEngine)
           {
@@ -220,17 +225,15 @@ namespace YAF.Classes.Data
               // case "other": return othPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
               default:
                   throw new ApplicationException("No return type");
-                  break;
-
           }
       }
 
-      public static  DataRow active_stats(object boardId)
+      public static  DataRow active_stats(int? mid, object boardId)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
           
           switch (dataEngine)
           {
@@ -243,17 +246,15 @@ namespace YAF.Classes.Data
               // case "other": return othPostgre.Db.active_stats(connectionString, boardId);
               default:
                   throw new ApplicationException("No return type");
-                  break;
-
           }
       }
 
-      public static void activeaccess_reset()
+      public static void activeaccess_reset(int? mid)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
           
           switch (dataEngine)
           {
@@ -266,17 +267,15 @@ namespace YAF.Classes.Data
               // case "other": othPostgre.Db.activeaccess_reset(connectionString); break;
               default:
                   throw new ApplicationException("No return type");
-                  break;
-
           }
       }
 
-      public static DataTable User_ListProfilesByIdsList(int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
+      public static DataTable User_ListProfilesByIdsList(int? mid, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
 
           switch (dataEngine)
           {
@@ -289,17 +288,15 @@ namespace YAF.Classes.Data
               // case "other":  return othPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
               default:
                   throw new ApplicationException("No return type");
-                  break;
-
           }
       }
 
-      public static DataTable User_ListTodaysBirthdays(object boardId, object useStyledNicks)
+      public static DataTable User_ListTodaysBirthdays(int? mid, object boardId, object useStyledNicks)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
           switch (dataEngine)
           {
@@ -317,12 +314,12 @@ namespace YAF.Classes.Data
           }
       }
 
-      public static DataTable admin_list(object boardId, object useStyledNicks)
+      public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
       {
           string dataEngine;
           string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
           
           switch (dataEngine)
           {

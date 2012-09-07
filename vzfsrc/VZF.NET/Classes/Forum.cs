@@ -439,7 +439,7 @@ namespace YAF
             }
 
             // "forum load" should be done by now, load the user and page...
-            var userId = YafContext.Current.PageUserID;
+            // var userId = YafContext.Current.PageUserID;
 
             // add the forum header control...
             this._topControl = new PlaceHolder();

@@ -139,8 +139,8 @@ namespace YAF.Controls
         this._activeUsers.ActiveUserTable =
           this.Get<IDBBroker>().StyleTransformDataTable(
             bTopic
-              ? LegacyDb.active_listtopic(this.PageContext.PageTopicID, this.PageContext.BoardSettings.UseStyledNicks)
-              : LegacyDb.active_listforum(this.PageContext.PageForumID, this.PageContext.BoardSettings.UseStyledNicks));
+              ? LegacyDb.active_listtopic(PageContext.PageModuleID, this.PageContext.PageTopicID, this.PageContext.BoardSettings.UseStyledNicks)
+              : LegacyDb.active_listforum(PageContext.PageModuleID, this.PageContext.PageForumID, this.PageContext.BoardSettings.UseStyledNicks));
       }
 
       // add it...

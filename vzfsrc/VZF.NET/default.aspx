@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
-<%@ Register TagPrefix="YAF" Assembly="YAF" Namespace="YAF" %>
+<%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
 <script runat="server">
 	
 </script>
