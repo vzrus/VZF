@@ -139,13 +139,12 @@ namespace YAF.Pages.Admin
                 if (readAccess || "admin_admin".ToLowerInvariant() == pageName.ToLowerInvariant())
                 {
                     // save it
-                        LegacyDb.adminpageaccess_save(
-                            userId,
+                        LegacyDb.adminpageaccess_save(PageContext.PageModuleID, userId,
                             pageName);
                 }
                 else
                 {
-                    LegacyDb.adminpageaccess_delete(userId, pageName);
+                    LegacyDb.adminpageaccess_delete(PageContext.PageModuleID, userId, pageName);
                 }
             }
 
@@ -171,8 +170,7 @@ namespace YAF.Pages.Admin
             foreach (RepeaterItem ri in this.AccessList.Items)
             {
                 // save it
-                LegacyDb.adminpageaccess_save(
-                    userId,
+                LegacyDb.adminpageaccess_save(PageContext.PageModuleID, userId,
                    ((Label)ri.FindControl("PageName")).Text.Trim());
             }
         }
@@ -201,7 +199,7 @@ namespace YAF.Pages.Admin
                 // save it - admin index should be always available
                 if ("admin_admin".ToLowerInvariant() != pageName.ToLowerInvariant())
                 {
-                    LegacyDb.adminpageaccess_delete(userId, ((Label) ri.FindControl("PageName")).Text.Trim());
+                    LegacyDb.adminpageaccess_delete(PageContext.PageModuleID, userId, ((Label) ri.FindControl("PageName")).Text.Trim());
                 }
             }
         }
@@ -222,8 +220,7 @@ namespace YAF.Pages.Admin
         if (this.Request.QueryString.GetFirstOrDefault("u") != null)
         {
             // Load the page access list.
-            DataTable dt = LegacyDb.adminpageaccess_list(
-                this.Request.QueryString.GetFirstOrDefault("u"), null);
+            DataTable dt = LegacyDb.adminpageaccess_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("u"), null);
             
             // Get admin pages by page prefixes.
             var listPages = Enum.GetNames(typeof(ForumPages)).Where(

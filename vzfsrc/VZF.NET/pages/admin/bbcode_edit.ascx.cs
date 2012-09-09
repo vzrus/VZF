@@ -107,8 +107,7 @@ namespace YAF.Pages.Admin
         return;
       }
 
-      LegacyDb.bbcode_save(
-        this.BBCodeID, 
+      LegacyDb.bbcode_save(PageContext.PageModuleID, this.BBCodeID, 
         this.PageContext.PageBoardID, 
         this.txtName.Text.Trim(), 
         this.txtDescription.Text, 

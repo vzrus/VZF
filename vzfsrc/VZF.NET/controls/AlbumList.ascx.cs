@@ -85,7 +85,7 @@ namespace YAF.Controls
 
                   if (coverImage == null) return;
 
-                  var curAlbum = DB.album_image_list(coverImage.AlternateText, null);
+                  var curAlbum = DB.album_image_list(PageContext.PageModuleID,coverImage.AlternateText, null);
 
                   Random random = new Random();
 
@@ -206,7 +206,7 @@ namespace YAF.Controls
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().AlbumsPerPage;
 
             // set the Datatable
-            var albumListDT = LegacyDb.album_list(this.UserID, null);
+            var albumListDT = LegacyDb.album_list(PageContext.PageModuleID, this.UserID, null);
 
             if ((albumListDT == null) || (albumListDT.Rows.Count <= 0))
             {

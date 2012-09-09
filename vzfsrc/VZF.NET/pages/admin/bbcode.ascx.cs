@@ -167,7 +167,7 @@ namespace YAF.Pages.Admin
                 YafBuildLink.Redirect(ForumPages.admin_bbcode_edit, "b={0}", e.CommandArgument);
                 break;
             case "delete":
-                LegacyDb.bbcode_delete(e.CommandArgument);
+                LegacyDb.bbcode_delete(PageContext.PageModuleID, e.CommandArgument);
                 this.Get<IDataCache>().Remove(Constants.Cache.CustomBBCode);
                 this.BindData();
                 break;

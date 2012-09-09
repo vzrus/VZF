@@ -230,7 +230,7 @@ namespace YAF.Editors
 
             if (this.Get<YafBoardSettings>().EnableAlbum && (this.PageContext.UsrAlbums > 0 && this.PageContext.NumAlbums > 0))
             {
-                var albumImageList = LegacyDb.album_images_by_user(this.PageContext.PageUserID);
+                var albumImageList = LegacyDb.album_images_by_user(PageContext.PageModuleID, this.PageContext.PageUserID);
 
                 writer.WriteLine(
                     @"<img src=""{5}"" id=""{3}"" alt=""{4}"" title=""{4}"" onclick=""{0}"" onload=""Button_Load(this)"" onmouseover=""{1}"" />"

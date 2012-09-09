@@ -116,7 +116,7 @@ namespace YAF.Pages.Admin
                     break;
                 case "delete":
                     string ip = this.GetIPFromID(e.CommandArgument);
-                    LegacyDb.bannedip_delete(e.CommandArgument);
+                    LegacyDb.bannedip_delete(PageContext.PageModuleID, e.CommandArgument);
                     this.Get<IDataCache>().Remove(Constants.Cache.BannedIP);
                     this.BindData();
                     this.PageContext.AddLoadMessage(this.GetText("ADMIN_BANNEDIP", "MSG_REMOVEBAN"));
@@ -165,8 +165,7 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
-            var dt = LegacyDb.bannedip_list(
-                this.PageContext.PageBoardID, null, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
+            var dt = LegacyDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
             this.list.DataSource = dt;
 
             this.PagerTop.Count = dt != null && dt.Rows.Count > 0

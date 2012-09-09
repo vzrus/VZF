@@ -102,8 +102,7 @@ namespace YAF.Core
             }
 
             // Load the page access list.
-            var dt = LegacyDb.adminpageaccess_list(
-                this.PageContext.PageUserID, this.PageContext.ForumPageType.ToString().ToLowerInvariant());
+            var dt = LegacyDb.adminpageaccess_list(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.ForumPageType.ToString().ToLowerInvariant());
 
             // Check access rights to the page.
             if (!this.PageContext.ForumPageType.ToString().IsSet() || dt == null || dt.Rows.Count <= 0)

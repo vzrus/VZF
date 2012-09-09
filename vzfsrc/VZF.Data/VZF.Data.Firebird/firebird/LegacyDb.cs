@@ -18,6 +18,7 @@
  */
 
 using System.Configuration;
+using System.Data.Common;
 using System.Web;
 using VZF.Data.Firebird;
 using YAF.Types.Handlers;
@@ -43,7 +44,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
     using FirebirdSql.Data.FirebirdClient;
    
-   
+    
 	/// <summary>
 	/// All the Database functions for YAF
 	/// </summary>
@@ -65,6 +66,37 @@ namespace YAF.Classes.Data.FirebirdDb
 				return "FirebirdSql.Data.FirebirdClient";
 			}
 		}
+
+        private static List<ConnectionParams> _connectionParams;
+
+        public static List<ConnectionParams> ConnectionParams
+        {
+            get
+            {
+                _connectionParams.Add(
+                    new ConnectionParams { Name = "Database", Type = typeof (string), Value = HttpContext.Current.Server.MapPath("~/App_Data/yafnet.fdb")});
+                _connectionParams.Add( 
+                    new ConnectionParams { Name = "Dialect", Type = typeof(string), Value = 3});
+                _connectionParams.Add(
+                   new ConnectionParams { Name = "Charset", Type = typeof(string), Value = "UTF8" });
+                _connectionParams.Add(
+                   new ConnectionParams { Name = "Port", Type = typeof(string), Value = 3050 });
+                _connectionParams.Add(
+                   new ConnectionParams { Name = "Server Type", Type = typeof(string), Value = 0 });
+                _connectionParams.Add(
+                   new ConnectionParams { Name = "Packet Size", Type = typeof(string), Value =8192 });
+                _connectionParams.Add(
+                  new ConnectionParams { Name = "Role", Type = typeof(string), Value = string.Empty });
+                _connectionParams.Add(
+                  new ConnectionParams { Name = "ConnectionTimeout", Type = typeof(string), Value = 150 });
+                _connectionParams.Add(
+                  new ConnectionParams { Name = "ConnectionLifeTime", Type = typeof(string), Value = 0 });
+               
+                return _connectionParams;
+            }
+            set { _connectionParams = value; }
+        }
+        
 		//Parameter 1
         public static string Parameter1_Name
 		{

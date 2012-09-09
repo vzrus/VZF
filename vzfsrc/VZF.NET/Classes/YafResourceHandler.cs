@@ -530,6 +530,10 @@ namespace YAF
                     location += ", {0}".FormatWith(YafContext.Current.Get<IHaveLocalization>().GetText("REGION", tag));
                 }
 
+                var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
+               
+                forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
+               
                 var pmButton = new ThemeButton
                                    {
                                        ID = "PM",
@@ -539,8 +543,7 @@ namespace YAF
                                        ImageThemeTag = "PM",
                                        TitleLocalizedTag = "PM_TITLE",
                                        TitleLocalizedPage = "POSTS",
-                                       NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                                       ForumPages.pmessage, "u={0}", userId).Replace("resource.ashx", "default.aspx"),
+                                       NavigateUrl = Config.IsAnyPortal ? forumUrl : YafBuildLink.GetLinkNotEscaped(ForumPages.pmessage, true, "u={0}", userId).Replace("resource.ashx", "default.aspx"),
                                        ParamTitle0 = userName,
                                        Visible =
                                            !userData.IsGuest && this.Get<YafBoardSettings>().AllowPrivateMessages
@@ -552,9 +555,9 @@ namespace YAF
                                        name = userName,
                                        realname = HttpUtility.HtmlEncode(userData.Profile.RealName),
                                        avatar = avatarUrl,
-                                       profilelink =
+                                      /* profilelink =
                                            YafBuildLink.GetLink(ForumPages.profile, "u={0}", userId).Replace(
-                                               "resource.ashx", "default.aspx"),
+                                               "resource.ashx", "default.aspx"), */
                                        interests = HttpUtility.HtmlEncode(userData.Profile.Interests),
                                        homepage = userData.Profile.Homepage,
                                        posts = "{0:N0}".FormatWith(userData.NumPosts),
@@ -720,8 +723,7 @@ namespace YAF
                 else
                 {
                     using (
-                        DataTable dt = LegacyDb.album_image_list(
-                            null, context.Request.QueryString.GetFirstOrDefault("cover")))
+                        DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("cover")))
                     {
                         if (dt.Rows.Count > 0)
                         {
@@ -753,8 +755,8 @@ namespace YAF
                 // reset position...
                 data.Position = 0;
                 var imagesNumber =
-                    LegacyDb.album_getstats(null, context.Request.QueryString.GetFirstOrDefault("album"))[1];
-                MemoryStream ms = GetAlbumOrAttachmentImageResized(
+                    LegacyDb.album_getstats(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("album"))[1];
+                var ms = GetAlbumOrAttachmentImageResized(
                     data, 200, 200, previewCropped, imagesNumber, localizationFile, "ALBUM");
 
                 context.Response.ContentType = "image/png";
@@ -792,14 +794,13 @@ namespace YAF
                 if (CheckETag(context, eTag))
                 {
                     // found eTag... no need to resend/create this image -- just mark another view?
-                    // YAF.Classes.Data.DB.album_image_download(context.Request.QueryString.GetFirstOrDefault("image"));
+                    // YAF.Classes.Data.DB.album_image_download(YafContext.Current.PageModuleID,context.Request.QueryString.GetFirstOrDefault("image"));
                     return;
                 }
 
                 // ImageID
                 using (
-                    DataTable dt = LegacyDb.album_image_list(
-                        null, context.Request.QueryString.GetFirstOrDefault("image")))
+                    DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("image")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -832,7 +833,7 @@ namespace YAF
                         context.Response.OutputStream.Write(data, 0, data.Length);
 
                         // add a download count...
-                        LegacyDb.album_image_download(context.Request.QueryString.GetFirstOrDefault("image"));
+                        LegacyDb.album_image_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("image"));
                         break;
                     }
                 }
@@ -869,8 +870,7 @@ namespace YAF
             {
                 // ImageID
                 using (
-                    DataTable dt = LegacyDb.album_image_list(
-                        null, context.Request.QueryString.GetFirstOrDefault("imgprv")))
+                    DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("imgprv")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -945,8 +945,7 @@ namespace YAF
             {
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(
-                        null, context.Request.QueryString.GetFirstOrDefault("a"), null, 0, 1000))
+                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("a"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -994,7 +993,7 @@ namespace YAF
                             "attachment; filename={0}".FormatWith(
                                 HttpUtility.UrlPathEncode(row["FileName"].ToString()).Replace("+", "_")));
                         context.Response.OutputStream.Write(data, 0, data.Length);
-                        LegacyDb.attachment_download(context.Request.QueryString.GetFirstOrDefault("a"));
+                        LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("a"));
                         break;
                     }
                 }
@@ -1058,14 +1057,13 @@ namespace YAF
                 if (CheckETag(context, eTag))
                 {
                     // found eTag... no need to resend/create this image -- just mark another view?
-                    LegacyDb.attachment_download(context.Request.QueryString.GetFirstOrDefault("i"));
+                    LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
                     return;
                 }
 
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(
-                        null, context.Request.QueryString.GetFirstOrDefault("i"), null, 0, 1000))
+                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("i"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -1113,7 +1111,7 @@ namespace YAF
                         context.Response.OutputStream.Write(data, 0, data.Length);
 
                         // add a download count...
-                        LegacyDb.attachment_download(context.Request.QueryString.GetFirstOrDefault("i"));
+                        LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
                         break;
                     }
                 }
@@ -1164,8 +1162,7 @@ namespace YAF
             {
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(
-                        null, context.Request.QueryString.GetFirstOrDefault("p"), null, 0, 1000))
+                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("p"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {

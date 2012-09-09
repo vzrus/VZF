@@ -74,7 +74,6 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}bbcode_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}bbcode_save;
 --GO
-
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}board_create;
 --GO 
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}board_delete;
@@ -1507,29 +1506,28 @@ BEGIN
 	
          select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
        
-   PREPARE stmt_els FROM 'select 
+    set @alpst = CONCAT('select 
  			a.*,
-			? AS BoardID,						
+			',i_BoardID,' AS BoardID,						
  			b.`Posted` AS Posted,
  			d.`ForumID` AS ForumID,
  			d.`Name` AS ForumName,
  			c.`TopicID` AS TopicID,
  			c.`Topic` AS TopicName,
-			{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows
+			{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
  		from 
  			{databaseName}.{objectQualifier}Attachment a
  			inner join {databaseName}.{objectQualifier}Message b on b.MessageID = a.MessageID
  			inner join {databaseName}.{objectQualifier}Topic c on c.TopicID = b.TopicID
  			inner join {databaseName}.{objectQualifier}Forum d on d.ForumID = c.ForumID
  			inner join {databaseName}.{objectQualifier}Category e on e.CategoryID = d.CategoryID
- 		where  e.BoardID = ?
-      order by a.AttachmentID  LIMIT ?,?';
-	   SET @pici_TotalRows = ici_TotalRows;
-       SET @pi_BoardID =  i_BoardID;  
-	   SET @pici_FirstSelectRowNumber = ici_FirstSelectRowNumber;
-	   SET @pi_PageSize = i_PageSize;
+ 		where  e.BoardID = ',i_BoardID,' 
+      order by a.AttachmentID  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
 
-    EXECUTE stmt_els USING @pi_BoardID, @pici_TotalRows, @pi_BoardID, @pici_FirstSelectRowNumber, @pi_PageSize;
+	   PREPARE stmt_els FROM @alpst;
+
+    EXECUTE stmt_els;
+
     DEALLOCATE PREPARE stmt_els;
  			
    END IF;
@@ -6662,6 +6660,7 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}post_list
                  (i_TopicID INT,				
 				 i_AuthorUserID INT,
+				 i_PageUserID INT,
 				 i_UpdateViewCount SMALLINT,
 				 i_ShowDeleted TINYINT(1),
 				 i_StyledNicks TINYINT(1),				
@@ -6675,7 +6674,9 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}post_list
 				 i_SortEdited int,
 				 i_SortPosition int,
 				 i_ShowThanks TINYINT(1),
-				 i_MessagePosition int
+				 i_ShowReputation TINYINT(1),
+				 i_MessagePosition int,
+                 i_UTCTIMESTAMP datetime
 				 )
 BEGIN
    declare ici_post_totalrowsnumber int default 0; 
@@ -6692,6 +6693,10 @@ BEGIN
    declare ici_pagecorrection int;
    declare ici_pageshift int;
 
+   set @PostTotalRowsNumber = null;
+   set @i_FirstSelectPosted = null;
+   set @i_FirstSelectEdited = null;
+   
 IF i_SortPosted IS NULL THEN
 SET i_SortPosted = 2;
 END IF;
@@ -6764,105 +6769,46 @@ SET i_PageIndex = i_PageIndex + 1;
    set rowcount 1;
    end if; */
 
- PREPARE plist2 FROM 'select
-CAST(? AS SIGNED) AS PostTotalRowsNumber,
-m.Posted AS i_FirstSelectPosted,
-m.Edited AS i_FirstSelectEdited,
-CAST(? AS SIGNED) AS PageIndex
-	from
+ set @pplv = CONCAT('select
+CAST(' , coalesce(ici_post_totalrowsnumber,1),  ' AS SIGNED),
+m.Posted,
+m.Edited
+INTO  	@PostTotalRowsNumber,  
+@i_FirstSelectPosted, 
+@i_FirstSelectEdited
+	 from
 		{databaseName}.{objectQualifier}Message m	
 	where
-		m.TopicID = ?
+		m.TopicID = ',i_TopicID, 
 		-- IsApproved
-		AND (m.Flags & 16) = 16
+		' AND (m.Flags & 16) = 16
 		-- IsDeleted
-		AND ((m.Flags & 8) <> 8 OR ((? = 1 AND (m.Flags & 8) = 8) OR (? > 0 AND m.UserID = ?)))
-		AND UNIX_TIMESTAMP(m.Posted) BETWEEN
-		 UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?) 
+		AND ((m.Flags & 8) <> 8 OR ((',i_ShowDeleted, ' = 1 AND (m.Flags & 8) = 8) 
+		OR (',i_AuthorUserID, ' > 0 AND m.UserID = ', i_AuthorUserID,')))
+		AND m.Posted BETWEEN ''',i_SincePostedDate,''' AND ''',i_ToPostedDate,''' 
 		 /*
 		AND m.Edited > @SinceEditedDate
 		*/
 		
 	order by
 		(case 
-        when ? = 1 then m.Position end) ASC,	
+        when ',i_SortPosition,' = 1 then m.Position end) ASC,	
 		(case 
-        when ? = 2 then m.Posted end) DESC,
+        when ',i_SortPosted,' = 2 then m.Posted end) DESC,
 		(case 
-        when ? = 1 then m.Posted end) ASC, 
+        when ',i_SortPosted,' = 1 then m.Posted end) ASC, 
 		(case 
-        when ? = 2 then m.Edited end) DESC,
+        when ',i_SortEdited,' = 2 then m.Edited end) DESC,
 		(case
-        when ? = 1 then m.Edited end) ASC LIMIT 1 OFFSET ?';
-		
-        SET @iici2_post_totalrowsnumber = ici_post_totalrowsnumber;
-        SET @ii2_PageIndex = i_PageIndex;
-		SET @ii2_PageSize =  i_PageSize;
-		SET @ii2_TopicID = i_TopicID;
-		SET @ii2_AuthorUserID = i_AuthorUserID;
-		SET @ii2_SortPosted = i_SortPosted;
-		SET @ii2_SortEdited = i_SortEdited;
-		SET @ii2_SortPosition = i_SortPosition;	
-		SET @ici2_SincePostedDate = i_SincePostedDate;
-		SET @ici2_ToPostedDate = i_ToPostedDate;
+        when ',i_SortEdited,' = 1 then m.Edited end) ASC LIMIT 1 OFFSET ',ici_firstselectrownum - 1,'');
+	    
+		PREPARE plist2 FROM @pplv;
 
-	    SET @ici_firstselectrownum = ici_firstselectrownum;
-		SET @ici_offfirstselectrownum = ici_firstselectrownum - 1;
-		SET @ici2_SinceEditedDate = i_SinceEditedDate;
-		SET @ici2_ToEditedDate = i_ToEditedDate;		
-		SET @ii2_ShowDeleted = i_ShowDeleted;
-
-
-        EXECUTE plist2 USING 	
-		@iici2_post_totalrowsnumber,
-		@ii2_PageIndex,	
-		@ii2_TopicID,
-		@ii2_ShowDeleted,
-		@ii_AuthorUserID, 
-		@ii_AuthorUserID, 
-		@ici2_SincePostedDate,
-		@ici2_ToPostedDate,		
-		@ii_SortPosition, 
-		@ii_SortPosted, 
-		@ii_SortPosted,
-		@ii_SortEdited, 
-		@ii_SortEdited,
-		@ici_offfirstselectrownum;		
+        EXECUTE plist2 ;		
 		 
-		DEALLOCATE PREPARE plist2;
-			 		
-			
-   -- SELECT FOUND_ROWS()
+		DEALLOCATE PREPARE plist2;		
 
-		
-
-END;
---GO
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}post_list_result
-( i_PageUserID INT,
-  i_StyledNicks TINYINT(1),
-  i_ShowReputation TINYINT(1),
- i_post_totalrowsnumber INT,
- i_PageIndex int, 
- i_PageSize int,
- i_TopicID INT,
- i_AuthorUserID INT,
- i_SortPosted int, 
- i_SortEdited int,
- i_SortPosition int,	
- i_SincePostedDate datetime, 
- i_ToPostedDate datetime, 
- i_SinceEditedDate datetime, 
- i_ToEditedDate datetime, 
- i_FirstSelectPosted datetime,
- i_FirstSelectEdited datetime,
- i_ShowDeleted TINYINT(1),
- i_UTCTIMESTAMP datetime
-)
-BEGIN 
-  
-	PREPARE plist1 FROM 'select
+		set @pplr = CONCAT('select
 		d.TopicID,
 		d.Topic,
 		d.Priority,
@@ -6899,16 +6845,15 @@ BEGIN
 		b.Signature,
 		b.NumPosts AS Posts,
 		b.Points,
-		(CASE (?) WHEN 1 THEN CAST(IFNULL((select VoteDate 
+		(CASE (',i_ShowReputation,') WHEN 1 THEN CAST(IFNULL((select VoteDate 
 		from {databaseName}.{objectQualifier}ReputationVote repVote 
-		where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID = ? LIMIT 1), null) as datetime) 
-		ELSE (?) END) AS ReputationVoteDate,		
+		where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID = ',i_PageUserID,' LIMIT 1), null) as datetime) 
+		ELSE (''',i_UTCTIMESTAMP,''') END) AS ReputationVoteDate,		
 		d.Views,
 		d.ForumID,
 		c.Name AS RankName,		
-		c.RankImage,
-		-- i_StyledNicks
-		(case(?)
+		c.RankImage,		
+		(case(',i_StyledNicks,')
 			when 1 then  
 			b.UserStyle 
 			else '''' end) as Style, 
@@ -6919,9 +6864,9 @@ BEGIN
 		where x.UserID=b.UserID and AvatarImage is not null LIMIT 1),0) AS HasAvatarImage,
 		((b.Flags & 4)=4) as IsGuest, 
 		-- ici_post_totalrowsnumber
-		{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows,
+		{databaseName}.{objectQualifier}biginttoint(',@PostTotalRowsNumber,') AS TotalRows,
 		-- i_PageIndex
-		{databaseName}.{objectQualifier}biginttoint(?) AS PageIndex,
+		{databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
 		up.*
 	from
 		{databaseName}.{objectQualifier}Message m
@@ -6931,26 +6876,25 @@ BEGIN
 		join {databaseName}.{objectQualifier}Forum g on g.ForumID=d.ForumID
 		join {databaseName}.{objectQualifier}Category h on h.CategoryID=g.CategoryID
 		join {databaseName}.{objectQualifier}Rank c on c.RankID=b.RankID
-	where
-	   -- i_TopicID
-		(m.TopicID = ?)
+	where	   
+		(m.TopicID = ',i_TopicID,')
 		-- IsApproved
  		AND IFNULL((m.Flags & 16)=16,false) 
 		-- IsDeleted AuthorUserID	
  		 AND 
-		(IFNULL((m.Flags & 8) <> 8,false) OR ((? = 1 AND IFNULL((m.Flags & 8 )= 8,false)) OR (? > 0 AND m.UserID = ?))) 
+		(IFNULL((m.Flags & 8) <> 8,false) OR ((',i_ShowDeleted,' = 1 AND IFNULL((m.Flags & 8 )= 8,false)) OR (',i_AuthorUserID,' > 0 AND m.UserID = ',i_AuthorUserID,'))) 
 		AND 
 		(m.Posted is null OR 
 		(m.Posted is not null AND
 		-- SortPosted
 		(m.Posted >= (case 
-        when ? = 1 then
-		 ? end) OR m.Posted <= (case 
-        when ? = 2 then ? end) OR
+        when ',i_SortPosted,' = 1 then
+		 ''',@i_FirstSelectPosted,''' end) OR m.Posted <= (case 
+        when ',i_SortPosted,' = 2 then  ''',@i_FirstSelectPosted,''' end) OR
 		m.Posted >= (case 
-        when ? = 0 then 0 end))))	AND
+        when ''',i_SortPosted,''' = 0 then 0 end))))	AND
 		-- ToPostedDate
-		(m.Posted <= (?))	
+		(m.Posted <= (''',i_ToPostedDate,'''))	
 		/*
 		AND (m.Edited is null OR (m.Edited is not null AND
 		(m.Edited >= (case 
@@ -6963,58 +6907,25 @@ BEGIN
 		*/
 	order by		
 		(case 
-        when ? = 1 then m.Position end) ASC,	
+        when ',i_SortPosition,' = 1 then m.Position end) ASC,	
 		(case 
-        when ? = 2 then m.Posted end) DESC,
+        when ',i_SortPosted,' = 2 then m.Posted end) DESC,
 		(case 
-        when ? = 1 then m.Posted end) ASC, 
+        when ',i_SortPosted,' = 1 then m.Posted end) ASC, 
 		(case 
-        when ? = 2 then m.Edited end) DESC,
+        when ',i_SortEdited,' = 2 then m.Edited end) DESC,
 		(case 
-        when ? = 1 then m.Edited end) ASC LIMIT ?'; 
-		SET @ii_ShowReputation = i_ShowReputation;
-		SET @ii_PageUserID = i_PageUserID;
-		SET @ii_UTCTIMESTAMP = i_UTCTIMESTAMP;
-		SET @ii_StyledNicks = i_StyledNicks;
-        SET @iici_post_totalrowsnumber = i_post_totalrowsnumber;
-        SET @ii_PageIndex = i_PageIndex;
-		SET @ii_TopicID = i_TopicID;
-		SET @ii_AuthorUserID = i_AuthorUserID;
-		SET @ii_SortPosted = i_SortPosted;
-		SET @iici_firstselectposted = i_FirstSelectPosted;
-		SET @ii_ToPostedDate = i_ToPostedDate;
-		SET @ii_SortPosition = i_SortPosition;	
-		SET @ii_SortEdited = i_SortEdited;
-		SET @ii_PageSize =  i_PageSize;
-		SET @ii_ShowDeleted =  i_ShowDeleted;
-        EXECUTE plist1 USING
-		@ii_ShowReputation,
-		@ii_PageUserID,
-		@ii_UTCTIMESTAMP,
-		@ii_StyledNicks, 
-		@iici_post_totalrowsnumber, 
-		@ii_PageIndex, 
-		@ii_TopicID,
-		@ii_ShowDeleted,
-		@ii_AuthorUserID, 
-		@ii_AuthorUserID, 
-		@ii_SortPosted, 
-		@iici_firstselectposted, 
-		@ii_SortPosted, 
-		@iici_firstselectposted,
-		@ii_SortPosted, 
-		@ii_ToPostedDate,
-		@ii_SortPosition, 
-		@ii_SortPosted, 
-		@ii_SortPosted,
-		@ii_SortEdited, 
-		@ii_SortEdited,
-		@ii_PageSize;
+        when ',i_SortEdited,' = 1 then m.Edited end) ASC LIMIT ',i_PageSize,''); 
+
+		PREPARE plist1 FROM  @pplr;		
+	
+        EXECUTE plist1;
 		 
 		DEALLOCATE PREPARE plist1;
+		
+
 END;
 --GO
-
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}post_list_reverse10(i_TopicID INT)

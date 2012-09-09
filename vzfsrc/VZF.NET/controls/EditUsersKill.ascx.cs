@@ -163,7 +163,7 @@ namespace YAF.Controls
     {
 
       var ips = this.IPAddresses;
-      var allIps = LegacyDb.bannedip_list(this.PageContext.PageBoardID, null, 0, 1000000).GetColumnAsList<string>("Mask").ToList();
+      var allIps = LegacyDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000).GetColumnAsList<string>("Mask").ToList();
 
       // remove all IPs from ips if they already exist in allIps...
       ips.RemoveAll(allIps.Contains);
@@ -178,14 +178,13 @@ namespace YAF.Controls
 
       this.IPAddresses.ForEach(
         x =>
-        LegacyDb.bannedip_save(
-          null, 
+        LegacyDb.bannedip_save(PageContext.PageModuleID, null, 
           this.PageContext.PageBoardID, 
           x, 
           this.Get<ILocalization>().GetText("ADMIN_EDITUSER", "LINK_USER_BAN").FormatWith(
-            this.CurrentUserID, 
-            YafBuildLink.GetLink(ForumPages.profile, "u={0}", this.CurrentUserID), 
-            this.HtmlEncode(name)), 
+              this.CurrentUserID, 
+              YafBuildLink.GetLink(ForumPages.profile, "u={0}", this.CurrentUserID), 
+              this.HtmlEncode(name)), 
           this.PageContext.PageUserID));
 
       // clear cache of banned IPs for this board

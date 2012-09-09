@@ -113,7 +113,7 @@ namespace YAF.Pages
 
       // Set the title text.
       this.LocalizedLabel1.Param0 = this.Server.HtmlEncode(displayName);
-      this.LocalizedLabel1.Param1 = this.Server.HtmlEncode(LegacyDb.album_gettitle(albumId));
+      this.LocalizedLabel1.Param1 = this.Server.HtmlEncode(LegacyDb.album_gettitle(PageContext.PageModuleID, albumId));
 
       // Initialize the Album Image List control.
       this.AlbumImageList1.UserID = (int)userId;

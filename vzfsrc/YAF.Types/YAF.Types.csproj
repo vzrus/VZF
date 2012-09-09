@@ -206,6 +206,7 @@
     <Compile Include="Objects\TypedUserList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocatorAccess.cs" />
+    <Compile Include="VzfTypes\ConnectionParams.cs" />
     <Compile Include="YafLifetimeScope.cs" />
   </ItemGroup>
   <ItemGroup />

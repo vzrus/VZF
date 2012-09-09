@@ -400,7 +400,7 @@ namespace YAF.Core.Services
         public IEnumerable<TypedBBCode> GetCustomBBCode()
         {
             return this.DataCache.GetOrSet(
-                Constants.Cache.CustomBBCode, () => LegacyDb.BBCodeList(YafContext.Current.PageBoardID, null).ToList());
+                Constants.Cache.CustomBBCode, () => LegacyDb.BBCodeList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).ToList());
         }
 
         /// <summary>

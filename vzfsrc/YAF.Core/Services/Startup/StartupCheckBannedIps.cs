@@ -127,7 +127,7 @@ namespace YAF.Core.Services
         var bannedIPs = this.DataCache.GetOrSet(
             Constants.Cache.BannedIP, () =>
             {
-                var dt = LegacyDb.bannedip_list(YafContext.Current.PageBoardID, null, 0, 1000000);
+                var dt = LegacyDb.bannedip_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null, 0, 1000000);
                
                 if (dt != null && dt.Rows.Count > 0)
                 {

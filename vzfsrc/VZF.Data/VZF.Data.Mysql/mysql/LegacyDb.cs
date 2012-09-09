@@ -67,7 +67,6 @@ namespace YAF.Classes.Data.MySqlDb
             }
         }
 
-        
         //Parameter 1
         public static string Parameter1_Name
         {
@@ -3425,9 +3424,8 @@ namespace YAF.Classes.Data.MySqlDb
                                          int messagePosition)
 
         {
-            DataTable dtt;
-            int rowNumber = 0;
-			using ( MySqlCommand cmd = MySqlDbAccess.GetCommand( "post_list" ) )
+            
+			using ( var cmd = MySqlDbAccess.GetCommand( "post_list" ) )
 			{
 				
                 if ( updateViewCount == null ) { updateViewCount = 1; }              
@@ -3436,6 +3434,7 @@ namespace YAF.Classes.Data.MySqlDb
 
 				cmd.Parameters.Add("i_TopicID", MySqlDbType.Int32 ).Value = topicId;
                 cmd.Parameters.Add("i_AuthorUserID", MySqlDbType.Int32).Value = authorUserID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = currentUserID;
 				cmd.Parameters.Add("i_UpdateViewCount", MySqlDbType.Int16 ).Value = updateViewCount;
                 cmd.Parameters.Add("i_ShowDeleted", MySqlDbType.Byte ).Value = showDeleted;
                 cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte ).Value = styledNicks;
@@ -3449,13 +3448,15 @@ namespace YAF.Classes.Data.MySqlDb
                 cmd.Parameters.Add("i_SortEdited", MySqlDbType.Int32).Value = sortEdited;
                 cmd.Parameters.Add("i_SortPosition", MySqlDbType.Int32).Value = sortPosition;
                 cmd.Parameters.Add("i_ShowThanks", MySqlDbType.Byte ).Value = showThanks;
+                cmd.Parameters.Add("i_ShowReputation", MySqlDbType.Byte).Value = showReputation;
                 cmd.Parameters.Add("i_MessagePosition", MySqlDbType.Int32).Value = messagePosition;
-				
-                dtt =  MySqlDbAccess.GetData(cmd,connectionString);
-                cmd.Parameters.Clear();
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+               
+                return MySqlDbAccess.GetData(cmd,connectionString);
+               
 			}
 
-            if (dtt != null && dtt.Columns.Count > 0)
+            /*  if (dtt != null && dtt.Columns.Count > 0)
             {
                 if (dtt.Rows.Count > 0)
                 {
@@ -3523,9 +3524,9 @@ namespace YAF.Classes.Data.MySqlDb
                     }
                 }
             }
-            return null;
+            return null;*/
         }
-
+            
         static public DataTable post_list_reverse10(string connectionString, object topicID)
 		{
 			using ( MySqlCommand cmd = MySqlDbAccess.GetCommand( "post_list_reverse10" ) )
@@ -3574,8 +3575,9 @@ namespace YAF.Classes.Data.MySqlDb
                 dt1.AcceptChanges();
 			}
             return dt1;
-		}
-
+           
+        }
+            
 		// gets list of replies to message
         static public DataTable message_getRepliesList(string connectionString, object messageID)
 		{

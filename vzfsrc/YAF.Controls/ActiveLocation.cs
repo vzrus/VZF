@@ -488,7 +488,7 @@ namespace YAF.Controls
         string albumName;
 
         // The DataRow should not be missing in the case
-        DataRow dr = LegacyDb.album_list(null, Convert.ToInt32(albumID.Trim())).Rows[0];
+        DataRow dr = LegacyDb.album_list(PageContext.PageModuleID, null, Convert.ToInt32(albumID.Trim())).Rows[0];
 
         // If album doesn't have a Title, use his ID.
         if (!string.IsNullOrEmpty(dr["Title"].ToString()))

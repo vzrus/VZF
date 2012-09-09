@@ -160,7 +160,7 @@ namespace YAF.Pages
       switch (e.CommandName)
       {
         case "delete":
-          LegacyDb.attachment_delete(e.CommandArgument);
+          LegacyDb.attachment_delete(PageContext.PageModuleID, e.CommandArgument);
           this.BindData();
           this.uploadtitletr.Visible = true;
           this.selectfiletr.Visible = true;
@@ -310,7 +310,7 @@ namespace YAF.Pages
     /// </summary>
     private void BindData()
     {
-      DataTable dt = LegacyDb.attachment_list(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), null, null,0,1000);
+      DataTable dt = LegacyDb.attachment_list(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), null, null,0,1000);
       this.List.DataSource = dt;
 
       this.List.Visible = dt.Rows.Count > 0;
@@ -431,8 +431,7 @@ namespace YAF.Pages
 
       if (this.Get<YafBoardSettings>().UseFileTable)
       {
-        LegacyDb.attachment_save(
-          messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, file.PostedFile.InputStream);
+        LegacyDb.attachment_save(PageContext.PageModuleID, messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, file.PostedFile.InputStream);
       }
       else
       {
@@ -448,7 +447,7 @@ namespace YAF.Pages
 
         file.PostedFile.SaveAs("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, messageID, filename));
 
-        LegacyDb.attachment_save(messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, null);
+        LegacyDb.attachment_save(PageContext.PageModuleID, messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, null);
       }
     }
 

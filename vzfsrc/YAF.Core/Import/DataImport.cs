@@ -60,17 +60,16 @@ namespace YAF.Core
                 dsBBCode.Tables["YafBBCode"].Columns["SearchRegex"] != null &&
                 dsBBCode.Tables["YafBBCode"].Columns["ExecOrder"] != null)
             {
-                var bbcodeList = LegacyDb.BBCodeList(boardId, null);
+                var bbcodeList = LegacyDb.BBCodeList(YafContext.Current.PageModuleID, boardId, null);
 
                 // import any extensions that don't exist...
-                foreach (DataRow row in from DataRow row in dsBBCode.Tables["YafBBCode"].Rows
+                foreach (var row in from DataRow row in dsBBCode.Tables["YafBBCode"].Rows
                                         let name = row["Name"].ToString()
-                                        where !bbcodeList.Any(b => b.Name == name)
+                                        where bbcodeList.All(b => b.Name != name)
                                         select row)
                 {
                     // add this bbcode...
-                    LegacyDb.bbcode_save(
-                        null,
+                    LegacyDb.bbcode_save(YafContext.Current.PageModuleID, null,
                         boardId,
                         row["Name"],
                         row["Description"],
@@ -206,7 +205,7 @@ namespace YAF.Core
         {
             int importedCount = 0;
 
-            var existingBannedIPList = LegacyDb.bannedip_list(boardId, null, 0, 1000000);
+            var existingBannedIPList = LegacyDb.bannedip_list(YafContext.Current.PageModuleID, boardId, null, 0, 1000000);
 
             using (var streamReader = new StreamReader(imputStream))
             {
@@ -225,7 +224,7 @@ namespace YAF.Core
                         continue;
                     }
 
-                    LegacyDb.bannedip_save(null, boardId, importAddress.ToString(), "Imported IP Adress", userId);
+                    LegacyDb.bannedip_save(YafContext.Current.PageModuleID, null, boardId, importAddress.ToString(), "Imported IP Adress", userId);
                     importedCount++;
                 }
             }

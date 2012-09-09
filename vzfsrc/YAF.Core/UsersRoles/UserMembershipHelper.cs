@@ -239,7 +239,7 @@ namespace YAF.Core
                     HttpContext.Current.Server.MapPath(
                         string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
 
-                using (DataTable dt = LegacyDb.album_list(userID, null))
+                using (DataTable dt = LegacyDb.album_list(YafContext.Current.PageModuleID, userID, null))
                 {
                     foreach (DataRow dr in dt.Rows)
                     {

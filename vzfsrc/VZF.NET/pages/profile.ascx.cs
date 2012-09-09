@@ -106,7 +106,7 @@ namespace YAF.Pages
             // Add check if Albums Tab is visible 
             if (!this.PageContext.IsGuest && this.Get<YafBoardSettings>().EnableAlbum)
             {
-                int albumCount = LegacyDb.album_getstats(albumUser, null)[0];
+                int albumCount = LegacyDb.album_getstats(PageContext.PageModuleID, albumUser, null)[0];
 
                 // Check if the user already has albums.
                 if (albumCount > 0)

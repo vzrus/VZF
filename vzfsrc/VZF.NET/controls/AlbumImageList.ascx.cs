@@ -78,15 +78,15 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="System.Web.UI.WebControls.CommandEventArgs"/> instance containing the event data.</param>
         protected void AlbumImages_ItemCommand([NotNull] object sender, [NotNull] CommandEventArgs e)
         {
-            using (var dt = LegacyDb.album_list(null, this.AlbumID))
+            using (var dt = LegacyDb.album_list(PageContext.PageModuleID, null, this.AlbumID))
             {
                 if (dt.Rows[0]["CoverImageID"].ToString() == e.CommandArgument.ToString())
                 {
-                    LegacyDb.album_save(this.AlbumID, null, null, 0);
+                    LegacyDb.album_save(PageContext.PageModuleID, this.AlbumID, null, null, 0);
                 }
                 else
                 {
-                    LegacyDb.album_save(dt.Rows[0]["AlbumID"], null, null, e.CommandArgument);
+                    LegacyDb.album_save(PageContext.PageModuleID, dt.Rows[0]["AlbumID"], null, null, e.CommandArgument);
                 }
             }
 
@@ -193,7 +193,7 @@ namespace YAF.Controls
         private void BindData()
         {
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().AlbumImagesPerPage;
-            string albumTitle = LegacyDb.album_gettitle(this.AlbumID);
+            string albumTitle = LegacyDb.album_gettitle(PageContext.PageModuleID, this.AlbumID);
 
             // if (UserID == PageContext.PageUserID)
             // ltrTitle.Visible = false;
@@ -203,8 +203,8 @@ namespace YAF.Controls
                                      : this.HtmlEncode(albumTitle);
 
             // set the Datatable
-            var dtAlbumImageList = LegacyDb.album_image_list(this.AlbumID, null);
-            var dtAlbum = LegacyDb.album_list(null, this.AlbumID);
+            var dtAlbumImageList = LegacyDb.album_image_list(PageContext.PageModuleID, this.AlbumID, null);
+            var dtAlbum = LegacyDb.album_list(PageContext.PageModuleID, null, this.AlbumID);
 
             // Does this album has a cover?
             this._coverImageID = dtAlbum.Rows[0]["CoverImageID"] == DBNull.Value
