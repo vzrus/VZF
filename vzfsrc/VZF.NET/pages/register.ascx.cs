@@ -647,7 +647,7 @@ namespace YAF.Pages
       string hash = FormsAuthentication.HashPasswordForStoringInConfigFile(hashinput, "md5");
 
       // save verification record...
-      LegacyDb.checkemail_save(userID, hash, user.Email);
+      LegacyDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
 
       var verifyEmail = new YafTemplateEmail("VERIFYEMAIL");
 

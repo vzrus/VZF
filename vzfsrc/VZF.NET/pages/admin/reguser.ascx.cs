@@ -135,7 +135,7 @@ namespace YAF.Pages.Admin
         if (this.Get<YafBoardSettings>().EmailVerification)
         {
             // save verification record...
-            LegacyDb.checkemail_save(userID, hash, user.Email);
+            LegacyDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
 
             // send template email
             var verifyEmail = new YafTemplateEmail("VERIFYEMAIL");

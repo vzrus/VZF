@@ -81,7 +81,7 @@ namespace YAF.Pages
         /// </param>
         public void ValidateKey_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable dt = LegacyDb.checkemail_update(this.key.Text);
+            DataTable dt = LegacyDb.checkemail_update(PageContext.PageModuleID, this.key.Text);
             DataRow row = dt.Rows[0];
             string dbEmail = row["Email"].ToString();
 

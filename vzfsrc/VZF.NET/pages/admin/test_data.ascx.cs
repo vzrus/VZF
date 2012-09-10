@@ -63,8 +63,7 @@ namespace YAF.Pages.Admin
         /// <summary>
         ///   The board object stats.
         /// </summary>
-        private DataRow boardObjectStats = LegacyDb.board_poststats(
-            YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
+        private DataRow boardObjectStats = LegacyDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
 
         /// <summary>
         ///   The random guid.
@@ -229,7 +228,7 @@ namespace YAF.Pages.Admin
 
             this.TimeZones.DataSource = StaticDataHelper.TimeZones();
 
-            DataTable categories = LegacyDb.category_list(this.PageContext.PageBoardID, null);
+            DataTable categories = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
             this.ForumsCategory.DataSource = categories;
             this.TopicsCategory.DataSource = categories;
@@ -242,7 +241,7 @@ namespace YAF.Pages.Admin
             this.ForumsGroups.DataSource = LegacyDb.group_list(this.PageContext.PageBoardID, null);
 
             // Board lists
-            this.UsersBoardsList.DataSource = LegacyDb.board_list(null);
+            this.UsersBoardsList.DataSource = LegacyDb.board_list(PageContext.PageModuleID, null);
             this.CategoriesBoardsList.DataSource = this.UsersBoardsList.DataSource;
             this.PMessagesBoardsList.DataSource = this.UsersBoardsList.DataSource;
 
@@ -418,8 +417,7 @@ namespace YAF.Pages.Admin
             for (i = 0; i < _boardNumber; i++)
             {
                 string boardName = this.BoardPrefixTB.Text.Trim() + Guid.NewGuid();
-                int curboard = LegacyDb.board_create(
-                    this.PageContext.User.UserName,
+                int curboard = LegacyDb.board_create(PageContext.PageModuleID, this.PageContext.User.UserName,
                     this.PageContext.User.Email,
                     this.PageContext.User.ProviderUserKey,
                     boardName,
@@ -654,8 +652,8 @@ namespace YAF.Pages.Admin
                         string catName = this.CategoryPrefixTB.Text.Trim() + Guid.NewGuid();
 
                         // TODO: should return number of categories created 
-                        LegacyDb.category_save(boardID, 0, catName, null, 100);
-                        DataTable dt = LegacyDb.category_simplelist(0, 10000);
+                        LegacyDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100);
+                        DataTable dt = LegacyDb.category_simplelist(PageContext.PageModuleID, 0, 10000);
 
                         foreach (DataRow dr in dt.Rows.Cast<DataRow>().Where(dr => dr["Name"].ToString() == catName))
                         {

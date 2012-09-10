@@ -143,7 +143,7 @@ namespace YAF.Core.Tasks
     {
       try
       {
-        var boardIds = LegacyDb.board_list(null).AsEnumerable().Select(b => b.Field<int>("BoardID"));
+          var boardIds = LegacyDb.board_list(YafContext.Current.PageModuleID, null).AsEnumerable().Select(b => b.Field<int>("BoardID"));
 
         foreach (var boardId in boardIds)
         {

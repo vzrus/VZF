@@ -346,7 +346,7 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            DataTable dt = LegacyDb.board_list(null);
+            DataTable dt = LegacyDb.board_list(PageContext.PageModuleID, null);
 
             // add row for "all boards" (null value)
             DataRow r = dt.NewRow();
@@ -376,7 +376,7 @@ namespace YAF.Pages.Admin
             // this.DataBind();
 
             // get stats for current board, selected board or all boards (see function)
-            DataRow row = LegacyDb.board_stats(this.GetSelectedBoardID());
+            DataRow row = LegacyDb.board_stats(PageContext.PageModuleID, this.GetSelectedBoardID());
 
             this.NumPosts.Text = "{0:N0}".FormatWith(row["NumPosts"]);
             this.NumTopics.Text = "{0:N0}".FormatWith(row["NumTopics"]);

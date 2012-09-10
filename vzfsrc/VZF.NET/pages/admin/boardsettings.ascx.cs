@@ -228,8 +228,7 @@ namespace YAF.Pages.Admin
                 languageFile = cultures.First().Field<string>("CultureFile");
             }
 
-            LegacyDb.board_save(
-                this.PageContext.PageBoardID,
+            LegacyDb.board_save(PageContext.PageModuleID, this.PageContext.PageBoardID,
                 languageFile,
                 this.Culture.SelectedValue,
                 this.Name.Text,
@@ -312,7 +311,7 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             DataRow row;
-            using (DataTable dt = LegacyDb.board_list(this.PageContext.PageBoardID))
+            using (DataTable dt = LegacyDb.board_list(PageContext.PageModuleID, this.PageContext.PageBoardID))
             {
                 row = dt.Rows[0];
             }

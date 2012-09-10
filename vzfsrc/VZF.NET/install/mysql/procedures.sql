@@ -1597,18 +1597,14 @@ WHERE  BoardID = i_BoardID;
 	
          select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
        
-   PREPARE stmt_els FROM 'select
+   set @biplpr = CONCAT('select
 		b.*,
-		{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
       FROM   {databaseName}.{objectQualifier}BannedIP b
-      WHERE  b.BoardID = ?
-      order by b.ID  LIMIT ?,?';
-	   SET @pici_TotalRows = ici_TotalRows;
-       SET @pi_BoardID =  i_BoardID;  
-	   SET @pici_FirstSelectRowNumber = ici_FirstSelectRowNumber;
-	   SET @pi_PageSize = i_PageSize;
-
-    EXECUTE stmt_els USING @pici_TotalRows, @pi_BoardID, @pici_FirstSelectRowNumber, @pi_PageSize;
+      WHERE  b.BoardID = ',i_BoardID,'
+      order by b.ID  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+    PREPARE stmt_els FROM @biplpr;
+    EXECUTE stmt_els;
 	-- show global status like 'com_stmt%';
     -- show session VARIABLES like 'max_prepared_stmt_count' 
 	-- Com_stmt_close  0   times prepared statements closed
@@ -2659,7 +2655,7 @@ create procedure {databaseName}.{objectQualifier}eventlog_list(i_BoardID INT, i_
    i_PageSize int, i_SinceDate datetime, i_ToDate datetime, i_EventIDs varchar(8000),i_UTCTIMESTAMP datetime) 
 begin
    declare ici_TotalRows int ;
-   declare ici_FirstSelectRowNumber int ;
+   declare ici_FirstSelectRowNumber int default 0;
    declare ici_FirstSelectRowID int;	  
 DECLARE ici_EventID varchar(11);
 DECLARE ici_Pos INT;  
@@ -2729,26 +2725,20 @@ SET i_EventIDs = (CONCAT(TRIM(i_EventIDs), ','));
 
 
        
-   PREPARE stmt_els FROM 'select
+	     
+	   set @elprep = CONCAT('select
 		a.*,		
 		IFNULL(b.`Name`,''System'') as `Name`,
-		{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
 	from
 		{databaseName}.{objectQualifier}EventLog a		
 		left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
-      where (b.UserID IS NULL or b.BoardID = ?)	and (? IS NULL OR  a.`Type` IN (?)) and a.EventTime between ? and ?
-      order by a.EventLogID   desc LIMIT ?,?';
-	   SET @pici_TotalRows = ici_TotalRows;
-       SET @pi_BoardID =  i_BoardID;
-       SET @pi_EventIDs = i_EventIDs;
-	   SET @pi_SinceDate = i_SinceDate;
-	   SET @pi_ToDate = i_ToDate;
-	   SET @pici_FirstSelectRowNumber = ici_FirstSelectRowNumber;
-	   SET @pi_PageSize = i_PageSize;
-
-    EXECUTE stmt_els USING @pici_TotalRows, @pi_BoardID, @pi_EventIDs, @pi_EventIDs,@pi_SinceDate,@pi_ToDate,@pici_FirstSelectRowNumber,@pi_PageSize;
-    DEALLOCATE PREPARE stmt_els;         
-	     
+      where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between ''',i_SinceDate,''' and ''',i_ToDate,''' 
+      order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+	  	
+	   PREPARE stmt_els FROM @elprep;
+	   EXECUTE stmt_els;
+	   DEALLOCATE PREPARE stmt_els;       
      
 else
 
@@ -2762,25 +2752,20 @@ else
 	
         select  (i_PageIndex - 1) * i_PageSize + 1 into ici_FirstSelectRowNumber;
 		       	   -- find first selectedrowid 
-     PREPARE stmt_els FROM 'select
+      set @elprep = CONCAT('select
 		a.*,		
 		IFNULL(b.`Name`,''System'') as `Name`,
-		{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
 	from
 		{databaseName}.{objectQualifier}EventLog a	
 		left join {databaseName}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
-		join {databaseName}.{objectQualifier}UserGroup ug on (ug.UserID = ? and ug.GroupID = e.GroupID)
+		join {databaseName}.{objectQualifier}UserGroup ug on (ug.UserID = ',i_PageUserID,' and ug.GroupID = e.GroupID)
 		left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
-      where (b.UserID IS NULL or b.BoardID = ?)	and (? IS NULL OR  a.`Type` IN (?)) and a.EventTime between ? and ?
-      order by a.EventLogID   desc LIMIT ?,?';
-	   SET @pici_TotalRows = ici_TotalRows;
-	   SET @pi_PageUserID = i_PageUserID;
-       SET @pi_BoardID =  i_BoardID;
-       SET @pi_EventIDs = i_EventIDs;
-	   SET @pi_SinceDate = i_SinceDate;
-	   SET @pi_ToDate = i_ToDate;
+      where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between''',i_SinceDate,''' and ''',i_ToDate,'''
+      order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
 
-    EXECUTE stmt_els USING @pici_TotalRows,@pi_PageUserID, @pi_BoardID, @pi_EventIDs, @pi_EventIDs,@pi_SinceDate,@pi_ToDate,@pici_FirstSelectRowNumber,@pi_PageSize;
+	PREPARE stmt_els FROM  @elprep;
+    EXECUTE stmt_els;
     DEALLOCATE PREPARE stmt_els; 
   
    end  if;
@@ -6612,8 +6597,8 @@ CREATE  PROCEDURE {databaseName}.{objectQualifier}post_alluser(
                 I_NumberOfMessages INT)
 BEGIN
         
-       PREPARE stmt_pau FROM 
-	    'SELECT a.MessageID,
+        set @stmtstrpau  =
+	    CONCAT('SELECT a.MessageID,
                 a.Posted,
                 c.Topic AS `Subject`,
                 a.Message,
@@ -6637,21 +6622,16 @@ BEGIN
                    ON e.CategoryID = d.CategoryID  
 				 JOIN {databaseName}.{objectQualifier}ActiveAccess x 
 				   ON x.ForumID=d.ForumID	           
-        WHERE    a.UserID = ? AND
-		         x.UserID = ? 
-		         AND x.ReadAccess <> 0      
-                 AND e.BoardID = ?
-                AND (a.Flags & 24) = 16
+        WHERE    a.UserID = ',i_UserID,' AND
+		         x.UserID = ',i_PageUserID, 
+		         ' AND x.ReadAccess <> 0      
+                 AND e.BoardID = ',i_BoardID,
+				 ' AND (a.Flags & 24) = 16
                 AND (c.Flags & 8) = 0
-        ORDER BY a.Posted DESC LIMIT ?';
-        
-        SET @prp_PageUserID = i_PageUserID;
-        SET @prp_UserID =  i_UserID;
-        SET @prp_BoardID =  i_BoardID;
-        SET @limit_all = I_NumberOfMessages;
-
-    EXECUTE stmt_pau USING @prp_UserID, @prp_PageUserID, @prp_BoardID, @limit_all;
-    DEALLOCATE PREPARE stmt_pau;         
+        ORDER BY a.Posted DESC LIMIT ',I_NumberOfMessages,'');
+        PREPARE stmt_pau FROM @stmtstrpau;
+		EXECUTE stmt_pau;
+		DEALLOCATE PREPARE stmt_pau;         
 END;
 --GO
 
@@ -7173,28 +7153,25 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}replace_words_list
 CREATE  PROCEDURE {databaseName}.{objectQualifier}shoutbox_getmessages(
  i_BoardId int, I_NumberOfMessages INT, I_StyledNicks TINYINT(1))
 BEGIN
-SET @limit_shsl_style = I_StyledNicks;
-SET @limit_shsl_emptystyle = '';
-SET @limit_shsl_boardid = i_BoardId;
-SET @limit_shsl = I_NumberOfMessages;
-PREPARE stmt_shsl FROM 'SELECT
+
+set @prstr_shsl = CONCAT('SELECT
 		sh.UserName,
 		sh.UserDisplayName,
 		sh.UserID,
 		sh.`Message`,
 		sh.ShoutBoxMessageID,
 		sh.`Date`,
-		(case(?) 
+		(case(',I_StyledNicks,') 
 	        when 1 then usr.UserStyle  
-	        else ?	end ) AS Style    
+	        else NULL end ) AS Style    
 	FROM
 		{databaseName}.{objectQualifier}ShoutboxMessage sh
 		JOIN {databaseName}.{objectQualifier}User usr ON usr.UserID = sh.UserID
 		WHERE 
-		sh.BoardID = ?
-	ORDER BY sh.Date DESC LIMIT ?';
-
-    EXECUTE stmt_shsl USING @limit_shsl_style,@limit_shsl_emptystyle, @limit_shsl_boardid, @limit_shsl;
+		sh.BoardID = ',i_BoardId,
+	' ORDER BY sh.Date DESC LIMIT ',I_NumberOfMessages,'');
+	PREPARE stmt_shsl FROM @prstr_shsl;
+    EXECUTE stmt_shsl;
     DEALLOCATE PREPARE stmt_shsl;         
     END;
 --GO 
@@ -7877,94 +7854,6 @@ BEGIN
 		DEALLOCATE PREPARE tlist1;
 END;
 --GO
-
-/*
-CREATE PROCEDURE {databaseName}.{objectQualifier}topic_active
-                 (i_BoardID INT,
-				 i_PageUserID INT,
-				 i_Since DATETIME,
-				 i_CategoryID INT,
-				 i_StyledNicks TINYINT(1),
-				 i_FindLastRead TINYINT(1)) 
-BEGIN
- 	SELECT
- 		c.ForumID,
- 		c.TopicID,
-		c.TopicMovedID,
-		c.`Status`,
-		c.Styles,
- 		c.Posted,
- 		IFNULL(c.TopicMovedID,c.TopicID) AS LinkTopicID,
- 		c.Topic AS Subject,
-		c.Description,
- 		c.UserID,
- 		IFNULL(c.UserName,b.Name) AS Starter,
- 		(SELECT COUNT(1) 
-                      FROM {databaseName}.{objectQualifier}Message mes 
-                      WHERE mes.TopicID = c.TopicID 
-					  -- deleted
-                        AND (mes.Flags & 8) = 8
-                      -- approved
-                        AND (mes.Flags & 16) = 16 
-                        AND ((i_PageUserID IS NOT NULL AND mes.UserID = i_PageUserID) 
-                        OR (i_PageUserID IS NULL)) ) AS NumPostsDeleted,
- 		((SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message x WHERE x.TopicID=c.TopicID and (x.Flags & 8)=0) - 1)
-                 AS Replies,
- 		c.Views AS Views,
- 		c.LastPosted AS LastPosted ,
- 		c.LastUserID AS LastUserID,
- 		IFNULL(c.LastUserName,(SELECT `Name` FROM {databaseName}.{objectQualifier}User x where x.UserID=c.LastUserID)) AS                   LastUserName,
- 		c.LastMessageID AS LastMessageID,
-		LastMessageFlags = c.LastMessageFlags,
- 		c.TopicID AS LastTopicID,
- 		c.Flags AS TopicFlags,
-		(SELECT COUNT(ID) FROM {databaseName}.{objectQualifier}FavoriteTopic WHERE TopicID = IFNULL(c.TopicMovedID,c.TopicID)) as FavoriteCount,
- 		c.Priority,
- 		c.PollID,
- 		d.Name AS ForumName,
- 		c.TopicMovedID,
- 		d.Flags AS ForumFlags, 
- 	    (SELECT CAST(`Message` AS CHAR(1000)) 
- 	    FROM {databaseName}.{objectQualifier}Message mes2 
- 	    where mes2.TopicID = IFNULL(c.TopicMovedID,c.TopicID) 
- 	    AND mes2.Position = 0) AS FirstMessage,
- 	     (case(i_StyledNicks)
-	        when 1 then  {databaseName}.{objectQualifier}get_userstyle(c.UserID)  
-	        else ''	 end) AS  StarterStyle,
-	    (case(i_StyledNicks)
-	        when 1 then  {databaseName}.{objectQualifier}get_userstyle(c.LastUserID)  
-	        else ''	 end ) AS LastUserStyle,
-	    (case(i_FindLastRead)
-		     when 1 then
-		       (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = i_PageUserID limit 1)
-		     else null	 end) AS LastForumAccess,
-		(case(i_FindLastRead)
-		     when 1 then
-		       (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = i_PageUserID limit 1)
-		     else null	 end) AS  LastTopicAccess    
- 	FROM
- 		{databaseName}.{objectQualifier}Topic c
- 		JOIN {databaseName}.{objectQualifier}User b ON b.UserID=c.UserID
- 		JOIN {databaseName}.{objectQualifier}Forum d ON d.ForumID=c.ForumID
- 		join {databaseName}.{objectQualifier}ActiveAccess x on x.ForumID=d.ForumID
- 		JOIN {databaseName}.{objectQualifier}Category e ON e.CategoryID=d.CategoryID
- 	WHERE
- 		UNIX_TIMESTAMP(i_Since) < UNIX_TIMESTAMP(c.LastPosted) AND 	
- 		x.UserID = i_PageUserID and
-		x.ReadAccess <> 0 
- 		 AND e.BoardID = i_BoardID AND
-    (i_CategoryID IS NULL OR e.CategoryID=i_CategoryID) AND    
-    -- is deleted
-    IFNULL(SIGN(c.Flags & 8),0) = 0 AND
-	c.TopicMovedID is null 
-    ORDER BY
-	e.SortOrder asc,
-	d.SortOrder asc,
-    d.Name DESC,
-    Priority DESC,
-    LastPosted DESC;
-    END;
-*/
 
     /* STORED PROCEDURE CREATED BY VZ-TEAM topic_announcements */
     CREATE PROCEDURE {databaseName}.{objectQualifier}topic_create_by_message (
@@ -11425,7 +11314,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_latest
  BEGIN
  -- to boost performance
  -- SET i_StyledNicks = 0;		
-PREPARE stmt_tl FROM 'SELECT
+set @tlpreps = CONCAT('SELECT
  		t.LastPosted,
  		t.ForumID,
  		f.Name as Forum,
@@ -11446,16 +11335,16 @@ PREPARE stmt_tl FROM 'SELECT
  		IFNULL(t.LastUserName,(SELECT `Name` from {databaseName}.{objectQualifier}User x WHERE x.UserID = t.LastUserID)) AS LastUserName,
 		IFNULL(t.LastUserDisplayName,(SELECT `DisplayName` from {databaseName}.{objectQualifier}User x WHERE x.UserID = t.LastUserID)) AS LastUserDisplayName,
 		(SELECT (x.Flags & 4) from {databaseName}.{objectQualifier}User x WHERE x.UserID = t.LastUserID) AS LastUserIsGuest,
- 	    (case(?)
+ 	    (case(',i_StyledNicks,')
 	          when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=t.LastUserID)  
-	        else ?	end) AS LastUserStyle,	
-	    (case(?)
+	        else null end) AS LastUserStyle,	
+	    (case(',i_FindLastRead,')
 		     when 1 then
-		       (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=f.ForumID AND x.UserID = ? LIMIT 1)
+		       (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=f.ForumID AND x.UserID = ',i_PageUserID,' LIMIT 1)
 		     else null	end) AS LastForumAccess,
-		(case(?)
+		(case(',i_FindLastRead,')
 		     when 1 then
-		       (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = ? LIMIT 1)
+		       (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
 		     else null	 end) AS  	LastTopicAccess    
  	FROM 
  		{databaseName}.{objectQualifier}Topic t
@@ -11466,39 +11355,20 @@ PREPARE stmt_tl FROM 'SELECT
 	JOIN
 		{databaseName}.{objectQualifier}ActiveAccess v ON v.ForumID=f.ForumID	 	
  	WHERE
- 		c.BoardID = ?
+ 		c.BoardID = ',i_BoardID,'
  		AND t.TopicMovedID is NULL
-		AND v.UserID= ?
+		AND v.UserID= ',i_PageUserID,'
 		AND v.ReadAccess <> 0
         AND SIGN(t.Flags & 8) != 1
         AND t.LastPosted IS NOT NULL
 		AND
-		f.Flags & 4 <> (CASE WHEN (?) > 0 THEN -1 ELSE 4 END)	       
+		f.Flags & 4 <> (CASE WHEN (',i_ShowNoCountPosts,') > 0 THEN -1 ELSE 4 END)	       
     ORDER BY
-    t.LastPosted DESC LIMIT ?';
-
-	
+    t.LastPosted DESC LIMIT ',i_NumPosts,'');	
     -- AND ({databaseName}.{objectQualifier}vaccess_s_readaccess(?,f.ForumID)<>0)
-    
-    
-    SET @_uvp1_nicks = i_StyledNicks;
-	SET @_uvp1_flr = i_FindLastRead;
-    SET @_uvp1_nicksempty = '';
-    SET @_uvp1_userID = i_PageUserID; 
-    SET @_uvp1_boardID = i_BoardID;       
-    SET @_uvp1_limit = i_NumPosts;
-	SET @_uvp1_shownocount = i_ShowNoCountPosts;
-    
-    EXECUTE stmt_tl USING @_uvp1_nicks,
-	                      @_uvp1_flr,
-						  @_uvp1_userID,
-						  @_uvp1_flr,
-						  @_uvp1_userID,
-	                      @_uvp1_nicksempty,
-						  @_uvp1_boardID,						
-						  @_uvp1_userID,
-						  @_uvp1_shownocount,
-						  @_uvp1_limit;
+      
+    PREPARE stmt_tl FROM @tlpreps;
+    EXECUTE stmt_tl;
     DEALLOCATE PREPARE stmt_tl;    
     END;    
 --GO
@@ -11514,19 +11384,16 @@ PREPARE stmt_tl FROM 'SELECT
 	INTO firstTipicID
     FROM     {databaseName}.{objectQualifier}Topic t
     WHERE    t.`TopicID` >= i_StartID LIMIT 1;
-
-
-    SET @_uvp2_tsl_start = firstTipicID;
-	SET @_uvp2_tsl_limit = i_Limit;
-	PREPARE stmt_tsl FROM 'SELECT   t.`TopicID`,
+  
+	set @tsl_prps =concat('SELECT   t.`TopicID`,
     t.`Topic`
     FROM     {databaseName}.{objectQualifier}Topic t
-    WHERE    t.`TopicID` >= ?  
-    ORDER BY t.`TopicID` LIMIT ?';
-           EXECUTE stmt_tsl 
-		   USING @_uvp2_tsl_start, 
-		         @_uvp_tsl_limit;			
-           DEALLOCATE PREPARE stmt_tsl;  
+    WHERE    t.`TopicID` >= ',firstTipicID,'  
+    ORDER BY t.`TopicID` LIMIT ',i_Limit,'');
+	
+	PREPARE stmt_tsl FROM @tsl_prps;
+    EXECUTE stmt_tsl;			
+    DEALLOCATE PREPARE stmt_tsl;  
          
      END;
  --GO  

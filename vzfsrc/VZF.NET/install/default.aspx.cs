@@ -1445,7 +1445,7 @@ namespace YAF.Install
 
                 // Ederon : 9/7/2007
                 // resync all boards - necessary for propr last post bubbling
-                LegacyDb.board_resync();
+                LegacyDb.board_resync(YafContext.Current.PageModuleID);
 
                 // upgrade providers...
                 // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);

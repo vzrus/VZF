@@ -226,7 +226,7 @@ namespace YAF.Core.Tasks
         try
         {
             this.Logger.Info("Starting Category Save Task for CategoryID {0}.",this.CategoryId);
-            LegacyDb.category_save(this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder); 
+            LegacyDb.category_save(YafContext.Current.PageModuleID, this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder); 
             this.Logger.Info("Category Save Task for CategoryID {0} is completed.", CategoryId);
         }
         catch (Exception x)

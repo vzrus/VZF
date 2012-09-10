@@ -93,7 +93,7 @@ namespace YAF.Core.Tasks
                 this.Logger.Info(
                   "Starting Board delete task for BoardId {0} delete task.",
                   this.BoardIdToDelete);
-			    LegacyDb.board_delete(this.BoardIdToDelete);
+			    LegacyDb.board_delete(YafContext.Current.PageModuleID, this.BoardIdToDelete);
                 this.Logger.Info(
                  "Board delete task for BoardId {0} delete task is completed.",
                  this.BoardIdToDelete);

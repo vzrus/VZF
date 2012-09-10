@@ -295,8 +295,7 @@ namespace YAF.Controls
               () =>
               {
                   // get the post stats
-                  DataRow dr = LegacyDb.board_poststats(
-                    this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks, true);
+                  DataRow dr = LegacyDb.board_poststats(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks, true);
 
                   // Set colorOnly parameter to false, as we get here color from data field in the place
                   dr["LastUserStyle"] = this.Get<YafBoardSettings>().UseStyledNicks
@@ -310,7 +309,7 @@ namespace YAF.Controls
             // Forum Statistics
             var userStatisticsDataRow = this.Get<IDataCache>().GetOrSet(
               Constants.Cache.BoardUserStats,
-              () => LegacyDb.board_userstats(this.PageContext.PageBoardID).Table,
+              () => LegacyDb.board_userstats(PageContext.PageModuleID, this.PageContext.PageBoardID).Table,
               TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardUserStatsCacheTimeout)).Rows[0];
 
             // show max users...

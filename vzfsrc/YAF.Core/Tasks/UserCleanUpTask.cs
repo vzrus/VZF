@@ -68,7 +68,7 @@ namespace YAF.Core.Tasks
       try
       {
         // get all boards...
-        List<int> boardIds = LegacyDb.board_list(null).GetColumnAsList<int>("BoardID");
+          List<int> boardIds = LegacyDb.board_list(YafContext.Current.PageModuleID, null).GetColumnAsList<int>("BoardID");
 
         // go through each board...
         foreach (int boardId in boardIds)

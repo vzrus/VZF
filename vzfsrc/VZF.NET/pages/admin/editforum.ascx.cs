@@ -301,7 +301,7 @@ namespace YAF.Pages.Admin
     {
       var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
-      this.CategoryList.DataSource = LegacyDb.category_list(this.PageContext.PageBoardID, null);
+      this.CategoryList.DataSource = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
       this.CategoryList.DataBind();
 
       if (forumId.HasValue)

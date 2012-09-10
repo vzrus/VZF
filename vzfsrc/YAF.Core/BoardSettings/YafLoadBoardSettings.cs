@@ -53,7 +53,7 @@ namespace YAF.Core
       this._boardID = boardID;
 
       // get the board table
-      DataTable dataTable = LegacyDb.board_list(this._boardID);
+      DataTable dataTable = LegacyDb.board_list(YafContext.Current.PageModuleID, this._boardID);
 
       if (dataTable.Rows.Count == 0)
       {

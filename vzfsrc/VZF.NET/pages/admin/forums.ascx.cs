@@ -205,7 +205,7 @@ namespace YAF.Pages.Admin
                     YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", e.CommandArgument);
                     break;
                 case "delete":
-                    if (LegacyDb.category_delete(e.CommandArgument))
+                    if (LegacyDb.category_delete(PageContext.PageModuleID, e.CommandArgument))
                     {
                         this.BindData();
                         this.ClearCaches();

@@ -269,7 +269,7 @@ namespace YAF.Pages
             if (this.Get<YafBoardSettings>().EmailVerification)
             {
                 // get the hash from the db associated with this user...
-                DataTable dt = LegacyDb.checkemail_list(user.Email);
+                DataTable dt = LegacyDb.checkemail_list(YafContext.Current.PageUserID, user.Email);
 
                 if (dt.Rows.Count > 0)
                 {

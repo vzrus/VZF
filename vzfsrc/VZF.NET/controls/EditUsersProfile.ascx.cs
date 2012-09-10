@@ -687,7 +687,7 @@ namespace YAF.Controls
             changeEmail.TemplateParams["{forumlink}"] = YafForumInfo.ForumURL;
 
             // save a change email reference to the db
-            LegacyDb.checkemail_save(this.currentUserID, hash, newEmail);
+            LegacyDb.checkemail_save(PageContext.PageModuleID, this.currentUserID, hash, newEmail);
 
             // send a change email message...
             changeEmail.SendEmail(

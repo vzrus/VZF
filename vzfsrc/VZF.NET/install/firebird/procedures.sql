@@ -5,9 +5,9 @@
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
   as published by the Free Software Foundation; version 2 only
-  General class structure is based on MS SQL Server code,
- created by YAF developers
- 
+  General names structure is based on MS SQL Server code,
+  created by YAF developers
+   
   http://www.yetanotherforum.net/
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License

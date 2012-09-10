@@ -203,8 +203,7 @@ namespace YAF.Core.Tasks
                 this.Logger.Info("Starting  Board Add Task for board {0}.", _boardOut);
 
                 // Create Board
-                _boardOut = LegacyDb.board_create(
-                    this.AdminUserName,
+                _boardOut = LegacyDb.board_create(YafContext.Current.PageModuleID, this.AdminUserName,
                     this.AdminUserEmail,
                     this.AdminUserProviderUserKey,
                     this.BoardName,

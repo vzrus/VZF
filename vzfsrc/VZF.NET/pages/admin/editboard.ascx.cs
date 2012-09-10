@@ -174,8 +174,7 @@ namespace YAF.Pages.Admin
         RoleMembershipHelper.AddUserToRole(newAdmin.UserName, "Administrators");
          
         // Create Board
-        newBoardID = LegacyDb.board_create(
-          newAdmin.UserName, 
+        newBoardID = LegacyDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
           newAdmin.Email, 
           newAdmin.ProviderUserKey, 
           boardName, 
@@ -192,8 +191,7 @@ namespace YAF.Pages.Admin
         MembershipUser newAdmin = UserMembershipHelper.GetUser();
 
         // Create Board
-        newBoardID = LegacyDb.board_create(
-          newAdmin.UserName, 
+        newBoardID = LegacyDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
           newAdmin.Email, 
           newAdmin.ProviderUserKey, 
           boardName, 
@@ -328,7 +326,7 @@ namespace YAF.Pages.Admin
         {
             this.CreateNewAdminHolder.Visible = false;
 
-            using (DataTable dt = LegacyDb.board_list(this.BoardID))
+            using (DataTable dt = LegacyDb.board_list(PageContext.PageModuleID, this.BoardID))
             {
                 DataRow row = dt.Rows[0];
                 this.Name.Text = (string)row["Name"];
@@ -395,8 +393,7 @@ namespace YAF.Pages.Admin
         }
 
         // Save current board settings
-        LegacyDb.board_save(
-          this.BoardID, langFile, this.Culture.SelectedItem.Value, this.Name.Text.Trim(), this.AllowThreaded.Checked);
+        LegacyDb.board_save(PageContext.PageModuleID, this.BoardID, langFile, this.Culture.SelectedItem.Value, this.Name.Text.Trim(), this.AllowThreaded.Checked);
       }
       else
       {

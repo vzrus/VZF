@@ -125,7 +125,7 @@ namespace YAF.Core.Tasks
             try
             {
                 this.Logger.Info("Starting Category {0} delete task.",this.CategoryId);
-                LegacyDb.category_delete(this.CategoryId);
+                LegacyDb.category_delete(YafContext.Current.PageModuleID, this.CategoryId);
                 this.Logger.Info("Category (ID: {0}) Delete Task Complete.",this.CategoryId);
 				
 			}

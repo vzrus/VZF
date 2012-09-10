@@ -220,7 +220,7 @@ namespace YAF.Core.Services
                     Constants.Cache.ForumCategory, 
                     () =>
                         {
-                            var catDt = LegacyDb.category_list(boardID, null);
+                            var catDt = LegacyDb.category_list(YafContext.Current.PageModuleID, boardID, null);
                             catDt.TableName = CommonSqlDbAccess.GetObjectName("Category");
                             return catDt;
                         }, 
@@ -687,7 +687,7 @@ namespace YAF.Core.Services
         {
             return this.DataCache.GetOrSet(
                 Constants.Cache.UserBuddies.FormatWith(userID), 
-                () => LegacyDb.buddy_list(userID), 
+                () => LegacyDb.buddy_list(YafContext.Current.PageModuleID, userID), 
                 TimeSpan.FromMinutes(10));
         }
 

@@ -193,7 +193,7 @@ namespace YAF.Pages.Admin
       }
 
       // save category
-      LegacyDb.category_save(this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder);
+      LegacyDb.category_save(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder);
 
       // remove category cache...
       this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);
@@ -213,7 +213,7 @@ namespace YAF.Pages.Admin
         {
             // Currently creating a New Category, and auto fill the Category Sort Order + 1
             using (
-            DataTable dt = LegacyDb.category_list(this.PageContext.PageBoardID, null))
+            DataTable dt = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 int sortOrder = 1;
 
@@ -235,7 +235,7 @@ namespace YAF.Pages.Admin
         }
 
         using (
-            DataTable dt = LegacyDb.category_list(this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("c")))
+            DataTable dt = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("c")))
         {
             DataRow row = dt.Rows[0];
             this.Name.Text = (string)row["Name"];

@@ -662,8 +662,7 @@ namespace YAF.Pages
                     // categoryid should not be null here
                     pgidt =
                         (int)
-                        LegacyDb.category_listread(
-                            this.PageContext.PageBoardID, this.PageContext.PageUserID, this._categoryId).Rows[0]["PollGroupID"];
+                        LegacyDb.category_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, this._categoryId).Rows[0]["PollGroupID"];
                 }
 
                 if (pgidt > 0)
