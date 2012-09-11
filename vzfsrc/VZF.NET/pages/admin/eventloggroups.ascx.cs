@@ -110,7 +110,7 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             // list admins but not host admins
-            this.List.DataSource = LegacyDb.group_eventlogaccesslist(null);
+            this.List.DataSource = LegacyDb.group_eventlogaccesslist(PageContext.PageModuleID, null);
             this.DataBind();
         }
 

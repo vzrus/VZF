@@ -150,15 +150,14 @@ namespace YAF.Pages.Admin
                         Enum.TryParse(eventTypeName, true, out eventTypeId);
 
                         // save it
-                        LegacyDb.eventloggroupaccess_save(
-                            groupId, eventTypeId.ToType<int>(), eventTypeName, deleteAccess);
+                        LegacyDb.eventloggroupaccess_save(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), eventTypeName, deleteAccess);
                     }
                     else
                     {
                         var etn = ((Label)ri.FindControl("EventTypeName")).Text.Trim();
                         EventLogTypes eventTypeId;
                         Enum.TryParse(etn, true, out eventTypeId);
-                        LegacyDb.eventloggroupaccess_delete(groupId, eventTypeId.ToType<int>(), etn);
+                        LegacyDb.eventloggroupaccess_delete(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), etn);
                     }
                 }
             }
@@ -192,7 +191,7 @@ namespace YAF.Pages.Admin
                     Enum.TryParse(etn, true, out eventTypeId);
 
                     // save it
-                    LegacyDb.eventloggroupaccess_save(groupId, eventTypeId.ToType<int>(), etn, false);
+                    LegacyDb.eventloggroupaccess_save(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), etn, false);
                 }
             }
 
@@ -223,7 +222,7 @@ namespace YAF.Pages.Admin
                     Enum.TryParse(etn, true, out eventTypeId);
 
                     // save it
-                    LegacyDb.eventloggroupaccess_save(groupId, eventTypeId.ToType<int>(), etn, true);
+                    LegacyDb.eventloggroupaccess_save(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), etn, true);
                 }
             }
 
@@ -254,7 +253,7 @@ namespace YAF.Pages.Admin
                     Enum.TryParse(etn, true, out eventTypeId);
 
                     // save it
-                    LegacyDb.eventloggroupaccess_save(groupId, eventTypeId.ToType<int>(), etn, false);
+                    LegacyDb.eventloggroupaccess_save(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), etn, false);
                 }
             }
 
@@ -285,7 +284,7 @@ namespace YAF.Pages.Admin
                     Enum.TryParse(etn, true, out eventTypeId);
 
                     // save it
-                    LegacyDb.eventloggroupaccess_delete(groupId, eventTypeId.ToType<int>(), etn);
+                    LegacyDb.eventloggroupaccess_delete(PageContext.PageModuleID, groupId, eventTypeId.ToType<int>(), etn);
                 }
             }
 
@@ -304,7 +303,7 @@ namespace YAF.Pages.Admin
             if (this.Request.QueryString.GetFirstOrDefault("r") != null)
             {
                 // Load the page access list.
-                var dt = LegacyDb.eventloggroupaccess_list(this.Request.QueryString.GetFirstOrDefault("r"), null);
+                var dt = LegacyDb.eventloggroupaccess_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("r"), null);
 
                 // Get admin pages by page prefixes.
                 var listEnumValues = Enum.GetValues(typeof(EventLogTypes));

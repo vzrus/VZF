@@ -4,7 +4,58 @@
 -- Copyright vzrus(c) 2009-2012
 
 -- Table Types
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_table_type');
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_category_save_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_group_save_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_forumid_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_message_getreplies_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_table_type');--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_album_image_list2_return_type');
+--GO 
+
+-- simple types to remove
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_buddy_remove_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_buddy_approverequest_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_favorite_list_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_watchtopic_check_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_watchforum_check_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_recoverpassword_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_login_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_getsignature_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_getpoints_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_get_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_emails_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_changepassword_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_aspnet_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_adminsave_return_type');
+--GO
+select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_prune_return_type');
+--GO
+select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_findprevnext_return_type');
+--GO
+select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_findnext_return_type');
+--GO
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_pollvote_check_return_type');
+--GO
+
+select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_poll_save_return_type');
 --GO
 CREATE TYPE databaseSchema.objectQualifier_user_table_type AS
 (
@@ -309,14 +360,6 @@ CREATE TYPE databaseSchema.objectQualifier_category_simplelist_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_category_save_return_type');
---GO
-CREATE TYPE databaseSchema.objectQualifier_category_save_return_type AS
-(
-"CategoryID" integer
-);
---GO
-
 SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_checkemail_list_return_type');
 --GO
 CREATE TYPE databaseSchema.objectQualifier_checkemail_list_return_type AS (
@@ -447,8 +490,6 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listpath_return_type AS
 "Name" varchar(255)
 );
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_forumid_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_forumid_return_type AS
 (
 "ForumID" integer
@@ -651,7 +692,6 @@ CREATE TYPE databaseSchema.objectQualifier_group_list_return_type AS
 "UsrSigHTMLTags"  varchar(255),
 "UsrAlbums" integer,
 "UsrAlbumImages" integer
-
 );
 --GO
 
@@ -712,8 +752,6 @@ CREATE TYPE databaseSchema.objectQualifier_group_member_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_group_save_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_group_save_return_type AS
 (
 "GroupID" integer
@@ -780,8 +818,6 @@ CREATE TYPE databaseSchema.objectQualifier_message_findunread_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_message_getreplies_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_message_getreplies_return_type AS 
 (
 "MessageID" integer
@@ -964,8 +1000,6 @@ CREATE TYPE databaseSchema.objectQualifier_pmessage_list_return_type AS
 );
 --GO
 
-select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_poll_save_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_poll_save_return_type AS
 (
 "PollID" integer
@@ -1032,8 +1066,6 @@ CREATE TYPE databaseSchema.objectQualifier_pollgroup_votecheck_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_pollvote_check_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_pollvote_check_return_type AS
 (
 "PollVoteID" integer
@@ -1290,8 +1322,6 @@ CREATE TYPE databaseSchema.objectQualifier_topic_announcements_return_type AS
 );
 --GO
 
-select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_findnext_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_topic_findnext_return_type AS
 (
 "TopicID" integer
@@ -1307,8 +1337,7 @@ CREATE TYPE databaseSchema.objectQualifier_pollgroup_list_return_type AS
 );
 --GO
 
-select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_findprevnext_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_topic_findprevnext_return_type AS
 (
 "TopicID"  integer
@@ -1556,8 +1585,6 @@ CREATE TYPE databaseSchema.objectQualifier_topic_listmessages_return_type AS (
 );
 --GO
 
-select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_prune_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_topic_prune_return_type AS
 ("COUNT" integer);
 --GO
@@ -1603,16 +1630,13 @@ CREATE TYPE databaseSchema.objectQualifier_user_activity_rank_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_adminsave_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_user_adminsave_return_type AS
 (
 "UserID" integer
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_aspnet_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_user_aspnet_return_type AS
 (
 "UserID" integer
@@ -1629,16 +1653,12 @@ CREATE TYPE databaseSchema.objectQualifier_user_avatarimage_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_changepassword_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_user_changepassword_return_type AS
 (
 "Success" boolean
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_emails_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_user_emails_return_type AS
 (
 "Email" varchar(128)
@@ -1688,24 +1708,21 @@ CREATE TYPE databaseSchema.objectQualifier_user_find_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_get_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_user_get_return_type AS
 (
 "UserID" integer
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_getpoints_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_user_getpoints_return_type AS
 (
 "Points" integer
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_getsignature_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_user_getsignature_return_type AS
 (
 "Signature" text
@@ -1896,8 +1913,6 @@ CREATE TYPE databaseSchema.objectQualifier_user_listmedals_return_type AS
 );
 --GO    
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_login_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_user_login_return_type AS
 (
 "UserID" integer
@@ -1944,8 +1959,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_pmcount_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_recoverpassword_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_user_recoverpassword_return_type AS
 (
 "UserID" integer
@@ -2034,8 +2048,7 @@ CREATE TYPE databaseSchema.objectQualifier_userpmessage_list_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_watchforum_check_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_watchforum_check_return_type AS
 (
 "WatchForumID" integer
@@ -2063,8 +2076,7 @@ CREATE TYPE databaseSchema.objectQualifier_watchforum_list_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_watchtopic_check_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_watchtopic_check_return_type AS
 (
 "WatchTopicID" integer
@@ -2292,8 +2304,6 @@ CREATE TYPE databaseSchema.objectQualifier_message_getallthanks_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_favorite_list_return_type');
---GO
 CREATE TYPE databaseSchema.objectQualifier_topic_favorite_list_return_type AS
 (
 	"TopicID" integer
@@ -2352,10 +2362,6 @@ CREATE TYPE databaseSchema.objectQualifier_buddy_addrequest_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_buddy_approverequest_return_type');
---GO
-
-
 SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_buddy_list_return_type');
 --GO
 CREATE TYPE databaseSchema.objectQualifier_buddy_list_return_type AS
@@ -2373,8 +2379,7 @@ CREATE TYPE databaseSchema.objectQualifier_buddy_list_return_type AS
 );
 --GO
 
-SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_buddy_remove_return_type');
---GO
+
 CREATE TYPE databaseSchema.objectQualifier_buddy_remove_return_type AS
 (
 "i_paramoutput" varchar(128)
@@ -2417,12 +2422,9 @@ CREATE TYPE databaseSchema.objectQualifier_album_image_list_return_type AS
  "UserID" integer
  );
  --GO
- SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_album_image_list2_return_type');
---GO
- 
+
  SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_album_image_list_return_type2');
- --GO
- 
+ --GO 
 CREATE TYPE databaseSchema.objectQualifier_album_image_list_return_type2 AS
 (
  "ImageID" integer,

@@ -243,8 +243,7 @@ namespace YAF.Core
       {
           if (this.Membership == null && !this.IsGuest)
           {
-              LegacyDb.eventlog_create(
-                  this.UserID,
+              LegacyDb.eventlog_create(YafContext.Current.PageModuleID, this.UserID,
                   this,
                   "ATTENTION! The user with id {0} and name {1} is very possibly is not in your Membership \r\n ".FormatWith(this.UserID, this.UserName)
                   + "data but it's still in you YAF user table. The situation should not normally happen. \r\n "

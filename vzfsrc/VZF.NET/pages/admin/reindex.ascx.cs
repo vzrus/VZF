@@ -106,7 +106,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void btnGetStats_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-        this.txtIndexStatistics.Text = LegacyDb.db_getstats_warning() + "\r\n{0}".FormatWith(LegacyDb.db_getstats_new());
+        this.txtIndexStatistics.Text = LegacyDb.db_getstats_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(LegacyDb.db_getstats_new(PageContext.PageModuleID));
     }
 
     /// <summary>
@@ -127,15 +127,15 @@ namespace YAF.Pages.Admin
             case 1: dbRecoveryMode = "SIMPLE"; break;
             case 2: dbRecoveryMode = "BULK_LOGGED"; break;
         }
-        string error = LegacyDb.db_recovery_mode_new(dbRecoveryMode);
+        string error = LegacyDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode);
         if (error.IsSet())
         {
-            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning() + this.GetText("ADMIN_REINDEX", "INDEX_STATS_FAIL").FormatWith(error);
+            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning(PageContext.PageModuleID) + this.GetText("ADMIN_REINDEX", "INDEX_STATS_FAIL").FormatWith(error);
         }
         else
         {
             this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_STATS").FormatWith(dbRecoveryMode);
-            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning() + "\r\n{0}".FormatWith(LegacyDb.db_recovery_mode_new(dbRecoveryMode));
+            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(LegacyDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode));
         }
     }
 
@@ -157,7 +157,7 @@ namespace YAF.Pages.Admin
         LegacyDb.db_reindex(connMan);
       } */
 
-      this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning() + LegacyDb.db_reindex_new();
+      this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(PageContext.PageModuleID) + LegacyDb.db_reindex_new(PageContext.PageModuleID);
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ namespace YAF.Pages.Admin
     {
         try
         {
-            this.txtIndexStatistics.Text = LegacyDb.db_shrink_warning() + @"\r\n\{0}\r\n\".FormatWith(LegacyDb.db_shrink_new());
+            this.txtIndexStatistics.Text = LegacyDb.db_shrink_warning(PageContext.PageModuleID) + @"\r\n\{0}\r\n\".FormatWith(LegacyDb.db_shrink_new(PageContext.PageModuleID));
             this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(LegacyDb.GetDBSize()) ;
         }
         catch (Exception error)

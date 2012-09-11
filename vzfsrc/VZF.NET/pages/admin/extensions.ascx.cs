@@ -167,7 +167,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      this.list.DataSource = LegacyDb.extension_list(this.PageContext.PageBoardID);
+      this.list.DataSource = LegacyDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID);
       this.DataBind();
     }
 
@@ -199,13 +199,13 @@ namespace YAF.Pages.Admin
                 YafBuildLink.Redirect(ForumPages.admin_extensions_edit, "i={0}", e.CommandArgument);
                 break;
             case "delete":
-                LegacyDb.extension_delete(e.CommandArgument);
+                LegacyDb.extension_delete(PageContext.PageModuleID, e.CommandArgument);
                 this.BindData();
                 break;
             case "export":
                 {
                     // export this list as XML...
-                    DataTable extensionList = LegacyDb.extension_list(this.PageContext.PageBoardID);
+                    DataTable extensionList = LegacyDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID);
                     extensionList.DataSet.DataSetName = "YafExtensionList";
                     extensionList.TableName = "YafExtension";
                     extensionList.Columns.Remove("ExtensionID");

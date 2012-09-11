@@ -96,7 +96,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(null, TaskName, "Exception In {1}: {0}".FormatWith(x, TaskName));
+          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Exception In {1}: {0}".FormatWith(x, TaskName));
       }
     }
   }

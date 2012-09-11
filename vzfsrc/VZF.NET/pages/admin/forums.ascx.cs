@@ -177,7 +177,7 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            using (DataSet ds = LegacyDb.ds_forumadmin(this.PageContext.PageBoardID))
+            using (DataSet ds = LegacyDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID))
             {
                 this.CategoryList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
             }

@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using YAF.Core;
+
 namespace YAF.Classes
 {
   #region Using
@@ -82,7 +85,7 @@ namespace YAF.Classes
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(null, _taskName, "Exception In {1}: {0}".FormatWith(x, _taskName));
+          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, _taskName, "Exception In {1}: {0}".FormatWith(x, _taskName));
       }
     }
 

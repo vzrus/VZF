@@ -463,8 +463,7 @@ namespace YAF.Pages
 
             this.Page.Form.DefaultButton = this.btnSearch.UniqueID;
 
-            this.listForum.DataSource = LegacyDb.forum_listall_sorted(
-                this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.listForum.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
             this.listForum.DataValueField = "ForumID";
             this.listForum.DataTextField = "Title";
             this.listForum.DataBind();

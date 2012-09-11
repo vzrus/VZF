@@ -548,7 +548,7 @@ namespace YAF.Pages
             // get topic flags
             this._topicFlags = new TopicFlags(this._topic["Flags"]);
 
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 this._forum = dt.Rows[0];
             }
@@ -1284,7 +1284,7 @@ namespace YAF.Pages
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(this.PageContext.PageUserID, this, x);
+                LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, x);
             }
 
             return findMessageId;
@@ -1580,7 +1580,7 @@ namespace YAF.Pages
             DataRow forumInfo;
             bool isForumModerated = false;
 
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }

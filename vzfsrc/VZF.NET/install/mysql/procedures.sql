@@ -11423,7 +11423,7 @@ set @tlpreps = CONCAT('SELECT
  		(c.Flags & 2)<>0 ORDER BY a.UserID LIMIT 1
     );
 
-    PREPARE stmt_uar FROM 'SELECT
+    set @str_stmt_uar = CONCAT('SELECT
     counter.`ID`,
     u.`Name`,
     counter.`NumOfPosts`
@@ -11431,15 +11431,15 @@ set @tlpreps = CONCAT('SELECT
     {databaseName}.{objectQualifier}User u inner join
     (
     SELECT m.UserID as ID, Count(m.UserID) as NumOfPosts FROM {databaseName}.{objectQualifier}Message m
-    WHERE UNIX_TIMESTAMP(m.Posted) >= UNIX_TIMESTAMP(?)
+    WHERE UNIX_TIMESTAMP(m.Posted) >= UNIX_TIMESTAMP(',i_StartDate,')
     GROUP BY m.UserID
     ) AS counter ON u.UserID = counter.ID
     WHERE
-    u.BoardID =? and u.UserID != ?
+    u.BoardID =',i_BoardID,' and u.UserID != ',ici_GuestUserID,'
     ORDER BY
-    NumOfPosts DESC LIMIT ?,?';
-      SET @_uvp3_startdate =i_StartDate,@_uvp3_boardId = i_BoardID,@_uvp3_gestuserid=ici_GuestUserID,@_uvp3_start = 0, @_uvp3_limit = i_DisplayNumber;
-    EXECUTE stmt_uar USING @_uvp3_startdate,@_uvp3_boardId, @_uvp3_gestuserid, @_uvp3_start, @_uvp3_limit;
+    NumOfPosts DESC LIMIT 0,',i_DisplayNumber,'');
+	PREPARE stmt_uar FROM @str_stmt_uar;    
+    EXECUTE stmt_uar;
     DEALLOCATE PREPARE stmt_uar;
    
     END;
@@ -11453,19 +11453,16 @@ set @tlpreps = CONCAT('SELECT
     DECLARE l_StartID INT DEFAULT 0;
         IF i_StartID IS NOT NULL THEN SET l_StartID =i_StartID ;END IF;
         IF i_Limit IS NOT NULL THEN SET l_Limit=i_Limit;END IF;
-    SET @_uvp4_start1 = l_StartID,
-            @_uvp4_start2 = l_StartID,   
-            @_uvp4_limit1 = l_Limit,
-            @_uvp4_start3 = l_StartID,
-            @_uvp4_limit2 = l_Limit;
+ 
     /*SET ROWCOUNT  i_Limit*/
-    PREPARE stmt_usl FROM 'SELECT   a.`UserID`,
+    set @str_stmt_usl = CONCAT('SELECT   a.`UserID`,
     a.`Name`
     FROM     {databaseName}.{objectQualifier}User a
-    WHERE    a.`UserID` >= ?
-    AND a.`UserID` < (? + ?)
-         ORDER BY a.`UserID` LIMIT ?, ?';
-           EXECUTE stmt_usl USING @_uvp4_start1, @_uvp4_start2, @_uvp4_limit1, @_uvp4_start3, @_uvp4_limit2;
+    WHERE    a.`UserID` >= ',l_StartID,'
+    AND a.`UserID` < (',l_StartID,' + ',l_Limit,')
+         ORDER BY a.`UserID` LIMIT ',l_StartID,', ',l_Limit,'');
+           PREPARE stmt_usl FROM @str_stmt_usl;
+           EXECUTE stmt_usl;
            DEALLOCATE PREPARE stmt_usl;  
          /*SET ROWCOUNT  0*/
      END;
@@ -11485,36 +11482,30 @@ set @tlpreps = CONCAT('SELECT
         
 
  
- 	SET @ici_SQL = 'SELECT  '
-                       + ' t.Topic, 
+ 	SET @ici_SQL = CONCAT('SELECT t.Topic, 
 					       t.LastPosted, 
 						   t.Posted,
 						   t.TopicID,
 						   t.LastMessageID, 
-						   t.LastMessageFlags FROM';
- 	SET @ici_SQL = @ici_SQL
-                       + ' {databaseName}.{objectQualifier}Topic t 
+						   t.LastMessageFlags FROM
+                        {databaseName}.{objectQualifier}Topic t 
                           INNER JOIN {databaseName}.{objectQualifier}Category c
 						  ON c.CategoryID = f.CategoryID 
                           INNER JOIN {databaseName}.{objectQualifier}Forum f                          
                           ON t.ForumID = f.ForumID
 						  join {databaseName}.{objectQualifier}ActiveAccess v 
-						  on v.ForumID=f.ForumID ';
- 	SET @ici_SQL = @ici_SQL 
-                       + ' WHERE c.BoardID = ' + '?'
-                       + ' AND v.UserID='
-                       + '?'
-					   + ' (v.ReadAccess) <> 0                        
+						  on v.ForumID=f.ForumID  
+                        WHERE c.BoardID = ',CONVERT(i_BoardID, CHAR),'
+                        AND v.UserID=',CONVERT(i_PageUserID, CHAR),'
+					     (v.ReadAccess) <> 0                        
                        OR (f.Flags & 2) = 0) 
                        AND (t.Flags & 8) != 8 
 					   AND t.TopicMovedID IS NULL
-                       AND (t.Priority = 2) ORDER BY t.LastPosted DESC LIMIT ?';
+                       AND (t.Priority = 2) ORDER BY t.LastPosted DESC LIMIT ',CONVERT (i_NumPosts, CHAR),'');
 
-        SET @_uvp5_userID = CONVERT(i_PageUserID, CHAR),
-            @_uvp5_boardID = CONVERT(i_BoardID, CHAR),
-            @_uvp5_numPosts = CONVERT (i_NumPosts, CHAR);
+
         PREPARE stmt_ta FROM @ici_SQL;
-        EXECUTE stmt_ta USING @_uvp5_boardID, @_uvp5_userID, @_uvp5_numPosts ;
+        EXECUTE stmt_ta;
         DEALLOCATE PREPARE stmt_ta;	
  
  END;  
@@ -11529,8 +11520,7 @@ set @tlpreps = CONCAT('SELECT
 	i_ShowNoCountPosts  TINYINT(1)
 )
 BEGIN	
-DECLARE ici_SQL VARCHAR(1000); 
- 	PREPARE stmt_ta FROM '
+ 	set @str_stmt_ta = CONCAT('
 	SELECT
 	    m.Message AS LastMessage,
 		t.LastPosted,
@@ -11561,22 +11551,17 @@ DECLARE ici_SQL VARCHAR(1000);
 	JOIN
 		{databaseName}.{objectQualifier}ActiveAccess v ON v.ForumID=f.ForumID
 	WHERE	
-		c.BoardID = ?
+		c.BoardID = ',CONVERT(i_BoardID, CHAR),'
 		AND (t.TopicMovedID IS NULL) 
-		AND (v.UserID = ?) 
+		AND (v.UserID = ',CONVERT(i_PageUserID, CHAR),') 
 		AND (CAST(v.ReadAccess AS UNSIGNED) <> 0) 
 		AND (t.Flags & 8) != 8  
 		AND (t.LastPosted IS NOT NULL)
-		AND	f.Flags & 4 <> (CASE WHEN (?) > 0 THEN -1 ELSE 4 END)
+		AND	f.Flags & 4 <> (CASE WHEN (',CONVERT (i_ShowNoCountPosts, CHAR),') > 0 THEN -1 ELSE 4 END)
 	ORDER BY
-		t.LastPosted DESC LIMIT ?';
-
-		  SET @_uvp5_userID = CONVERT(i_PageUserID, CHAR),
-              @_uvp5_boardID = CONVERT(i_BoardID, CHAR),
-              @_uvp5_numPosts = CONVERT (i_NumPosts, CHAR),							
-			  @_uvp5_shownocount = CONVERT (i_ShowNoCountPosts, CHAR);
-        
-        EXECUTE stmt_ta USING  @_uvp5_boardID, @_uvp5_userID, @_uvp5_shownocount, @_uvp5_numPosts ;
+		t.LastPosted DESC LIMIT ',CONVERT (i_NumPosts, CHAR),'');
+		PREPARE stmt_ta FROM @str_stmt_ta;       
+        EXECUTE stmt_ta;
         DEALLOCATE PREPARE stmt_ta;	
 END;
 --GO

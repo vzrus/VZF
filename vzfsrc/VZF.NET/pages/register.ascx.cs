@@ -526,7 +526,7 @@ namespace YAF.Pages
         // Trying to consume data about user IP whereabouts
         if (this.Get<YafBoardSettings>().EnableIPInfoService && this._UserIpLocator["StatusCode"] != "OK")
         {
-            LegacyDb.eventlog_create(null, this.GetType().ToString(), "Geolocation Service reports: " + this._UserIpLocator["StatusMessage"], EventLogTypes.Information);
+            LegacyDb.eventlog_create(PageContext.PageModuleID, null, this.GetType().ToString(), "Geolocation Service reports: " + this._UserIpLocator["StatusMessage"], EventLogTypes.Information);
         }
 
         if (this.Get<YafBoardSettings>().EnableIPInfoService && this._UserIpLocator.Count > 0 && this._UserIpLocator["StatusCode"] == "OK")
@@ -743,7 +743,7 @@ namespace YAF.Pages
           string.IsNullOrEmpty(this.Get<YafBoardSettings>().RecaptchaPrivateKey))
       {
         // this.PageContext.AddLoadMessage(this.GetText("RECAPTCHA_BADSETTING"));              
-        LegacyDb.eventlog_create(this.PageContext.PageUserID, this, "Private or public key for Recapture required!");
+        LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, "Private or public key for Recapture required!");
         YafBuildLink.AccessDenied();
       }
 

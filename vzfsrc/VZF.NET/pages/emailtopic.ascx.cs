@@ -135,7 +135,7 @@ namespace YAF.Pages
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(this.PageContext.PageUserID, this, x);
+        LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, x);
         this.PageContext.AddLoadMessage(this.GetTextFormatted("failed", x.Message));
       }
     }

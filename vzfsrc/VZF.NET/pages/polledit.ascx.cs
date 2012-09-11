@@ -294,14 +294,14 @@ namespace YAF.Pages
             if (this._returnForum > 0)
             {
                 this.PageLinks.AddLink(
-                    LegacyDb.forum_list(this.PageContext.PageBoardID, this._returnForum).Rows[0]["Name"].ToString(),
+                    LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._returnForum).Rows[0]["Name"].ToString(),
                     YafBuildLink.GetLink(ForumPages.topics, "f={0}", this._returnForum));
             }
 
             if (this._forumId > 0)
             {
                 this.PageLinks.AddLink(
-                    LegacyDb.forum_list(this.PageContext.PageBoardID, this._returnForum).Rows[0]["Name"].ToString(),
+                    LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._returnForum).Rows[0]["Name"].ToString(),
                     YafBuildLink.GetLink(ForumPages.topics, "f={0}", this._forumId));
             }
 
@@ -439,16 +439,16 @@ namespace YAF.Pages
                     if (string.IsNullOrEmpty(chid) && !string.IsNullOrEmpty(choice))
                     {
                         // add choice
-                        LegacyDb.choice_add(this.PollId, choice, choiceObjectPath, choiceImageMime);
+                        LegacyDb.choice_add(PageContext.PageModuleID, this.PollId, choice, choiceObjectPath, choiceImageMime);
                     }
                     else if (!string.IsNullOrEmpty(chid) && !string.IsNullOrEmpty(choice))
                     {
-                        LegacyDb.choice_update(chid, choice, choiceObjectPath, choiceImageMime);
+                        LegacyDb.choice_update(PageContext.PageModuleID, chid, choice, choiceObjectPath, choiceImageMime);
                     }
                     else if (!string.IsNullOrEmpty(chid) && string.IsNullOrEmpty(choice))
                     {
                         // remove choice
-                        LegacyDb.choice_delete(chid);
+                        LegacyDb.choice_delete(PageContext.PageModuleID, chid);
                     }
                 }
 
@@ -655,7 +655,7 @@ namespace YAF.Pages
                 else if (this._forumId > 0 && (!(this._topicId > 0) || (!(this._editTopicId > 0))))
                 {
                     // forumid should not be null here
-                    pgidt = (int)LegacyDb.forum_list(this.PageContext.PageBoardID, this._forumId).Rows[0]["PollGroupID"];
+                    pgidt = (int)LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._forumId).Rows[0]["PollGroupID"];
                 }
                 else if (this._categoryId > 0)
                 {

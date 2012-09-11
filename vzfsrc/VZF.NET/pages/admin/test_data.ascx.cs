@@ -137,8 +137,7 @@ namespace YAF.Pages.Admin
 
             string mesRetStr = sb.ToString();
 
-            LegacyDb.eventlog_create(
-                this.PageContext.PageUserID, this.GetType().ToString(), mesRetStr, EventLogTypes.Information);
+            LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this.GetType().ToString(), mesRetStr, EventLogTypes.Information);
 
             this.PageContext.AddLoadMessage(mesRetStr);
             YafBuildLink.Redirect(ForumPages.admin_test_data);
@@ -155,8 +154,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void ForumsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable forums_category = LegacyDb.forum_listall_fromCat(
-                this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>());
+            DataTable forums_category = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>());
             this.ForumsParent.DataSource = forums_category;
             this.ForumsParent.DataBind();
         }
@@ -306,8 +304,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void PostsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable posts_category = LegacyDb.forum_listall_fromCat(
-                this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>());
+            DataTable posts_category = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>());
             this.PostsForum.DataSource = posts_category;
             this.PostsForum.DataBind();
         }
@@ -356,8 +353,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void TopicsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable topic_forums = LegacyDb.forum_listall_fromCat(
-                this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>());
+            DataTable topic_forums = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>());
             this.TopicsForum.DataSource = topic_forums;
             this.TopicsForum.DataBind();
         }
@@ -769,8 +765,7 @@ namespace YAF.Pages.Admin
                 long _forumID = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
                 DataTable _accessForumList = LegacyDb.forumaccess_list(_forumID);
-                _forumID = LegacyDb.forum_save(
-                    _forumID,
+                _forumID = LegacyDb.forum_save(PageContext.PageModuleID, _forumID,
                     categoryID,
                     parentID,
                     this.ForumPrefixTB.Text.Trim() + this.randomGuid,

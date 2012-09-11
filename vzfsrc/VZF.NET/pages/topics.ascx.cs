@@ -254,7 +254,7 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied();
             }
 
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 this._forum = dt.Rows[0];
             }

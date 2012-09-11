@@ -163,8 +163,7 @@ namespace YAF.Pages.Admin
             this.NntpServerID.DataSource = LegacyDb.nntpserver_list(this.PageContext.PageBoardID, null);
             this.NntpServerID.DataValueField = "NntpServerID";
             this.NntpServerID.DataTextField = "Name";
-            this.ForumID.DataSource = LegacyDb.forum_listall_sorted(
-                this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.ForumID.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
             this.ForumID.DataValueField = "ForumID";
             this.ForumID.DataTextField = "Title";
             this.DataBind();

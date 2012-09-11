@@ -718,19 +718,6 @@ namespace YAF.Classes.Data.Postgre
             return forum_listall(connectionString, boardId, userId, 0);
         }
 
-        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId)
-        {
-            if (!PostgreDBAccess.LargeForumTree)
-            {
-
-                return forum_listall_sorted(connectionString,boardId, userId, null, false, 0);
-            }
-            else
-            {                
-                return forum_ns_getchildren_activeuser(connectionString,(int)boardId, 0, 0, (int)userId,false,false,"-");
-            }
-        }
-
         static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions)
         {
             return forum_listall_sorted(connectionString,boardId, userId, null, false, 0);
@@ -2607,16 +2594,7 @@ namespace YAF.Classes.Data.Postgre
 
             return listDestination;
         }
-        /// <summary>
-        /// Lists all forums within a given subcategory
-        /// </summary>
-        /// <param name="boardId">BoardID</param>
-        /// <param name="CategoryID">CategoryID</param>
-        /// <returns>DataTable with list</returns>
-        static public DataTable forum_listall_fromCat(string connectionString, object boardId, object categoryID)
-        {
-            return forum_listall_fromCat(connectionString,boardId, categoryID, true);
-        }
+
 		/// <summary>
 		/// Lists all forums within a given subcategory
 		/// </summary>
@@ -2649,7 +2627,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns></returns>
         static public DataTable forum_listpath(string connectionString, object forumID)
         {
-            if (!PostgreDBAccess.LargeForumTree)
+            if (!Config.LargeForumTree)
             {
 
                 using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listpath"))
@@ -2690,7 +2668,7 @@ namespace YAF.Classes.Data.Postgre
 
 			if (categoryID == null) { categoryID = DBNull.Value; }
 			if (parentID == null) { parentID = DBNull.Value; }
-            if (!PostgreDBAccess.LargeForumTree)
+            if (!Config.LargeForumTree)
             {
                 using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("forum_listread"))
                 {

@@ -179,7 +179,7 @@ namespace YAF.Pages
     /// </param>
     protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
     {
-      using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+      using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
       {
         this._forum = dt.Rows[0];
       }
@@ -244,7 +244,7 @@ namespace YAF.Pages
       this.Upload.Text = this.GetText("UPLOAD");
 
       // MJ : 10/14/2007 - list of allowed file extensions
-      DataTable extensionTable = LegacyDb.extension_list(this.PageContext.PageBoardID);
+      DataTable extensionTable = LegacyDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID);
 
       string types = string.Empty;
       bool bFirst = true;
@@ -299,7 +299,7 @@ namespace YAF.Pages
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(this.PageContext.PageUserID, this, x);
+        LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, x);
         this.PageContext.AddLoadMessage(x.Message);
         return;
       }

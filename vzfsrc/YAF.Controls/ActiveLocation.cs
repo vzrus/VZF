@@ -425,8 +425,7 @@ namespace YAF.Controls
             {
                 if (this.Get<YafBoardSettings>().EnableActiveLocationErrorsLog)
                 {
-                    LegacyDb.eventlog_create(
-                        this.UserID,
+                    LegacyDb.eventlog_create(PageContext.PageModuleID, this.UserID,
                         this,
                         "Incorrect active location string: ForumID = {0}; ForumName= {1}; ForumPage={2}; TopicID={3}; TopicName={4}; UserID={5}; UserName={6}; Attributes={7}; ForumPageName={8}"
                             .FormatWith(

@@ -234,7 +234,7 @@ namespace YAF.Controls
         userID = this.PageContext.PageUserID;
       }
 
-      LegacyDb.choice_vote(e.CommandArgument, userID, remoteIP);
+      LegacyDb.choice_vote(PageContext.PageModuleID, e.CommandArgument, userID, remoteIP);
 
       // save the voting cookie...
       string cookieCurrent = String.Empty;

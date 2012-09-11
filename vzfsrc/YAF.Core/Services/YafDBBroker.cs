@@ -244,8 +244,7 @@ namespace YAF.Core.Services
                     categoryTable.AcceptChanges();
                 }
 
-                DataTable forum = LegacyDb.forum_listread(
-                    boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
+                DataTable forum = LegacyDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                 forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
                 ds.Tables.Add(forum.Copy());
 
@@ -471,7 +470,7 @@ namespace YAF.Core.Services
         /// </returns>
         public DataTable GetModerators()
         {
-            DataTable moderator = LegacyDb.forum_moderators(this.Get<YafBoardSettings>().UseStyledNicks);
+            DataTable moderator = LegacyDb.forum_moderators(YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
             moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
 
             return moderator;
@@ -558,7 +557,7 @@ namespace YAF.Core.Services
         public List<SimpleForum> GetSimpleForumTopic(int boardId, int userId, DateTime timeFrame, int maxCount)
         {
             var forumData =
-                LegacyDb.forum_listall(boardId, userId).SelectTypedList(
+                LegacyDb.forum_listall((int?)YafContext.Current.PageModuleID, boardId, userId).SelectTypedList(
                     x => new SimpleForum { ForumID = x.Field<int>("ForumID"), Name = x.Field<string>("Forum") }).ToList();
 
             // get topics for all forums...

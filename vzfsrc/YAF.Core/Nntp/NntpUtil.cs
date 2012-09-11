@@ -291,8 +291,7 @@ namespace YAF.Core.Nntp
       }
       catch (Exception ex)
       {
-        LegacyDb.eventlog_create(
-          YafContext.Current.PageUserID,
+          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID,
           "NNTP Feature",
           "Unhandled NNTP DateTime nntpDateTime '{0}': {1}".FormatWith(nntpDateTime, ex.ToString()),
           EventLogTypes.Error);

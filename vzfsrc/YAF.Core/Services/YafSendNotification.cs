@@ -197,7 +197,7 @@ namespace YAF.Core.Services
             catch (Exception x)
             {
                 // report exception to the forum's event log
-                LegacyDb.eventlog_create(YafContext.Current.PageUserID, "SendMessageReportNotification", x);
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, "SendMessageReportNotification", x);
             }
         }
 
@@ -271,7 +271,7 @@ namespace YAF.Core.Services
             catch (Exception x)
             {
                 // report exception to the forum's event log
-                LegacyDb.eventlog_create(YafContext.Current.PageUserID, "SendPmNotification", x);
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, "SendPmNotification", x);
 
                 // tell user about failure
                 YafContext.Current.AddLoadMessage(

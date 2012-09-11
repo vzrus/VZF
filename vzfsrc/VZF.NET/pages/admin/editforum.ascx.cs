@@ -207,7 +207,7 @@ namespace YAF.Pages.Admin
       {
           // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
           using (
-          DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, null))
+          DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
           {
               int sortOrder = 1;
 
@@ -228,7 +228,7 @@ namespace YAF.Pages.Admin
           }
       }
 
-      using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, forumId.Value))
+      using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
       {
         DataRow row = dt.Rows[0];
         var flags = new ForumFlags(row["Flags"]);
@@ -330,8 +330,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindParentList()
     {
-      this.ParentList.DataSource = LegacyDb.forum_listall_fromCat(
-        this.PageContext.PageBoardID, this.CategoryList.SelectedValue);
+      this.ParentList.DataSource = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue);
       this.ParentList.DataValueField = "ForumID";
       this.ParentList.DataTextField = "Title";
       this.ParentList.DataBind();
@@ -450,7 +449,7 @@ namespace YAF.Pages.Admin
       // If we update a forum ForumID > 0 
       if (forumId.HasValue && parentID != null)
       {
-        int dependency = LegacyDb.forum_save_parentschecker(forumId.Value, parentID);
+        int dependency = LegacyDb.forum_save_parentschecker(PageContext.PageModuleID, forumId.Value, parentID);
         if (dependency > 0)
         {
           this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CHILD_PARENT"));
@@ -471,7 +470,7 @@ namespace YAF.Pages.Admin
       // duplicate name checking...
       if (!forumId.HasValue)
       {
-        var forumList = LegacyDb.forum_list(this.PageContext.PageBoardID, null).AsEnumerable();
+        var forumList = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).AsEnumerable();
 
         if (forumList.Any() && !this.Get<YafBoardSettings>().AllowForumsWithSameName &&
             forumList.Any(dr => dr.Field<string>("Name") == this.Name.Text.Trim()))
@@ -488,8 +487,7 @@ namespace YAF.Pages.Admin
         themeUrl = this.ThemeList.SelectedValue;
       }
 
-      var newForumId = LegacyDb.forum_save(
-        forumId, 
+      var newForumId = LegacyDb.forum_save(PageContext.PageModuleID, forumId, 
         this.CategoryList.SelectedValue, 
         parentID, 
         this.Name.Text.Trim(), 

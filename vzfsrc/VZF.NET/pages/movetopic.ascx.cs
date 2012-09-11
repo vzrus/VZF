@@ -153,7 +153,7 @@ namespace YAF.Pages
             LinkDays.Text = "1";
         }
 
-        this.ForumList.DataSource = LegacyDb.forum_listall_sorted(this.PageContext.PageBoardID, this.PageContext.PageUserID);
+        this.ForumList.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
 
         this.DataBind();
 

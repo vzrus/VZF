@@ -40,8 +40,13 @@ BEGIN
   COST 100;
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_upgrade(i_previousversion integer,  i_newversion  integer, i_utctimestamp timestampTZ)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_upgrade
+                           (
+                           i_previousversion integer,  
+						   i_newversion  integer, 
+						   i_utctimestamp timestampTZ
+						   )
+				  RETURNS void AS
 $BODY$
 BEGIN
 -- RESOLVE SALT ISSUE IN 193 BETA and RC2
@@ -63,14 +68,16 @@ IF ((i_previousversion  = 31) OR (i_previousversion  = 32)) THEN
 -- PROVIDER FUNCTION SCRIPT BY VZ_TEAM 
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepassword
-(IN i_applicationname varchar, 
-IN i_username varchar, 
-IN i_password varchar, 
-IN i_passwordsalt varchar, 
-IN i_passwordformat varchar,
-IN i_passwordanswer varchar,
-IN i_newguid uuid) 
-RETURNS void AS
+                           (
+						   IN i_applicationname varchar,
+						   IN i_username varchar,
+						   IN i_password varchar,
+						   IN i_passwordsalt varchar,
+						   IN i_passwordformat varchar,
+						   IN i_passwordanswer varchar,
+						   IN i_newguid uuid
+						   ) 
+                  RETURNS void AS
 $BODY$
 BEGIN 
  	
@@ -94,13 +101,15 @@ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
 
 -- DROP FUNCTION objectQualifier_prov_ChangePasswordQuestionAndAnswer(varchar, varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepasswordquestionandanswer(
-i_applicationname varchar, 
-i_username varchar, 
-i_passwordquestion varchar, 
-i_passwordanswer varchar,
-IN i_newguid uuid) 
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_changepasswordquestionandanswer
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_passwordquestion varchar,
+						   i_passwordanswer varchar,
+						   IN i_newguid uuid
+						   ) 
+                  RETURNS void AS
 $BODY$
 BEGIN 	
  	UPDATE databaseSchema.objectQualifier_prov_membership 
@@ -118,24 +127,25 @@ END;$BODY$
 
 -- DROP FUNCTION databaseSchema.objectQualifier_prov_createuser(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_createuser(
-IN i_applicationname varchar, 
-IN i_username varchar, 
-IN i_password varchar, 
-IN i_passwordsalt varchar,
-IN i_passwordformat varchar, 
-IN i_email varchar, 
-IN i_passwordquestion varchar, 
-IN i_passwordanswer varchar, 
-IN i_isapproved boolean,
-IN i_newguid uuid,
-IN i_newuserkey uuid,
-i_utctimestamp timestampTZ,
-INOUT i_userkey uuid)
-
-  RETURNS uuid AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_createuser
+                           (
+						   IN i_applicationname varchar,
+						   IN i_username varchar,
+						   IN i_password varchar,
+						   IN i_passwordsalt varchar,
+						   IN i_passwordformat varchar,
+						   IN i_email varchar,
+						   IN i_passwordquestion varchar,
+						   IN i_passwordanswer varchar,
+						   IN i_isapproved boolean,
+						   IN i_newguid uuid,
+						   IN i_newuserkey uuid,
+						   i_utctimestamp timestampTZ,
+						   INOUT i_userkey uuid
+						   )
+				 RETURNS uuid AS
 $BODY$DECLARE
-ici_userkey uuid:=i_userkey;
+             ici_userkey uuid:=i_userkey;
 BEGIN	
 	IF ici_userkey IS NULL THEN
 	   ici_userkey := i_newuserkey;
@@ -155,14 +165,16 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_deleteuser(varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_deleteuser(
-i_applicationname varchar, 
-i_username varchar, 
-i_deleteallrelated boolean,
-IN i_newguid uuid)
-  RETURNS void AS
-$BODY$ DECLARE 
-ici_userid varchar(64);
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_deleteuser
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_deleteallrelated boolean,
+						   IN i_newguid uuid
+						   )
+				  RETURNS void AS
+$BODY$DECLARE 
+             ici_userid varchar(64);
 BEGIN 	
  
     
@@ -195,20 +207,21 @@ END;$BODY$
 
 --DROP FUNCTION objectQualifier_prov_findusersbyemail(varchar, varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyemail(
-i_applicationname varchar, 
-i_emailaddress varchar, 
-i_pageindex integer, 
-i_pagesize integer,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyemail_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyemail
+                           (
+						   i_applicationname varchar,
+						   i_emailaddress varchar,
+						   i_pageindex integer,
+						   i_pagesize integer,
+						   IN i_newguid uuid)
+				  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyemail_return_type AS
 $BODY$DECLARE 
-ici_pagelowerbound integer:=0;
-ici_pageupperbound integer:=0;
-i_totalrecords   integer:=0;
-rownumber integer:=0;
-ici_applicationid uuid;
-_rec databaseSchema.objectQualifier_prov_findusersbyemail_return_type%ROWTYPE;
+             ici_pagelowerbound integer:=0;
+			 ici_pageupperbound integer:=0;
+			 i_totalrecords   integer:=0;
+			 rownumber integer:=0;
+			 ici_applicationid uuid;
+			 _rec databaseSchema.objectQualifier_prov_findusersbyemail_return_type%ROWTYPE;
 BEGIN 
 SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
      ici_pagelowerbound := i_pagesize*i_pageindex;
@@ -231,26 +244,26 @@ END;$BODY$
   COST 100;
   --GO
 
-
-
 -- Function: objectQualifier_prov_findusersbyname(varchar, varchar, integer, integer)
 
 --DROP FUNCTION objectQualifier_prov_findusersbyname(varchar, varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyname(
-i_applicationname varchar, 
-i_username varchar, 
-i_pageindex integer, 
-i_pagesize integer,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyname_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_findusersbyname
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_pageindex integer,
+						   i_pagesize integer,
+						   IN i_newguid uuid
+						   )
+				  RETURNS SETOF databaseSchema.objectQualifier_prov_findusersbyname_return_type AS
 $BODY$DECLARE 
-ici_pagelowerbound integer:=0;
-ici_pageupperbound integer:=0;
-i_totalrecords   integer;
-rownumber integer:=0;
-ici_applicationid uuid;
- _rec databaseSchema.objectQualifier_prov_findusersbyname_return_type%ROWTYPE;
+             ici_pagelowerbound integer:=0;
+			 ici_pageupperbound integer:=0;
+			 i_totalrecords   integer;
+			 rownumber integer:=0;
+			 ici_applicationid uuid;
+			 _rec databaseSchema.objectQualifier_prov_findusersbyname_return_type%ROWTYPE;
 
 BEGIN
 SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
@@ -285,20 +298,22 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_getallusers(varchar, integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getallusers(
-i_applicationname varchar,
- i_pageindex integer, 
- i_pagesize integer,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_getallusers_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getallusers
+                           (
+						   i_applicationname varchar,
+						   i_pageindex integer,
+						   i_pagesize integer,
+						   IN i_newguid uuid
+						   )
+                  RETURNS SETOF databaseSchema.objectQualifier_prov_getallusers_return_type AS
 $BODY$    
 DECLARE      
-     ici_pagelowerbound integer;
-     ici_pageupperbound integer;
-     ici_totalrecords   integer; 
-     rownumber integer:=0;
-  ici_applicationid uuid;   
-_rec databaseSchema.objectQualifier_prov_getallusers_return_type%ROWTYPE;
+       ici_pagelowerbound integer;
+	   ici_pageupperbound integer;
+	   ici_totalrecords   integer;
+	   rownumber integer:=0;
+	   ici_applicationid uuid;
+	   _rec databaseSchema.objectQualifier_prov_getallusers_return_type%ROWTYPE;
 
 BEGIN   
  SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
@@ -327,21 +342,23 @@ $BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestamp with time zone)
+-- Function: objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestampTZ)
 
--- DROP FUNCTION objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestamp with time zone);
+-- DROP FUNCTION objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestampTZ);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword(
-i_applicationname varchar, 
-i_username varchar, 
-i_password varchar, 
-i_passwordsalt varchar, 
-i_passwordformat varchar, 
-i_maxinvalidattempts integer, 
-i_passwordattemptwindow integer, 
-i_currenttimeutc timestamp with time zone,
-IN i_newguid uuid)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_password varchar,
+						   i_passwordsalt varchar,
+						   i_passwordformat varchar,
+						   i_maxinvalidattempts integer,
+						   i_passwordattemptwindow integer,
+						   i_currenttimeutc timestampTZ,
+						   IN i_newguid uuid
+						   )
+                  RETURNS void AS
 $BODY$
 BEGIN  
  	
@@ -364,17 +381,19 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_GetUser(varchar, varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getuser(
-i_applicationname varchar, 
-i_username varchar, 
-i_userkey uuid, 
-i_userisonline boolean,
-IN i_newguid uuid,
-i_utctimestamp timestampTZ)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_getuser_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getuser
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_userkey uuid,
+						   i_userisonline boolean,
+						   IN i_newguid uuid,
+						   i_utctimestamp timestampTZ
+						   )
+				  RETURNS SETOF databaseSchema.objectQualifier_prov_getuser_return_type AS
 $BODY$DECLARE 
-ici_applicationid uuid;
-_rec databaseSchema.objectQualifier_prov_getuser_return_type;
+             ici_applicationid uuid;
+             _rec databaseSchema.objectQualifier_prov_getuser_return_type;
 
 BEGIN 	
  	 SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	 
@@ -412,25 +431,27 @@ END;$BODY$
 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestamp with time zone, timestamp with time zone, boolean)
+-- Function: objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestampTZ, timestampTZ, boolean)
 
--- DROP FUNCTION objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestamp with time zone, timestamp with time zone, boolean);
+-- DROP FUNCTION objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestampTZ, timestampTZ, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_updateuser(
-i_applicationname varchar, 
-i_userkey uuid, 
-i_username varchar, 
-i_email varchar, 
-i_comment text, 
-i_isapproved boolean, 
-i_lastlogin timestamp with time zone, 
-i_lastactivity timestamp with time zone, 
-i_uniqueemail boolean,
-IN i_newguid uuid)
-  RETURNS integer AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_updateuser
+                           (
+						   i_applicationname varchar,
+						   i_userkey uuid,
+						   i_username varchar,
+						   i_email varchar,
+						   i_comment text,
+						   i_isapproved boolean,
+						   i_lastlogin timestampTZ,
+						   i_lastactivity timestampTZ,
+						   i_uniqueemail boolean,
+						   IN i_newguid uuid
+						   )
+				  RETURNS integer AS
 $BODY$DECLARE 
-ici_applicationid uuid;
-ici_return integer := 0;
+             ici_applicationid uuid;
+			 ici_return integer := 0;
 BEGIN
  	
  
@@ -478,15 +499,15 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_unlockuser(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_unlockuser(
-i_applicationname varchar, 
-i_username varchar,
-IN i_newguid uuid)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_unlockuser
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS void AS
 $BODY$
-BEGIN	
- 	
- 	
+BEGIN 	
  	UPDATE databaseSchema.objectQualifier_prov_membership SET
  	islockedout = 0,
  	failedpasswordattempts = 0
@@ -500,19 +521,22 @@ END;$BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_getnumberofusersonline(varchar, integer, timestamp with time zone)
+-- Function: objectQualifier_prov_getnumberofusersonline(varchar, integer, timestampTZ)
 
--- DROP FUNCTION objectQualifier_prov_getnumberofusersonline(varchar, integer, timestamp with time zone);
+-- DROP FUNCTION objectQualifier_prov_getnumberofusersonline(varchar, integer, timestampTZ);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getnumberofusersonline(
-i_applicationname varchar, 
-i_timewindow integer, 
-i_currenttimeutc timestamp with time zone,
-IN i_newguid uuid)
-  RETURNS integer AS
-$BODY$DECLARE ici_activitydate timestamp with time zone;
-     ici_numberactive integer;
-     dd interval;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getnumberofusersonline
+                           (
+						   i_applicationname varchar,
+						   i_timewindow integer,
+						   i_currenttimeutc timestampTZ,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
+$BODY$DECLARE 
+             ici_activitydate timestampTZ;
+			 ici_numberactive integer;
+			 dd interval;
      
 BEGIN 
  dd := CAST(CAST(i_timewindow AS varchar) || ' minute' AS interval); 
@@ -538,14 +562,16 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_getusernamebyemail(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getusernamebyemail(
-i_applicationname varchar, 
-i_email varchar,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_getusernamebyemail_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getusernamebyemail
+                           (
+						   i_applicationname varchar,
+						   i_email varchar,
+						   IN i_newguid uuid
+						   )
+				  RETURNS SETOF databaseSchema.objectQualifier_prov_getusernamebyemail_return_type AS
 $BODY$DECLARE 
-ici_applicationid uuid;
-_rec databaseSchema.objectQualifier_prov_getusernamebyemail_return_type%ROWTYPE;
+             ici_applicationid uuid;
+			 _rec databaseSchema.objectQualifier_prov_getusernamebyemail_return_type%ROWTYPE;
 BEGIN 	
 SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
 FOR _rec IN 
@@ -572,16 +598,18 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_addusertorole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_addusertorole(
-i_applicationname varchar, 
-i_username varchar, 
-i_rolename varchar,
-IN i_newguid uuid)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_addusertorole
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS void AS
 $BODY$DECLARE 
- ici_iserid uuid;
- ici_roleid uuid;
- ici_applicationid uuid;
+             ici_iserid uuid;
+			 ici_roleid uuid;
+			 ici_applicationid uuid;
 BEGIN	
  	
  	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
@@ -616,14 +644,16 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_createrole(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_createrole(
-i_applicationname varchar, 
-i_rolename varchar,
-IN i_newguid uuid,
-IN i_newroleguid uuid)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_createrole
+                           (
+						   i_applicationname varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid,
+						   IN i_newroleguid uuid
+						   )
+                  RETURNS void AS
 $BODY$DECLARE 
-ici_applicationid uuid;
+             ici_applicationid uuid;
 
 BEGIN 	
  	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	 INTO ici_applicationid;
@@ -642,17 +672,17 @@ END;$BODY$
 
 -- DROP FUNCTION databaseSchema.objectQualifier_prov_role_deleterole(varchar, varchar, boolean);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_deleterole(
-i_applicationname varchar, 
-i_rolename varchar, 
-i_deleteonlyifroleisempty boolean,
-IN i_newguid uuid)
-  RETURNS integer AS
-$BODY$	DECLARE
-	 ici_roleid uuid;
- 	 ici_errorcode integer:=0; 	 
- 	 
- 	
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_deleterole
+                           (
+						   i_applicationname varchar,
+						   i_rolename varchar,
+						   i_deleteonlyifroleisempty boolean,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
+$BODY$DECLARE
+	         ici_roleid uuid;
+			 ici_errorcode integer:=0;  	
 BEGIN 	
  	
  	SELECT r.roleid INTO ici_roleid FROM databaseSchema.objectQualifier_prov_role r WHERE r.rolenamelwd=LOWER(i_rolename) AND r.applicationid= (SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid));
@@ -679,11 +709,13 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_exists(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_exists(
-i_applicationname varchar, 
-i_rolename varchar,
-IN i_newguid uuid)
-  RETURNS integer AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_exists
+                           (
+						   i_applicationname varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
 $BODY$
  	BEGIN	
  	
@@ -699,13 +731,16 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_getroles(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_getroles(
-i_applicationname varchar, 
-i_username varchar,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_role_getroles_return_type AS
-$BODY$DECLARE ici_applicationid uuid;
-_rec databaseSchema.objectQualifier_prov_role_getroles_return_type%ROWTYPE;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_getroles
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS SETOF databaseSchema.objectQualifier_prov_role_getroles_return_type AS
+$BODY$DECLARE 
+             ici_applicationid uuid;
+             _rec databaseSchema.objectQualifier_prov_role_getroles_return_type%ROWTYPE;
 BEGIN 	
  	
   	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
@@ -745,16 +780,18 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_removeuserfromrole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_removeuserfromrole(
-i_applicationname varchar, 
-i_username varchar, 
-i_rolename varchar,
-IN i_newguid uuid)
-  RETURNS void AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_removeuserfromrole
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS void AS
 $BODY$DECLARE 
-ici_iserid uuid;
-ici_roleid uuid;
-ici_applicationid uuid;
+             ici_iserid uuid;
+			 ici_roleid uuid;
+			 ici_applicationid uuid;
 
 BEGIN
  
@@ -787,14 +824,17 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_findusersinrole(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_findusersinrole(
-i_applicationname varchar, 
-i_rolename varchar,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_role_findusersinrole_return_type AS
-$BODY$DECLARE ici_roleid uuid;
- ici_applicationid uuid;
- _rec databaseSchema.objectQualifier_prov_role_findusersinrole_return_type%ROWTYPE;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_findusersinrole
+                           (
+						   i_applicationname varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS SETOF databaseSchema.objectQualifier_prov_role_findusersinrole_return_type AS
+$BODY$DECLARE
+             ici_roleid uuid;
+             ici_applicationid uuid;
+             _rec databaseSchema.objectQualifier_prov_role_findusersinrole_return_type%ROWTYPE;
 BEGIN	
  	
  	SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	
@@ -822,15 +862,17 @@ $BODY$
 
 -- DROP FUNCTION objectQualifier_prov_role_isuserinrole(varchar, varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_isuserinrole(
-i_applicationname varchar, 
-i_username varchar, 
-i_rolename varchar,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_role_isuserinrole_return_type AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_role_isuserinrole
+                           (
+						   i_applicationname varchar,
+						   i_username varchar,
+						   i_rolename varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS SETOF databaseSchema.objectQualifier_prov_role_isuserinrole_return_type AS
 $BODY$DECLARE 
-_rec databaseSchema.objectQualifier_prov_role_isuserinrole_return_type%ROWTYPE;
-ici_applicationid uuid;
+             _rec databaseSchema.objectQualifier_prov_role_isuserinrole_return_type%ROWTYPE;
+			 ici_applicationid uuid;
 BEGIN  
  SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid)	INTO ici_applicationid;
  FOR _rec IN
@@ -852,17 +894,19 @@ END;$BODY$
 -- ################ Profiles Create Procedures ####################################
 -- #############################################################################
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_profile_deleteinactive(varchar, timestamp with time zone)
+-- Function: objectQualifier_prov_profile_deleteinactive(varchar, timestampTZ)
 
--- DROP FUNCTION objectQualifier_prov_profile_deleteinactive(varchar, timestamp with time zone);
+-- DROP FUNCTION objectQualifier_prov_profile_deleteinactive(varchar, timestampTZ);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteinactive(
-i_applicationname varchar, 
-i_inactivesincedate timestamp with time zone,
-IN i_newguid uuid)
-  RETURNS integer AS
-$BODY$DECLARE 
-deleted integer:=0;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteinactive
+                           (
+						   i_applicationname varchar,
+						   i_inactivesincedate timestampTZ,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
+$BODY$DECLARE
+             deleted integer:=0;
 BEGIN 	 
  
      DELETE
@@ -883,20 +927,22 @@ END;$BODY$
 
 -- DROP FUNCTION objectQualifier_prov_profile_deleteprofiles(varchar, varchar);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteprofiles(
-i_applicationname varchar, 
-i_usernames varchar,
-IN i_newguid uuid)
-  RETURNS integer AS
-$BODY$     DECLARE     
-      ici_applicationid uuid;
-      ici_username     varchar(256);
-      ici_currentpos   integer :=1;
-      ici_nextpos      integer;
-      ici_numdeleted   integer :=0;
-      ici_deleteduser  integer;
-      ici_errorcode    integer :=0;
-      deleted integer:=0;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteprofiles
+                           (
+						   i_applicationname varchar,
+						   i_usernames varchar,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
+$BODY$DECLARE
+             ici_applicationid uuid;
+			 ici_username     varchar(256);
+			 ici_currentpos   integer :=1;
+			 ici_nextpos      integer;
+			 ici_numdeleted   integer :=0;
+			 ici_deleteduser  integer;
+			 ici_errorcode    integer :=0;
+			 deleted integer:=0;
 BEGIN
    
  
@@ -943,25 +989,27 @@ $BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- -- Function: objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestamp with time zone)
+ -- Function: objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestampTZ)
 
- -- DROP FUNCTION objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestamp with time zone);
+ -- DROP FUNCTION objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestampTZ);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofiles(
-i_applicationname varchar, 
-i_pageindex integer, 
-i_pagesize integer, 
-i_usernametomatch varchar, 
-i_inactivesincedate timestamp with time zone,
-IN i_newguid uuid)
-  RETURNS SETOF databaseSchema.objectQualifier_prov_profile_getprofiles_return_type AS
-$BODY$DECLARE 
-ici_applicationid uuid;
-ici_pagelowerbound integer;
-ici_pageupperbound integer;
-ici_totalrecords   integer;
-rownumber integer:=0;
-_rec databaseSchema.objectQualifier_prov_profile_getprofiles_return_type%ROWTYPE;
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofiles
+                           (
+						   i_applicationname varchar,
+						   i_pageindex integer,
+						   i_pagesize integer,
+						   i_usernametomatch varchar,
+						   i_inactivesincedate timestampTZ,
+						   IN i_newguid uuid
+						   )
+                  RETURNS SETOF databaseSchema.objectQualifier_prov_profile_getprofiles_return_type AS
+$BODY$DECLARE
+             ici_applicationid uuid;
+			 ici_pagelowerbound integer;
+			 ici_pageupperbound integer;
+			 ici_totalrecords   integer;
+			 rownumber integer:=0;
+			 _rec databaseSchema.objectQualifier_prov_profile_getprofiles_return_type%ROWTYPE;
 BEGIN 
  SELECT  databaseSchema.objectQualifier_prov_createapplication(i_applicationname,i_newguid) INTO ici_applicationid;
      -- Set the page bounds
@@ -1002,13 +1050,15 @@ END LOOP;
 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- -- Function: objectQualifier_prov_profile_getnumberinactiveprofiles(varchar, timestamp with time zone)
+ -- Function: objectQualifier_prov_profile_getnumberinactiveprofiles(varchar, timestampTZ)
  
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getnumberinactiveprofiles(
-i_applicationname varchar, 
-i_inactivesincedate timestamp with time zone,
-IN i_newguid uuid)
-  RETURNS integer AS
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getnumberinactiveprofiles
+                           (
+						   i_applicationname varchar,
+						   i_inactivesincedate timestampTZ,
+						   IN i_newguid uuid
+						   )
+                  RETURNS integer AS
 $BODY$
 BEGIN  	
  

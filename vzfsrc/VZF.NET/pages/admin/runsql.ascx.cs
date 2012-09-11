@@ -97,7 +97,7 @@ namespace YAF.Pages.Admin
 
         this.txtResult.Text = LegacyDb.db_runsql(sql, connMan, this.chkRunInTransaction.Checked);
       } */
-      this.txtResult.Text = LegacyDb.db_runsql_new(this.txtQuery.Text.Trim(), this.chkRunInTransaction.Checked);
+      this.txtResult.Text = LegacyDb.db_runsql_new(PageContext.PageModuleID, this.txtQuery.Text.Trim(), this.chkRunInTransaction.Checked);
     }
 
     /// <summary>

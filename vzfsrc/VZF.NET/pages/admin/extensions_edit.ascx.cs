@@ -140,7 +140,7 @@ namespace YAF.Pages.Admin
       }
       else
       {
-        LegacyDb.extension_save(this.Request.QueryString.GetFirstOrDefault("i"), this.PageContext.PageBoardID, ext);
+        LegacyDb.extension_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), this.PageContext.PageBoardID, ext);
         YafBuildLink.Redirect(ForumPages.admin_extensions);
       }
     }
@@ -156,7 +156,7 @@ namespace YAF.Pages.Admin
         }
 
         DataRow row =
-            LegacyDb.extension_edit(Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("i"))).Rows[0];
+            LegacyDb.extension_edit(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("i"))).Rows[0];
         this.extension.Text = (string)row["Extension"];
     }
 

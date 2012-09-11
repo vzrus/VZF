@@ -118,7 +118,7 @@ namespace YAF.Core
             if (dsExtensions.Tables["YafExtension"] != null &&
                 dsExtensions.Tables["YafExtension"].Columns["Extension"] != null)
             {
-                DataTable extensionList = LegacyDb.extension_list(boardId);
+                DataTable extensionList = LegacyDb.extension_list((int?)YafContext.Current.PageModuleID, boardId);
 
                 // import any extensions that don't exist...
                 foreach (string ext in
@@ -126,7 +126,7 @@ namespace YAF.Core
                     ext => extensionList.Select("Extension = '{0}'".FormatWith(ext)).Length == 0))
                 {
                     // add this...
-                    LegacyDb.extension_save(null, boardId, ext);
+                    LegacyDb.extension_save(YafContext.Current.PageModuleID, null, boardId, ext);
                     importedCount++;
                 }
             }

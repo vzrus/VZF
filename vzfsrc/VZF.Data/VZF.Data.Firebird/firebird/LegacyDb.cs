@@ -2225,6 +2225,117 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion        
 
 		#region yaf_Forum
+
+        static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        {
+            using (FbCommand cmd = FbDbAccess.GetCommand("forum_ns_getchildren_anyuser"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("i_boardid", FbDbType.Integer)).Value = boardid;
+                cmd.Parameters.Add(new FbParameter("i_categoryid", FbDbType.Integer)).Value = categoryid;
+                cmd.Parameters.Add(new FbParameter("i_forumid", FbDbType.Integer)).Value = forumid;
+                cmd.Parameters.Add(new FbParameter("i_userid", FbDbType.Integer)).Value = userid;
+                cmd.Parameters.Add(new FbParameter("i_notincluded", FbDbType.Boolean)).Value = notincluded;
+                cmd.Parameters.Add(new FbParameter("i_immediateonly", FbDbType.Boolean)).Value = immediateonly;
+
+                DataTable dt = FbDbAccess.GetData(cmd, connectionString);
+                DataTable sorted = dt.Clone();
+                bool forumRow = false;
+                foreach (DataRow row in dt.Rows)
+                {
+                    DataRow newRow = sorted.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    newRow = row;
+
+                    int currentIndent = (int)row["Level"];
+                    string sIndent = "";
+
+                    for (int j = 0; j < currentIndent; j++)
+                        sIndent += "--";
+                    if (currentIndent == 1 && !forumRow)
+                    {
+                        newRow["ForumID"] = currentIndent;
+                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["CategoryName"]);
+                        forumRow = true;
+                    }
+                    else
+                    {
+                        newRow["ForumID"] = currentIndent;
+                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Title"]);
+                        forumRow = false;
+                    }
+
+
+                    // import the row into the destination
+
+
+
+
+                    sorted.Rows.Add(newRow);
+                }
+                return sorted;
+            }
+        }
+
+        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        {
+            using (FbCommand cmd = FbDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("i_boardid", FbDbType.Integer)).Value = boardid;
+                cmd.Parameters.Add(new FbParameter("i_categoryid", FbDbType.Integer)).Value = categoryid;
+                cmd.Parameters.Add(new FbParameter("i_forumid", FbDbType.Integer)).Value = forumid;
+                cmd.Parameters.Add(new FbParameter("i_userid", FbDbType.Integer)).Value = userid;
+                cmd.Parameters.Add(new FbParameter("i_notincluded", FbDbType.Boolean)).Value = notincluded;
+                cmd.Parameters.Add(new FbParameter("i_immediateonly", FbDbType.Boolean)).Value = immediateonly;
+
+                DataTable dt = FbDbAccess.GetData(cmd, connectionString);
+                DataTable sorted = dt.Clone();
+                int categoryId = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    DataRow newRow = sorted.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+
+                    int currentIndent = (int)row["Level"];
+                    string sIndent = "";
+
+
+                    if (currentIndent >= 2)
+                    {
+                        for (int j = 0; j < currentIndent - 1; j++)
+                        {
+                            sIndent += "-";
+                            if (currentIndent > 2)
+                            {
+                                sIndent += "-";
+                            }
+                        }
+                    }
+
+                    if ((int)row["CategoryID"] != categoryId)
+                    {
+                        DataRow cRow = sorted.NewRow();
+                        // we add a category
+                        cRow["ForumID"] = -(int)row["CategoryID"];
+                        cRow["Title"] = string.Format(" {0}", row["CategoryName"]);
+                        categoryId = (int)row["CategoryID"];
+                        sorted.Rows.Add(cRow);
+
+                    }
+
+                    newRow["ForumID"] = row["ForumID"];
+                    newRow["Title"] = string.Format(" {0} {1}", sIndent, row["Title"]);
+                    sorted.Rows.Add(newRow);
+
+
+                }
+                return sorted;
+
+            }
+        }
 		//ABOT NEW 16.04.04
 		/// <summary>
 		/// Deletes attachments out of a entire forum
@@ -2432,16 +2543,7 @@ namespace YAF.Classes.Data.FirebirdDb
       return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
     }
 
-		/// <summary>
-		/// Lists all forums within a given subcategory
-		/// </summary>
-		/// <param name="boardID">BoardID</param>
-		/// <param name="CategoryID">CategoryID</param>
-		/// <returns>DataTable with list</returns>
-         static public DataTable forum_listall_fromCat(string connectionString, object boardID, object categoryID)
-		{
-            return forum_listall_fromCat(connectionString, boardID, categoryID, true);
-		}
+
 		/// <summary>
 		/// Lists forums very simply (for URL rewriting)
 		/// </summary>
@@ -2490,24 +2592,38 @@ namespace YAF.Classes.Data.FirebirdDb
 				}
 			}
 		}
-		/// <summary>
-		/// Sorry no idea what this does
-		/// </summary>
-		/// <param name="forumID"></param>
-		/// <returns></returns>
-         static public DataTable forum_listpath(string connectionString, object forumID)
-		{
-			using (FbCommand cmd = FbDbAccess.GetCommand("forum_listpath"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
 
-				cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-				cmd.Parameters[0].Value = forumID;
-			   
-				return FbDbAccess.GetData(cmd,connectionString);
-			}
-		}
-		/// <summary>
+         /// <summary>
+         /// Sorry no idea what this does
+         /// </summary>
+         /// <param name="forumID"></param>
+         /// <returns></returns>
+         static public DataTable forum_listpath(string connectionString, object forumID)
+         {
+             if (!Config.LargeForumTree)
+             {
+
+                 using (var cmd = FbDbAccess.GetCommand("forum_listpath"))
+                 {
+                     cmd.CommandType = CommandType.StoredProcedure;
+
+                     cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
+
+                     return FbDbAccess.GetData(cmd, connectionString);
+                 }
+             }
+
+             using (var cmd = FbDbAccess.GetCommand("forum_ns_listpath"))
+             {
+                 cmd.CommandType = CommandType.StoredProcedure;
+
+                 cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
+
+                 return FbDbAccess.GetData(cmd, connectionString);
+             }
+         }
+
+	    /// <summary>
 		/// Lists read topics
 		/// </summary>
 		/// <param name="boardID">BoardID</param>
@@ -2536,63 +2652,79 @@ namespace YAF.Classes.Data.FirebirdDb
 			   FbDbAccess.ExecuteNonQuery(cmd0, true);
 				//return dt1;
 			}*/
-		
-			using (FbCommand cmd1 = FbDbAccess.GetCommand("FORUM_LISTREAD"))
-			{
-				cmd1.CommandType = CommandType.StoredProcedure;
+		 if (!Config.LargeForumTree)
+		 {
+		     using (FbCommand cmd1 = FbDbAccess.GetCommand("FORUM_LISTREAD"))
+		     {
+		         cmd1.CommandType = CommandType.StoredProcedure;
 
-				cmd1.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardID;
-				cmd1.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
-				cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID;
-				cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID;
-                cmd1.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
-                cmd1.Parameters.Add(new FbParameter("@I_FINDLASTREAD", FbDbType.Boolean)).Value = findLastRead;
-				cmd1.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow; 
+		         cmd1.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardID;
+		         cmd1.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
+		         cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID;
+		         cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID;
+		         cmd1.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
+		         cmd1.Parameters.Add(new FbParameter("@I_FINDLASTREAD", FbDbType.Boolean)).Value = findLastRead;
+		         cmd1.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
-				return FbDbAccess.GetData(cmd1, false,connectionString);
-				//return dt1;
-			}
+		         return FbDbAccess.GetData(cmd1, false, connectionString);
+		         //return dt1;
+		     }
+		 }
+
+             using (FbCommand cmd1 = FbDbAccess.GetCommand("FORUM_NS_LISTREAD"))
+		     {
+		         cmd1.CommandType = CommandType.StoredProcedure;
+
+		         cmd1.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardID;
+		         cmd1.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
+		         cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID;
+		         cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID;
+		         cmd1.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
+		         cmd1.Parameters.Add(new FbParameter("@I_FINDLASTREAD", FbDbType.Boolean)).Value = findLastRead;
+		         cmd1.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+
+		         return FbDbAccess.GetData(cmd1, false, connectionString);
+		         //return dt1;
+		     }
+            //Add extra columns to data table
+            /* int cntr = 0;
+             int firstColumnIndex = dt1.Columns.Count;
+             int dt1rc = dt1.Rows.Count;
+             if (dt1rc != 0)
+             {
+                 foreach (DataRow dr1 in dt1.Rows)
+                 {
+
+                     using (FbCommand cmd3 = FbDbAccess.GetCommand("FORUM_LISTREAD_HELPER"))
+                     {
+                         cmd3.CommandType = CommandType.StoredProcedure;
+
+                         cmd3.Parameters.Add("@I_FORUMID", FbDbType.Integer).Value = dr1["ForumID"];
+
+                         if (cntr != dt1rc - 1 || dt1rc == 0)
+                             dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, true, firstColumnIndex, cntr);
+                         else
+                             dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, false, firstColumnIndex, cntr);
+                     }
 
 
-			//Add extra columns to data table
-		   /* int cntr = 0;
-			int firstColumnIndex = dt1.Columns.Count;
-			int dt1rc = dt1.Rows.Count;
-			if (dt1rc != 0)
-			{
-				foreach (DataRow dr1 in dt1.Rows)
-				{
+                     cntr++;
+                 }
+             }
+             else
+             {
+                 //We simply get rows' structure
+                 using (FbCommand cmd2 = FbDbAccess.GetCommand("forum_listread_helper"))
+                 {
+                     cmd2.CommandType = CommandType.StoredProcedure;
 
-					using (FbCommand cmd3 = FbDbAccess.GetCommand("FORUM_LISTREAD_HELPER"))
-					{
-						cmd3.CommandType = CommandType.StoredProcedure;
+                     cmd2.Parameters.Add("i_forumid", FbDbType.Integer).Value = 0;
 
-						cmd3.Parameters.Add("@I_FORUMID", FbDbType.Integer).Value = dr1["ForumID"];
+                     dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd2, dt1, false, true, firstColumnIndex, 0);
+                 }
+             }
 
-						if (cntr != dt1rc - 1 || dt1rc == 0)
-							dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, true, firstColumnIndex, cntr);
-						else
-							dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, false, firstColumnIndex, cntr);
-					}
-
-
-					cntr++;
-				}
-			}
-			else
-			{
-				//We simply get rows' structure
-				using (FbCommand cmd2 = FbDbAccess.GetCommand("forum_listread_helper"))
-				{
-					cmd2.CommandType = CommandType.StoredProcedure;
-
-					cmd2.Parameters.Add("i_forumid", FbDbType.Integer).Value = 0;
-
-					dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd2, dt1, false, true, firstColumnIndex, 0);
-				}
-			}
-
-			return dt2;*/
+             return dt2;*/
 
 		}
 		/// <summary>
@@ -2706,14 +2838,7 @@ namespace YAF.Classes.Data.FirebirdDb
              }
          }
 
-		/// <summary>
-		/// Updates topic and post count and last topic for all forums in specified board
-		/// </summary>
-		/// <param name="boardID">BoardID</param>
-         static public void forum_resync(string connectionString, object boardID)
-		{
-            forum_resync(connectionString, boardID, null);
-		}
+
 		/// <summary>
 		/// Updates topic and post count and last topic for specified forum
 		/// </summary>

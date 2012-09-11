@@ -94,7 +94,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(null, TaskName, "Error In MigrateUsers Task: {0}".FormatWith(x));
+          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In MigrateUsers Task: {0}".FormatWith(x));
       }
     }
 

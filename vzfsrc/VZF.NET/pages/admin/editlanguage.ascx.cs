@@ -445,8 +445,7 @@ namespace YAF.Pages.Admin
             }
             catch (Exception exception)
             {
-                LegacyDb.eventlog_create(
-                    null, this.GetType().ToString(), "Error loading files. {0}".FormatWith(exception.Message), 1);
+                LegacyDb.eventlog_create(PageContext.PageModuleID, null, this.GetType().ToString(), "Error loading files. {0}".FormatWith(exception.Message), 1);
             }
         }
 

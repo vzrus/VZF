@@ -154,7 +154,7 @@ namespace YAF.Pages
             this.CreateAndMove.Text = this.GetText("CREATE_TOPIC");
             this.CreateAndMove.ToolTip = this.GetText("SPLIT_TITLE");
 
-            this.ForumList.DataSource = LegacyDb.forum_listall_sorted(this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.ForumList.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
             this.ForumList.DataTextField = "Title";
             this.ForumList.DataValueField = "ForumID";
             this.DataBind();

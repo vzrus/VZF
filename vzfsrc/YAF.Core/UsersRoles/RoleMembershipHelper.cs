@@ -111,7 +111,7 @@ namespace YAF.Core
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(DBNull.Value, "CreateForumUser", x);
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, DBNull.Value, "CreateForumUser", x);
             }
 
             return userID;
@@ -372,8 +372,7 @@ namespace YAF.Core
             if (user.ProviderUserKey == null)
             {
                 // problem -- log and move on...
-                LegacyDb.eventlog_create(
-                    userId,
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId,
                     "UpdateForumUser",
                     "Null User Provider Key for UserName {0}. Please check your provider key settings for your ASP.NET membership provider.",
                     user.UserName);
@@ -437,8 +436,7 @@ namespace YAF.Core
                 }
                 catch (Exception ex)
                 {
-                    LegacyDb.eventlog_create(
-                        userId, "UpdateForumUser", "Failed to save default notifications for new user: {0}".FormatWith(ex));
+                    LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, "UpdateForumUser", "Failed to save default notifications for new user: {0}".FormatWith(ex));
                 }
             }
 
@@ -539,8 +537,7 @@ namespace YAF.Core
 
                             if (status != MembershipCreateStatus.Success)
                             {
-                                LegacyDb.eventlog_create(
-                                    0, "MigrateUsers", "Failed to create user {0}: {1}".FormatWith(name, status));
+                                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, 0, "MigrateUsers", "Failed to create user {0}: {1}".FormatWith(name, status));
                             }
                             else
                             {

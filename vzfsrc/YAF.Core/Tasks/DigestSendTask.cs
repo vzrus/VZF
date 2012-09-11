@@ -157,7 +157,7 @@ namespace YAF.Core.Tasks
           if (Config.BaseUrlMask.IsNotSet())
           {
             // fail...
-            LegacyDb.eventlog_create(null, "DigestSendTask", "Failed to send digest because BaseUrlMask value is not set in your appSettings.");
+              LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, "DigestSendTask", "Failed to send digest because BaseUrlMask value is not set in your appSettings.");
             return;
           }
 
@@ -174,7 +174,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception ex)
       {
-        LegacyDb.eventlog_create(null, TaskName, "Error In {0} Task: {1}".FormatWith(TaskName, ex));
+          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In {0} Task: {1}".FormatWith(TaskName, ex));
       }
     }
 
@@ -196,8 +196,7 @@ namespace YAF.Core.Tasks
             }
             catch (Exception e)
             {
-                LegacyDb.eventlog_create(
-                    null, TaskName, "Error In Creating Digest for User {0}: {1}".FormatWith(user.UserID, e.ToString()));
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In Creating Digest for User {0}: {1}".FormatWith(user.UserID, e.ToString()));
             }
 
             if (!digestHtml.IsSet())

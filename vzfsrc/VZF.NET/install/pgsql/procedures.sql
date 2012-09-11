@@ -16,19 +16,22 @@ $BODY$DECLARE
 			_rec RECORD;
                   
 BEGIN
-     FOR _rec IN select userid,userstyle,rankid from databaseSchema.objectQualifier_user
-LOOP
-UPDATE databaseSchema.objectQualifier_user SET userstyle = COALESCE(( SELECT f.style FROM databaseSchema.objectQualifier_usergroup e 
-			join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid= _rec.userid AND CHAR_LENGTH(f.style) > 2 ORDER BY f.sortorder limit 1), 
-			(SELECT r.style FROM databaseSchema.objectQualifier_rank r where rankid =  _rec.rankid)) 
-        WHERE userid = _rec.userid;
-END LOOP;
+FOR _rec IN select userid,userstyle,rankid from databaseSchema.objectQualifier_user
+         LOOP 
+		     UPDATE databaseSchema.objectQualifier_user 
+		     SET userstyle = 
+			 COALESCE(
+			 (SELECT f.style FROM databaseSchema.objectQualifier_usergroup e 
+			  join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid= _rec.userid AND CHAR_LENGTH(f.style) > 2 ORDER BY f.sortorder limit 1), 
+			 (SELECT r.style FROM databaseSchema.objectQualifier_rank r where rankid =  _rec.rankid)
+			          )   
+			  WHERE userid = _rec.userid;
+         END LOOP;
 END;$BODY$
-    LANGUAGE 'plpgsql'  VOLATILE SECURITY DEFINER
-    COST 100;  
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;  
 --GO
 SELECT databaseSchema.objectQualifier_user_savestyle(
-                           null, null); 
+                           null, null);
 --GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_vaccess_combo
                            (
@@ -73,7 +76,7 @@ $BODY$DECLARE
 			 out_UploadAccess integer DEFAULT 0;
 			 out_DownloadAccess integer DEFAULT 0;
 BEGIN
-     SELECT
+SELECT
       COALESCE(userid,i_userid),
 	  COALESCE(forumid,0),
 	  COALESCE(ReadAccess,0), 
@@ -178,8 +181,7 @@ FOR _rec IN SELECT
 			     RETURN NEXT _rec;
 			 END LOOP;
 END;$BODY$
-    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-    COST 100 ROWS 1000; 
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_vaccess_combo_rows
@@ -221,8 +223,7 @@ $BODY$DECLARE
 	  END IF;
 	  END LOOP;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000; 
+     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_delete
@@ -245,9 +246,8 @@ BEGIN
 
 RETURN 1::integer;
 
-  END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
- COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
  --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_list
@@ -256,8 +256,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_list
 						   i_accessmaskid integer,
 						   i_excludeflags integer
 						   )
-                  RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type 
-AS
+                  RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type AS
 $BODY$
 DECLARE
        _rec databaseSchema.objectQualifier_accessmask_list_return_type%ROWTYPE;
@@ -294,8 +293,7 @@ BEGIN
       END LOOP;
  END IF;     
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;   
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;   
 --GO
 
 -- Function: databaseSchema.objectQualifier_accessmask_save(integer, integer, varchar, integer, integer, integer, integer, integer, integer, integer, integer, integer, integer, integer)
@@ -320,13 +318,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_save
 						   i_downloadaccess boolean, 
 						   i_sortorder smallint
 						   )
-                  RETURNS void 
-AS
-  $BODY$
-      DECLARE
-	   ici_flags integer:=0;
-   BEGIN
-IF i_readaccess IS NOT FALSE THEN
+                  RETURNS void AS
+$BODY$DECLARE
+             ici_flags integer:=0;
+BEGIN
+IF i_readaccess IS NOT FALSE THEN 
 ici_flags := ici_flags | 1;
 END IF;
 IF i_postaccess IS NOT FALSE THEN
@@ -370,10 +366,8 @@ ELSE
        WHERE  accessmaskid = i_accessmaskid;
 END IF;
 RETURN;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: databaseSchema.objectQualifier_active_list(integer, boolean)
@@ -388,11 +382,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list
 						   i_interval integer,
 						   i_stylednicks boolean,
 						   i_utctimestamp timestampTZ)
-				  RETURNS SETOF databaseSchema.objectQualifier_active_list_return_type 
-  AS
-  $BODY$DECLARE
-  _rec databaseSchema.objectQualifier_active_list_return_type%ROWTYPE;
-  BEGIN
+				  RETURNS SETOF databaseSchema.objectQualifier_active_list_return_type AS
+$BODY$DECLARE
+             _rec databaseSchema.objectQualifier_active_list_return_type%ROWTYPE;
+BEGIN
   -- Default i_guests  boolean 0
 
   -- delete non-active
@@ -539,9 +532,7 @@ ELSE
           end loop;
 END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100
-  ROWS 1000;
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100 ROWS 1000;
 --GO
 
 -- Function: databaseSchema.objectQualifier_active_list_user(integer, boolean)
@@ -560,12 +551,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list_user
 						   )
 				  RETURNS SETOF databaseSchema.objectQualifier_active_list_user_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_active_list_user_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_active_list_user_return_type%ROWTYPE;
 BEGIN
 -- Default i_guests  boolean 0
-
--- delete non-active
- 
+-- delete non-active 
 DELETE FROM databaseSchema.objectQualifier_active
 WHERE    lastactive < i_utctimestamp - (i_interval::varchar(11) || ' minute')::interval;
         -- SELECT active
@@ -705,9 +694,7 @@ ELSE
           end loop; 
 END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100
-  ROWS 1000; 
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 -- Function: objectQualifier_active_listforum(integer)
@@ -761,10 +748,8 @@ BEGIN
     END LOOP;
 RETURN;
 END;$BODY$
-
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;
-  --GO
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
+--GO
 
 -- Function: objectQualifier_active_listtopic(integer)
 
@@ -811,8 +796,7 @@ FOR _rec IN
 				    RETURN NEXT _rec;
 				END LOOP;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000; 
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 -- Function: objectQualifier_active_stats(integer)
@@ -871,11 +855,9 @@ AND usr.isactiveexcluded IS TRUE LIMIT 1);
 
 -- Only one record
 	RETURN  _rec;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100; 
-  --GO
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100; 
+--GO
 
 -- Function: databaseSchema.objectQualifier_active_updatemaxstats(integer)
 
@@ -933,10 +915,8 @@ AND name = 'maxusers')::integer,0))	THEN
            AND name = 'maxuserswhen';
 	END  IF;
 	
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_attachment_delete(integer)
@@ -967,8 +947,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_attachment_download
 'UPDATE databaseSchema.objectQualifier_attachment
 SET    downloads = downloads + 1
 WHERE  attachmentid = $1;'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER 
-  COST 100;
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 
@@ -1095,10 +1074,8 @@ END LOOP;
 END LOOP; 
    END IF; 
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;  
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;  
 --GO
-
 
 -- Function: objectQualifier_attachment_save(integer, varchar, integer, varchar, bytea)
 
@@ -1117,10 +1094,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_attachment_save
 'INSERT INTO databaseSchema.objectQualifier_attachment
     (messageid,filename,bytes,contenttype,downloads,filedata)
  VALUES ($1,$2,$3,$4,0,$5);'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100;
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;
   --GO
-
 
 -- Function: objectQualifier_bannedip_delete(integer)
 
@@ -1137,8 +1112,7 @@ DELETE FROM databaseSchema.objectQualifier_bannedip
 WHERE       id = i_id;
 RETURN;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
   --GO 
 
 -- Function: objectQualifier_bannedip_list(integer, integer)
@@ -1201,8 +1175,7 @@ LOOP
 END LOOP;
 END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;
   --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_bannedip_save
@@ -1240,10 +1213,8 @@ WHERE  id = i_id;
 END;
 END IF;
 RETURN;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_bbcode_delete(integer)
@@ -1261,10 +1232,8 @@ BEGIN
  		DELETE FROM databaseSchema.objectQualifier_bbcode;
      END IF;
    RETURN;
- END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+ END;$BODY$
+     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
  
  -- Function: databaseSchema.objectQualifier_bbcode_list(integer, integer)
@@ -1327,9 +1296,8 @@ BEGIN
  		EXIT;
  		END LOOP; 
    END IF;   
- END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100
   ROWS 1000;
 --GO
 
@@ -1386,10 +1354,8 @@ $BODY$
  	    END IF; 
  	END IF;
  	RETURN;
- END;	
- 	$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_board_create(varchar, varchar, varchar, varchar, varchar, boolean)
@@ -1601,10 +1567,8 @@ BEGIN
   VALUES(l_GroupIDMember,l_ForumID,l_AccessMaskIDMember);
 
  RETURN ici_boardid;
-  END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_board_delete(integer)
@@ -1615,8 +1579,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_delete(
                            i_boardid integer)
 				  RETURNS void AS
 $BODY$DECLARE 
-itmpForumID integer;
-board_cursor refcursor; 
+             itmpForumID integer;
+			 board_cursor refcursor; 
 BEGIN
   
   
@@ -1687,10 +1651,8 @@ END LOOP;
   DELETE FROM databaseSchema.objectQualifier_board
   WHERE       boardid = i_boardid;
   RETURN;
-  END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
   --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_list(
@@ -1725,9 +1687,8 @@ BEGIN
   WHERE  boardid = i_boardid;
   RETURN  NEXT _rec;
   END IF;
-  END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000; 
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_poststats(
@@ -1799,8 +1760,7 @@ RETURN _rec;
 -- this can be in any very rare updatable cached place 
 	
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: databaseSchema.objectQualifier_board_userstats(integer)
@@ -1811,7 +1771,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_userstats(
                            i_boardid integer)
 				  RETURNS databaseSchema.objectQualifier_board_userstats_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_board_userstats_return_type;
+             _rec databaseSchema.objectQualifier_board_userstats_return_type;
 BEGIN
     
     SELECT COUNT(1) INTO _rec."Members"
@@ -1848,8 +1808,7 @@ ORDER BY "LastMemberInfoID","LastMemberID" DESC LIMIT 1;
 
 RETURN _rec;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_board_resync(integer)
@@ -1860,9 +1819,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_resync(
                            i_boardid integer)
 				  RETURNS void AS
 $BODY$DECLARE
-currBoards refcursor;
-itmpBoardID integer;
-nullForum integer;
+             currBoards refcursor;
+			 itmpBoardID integer;
+			 nullForum integer;
 BEGIN
  	IF i_boardid IS NULL THEN 		
          OPEN currBoards  FOR
@@ -1883,10 +1842,8 @@ BEGIN
  		PERFORM databaseSchema.objectQualifier_forum_resync(i_boardid,nullForum);
  	END IF;
  	RETURN;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_board_save(integer, varchar, boolean)
@@ -1913,8 +1870,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_save(
 						   i_culture varchar, 
 						   i_allowthreaded boolean)
 				  RETURNS integer AS
-  $BODY$DECLARE
-  BEGIN
+$BODY$
+BEGIN
    	PERFORM databaseSchema.objectQualifier_registry_save('culture',i_culture,i_boardid);
 	PERFORM databaseSchema.objectQualifier_registry_save('language',i_languagefile,i_boardid);
 UPDATE databaseSchema.objectQualifier_board
@@ -1922,10 +1879,9 @@ UPDATE databaseSchema.objectQualifier_board
                allowthreaded = i_allowthreaded
         WHERE  boardid = i_boardid;
         RETURN i_boardid;
-  END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER 
-  COST 100; 
- --GO
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
+--GO
 
 -- Function: objectQualifier_board_stats(integer)
 
@@ -1935,7 +1891,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_stats(
                            i_boardid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_board_stats_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_board_stats_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_board_stats_return_type%ROWTYPE;
 BEGIN
  	IF i_boardid IS NULL THEN
  FOR _rec IN
@@ -1979,8 +1935,7 @@ LOOP
 END LOOP;
  	END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;
+     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_category_delete(integer)
@@ -1990,8 +1945,8 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_delete(
                            i_categoryid integer)
 				  RETURNS integer AS
-$BODY$ DECLARE 
- i_flag integer;
+$BODY$DECLARE 
+             i_flag integer;
 BEGIN
        
         IF EXISTS (SELECT 1
@@ -2018,7 +1973,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_list(
 						   i_categoryid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_category_list_return_type AS
 $BODY$DECLARE 
-_rec databaseSchema.objectQualifier_category_list_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_category_list_return_type%ROWTYPE;
 BEGIN
         
  	IF i_categoryid IS NULL THEN
@@ -2047,8 +2002,7 @@ END LOOP;
 END LOOP; 	
         END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000; 
+     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 -- Function: objectQualifier_category_listread(integer, integer, integer)
@@ -2061,7 +2015,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_listread(
 						   i_categoryid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_category_listread_return_type AS
 $BODY$DECLARE 
-_rec databaseSchema.objectQualifier_category_listread_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_category_listread_return_type%ROWTYPE;
 BEGIN
 -- we don't need b.forumid,b.flags - they used to check access 
 FOR _rec IN
@@ -2090,10 +2044,8 @@ IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_user
 RETURN NEXT _rec;
 END IF;
 END LOOP;	
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;  
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;  
 --GO
 
 -- STORED PROCEDURE CREATED BY VZ-TEAM 
@@ -2106,8 +2058,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_simplelist(
 						   i_limit integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_category_simplelist_return_type AS
 $BODY$DECLARE
-cntr integer :=0;
-_rec databaseSchema.objectQualifier_category_simplelist_return_type%ROWTYPE;
+             cntr integer :=0;
+             _rec databaseSchema.objectQualifier_category_simplelist_return_type%ROWTYPE;
 BEGIN
 FOR _rec IN
 SELECT   c.categoryid,
@@ -2121,10 +2073,8 @@ EXIT WHEN cntr >= i_limit;
 cntr:=cntr+1;
 END LOOP;
 
-    END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100
-  ROWS 1000;
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
 --GO
   COMMENT ON FUNCTION databaseSchema.objectQualifier_category_simplelist(integer, integer) IS 'i_startid is real id, i_limit is number of record to return';
 --GO
@@ -2140,10 +2090,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_save(
 						   i_name varchar, 
 						   i_sortorder smallint, 
 						   i_categoryimage varchar)
-				  RETURNS databaseSchema.objectQualifier_category_save_return_type AS
+				  RETURNS integer AS
 $BODY$DECLARE
-ici_sortorder smallint:=i_sortorder; 
-_rec databaseSchema.objectQualifier_category_save_return_type;
+             ici_sortorder smallint:=i_sortorder;
+			 ici_categoryid integer :=i_categoryid ;
 BEGIN
  IF ici_sortorder > 0 THEN 
     IF EXISTS(SELECT 1 FROM databaseSchema.objectQualifier_category 
@@ -2169,7 +2119,6 @@ SET    name = i_name ,
 categoryimage = i_categoryimage,
 sortorder = ici_sortorder
 WHERE  categoryid = i_categoryid ;
-SELECT i_categoryid INTO _rec ;
 ELSE
 INSERT INTO databaseSchema.objectQualifier_category
 (boardid,
@@ -2180,12 +2129,11 @@ VALUES     (i_boardid,
 substr(i_name, 1, 128),
 i_categoryimage,
 ici_sortorder);
-  SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_category','categoryid')) INTO _rec; 
+  SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_category','categoryid')) INTO ici_categoryid; 
 END IF;
-RETURN  _rec;
+RETURN  ici_categoryid;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_checkemail_list(varchar)
@@ -2196,7 +2144,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_checkemail_list(
                            i_email varchar)
 				  RETURNS SETOF databaseSchema.objectQualifier_checkemail_list_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_checkemail_list_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_checkemail_list_return_type%ROWTYPE;
 BEGIN
 IF i_email IS NULL THEN
 FOR _rec IN
@@ -2221,10 +2169,8 @@ SELECT  checkemailid,
 END LOOP; 	
 END IF;
 
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
 --GO
 
 -- Function: objectQualifier_checkemail_save(integer, varchar, varchar)
@@ -2241,8 +2187,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_checkemail_save(
 (userid,email,created,hash)
 VALUES
 ($1,LOWER($3),$4,$2);'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100;
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;
 --GO
  COMMENT ON FUNCTION databaseSchema.objectQualifier_checkemail_save(integer, varchar, varchar,timestampTZ ) IS 'Saves email message data for delivering in CheckEmail table.';
 --GO
@@ -2254,13 +2199,12 @@ VALUES
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_checkemail_update(
                            i_hash varchar)
 				  RETURNS SETOF databaseSchema.objectQualifier_checkemail_update_return_type AS
-$BODY$DECLARE 
-l_UserID integer;
-l_CheckEmailID integer;
-l_Email varchar(50);
-_rec databaseSchema.objectQualifier_checkemail_update_return_type%ROWTYPE;
-BEGIN
- 
+$BODY$DECLARE
+             l_UserID integer;
+			 l_CheckEmailID integer;
+			 l_Email varchar(50);
+			 _rec databaseSchema.objectQualifier_checkemail_update_return_type%ROWTYPE;
+BEGIN 
 SELECT
 checkemailid,
 userid,
@@ -2291,8 +2235,7 @@ LOOP
 END LOOP;
 END IF;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100 ROWS 1000;  
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100 ROWS 1000;  
 --GO
 
 -- Function: objectQualifier_choice_add(integer, varchar)
@@ -2309,8 +2252,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_choice_add(
 (pollid, choice, votes, objectpath, mimetype)
 VALUES
 ($1, $2, 0, $3, $4);'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100; 
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
   COMMENT ON FUNCTION databaseSchema.objectQualifier_choice_add(integer, varchar, varchar, varchar) IS 'Inserts a single Poll option into Choice table';
 --GO
@@ -2324,8 +2266,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_choice_delete(
 				  RETURNS void AS
 'DELETE FROM databaseSchema.objectQualifier_choice
 WHERE choiceid = $1;'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100;  
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;  
 --GO
 
 -- Function: objectQualifier_choice_update(integer, varchar)
@@ -2341,8 +2282,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_choice_update(
 'UPDATE databaseSchema.objectQualifier_choice
 SET choice = $2, objectpath =$3, mimetype = $4
 WHERE choiceid = $1;'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100;  
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;  
 --GO
 
 -- Function: objectQualifier_choice_vote(integer, integer, varchar)
@@ -2355,7 +2295,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_choice_vote(
 						   i_remoteip varchar)
 				  RETURNS void AS
 $BODY$DECLARE
-l_PollID integer;
+             l_PollID integer;
 BEGIN
 SELECT pollid INTO l_PollID 
 FROM databaseSchema.objectQualifier_choice 
@@ -2373,10 +2313,8 @@ INSERT INTO databaseSchema.objectQualifier_pollvote (pollid, userid, remoteip, c
 END IF;
 
 UPDATE databaseSchema.objectQualifier_choice SET votes = votes + 1 WHERE choiceid = i_choiceid;
-END;
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_eventlog_create(integer, varchar, text, integer)
@@ -2391,7 +2329,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_eventlog_create(
 						   i_utctimestamp timestampTZ)
 				  RETURNS void AS
 $BODY$DECLARE
-topLogID integer;
+             topLogID integer;
 BEGIN
 
 INSERT INTO databaseSchema.objectQualifier_eventlog
@@ -2407,9 +2345,8 @@ i_type,
 i_utctimestamp);
 
  RETURN; 
-    END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_eventlog_delete(integer, integer)
@@ -2435,9 +2372,8 @@ BEGIN
  		 -- delete just one event
  		DELETE FROM  databaseSchema.objectQualifier_eventlog WHERE eventlogid=i_eventlogid;
  	END IF;
- END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100;
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: objectQualifier_eventlog_list(integer)
@@ -2459,14 +2395,14 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_eventlog_list
 						   )
 				  RETURNS SETOF databaseSchema.objectQualifier_eventlog_list_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_eventlog_list_return_type%ROWTYPE;
-ici_eventid varchar(11);
-i_eventids text := TRIM(BOTH FROM i_eventids) || ',';
-ici_pos integer := POSITION(',' IN i_eventids);
-ici_messagearray int array;
-ici_msgcntr int := 0;
-ici_firstselectrownumber int := 0;
-ici_totalrows integer := 0;
+             _rec databaseSchema.objectQualifier_eventlog_list_return_type%ROWTYPE;
+			 ici_eventid varchar(11);
+			 i_eventids text := TRIM(BOTH FROM i_eventids) || ',';
+			 ici_pos integer := POSITION(',' IN i_eventids);
+			 ici_messagearray int array;
+			 ici_msgcntr int := 0;
+			 ici_firstselectrownumber int := 0;
+			 ici_totalrows integer := 0;
 BEGIN 
 -- i_eventids := TRIM(BOTH FROM i_messageids) || ',';
 -- ici_pos := POSITION(',' IN i_eventids);
@@ -2577,8 +2513,7 @@ END LOOP;
 
 end if;
 END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100 ROWS 1000;   
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100 ROWS 1000;   
 --GO
 
 -- Function: objectQualifier_extension_delete(integer)
@@ -2590,8 +2525,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_extension_delete(
 				  RETURNS void AS
 'DELETE FROM databaseSchema.objectQualifier_extension 
  	WHERE extensionid = $1;'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100; 
+LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: objectQualifier_extension_edit(integer)
@@ -2602,7 +2536,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_extension_edit(
                            i_extensionid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_extension_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_extension_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_extension_return_type%ROWTYPE;
 BEGIN
 FOR _rec IN
  	SELECT extensionid,
@@ -2615,9 +2549,8 @@ FOR _rec IN
 	RETURN NEXT _rec;
 END LOOP;
 
- END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100 ROWS 1000; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
 -- Function: objectQualifier_extension_list(integer, varchar)
@@ -2629,10 +2562,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_extension_list(
 						   i_extension varchar)
 				  RETURNS SETOF databaseSchema.objectQualifier_extension_return_type AS
 $BODY$DECLARE 
- _rec databaseSchema.objectQualifier_extension_return_type%ROWTYPE;
- 
- BEGIN
- 
+             _rec databaseSchema.objectQualifier_extension_return_type%ROWTYPE; 
+BEGIN 
  	-- If an extension is passed, THEN we want to check for THAT extension-
  	IF i_extension IS NOT NULL THEN
  		FOR _rec IN
@@ -2646,7 +2577,6 @@ $BODY$DECLARE
  				boardid = i_boardid AND extension=i_extension
  			ORDER BY
  				extension
-
  LOOP
 	RETURN NEXT _rec;
 END LOOP;
@@ -2669,10 +2599,8 @@ END LOOP;
         END LOOP;
  	END IF;
 
- END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;  
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;  
 --GO
 
 -- Function: objectQualifier_extension_save(integer, integer, varchar)
@@ -2685,7 +2613,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_extension_save(
 						   i_extension varchar)
 				  RETURNS void AS
 $BODY$
- BEGIN
+BEGIN
  	IF i_extensionid IS NULL OR i_extensionid = 0 THEN
  		INSERT INTO databaseSchema.objectQualifier_extension (boardid,extension) 
  		VALUES(i_boardid,i_extension);
@@ -2694,9 +2622,8 @@ $BODY$
  		SET extension = i_extension 
  		WHERE extensionid = i_extensionid;
  	END IF;
- END;$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: databaseSchema.objectQualifier_forum_delete(integer)
@@ -2705,8 +2632,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_delete(
                            i_forumid integer)
 				  RETURNS void AS
 $BODY$DECLARE
-itmpTopicID integer;
-topic_cursor refcursor;
+             itmpTopicID integer;
+             topic_cursor refcursor;
 BEGIN      
 
         -- Maybe an idea to use cascading foreign keys instead Too bad they don't work on MS SQL 7.0...
@@ -2776,12 +2703,8 @@ END LOOP;
 
         DELETE FROM databaseSchema.objectQualifier_forum
         WHERE       forumid = i_forumid;
-    END;
-
-
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: databaseSchema.objectQualifier_forum_delete(integer)
@@ -2790,14 +2713,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_move(
                            i_forumoldid integer, i_forumnewid integer)
 				  RETURNS void AS
 $BODY$DECLARE
-itmpTopicID integer;
-topic_cursor refcursor;
-BEGIN      
-
-
- 
-	
-
+             itmpTopicID integer;
+			 topic_cursor refcursor;
+BEGIN 
         UPDATE databaseSchema.objectQualifier_forum
         SET    lastmessageid = NULL,
                 lasttopicid = NULL
@@ -2825,10 +2743,8 @@ LOOP
   PERFORM databaseSchema.objectQualifier_topic_move(itmpTopicID, i_forumnewid, false,-1, current_timestamp);
   EXIT WHEN NOT FOUND;
 END LOOP;        
-           CLOSE topic_cursor;
-      
-        -- TopicDelete finished 
-      
+           CLOSE topic_cursor;      
+        -- TopicDelete finished       
         DELETE FROM databaseSchema.objectQualifier_forumaccess
         WHERE       forumid = i_forumid;
       
@@ -2841,23 +2757,22 @@ END LOOP;
 
         DELETE FROM databaseSchema.objectQualifier_forum
         WHERE       forumid = i_forumoldid;
-    END;
-
-$BODY$
-  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
-  COST 100; 
+END;$BODY$
+    LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100; 
 --GO
 
 -- Function: databaseSchema.objectQualifier_forum_list(integer, integer)
 
 -- DROP FUNCTION databaseSchema.objectQualifier_forum_list(integer, integer);
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_list(
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_list
+                           (
                            i_boardid integer, 
-						   i_forumid integer)
+						   i_forumid integer
+						   )
 				  RETURNS SETOF databaseSchema.objectQualifier_forum_list_return_type  AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_forum_list_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_forum_list_return_type%ROWTYPE;
 BEGIN
        IF i_forumid IS NULL THEN
        FOR _rec IN 
@@ -2919,10 +2834,8 @@ RETURN NEXT _rec;
 END LOOP;
         END IF;
 
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100;
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;
 --GO
 
 -- Function: databaseSchema.objectQualifier_forum_listall(integer, integer, integer)
@@ -3024,10 +2937,8 @@ END IF;
 END LOOP;
 END IF;
 
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;  
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;  
   --GO
 
 -- Function: databaseSchema.objectQualifier_forum_listall_fromcat(integer, integer)
@@ -3039,7 +2950,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listall_fromcat(
 						   i_categoryid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_forum_listall_fromcat_return_type AS
 $BODY$DECLARE
-_rec databaseSchema.objectQualifier_forum_listall_fromcat_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_forum_listall_fromcat_return_type%ROWTYPE;
 BEGIN
 FOR _rec IN
  	SELECT     b.categoryid, 
@@ -3061,9 +2972,8 @@ LOOP
 RETURN NEXT _rec;
 END LOOP;
 			
- END;$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100 ROWS 1000;   
+END;$BODY$
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;   
 --GO
 
 -- Function: databaseSchema.objectQualifier_forum_listallmymoderated(integer, integer)

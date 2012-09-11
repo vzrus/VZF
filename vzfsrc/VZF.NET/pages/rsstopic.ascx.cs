@@ -612,8 +612,7 @@ namespace YAF.Pages
         {
             var syndicationItems = new List<SyndicationItem>();
             using (
-                DataTable dt = LegacyDb.forum_listread(
-                    this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false))
+                DataTable dt = LegacyDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 

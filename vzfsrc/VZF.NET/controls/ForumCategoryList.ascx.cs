@@ -80,8 +80,7 @@ namespace YAF.Controls
 				categoryId = icategoryId;
 			}
 
-			DataTable dt = LegacyDb.forum_listread(
-				boardID: this.PageContext.PageBoardID,
+			DataTable dt = LegacyDb.forum_listread(PageContext.PageModuleID, boardID: this.PageContext.PageBoardID,
 				userID: this.PageContext.PageUserID,
 				categoryID: categoryId,
 				parentID: null,

@@ -860,7 +860,7 @@ namespace YAF.Pages
             DataRow forumInfo;
             bool isForumModerated = false;
 
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -946,7 +946,7 @@ namespace YAF.Pages
             DataRow forumInfo;
             bool isForumModerated = false;
 
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -1229,7 +1229,7 @@ namespace YAF.Pages
             DataRow forumInfo;
 
             // get  forum information
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -1270,7 +1270,7 @@ namespace YAF.Pages
             DataRow forumInfo;
 
             // get topic and forum information
-            using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
