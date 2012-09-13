@@ -130,7 +130,7 @@ namespace YAF.Controls
         /// </summary>
         protected void BindData()
         {
-            this._sig.Text = LegacyDb.user_getsignature(this.CurrentUserID);
+            this._sig.Text = LegacyDb.user_getsignature(PageContext.PageModuleID, this.CurrentUserID);
 
             this.signaturePreview.Signature = this._sig.Text;
             this.signaturePreview.DisplayUserID = this.CurrentUserID;
@@ -176,7 +176,7 @@ namespace YAF.Controls
             this._sig.BaseDir = YafForumInfo.ForumClientFileRoot + "editors";
             this._sig.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
 
-            DataTable sigData = LegacyDb.user_getsignaturedata(this.CurrentUserID, YafContext.Current.PageBoardID);
+            DataTable sigData = LegacyDb.user_getsignaturedata(PageContext.PageModuleID, this.CurrentUserID, YafContext.Current.PageBoardID);
             if (sigData.Rows.Count > 0)
             {
                 this._allowedBbcodes = sigData.Rows[0]["UsrSigBBCodes"].ToString().Trim().Trim(',').Trim();

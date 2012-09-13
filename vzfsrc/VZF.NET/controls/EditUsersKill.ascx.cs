@@ -65,8 +65,7 @@ namespace YAF.Controls
       {
           return this._allPostsByUser ??
                  (this._allPostsByUser =
-                  LegacyDb.post_alluser(
-                      this.PageContext.PageBoardID, this.CurrentUserID, this.PageContext.PageUserID, null));
+                  LegacyDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, this.PageContext.PageUserID, null));
       }
     }
 
@@ -214,7 +213,7 @@ namespace YAF.Controls
       var messageIds =
         (from m in this.AllPostsByUser.AsEnumerable() select m.Field<int>("MessageID")).Distinct().ToList();
 
-      messageIds.ForEach(x => LegacyDb.message_delete(x, true, string.Empty, 1, true));
+      messageIds.ForEach(x => LegacyDb.message_delete(PageContext.PageModuleID, x, true, string.Empty, 1, true));
     }
 
     #endregion

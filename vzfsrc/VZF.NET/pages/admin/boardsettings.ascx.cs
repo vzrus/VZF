@@ -121,7 +121,7 @@ namespace YAF.Pages.Admin
 
             // bind poll group list
             var pollGroup =
-                LegacyDb.PollGroupList(this.PageContext.PageUserID, null, this.PageContext.PageBoardID).Distinct(
+                LegacyDb.PollGroupList(PageContext.PageModuleID, this.PageContext.PageUserID, null, this.PageContext.PageBoardID).Distinct(
                     new AreEqualFunc<TypedPollGroup>((v1, v2) => v1.PollGroupID == v2.PollGroupID)).ToList();
 
             pollGroup.Insert(0, new TypedPollGroup(string.Empty, -1));

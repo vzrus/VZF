@@ -91,7 +91,7 @@ namespace YAF.Core.Services
           Constants.Cache.ReplaceWords, 
           () =>
             {
-              var replaceWords = LegacyDb.replace_words_list(YafContext.Current.PageBoardID, null).AsEnumerable();
+                var replaceWords = LegacyDb.replace_words_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).AsEnumerable();
 
               // move to collection...
               return

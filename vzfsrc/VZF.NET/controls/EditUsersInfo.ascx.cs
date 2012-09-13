@@ -134,8 +134,7 @@ namespace YAF.Controls
           IsApproved = this.IsApproved.Checked
         };
 
-      LegacyDb.user_adminsave(
-        this.PageContext.PageBoardID, 
+      LegacyDb.user_adminsave(PageContext.PageModuleID, this.PageContext.PageBoardID, 
         this.CurrentUserID, 
         this.Name.Text.Trim(), 
         this.DisplayName.Text.Trim(), 
@@ -153,7 +152,7 @@ namespace YAF.Controls
     /// </summary>
     private void BindData()
     {
-      this.RankID.DataSource = LegacyDb.rank_list(this.PageContext.PageBoardID, null);
+      this.RankID.DataSource = LegacyDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
       this.RankID.DataValueField = "RankID";
       this.RankID.DataTextField = "Name";
       this.RankID.DataBind();

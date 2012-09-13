@@ -68,9 +68,8 @@ namespace YAF.Pages
         {
             if (this.TopicSubject.Text != string.Empty)
             {
-                long nTopicId = LegacyDb.topic_create_by_message(
-                  this.Request.QueryString.GetFirstOrDefault("m"), this.ForumList.SelectedValue, this.TopicSubject.Text);
-                LegacyDb.message_move(this.Request.QueryString.GetFirstOrDefault("m"), nTopicId, true);
+                long nTopicId = LegacyDb.topic_create_by_message(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("m"), this.ForumList.SelectedValue, this.TopicSubject.Text);
+                LegacyDb.message_move(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("m"), nTopicId, true);
                 YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
             }
             else
@@ -90,7 +89,7 @@ namespace YAF.Pages
         /// </param>
         protected void ForumList_SelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            this.TopicsList.DataSource = LegacyDb.topic_list(this.ForumList.SelectedValue, null, DateTimeHelper.SqlDbMinTime(), DateTime.UtcNow, 0, 32762, false, false, false);
+            this.TopicsList.DataSource = LegacyDb.topic_list(PageContext.PageModuleID, this.ForumList.SelectedValue, null, DateTimeHelper.SqlDbMinTime(), DateTime.UtcNow, 0, 32762, false, false, false);
             this.TopicsList.DataTextField = "Subject";
             this.TopicsList.DataValueField = "TopicID";
             this.TopicsList.DataBind();
@@ -111,7 +110,7 @@ namespace YAF.Pages
         {
             if (this.TopicsList.SelectedValue.ToType<int>() != this.PageContext.PageTopicID)
             {
-                LegacyDb.message_move(this.Request.QueryString.GetFirstOrDefault("m"), this.TopicsList.SelectedValue, true);
+                LegacyDb.message_move(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("m"), this.TopicsList.SelectedValue, true);
             }
 
             YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);

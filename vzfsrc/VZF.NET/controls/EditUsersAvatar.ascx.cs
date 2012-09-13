@@ -99,7 +99,7 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void DeleteAvatar_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            LegacyDb.user_deleteavatar(this._currentUserID);
+            LegacyDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
 
             // clear the cache for this user...
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this._currentUserID));
@@ -236,7 +236,7 @@ namespace YAF.Controls
                 }
 
                 // Delete old first...
-                LegacyDb.user_deleteavatar(this._currentUserID);
+                LegacyDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
 
                 LegacyDb.user_saveavatar(
                     this._currentUserID,

@@ -103,8 +103,7 @@ namespace YAF.Pages.Admin
             }
 
             // save group, if there is no message specified, pass null
-            LegacyDb.group_medal_save(
-              this.AvailableGroupList.SelectedValue,
+            LegacyDb.group_medal_save(PageContext.PageModuleID, this.AvailableGroupList.SelectedValue,
               this.Request.QueryString.GetFirstOrDefault("m"),
               this.GroupMessage.Text.IsNotSet() ? null : this.GroupMessage.Text,
               this.GroupHide.Checked,
@@ -442,7 +441,7 @@ namespace YAF.Pages.Admin
                 case "edit":
 
                     // load group-medal to the controls
-                    using (DataTable dt = LegacyDb.group_medal_list(e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m")))
+                    using (DataTable dt = LegacyDb.group_medal_list(PageContext.PageModuleID, e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m")))
                     {
                         // prepare editing interface
                         this.AddGroup_Click(null, e);
@@ -468,7 +467,7 @@ namespace YAF.Pages.Admin
 
                     break;
                 case "remove":
-                    LegacyDb.group_medal_delete(e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m"));
+                    LegacyDb.group_medal_delete(PageContext.PageModuleID, e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m"));
 
                     // remove all user medals...
                     this.RemoveMedalsFromCache();
@@ -630,8 +629,7 @@ namespace YAF.Pages.Admin
             imageSize = this.GetImageSize(smallImageURL.ToString());
 
             // save medal
-            LegacyDb.medal_save(
-              this.PageContext.PageBoardID,
+            LegacyDb.medal_save(PageContext.PageModuleID, this.PageContext.PageBoardID,
               medalID,
               this.Name.Text,
               this.Description.Text,
@@ -787,14 +785,14 @@ namespace YAF.Pages.Admin
                 // load users and groups who has been assigned this medal
                 this.UserList.DataSource = LegacyDb.user_medal_list(null, this.Request.QueryString.GetFirstOrDefault("m"));
                 this.UserList.DataBind();
-                this.GroupList.DataSource = LegacyDb.group_medal_list(null, this.Request.QueryString.GetFirstOrDefault("m"));
+                this.GroupList.DataSource = LegacyDb.group_medal_list(PageContext.PageModuleID, null, this.Request.QueryString.GetFirstOrDefault("m"));
                 this.GroupList.DataBind();
 
                 // enable adding users/groups
                 this.AddUserRow.Visible = true;
                 this.AddGroupRow.Visible = true;
 
-                using (DataTable dt = LegacyDb.medal_list(this.Request.QueryString.GetFirstOrDefault("m")))
+                using (DataTable dt = LegacyDb.medal_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("m")))
                 {
                     // get data row
                     DataRow row = dt.Rows[0];
@@ -820,7 +818,7 @@ namespace YAF.Pages.Admin
                     this.SelectImage(this.SmallRibbonImage, this.SmallRibbonPreview, row["SmallRibbonURL"]);
                 }
 
-                using (DataTable dt = LegacyDb.group_list(this.PageContext.PageBoardID, null))
+                using (DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
                 {
                     this.AvailableGroupList.DataSource = dt;
                     this.AvailableGroupList.DataTextField = "Name";

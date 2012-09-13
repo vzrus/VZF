@@ -119,8 +119,7 @@ namespace YAF.Core
 
                 do
                 {
-                    pageRow = LegacyDb.pageload(
-                        this.Get<HttpSessionStateBase>().SessionID,
+                    pageRow = LegacyDb.pageload(YafContext.Current.PageModuleID, this.Get<HttpSessionStateBase>().SessionID,
                         YafContext.Current.PageBoardID,
                         userKey,
                         this.Get<HttpRequestBase>().UserHostAddress,

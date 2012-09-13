@@ -149,7 +149,7 @@ namespace YAF.Core.Services
                 {
                     // all is well, delete this message...
                     this.Logger.Debug("Deleting email to {0} (ID: {1})".FormatWith(message.ToUser, message.MailID));
-                    LegacyDb.mail_delete(message.MailID);
+                    LegacyDb.mail_delete(YafContext.Current.PageModuleID, message.MailID);
                 }
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@ namespace YAF.Core.Services
                 // Build a MailMessage
                 if (mail.FromUser.IsNotSet() || mail.ToUser.IsNotSet())
                 {
-                    LegacyDb.mail_delete(mail.MailID.Value);
+                    LegacyDb.mail_delete(YafContext.Current.PageModuleID, mail.MailID.Value);
                     continue;
                 }
 
@@ -216,7 +216,7 @@ namespace YAF.Core.Services
                 catch (FormatException ex)
                 {
                     // incorrect email format -- delete this message immediately
-                    LegacyDb.mail_delete(mail.MailID);
+                    LegacyDb.mail_delete(YafContext.Current.PageModuleID, mail.MailID);
 #if (DEBUG)
                     this.Logger.Debug("Invalid Email Address: {0}".FormatWith(ex.ToString()), ex.ToString());
 #else
@@ -241,7 +241,7 @@ namespace YAF.Core.Services
                 this.Logger.Debug("Retrieving queued mail...");
                 Thread.BeginCriticalRegion();
 
-                mailList = LegacyDb.MailList(this._uniqueId).ToList();
+                mailList = LegacyDb.MailList(YafContext.Current.PageModuleID, this._uniqueId).ToList();
 
                 this.Logger.Debug("Got {0} Messages...".FormatWith(mailList.Count()));
             }

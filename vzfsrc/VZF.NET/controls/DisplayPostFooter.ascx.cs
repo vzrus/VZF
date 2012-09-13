@@ -195,8 +195,7 @@ namespace YAF.Controls
                         Constants.Cache.AlbumCountUser.FormatWith(this.PostData.UserId),
                         () =>
                             {
-                                DataTable usrAlbumsData = LegacyDb.user_getalbumsdata(
-                                    this.PostData.UserId, YafContext.Current.PageBoardID);
+                                DataTable usrAlbumsData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PostData.UserId, YafContext.Current.PageBoardID);
                                 return usrAlbumsData.GetFirstRowColumnAsValue<int?>("NumAlbums", null);
                             },
                         TimeSpan.FromMinutes(5));

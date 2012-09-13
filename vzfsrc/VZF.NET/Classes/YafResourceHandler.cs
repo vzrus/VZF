@@ -596,7 +596,7 @@ namespace YAF
         {
             try
             {
-                using (DataTable dt = LegacyDb.user_avatarimage(context.Request.QueryString.GetFirstOrDefault("u")))
+                using (DataTable dt = LegacyDb.user_avatarimage(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("u")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -668,8 +668,7 @@ namespace YAF
                 userKey = user.ProviderUserKey;
             }
 
-            DataRow pageRow = LegacyDb.pageload(
-                HttpContext.Current.Session.SessionID,
+            DataRow pageRow = LegacyDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
                 boardID,
                 userKey,
                 HttpContext.Current.Request.UserHostAddress,

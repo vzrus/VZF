@@ -200,8 +200,7 @@ namespace YAF.Controls
             switch (this.CurrentMode)
             {
                 case TopicListMode.Active:
-                    topicList = LegacyDb.topic_active(
-                        this.PageContext.PageBoardID,
+                    topicList = LegacyDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -212,8 +211,7 @@ namespace YAF.Controls
                         this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     break;
                 case TopicListMode.Unanswered:
-                    topicList = LegacyDb.topic_unanswered(
-                        this.PageContext.PageBoardID,
+                    topicList = LegacyDb.topic_unanswered(PageContext.PageModuleID, this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -226,8 +224,7 @@ namespace YAF.Controls
                 case TopicListMode.Unread:
                     if (!this.Get<YafBoardSettings>().UseReadTrackingByDatabase)
                     {
-                        topicList = LegacyDb.topic_active(
-                            this.PageContext.PageBoardID,
+                        topicList = LegacyDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryIdObject,
                             this.PageContext.PageUserID,
                             this.sinceDate,
@@ -239,8 +236,7 @@ namespace YAF.Controls
                     }
                     else
                     {
-                        topicList = LegacyDb.topic_unread(
-                       this.PageContext.PageBoardID,
+                        topicList = LegacyDb.topic_unread(PageContext.PageModuleID, this.PageContext.PageBoardID,
                        categoryIdObject,
                        this.PageContext.PageUserID,
                        this.sinceDate,
@@ -253,8 +249,7 @@ namespace YAF.Controls
                     }
                     break;
                 case TopicListMode.User:
-                    topicList = LegacyDb.Topics_ByUser(
-                        this.PageContext.PageBoardID,
+                    topicList = LegacyDb.Topics_ByUser(PageContext.PageModuleID, this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -265,8 +260,7 @@ namespace YAF.Controls
                         this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     break;
                 case TopicListMode.Favorite:
-                    topicList = LegacyDb.topic_favorite_details(
-                        this.PageContext.PageBoardID,
+                    topicList = LegacyDb.topic_favorite_details(PageContext.PageModuleID, this.PageContext.PageBoardID,
                         (YafContext.Current.Settings.CategoryID == 0)
                             ? null
                             : (object)YafContext.Current.Settings.CategoryID,

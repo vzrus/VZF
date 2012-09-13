@@ -91,7 +91,7 @@ namespace YAF.Core.Services
 
                 if (!lastRead.HasValue && this._boardSettings.UseReadTrackingByDatabase && !this.IsGuest)
                 {
-                    lastRead = LegacyDb.User_LastRead(this.CurrentUserID);
+                    lastRead = LegacyDb.User_LastRead(YafContext.Current.PageModuleID, this.CurrentUserID);
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace YAF.Core.Services
                     else
                     {
                         // last option is to load from the forum...
-                        readTime = LegacyDb.ReadForum_lastread(this.CurrentUserID, forumID);
+                        readTime = LegacyDb.ReadForum_lastread(YafContext.Current.PageModuleID, this.CurrentUserID, forumID);
                     }
 
                     // save value in session so that the db doesn't get called again...
@@ -205,7 +205,7 @@ namespace YAF.Core.Services
                     else
                     {
                         // last option is to load from the forum...
-                        readTime = LegacyDb.Readtopic_lastread(this.CurrentUserID, topicID);
+                        readTime = LegacyDb.Readtopic_lastread(YafContext.Current.PageModuleID, this.CurrentUserID, topicID);
                     }
 
                     // save value in session so that the db doesn't get called again...
@@ -229,7 +229,7 @@ namespace YAF.Core.Services
         {
             if (this._boardSettings.UseReadTrackingByDatabase && !this.IsGuest)
             {
-                LegacyDb.ReadForum_AddOrUpdate(this.CurrentUserID, forumID);
+                LegacyDb.ReadForum_AddOrUpdate(YafContext.Current.PageModuleID, this.CurrentUserID, forumID);
             }
 
             this._yafSession.SetForumRead(forumID, DateTime.UtcNow);
@@ -243,7 +243,7 @@ namespace YAF.Core.Services
         {
             if (this._boardSettings.UseReadTrackingByDatabase && !this.IsGuest)
             {
-                LegacyDb.Readtopic_AddOrUpdate(this.CurrentUserID, topicID);
+                LegacyDb.Readtopic_AddOrUpdate(YafContext.Current.PageModuleID, this.CurrentUserID, topicID);
             }
 
             this._yafSession.SetTopicRead(topicID, DateTime.UtcNow);

@@ -87,7 +87,7 @@ namespace YAF.Pages
               linkDays = ld;
           }
           // Ederon : 7/14/2007
-          LegacyDb.topic_move(this.PageContext.PageTopicID, this.ForumList.SelectedValue, this.LeavePointer.Checked, linkDays);
+          LegacyDb.topic_move(PageContext.PageModuleID, this.PageContext.PageTopicID, this.ForumList.SelectedValue, this.LeavePointer.Checked, linkDays);
       }
 
       YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);

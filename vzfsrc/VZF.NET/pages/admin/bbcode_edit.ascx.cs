@@ -138,7 +138,7 @@ namespace YAF.Pages.Admin
             return;
         }
 
-        DataRow row = LegacyDb.bbcode_list(this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0];
+        DataRow row = LegacyDb.bbcode_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0];
 
         // fill the control values...
         this.txtName.Text = row["Name"].ToString();

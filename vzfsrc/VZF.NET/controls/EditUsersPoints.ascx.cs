@@ -69,7 +69,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_addpoints(this.CurrentUserID, null, this.txtAddPoints.Text);
+            LegacyDb.user_addpoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtAddPoints.Text);
 
             this.BindData();
         }
@@ -144,7 +144,7 @@ namespace YAF.Controls
         /// </summary>
         private void BindData()
         {
-            this.ltrCurrentPoints.Text = LegacyDb.user_getpoints(this.CurrentUserID).ToString();
+            this.ltrCurrentPoints.Text = LegacyDb.user_getpoints(PageContext.PageModuleID, this.CurrentUserID).ToString();
         }
 
         #endregion

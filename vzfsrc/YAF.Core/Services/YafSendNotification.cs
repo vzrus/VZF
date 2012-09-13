@@ -237,7 +237,7 @@ namespace YAF.Core.Services
                 // Ederon : 11/21/2007 - PageBoardID as parameter of DB.pmessage_list?
                 // using (DataTable dt = DB.pmessage_list(toUserID, PageContext.PageBoardID, null))
                 int userPMessageId =
-                    LegacyDb.pmessage_list(toUserId, null, null).GetFirstRow().Field<int>("UserPMessageID");
+                    LegacyDb.pmessage_list(YafContext.Current.PageModuleID, toUserId, null, null).GetFirstRow().Field<int>("UserPMessageID");
 
                 /*// get the sender e-mail -- DISABLED: too much information...
                     // using ( DataTable dt = YAF.Classes.Data.DB.user_list( PageContext.PageBoardID, PageContext.PageUserID, true ) )
@@ -305,7 +305,7 @@ namespace YAF.Core.Services
             // TODO : Rewrite Watch Topic code to allow watch mails in the users language, as workaround send all messages in the default board language
             var languageFile = this.Get<YafBoardSettings>().Language;
 
-            foreach (var message in LegacyDb.MessageList(newMessageId))
+            foreach (var message in LegacyDb.MessageList(YafContext.Current.PageModuleID, newMessageId))
             {
                 int userId = message.UserID ?? 0;
 

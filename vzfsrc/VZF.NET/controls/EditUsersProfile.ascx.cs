@@ -435,7 +435,7 @@ namespace YAF.Controls
 
             if (dt.Rows.Count > 0 && dt.Rows[0]["IsGuest"].ToType<bool>())
             {
-                LegacyDb.registry_save("timezone", this.TimeZones.SelectedValue, this.PageContext.PageBoardID);
+                LegacyDb.registry_save(PageContext.PageModuleID, "timezone", this.TimeZones.SelectedValue, this.PageContext.PageBoardID);
             }
 
             // clear the cache for this user...)
@@ -760,7 +760,7 @@ namespace YAF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            LegacyDb.SetPropertyValues(PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this.currentUserID, settingsPropertyValueCollection);
+            LegacyDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this.currentUserID, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

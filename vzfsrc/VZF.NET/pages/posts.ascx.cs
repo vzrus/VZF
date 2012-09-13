@@ -192,7 +192,7 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied();
             }
 
-            LegacyDb.topic_delete(this.PageContext.PageTopicID);
+            LegacyDb.topic_delete(PageContext.PageModuleID, this.PageContext.PageTopicID);
             YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
         }
 
@@ -351,7 +351,7 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied();
             }
 
-            LegacyDb.topic_lock(this.PageContext.PageTopicID, true);
+            LegacyDb.topic_lock(PageContext.PageModuleID, this.PageContext.PageTopicID, true);
             this.BindData();
             this.PageContext.AddLoadMessage(this.GetText("INFO_TOPIC_LOCKED"));
             this.LockTopic1.Visible = !this.LockTopic1.Visible;
@@ -431,7 +431,7 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void NextTopic_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            using (DataTable dt = LegacyDb.topic_findnext(this.PageContext.PageTopicID))
+            using (DataTable dt = LegacyDb.topic_findnext(PageContext.PageModuleID, this.PageContext.PageTopicID))
             {
                 if (dt.Rows.Count == 0)
                 {
@@ -537,7 +537,7 @@ namespace YAF.Pages
             this._quickReplyEditor.BaseDir = "{0}editors".FormatWith(YafForumInfo.ForumClientFileRoot);
             this._quickReplyEditor.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
 
-            this._topic = LegacyDb.topic_info(this.PageContext.PageTopicID);
+            this._topic = LegacyDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
 
             // in case topic is deleted or not existant
             if (this._topic == null)
@@ -789,7 +789,7 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void PrevTopic_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            using (DataTable dt = LegacyDb.topic_findprev(this.PageContext.PageTopicID))
+            using (DataTable dt = LegacyDb.topic_findprev(PageContext.PageModuleID, this.PageContext.PageTopicID))
             {
                 if (dt.Rows.Count == 0)
                 {
@@ -870,7 +870,7 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied(/*"You are not a forum moderator."*/);
             }
 
-            LegacyDb.topic_lock(this.PageContext.PageTopicID, false);
+            LegacyDb.topic_lock(PageContext.PageModuleID, this.PageContext.PageTopicID, false);
             this.BindData();
             this.PageContext.AddLoadMessage(this.GetText("INFO_TOPIC_UNLOCKED"));
             this.LockTopic1.Visible = !this.LockTopic1.Visible;
@@ -1006,8 +1006,7 @@ namespace YAF.Pages
             // Mark topic read
             this.Get<IReadTrackCurrentUser>().SetTopicRead(this.PageContext.PageTopicID);
 
-            DataTable postListDataTable = LegacyDb.post_list(
-                this.PageContext.PageTopicID,
+            DataTable postListDataTable = LegacyDb.post_list(PageContext.PageModuleID, this.PageContext.PageTopicID,
                 this.PageContext.PageUserID,
                 userId,
                 this.IsPostBack || PageContext.IsCrawler ? 0 : 1,
@@ -1192,8 +1191,7 @@ namespace YAF.Pages
                         {
                             // we find message position always by time.
                             using (
-                                DataTable lastPost = LegacyDb.message_findunread(
-                                    topicID: this.PageContext.PageTopicID,
+                                DataTable lastPost = LegacyDb.message_findunread(PageContext.PageModuleID, topicID: this.PageContext.PageTopicID,
                                     messageId: this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
                                     lastRead: DateTimeHelper.SqlDbMinTime(),
                                     showDeleted: showDeleted,
@@ -1225,8 +1223,7 @@ namespace YAF.Pages
 
                             // Find next unread
                             using (
-                                DataTable unread = LegacyDb.message_findunread(
-                                    topicID: this.PageContext.PageTopicID,
+                                DataTable unread = LegacyDb.message_findunread(PageContext.PageModuleID, topicID: this.PageContext.PageTopicID,
                                     messageId: 0,
                                     lastRead: lastRead,
                                     showDeleted: showDeleted,
@@ -1255,8 +1252,7 @@ namespace YAF.Pages
                         {
                             // Find next unread
                             using (
-                                DataTable unread = LegacyDb.message_findunread(
-                                    topicID: this.PageContext.PageTopicID,
+                                DataTable unread = LegacyDb.message_findunread(PageContext.PageModuleID, topicID: this.PageContext.PageTopicID,
                                     messageId: 0,
                                     lastRead: DateTime.UtcNow,
                                     showDeleted: showDeleted,
@@ -1633,8 +1629,7 @@ namespace YAF.Pages
 
             // Bypass Approval if Admin or Moderator.
             if (
-                !LegacyDb.message_save(
-                    topicID,
+                !LegacyDb.message_save(PageContext.PageModuleID, topicID,
                     this.PageContext.PageUserID,
                     msg,
                     null,
@@ -1663,7 +1658,7 @@ namespace YAF.Pages
 
             bool bApproved = false;
 
-            using (DataTable dt = LegacyDb.message_list(nMessageId))
+            using (DataTable dt = LegacyDb.message_list(PageContext.PageModuleID, nMessageId))
             {
                 foreach (DataRow row in dt.Rows)
                 {

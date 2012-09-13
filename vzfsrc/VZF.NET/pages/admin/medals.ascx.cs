@@ -104,17 +104,17 @@ namespace YAF.Pages.Admin
                 case "delete":
 
                     // delete medal
-                    LegacyDb.medal_delete(e.CommandArgument);
+                    LegacyDb.medal_delete(PageContext.PageModuleID, e.CommandArgument);
 
                     // re-bind data
                     this.BindData();
                     break;
                 case "moveup":
-                    LegacyDb.medal_resort(this.PageContext.PageBoardID, e.CommandArgument, -1);
+                    LegacyDb.medal_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, -1);
                     this.BindData();
                     break;
                 case "movedown":
-                    LegacyDb.medal_resort(this.PageContext.PageBoardID, e.CommandArgument, 1);
+                    LegacyDb.medal_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, 1);
                     this.BindData();
                     break;
             }

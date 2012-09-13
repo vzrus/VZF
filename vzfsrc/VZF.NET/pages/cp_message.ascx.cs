@@ -125,11 +125,11 @@ namespace YAF.Pages
                 case "delete":
                     if (this.IsOutbox)
                     {
-                        LegacyDb.pmessage_delete(e.CommandArgument, true);
+                        LegacyDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument, true);
                     }
                     else
                     {
-                        LegacyDb.pmessage_delete(e.CommandArgument);
+                        LegacyDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument);
                     }
 
                     this.BindData();
@@ -200,8 +200,7 @@ namespace YAF.Pages
         {
             using (
                 DataTable dt =
-                    LegacyDb.pmessage_list(
-                        Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm"))))
+                    LegacyDb.pmessage_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm"))))
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -255,7 +254,7 @@ namespace YAF.Pages
 
             var userPmessageId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm").ToType<int>();
 
-            LegacyDb.pmessage_markread(userPmessageId);
+            LegacyDb.pmessage_markread(PageContext.PageModuleID, userPmessageId);
             this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(this.PageContext.PageUserID));
             this.Get<IRaiseEvent>().Raise(
                 new UpdateUserPrivateMessageEvent(this.PageContext.PageUserID, userPmessageId));

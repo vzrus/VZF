@@ -83,8 +83,7 @@ namespace YAF.Pages
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
             int baseSize = this.Get<YafBoardSettings>().TopicsPerPage;
             int nCurrentPageIndex = this.PagerTop.CurrentPageIndex;
-            DataTable dt = LegacyDb.topic_list(
-                this.PageContext.PageForumID,
+            DataTable dt = LegacyDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                 null,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
@@ -119,7 +118,7 @@ namespace YAF.Pages
                 this.topiclist.Controls.OfType<RepeaterItem>().SelectMany(x => x.Controls.OfType<TopicLine>()).Where(
                     x => x.IsSelected && x.TopicRowID.HasValue).ToList();
 
-            list.ForEach(x => LegacyDb.topic_delete(x.TopicRowID));
+            list.ForEach(x => LegacyDb.topic_delete(PageContext.PageModuleID, x.TopicRowID));
 
             this.PageContext.AddLoadMessage(this.GetText("moderate", "deleted"));
             this.BindData();
@@ -224,7 +223,7 @@ namespace YAF.Pages
             switch (e.CommandName)
             {
                 case "delete":
-                    LegacyDb.topic_delete(e.CommandArgument);
+                    LegacyDb.topic_delete(PageContext.PageModuleID, e.CommandArgument);
                     this.PageContext.AddLoadMessage(this.GetText("deleted"));
                     this.BindData();
                     break;

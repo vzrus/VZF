@@ -107,7 +107,7 @@ namespace YAF.Pages
       }
 
       // Save the reported message
-      LegacyDb.message_report(this.messageID, this.PageContext.PageUserID, DateTime.UtcNow, this.reportEditor.Text);
+      LegacyDb.message_report(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID, DateTime.UtcNow, this.reportEditor.Text);
 
       // Send Notification to Mods about the Reported Post.
       if (this.Get<YafBoardSettings>().EmailModeratorsOnReportedPost)
@@ -192,13 +192,13 @@ namespace YAF.Pages
         }
 
         // Get reported message text for better quoting                    
-        DataTable messageRow = LegacyDb.message_secdata(this.messageID, this.PageContext.PageUserID);
+        DataTable messageRow = LegacyDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID);
 
         // Checking if the user has a right to view the message and getting data  
         if (messageRow.Rows.Count > 0)
         {
             // populate the repeater with the message datarow...
-            this.MessageList.DataSource = LegacyDb.message_secdata(this.messageID, this.PageContext.PageUserID);
+            this.MessageList.DataSource = LegacyDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID);
             this.MessageList.DataBind();
         }
         else

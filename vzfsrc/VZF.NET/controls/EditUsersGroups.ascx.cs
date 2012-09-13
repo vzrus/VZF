@@ -134,7 +134,7 @@ namespace YAF.Controls
 
         // get role name
         string roleName = string.Empty;
-        using (DataTable dt = LegacyDb.group_list(this.PageContext.PageBoardID, roleID))
+        using (DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, roleID))
         {
           foreach (DataRow row in dt.Rows)
           {
@@ -191,7 +191,7 @@ namespace YAF.Controls
     private void BindData()
     {
       // get user roles
-      this.UserGroups.DataSource = LegacyDb.group_member(this.PageContext.PageBoardID, this.CurrentUserID);
+      this.UserGroups.DataSource = LegacyDb.group_member(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID);
 
       // bind data to controls
       this.DataBind();

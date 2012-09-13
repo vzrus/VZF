@@ -88,8 +88,7 @@ namespace YAF.Controls.Statistics
         () =>
           {
             // nothing was cached, retrieve it from the database
-            var dt = LegacyDb.topic_latest(
-              this.PageContext.PageBoardID,
+            var dt = LegacyDb.topic_latest(PageContext.PageModuleID, this.PageContext.PageBoardID,
               this._displayNumber,
               this.PageContext.PageUserID,
               this.Get<YafBoardSettings>().UseStyledNicks,

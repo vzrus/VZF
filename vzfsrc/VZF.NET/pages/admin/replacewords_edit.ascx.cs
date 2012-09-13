@@ -127,7 +127,7 @@ namespace YAF.Pages.Admin
             return;
         }
 
-        DataRow row = LegacyDb.replace_words_list(this.PageContext.PageBoardID, id).Rows[0];
+        DataRow row = LegacyDb.replace_words_list(PageContext.PageModuleID, this.PageContext.PageBoardID, id).Rows[0];
         this.badword.Text = (string)row["badword"];
         this.goodword.Text = (string)row["goodword"];
     }
@@ -157,8 +157,7 @@ namespace YAF.Pages.Admin
         }
         else
         {
-            LegacyDb.replace_words_save(
-                this.PageContext.PageBoardID,
+            LegacyDb.replace_words_save(PageContext.PageModuleID, this.PageContext.PageBoardID,
                 this.Request.QueryString.GetFirstOrDefault("i"),
                 this.badword.Text,
                 this.goodword.Text);

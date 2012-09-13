@@ -99,8 +99,7 @@ namespace YAF.Core
 
             try
             {
-                userID = LegacyDb.user_aspnet(
-                    pageBoardID, user.UserName, displayName, user.Email, user.ProviderUserKey, user.IsApproved);
+                userID = LegacyDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, displayName, user.Email, user.ProviderUserKey, user.IsApproved);
 
                 foreach (string role in GetRolesForUser(user.UserName))
                 {
@@ -253,7 +252,7 @@ namespace YAF.Core
         /// <param name="userName">Name of the user.</param>
         public static void SetupUserRoles(int pageBoardID, [NotNull] string userName)
         {
-            using (DataTable dt = LegacyDb.group_list(pageBoardID, DBNull.Value))
+            using (DataTable dt = LegacyDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
             {
                 foreach (string roleName in from DataRow row in dt.Rows
                                             let roleFlags = new GroupFlags(row["Flags"])
@@ -297,7 +296,7 @@ namespace YAF.Core
         public static void SyncRoles(int pageModuleID,int pageBoardID)
         {
             // get all the groups in YAF DB and create them if they do not exist as a role in membership
-            using (DataTable dt = LegacyDb.group_list(pageBoardID, DBNull.Value))
+            using (DataTable dt = LegacyDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
             {
                 foreach (var name in from DataRow row in dt.Rows let name = (string)row["Name"] let roleFlags = new GroupFlags(row["Flags"]) where name.IsSet() && !roleFlags.IsGuest && !RoleExists(name) select name)
                 {
@@ -383,11 +382,10 @@ namespace YAF.Core
             // is this a new user?
             bool isNewUser = userId <= 0;
 
-            userId = LegacyDb.user_aspnet(
-                pageBoardID, user.UserName, null, user.Email, user.ProviderUserKey, user.IsApproved);
+            userId = LegacyDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, null, user.Email, user.ProviderUserKey, user.IsApproved);
 
             // get user groups...
-            DataTable groupTable = LegacyDb.group_member(pageBoardID, userId);
+            DataTable groupTable = LegacyDb.group_member(YafContext.Current.PageModuleID, pageBoardID, userId);
             string[] userRoles = GetRolesForUser(user.UserName);
 
             if (Config.IsDotNetNuke && roles != null)

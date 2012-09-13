@@ -184,7 +184,7 @@ namespace YAF.Pages
         this._forum = dt.Rows[0];
       }
 
-      this._topic = LegacyDb.topic_info(this.PageContext.PageTopicID);
+      this._topic = LegacyDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
 
       if (this.IsPostBack)
       {
@@ -215,7 +215,7 @@ namespace YAF.Pages
       // Check that non-moderators only edit messages they have written
       if (!this.PageContext.ForumModeratorAccess)
       {
-        using (DataTable dt = LegacyDb.message_list(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m")))
+        using (DataTable dt = LegacyDb.message_list(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m")))
         {
           if ((int)dt.Rows[0]["UserID"] != this.PageContext.PageUserID)
           {

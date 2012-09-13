@@ -352,7 +352,7 @@ namespace YAF.Pages
             }
 
             if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().AllowCreateTopicsSameName)
-                && LegacyDb.topic_findduplicate(this.TopicSubjectTextBox.Text.Trim()) == 1 && this.TopicID == null
+                && LegacyDb.topic_findduplicate(PageContext.PageModuleID, this.TopicSubjectTextBox.Text.Trim()) == 1 && this.TopicID == null
                 && this.EditMessageID == null)
             {
                 this.PageContext.AddLoadMessage(this.GetText("SUBJECT_DUPLICATE"));
@@ -469,13 +469,13 @@ namespace YAF.Pages
             this.PageContext.QueryIDs = new QueryStringIDHelper(new[] { "m", "t", "q", "page" }, false);
 
             TypedMessageList currentMessage = null;
-            DataRow topicInfo = LegacyDb.topic_info(this.PageContext.PageTopicID);
+            DataRow topicInfo = LegacyDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
 
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
                 currentMessage =
-                    LegacyDb.MessageList(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>()).FirstOrDefault();
+                    LegacyDb.MessageList(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>()).FirstOrDefault();
 
                 this.OriginalMessage = currentMessage.Message;
 
@@ -505,7 +505,7 @@ namespace YAF.Pages
             }
             else if (this.EditMessageID != null)
             {
-                currentMessage = LegacyDb.MessageList(this.EditMessageID.ToType<int>()).FirstOrDefault();
+                currentMessage = LegacyDb.MessageList(PageContext.PageModuleID, this.EditMessageID.ToType<int>()).FirstOrDefault();
 
                 this.OriginalMessage = currentMessage.Message;
 
@@ -586,7 +586,7 @@ namespace YAF.Pages
 
                     this.TopicStatus.Items.Add(new ListItem("   ", "-1"));
 
-                    foreach (DataRow row in LegacyDb.TopicStatus_List(this.PageContext.PageBoardID).Rows)
+                    foreach (DataRow row in LegacyDb.TopicStatus_List(PageContext.PageModuleID, this.PageContext.PageBoardID).Rows)
                     {
                         var text = this.GetText("TOPIC_STATUS", row["TopicStatusName"].ToString());
 
@@ -689,8 +689,7 @@ namespace YAF.Pages
                                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>());
                             }
 
-                            var messages = LegacyDb.post_list(
-                                this.TopicID,
+                            var messages = LegacyDb.post_list(PageContext.PageModuleID, this.TopicID,
                                 this.PageContext.PageUserID,
                                 this.PageContext.PageUserID,
                                 0,
@@ -799,7 +798,7 @@ namespace YAF.Pages
             // Mek Suggestion: This should be removed, resetting flags on edit is a bit lame.
             // Ederon : now it should be better, but all this code around forum/topic/message flags needs revamp
             // retrieve message flags
-            var messageFlags = new MessageFlags(LegacyDb.message_list(this.EditMessageID).Rows[0]["Flags"])
+            var messageFlags = new MessageFlags(LegacyDb.message_list(PageContext.PageModuleID, this.EditMessageID).Rows[0]["Flags"])
                 {
                     IsHtml = this._forumEditor.UsesHTML,
                     IsBBCode = this._forumEditor.UsesBBCode,
@@ -808,8 +807,7 @@ namespace YAF.Pages
 
             bool isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
 
-            LegacyDb.message_update(
-                this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
+            LegacyDb.message_update(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
                 this.Priority.SelectedValue,
                 this._forumEditor.Text.Trim(),
                 descriptionSave.Trim(),
@@ -894,8 +892,7 @@ namespace YAF.Pages
             string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);
 
             // Save to Db
-            topicId = LegacyDb.topic_save(
-                this.PageContext.PageForumID,
+            topicId = LegacyDb.topic_save(PageContext.PageModuleID, this.PageContext.PageForumID,
                 this.TopicSubjectTextBox.Text.Trim(),
                 this.TopicStatus.SelectedValue.Equals("-1") || this.TopicStatus.SelectedIndex.Equals(0)
                     ? string.Empty
@@ -979,8 +976,7 @@ namespace YAF.Pages
                     IsApproved = isSpamApproved
                 };
 
-            LegacyDb.message_save(
-                this.TopicID.Value,
+            LegacyDb.message_save(PageContext.PageModuleID, this.TopicID.Value,
                 this.PageContext.PageUserID,
                 this._forumEditor.Text,
                 this.User != null ? null : this.From.Text,
@@ -1071,7 +1067,7 @@ namespace YAF.Pages
 
             // Check if message is approved
             bool isApproved = false;
-            using (DataTable dt = LegacyDb.message_list(messageId))
+            using (DataTable dt = LegacyDb.message_list(PageContext.PageModuleID, messageId))
             {
                 foreach (DataRow row in dt.Rows)
                 {
@@ -1192,7 +1188,7 @@ namespace YAF.Pages
                 return;
             }
 
-            string userSig = LegacyDb.user_getsignature(this.PageContext.PageUserID);
+            string userSig = LegacyDb.user_getsignature(PageContext.PageModuleID, this.PageContext.PageUserID);
 
             if (userSig.IsSet())
             {
@@ -1462,7 +1458,7 @@ namespace YAF.Pages
         /// </summary>
         private void InitReplyToTopic()
         {
-            DataRow topic = LegacyDb.topic_info(this.TopicID);
+            DataRow topic = LegacyDb.topic_info(PageContext.PageModuleID, this.TopicID);
             var topicFlags = new TopicFlags(topic["Flags"].ToType<int>());
 
             // Ederon : 9/9/2007 - moderators can reply in locked topics

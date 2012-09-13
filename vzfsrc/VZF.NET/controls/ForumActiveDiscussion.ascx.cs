@@ -230,8 +230,7 @@ namespace YAF.Controls
             {
                 this.Get<IYafSession>().UnreadTopics = 0;
 
-                activeTopics = LegacyDb.topic_latest(
-                    boardID: this.PageContext.PageBoardID,
+                activeTopics = LegacyDb.topic_latest(PageContext.PageModuleID, boardID: this.PageContext.PageBoardID,
                     numOfPostsToRetrieve: this.Get<YafBoardSettings>().ActiveDiscussionsCount,
                     pageUserId: this.PageContext.PageUserID,
                     useStyledNicks: this.Get<YafBoardSettings>().UseStyledNicks,

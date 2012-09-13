@@ -396,8 +396,7 @@ namespace YAF.Pages
             using (
                 DataTable dt =
                     this.TabledCleanUpByDate(
-                        LegacyDb.topic_active(
-                            this.PageContext.PageBoardID,
+                        LegacyDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryActiveId,
                             this.PageContext.PageUserID,
                             toActDate,
@@ -517,8 +516,7 @@ namespace YAF.Pages
             using (
                 DataTable dt =
                     this.TabledCleanUpByDate(
-                        LegacyDb.topic_favorite_details(
-                            this.PageContext.PageBoardID,
+                        LegacyDb.topic_favorite_details(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryActiveId,
                             this.PageContext.PageUserID,
                             toFavDate,
@@ -692,8 +690,7 @@ namespace YAF.Pages
         {
             var syndicationItems = new List<SyndicationItem>();
             using (
-                DataTable dt = LegacyDb.topic_announcements(
-                    this.PageContext.PageBoardID, 10, this.PageContext.PageUserID))
+                DataTable dt = LegacyDb.topic_announcements(PageContext.PageModuleID, this.PageContext.PageBoardID, 10, this.PageContext.PageUserID))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 
@@ -814,8 +811,7 @@ namespace YAF.Pages
             var syndicationItems = new List<SyndicationItem>();
 
             using (
-                DataTable dataTopics = LegacyDb.rss_topic_latest(
-                    this.PageContext.PageBoardID,
+                DataTable dataTopics = LegacyDb.rss_topic_latest(PageContext.PageModuleID, this.PageContext.PageBoardID,
                     this.Get<YafBoardSettings>().ActiveDiscussionsCount <= 50
                         ? this.Get<YafBoardSettings>().ActiveDiscussionsCount
                         : 50,
@@ -929,8 +925,7 @@ namespace YAF.Pages
             }
 
             using (
-                DataTable dt = LegacyDb.post_list(
-                    topicId,
+                DataTable dt = LegacyDb.post_list(PageContext.PageModuleID, topicId,
                     this.PageContext.PageUserID,
                     userId,
                     0,
@@ -1049,7 +1044,7 @@ namespace YAF.Pages
             var syndicationItems = new List<SyndicationItem>();
 
             // vzrus changed to separate DLL specific code
-            using (DataTable dt = LegacyDb.rsstopic_list(forumId, this.Get<YafBoardSettings>().TopicsFeedItemsCount))
+            using (DataTable dt = LegacyDb.rsstopic_list((int?) PageContext.PageModuleID, forumId, this.Get<YafBoardSettings>().TopicsFeedItemsCount))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 

@@ -88,8 +88,7 @@ namespace YAF.Pages.Admin
         if (this.Request.QueryString.GetFirstOrDefault("s") != null)
         {
             using (
-                DataTable dt = LegacyDb.nntpserver_list(
-                    this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("s")))
+                DataTable dt = LegacyDb.nntpserver_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("s")))
             {
                 DataRow row = dt.Rows[0];
                 this.Name.Text = row["Name"].ToString();
@@ -134,8 +133,7 @@ namespace YAF.Pages.Admin
         nntpServerID = this.Request.QueryString.GetFirstOrDefault("s");
       }
 
-      LegacyDb.nntpserver_save(
-        nntpServerID, 
+      LegacyDb.nntpserver_save(PageContext.PageModuleID, nntpServerID, 
         this.PageContext.PageBoardID, 
         this.Name.Text, 
         this.Address.Text, 

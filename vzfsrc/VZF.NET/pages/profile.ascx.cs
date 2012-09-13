@@ -119,7 +119,7 @@ namespace YAF.Pages
                 {
                     // Check if a user have permissions to have albums, even if he has no albums at all.
                     var usrAlbums =
-                        LegacyDb.user_getalbumsdata(albumUser, YafContext.Current.PageBoardID).GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
+                        LegacyDb.user_getalbumsdata(PageContext.PageModuleID, albumUser, YafContext.Current.PageBoardID).GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
 
                     if (usrAlbums.HasValue && usrAlbums > 0)
                     {
@@ -367,8 +367,7 @@ namespace YAF.Pages
             if (this.LastPosts.Visible)
             {
                 this.LastPosts.DataSource =
-                    LegacyDb.post_alluser(
-                    this.PageContext.PageBoardID, 
+                    LegacyDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, 
                     this.UserId, 
                     this.PageContext.PageUserID, 
                     10).AsEnumerable();
@@ -685,8 +684,8 @@ namespace YAF.Pages
             }
 
             this.ThanksFrom.Text =
-                LegacyDb.user_getthanks_from(userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
-            int[] thanksToArray = LegacyDb.user_getthanks_to(userData.DBRow["userID"], this.PageContext.PageUserID);
+                LegacyDb.user_getthanks_from(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
+            int[] thanksToArray = LegacyDb.user_getthanks_to(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
             this.ThanksToTimes.Text = thanksToArray[0].ToString();
             this.ThanksToPosts.Text = thanksToArray[1].ToString();
             this.ReputationReceived.Text = userData.Points.ToString();

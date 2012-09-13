@@ -69,8 +69,7 @@ BEGIN
                 VALUES     ((SELECT NEXT VALUE FOR SEQ_objQual_REGISTRY_REGISTRYID FROM RDB$DATABASE),
                              Lower(:I_NAME),
                             :I_VALUE,
-                            :I_BOARDID);
-           
+                            :I_BOARDID);           
         END     
     
     END;

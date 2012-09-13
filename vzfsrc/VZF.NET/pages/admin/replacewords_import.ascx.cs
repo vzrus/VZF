@@ -81,7 +81,7 @@ namespace YAF.Pages.Admin
                 {
                     int importedCount = 0;
 
-                    DataTable replaceWordsList = LegacyDb.replace_words_list(this.PageContext.PageBoardID, null);
+                    DataTable replaceWordsList = LegacyDb.replace_words_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
                     // import any extensions that don't exist...
                     foreach (DataRow row in
@@ -91,7 +91,7 @@ namespace YAF.Pages.Admin
                                 "badword = '{0}' AND goodword = '{1}'".FormatWith(row["badword"], row["goodword"])).Length == 0))
                     {
                         // add this...
-                        LegacyDb.replace_words_save(this.PageContext.PageBoardID, null, row["badword"], row["goodword"]);
+                        LegacyDb.replace_words_save(PageContext.PageModuleID, this.PageContext.PageBoardID, null, row["badword"], row["goodword"]);
                         importedCount++;
                     }
 

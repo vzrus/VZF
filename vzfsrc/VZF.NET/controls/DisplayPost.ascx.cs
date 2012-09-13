@@ -302,7 +302,7 @@ namespace YAF.Controls
             this.AddReputation.Visible = false;
             this.RemoveReputation.Visible = false;
 
-            LegacyDb.user_addpoints(this.PostData.UserId, this.PageContext.PageUserID, 1);
+            LegacyDb.user_addpoints(PageContext.PageModuleID, this.PostData.UserId, this.PageContext.PageUserID, 1);
 
             this.DataRow["ReputationVoteDate"] = DateTime.UtcNow;
 

@@ -337,7 +337,7 @@ namespace YAF.Pages
 
                 // get quoted message
                 DataRow row =
-                    LegacyDb.pmessage_list(Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("p"))).GetFirstRow();
+                    LegacyDb.pmessage_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("p"))).GetFirstRow();
 
                 // there is such a message
                 if (row != null)
@@ -569,7 +569,7 @@ namespace YAF.Pages
                 string body = this._editor.Text;
                 var messageFlags = new MessageFlags { IsHtml = this._editor.UsesHTML, IsBBCode = this._editor.UsesBBCode };
 
-                LegacyDb.pmessage_save(YafContext.Current.PageUserID, 0, this.PmSubjectTextBox.Text, body, messageFlags.BitValue, replyTo);
+                LegacyDb.pmessage_save(PageContext.PageModuleID, YafContext.Current.PageUserID, 0, this.PmSubjectTextBox.Text, body, messageFlags.BitValue, replyTo);
 
                 // redirect to outbox (sent items), not control panel
                 YafBuildLink.Redirect(ForumPages.cp_pm, "v={0}", "out");
@@ -666,8 +666,7 @@ namespace YAF.Pages
 
                     var messageFlags = new MessageFlags { IsHtml = this._editor.UsesHTML, IsBBCode = this._editor.UsesBBCode };
 
-                    LegacyDb.pmessage_save(
-                    YafContext.Current.PageUserID, userId, this.PmSubjectTextBox.Text, body, messageFlags.BitValue, replyTo);
+                    LegacyDb.pmessage_save(PageContext.PageModuleID, YafContext.Current.PageUserID, userId, this.PmSubjectTextBox.Text, body, messageFlags.BitValue, replyTo);
 
                     // reset reciever's lazy data as he should be informed at once
                     this.Get<IDataCache>().Remove(

@@ -121,7 +121,7 @@ namespace YAF.Controls
       // TODO: Needs better commentting.
       writer.WriteLine(@"<div id=""{0}"" class=""yafReportedPosts"">".FormatWith(this.ClientID));
 
-      DataTable reportersList = LegacyDb.message_listreporters(this.MessageID);
+      DataTable reportersList = LegacyDb.message_listreporters((int?) PageContext.PageModuleID, this.MessageID);
 
         if (reportersList.Rows.Count <= 0)
         {

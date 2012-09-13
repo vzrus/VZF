@@ -99,8 +99,7 @@ public class YafWebService : WebService, IHaveServiceLocator
         long messageId = 0;
         string subjectEncoded = this.Server.HtmlEncode(subject);
 
-        return LegacyDb.topic_save(
-            forumid,
+        return LegacyDb.topic_save(YafContext.Current.PageModuleID, forumid,
             subjectEncoded,
             status,
             styles,

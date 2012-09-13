@@ -282,7 +282,7 @@ namespace YAF.Classes
         {
             var messages = this.Get<IDataCache>().GetOrSet(
                 "{0}_basic".FormatWith(Constants.Cache.Shoutbox),
-                () => LegacyDb.shoutbox_getmessages(boardId, 1, false).AsEnumerable(),
+                () => LegacyDb.shoutbox_getmessages(YafContext.Current.PageModuleID, boardId, 1, false).AsEnumerable(),
                 TimeSpan.FromMilliseconds(1000));
 
             var message = messages.FirstOrDefault();
@@ -343,8 +343,7 @@ namespace YAF.Classes
             if (membershipUser != null)
             {
                 var username =
-                    LegacyDb.message_AddThanks(
-                        UserMembershipHelper.GetUserIDFromProviderUserKey(membershipUser.ProviderUserKey), messageId, this.Get<YafBoardSettings>().EnableDisplayName);
+                    LegacyDb.message_AddThanks(YafContext.Current.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(membershipUser.ProviderUserKey), messageId, this.Get<YafBoardSettings>().EnableDisplayName);
 
                 // if the user is empty, return a null object...
                 return username.IsNotSet()
@@ -375,8 +374,7 @@ namespace YAF.Classes
             var messageID = msgID.ToType<int>();
 
             var username =
-                LegacyDb.message_RemoveThanks(
-                    UserMembershipHelper.GetUserIDFromProviderUserKey(Membership.GetUser().ProviderUserKey), messageID, this.Get<YafBoardSettings>().EnableDisplayName);
+                LegacyDb.message_RemoveThanks(YafContext.Current.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(Membership.GetUser().ProviderUserKey), messageID, this.Get<YafBoardSettings>().EnableDisplayName);
 
             return YafThankYou.CreateThankYou(username, "BUTTON_THANKS", "BUTTON_THANKS_TT", messageID);
         }

@@ -353,8 +353,7 @@ namespace YAF.Pages
                 }
             }
 
-            DataTable dt = LegacyDb.announcements_list(
-                this.PageContext.PageForumID,
+            DataTable dt = LegacyDb.announcements_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                 userId,
                 null,
                 DateTime.UtcNow,
@@ -388,8 +387,7 @@ namespace YAF.Pages
 
             if (this._showTopicListSelected == 0)
             {
-                dtTopics = LegacyDb.topic_list(
-                    this.PageContext.PageForumID,
+                dtTopics = LegacyDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                     userId,
                     DateTimeHelper.SqlDbMinTime(),
                     DateTime.UtcNow,
@@ -409,8 +407,7 @@ namespace YAF.Pages
 
                 DateTime date = DateTime.UtcNow.AddDays(-days[this._showTopicListSelected]);
 
-                dtTopics = LegacyDb.topic_list(
-                    this.PageContext.PageForumID,
+                dtTopics = LegacyDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                     userId,
                     date,
                     DateTime.UtcNow,

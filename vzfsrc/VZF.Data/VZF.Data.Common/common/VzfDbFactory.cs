@@ -798,6 +798,28 @@ namespace YAF.Classes.Data
           }
       }
 
+      static public DataTable bbcode_list(int? mid, object boardId, object bbcodeID)
+      {
+          string dataEngine;
+          string connectionString;
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+          switch (dataEngine)
+          {
+              // case "System.Data.SqlClient": return MsSql.LegacyDb.bbcode_list( connectionString,  boardId,  bbcodeID);
+              case "Npgsql": return Postgre.Db.bbcode_list(connectionString, boardId, bbcodeID);
+              case "MySql.Data.MySqlClient": return MySqlDb.Db.bbcode_list(connectionString, boardId, bbcodeID);
+              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bbcode_list(connectionString, boardId, bbcodeID);
+              // case "oracle":  return orPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
+              // case "db2":  return db2Postgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
+              // case "other":  return othPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
+              default:
+                  throw new ApplicationException("No return type");
+          }
+
+      }
+
       public static void bbcode_save(int? mid, object bbcodeID, object boardId, object name, object description, object onclickjs, object displayjs, object editjs, object displaycss, object searchregex, object replaceregex, object variables, object usemodule, object moduleclass, object execorder)
       {
           string dataEngine;
@@ -1443,7 +1465,7 @@ namespace YAF.Classes.Data
           string dataEngine;
           string connectionString;
           int? mid = 0;  string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
           switch (dataEngine)
           {
@@ -2011,11 +2033,6 @@ namespace YAF.Classes.Data
             }
         }
 
-        static private DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions)
-        {
-            return forum_sort_list(mid,listSource, parentID, categoryID, startingIndent, forumidExclusions, true);
-        }
-
         static public DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow)
         {
             DataTable listDestination = new DataTable();
@@ -2378,12 +2395,12 @@ namespace YAF.Classes.Data
                      throw new ApplicationException("No return type");
              }
          }
-         public static DataTable forumaccess_group(object groupID)
+         public static DataTable forumaccess_group(int? mid, object groupID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2396,15 +2413,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.forumaccess_group(connectionString, groupID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable forumaccess_list(object forumID)
+         public static DataTable forumaccess_list(int? mid, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2417,16 +2433,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.forumaccess_list(connectionString, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void forumaccess_save(object forumID, object groupID, object accessMaskID)
+         public static void forumaccess_save(int? mid, object forumID, object groupID, object accessMaskID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2439,19 +2454,18 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static IEnumerable<TypedForumListAll> ForumListAll(int boardId, int userId)
+         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId)
          {
-             return forum_listall(boardId, userId, 0).AsEnumerable().Select(r => new TypedForumListAll(r));
+             return forum_listall(mid,boardId, userId, 0).AsEnumerable().Select(r => new TypedForumListAll(r));
          }
-         public static IEnumerable<TypedForumListAll> ForumListAll(int boardId, int userId, int startForumId)
+         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, int startForumId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2464,16 +2478,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.ForumListAll(connectionString, boardId, userId, startForumId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static bool forumpage_initdb(out string errorStr, bool debugging)
+         public static bool forumpage_initdb(int? mid, out string errorStr, bool debugging)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2486,15 +2499,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static string forumpage_validateversion(int appVersion)
+         public static string forumpage_validateversion(int? mid, int appVersion)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2507,18 +2519,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.forumpage_validateversion(connectionString, appVersion); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static DataTable GetSearchResult(string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod,
-                                  SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userId, int boardId,
-                                  int maxResults, bool useFullText, bool searchDisplayName)
+         public static DataTable GetSearchResult(int? mid, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2531,16 +2540,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void group_delete(object groupID)
+         public static void group_delete(int? mid, object groupID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2553,15 +2561,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.group_delete(connectionString, groupID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable group_list(object boardId, object groupID)
+         public static DataTable group_list(int? mid, object boardId, object groupID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2574,15 +2581,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.group_list(connectionString, boardId, groupID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void group_medal_delete(object groupID, object medalID)
+         public static void group_medal_delete(int? mid, object groupID, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2595,15 +2601,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable group_medal_list(object groupID, object medalID)
+         public static DataTable group_medal_list(int? mid, object groupID, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2616,17 +2621,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.group_medal_list(connectionString, groupID, medalID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void group_medal_save(
-            object groupID, object medalID, object message,
-            object hide, object onlyRibbon, object sortOrder)
+         public static void group_medal_save(int? mid, object groupID, object medalID, object message, object hide, object onlyRibbon, object sortOrder)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2639,15 +2641,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable group_member(object boardId, object userId)
+         public static DataTable group_member(int? mid, object boardId, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2660,15 +2661,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.group_member(connectionString, boardId, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable group_rank_style(object boardID)
+         public static DataTable group_rank_style(int? mid, object boardID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2684,20 +2684,13 @@ namespace YAF.Classes.Data
                      break;
              }
          }
-         public static long group_save(object groupID, object boardId, object name,
-                        object isAdmin, object isGuest, object isStart, object isModerator,
-                        object accessMaskID, object pmLimit, object style, object sortOrder,
-                        object description,
-                        object usrSigChars,
-                        object usrSigBBCodes,
-                        object usrSigHTMLTags,
-                        object usrAlbums,
-                        object usrAlbumImages)
+
+         public static long group_save(int? mid, object groupID, object boardId, object name, object isAdmin, object isGuest, object isStart, object isModerator, object accessMaskID, object pmLimit, object style, object sortOrder, object description, object usrSigChars, object usrSigBBCodes, object usrSigHTMLTags, object usrAlbums, object usrAlbumImages)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2710,16 +2703,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void mail_create(object from, object fromName, object to, object toName, object subject, object body,
-                         object bodyHtml)
+         public static void mail_create(int? mid, object @from, object fromName, object to, object toName, object subject, object body, object bodyHtml)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2732,16 +2723,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void mail_createwatch(object topicID, object from, object fromName, object subject, object body, object bodyHtml,
-                              object userId)
+         public static void mail_createwatch(int? mid, object topicID, object @from, object fromName, object subject, object body, object bodyHtml, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2754,15 +2743,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void mail_delete(object mailID)
+         public static void mail_delete(int? mid, object mailID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2775,15 +2763,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.mail_delete(connectionString, mailID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static IEnumerable<TypedMailList> MailList(long processId)
+         public static IEnumerable<TypedMailList> MailList(int? mid, long processId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2796,35 +2783,36 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.MailList(connectionString, processId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         /// <summary>
-         /// Deletes given medals.
-         /// </summary>
-         /// <param name="boardId">ID of board of which medals to delete. Required.</param>
-         /// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
-         static public void medal_delete(object boardId, object category)
+        /// <summary>
+        /// Deletes given medals.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="boardId">ID of board of which medals to delete. Required.</param>
+        /// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
+        static public void medal_delete(int? mid, object boardId, object category)
          {
-             medal_delete(boardId, null, category);
+             medal_delete(mid,boardId, null, category);
          }
 
-         /// <summary>
-         /// Deletes given medal.
-         /// </summary>
-         /// <param name="medalID">ID of medal to delete.</param>
-         static public void medal_delete(object medalID)
+        /// <summary>
+        /// Deletes given medal.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="medalID">ID of medal to delete.</param>
+        static public void medal_delete(int? mid, object medalID)
          {
-             medal_delete(null, medalID, null);
+             medal_delete(mid,null, medalID, null);
          }
 
-         public static void medal_delete(object boardId, object medalID, object category)
+         public static void medal_delete(int? mid, object boardId, object medalID, object category)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2837,19 +2825,20 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         /// <summary>
-         /// Lists given medal.
-         /// </summary>
-         /// <param name="medalID">ID of medal to list.</param>
-         static public DataTable medal_list(object medalID)
+
+        /// <summary>
+        /// Lists given medal.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="medalID">ID of medal to list.</param>
+        static public DataTable medal_list(int? mid, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2862,22 +2851,23 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.medal_list(connectionString, null, medalID, null); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
              
          }
-         /// <summary>
-         /// Lists given medals.
-         /// </summary>
-         /// <param name="boardId">ID of board of which medals to list. Required.</param>
-         /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-         static public DataTable medal_list(object boardId, object category)
+
+        /// <summary>
+        /// Lists given medals.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="boardId">ID of board of which medals to list. Required.</param>
+        /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
+        static public DataTable medal_list(int? mid, object boardId, object category)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2890,24 +2880,25 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.medal_list(connectionString, boardId, null, category); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
       
         // DataTable mail_list(object processId); 
 
-         /// <summary>
-         /// Lists given medals.
-         /// </summary>
-         /// <param name="boardId">ID of board of which medals to list. Required.</param>
-         /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-         static public DataTable medal_listusers(object medalID)
+        /// <summary>
+        /// Lists given medals.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="medalID"> </param>
+        /// <param name="boardId">ID of board of which medals to list. Required.</param>
+        /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
+        static public DataTable medal_listusers(int? mid, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2920,17 +2911,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.medal_listusers(connectionString, medalID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void medal_resort(object boardId, object medalID, int move)
+         public static void medal_resort(int? mid, object boardId, object medalID, int move)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2943,18 +2933,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public bool medal_save(
-            object boardId, object medalID, object name, object description, object message, object category,
-            object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth,
-            object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
+         static public bool medal_save(int? mid, object boardId, object medalID, object name, object description, object message, object category, object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth, object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2967,16 +2953,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public string message_AddThanks(object fromUserID, object messageID, bool useDisplayName)
+         static public string message_AddThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -2989,16 +2974,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void message_approve(object messageID)
+         public static void message_approve(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3011,21 +2995,19 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_approve(connectionString, messageID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public void message_delete(object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
+         static public void message_delete(int? mid, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
          {
-             message_delete(messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
+             message_delete(mid,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
          }
 
-         public static void message_delete(object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction,
-                            bool DeleteLinked, bool eraseMessage)
+         public static void message_delete(int? mid, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool eraseMessage)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3038,16 +3020,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable message_findunread(object topicID, object messageId, object lastRead, object showDeleted,
-                                     object authorUserID)
+         static public DataTable message_findunread(int? mid, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3060,16 +3040,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_getRepliesList(object messageID)
+         static public DataTable message_getRepliesList(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3082,16 +3061,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_getRepliesList(connectionString, messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_GetTextByIds(string messageIDs)
+         static public DataTable message_GetTextByIds(int? mid, string messageIDs)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3104,16 +3082,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_GetTextByIds(connectionString, messageIDs); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_GetThanks(object messageID)
+         static public DataTable message_GetThanks(int mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3126,16 +3103,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_GetThanks(connectionString, messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_list(object messageID)
+         static public DataTable message_list(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3148,16 +3124,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_list(connectionString, messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_listreported(object forumID)
+         static public DataTable message_listreported(int? mid, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3170,29 +3145,27 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_listreported(connectionString, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
-
          }
 
-
-         /// <summary>
-         /// Here we get reporters list for a reported message
-         /// </summary>       
-         /// <param name="MessageID">Should not be NULL</param>
-         /// <returns>Returns reporters DataTable for a reported message.</returns>
-         static public DataTable message_listreporters(int messageID)
+        /// <summary>
+        /// Here we get reporters list for a reported message
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="messageID"> </param>
+        /// <param name="MessageID">Should not be NULL</param>
+        /// <returns>Returns reporters DataTable for a reported message.</returns>
+        static public DataTable message_listreporters(int? mid, int messageID)
          {
-
-             return message_listreporters(messageID, null);
-
+             return message_listreporters(mid,messageID, null);
          }
-         static public DataTable message_listreporters(int messageID, object userID)
+
+         static public DataTable message_listreporters(int? mid, int messageID, object userID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3205,16 +3178,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_listreporters(connectionString, messageID, userID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
-
          }
-         public static void message_move(object messageID, object moveToTopic, bool moveAll)
+         public static void message_move(int? mid, object messageID, object moveToTopic, bool moveAll)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3227,15 +3198,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public string message_RemoveThanks(object fromUserID, object messageID, bool useDisplayName)
+         static public string message_RemoveThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3248,16 +3218,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void message_report(object messageID, object userId, object reportedDateTime, object reportText)
+         public static void message_report(int? mid, object messageID, object userId, object reportedDateTime, object reportText)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3270,15 +3239,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void message_reportcopyover(object messageID)
+         public static void message_reportcopyover(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3291,15 +3259,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_reportcopyover(connectionString, messageID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void message_reportresolve(object messageFlag, object messageID, object userId)
+         public static void message_reportresolve(int? mid, object messageFlag, object messageID, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3312,24 +3279,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public bool message_save(
-            [NotNull] object topicId,
-            [NotNull] object userId,
-            [NotNull] object message,
-            [NotNull] object userName,
-            [NotNull] object ip,
-            [NotNull] object posted,
-            [NotNull] object replyTo,
-            [NotNull] object flags,
-            ref long messageId)
+         static public bool message_save(int? mid, [NotNull] object topicId, [NotNull] object userId, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags, ref long messageId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3342,16 +3299,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_secdata(int MessageID, object pageUserId)
+         static public DataTable message_secdata(int? mid, int MessageID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3364,16 +3320,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_secdata(connectionString, MessageID, pageUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_simplelist(int StartID, int Limit)
+         static public DataTable message_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3386,16 +3341,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_simplelist(connectionString, StartID, Limit); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public int message_ThanksNumber(object messageID)
+         static public int message_ThanksNumber(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3408,16 +3362,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_ThanksNumber(connectionString, messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable message_unapproved(object forumID)
+         static public DataTable message_unapproved(int? mid, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3430,19 +3383,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.message_unapproved(connectionString, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void message_update(object messageID, object priority, object message,object description, object status, object styles, object subject,
-                            object flags, object reasonOfEdit, object isModeratorChanged, object overrideApproval,
-                            object origMessage, object editedBy)
+         public static void message_update(int? mid, object messageID, object priority, object message, object description, object status, object styles, object subject, object flags, object reasonOfEdit, object isModeratorChanged, object overrideApproval, object origMessage, object editedBy)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3455,16 +3405,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public IEnumerable<TypedAllThanks> MessageGetAllThanks(string messageIdsSeparatedWithColon)
+         static public IEnumerable<TypedAllThanks> MessageGetAllThanks(int? mid, string messageIdsSeparatedWithColon)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3477,16 +3426,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable messagehistory_list(int messageID, int daysToClean)
+         static public DataTable messagehistory_list(int? mid, int messageID, int daysToClean)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3499,17 +3447,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.messagehistory_list(connectionString, messageID, daysToClean); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         static public IEnumerable<TypedMessageList> MessageList(int messageID)
+         static public IEnumerable<TypedMessageList> MessageList(int? mid, int messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3522,16 +3469,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.MessageList(connectionString, messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static DataTable moderators_team_list(bool useStyledNicks)
+         public static DataTable moderators_team_list(int? mid, bool useStyledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3544,15 +3490,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.moderators_team_list( connectionString,  useStyledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void Readtopic_AddOrUpdate([NotNull] object userID, [NotNull] object topicID)
+         public static void Readtopic_AddOrUpdate(int? mid, [NotNull] object userID, [NotNull] object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3565,21 +3510,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         /// <summary>
-         /// Delete the Read Tracking
-         /// </summary>
-         /// <param name="trackingID">
-         /// The tracking id.
-         /// </param>
+
         /* public static void ReadTopic_delete([NotNull] object trackingID)
          {
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3595,24 +3534,31 @@ namespace YAF.Classes.Data
                      break;
              }
          } */
-         /// <summary>
-         /// Get the Global Last Read DateTime User
-         /// </summary>
-         /// <param name="userID">
-         /// The user ID.
-         /// </param>
-         /// <param name="lastVisitDate">
-         /// The last Visit Date of the User
-         /// </param>
-         /// <returns>
-         /// Returns the Global Last Read DateTime
-         /// </returns>
-         public static DateTime? User_LastRead([NotNull] object userID)
+        /// <summary>
+        /// Delete the Read Tracking
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="userID">
+        /// The user ID.
+        /// </param>
+        /// <param name="trackingID">
+        /// The tracking id.
+        /// </param>
+        /// <summary>
+        /// Get the Global Last Read DateTime User
+        /// </summary>
+        /// <param name="lastVisitDate">
+        /// The last Visit Date of the User
+        /// </param>
+        /// <returns>
+        /// Returns the Global Last Read DateTime
+        /// </returns>
+        public static DateTime? User_LastRead(int? mid, [NotNull] object userID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3625,15 +3571,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.User_LastRead( connectionString,  userID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DateTime? Readtopic_lastread([NotNull] object userID, [NotNull] object topicID)
+         public static DateTime? Readtopic_lastread(int? mid, [NotNull] object userID, [NotNull] object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3646,15 +3591,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.Readtopic_lastread(connectionString, userID, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void ReadForum_AddOrUpdate([NotNull] object userID, [NotNull] object forumID)
+         public static void ReadForum_AddOrUpdate(int? mid, [NotNull] object userID, [NotNull] object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3667,7 +3611,6 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
          /* public static void ReadForum_delete([NotNull] object trackingID)
@@ -3675,7 +3618,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3692,12 +3635,12 @@ namespace YAF.Classes.Data
              }
          } */
 
-         public static DateTime ReadForum_lastread([NotNull] object userID, [NotNull] object forumID)
+         public static DateTime ReadForum_lastread(int? mid, [NotNull] object userID, [NotNull] object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3710,15 +3653,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.ReadForum_lastread(connectionString,userID, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                   
              }
          }
-         public static void  nntpforum_delete(object nntpForumID)
+         public static void  nntpforum_delete(int? mid, object nntpForumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3731,16 +3674,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public DataTable nntpforum_list(object boardId, object minutes, object nntpForumID, object active)
+         static public DataTable nntpforum_list(int? mid, object boardId, object minutes, object nntpForumID, object active)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3753,18 +3695,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void nntpforum_save(object nntpForumID, object nntpServerID, object groupName, object forumID, object active,
-                            object cutoffdate)
+         public static void nntpforum_save(int? mid, object nntpForumID, object nntpServerID, object groupName, object forumID, object active, object cutoffdate)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3777,16 +3717,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void nntpforum_update(object nntpForumID, object lastMessageNo, object userId)
+         public static void nntpforum_update(int? mid, object nntpForumID, object lastMessageNo, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3799,15 +3738,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public IEnumerable<TypedNntpForum> NntpForumList(int boardId, int? minutes, int? nntpForumID, bool? active)
+         static public IEnumerable<TypedNntpForum> NntpForumList(int? mid, int boardId, int? minutes, int? nntpForumID, bool? active)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3820,16 +3758,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void nntpserver_delete(object nntpServerID)
+         public static void nntpserver_delete(int? mid, object nntpServerID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3842,16 +3779,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public DataTable nntpserver_list(object boardId, object nntpServerID)
+         static public DataTable nntpserver_list(int? mid, object boardId, object nntpServerID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3864,17 +3800,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void nntpserver_save(object nntpServerID, object boardId, object name, object address, object port,
-                             object userName, object userPass)
+         public static void nntpserver_save(int? mid, object nntpServerID, object boardId, object name, object address, object port, object userName, object userPass)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3887,16 +3821,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public DataTable nntptopic_list(object thread)
+         static public DataTable nntptopic_list(int? mid, object thread)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3909,25 +3842,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.nntptopic_list(connectionString, thread); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void nntptopic_savemessage(
-            object nntpForumID,
-            object topic,
-            object body,
-            object userId,
-            object userName,
-            object ip,
-            object posted,
-            object externalMessageId,
-            object referenceMessageId)
+         public static void nntptopic_savemessage(int? mid, object nntpForumID, object topic, object body, object userId, object userName, object ip, object posted, object externalMessageId, object referenceMessageId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3940,30 +3863,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataRow pageload(
-            object sessionID,
-            object boardId,
-            object userKey,
-            object ip,
-            object location,
-            object forumPage,
-            object browser,
-            object platform,
-            object categoryID,
-            object forumID,
-            object topicID,
-            object messageID,
-            object isCrawler,
-            object isMobileDevice,
-            object donttrack)
+         static public DataRow pageload(int? mid, object sessionID, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryID, object forumID, object topicID, object messageID, object isCrawler, object isMobileDevice, object donttrack)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3976,16 +3883,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void pmessage_archive(object userPMessageID)
+         public static void pmessage_archive(int? mid, object userPMessageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -3998,24 +3904,25 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pmessage_archive(connectionString, userPMessageID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         /// <summary>
-         /// Deletes the private message from the database as per the given parameter.  If fromOutbox is true,
-         /// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
-         /// </summary>
-         /// <param name="userPMessageID"></param>
-         static public void pmessage_delete(object userPMessageID)
+
+        /// <summary>
+        /// Deletes the private message from the database as per the given parameter.  If fromOutbox is true,
+        /// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="userPMessageID"></param>
+        static public void pmessage_delete(int? mid, object userPMessageID)
          {
-             pmessage_delete(userPMessageID, false);
+             pmessage_delete(mid, userPMessageID, false);
          }
-         public static void pmessage_delete(object userPMessageID, bool fromOutbox)
+         public static void pmessage_delete(int? mid, object userPMessageID, bool fromOutbox)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4028,15 +3935,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable pmessage_info()
+         static public DataTable pmessage_info(int? mid)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4049,30 +3955,32 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pmessage_info(connectionString); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         /// <summary>
-         /// Returns a list of private messages based on the arguments specified.
-         /// If pMessageID != null, returns the PM of id pMessageId.
-         /// If toUserID != null, returns the list of PMs sent to the user with the given ID.
-         /// If fromUserID != null, returns the list of PMs sent by the user of the given ID.
-         /// </summary>
-         /// <param name="toUserID"></param>
-         /// <param name="fromUserID"></param>
-         /// <param name="pMessageID">The id of the private message</param>
-         /// <returns></returns>
-         static public DataTable pmessage_list(object userPMessageID)
+
+        /// <summary>
+        /// Returns a list of private messages based on the arguments specified.
+        /// If pMessageID != null, returns the PM of id pMessageId.
+        /// If toUserID != null, returns the list of PMs sent to the user with the given ID.
+        /// If fromUserID != null, returns the list of PMs sent by the user of the given ID.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="userPMessageID"> </param>
+        /// <param name="toUserID"></param>
+        /// <param name="fromUserID"></param>
+        /// <param name="pMessageID">The id of the private message</param>
+        /// <returns></returns>
+        static public DataTable pmessage_list(int? mid, object userPMessageID)
          {
-             return pmessage_list(null, null, userPMessageID);
+             return pmessage_list(mid, null, null, userPMessageID);
          }
-         static public DataTable pmessage_list(object toUserID, object fromUserID, object userPMessageID)
+         static public DataTable pmessage_list(int? mid, object toUserID, object fromUserID, object userPMessageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4085,16 +3993,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void pmessage_markread(object userPMessageID)
+         public static void pmessage_markread(int? mid, object userPMessageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4107,15 +4014,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pmessage_markread(connectionString, userPMessageID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void pmessage_prune(object daysRead, object daysUnread)
+         public static void pmessage_prune(int? mid, object daysRead, object daysUnread)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4128,15 +4034,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void pmessage_save(object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
+         public static void pmessage_save(int? mid, object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4149,15 +4054,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void poll_remove(object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
+         public static void poll_remove(int? mid, object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4170,15 +4074,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int? poll_save(List<PollSaveList> pollList)
+         static public int? poll_save(int? mid, List<PollSaveList> pollList)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4191,16 +4094,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.poll_save(connectionString, pollList); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable poll_stats(int? pollId)
+         static public DataTable poll_stats(int? mid, int? pollId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4213,16 +4115,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.poll_stats(connectionString, pollId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public int pollgroup_attach(int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+         static public int pollgroup_attach(int? mid, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4235,17 +4136,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void pollgroup_remove(object pollGroupID, object topicId, object forumId, object categoryId, object boardId,
-                              bool removeCompletely, bool removeEverywhere)
+         public static void pollgroup_remove(int? mid, object pollGroupID, object topicId, object forumId, object categoryId, object boardId, bool removeCompletely, bool removeEverywhere)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4258,15 +4157,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable pollgroup_stats(int? pollGroupId)
+         static public DataTable pollgroup_stats(int? mid, int? pollGroupId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4279,16 +4177,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pollgroup_stats(connectionString, pollGroupId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void poll_update(object pollID, object question, object closes, object isBounded, bool isClosedBounded, bool allowMultipleChoices, bool showVoters, bool allowSkipVote, object questionPath, object questionMime)
+         public static void poll_update(int? mid, object pollID, object question, object closes, object isBounded, bool isClosedBounded, bool allowMultipleChoices, bool showVoters, bool allowSkipVote, object questionPath, object questionMime)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4301,15 +4198,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable pollgroup_votecheck(object pollGroupId, object userId, object remoteIp)
+         static public DataTable pollgroup_votecheck(int? mid, object pollGroupId, object userId, object remoteIp)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4322,16 +4218,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public IEnumerable<TypedPollGroup> PollGroupList(int userID, int? forumId, int boardId)
+         static public IEnumerable<TypedPollGroup> PollGroupList(int? mid, int userID, int? forumId, int boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4344,16 +4239,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.PollGroupList(connectionString, userID, forumId, boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable pollvote_check(object pollid, object userid, object remoteip)
+
+         static public DataTable pollvote_check(int? mid, object pollid, object userid, object remoteip)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4366,16 +4261,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable post_alluser(object boardid, object userid, object pageUserID, object topCount)
+
+         static public DataTable post_alluser(int? mid, object boardid, object userid, object pageUserID, object topCount)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4388,35 +4283,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         static public DataTable post_list(
-            object topicId,
-            object currentUserID,
-            object authoruserId,
-            object updateViewCount,
-            bool showDeleted,
-            bool styledNicks,
-            bool showReputation,
-            DateTime sincePostedDate,
-            DateTime toPostedDate,
-            DateTime sinceEditedDate,
-            DateTime toEditedDate,
-            int pageIndex,
-            int pageSize,
-            int sortPosted,
-            int sortEdited,
-            int sortPosition,
-            bool showThanks,
-            int messagePosition)
+         static public DataTable post_list(int? mid, object topicId, object currentUserID, object authoruserId, object updateViewCount, bool showDeleted, bool styledNicks, bool showReputation, DateTime sincePostedDate, DateTime toPostedDate, DateTime sinceEditedDate, DateTime toEditedDate, int pageIndex, int pageSize, int sortPosted, int sortEdited, int sortPosition, bool showThanks, int messagePosition)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4429,16 +4305,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable post_list_reverse10(object topicID)
+         static public DataTable post_list_reverse10(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4451,16 +4326,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.post_list_reverse10(connectionString, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void rank_delete(object rankID)
+         public static void rank_delete(int? mid, object rankID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4473,15 +4347,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.rank_delete(connectionString, rankID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable rank_list(object boardId, object rankID)
+         static public DataTable rank_list(int? mid, object boardId, object rankID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4494,24 +4367,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.rank_list(connectionString, boardId, rankID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void rank_save(object rankID, object boardId, object name,
-                       object isStart, object isLadder, object minPosts, object rankImage,
-                       object pmLimit, object style, object sortOrder,
-                       object description,
-                       object usrSigChars,
-                       object usrSigBBCodes,
-                       object usrSigHTMLTags,
-                       object usrAlbums,
-                       object usrAlbumImages)
+         public static void rank_save(int? mid, object rankID, object boardId, object name, object isStart, object isLadder, object minPosts, object rankImage, object pmLimit, object style, object sortOrder, object description, object usrSigChars, object usrSigBBCodes, object usrSigHTMLTags, object usrAlbums, object usrAlbumImages)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4524,15 +4388,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                    
              }
          }
-         static public DataTable recent_users(object boardID, int timeSinceLastLogin, object styledNicks)
+         static public DataTable recent_users(int? mid, object boardID, int timeSinceLastLogin, object styledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4545,33 +4409,37 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         /// <summary>
-         /// Retrieves all the entries in the board settings registry
-         /// </summary>
-         /// <returns>DataTable filled will all registry entries</returns>
-         static public DataTable registry_list()
+
+        /// <summary>
+        /// Retrieves all the entries in the board settings registry
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <returns>DataTable filled will all registry entries</returns>
+        static public DataTable registry_list(int? mid)
          {
-             return registry_list(null, null);
+             return registry_list(mid, null, null);
          }
-         /// <summary>
-         /// Retrieves entries in the board settings registry
-         /// </summary>
-         /// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
-         /// <returns>DataTable filled will registry entries</returns>
-         static public DataTable registry_list(object name)
+
+        /// <summary>
+        /// Retrieves entries in the board settings registry
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="name"> </param>
+        /// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
+        /// <returns>DataTable filled will registry entries</returns>
+        static public DataTable registry_list(int? mid, object name)
          {
-             return registry_list(name, null);
+             return registry_list(mid, name, null);
          }
-         static public DataTable registry_list(object name, object boardId)
+         static public DataTable registry_list(int? mid, object name, object boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4584,27 +4452,31 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.registry_list(connectionString, name,  boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                    
              }
 
          }
-         /// <summary>
-         /// Saves a single registry entry pair to the database.
-         /// </summary>
-         /// <param name="Name">Unique name associated with this entry</param>
-         /// <param name="Value">Value associated with this entry which can be null</param>
-         static public void registry_save(object name, object value)
+
+        /// <summary>
+        /// Saves a single registry entry pair to the database.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="name"> </param>
+        /// <param name="value"> </param>
+        /// <param name="Name">Unique name associated with this entry</param>
+        /// <param name="Value">Value associated with this entry which can be null</param>
+        static public void registry_save(int? mid, object name, object value)
          {
 
-             registry_save(name, value, DBNull.Value);
+             registry_save(mid, name, value, DBNull.Value);
 
          }
-         public static void registry_save(object name, object value, object boardId)
+         public static void registry_save(int? mid, object name, object value, object boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4617,15 +4489,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.registry_save(connectionString, name, value, boardId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void replace_words_delete(object id)
+         public static void replace_words_delete(int? mid, object id)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4638,15 +4509,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.replace_words_delete(connectionString, id); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable replace_words_list(object boardId, object id)
+         static public DataTable replace_words_list(int? mid, object boardId, object id)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4659,16 +4529,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.replace_words_list(connectionString, boardId, id); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void replace_words_save(object boardId, object id, object badword, object goodword)
+         public static void replace_words_save(int? mid, object boardId, object id, object badword, object goodword)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4681,16 +4550,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable rss_topic_latest(object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks,
-                                   bool showNoCountPosts)
+         static public DataTable rss_topic_latest(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4703,20 +4570,19 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable rsstopic_list(int forumID, int topicCount)
+         static public DataTable rsstopic_list(int? mid, int forumID, int topicCount)
          {
-             return rsstopic_list(forumID, 0, topicCount);
+             return rsstopic_list(mid, forumID, 0, topicCount);
          }
-         static public DataTable rsstopic_list(int forumID, int topicStart, int topicCount)
+         static public DataTable rsstopic_list(int? mid, int forumID, int topicStart, int topicCount)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4729,16 +4595,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void SetPropertyValues(int boardId, string appname, int userId, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
+         public static void SetPropertyValues(int? mid, int boardId, string appname, int userId, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4751,16 +4616,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
        
-         static public Boolean shoutbox_clearmessages(int boardId)
+         static public bool shoutbox_clearmessages(int? mid, int boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4773,16 +4637,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.shoutbox_clearmessages(connectionString, boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable shoutbox_getmessages(int boardId, int numberOfMessages, object useStyledNicks)
+         static public DataTable shoutbox_getmessages(int? mid, int boardId, int numberOfMessages, object useStyledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4795,16 +4658,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public Boolean shoutbox_savemessage(int boardId, string message, string userName, int userID, object ip)
+         static public bool shoutbox_savemessage(int? mid, int boardId, string message, string userName, int userID, object ip)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4817,16 +4679,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void smiley_delete(object smileyID)
+         public static void smiley_delete(int? mid, object smileyID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4839,15 +4700,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.smiley_delete(connectionString, smileyID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable smiley_list(object boardId, object smileyID)
+         static public DataTable smiley_list(int? mid, object boardId, object smileyID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4860,16 +4720,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.smiley_list(connectionString, boardId, smileyID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable smiley_listunique(object boardId)
+         static public DataTable smiley_listunique(int? mid, object boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4882,16 +4741,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.smiley_listunique(connectionString, boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void smiley_resort(object boardId, object smileyID, int move)
+         public static void smiley_resort(int? mid, object boardId, object smileyID, int move)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4904,16 +4762,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void smiley_save(object smileyID, object boardId, object code, object icon, object emoticon, object sortOrder,
-                         object replace)
+         public static void smiley_save(int? mid, object smileyID, object boardId, object code, object icon, object emoticon, object sortOrder, object replace)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4926,15 +4782,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public IEnumerable<TypedSmileyList> SmileyList(int boardId, int? smileyID)
+         static public IEnumerable<TypedSmileyList> SmileyList(int? mid, int boardId, int? smileyID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4947,16 +4802,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.SmileyList(connectionString, boardId, smileyID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void  system_deleteinstallobjects()
+         public static void  system_deleteinstallobjects(int? mid)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4969,17 +4823,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.system_deleteinstallobjects(connectionString); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void system_initialize(string forumName, string timeZone, string culture, string languageFile, string forumEmail,
-                               string smtpServer, string userName, string userEmail, object providerUserKey,
-                               string rolePrefix)
+         public static void system_initialize(int? mid, string forumName, string timeZone, string culture, string languageFile, string forumEmail, string smtpServer, string userName, string userEmail, object providerUserKey, string rolePrefix)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -4992,15 +4843,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void system_initialize_executescripts(string script, string scriptFile, bool useTransactions)
+         public static void system_initialize_executescripts(int? mid, string script, string scriptFile, bool useTransactions)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5013,15 +4863,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void system_initialize_fixaccess(bool bGrant)
+         public static void system_initialize_fixaccess(int? mid, bool bGrant)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5034,15 +4883,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable system_list()
+         static public DataTable system_list(int? mid)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5055,16 +4903,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.system_list(connectionString); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void system_updateversion(int version, string name)
+         public static void system_updateversion(int? mid, int version, string name)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5077,16 +4924,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.system_updateversion(connectionString, version, name); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static DataTable topic_active([NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+         public static DataTable topic_active(int? mid, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
         {
           
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5099,38 +4945,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable bbcode_list(object boardId, object bbcodeID)
-         {
-             string dataEngine;
-             string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
-             
-             switch (dataEngine)
-             {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 case "Npgsql": return Postgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 case "MySql.Data.MySqlClient": return MySqlDb.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 // case "oracle":  return orPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 // case "db2":  return db2Postgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                 // case "other":  return othPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
-                 default:
-                     throw new ApplicationException("No return type");
-                     break;
-             }
 
-         }
-         static public DataTable topic_announcements(object boardId, object numOfPostsToRetrieve, object pageUserId)
+         static public DataTable topic_announcements(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5143,26 +4967,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static DataTable topic_unanswered(
-            [NotNull] object boardId, 
-            [CanBeNull] object categoryId, 
-            [NotNull] object pageUserId, 
-            [NotNull] object sinceDate, 
-            [NotNull] object toDate, 
-            [NotNull] object pageIndex, 
-            [NotNull] object pageSize, 
-            [NotNull] object useStyledNicks, 
-            [CanBeNull]bool findLastRead)
+         public static DataTable topic_unanswered(int? mid, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5175,25 +4989,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static DataTable topic_unread(
-             [NotNull] object boardId,
-             [CanBeNull] object categoryId,
-             [NotNull] object pageUserId,
-             [NotNull] object sinceDate,
-             [NotNull] object toDate,
-             [NotNull] object pageIndex,
-             [NotNull] object pageSize,
-             [NotNull] object useStyledNicks,
-             [CanBeNull]bool findLastRead)
+         public static DataTable topic_unread(int? mid, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5206,18 +5010,17 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static DataTable Topics_ByUser([NotNull] object boardId, [NotNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+         public static DataTable Topics_ByUser(int? mid, [NotNull] object boardId, [NotNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
          {
 
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5230,17 +5033,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void TopicStatus_Delete([NotNull] object topicStatusID)
+         public static void TopicStatus_Delete(int? mid, [NotNull] object topicStatusID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5253,16 +5055,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public DataTable TopicStatus_Edit([NotNull] object topicStatusID)
+         static public DataTable TopicStatus_Edit(int? mid, [NotNull] object topicStatusID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5275,16 +5076,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable TopicStatus_List([NotNull] object topicStatusID)
+         static public DataTable TopicStatus_List(int? mid, [NotNull] object topicStatusID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5297,15 +5097,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.TopicStatus_List(connectionString,  topicStatusID);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void TopicStatus_Save([NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
+         public static void TopicStatus_Save(int? mid, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5318,15 +5117,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public long topic_create_by_message(object messageID, object forumId, object newTopicSubj)
+         static public long topic_create_by_message(int? mid, object messageID, object forumId, object newTopicSubj)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5339,21 +5137,20 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         static public void topic_delete(object topicID)
+         static public void topic_delete(int? mid, object topicID)
          {
-             topic_delete(topicID, false);
+             topic_delete(mid,topicID, false);
          }
-         public static void topic_delete(object topicID, object eraseTopic)
+         public static void topic_delete(int? mid, object topicID, object eraseTopic)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5366,15 +5163,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void topic_favorite_add(object userID, object topicID)
+         public static void topic_favorite_add(int? mid, object userID, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5387,16 +5183,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-        public static DataTable topic_favorite_details( [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable topic_favorite_details(int? mid, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
         {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5409,16 +5204,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_favorite_list(object userID)
+         static public DataTable topic_favorite_list(int? mid, object userID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5431,16 +5225,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_favorite_list(connectionString, userID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void topic_favorite_remove(object userID, object topicID)
+         public static void topic_favorite_remove(int? mid, object userID, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5453,16 +5246,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public int topic_findduplicate(object topicName)
+         static public int topic_findduplicate(int? mid, object topicName)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5475,16 +5267,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_findduplicate(connectionString, topicName); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_findnext(object topicID)
+         static public DataTable topic_findnext(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5497,16 +5288,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_findnext(connectionString, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_findprev(object topicID)
+         static public DataTable topic_findprev(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5519,16 +5309,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_findprev(connectionString, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataRow topic_info(object topicID)
+         static public DataRow topic_info(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5541,17 +5330,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_info(connectionString, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_latest(object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks,
-                               bool showNoCountPosts, [CanBeNull]bool findLastRead)
+         static public DataTable topic_latest(int? mid, object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5564,16 +5351,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_list([NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
+         static public DataTable topic_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5586,17 +5372,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static DataTable announcements_list([NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
+         public static DataTable announcements_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -5609,16 +5394,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void topic_lock(object topicID, object locked)
+         public static void topic_lock(int? mid, object topicID, object locked)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5631,15 +5415,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_lock(connectionString, topicID, locked); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void topic_move(object topicID, object forumID, object showMoved, object linkDays)
+         public static void topic_move(int? mid, object topicID, object forumID, object showMoved, object linkDays)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5652,16 +5435,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int topic_prune([NotNull] object boardID, [NotNull] object forumID, [NotNull] object days,
-                       [NotNull] object permDelete)
+         static public int topic_prune(int? mid, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5674,18 +5455,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public long topic_save(object forumID, object subject, object status, object styles, object description, object message, object userId,
-                        object priority, object userName, object ip, object posted, object blogPostID, object flags,
-                        ref long messageID)
+         static public long topic_save(int? mid, object forumID, object subject, object status, object styles, object description, object message, object userId, object priority, object userName, object ip, object posted, object blogPostID, object flags, ref long messageID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5698,16 +5476,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable topic_simplelist(int StartID, int Limit)
+         static public DataTable topic_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5720,16 +5497,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.topic_simplelist(connectionString, StartID, Limit); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void topic_updatetopic(int topicId, string topic)
+         public static void topic_updatetopic(int? mid, int topicId, string topic)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5742,15 +5518,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int  TopicFavoriteCount(int topicId)
+         static public int  TopicFavoriteCount(int? mid, int topicId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5763,17 +5538,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.TopicFavoriteCount(connectionString, topicId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void unencode_all_topics_subjects(Func<string, string> decodeTopicFunc)
+         public static void unencode_all_topics_subjects(int? mid, Func<string, string> decodeTopicFunc)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5786,15 +5560,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable user_accessmasks(object boardId, object userId)
+         static public DataTable user_accessmasks(int? mid, object boardId, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5807,16 +5580,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_accessmasks(connectionString, boardId, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_activity_rank(object boardId, object startDate, object displayNumber)
+         static public DataTable user_activity_rank(int? mid, object boardId, object startDate, object displayNumber)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5829,16 +5601,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void user_addignoreduser(object userId, object ignoredUserId)
+         public static void user_addignoreduser(int? mid, object userId, object ignoredUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5851,15 +5622,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_addpoints(object userId, object forumUserId, object points)
+         public static void user_addpoints(int? mid, object userId, object forumUserId, object points)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5872,16 +5642,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
          public static void user_adminsave
-            (object boardId, object userId, object name, object displayName, object email, object flags, object rankID)
+            (int? mid, object boardId, object userId, object name, object displayName, object email, object flags, object rankID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5894,15 +5663,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_approve(object userId)
+         public static void user_approve(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5915,16 +5683,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_approve(connectionString, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void user_approveall(object boardId)
+         public static void user_approveall(int? mid, object boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5937,16 +5704,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_approveall(connectionString, boardId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int user_aspnet(int boardId, string userName, string displayName, string email, object providerUserKey,
-                        object isApproved)
+         static public int user_aspnet(int? mid, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5959,16 +5724,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_avatarimage(object userId)
+         static public DataTable user_avatarimage(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -5981,16 +5745,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_avatarimage(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public bool user_changepassword(object userId, object oldPassword, object newPassword)
+         static public bool user_changepassword(int? mid, object userId, object oldPassword, object newPassword)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6003,16 +5766,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void user_delete(object userId)
+         public static void user_delete(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6025,15 +5787,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_delete(connectionString, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_deleteavatar(object userId)
+         public static void user_deleteavatar(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6046,15 +5807,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_deleteavatar(connectionString, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_deleteold(object boardId, object days)
+         public static void user_deleteold(int? mid, object boardId, object days)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6067,15 +5827,15 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_deleteold(connectionString, boardId, days); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable user_emails(object boardId, object groupID)
+
+         static public DataTable user_emails(int? mid, object boardId, object groupID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6088,17 +5848,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_emails(connectionString, boardId, groupID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         static public int user_get(int boardId, object providerUserKey)
+         static public int user_get(int? mid, int boardId, object providerUserKey)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6111,16 +5870,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_get(connectionString, boardId, providerUserKey); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_getalbumsdata(object userID, object boardID)
+         static public DataTable user_getalbumsdata(int? mid, object userID, object boardID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6133,16 +5891,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_getalbumsdata(connectionString, userID, boardID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public int user_getpoints(object userId)
+         static public int user_getpoints(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6155,16 +5912,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_getpoints(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                   
              }
 
          }
-         static public string user_getsignature(object userId)
+         static public string user_getsignature(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6177,16 +5934,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_user_getsignature(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_getsignaturedata(object userID, object boardID)
+         static public DataTable user_getsignaturedata(int? mid, object userID, object boardID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6199,16 +5955,16 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_getsignaturedata(connectionString, userID, boardID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                    
              }
 
          }
-         static public int user_getthanks_from(object userID, object pageUserId)
+         static public int user_getthanks_from(int? mid, object userID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+              string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6221,15 +5977,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_getthanks_from(connectionString, userID, pageUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int[] user_getthanks_to(object userID, object pageUserId)
+         static public int[] user_getthanks_to(int? mid, object userID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6242,15 +5997,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_getthanks_to(connectionString, userID, pageUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int? user_guest(object boardId)
+         static public int? user_guest(int? mid, object boardId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6263,15 +6017,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_guest(connectionString, boardId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable user_ignoredlist(object userId)
+         static public DataTable user_ignoredlist(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6284,16 +6037,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_ignoredlist(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public bool user_isuserignored(object userId, object ignoredUserId)
+         static public bool user_isuserignored(int? mid, object userId, object ignoredUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6306,16 +6058,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_isuserignored(connectionString, userId, ignoredUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataRow user_lazydata(object userID, object boardID, bool showPendingMails, bool showPendingBuddies,
-                              bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
+         static public DataRow user_lazydata(int? mid, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6328,7 +6078,6 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
@@ -6401,7 +6150,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6423,7 +6172,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6464,7 +6213,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6487,7 +6236,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6508,7 +6257,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6533,7 +6282,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6554,7 +6303,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6575,7 +6324,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6596,7 +6345,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6618,7 +6367,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6641,7 +6390,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6663,7 +6412,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6685,7 +6434,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6706,7 +6455,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6727,7 +6476,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6767,7 +6516,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6788,7 +6537,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6814,7 +6563,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6835,7 +6584,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6856,7 +6605,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6877,7 +6626,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6898,7 +6647,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6919,7 +6668,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6940,7 +6689,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6962,7 +6711,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -6984,7 +6733,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7006,7 +6755,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
              {
@@ -7028,7 +6777,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7050,7 +6799,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7072,7 +6821,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7095,7 +6844,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7121,7 +6870,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7142,7 +6891,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7164,7 +6913,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7185,7 +6934,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7207,7 +6956,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7229,7 +6978,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7251,7 +7000,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7272,7 +7021,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7295,7 +7044,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7316,7 +7065,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7338,7 +7087,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7359,7 +7108,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7381,7 +7130,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7402,7 +7151,7 @@ namespace YAF.Classes.Data
              string dataEngine;
              string connectionString;
              int? mid = 0;  string namePattern = string.Empty;
-             CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
              {
@@ -7428,7 +7177,7 @@ namespace YAF.Classes.Data
             string dataEngine;
             string connectionString;
             int? mid = 0;  string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
             {
@@ -7451,7 +7200,7 @@ namespace YAF.Classes.Data
             string dataEngine;
             string connectionString;
             int? mid = 0;  string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
             {
@@ -7475,7 +7224,7 @@ namespace YAF.Classes.Data
             string dataEngine;
             string connectionString;
             int? mid = 0;  string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
             {
@@ -7500,7 +7249,7 @@ namespace YAF.Classes.Data
                  string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7523,7 +7272,7 @@ namespace YAF.Classes.Data
                  string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7551,7 +7300,7 @@ namespace YAF.Classes.Data
                  string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7573,7 +7322,7 @@ namespace YAF.Classes.Data
                  string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7611,7 +7360,7 @@ namespace YAF.Classes.Data
                  string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7636,7 +7385,7 @@ namespace YAF.Classes.Data
 				 string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7662,7 +7411,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7686,7 +7435,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7711,7 +7460,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7736,7 +7485,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7760,7 +7509,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7785,7 +7534,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7810,7 +7559,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7834,7 +7583,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7859,7 +7608,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7884,7 +7633,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7908,7 +7657,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7933,7 +7682,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7958,7 +7707,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -7982,7 +7731,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8007,7 +7756,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8033,7 +7782,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8057,7 +7806,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8082,7 +7831,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8108,7 +7857,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8132,7 +7881,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8157,7 +7906,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8182,7 +7931,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8207,7 +7956,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8232,7 +7981,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8257,7 +8006,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8282,7 +8031,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8307,7 +8056,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8332,7 +8081,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8357,7 +8106,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8382,7 +8131,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8412,7 +8161,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8437,7 +8186,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8462,7 +8211,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8488,7 +8237,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8513,7 +8262,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8538,7 +8287,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8563,7 +8312,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8588,7 +8337,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8613,7 +8362,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8639,7 +8388,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8664,7 +8413,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8689,7 +8438,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8715,7 +8464,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8740,7 +8489,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8765,7 +8514,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8790,7 +8539,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8815,7 +8564,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8840,7 +8589,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8866,7 +8615,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8891,7 +8640,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8916,7 +8665,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8942,7 +8691,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8967,7 +8716,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -8992,7 +8741,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9017,7 +8766,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9042,7 +8791,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9067,7 +8816,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9094,7 +8843,7 @@ namespace YAF.Classes.Data
                 string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9120,7 +8869,7 @@ namespace YAF.Classes.Data
 				 string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9144,7 +8893,7 @@ namespace YAF.Classes.Data
 				 string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9168,7 +8917,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9192,7 +8941,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {
@@ -9218,7 +8967,7 @@ namespace YAF.Classes.Data
 				string dataEngine;
                  string connectionString;
                  int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData((int)mid, namePattern, out dataEngine, out connectionString);
+                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
                  
                  switch (dataEngine)
                  {

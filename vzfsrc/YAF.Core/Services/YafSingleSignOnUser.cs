@@ -559,7 +559,7 @@ namespace YAF.Core.Services
 
             if (YafContext.Current.Get<YafBoardSettings>().AllowPrivateMessages)
             {
-                LegacyDb.pmessage_save(2, userId, subject, emailBody, messageFlags.BitValue, -1);
+                LegacyDb.pmessage_save(YafContext.Current.PageModuleID, 2, userId, subject, emailBody, messageFlags.BitValue, -1);
 
                 string message = "{0}. {1}".FormatWith(
                 subject, YafContext.Current.Get<ILocalization>().GetText("LOGIN", "TWITTER_DM"));

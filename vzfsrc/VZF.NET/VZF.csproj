@@ -2684,7 +2684,6 @@
     <Content Include="install\firebird\providers\tables.sql" />
     <Content Include="install\firebird\sequences.sql" />
     <Content Include="install\firebird\tables.sql" />
-    <Content Include="install\firebird\tables_drop.sql" />
     <Content Include="install\firebird\test_drop.sql" />
     <Content Include="install\firebird\triggers.sql" />
     <Content Include="install\firebird\triggers_drop.sql" />

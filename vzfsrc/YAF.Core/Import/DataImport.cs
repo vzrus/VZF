@@ -165,7 +165,7 @@ namespace YAF.Core
                 dsStates.Tables["YafTopicStatus"].Columns["TopicStatusName"] != null &&
                 dsStates.Tables["YafTopicStatus"].Columns["DefaultDescription"] != null)
             {
-                var topicStatusList = LegacyDb.TopicStatus_List(boardId);
+                var topicStatusList = LegacyDb.TopicStatus_List(YafContext.Current.PageModuleID, boardId);
 
                 // import any topic status that don't exist...
                 foreach (
@@ -176,8 +176,7 @@ namespace YAF.Core
                             0))
                 {
                     // add this...
-                    LegacyDb.TopicStatus_Save(
-                        null, boardId, row["TopicStatusName"].ToString(), row["DefaultDescription"].ToString());
+                    LegacyDb.TopicStatus_Save(YafContext.Current.PageModuleID, null, boardId, row["TopicStatusName"].ToString(), row["DefaultDescription"].ToString());
                     importedCount++;
                 }
             }

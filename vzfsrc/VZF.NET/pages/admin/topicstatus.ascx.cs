@@ -153,7 +153,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      this.list.DataSource = LegacyDb.TopicStatus_List(this.PageContext.PageBoardID);
+      this.list.DataSource = LegacyDb.TopicStatus_List(PageContext.PageModuleID, this.PageContext.PageBoardID);
       this.DataBind();
     }
 
@@ -185,13 +185,13 @@ namespace YAF.Pages.Admin
                 YafBuildLink.Redirect(ForumPages.admin_topicstatus_edit, "i={0}", e.CommandArgument);
                 break;
             case "delete":
-                LegacyDb.TopicStatus_Delete(e.CommandArgument);
+                LegacyDb.TopicStatus_Delete(PageContext.PageModuleID, e.CommandArgument);
                 this.BindData();
                 break;
             case "export":
                 {
                     // export this list as XML...
-                    var topicStatusList = LegacyDb.TopicStatus_List(this.PageContext.PageBoardID);
+                    var topicStatusList = LegacyDb.TopicStatus_List(PageContext.PageModuleID, this.PageContext.PageBoardID);
                     topicStatusList.DataSet.DataSetName = "YafTopicStatusList";
                     topicStatusList.TableName = "YafTopicStatus";
                     topicStatusList.Columns.Remove("TopicStatusID");

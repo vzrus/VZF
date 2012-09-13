@@ -642,8 +642,7 @@ namespace YAF.Pages
                     var sfw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchFromWho.SelectedValue);
                     int forumId = int.Parse(this.listForum.SelectedValue);
 
-                    var searchResults = LegacyDb.GetSearchResult(
-                        this.SearchWhatCleaned,
+                    var searchResults = LegacyDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
                         this.SearchWhoCleaned,
                         sfw,
                         sw,

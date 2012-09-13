@@ -242,7 +242,7 @@ namespace YAF.Pages
             this.Posts.Text = this.GetText("posts");
             this.LastVisitLB.Text = this.GetText("members", "lastvisit");
        
-            using (DataTable dt = LegacyDb.group_list(this.PageContext.PageBoardID, null))
+            using (DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 // add empty item for no filtering
                 DataRow newRow = dt.NewRow();
@@ -276,7 +276,7 @@ namespace YAF.Pages
             this.NumPostDDL.DataBind();
 
             // get list of user ranks for filtering
-            using (DataTable dt = LegacyDb.rank_list(this.PageContext.PageBoardID, null))
+            using (DataTable dt = LegacyDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 // add empty for for no filtering
                 DataRow newRow = dt.NewRow();

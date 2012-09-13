@@ -55,7 +55,7 @@ namespace YAF.Core
                     () =>
                         {
                             // get the guest user for this board...
-                            guestUserID = LegacyDb.user_guest(YafContext.Current.PageBoardID);
+                            guestUserID = LegacyDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
 
                             if (!guestUserID.HasValue)
                             {
@@ -63,7 +63,7 @@ namespace YAF.Core
                                 // FixGuestUserForBoard(YafContext.Current.PageBoardID);
 
                                 // attempt to get the guestUser again...
-                                guestUserID = LegacyDb.user_guest(YafContext.Current.PageBoardID);
+                                guestUserID = LegacyDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
                             }
 
                             if (!guestUserID.HasValue)
@@ -134,7 +134,7 @@ namespace YAF.Core
                     int id = GetUserIDFromProviderUserKey(user.ProviderUserKey);
                     if (id > 0)
                     {
-                        LegacyDb.user_approve(id);
+                        LegacyDb.user_approve(YafContext.Current.PageModuleID, id);
                     }
                 }
 
@@ -163,7 +163,7 @@ namespace YAF.Core
                 }
 
                 YafContext.Current.Get<MembershipProvider>().UpdateUser(user);
-                LegacyDb.user_approve(userID);
+                LegacyDb.user_approve(YafContext.Current.PageModuleID, userID);
 
                 return true;
             }
@@ -212,7 +212,7 @@ namespace YAF.Core
                     allUsers.Cast<MembershipUser>().Where(user => !user.IsApproved && user.CreationDate < createdCutoff))
                 {
                     // delete this user...
-                    LegacyDb.user_delete(GetUserIDFromProviderUserKey(user.ProviderUserKey));
+                    LegacyDb.user_delete(YafContext.Current.PageModuleID, GetUserIDFromProviderUserKey(user.ProviderUserKey));
                     YafContext.Current.Get<MembershipProvider>().DeleteUser(user.UserName, true);
                     YafContext.Current.Get<ILogger>().UserDeleted(YafContext.Current.PageUserID, "UserMembershipHelper.DeleteAllUnapproved", "User {0} was deleted by user id {1} as unapproved.".FormatWith(user.UserName, YafContext.Current.PageUserID));
                 }
@@ -248,7 +248,7 @@ namespace YAF.Core
                 }
 
                 YafContext.Current.Get<MembershipProvider>().DeleteUser(userName, true);
-                LegacyDb.user_delete(userID);
+                LegacyDb.user_delete(YafContext.Current.PageModuleID, userID);
                 YafContext.Current.Get<ILogger>().UserDeleted(YafContext.Current.PageUserID, "UserMembershipHelper.DeleteUser", "User {0} was deleted by user id {1}.".FormatWith(userName, YafContext.Current.PageUserID));
                 
                 // clear the cache
@@ -504,7 +504,7 @@ namespace YAF.Core
         /// </returns>
         public static int GetUserIDFromProviderUserKey(object providerUserKey)
         {
-            int userID = LegacyDb.user_get(YafContext.Current.PageBoardID, providerUserKey.ToString());
+            int userID = LegacyDb.user_get(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, providerUserKey.ToString());
             return userID;
         }
 
@@ -672,8 +672,7 @@ namespace YAF.Core
 
                 YafContext.Current.Get<MembershipProvider>().UpdateUser(user);
 
-                LegacyDb.user_aspnet(
-                    YafContext.Current.PageBoardID, user.UserName, null, newEmail, user.ProviderUserKey, user.IsApproved);
+                LegacyDb.user_aspnet(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, user.UserName, null, newEmail, user.ProviderUserKey, user.IsApproved);
 
                 return true;
             }

@@ -620,7 +620,7 @@ namespace YAF.Core
             if (row == null)
             {
                 // get the section desired...
-                DataTable list = LegacyDb.topic_simplelist(this.LowRange(id), this.CacheSize);
+                DataTable list = LegacyDb.topic_simplelist(YafContext.Current.PageModuleID, this.LowRange(id), this.CacheSize);
 
                 // set it up in the cache
                 row = this.SetupDataToCache(ref list, TSype, id, PrimaryKey);
@@ -651,7 +651,7 @@ namespace YAF.Core
             if (row == null)
             {
                 // get the section desired...
-                DataTable list = LegacyDb.message_simplelist(this.LowRange(id), this.CacheSize);
+                DataTable list = LegacyDb.message_simplelist(YafContext.Current.PageModuleID, this.LowRange(id), this.CacheSize);
 
                 // set it up in the cache
                 row = this.SetupDataToCache(ref list, Type, id, PrimaryKey);

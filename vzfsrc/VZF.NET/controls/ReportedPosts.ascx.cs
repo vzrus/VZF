@@ -52,7 +52,7 @@ namespace YAF.Controls
             return;
         }
 
-        this.ReportedPostsRepeater.DataSource = LegacyDb.message_listreporters(this.MessageID);
+        this.ReportedPostsRepeater.DataSource = LegacyDb.message_listreporters((int?) PageContext.PageModuleID, this.MessageID);
         this.ReportedPostsRepeater.DataBind();
     }
 

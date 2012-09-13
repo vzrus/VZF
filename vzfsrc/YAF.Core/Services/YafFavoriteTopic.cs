@@ -75,7 +75,7 @@ namespace YAF.Core.Services
     /// </returns>
     public int AddFavoriteTopic(int topicId)
     {
-      LegacyDb.topic_favorite_add(YafContext.Current.PageUserID, topicId);
+        LegacyDb.topic_favorite_add(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, topicId);
       this.ClearFavoriteTopicCache();
 
       if (YafContext.Current.CurrentUserData.NotificationSetting == UserNotificationSetting.TopicsIPostToOrSubscribeTo)
@@ -111,7 +111,7 @@ namespace YAF.Core.Services
       return
         this.Get<IDataCache>().GetOrSet(
           Constants.Cache.FavoriteTopicCount.FormatWith(topicId),
-          () => LegacyDb.TopicFavoriteCount(topicId),
+          () => LegacyDb.TopicFavoriteCount(YafContext.Current.PageModuleID, topicId),
           TimeSpan.FromMilliseconds(90000)).ToType<int>();
     }
 
@@ -126,8 +126,7 @@ namespace YAF.Core.Services
     /// </returns>
     public DataTable FavoriteTopicDetails(DateTime sinceDate)
     {
-      return LegacyDb.topic_favorite_details(
-           YafContext.Current.PageBoardID,
+        return LegacyDb.topic_favorite_details(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID,
                          (YafContext.Current.Settings.CategoryID == 0) ? null : (object)YafContext.Current.Settings.CategoryID,
                         YafContext.Current.PageUserID,
                         sinceDate,
@@ -172,7 +171,7 @@ namespace YAF.Core.Services
     /// </returns>
     public int RemoveFavoriteTopic(int topicId)
     {
-      LegacyDb.topic_favorite_remove(YafContext.Current.PageUserID, topicId);
+        LegacyDb.topic_favorite_remove(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, topicId);
       this.ClearFavoriteTopicCache();
 
       if (YafContext.Current.CurrentUserData.NotificationSetting == UserNotificationSetting.TopicsIPostToOrSubscribeTo)

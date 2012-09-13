@@ -146,7 +146,7 @@ namespace YAF.Pages
                     // If the user is trying to edit an existing album, initialize the repeater.
                     this.BindVariousControls(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("a").Equals("new"));
 
-                    DataTable sigData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+                    DataTable sigData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PageContext.PageUserID, YafContext.Current.PageBoardID);
 
                     //int[] albumSize = LegacyDb.album_getstats(this.PageContext.PageModuleID,this.PageContext.PageUserID, null);
 
@@ -197,7 +197,7 @@ namespace YAF.Pages
                 return;
             }
 
-            DataTable sigData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+            DataTable sigData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PageContext.PageUserID, YafContext.Current.PageBoardID);
 
             var usrAlbumsAllowed = sigData.GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
 
@@ -326,7 +326,7 @@ namespace YAF.Pages
 
                 this.BindData();
 
-                DataTable sigData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+                DataTable sigData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PageContext.PageUserID, YafContext.Current.PageBoardID);
 
                 // int[] albumSize = LegacyDb.album_getstats(this.PageContext.PageUserID, null);
                 var usrAlbumImagesAllowed = sigData.GetFirstRowColumnAsValue<int?>("UsrAlbumImages", null);
@@ -472,7 +472,7 @@ namespace YAF.Pages
             }
 
             // vzrus: the checks here are useless but in a case...
-            DataTable sigData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+            DataTable sigData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PageContext.PageUserID, YafContext.Current.PageBoardID);
 
             var usrAlbumsAllowed = sigData.GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
             var usrAlbumImagesAllowed = sigData.GetFirstRowColumnAsValue<int?>("UsrAlbumImages", null);

@@ -79,12 +79,12 @@ namespace YAF.Core
       // loop through all values and commit them to the DB
       foreach (string key in this._reg.Keys)
       {
-        LegacyDb.registry_save(key, this._reg[key]);
+        LegacyDb.registry_save((int?) YafContext.Current.PageModuleID, key, this._reg[key]);
       }
 
       foreach (string key in this._regBoard.Keys)
       {
-        LegacyDb.registry_save(key, this._regBoard[key], this._boardID);
+          LegacyDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key], this._boardID);
       }
     }
 
@@ -101,7 +101,7 @@ namespace YAF.Core
     {
       DataTable dataTable;
 
-      using (dataTable = LegacyDb.registry_list())
+      using (dataTable = LegacyDb.registry_list((int?)YafContext.Current.PageModuleID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)

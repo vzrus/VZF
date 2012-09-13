@@ -233,7 +233,7 @@ namespace YAF.Controls
             // this should be called once for groups and for rank for each user/post.
             DataTable roleRankStyleTable = this.Get<IDataCache>().GetOrSet(
                 Constants.Cache.GroupRankStyles,
-                () => LegacyDb.group_rank_style(YafContext.Current.PageBoardID),
+                () => LegacyDb.group_rank_style(PageContext.PageModuleID, YafContext.Current.PageBoardID),
                 TimeSpan.FromMinutes(this.Get<YafBoardSettings>().ForumStatisticsCacheTimeout));
 
             // Avatar
@@ -488,7 +488,7 @@ namespace YAF.Controls
                 {
 
                     // DataTable dtt = LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows;
-                    foreach (DataRow role in LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
+                    foreach (DataRow role in LegacyDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
                         // LegacyDb.eventlog_create(this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
                         if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0) continue;
@@ -533,7 +533,7 @@ namespace YAF.Controls
                     // vzrus: Only a guest normally has no role
                     DataTable dt = this.Get<IDataCache>().GetOrSet(
                         Constants.Cache.GuestGroupsCache,
-                        () => LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]),
+                        () => LegacyDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]),
                         TimeSpan.FromMinutes(60));
 
                     foreach (string guestRole in

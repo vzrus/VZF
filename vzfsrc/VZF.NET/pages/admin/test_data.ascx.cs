@@ -236,7 +236,7 @@ namespace YAF.Pages.Admin
             this.ForumsStartMask.DataSource = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
-            this.ForumsGroups.DataSource = LegacyDb.group_list(this.PageContext.PageBoardID, null);
+            this.ForumsGroups.DataSource = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
             // Board lists
             this.UsersBoardsList.DataSource = LegacyDb.board_list(PageContext.PageModuleID, null);
@@ -327,8 +327,7 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            DataTable topics = LegacyDb.topic_list(
-                this.PostsForum.SelectedValue.ToType<int>(),
+            DataTable topics = LegacyDb.topic_list(PageContext.PageModuleID, this.PostsForum.SelectedValue.ToType<int>(),
                 this.PageContext.PageUserID,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
@@ -764,7 +763,7 @@ namespace YAF.Pages.Admin
             {
                 long _forumID = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
-                DataTable _accessForumList = LegacyDb.forumaccess_list(_forumID);
+                DataTable _accessForumList = LegacyDb.forumaccess_list(PageContext.PageModuleID, _forumID);
                 _forumID = LegacyDb.forum_save(PageContext.PageModuleID, _forumID,
                     categoryID,
                     parentID,
@@ -789,13 +788,12 @@ namespace YAF.Pages.Admin
 
                 for (int i1 = 0; i1 < _accessForumList.Rows.Count; i1++)
                 {
-                    LegacyDb.forumaccess_save(
-                        _forumID,
+                    LegacyDb.forumaccess_save(PageContext.PageModuleID, _forumID,
                         _accessForumList.Rows[i1]["GroupID"],
                         _accessForumList.Rows[i1]["AccessMaskID"].ToType<int>());
                 }
 
-                LegacyDb.forumaccess_save(_forumID, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
+                LegacyDb.forumaccess_save(PageContext.PageModuleID, _forumID, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
 
                 if (_topicsToCreate <= 0)
                 {
@@ -845,9 +843,8 @@ namespace YAF.Pages.Admin
             for (i = 0; i < numPMessages; i++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                LegacyDb.pmessage_save(
-                    LegacyDb.user_get(YafContext.Current.PageBoardID, Membership.GetUser(_fromUser).ProviderUserKey),
-                    LegacyDb.user_get(YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey),
+                LegacyDb.pmessage_save(PageContext.PageModuleID, LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_fromUser).ProviderUserKey),
+                    LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey),
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     "{0}{1}   {2}".FormatWith(pmessagePrefix, this.randomGuid, this.PMessageText.Text.Trim()),
                     6, 
@@ -856,11 +853,10 @@ namespace YAF.Pages.Admin
 
             if (this.MarkRead.Checked)
             {
-                int userAID = LegacyDb.user_get(
-                    YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey);
-                foreach (DataRow dr in LegacyDb.pmessage_list(null, userAID, null).Rows)
+                int userAID = LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey);
+                foreach (DataRow dr in LegacyDb.pmessage_list(PageContext.PageModuleID, null, userAID, null).Rows)
                 {
-                    LegacyDb.pmessage_markread(dr["PMessageID"]);
+                    LegacyDb.pmessage_markread(PageContext.PageModuleID, dr["PMessageID"]);
 
                     // Clearing cache with old permissions data...
                     this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(userAID));
@@ -929,8 +925,7 @@ namespace YAF.Pages.Admin
             for (iposts = 0; iposts < numMessages; iposts++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                LegacyDb.message_save(
-                    topicID,
+                LegacyDb.message_save(PageContext.PageModuleID, topicID,
                     this.PageContext.PageUserID,
                     "msgd-" + this.randomGuid + "  " + this.MyMessage.Text.Trim(),
                     this.PageContext.User.UserName,
@@ -1018,8 +1013,7 @@ namespace YAF.Pages.Admin
                 this.randomGuid = Guid.NewGuid().ToString();
                 object pollID = null;
 
-                long topicID = LegacyDb.topic_save(
-                    forumID,
+                long topicID = LegacyDb.topic_save(PageContext.PageModuleID, forumID,
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     string.Empty,
                     string.Empty,
@@ -1068,7 +1062,7 @@ namespace YAF.Pages.Admin
                             false,
                             false,
                             false));
-                    pollID = LegacyDb.poll_save(pollList);
+                    pollID = LegacyDb.poll_save(PageContext.PageModuleID, pollList);
                 }
 
                 if (_messagesToCreate > 0)
@@ -1224,7 +1218,7 @@ namespace YAF.Pages.Admin
                           _excludeCurrentBoard))
                     {
                         LegacyDb.user_save(
-                            LegacyDb.user_get(boardID, user.ProviderUserKey),
+                            LegacyDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
                             boardID,
                             null,
                             null,

@@ -1082,8 +1082,7 @@ namespace YAF.Install
                     langFile = (string)drow["CultureFile"];
                 }
 
-                LegacyDb.system_initialize(
-                    this.TheForumName.Text,
+                LegacyDb.system_initialize(YafContext.Current.PageModuleID, this.TheForumName.Text,
                     this.TimeZones.SelectedValue,
                     this.Culture.SelectedValue,
                     langFile,
@@ -1094,8 +1093,8 @@ namespace YAF.Install
                     user.ProviderUserKey,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty);
 
-                LegacyDb.system_updateversion(YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
-                LegacyDb.system_updateversion(YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // vzrus: uncomment it to not keep install/upgrade objects in db for a place and better security
                 // YAF.Classes.Data.DB.system_deleteinstallobjects();
@@ -1170,7 +1169,7 @@ namespace YAF.Install
                 throw new IOException("Failed to read {0}".FormatWith(fileName), x);
             }
 
-            LegacyDb.system_initialize_executescripts(script, scriptFile, useTransactions);
+            LegacyDb.system_initialize_executescripts(YafContext.Current.PageModuleID, script, scriptFile, useTransactions);
         }
 
         /// <summary>
@@ -1204,7 +1203,7 @@ namespace YAF.Install
         /// </param>
         private void FixAccess(bool bGrant)
         {
-            LegacyDb.system_initialize_fixaccess(bGrant);
+            LegacyDb.system_initialize_fixaccess(YafContext.Current.PageModuleID, bGrant);
         }
 
         /// <summary>
@@ -1441,7 +1440,7 @@ namespace YAF.Install
 
                 int prevVersion = LegacyDb.GetDBVersion();
 
-                LegacyDb.system_updateversion(YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // Ederon : 9/7/2007
                 // resync all boards - necessary for propr last post bubbling
@@ -1490,7 +1489,7 @@ namespace YAF.Install
                 if (LegacyDb.GetIsForumInstalled() && prevVersion < 42)
                 {
                     // un-html encode all topic subject names...
-                    LegacyDb.unencode_all_topics_subjects(t => Server.HtmlDecode(t));
+                    LegacyDb.unencode_all_topics_subjects(YafContext.Current.PageModuleID, t => Server.HtmlDecode(t));
                 }
 
                 if (LegacyDb.GetIsForumInstalled() && prevVersion < 49)

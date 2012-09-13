@@ -132,8 +132,7 @@ namespace YAF.Controls
                 userId = this.PageContext.PageUserID;
             }
 
-             DataTable dt = LegacyDb.post_list(
-                 this.TopicID,
+             DataTable dt = LegacyDb.post_list(PageContext.PageModuleID, this.TopicID,
                  this.PageContext.PageUserID,
                  userId,
                  0,
