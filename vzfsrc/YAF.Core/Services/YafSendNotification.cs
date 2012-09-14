@@ -220,7 +220,7 @@ namespace YAF.Core.Services
                 // user's email
                 var toEMail = string.Empty;
 
-                var userList = LegacyDb.UserList(YafContext.Current.PageBoardID, toUserId, true, null, null, null);
+                var userList = LegacyDb.UserList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, toUserId, true, null, null, null);
 
                 if (userList.Any())
                 {
@@ -292,8 +292,7 @@ namespace YAF.Core.Services
             if (this.Get<YafBoardSettings>().AllowNotificationAllPostsAllTopics)
             {
                 // TODO: validate permissions!
-                usersWithAll = LegacyDb.UserFind(
-                    YafContext.Current.PageBoardID,
+                usersWithAll = LegacyDb.UserFind(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID,
                     false,
                     null,
                     null,
@@ -406,7 +405,7 @@ namespace YAF.Core.Services
         /// <param name="medalName">Name of the medal.</param>
         public void ToUserWithNewMedal([NotNull] int toUserId, [NotNull] string medalName)
         {
-            var userList = LegacyDb.UserList(YafContext.Current.PageBoardID, toUserId, true, null, null, null);
+            var userList = LegacyDb.UserList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, toUserId, true, null, null, null);
 
             TypedUserList toUser;
 

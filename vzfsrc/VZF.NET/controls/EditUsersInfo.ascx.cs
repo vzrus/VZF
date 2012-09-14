@@ -157,7 +157,7 @@ namespace YAF.Controls
       this.RankID.DataTextField = "Name";
       this.RankID.DataBind();
 
-      using (DataTable dt = LegacyDb.user_list(this.PageContext.PageBoardID, this.CurrentUserID, null))
+      using (DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null))
       {
         DataRow row = dt.Rows[0];
         var userFlags = new UserFlags(row["Flags"]);

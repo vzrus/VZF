@@ -371,7 +371,7 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            this.UserList.DataSource = LegacyDb.user_list(this.PageContext.PageBoardID, null, false);
+            this.UserList.DataSource = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false);
 
             // this.DataBind();
 
@@ -403,7 +403,7 @@ namespace YAF.Pages.Admin
 
             try
             {
-                this.DBSize.Text = "{0} MB".FormatWith(LegacyDb.GetDBSize());
+                this.DBSize.Text = "{0} MB".FormatWith(LegacyDb.GetDBSize(PageContext.PageModuleID));
             }
             catch (SqlException)
             {

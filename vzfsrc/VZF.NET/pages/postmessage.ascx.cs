@@ -1510,7 +1510,7 @@ namespace YAF.Pages
         /// </returns>
         private int? TopicWatchedId(int userId, int topicId)
         {
-            return LegacyDb.watchtopic_check(userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
+            return LegacyDb.watchtopic_check(PageContext.PageModuleID, userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
         }
 
         /// <summary>
@@ -1529,7 +1529,7 @@ namespace YAF.Pages
             if (topicWatchedID.HasValue && !this.PostOptions1.WatchChecked)
             {
                 // unsubscribe...
-                LegacyDb.watchtopic_delete(topicWatchedID.Value);
+                LegacyDb.watchtopic_delete(PageContext.PageModuleID, topicWatchedID.Value);
             }
             else if (!topicWatchedID.HasValue && this.PostOptions1.WatchChecked)
             {
@@ -1552,7 +1552,7 @@ namespace YAF.Pages
             if (!this.TopicWatchedId(userId, topicId).HasValue)
             {
                 // subscribe to this forum
-                LegacyDb.watchtopic_add(userId, topicId);
+                LegacyDb.watchtopic_add(PageContext.PageModuleID, userId, topicId);
             }
         }
 

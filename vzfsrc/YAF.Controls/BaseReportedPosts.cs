@@ -147,7 +147,7 @@ namespace YAF.Controls
             if (!string.IsNullOrEmpty(this.ResolvedDate))
             {
                 string resolvedByName =
-                    LegacyDb.user_list(this.PageContext.PageBoardID, this.ResolvedBy.ToType<int>(), true).Rows[0]["Name"].ToString();
+                    LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ResolvedBy.ToType<int>(), true).Rows[0]["Name"].ToString();
 
                 writer.Write(@"<tr class=""header2""><td>");
                 writer.Write(

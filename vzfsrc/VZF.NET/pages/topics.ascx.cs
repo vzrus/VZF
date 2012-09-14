@@ -307,14 +307,14 @@ namespace YAF.Pages
 
             if (this.WatchForumID.InnerText == string.Empty)
             {
-                LegacyDb.watchforum_add(this.PageContext.PageUserID, this.PageContext.PageForumID);
+                LegacyDb.watchforum_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_WATCH_FORUM"));
             }
             else
             {
                 var tmpID = this.WatchForumID.InnerText.ToType<int>();
-                LegacyDb.watchforum_delete(tmpID);
+                LegacyDb.watchforum_delete(PageContext.PageModuleID, tmpID);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_UNWATCH_FORUM"));
             }
@@ -447,7 +447,7 @@ namespace YAF.Pages
             }
 
             // check if this forum is being watched by this user
-            using (DataTable dt = LegacyDb.watchforum_check(this.PageContext.PageUserID, this.PageContext.PageForumID))
+            using (DataTable dt = LegacyDb.watchforum_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID))
             {
                 if (dt.Rows.Count > 0)
                 {

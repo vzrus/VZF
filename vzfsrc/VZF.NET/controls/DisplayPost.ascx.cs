@@ -345,7 +345,7 @@ namespace YAF.Controls
             this.AddReputation.Visible = false;
             this.RemoveReputation.Visible = false;
 
-            LegacyDb.user_removepoints(this.PostData.UserId, this.PageContext.PageUserID, 1);
+            LegacyDb.user_removepoints(PageContext.PageModuleID, this.PostData.UserId, this.PageContext.PageUserID, 1);
 
             this.DataRow["ReputationVoteDate"] = DateTime.UtcNow;
 

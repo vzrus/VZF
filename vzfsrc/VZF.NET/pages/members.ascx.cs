@@ -170,8 +170,7 @@ namespace YAF.Pages
         /// </returns>
         protected DataTable GetUserList(string literals, int lastUserId, bool specialSymbol, out int totalCount)
         {
-            this._userListDataTable = LegacyDb.user_listmembers(
-                PageContext.PageBoardID,
+            this._userListDataTable = LegacyDb.user_listmembers(PageContext.PageModuleID, PageContext.PageBoardID,
                 null,
                 true,
                 this.Group.SelectedIndex <= 0 ? null : this.Group.SelectedValue,

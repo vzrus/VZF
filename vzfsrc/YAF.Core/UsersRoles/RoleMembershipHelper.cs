@@ -103,7 +103,7 @@ namespace YAF.Core
 
                 foreach (string role in GetRolesForUser(user.UserName))
                 {
-                    LegacyDb.user_setrole(pageBoardID, user.ProviderUserKey, role);
+                    LegacyDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
                 }
 
                 // YAF.Classes.Data.DB.eventlog_create(DBNull.Value, user, string.Format("Created forum user {0}", user.UserName));
@@ -331,13 +331,13 @@ namespace YAF.Core
         public static void SyncUsers(int moduleID, int pageBoardID)
         {
             // first sync unapproved users...
-            using (DataTable dt = LegacyDb.user_list(pageBoardID, DBNull.Value, false))
+            using (DataTable dt = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, false))
             {
                 MigrateUsersFromDataTable(false, dt);
             }
 
             // then sync approved users...
-            using (DataTable dt = LegacyDb.user_list(pageBoardID, DBNull.Value, true))
+            using (DataTable dt = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, true))
             {
                 MigrateUsersFromDataTable(true, dt);
             }
@@ -404,7 +404,7 @@ namespace YAF.Core
             foreach (string role in userRoles.Where(role => !GroupInGroupTable(role, groupTable)))
             {
                 // add the role...
-                LegacyDb.user_setrole(pageBoardID, user.ProviderUserKey, role);
+                LegacyDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
             }
 
             // remove groups...
@@ -412,7 +412,7 @@ namespace YAF.Core
                 groupTable.AsEnumerable().Where(row => !userRoles.Contains(row["Name"].ToString())))
             {
                 // remove since there is no longer an association in the membership...
-                LegacyDb.usergroup_save(userId, row["GroupID"], 0);
+                LegacyDb.usergroup_save(YafContext.Current.PageModuleID, userId, row["GroupID"], 0);
             }
 
             if (isNewUser && userId > 0)
@@ -429,8 +429,7 @@ namespace YAF.Core
                                                   == UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
                     // save the settings...
-                    LegacyDb.user_savenotification(
-                        userId, true, autoWatchTopicsEnabled, defaultNotificationSetting, defaultSendDigestEmail);
+                    LegacyDb.user_savenotification(YafContext.Current.PageModuleID, userId, true, autoWatchTopicsEnabled, defaultNotificationSetting, defaultSendDigestEmail);
                 }
                 catch (Exception ex)
                 {
@@ -540,7 +539,7 @@ namespace YAF.Core
                             else
                             {
                                 // update the YAF table with the ProviderKey -- update the provider table if this is the YAF provider...
-                                LegacyDb.user_migrate(row["UserID"], user.ProviderUserKey, isYafProvider);
+                                LegacyDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, isYafProvider);
 
                                 user.Comment = "Migrated from YetAnotherForum.NET";
 
@@ -629,11 +628,11 @@ namespace YAF.Core
                         else
                         {
                             // just update the link just in case...
-                            LegacyDb.user_migrate(row["UserID"], user.ProviderUserKey, false);
+                            LegacyDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, false);
                         }
 
                         // setup roles for this user...
-                        using (DataTable dtGroups = LegacyDb.usergroup_list(row["UserID"]))
+                        using (DataTable dtGroups = LegacyDb.usergroup_list(YafContext.Current.PageModuleID, row["UserID"]))
                         {
                             foreach (DataRow rowGroup in dtGroups.Rows)
                             {

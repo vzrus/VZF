@@ -183,8 +183,7 @@ namespace YAF.Core.Services
                         // send user register notification to the following admin users...
                         SendRegistrationMessageToTwitterUser(user, pass, securityAnswer, userId, oAuth);
 
-                        LegacyDb.user_save(
-                            userId,
+                        LegacyDb.user_save(YafContext.Current.PageModuleID, userId,
                             YafContext.Current.PageBoardID,
                             twitterUser.UserName,
                             null,
@@ -207,8 +206,7 @@ namespace YAF.Core.Services
                                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
                         // save the settings...
-                        LegacyDb.user_savenotification(
-                            userId,
+                        LegacyDb.user_savenotification(YafContext.Current.PageModuleID, userId,
                             true,
                             autoWatchTopicsEnabled,
                             YafContext.Current.Get<YafBoardSettings>().DefaultNotificationSetting,
@@ -217,8 +215,7 @@ namespace YAF.Core.Services
                         // save avatar
                         if (!string.IsNullOrEmpty(twitterUser.ProfileImageUrl))
                         {
-                            LegacyDb.user_saveavatar(
-                                userId,
+                            LegacyDb.user_saveavatar(YafContext.Current.PageModuleID, userId,
                                 twitterUser.ProfileImageUrl,
                                 null,
                                 null);
@@ -347,7 +344,7 @@ namespace YAF.Core.Services
                 if (yafUser.Facebook.Equals(id))
                 {
                     // Add Flag to User that indicates that the user is logged in via facebook
-                    LegacyDb.user_update_single_sign_on_status(yafUserData.UserID, true, false);
+                    LegacyDb.user_update_single_sign_on_status(YafContext.Current.PageModuleID, yafUserData.UserID, true, false);
 
                     FormsAuthentication.SetAuthCookie(userName, remember);
 
@@ -428,8 +425,7 @@ namespace YAF.Core.Services
                 // save the time zone...
                 int userId = UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey);
 
-                LegacyDb.user_save(
-                    userId,
+                LegacyDb.user_save(YafContext.Current.PageModuleID, userId,
                     YafContext.Current.PageBoardID,
                     username,
                     username,
@@ -452,15 +448,14 @@ namespace YAF.Core.Services
                                               UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
                 // save the settings...
-                LegacyDb.user_savenotification(
-                    userId,
+                LegacyDb.user_savenotification(YafContext.Current.PageModuleID, userId,
                     true,
                     autoWatchTopicsEnabled,
                     YafContext.Current.Get<YafBoardSettings>().DefaultNotificationSetting,
                     YafContext.Current.Get<YafBoardSettings>().DefaultSendDigestEmail);
 
                 // save avatar
-                LegacyDb.user_saveavatar(userId, "https://graph.facebook.com/{0}/picture".FormatWith(id), null, null);
+                LegacyDb.user_saveavatar(YafContext.Current.PageModuleID, userId, "https://graph.facebook.com/{0}/picture".FormatWith(id), null, null);
 
                 // Clearing cache with old Active User Lazy Data ...
                 YafContext.Current.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(userId));
@@ -468,7 +463,7 @@ namespace YAF.Core.Services
                 YafContext.Current.Get<IRaiseEvent>().Raise(new NewUserRegisteredEvent(user, userId));
 
                 // Add Flag to User that indicates that the user is logged in via facebook
-                LegacyDb.user_update_single_sign_on_status(userId, true, false);
+                LegacyDb.user_update_single_sign_on_status(YafContext.Current.PageModuleID, userId, true, false);
 
                 FormsAuthentication.SetAuthCookie(user.UserName, remember);
 
@@ -510,7 +505,7 @@ namespace YAF.Core.Services
             YafContext.Current.Get<IYafSession>().TwitterTokenSecret = oAuth.TokenSecret;
 
             // Add Flag to User that indicates that the user is logged in via twitter
-            LegacyDb.user_update_single_sign_on_status(userId, false, true);
+            LegacyDb.user_update_single_sign_on_status(YafContext.Current.PageModuleID, userId, false, true);
 
             FormsAuthentication.SetAuthCookie(user.UserName, true);
 

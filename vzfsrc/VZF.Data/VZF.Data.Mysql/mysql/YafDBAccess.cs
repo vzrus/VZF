@@ -24,6 +24,8 @@
  * 
  */
 
+using System.Collections.Concurrent;
+using System.Reflection;
 using MySql.Data.MySqlClient;
 namespace YAF.Classes.Data
 {
@@ -207,7 +209,10 @@ namespace YAF.Classes.Data
         {
 
             MySqlConnectionStringBuilder connBuilder = new MySqlConnectionStringBuilder();
-           // List<MySqlParameter> conParams = new List<MySqlParameter>();
+
+          
+            
+            // List<MySqlParameter> conParams = new List<MySqlParameter>();
           //  conParams.Add(new MySqlParameter())
             connBuilder.OldGuids = true;
             connBuilder.AllowBatch = true;
@@ -235,6 +240,36 @@ namespace YAF.Classes.Data
             return connBuilder.ConnectionString;
 
         }
+
+        public static ConcurrentDictionary<string, Type> GetConnectionParams()
+        {
+            Type myType = (typeof (MySqlConnectionStringBuilder));
+            PropertyInfo[] myPropertyInfo = myType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // Display information for all properties. 
+            var cd = new ConcurrentDictionary<string, Type>();
+            foreach (PropertyInfo t in myPropertyInfo)
+            {
+              
+                var dd = t.GetCustomAttributesData();
+                if (dd == null || dd.Count <= 0) continue;
+
+                foreach (var customAttributeData in dd)
+                {
+
+                    if (customAttributeData != null && customAttributeData.ConstructorArguments !=null && customAttributeData.ConstructorArguments.Count > 0  
+                        && (customAttributeData.ConstructorArguments[0].Value.ToString() == "Connection"
+                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Pooling"
+                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Security"
+                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Advanced"))
+                    {
+                        cd.AddOrUpdate(t.Name, t.PropertyType, (key, value) => value);
+                        break;
+                    }
+                }
+            }
+            return cd;
+        }
+
         /// <summary>
         /// Test the DB Connection.
         /// </summary>

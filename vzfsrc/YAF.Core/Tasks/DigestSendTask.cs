@@ -163,7 +163,7 @@ namespace YAF.Core.Tasks
 
           // get users with digest enabled...
           var usersWithDigest =
-            LegacyDb.UserFind(boardId, false, null, null, null, null, true).Where(x => !x.IsGuest && (x.IsApproved ?? false));
+            LegacyDb.UserFind(YafContext.Current.PageModuleID, boardId, false, null, null, null, null, true).Where(x => !x.IsGuest && (x.IsApproved ?? false));
 
           if (usersWithDigest.Any())
           {

@@ -122,7 +122,7 @@ namespace YAF.Pages
       {
         string senderEmail = null;
 
-        using (DataTable dt = LegacyDb.user_list(this.PageContext.PageBoardID, this.PageContext.PageUserID, true))
+        using (DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, true))
         {
           senderEmail = (string)dt.Rows[0]["Email"];
         }

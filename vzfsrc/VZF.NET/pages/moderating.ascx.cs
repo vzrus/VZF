@@ -94,7 +94,7 @@ namespace YAF.Pages
                 false);
 
             this.topiclist.DataSource = dt;
-            this.UserList.DataSource = LegacyDb.userforum_list(null, this.PageContext.PageForumID);
+            this.UserList.DataSource = LegacyDb.userforum_list(PageContext.PageModuleID, null, this.PageContext.PageForumID);
             this.DataBind();
 
             if (dt != null && dt.Rows.Count > 0)
@@ -204,7 +204,7 @@ namespace YAF.Pages
                         ForumPages.mod_forumuser, "f={0}&u={1}", this.PageContext.PageForumID, e.CommandArgument);
                     break;
                 case "remove":
-                    LegacyDb.userforum_delete(e.CommandArgument, this.PageContext.PageForumID);
+                    LegacyDb.userforum_delete(PageContext.PageModuleID, e.CommandArgument, this.PageContext.PageForumID);
                     this.BindData();
 
                     // clear moderatorss cache

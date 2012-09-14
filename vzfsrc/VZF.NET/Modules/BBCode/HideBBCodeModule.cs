@@ -137,7 +137,7 @@ namespace YAF.Modules.BBCode
 
 
                 if (DisplayUserID == userId ||
-                    LegacyDb.user_ThankFromCount(userId) >= thanksCount)
+                    LegacyDb.user_ThankFromCount(PageContext.PageModuleID, userId) >= thanksCount)
                 {
                     shownContent = hiddenContent;
                 }
@@ -163,7 +163,7 @@ namespace YAF.Modules.BBCode
 
 
                 if (DisplayUserID == userId ||
-                    LegacyDb.user_ThankedMessage(messageId.ToType<int>(), userId))
+                    LegacyDb.user_ThankedMessage(PageContext.PageModuleID, messageId.ToType<int>(), userId))
                 {
                     // Show hiddent content if user is the poster or have thanked the poster.
                     shownContent = hiddenContent;

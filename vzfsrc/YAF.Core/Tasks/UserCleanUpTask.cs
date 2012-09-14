@@ -74,7 +74,7 @@ namespace YAF.Core.Tasks
         foreach (int boardId in boardIds)
         {
           // get users for this board...
-          List<DataRow> users = LegacyDb.user_list(boardId, null, null).Rows.Cast<DataRow>().ToList();
+          List<DataRow> users = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, boardId, null, null).Rows.Cast<DataRow>().ToList();
 
           // handle unsuspension...
           var suspendedUsers = from u in users
@@ -84,7 +84,7 @@ namespace YAF.Core.Tasks
           // unsuspend these users...
           foreach (var user in suspendedUsers)
           {
-            LegacyDb.user_suspend(user["UserId"], null);
+            LegacyDb.user_suspend(YafContext.Current.PageModuleID, user["UserId"], null);
 
             // sleep for a quarter of a second so we don't pound the server...
             Thread.Sleep(250);

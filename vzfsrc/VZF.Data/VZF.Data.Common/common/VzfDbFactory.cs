@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Web.Security;
 using YAF.Types;
 using YAF.Types.Constants;
 using YAF.Types.Objects;
@@ -6081,75 +6082,71 @@ namespace YAF.Classes.Data
              }
 
          }
-         /// <summary>
-         /// The user_list.
-         /// </summary>
-         /// <param name="boardID">
-         /// The board id.
-         /// </param>
-         /// <param name="userID">
-         /// The user id.
-         /// </param>
-         /// <param name="approved">
-         /// The approved.
-         /// </param>    
-         /// <returns>
-         /// </returns>
-         public static DataTable user_list(object boardID, object userID, object approved)
-         {
-             return user_list(boardID, userID, approved, null, null, false);
-         }
-         /// <summary>
-         /// The user_list.
-         /// </summary>
-         /// <param name="boardID">
-         /// The board id.
-         /// </param>
-         /// <param name="userID">
-         /// The user id.
-         /// </param>
-         /// <param name="approved">
-         /// The approved.
-         /// </param>
-         /// <param name="useStyledNicks">
-         /// Return style info.
-         /// </param> 
-         /// <returns>
-         /// </returns>
-         public static DataTable user_list( object boardID, object userID, object approved, object useStyledNicks)
-         {
-             return user_list(boardID, userID, approved, null, null, useStyledNicks);
-         }
 
-         /// <summary>
-         /// The user_list.
-         /// </summary>
-         /// <param name="boardID">
-         /// The board id.
-         /// </param>
-         /// <param name="userID">
-         /// The user id.
-         /// </param>
-         /// <param name="approved">
-         /// The approved.
-         /// </param>
-         /// <param name="groupID">
-         /// The group id.
-         /// </param>
-         /// <param name="rankID">
-         /// The rank id.
-         /// </param>
-         /// <returns>
-         /// </returns>
-         public static DataTable user_list(object boardID, object userID, object approved, object groupID, object rankID)
+        /// <summary>
+        /// The user_list.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="approved">
+        /// The approved.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_list(int? mid, object boardID, object userID, object approved)
          {
-             return user_list(boardID, userID, approved, null, null, false);
+             return user_list(mid, boardID, userID, approved, null, null, false);
          }
-         static public DataTable user_list(object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
+        /// <summary>
+        /// The user_list.
+        /// </summary>
+        /// <param name="mid"> </param>
+        /// <param name="boardId"> </param>
+        /// <param name="userId"> </param>
+        /// <param name="approved">
+        /// The approved.
+        /// </param>
+        /// <param name="approved">
+        /// The approved.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="rankID">
+        /// The rank id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// Return style info.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        /// <summary>
+        /// The user_list.
+        /// </summary>
+        /// <returns>
+        /// </returns>
+         static public DataTable user_list(int? mid, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6163,15 +6160,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_listmedals(object userId)
+         static public DataTable user_listmedals(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6185,34 +6181,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_listmedals(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_listmembers(
-            object boardId,
-            object userId,
-            object approved,
-            object groupId,
-            object rankId,
-            object useStyledNicks,
-            object lastUserId,
-            object literals,
-            object exclude,
-            object beginsWith,
-            object pageIndex,
-            object pageSize,
-            object sortName,
-            object sortRank,
-            object sortJoined,
-            object sortPosts,
-            object sortLastVisit,
-            object numPosts,
-            object numPostCompare)
+         static public DataTable user_listmembers(int? mid, object boardId, object userId, object approved, object groupId, object rankId, object useStyledNicks, object lastUserId, object literals, object exclude, object beginsWith, object pageIndex, object pageSize, object sortName, object sortRank, object sortJoined, object sortPosts, object sortLastVisit, object numPosts, object numPostCompare)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+              string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6226,16 +6202,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
  
-         public static void user_medal_delete(object userId, object medalID)
+         public static void user_medal_delete(int? mid, object userId, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6249,14 +6224,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_medal_delete(connectionString, userId, medalID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable user_medal_list(object userId, object medalID)
+         static public DataTable user_medal_list(int? mid, object userId, object medalID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6270,18 +6244,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_medal_list(connectionString, userId, medalID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void user_medal_save(
-            object userId, object medalID, object message,
-            object hide, object onlyRibbon, object sortOrder, object dateAwarded)
+         public static void user_medal_save(int? mid, object userId, object medalID, object message, object hide, object onlyRibbon, object sortOrder, object dateAwarded)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6295,14 +6266,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_migrate(object userId, object providerUserKey, object updateProvider)
+         public static void user_migrate(int? mid, object userId, object providerUserKey, object updateProvider)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6316,14 +6286,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public int user_nntp(object boardId, object userName, object email, int? timeZone)
+         static public int user_nntp(int? mid, object boardId, object userName, object email, int? timeZone)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6337,14 +6306,13 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable user_pmcount(object userId)
+         static public DataTable user_pmcount(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6358,15 +6326,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_pmcount(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public object user_recoverpassword(object boardId, object userName, object email)
+         static public object user_recoverpassword(int? mid, object boardId, object userName, object email)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6380,16 +6347,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_recoverpassword(connectionString, boardId, userName, email); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public bool user_register(object boardId, object userName, object password, object hash, object email, object location,
-                           object homePage, object timeZone, bool approved)
+         static public bool user_register(int? mid, object boardId, object userName, object password, object hash, object email, object location, object homePage, object timeZone, bool approved)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6403,15 +6368,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void user_removeignoreduser(object userId, object ignoredUserId)
+         public static void user_removeignoreduser(int? mid, object userId, object ignoredUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6425,15 +6389,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void user_removepoints(object userId, [CanBeNull] object fromUserID, object points)
+         public static void user_removepoints(int? mid, object userId, [CanBeNull] object fromUserID, object points)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6447,14 +6410,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_removepointsByTopicID(object topicID, object points)
+         public static void user_removepointsByTopicID(int? mid, object topicID, object points)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6468,14 +6430,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public bool  user_RepliedTopic([NotNull] object messageId, [NotNull] object userId)
+         static public bool  user_RepliedTopic(int? mid, [NotNull] object messageId, [NotNull] object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6489,33 +6450,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_RepliedTopic(connectionString, messageId, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void user_save(
-            object userId,
-            object boardId,
-            object userName,
-            object displayName,
-            object email,
-            object timeZone,
-            object languageFile,
-            object culture,
-            object themeFile,
-            object useSingleSignOn,
-            object textEditor,
-            object overrideDefaultThemes,
-            object approved,
-            object pmNotification,
-            object autoWatchTopics,
-            object dSTUser,
-            object isHidden,
-            object notificationType)
+         public static void user_save(int? mid, object userId, object boardId, object userName, object displayName, object email, object timeZone, object languageFile, object culture, object themeFile, object useSingleSignOn, object textEditor, object overrideDefaultThemes, object approved, object pmNotification, object autoWatchTopics, object dSTUser, object isHidden, object notificationType)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6529,14 +6471,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_saveavatar(object userId, object avatar, System.IO.Stream stream, object avatarImageType)
+         public static void user_saveavatar(int? mid, object userId, object avatar, Stream stream, object avatarImageType)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6550,19 +6491,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_savenotification(
-            object userId,
-            object pmNotification,
-            object autoWatchTopics,
-            object notificationType,
-            object dailyDigest)
+         public static void user_savenotification(int? mid, object userId, object pmNotification, object autoWatchTopics, object notificationType, object dailyDigest)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6576,14 +6511,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_savepassword(object userId, object password)
+         public static void user_savepassword(int? mid, object userId, object password)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6597,14 +6531,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_savepassword(connectionString, userId, password); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_savesignature(object userId, object signature)
+         public static void user_savesignature(int? mid, object userId, object signature)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6618,14 +6551,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_savesignature(connectionString, userId, signature); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_setinfo(int boardId, System.Web.Security.MembershipUser user)
+         public static void user_setinfo(int? mid, int boardId, MembershipUser user)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6639,14 +6571,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_setinfo(connectionString, boardId, user); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_setnotdirty(int boardId, int userId)
+         public static void user_setnotdirty(int? mid, int boardId, int userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6660,14 +6591,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_setpoints(object userId, object points)
+         public static void user_setpoints(int? mid, object userId, object points)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6681,14 +6611,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_setpoints(connectionString, userId, points); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         public static void user_setrole(int boardId, object providerUserKey, object role)
+         public static void user_setrole(int? mid, int boardId, object providerUserKey, object role)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6702,15 +6631,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public DataTable user_simplelist(int StartID, int Limit)
+         static public DataTable user_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6724,15 +6652,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_simplelist(connectionString, StartID, Limit); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void user_suspend(object userId, object suspend)
+         public static void user_suspend(int? mid, object userId, object suspend)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+              string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6746,15 +6673,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_suspend(connectionString, userId, suspend); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         public static void user_update_single_sign_on_status([NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
+         public static void user_update_single_sign_on_status(int? mid, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
              switch (dataEngine)
@@ -6768,15 +6694,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser);break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
 
-         static public bool user_ThankedMessage(object messageId, object userId)
+         static public bool user_ThankedMessage(int? mid, object messageId, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6790,15 +6715,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_ThankedMessage(connectionString, messageId, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public int user_ThankFromCount([NotNull] object userId)
+         static public int user_ThankFromCount(int? mid, [NotNull] object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6812,15 +6736,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_ThankFromCount(connectionString,  userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public DataTable user_viewallthanks(object UserID, object pageUserId)
+         static public DataTable user_viewallthanks(int? mid, object UserID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6834,16 +6757,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.user_viewallthanks(connectionString, UserID, pageUserId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         static public IEnumerable<TypedUserFind> UserFind(int boardId, bool filter, string userName, string email, string displayName,
-                                            object notificationType, object dailyDigest)
+         static public IEnumerable<TypedUserFind> UserFind(int? mid, int boardId, bool filter, string userName, string email, string displayName, object notificationType, object dailyDigest)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6861,15 +6782,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void userforum_delete(object userId, object forumID)
+         public static void userforum_delete(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6883,14 +6803,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.userforum_delete(connectionString, userId, forumID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable userforum_list(object userId, object forumID)
+         static public DataTable userforum_list(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6904,15 +6823,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.userforum_list(connectionString, userId, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void userforum_save(object userId, object forumID, object accessMaskID)
+         public static void userforum_save(int? mid, object userId, object forumID, object accessMaskID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6926,14 +6844,14 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
+                    
              }
          }
-         static public DataTable usergroup_list(object userId)
+         static public DataTable usergroup_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6947,15 +6865,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.usergroup_list(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void usergroup_save(object userId, object groupID, object member)
+         public static void usergroup_save(int? mid, object userId, object groupID, object member)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6969,15 +6886,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public IEnumerable<TypedUserList> UserList(int boardId, int? userId, bool? approved, int? groupID, int? rankID,
-                                            bool? useStyledNicks)
+         static public IEnumerable<TypedUserList> UserList(int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -6991,15 +6906,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void watchforum_add(object userId, object forumID)
+         public static void watchforum_add(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7013,14 +6927,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.watchforum_add(connectionString, userId, forumID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable watchforum_check(object userId, object forumID)
+         static public DataTable watchforum_check(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7034,16 +6947,15 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.watchforum_check(connectionString, userId, forumID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
 
-         public static void watchforum_delete(object watchForumID)
+         public static void watchforum_delete(int? mid, object watchForumID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7057,14 +6969,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.watchforum_delete(connectionString, watchForumID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable watchforum_list(object userId)
+         static public DataTable watchforum_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7078,15 +6989,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.watchforum_list(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void watchtopic_add(object userId, object topicID)
+         public static void watchtopic_add(int? mid, object userId, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7100,14 +7010,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.watchtopic_add(connectionString, userId, topicID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable watchtopic_check(object userId, object topicID)
+         static public DataTable watchtopic_check(int? mid, object userId, object topicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7121,15 +7030,14 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.watchtopic_check(connectionString, userId, topicID); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
-         public static void watchtopic_delete(object watchTopicID)
+         public static void watchtopic_delete(int? mid, object watchTopicID)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7143,14 +7051,13 @@ namespace YAF.Classes.Data
                  // case "other":   othPostgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
          }
-         static public DataTable watchtopic_list(object userId)
+         static public DataTable watchtopic_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
-             int? mid = 0;  string namePattern = string.Empty;
+             string namePattern = string.Empty;
              CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
              
              switch (dataEngine)
@@ -7164,7 +7071,6 @@ namespace YAF.Classes.Data
                  // case "other":  return othPostgre.Db.watchtopic_list(connectionString, userId); 
                  default:
                      throw new ApplicationException("No return type");
-                     break;
              }
 
          }
@@ -7172,11 +7078,11 @@ namespace YAF.Classes.Data
 
          // Properties
 
-        public static int GetDBSize()
+        public static int GetDBSize(int? mid)
         {
             string dataEngine;
             string connectionString;
-            int? mid = 0;  string namePattern = string.Empty;
+            string namePattern = string.Empty;
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
@@ -7191,15 +7097,14 @@ namespace YAF.Classes.Data
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ",
                                                                  mid));
-                    break;
             }
         }
 
-        public static bool GetIsForumInstalled()
+        public static bool GetIsForumInstalled(int? mid)
         {
             string dataEngine;
             string connectionString;
-            int? mid = 0;  string namePattern = string.Empty;
+            string namePattern = string.Empty;
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
@@ -7214,16 +7119,15 @@ namespace YAF.Classes.Data
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ",
                                                                  mid));
-                    break;
             }
         }
        
 
-        public static int GetDBVersion()
+        public static int GetDBVersion(int? mid)
         {
             string dataEngine;
             string connectionString;
-            int? mid = 0;  string namePattern = string.Empty;
+            string namePattern = string.Empty;
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
             
             switch (dataEngine)
@@ -7238,111 +7142,62 @@ namespace YAF.Classes.Data
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ",
                                                                  mid));
-                    break;
             }
         }
 
-        public static bool FullTextSupported
-         {
-             get
-             { 
-                 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextSupported;;
-                     case "Npgsql": return Postgre.Db.FullTextSupported;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.FullTextSupported;;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.FullTextSupported;;
-                     // case "oracle":  return orPostgre.Db.fullTextSupported;;
-                     // case "db2":  return db2Postgre.Db.fullTextSupported;;
-                     // case "other":  return othPostgre.Db.fullTextSupported;; 
-                     default:
-                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ",
-                                                                      mid));
-                         break;
-                 }
+        public static bool GetFullTextSupported(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-             }
-             set
-             {
-                 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient":  MsSql.LegacyDb.FullTextSupported = value; break;
-                     case "Npgsql": Postgre.Db.FullTextSupported = value; break;
-                     case "MySql.Data.MySqlClient":  MySqlDb.Db.FullTextSupported = value; break;
-                     case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.FullTextSupported = value; break;
-                     // case "oracle":   orPostgre.Db.fullTextSupported = value; break;
-                     // case "db2":   db2Postgre.Db.fullTextSupported = value; break;
-                     // case "other":   othPostgre.Db.fullTextSupported = value; break; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-
-                 
-             }
-         }
-
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextSupported;;
+                case "Npgsql":
+                    return Postgre.Db.FullTextSupported;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.FullTextSupported;
+                    ;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.FullTextSupported;
+                    ;
+                    // case "oracle":  return orPostgre.Db.fullTextSupported;;
+                    // case "db2":  return db2Postgre.Db.fullTextSupported;;
+                    // case "other":  return othPostgre.Db.fullTextSupported;; 
+                default:
+                    throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ",
+                                                                 mid));
+            }
+        }
        
-         public static string FullTextScript
-         {
-             get
-             {
-                 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextScript;
-                     case "Npgsql": return Postgre.Db.FullTextScript;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.FullTextScript;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.FullTextScript;
-                     // case "oracle":  return orPostgre.Db.fullTextScript;
-                     // case "db2":  return db2Postgre.Db.fullTextScript;
-                     // case "other":  return othPostgre.Db.fullTextScript; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-                 
-             }
-             set
-             {
-                 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient":  MsSql.LegacyDb.FullTextScript = value; break;
-                     case "Npgsql": Postgre.Db.FullTextScript = value; break;
-                     case "MySql.Data.MySqlClient":  MySqlDb.Db.FullTextScript = value; break;
-                     case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.FullTextScript = value; break;
-                     // case "oracle":   orPostgre.Db.fullTextScript = value; break;
-                     // case "db2":   db2Postgre.Db.fullTextScript = value; break;
-                     // case "other":   othPostgre.Db.fullTextScript = value; break; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-                 
-             }
+        public static string GetFullTextScript(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-         }
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextScript;
+                case "Npgsql":
+                    return Postgre.Db.FullTextScript;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.FullTextScript;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.FullTextScript;
+                    // case "oracle":  return orPostgre.Db.fullTextScript;
+                    // case "db2":  return db2Postgre.Db.fullTextScript;
+                    // case "other":  return othPostgre.Db.fullTextScript; 
+                default:
+                    throw new ApplicationException("No return type");
+                
+            }
+        }
 
-       /*  private static List<ConnectionStringOptions> _connectionOptions;
+        /*  private static List<ConnectionStringOptions> _connectionOptions;
 
          public static  List<ConnectionStringOptions> ConnectionOptions
          {
@@ -7353,1640 +7208,1635 @@ namespace YAF.Classes.Data
         //added vzrus
 		#region ConnectionStringOptions
 
-		public static string ProviderAssemblyName
-		{
-			get
-			{
-                 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.ProviderAssemblyName;
-                     case "Npgsql": return Postgre.Db.ProviderAssemblyName;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.ProviderAssemblyName;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.ProviderAssemblyName;
-                     // case "oracle":  return orPostgre.Db.ProviderAssemblyName;
-                     // case "db2":  return db2Postgre.Db.ProviderAssemblyName;
-                     // case "other":  return othPostgre.Db.ProviderAssemblyName; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetProviderAssemblyName(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool PasswordPlaceholderVisible
-		{
-			get
-			{
-				 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.PasswordPlaceholderVisible;
-                     case "Npgsql": return Postgre.Db.PasswordPlaceholderVisible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.PasswordPlaceholderVisible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PasswordPlaceholderVisible;
-                     // case "oracle":  return orPostgre.Db.PasswordPlaceholderVisible;
-                     // case "db2":  return db2Postgre.Db.PasswordPlaceholderVisible;
-                     // case "other":  return othPostgre.Db.PasswordPlaceholderVisible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-	  
-		//Parameter 1
-		public static string Parameter1_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Name;
-                     case "Npgsql": return Postgre.Db.Parameter1_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter1_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter1_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter1_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter1_Name;
-                     // case "other":  return othPostgre.Db.Parameter1_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter1_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Value;
-                     case "Npgsql": return Postgre.Db.Parameter1_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter1_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter1_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter1_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter1_Value;
-                     // case "other":  return othPostgre.Db.Parameter1_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.ProviderAssemblyName;
+                case "Npgsql":
+                    return Postgre.Db.ProviderAssemblyName;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.ProviderAssemblyName;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.ProviderAssemblyName;
+                    // case "oracle":  return orPostgre.Db.ProviderAssemblyName;
+                    // case "db2":  return db2Postgre.Db.ProviderAssemblyName;
+                    // case "other":  return othPostgre.Db.ProviderAssemblyName; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter1_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter1_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter1_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter1_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter1_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter1_Visible;
-                     // case "other":  return othPostgre.Db.Parameter1_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 2
-		public static string Parameter2_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Name;
-                     case "Npgsql": return Postgre.Db.Parameter2_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter2_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter2_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter2_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter2_Name;
-                     // case "other":  return othPostgre.Db.Parameter2_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter2_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Value;
-                     case "Npgsql": return Postgre.Db.Parameter2_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter2_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter2_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter2_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter2_Value;
-                     // case "other":  return othPostgre.Db.Parameter2_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetPasswordPlaceholderVisible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter2_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter2_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter2_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter2_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter2_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter2_Visible;
-                     // case "other":  return othPostgre.Db.Parameter2_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 3
-		public static string Parameter3_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Name;
-                     case "Npgsql": return Postgre.Db.Parameter3_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter3_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter3_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter3_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter3_Name;
-                     // case "other":  return othPostgre.Db.Parameter3_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-        public static string Parameter3_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Value;
-                     case "Npgsql": return Postgre.Db.Parameter3_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter3_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter3_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter3_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter3_Value;
-                     // case "other":  return othPostgre.Db.Parameter3_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PasswordPlaceholderVisible;
+                case "Npgsql":
+                    return Postgre.Db.PasswordPlaceholderVisible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.PasswordPlaceholderVisible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.PasswordPlaceholderVisible;
+                    // case "oracle":  return orPostgre.Db.PasswordPlaceholderVisible;
+                    // case "db2":  return db2Postgre.Db.PasswordPlaceholderVisible;
+                    // case "other":  return othPostgre.Db.PasswordPlaceholderVisible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter3_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter3_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter3_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter3_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter3_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter3_Visible;
-                     // case "other":  return othPostgre.Db.Parameter3_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 4
-		public static string Parameter4_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Name;
-                     case "Npgsql": return Postgre.Db.Parameter4_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter4_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter4_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter4_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter4_Name;
-                     // case "other":  return othPostgre.Db.Parameter4_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter4_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Value;
-                     case "Npgsql": return Postgre.Db.Parameter4_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter4_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter4_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter4_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter4_Value;
-                     // case "other":  return othPostgre.Db.Parameter4_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        //Parameter 1
 
-		public static bool Parameter4_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter4_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter4_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter4_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter4_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter4_Visible;
-                     // case "other":  return othPostgre.Db.Parameter4_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 5
-		public static string Parameter5_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Name;
-                     case "Npgsql": return Postgre.Db.Parameter5_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter5_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter5_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter5_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter5_Name;
-                     // case "other":  return othPostgre.Db.Parameter5_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter5_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Value;
-                     case "Npgsql": return Postgre.Db.Parameter5_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter5_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter5_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter5_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter5_Value;
-                     // case "other":  return othPostgre.Db.Parameter5_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter1_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter5_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter5_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter5_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter5_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter5_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter5_Visible;
-                     // case "other":  return othPostgre.Db.Parameter5_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter1_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter1_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter1_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter1_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter1_Name;
+                    // case "other":  return othPostgre.Db.Parameter1_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		//Parameter 6
-		public static string Parameter6_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Name;
-                     case "Npgsql": return Postgre.Db.Parameter6_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter6_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter6_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter6_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter6_Name;
-                     // case "other":  return othPostgre.Db.Parameter6_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter6_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Value;
-                     case "Npgsql": return Postgre.Db.Parameter6_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter6_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter6_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter6_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter6_Value;
-                     // case "other":  return othPostgre.Db.Parameter6_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter1_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter6_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter6_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter6_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter6_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter6_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter6_Visible;
-                     // case "other":  return othPostgre.Db.Parameter6_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter1_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter1_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter1_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter1_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter1_Value;
+                    // case "other":  return othPostgre.Db.Parameter1_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		//Parameter 7
-		public static string Parameter7_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Name;
-                     case "Npgsql": return Postgre.Db.Parameter7_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter7_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter7_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter7_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter7_Name;
-                     // case "other":  return othPostgre.Db.Parameter7_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static string Parameter7_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Value;
-                     case "Npgsql": return Postgre.Db.Parameter7_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter7_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter7_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter7_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter7_Value;
-                     // case "other":  return othPostgre.Db.Parameter7_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter1_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter7_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter7_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter7_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter7_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter7_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter7_Visible;
-                     // case "other":  return othPostgre.Db.Parameter7_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 8
-		public static string Parameter8_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Name;
-                     case "Npgsql": return Postgre.Db.Parameter8_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter8_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter8_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter8_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter8_Name;
-                     // case "other":  return othPostgre.Db.Parameter8_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter1_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter1_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter1_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter1_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter1_Visible;
+                    // case "other":  return othPostgre.Db.Parameter1_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static string Parameter8_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Value;
-                     case "Npgsql": return Postgre.Db.Parameter8_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter8_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter8_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter8_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter8_Value;
-                     // case "other":  return othPostgre.Db.Parameter8_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        //Parameter 2
 
-		public static bool Parameter8_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter8_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter8_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter8_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter8_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter8_Visible;
-                     // case "other":  return othPostgre.Db.Parameter8_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 9
-		public static string Parameter9_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Name;
-                     case "Npgsql": return Postgre.Db.Parameter9_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter9_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter9_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter9_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter9_Name;
-                     // case "other":  return othPostgre.Db.Parameter9_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter2_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static string Parameter9_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Value;
-                     case "Npgsql": return Postgre.Db.Parameter9_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter9_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter9_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter9_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter9_Value;
-                     // case "other":  return othPostgre.Db.Parameter9_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter2_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter2_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter2_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter2_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter2_Name;
+                    // case "other":  return othPostgre.Db.Parameter2_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter9_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter9_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter9_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter9_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter9_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter9_Visible;
-                     // case "other":  return othPostgre.Db.Parameter9_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 10
-		public static string Parameter10_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Name;
-                     case "Npgsql": return Postgre.Db.Parameter10_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter10_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter10_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter10_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter10_Name;
-                     // case "other":  return othPostgre.Db.Parameter10_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter2_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static string Parameter10_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Value;
-                     case "Npgsql": return Postgre.Db.Parameter10_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter10_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter10_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter10_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter10_Value;
-                     // case "other":  return othPostgre.Db.Parameter10_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter2_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter2_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter2_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter2_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter2_Value;
+                    // case "other":  return othPostgre.Db.Parameter2_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter10_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter10_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter10_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter10_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter10_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter10_Visible;
-                     // case "other":  return othPostgre.Db.Parameter10_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter2_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		// Role=
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter2_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter2_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter2_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter2_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter2_Visible;
+                    // case "other":  return othPostgre.Db.Parameter2_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 3
+
+        public static string GetParameter3_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter3_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter3_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter3_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter3_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter3_Name;
+                    // case "other":  return othPostgre.Db.Parameter3_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter3_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter3_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter3_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter3_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter3_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter3_Value;
+                    // case "other":  return othPostgre.Db.Parameter3_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter3_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter3_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter3_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter3_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter3_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter3_Visible;
+                    // case "other":  return othPostgre.Db.Parameter3_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 4
+
+        public static string GetParameter4_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter4_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter4_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter4_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter4_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter4_Name;
+                    // case "other":  return othPostgre.Db.Parameter4_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter4_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter4_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter4_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter4_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter4_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter4_Value;
+                    // case "other":  return othPostgre.Db.Parameter4_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter4_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter4_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter4_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter4_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter4_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter4_Visible;
+                    // case "other":  return othPostgre.Db.Parameter4_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 5
+
+        public static string GetParameter5_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter5_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter5_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter5_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter5_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter5_Name;
+                    // case "other":  return othPostgre.Db.Parameter5_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter5_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter5_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter5_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter5_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter5_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter5_Value;
+                    // case "other":  return othPostgre.Db.Parameter5_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter5_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter5_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter5_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter5_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter5_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter5_Visible;
+                    // case "other":  return othPostgre.Db.Parameter5_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 6
+
+        public static string GetParameter6_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter6_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter6_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter6_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter6_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter6_Name;
+                    // case "other":  return othPostgre.Db.Parameter6_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter6_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter6_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter6_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter6_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter6_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter6_Value;
+                    // case "other":  return othPostgre.Db.Parameter6_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter6_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter6_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter6_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter6_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter6_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter6_Visible;
+                    // case "other":  return othPostgre.Db.Parameter6_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 7
+
+        public static string GetParameter7_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter7_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter7_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter7_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter7_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter7_Name;
+                    // case "other":  return othPostgre.Db.Parameter7_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter7_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter7_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter7_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter7_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter7_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter7_Value;
+                    // case "other":  return othPostgre.Db.Parameter7_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter7_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter7_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter7_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter7_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter7_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter7_Visible;
+                    // case "other":  return othPostgre.Db.Parameter7_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 8
+
+        public static string GetParameter8_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter8_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter8_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter8_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter8_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter8_Name;
+                    // case "other":  return othPostgre.Db.Parameter8_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter8_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter8_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter8_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter8_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter8_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter8_Value;
+                    // case "other":  return othPostgre.Db.Parameter8_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter8_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter8_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter8_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter8_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter8_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter8_Visible;
+                    // case "other":  return othPostgre.Db.Parameter8_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 9
+
+        public static string GetParameter9_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter9_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter9_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter9_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter9_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter9_Name;
+                    // case "other":  return othPostgre.Db.Parameter9_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter9_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter9_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter9_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter9_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter9_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter9_Value;
+                    // case "other":  return othPostgre.Db.Parameter9_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter9_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter9_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter9_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter9_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter9_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter9_Visible;
+                    // case "other":  return othPostgre.Db.Parameter9_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 10
+
+        public static string GetParameter10_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter10_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter10_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter10_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter10_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter10_Name;
+                    // case "other":  return othPostgre.Db.Parameter10_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static string GetParameter10_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter10_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter10_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter10_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter10_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter10_Value;
+                    // case "other":  return othPostgre.Db.Parameter10_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter10_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter10_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter10_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter10_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter10_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter10_Visible;
+                    // case "other":  return othPostgre.Db.Parameter10_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        // Role=
 		//Check boxes
 
 		//Parameter 11 hides user password placeholder! 12 reserved for User Instance
 
-		public static string Parameter11_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Name;
-                     case "Npgsql": return Postgre.Db.Parameter11_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter11_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter11_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter11_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter11_Name;
-                     // case "other":  return othPostgre.Db.Parameter11_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter11_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter11_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Value;
-                     case "Npgsql": return Postgre.Db.Parameter11_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter11_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter11_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter11_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter11_Value;
-                     // case "other":  return othPostgre.Db.Parameter11_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter11_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter11_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter11_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter11_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter11_Name;
+                    // case "other":  return othPostgre.Db.Parameter11_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter11_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter11_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter11_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter11_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter11_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter11_Visible;
-                     // case "other":  return othPostgre.Db.Parameter11_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter11_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static string Parameter12_Name
-		{
-			get
-			{
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter11_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter11_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter11_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter11_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter11_Value;
+                    // case "other":  return othPostgre.Db.Parameter11_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Name;
-                     case "Npgsql": return Postgre.Db.Parameter12_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter12_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter12_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter12_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter12_Name;
-                     // case "other":  return othPostgre.Db.Parameter12_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter11_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter12_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Value;
-                     case "Npgsql": return Postgre.Db.Parameter12_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter12_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter12_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter12_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter12_Value;
-                     // case "other":  return othPostgre.Db.Parameter12_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter11_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter11_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter11_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter11_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter11_Visible;
+                    // case "other":  return othPostgre.Db.Parameter11_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter12_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter12_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter12_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter12_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter12_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter12_Visible;
-                     // case "other":  return othPostgre.Db.Parameter12_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter12_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static string Parameter13_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Name;
-                     case "Npgsql": return Postgre.Db.Parameter13_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter13_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter13_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter13_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter13_Name;
-                     // case "other":  return othPostgre.Db.Parameter13_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter12_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter12_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter12_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter12_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter12_Name;
+                    // case "other":  return othPostgre.Db.Parameter12_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter13_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Value;
-                     case "Npgsql": return Postgre.Db.Parameter13_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter13_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter13_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter13_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter13_Value;
-                     // case "other":  return othPostgre.Db.Parameter13_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter12_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter13_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter13_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter13_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter13_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter13_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter13_Visible;
-                     // case "other":  return othPostgre.Db.Parameter13_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter12_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter12_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter12_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter12_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter12_Value;
+                    // case "other":  return othPostgre.Db.Parameter12_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		//Parameter 14
-		public static string Parameter14_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Name;
-                     case "Npgsql": return Postgre.Db.Parameter14_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter14_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter14_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter14_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter14_Name;
-                     // case "other":  return othPostgre.Db.Parameter14_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter12_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter14_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Value;
-                     case "Npgsql": return Postgre.Db.Parameter14_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter14_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter14_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter14_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter14_Value;
-                     // case "other":  return othPostgre.Db.Parameter4_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter12_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter12_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter12_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter12_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter12_Visible;
+                    // case "other":  return othPostgre.Db.Parameter12_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter14_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter14_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter14_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter14_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter14_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter14_Visible;
-                     // case "other":  return othPostgre.Db.Parameter14_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter13_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		//Parameter 15
-		public static string Parameter15_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Name;
-                     case "Npgsql": return Postgre.Db.Parameter15_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter15_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter15_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter15_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter15_Name;
-                     // case "other":  return othPostgre.Db.Parameter15_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter13_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter13_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter13_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter13_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter13_Name;
+                    // case "other":  return othPostgre.Db.Parameter13_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter15_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Value;
-                     case "Npgsql": return Postgre.Db.Parameter15_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter15_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter15_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter15_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter15_Value;
-                     // case "other":  return othPostgre.Db.Parameter15_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter13_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter15_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter15_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter15_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter15_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter15_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter15_Visible;
-                     // case "other":  return othPostgre.Db.Parameter15_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 16
-		public static string Parameter16_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Name;
-                     case "Npgsql": return Postgre.Db.Parameter16_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter16_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter16_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter16_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter16_Name;
-                     // case "other":  return othPostgre.Db.Parameter16_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter13_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter13_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter13_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter13_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter13_Value;
+                    // case "other":  return othPostgre.Db.Parameter13_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter16_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Value;
-                     case "Npgsql": return Postgre.Db.Parameter16_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter16_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter16_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter16_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter16_Value;
-                     // case "other":  return othPostgre.Db.Parameter16_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter13_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter16_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter16_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter16_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter16_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter16_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter16_Visible;
-                     // case "other":  return othPostgre.Db.Parameter16_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter13_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter13_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter13_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter13_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter13_Visible;
+                    // case "other":  return othPostgre.Db.Parameter13_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		//Parameter 17
-		public static string Parameter17_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Name;
-                     case "Npgsql": return Postgre.Db.Parameter17_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter17_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter17_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter17_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter17_Name;
-                     // case "other":  return othPostgre.Db.Parameter17_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        //Parameter 14
 
-		public static bool Parameter17_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Value;
-                     case "Npgsql": return Postgre.Db.Parameter17_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter17_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter17_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter17_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter17_Value;
-                     // case "other":  return othPostgre.Db.Parameter17_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static string GetParameter14_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter17_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter17_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter17_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter17_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter17_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter17_Visible;
-                     // case "other":  return othPostgre.Db.Parameter17_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter14_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter14_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter14_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter14_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter14_Name;
+                    // case "other":  return othPostgre.Db.Parameter14_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		//Parameter 18
-		public static string Parameter18_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Name;
-                     case "Npgsql": return Postgre.Db.Parameter18_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter18_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter18_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter18_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter18_Name;
-                     // case "other":  return othPostgre.Db.Parameter18_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter14_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter18_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Value;
-                     case "Npgsql": return Postgre.Db.Parameter18_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter18_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter18_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter18_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter18_Value;
-                     // case "other":  return othPostgre.Db.Parameter18_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter14_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter14_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter14_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter14_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter14_Value;
+                    // case "other":  return othPostgre.Db.Parameter4_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter18_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter18_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter18_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter18_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter18_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter18_Visible;
-                     // case "other":  return othPostgre.Db.Parameter18_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		//Parameter 19
-		public static string Parameter19_Name
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Name;
-                     case "Npgsql": return Postgre.Db.Parameter19_Name;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter19_Name;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter19_Name;
-                     // case "oracle":  return orPostgre.Db.Parameter19_Name;
-                     // case "db2":  return db2Postgre.Db.Parameter19_Name;
-                     // case "other":  return othPostgre.Db.Parameter19_Name; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter14_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		public static bool Parameter19_Value
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Value;
-                     case "Npgsql": return Postgre.Db.Parameter19_Value;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter19_Value;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter19_Value;
-                     // case "oracle":  return orPostgre.Db.Parameter19_Value;
-                     // case "db2":  return db2Postgre.Db.Parameter19_Value;
-                     // case "other":  return othPostgre.Db.Parameter19_Value; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter14_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter14_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter14_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter14_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter14_Visible;
+                    // case "other":  return othPostgre.Db.Parameter14_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-		public static bool Parameter19_Visible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Visible;
-                     case "Npgsql": return Postgre.Db.Parameter19_Visible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.Parameter19_Visible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Parameter19_Visible;
-                     // case "oracle":  return orPostgre.Db.Parameter19_Visible;
-                     // case "db2":  return db2Postgre.Db.Parameter19_Visible;
-                     // case "other":  return othPostgre.Db.Parameter19_Visible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		#endregion
+        //Parameter 15
 
+        public static string GetParameter15_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-         public static string [] ScriptList
-		{
-			get
-			{
-                string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.ScriptList;
-                     case "Npgsql": return Postgre.Db.ScriptList;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.ScriptList;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.ScriptList;
-                     // case "oracle":  return orPostgre.Db.scriptList;
-                     // case "db2":  return db2Postgre.Db.scriptList;
-                     // case "other":  return othPostgre.Db.scriptList; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-				
-			}
-		}
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter15_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter15_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter15_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter15_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter15_Name;
+                    // case "other":  return othPostgre.Db.Parameter15_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-        		public static bool PanelGetStats
-		{
-			get
-			{
-				 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelGetStats;
-                     case "Npgsql": return Postgre.Db.PanelGetStats;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.PanelGetStats;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PanelGetStats;
-                     // case "oracle":  return orPostgre.Db.PanelGetStats;
-                     // case "db2":  return db2Postgre.Db.PanelGetStats;
-                     // case "other":  return othPostgre.Db.PanelGetStats; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static bool PanelRecoveryMode
-		{
-			get
-			{
-				 string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelRecoveryMode;
-                     case "Npgsql": return Postgre.Db.PanelRecoveryMode;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.PanelRecoveryMode;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PanelRecoveryMode;
-                     // case "oracle":  return orPostgre.Db.PanelRecoveryMode;
-                     // case "db2":  return db2Postgre.Db.PanelRecoveryMode;
-                     // case "other":  return othPostgre.Db.PanelRecoveryMode; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static bool PanelReindex
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelReindex;
-                     case "Npgsql": return Postgre.Db.PanelReindex;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.PanelReindex;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PanelReindex;
-                     // case "oracle":  return orPostgre.Db.PanelReindex;
-                     // case "db2":  return db2Postgre.Db.PanelReindex;
-                     // case "other":  return othPostgre.Db.PanelReindex; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
-		public static bool PanelShrink
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelShrink;
-                     case "Npgsql": return Postgre.Db.PanelShrink;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.PanelShrink;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PanelShrink;
-                     // case "oracle":  return orPostgre.Db.PanelShrink;
-                     // case "db2":  return db2Postgre.Db.PanelShrink;
-                     // case "other":  return othPostgre.Db.PanelShrink; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		}
+        public static bool GetParameter15_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
-		
-		public static bool btnReindexVisible
-		{
-			get
-			{
-				string dataEngine;
-                 string connectionString;
-                 int? mid = 0;  string namePattern = string.Empty;
-                 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-                 
-                 switch (dataEngine)
-                 {
-                     // case "System.Data.SqlClient": return MsSql.LegacyDb.btnReindexVisible;
-                     case "Npgsql": return Postgre.Db.btnReindexVisible;
-                     case "MySql.Data.MySqlClient": return MySqlDb.Db.btnReindexVisible;
-                     case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.btnReindexVisible;
-                     // case "oracle":  return orPostgre.Db.btnReindexVisible;
-                     // case "db2":  return db2Postgre.Db.btnReindexVisible;
-                     // case "other":  return othPostgre.Db.btnReindexVisible; 
-                     default:
-                         throw new ApplicationException("No return type");
-                         break;
-                 }
-			}
-		} 
-         
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter15_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter15_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter15_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter15_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter15_Value;
+                    // case "other":  return othPostgre.Db.Parameter15_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter15_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter15_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter15_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter15_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter15_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter15_Visible;
+                    // case "other":  return othPostgre.Db.Parameter15_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 16
+
+        public static string GetParameter16_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter16_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter16_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter16_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter16_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter16_Name;
+                    // case "other":  return othPostgre.Db.Parameter16_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter16_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter16_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter16_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter16_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter16_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter16_Value;
+                    // case "other":  return othPostgre.Db.Parameter16_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter16_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter16_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter16_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter16_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter16_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter16_Visible;
+                    // case "other":  return othPostgre.Db.Parameter16_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 17
+
+        public static string GetParameter17_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter17_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter17_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter17_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter17_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter17_Name;
+                    // case "other":  return othPostgre.Db.Parameter17_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter17_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter17_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter17_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter17_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter17_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter17_Value;
+                    // case "other":  return othPostgre.Db.Parameter17_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter17_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter17_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter17_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter17_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter17_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter17_Visible;
+                    // case "other":  return othPostgre.Db.Parameter17_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 18
+
+        public static string GetParameter18_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter18_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter18_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter18_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter18_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter18_Name;
+                    // case "other":  return othPostgre.Db.Parameter18_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter18_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter18_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter18_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter18_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter18_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter18_Value;
+                    // case "other":  return othPostgre.Db.Parameter18_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter18_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter18_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter18_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter18_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter18_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter18_Visible;
+                    // case "other":  return othPostgre.Db.Parameter18_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        //Parameter 19
+
+        public static string GetParameter19_Name(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Name;
+                case "Npgsql":
+                    return Postgre.Db.Parameter19_Name;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter19_Name;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter19_Name;
+                    // case "oracle":  return orPostgre.Db.Parameter19_Name;
+                    // case "db2":  return db2Postgre.Db.Parameter19_Name;
+                    // case "other":  return othPostgre.Db.Parameter19_Name; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter19_Value(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Value;
+                case "Npgsql":
+                    return Postgre.Db.Parameter19_Value;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter19_Value;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter19_Value;
+                    // case "oracle":  return orPostgre.Db.Parameter19_Value;
+                    // case "db2":  return db2Postgre.Db.Parameter19_Value;
+                    // case "other":  return othPostgre.Db.Parameter19_Value; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetParameter19_Visible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter19_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter19_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter19_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter19_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter19_Visible;
+                    // case "other":  return othPostgre.Db.Parameter19_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+                public static bool GetParametes(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Visible;
+                case "Npgsql":
+                    return Postgre.Db.Parameter19_Visible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.Parameter19_Visible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.Parameter19_Visible;
+                    // case "oracle":  return orPostgre.Db.Parameter19_Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter19_Visible;
+                    // case "other":  return othPostgre.Db.Parameter19_Visible; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+        
+           
+        #endregion
+
+        public static string[] GetScriptList(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+           
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.ScriptList;
+                case "Npgsql":
+                    return Postgre.Db.ScriptList;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.ScriptList;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.ScriptList;
+                    // case "oracle":  return orPostgre.Db.scriptList;
+                    // case "db2":  return db2Postgre.Db.scriptList;
+                    // case "other":  return othPostgre.Db.scriptList; 
+                default:
+                    throw new ApplicationException("No return type");
+                  
+            }
+        }
+
+        public static bool GetPanelGetStats(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelGetStats;
+                case "Npgsql":
+                    return Postgre.Db.PanelGetStats;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.PanelGetStats;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.PanelGetStats;
+                    // case "oracle":  return orPostgre.Db.PanelGetStats;
+                    // case "db2":  return db2Postgre.Db.PanelGetStats;
+                    // case "other":  return othPostgre.Db.PanelGetStats; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetPanelRecoveryMode(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelRecoveryMode;
+                case "Npgsql":
+                    return Postgre.Db.PanelRecoveryMode;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.PanelRecoveryMode;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.PanelRecoveryMode;
+                    // case "oracle":  return orPostgre.Db.PanelRecoveryMode;
+                    // case "db2":  return db2Postgre.Db.PanelRecoveryMode;
+                    // case "other":  return othPostgre.Db.PanelRecoveryMode; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetPanelReindex(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelReindex;
+                case "Npgsql":
+                    return Postgre.Db.PanelReindex;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.PanelReindex;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.PanelReindex;
+                    // case "oracle":  return orPostgre.Db.PanelReindex;
+                    // case "db2":  return db2Postgre.Db.PanelReindex;
+                    // case "other":  return othPostgre.Db.PanelReindex; 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+
+        public static bool GetPanelShrink(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelShrink;
+                case "Npgsql":
+                    return Postgre.Db.PanelShrink;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.PanelShrink;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.PanelShrink;
+                    // case "oracle":  return orPostgre.Db.PanelShrink;
+                    // case "db2":  return db2Postgre.Db.PanelShrink;
+                    // case "other":  return othPostgre.Db.PanelShrink; 
+                default:
+                    throw new ApplicationException("No return type");
+                    
+            }
+        }
 
 
+        public static bool getBtnReindexVisible(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+           
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                    // case "System.Data.SqlClient": return MsSql.LegacyDb.btnReindexVisible;
+                case "Npgsql":
+                    return Postgre.Db.btnReindexVisible;
+                case "MySql.Data.MySqlClient":
+                    return MySqlDb.Db.btnReindexVisible;
+                case "FirebirdSql.Data.FirebirdClient":
+                    return FirebirdDb.Db.btnReindexVisible;
+                    // case "oracle":  return orPostgre.Db.btnReindexVisible;
+                    // case "db2":  return db2Postgre.Db.btnReindexVisible;
+                    // case "other":  return othPostgre.Db.btnReindexVisible; 
+                default:
+                    throw new ApplicationException("No return type");
+                    
+            }
+        }
     }
 
     

@@ -196,7 +196,7 @@ namespace YAF.Pages.Admin
             if (this.UserNameList.SelectedValue.IsNotSet() && this.UserID.Text.IsNotSet())
             {
                 // only username is specified, we must find id for it
-                var users = LegacyDb.UserFind(this.PageContext.PageBoardID, true, this.UserName.Text, null, this.UserName.Text, null, null);
+                var users = LegacyDb.UserFind(PageContext.PageModuleID, this.PageContext.PageBoardID, true, this.UserName.Text, null, this.UserName.Text, null, null);
 
                 if (users.Count() > 1)
                 {
@@ -222,8 +222,7 @@ namespace YAF.Pages.Admin
             }
 
             // save user, if there is no message specified, pass null
-            LegacyDb.user_medal_save(
-              this.UserID.Text,
+            LegacyDb.user_medal_save(PageContext.PageModuleID, this.UserID.Text,
               this.Request.QueryString.GetFirstOrDefault("m"),
               this.UserMessage.Text.IsNotSet() ? null : this.UserMessage.Text,
               this.UserHide.Checked,
@@ -367,7 +366,7 @@ namespace YAF.Pages.Admin
         protected void FindUsers_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // try to find users by user name
-            var users = LegacyDb.UserFind(this.PageContext.PageBoardID, true, this.UserName.Text, null, this.UserName.Text, null, null);
+            var users = LegacyDb.UserFind(PageContext.PageModuleID, this.PageContext.PageBoardID, true, this.UserName.Text, null, this.UserName.Text, null, null);
 
             if (!users.Any())
             {
@@ -666,7 +665,7 @@ namespace YAF.Pages.Admin
                 case "edit":
 
                     // load user-medal to the controls
-                    using (DataTable dt = LegacyDb.user_medal_list(e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m")))
+                    using (DataTable dt = LegacyDb.user_medal_list(PageContext.PageModuleID, e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m")))
                     {
                         // prepare editing interface
                         this.AddUser_Click(null, e);
@@ -692,7 +691,7 @@ namespace YAF.Pages.Admin
                 case "remove":
 
                     // delete user-medal
-                    LegacyDb.user_medal_delete(e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m"));
+                    LegacyDb.user_medal_delete(PageContext.PageModuleID, e.CommandArgument, this.Request.QueryString.GetFirstOrDefault("m"));
 
                     // clear cache...
                     this.RemoveUserFromCache(this.Request.QueryString.GetFirstOrDefault("m").ToType<int>());
@@ -783,7 +782,7 @@ namespace YAF.Pages.Admin
             if (this.Request.QueryString.GetFirstOrDefault("m") != null)
             {
                 // load users and groups who has been assigned this medal
-                this.UserList.DataSource = LegacyDb.user_medal_list(null, this.Request.QueryString.GetFirstOrDefault("m"));
+                this.UserList.DataSource = LegacyDb.user_medal_list(PageContext.PageModuleID, null, this.Request.QueryString.GetFirstOrDefault("m"));
                 this.UserList.DataBind();
                 this.GroupList.DataSource = LegacyDb.group_medal_list(PageContext.PageModuleID, null, this.Request.QueryString.GetFirstOrDefault("m"));
                 this.GroupList.DataBind();

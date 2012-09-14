@@ -843,14 +843,14 @@ namespace YAF.Pages
 
             if (this.WatchTopicID.InnerText == string.Empty)
             {
-                LegacyDb.watchtopic_add(this.PageContext.PageUserID, this.PageContext.PageTopicID);
+                LegacyDb.watchtopic_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageTopicID);
                 this.PageContext.AddLoadMessage(this.GetText("INFO_WATCH_TOPIC"));
             }
             else
             {
                 int tmpID = this.WatchTopicID.InnerText.ToType<int>();
 
-                LegacyDb.watchtopic_delete(tmpID);
+                LegacyDb.watchtopic_delete(PageContext.PageModuleID, tmpID);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_UNWATCH_TOPIC"));
             }
@@ -1300,7 +1300,7 @@ namespace YAF.Pages
             }
 
             // check if this forum is being watched by this user
-            using (DataTable dt = LegacyDb.watchtopic_check(this.PageContext.PageUserID, this.PageContext.PageTopicID))
+            using (DataTable dt = LegacyDb.watchtopic_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageTopicID))
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -1646,12 +1646,12 @@ namespace YAF.Pages
             if (this.PageContext.CurrentUserData.AutoWatchTopics)
             {
                 using (
-                    DataTable dt = LegacyDb.watchtopic_check(this.PageContext.PageUserID, this.PageContext.PageTopicID))
+                    DataTable dt = LegacyDb.watchtopic_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageTopicID))
                 {
                     if (dt.Rows.Count == 0)
                     {
                         // subscribe to this forum
-                        LegacyDb.watchtopic_add(this.PageContext.PageUserID, this.PageContext.PageTopicID);
+                        LegacyDb.watchtopic_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageTopicID);
                     }
                 }
             }

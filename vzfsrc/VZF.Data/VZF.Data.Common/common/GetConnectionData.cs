@@ -22,10 +22,11 @@ namespace YAF.Classes.Data
         public static bool GetConnectionData(int? mid, string namePattern, out string dataEngine, out string connectionString)
         {
             // string [] patterns = new string[]{"",""};
-            // Look for board special configs.
-           
+
+            // Look for modules special configs.
             string connectionStringName =
-                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameBoard{0}", mid));
+                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+           
             // They were not found gte default.
             if (string.IsNullOrEmpty(connectionStringName))
             {

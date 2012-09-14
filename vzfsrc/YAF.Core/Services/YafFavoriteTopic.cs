@@ -212,7 +212,7 @@ namespace YAF.Core.Services
     /// </returns>
     private int? TopicWatchedId(int userId, int topicId)
     {
-      return LegacyDb.watchtopic_check(userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
+        return LegacyDb.watchtopic_check(YafContext.Current.PageModuleID, userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
     }
 
     /// <summary>
@@ -230,7 +230,7 @@ namespace YAF.Core.Services
       if (watchedId.HasValue)
       {
         // subscribe to this forum
-        LegacyDb.watchtopic_delete(watchedId);
+          LegacyDb.watchtopic_delete(YafContext.Current.PageModuleID, watchedId);
       }
     }
 
@@ -247,7 +247,7 @@ namespace YAF.Core.Services
       if (!this.TopicWatchedId(userId, topicId).HasValue)
       {
         // subscribe to this forum
-        LegacyDb.watchtopic_add(userId, topicId);
+          LegacyDb.watchtopic_add(YafContext.Current.PageModuleID, userId, topicId);
       }
     }
 

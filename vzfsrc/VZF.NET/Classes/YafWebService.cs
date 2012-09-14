@@ -159,10 +159,9 @@ public class YafWebService : WebService, IHaveServiceLocator
                         displayName));
             }
 
-            var userFields = LegacyDb.user_list(Config.BoardID, userId, null).Rows[0];
+            var userFields = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, Config.BoardID, userId, null).Rows[0];
 
-            LegacyDb.user_save(
-                userId,
+            LegacyDb.user_save(YafContext.Current.PageModuleID, userId,
                 Config.BoardID,
                 null,
                 displayName,

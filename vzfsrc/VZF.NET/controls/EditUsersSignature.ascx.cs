@@ -331,7 +331,7 @@ namespace YAF.Controls
             {
                 if (this._sig.Text.Length <= this._allowedNumberOfCharacters)
                 {
-                    LegacyDb.user_savesignature(this.CurrentUserID, this.Get<IBadWordReplace>().Replace(body));
+                    LegacyDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, this.Get<IBadWordReplace>().Replace(body));
                 }
                 else
                 {
@@ -343,7 +343,7 @@ namespace YAF.Controls
             }
             else
             {
-                LegacyDb.user_savesignature(this.CurrentUserID, DBNull.Value);
+                LegacyDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, DBNull.Value);
             }
 
             // clear the cache for this user...

@@ -1217,8 +1217,7 @@ namespace YAF.Pages.Admin
                         !(this.UsersBoardsList.Items[iboards].Value.ToType<int>() == YafContext.Current.PageBoardID &&
                           _excludeCurrentBoard))
                     {
-                        LegacyDb.user_save(
-                            LegacyDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
+                        LegacyDb.user_save(PageContext.PageModuleID, LegacyDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
                             boardID,
                             null,
                             null,

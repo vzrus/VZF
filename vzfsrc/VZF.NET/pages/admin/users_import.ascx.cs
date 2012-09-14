@@ -464,8 +464,7 @@ namespace YAF.Pages.Admin
                 };
             }
 
-            LegacyDb.user_save(
-                userId,
+            LegacyDb.user_save(PageContext.PageModuleID, userId,
                 YafContext.Current.PageBoardID,
                 row["Name"],
                 row.Table.Columns.Contains("DisplayName") ? row["DisplayName"] : null,
@@ -488,8 +487,7 @@ namespace YAF.Pages.Admin
                                           == UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
             // save the settings...
-            LegacyDb.user_savenotification(
-                userId,
+            LegacyDb.user_savenotification(PageContext.PageModuleID, userId,
                 true,
                 autoWatchTopicsEnabled,
                 this.Get<YafBoardSettings>().DefaultNotificationSetting,

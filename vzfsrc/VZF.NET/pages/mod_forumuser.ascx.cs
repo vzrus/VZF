@@ -208,8 +208,7 @@ namespace YAF.Pages
             }
 
             using (
-                DataTable dt = LegacyDb.userforum_list(
-                    this.Request.QueryString.GetFirstOrDefault("u"), this.PageContext.PageForumID))
+                DataTable dt = LegacyDb.userforum_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("u"), this.PageContext.PageForumID))
             {
                 foreach (DataRow row in dt.Rows)
                 {
@@ -270,7 +269,7 @@ namespace YAF.Pages
             }
 
             // save permission
-            LegacyDb.userforum_save(userId.Value, this.PageContext.PageForumID, this.AccessMaskID.SelectedValue);
+            LegacyDb.userforum_save(PageContext.PageModuleID, userId.Value, this.PageContext.PageForumID, this.AccessMaskID.SelectedValue);
             
             // clear moderators cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);

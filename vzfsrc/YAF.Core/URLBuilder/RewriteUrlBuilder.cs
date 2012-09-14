@@ -588,7 +588,7 @@ namespace YAF.Core
             if (row == null)
             {
                 // get the section desired...
-                DataTable list = LegacyDb.user_simplelist(this.LowRange(id), this.CacheSize);
+                DataTable list = LegacyDb.user_simplelist(YafContext.Current.PageModuleID, this.LowRange(id), this.CacheSize);
 
                 // set it up in the cache
                 row = this.SetupDataToCache(ref list, Type, id, PrimaryKey);

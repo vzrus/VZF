@@ -378,8 +378,7 @@ namespace YAF.Pages
         // save the time zone...
         int userId = UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey);
 
-        LegacyDb.user_save(
-            userId, 
+        LegacyDb.user_save(PageContext.PageModuleID, userId, 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -402,8 +401,7 @@ namespace YAF.Pages
                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
         // save the settings...
-        LegacyDb.user_savenotification(
-            userId, 
+        LegacyDb.user_savenotification(PageContext.PageModuleID, userId, 
             true, 
             autoWatchTopicsEnabled, 
             this.Get<YafBoardSettings>().DefaultNotificationSetting, 

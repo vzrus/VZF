@@ -869,8 +869,7 @@ namespace YAF.Classes.Data.MySqlDb
 			while ( true )
 			{
 				try
-				{           
-                   
+				{
                     DataTable dt1=null;                   
                   
 					using ( MySqlCommand cmd = MySqlDbAccess.GetCommand( "pageload" ) )

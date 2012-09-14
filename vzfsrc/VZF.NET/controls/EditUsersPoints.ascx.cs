@@ -115,7 +115,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_removepoints(this.CurrentUserID, null, this.txtRemovePoints.Text);
+            LegacyDb.user_removepoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtRemovePoints.Text);
             this.BindData();
         }
 
@@ -135,7 +135,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_setpoints(this.CurrentUserID, this.txtUserPoints.Text);
+            LegacyDb.user_setpoints(PageContext.PageModuleID, this.CurrentUserID, this.txtUserPoints.Text);
             this.BindData();
         }
 

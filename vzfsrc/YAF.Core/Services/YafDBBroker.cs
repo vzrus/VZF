@@ -732,7 +732,7 @@ namespace YAF.Core.Services
 
             // get the medals cached...
             DataTable dt = this.DataCache.GetOrSet(
-                key, () => LegacyDb.user_listmedals(userId), TimeSpan.FromMinutes(10));
+                key, () => LegacyDb.user_listmedals(YafContext.Current.PageModuleID, userId), TimeSpan.FromMinutes(10));
 
             return dt;
         }

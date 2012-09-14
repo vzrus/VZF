@@ -690,7 +690,7 @@ namespace YAF.Controls
         protected void Stats_Renew()
         {
             // Renew PM Statistics
-            DataTable dt = LegacyDb.user_pmcount(this.PageContext.PageUserID);
+            DataTable dt = LegacyDb.user_pmcount(PageContext.PageModuleID, this.PageContext.PageUserID);
             if (dt.Rows.Count > 0)
             {
                 this.PMInfoLink.Text = this.GetPMessageText(

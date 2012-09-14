@@ -135,7 +135,7 @@ namespace YAF.Install
         {
             get
             {
-                return LegacyDb.GetIsForumInstalled();
+                return LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID);
             }
         }
 
@@ -437,7 +437,7 @@ namespace YAF.Install
 
                     break;
                 case "WizCreateForum":
-                    if (LegacyDb.GetIsForumInstalled())
+                    if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID))
                     {
                         this.InstallWizard.ActiveStepIndex++;
                     }
@@ -451,7 +451,7 @@ namespace YAF.Install
                     }
                     else
                     {
-                        object version = this.Cache["DBVersion"] ?? LegacyDb.GetDBVersion();
+                        object version = this.Cache["DBVersion"] ?? LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
 
                         if (((int)version) >= 30 || ((int)version) == -1)
                         {
@@ -466,7 +466,7 @@ namespace YAF.Install
                     if (this.CurrentWizardStepID == "WizMigrateUsers")
                     {
                         this.lblMigrateUsersCount.Text =
-                            LegacyDb.user_list(this.PageBoardID, null, true).Rows.Count.ToString();
+                            LegacyDb.user_list((int?) YafContext.Current.PageModuleID, this.PageBoardID, null, true).Rows.Count.ToString();
                     }
 
                     break;
@@ -973,7 +973,7 @@ namespace YAF.Install
         /// </returns>
         private bool CreateForum()
         {
-            if (LegacyDb.GetIsForumInstalled())
+            if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID))
             {
                 this.AddLoadMessage("Forum is already installed.");
                 return false;
@@ -1248,7 +1248,7 @@ namespace YAF.Install
             }
             else
             {
-                this.Cache["DBVersion"] = LegacyDb.GetDBVersion();
+                this.Cache["DBVersion"] = LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
 
                 this.CurrentWizardStepID = this.IsInstalled ? "WizEnterPassword" : "WizValidatePermission";
 
@@ -1259,7 +1259,7 @@ namespace YAF.Install
                     YafContext.Current.BoardSettings = new YafBoardSettings();
                 }
 
-                this.FullTextSupport.Visible = LegacyDb.FullTextSupported;
+                this.FullTextSupport.Visible = LegacyDb.GetFullTextSupported(YafContext.Current.PageModuleID);
 
                 this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");
 
@@ -1275,85 +1275,85 @@ namespace YAF.Install
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
 
-                this.DBUsernamePasswordHolder.Visible = LegacyDb.PasswordPlaceholderVisible;
+                this.DBUsernamePasswordHolder.Visible = LegacyDb.GetPasswordPlaceholderVisible(YafContext.Current.PageModuleID);
 
                 // Connection string parameters text boxes
-                this.Parameter1_Name.Text = LegacyDb.Parameter1_Name;
-                this.Parameter1_Value.Text = LegacyDb.Parameter1_Value;
-                this.Parameter1_Value.Visible = LegacyDb.Parameter1_Visible;
+                this.Parameter1_Name.Text = LegacyDb.GetParameter1_Name(YafContext.Current.PageModuleID);
+                this.Parameter1_Value.Text = LegacyDb.GetParameter1_Value(YafContext.Current.PageModuleID);
+                this.Parameter1_Value.Visible = LegacyDb.GetParameter1_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter2_Name.Text = LegacyDb.Parameter2_Name;
-                this.Parameter2_Value.Text = LegacyDb.Parameter2_Value;
-                this.Parameter2_Value.Visible = LegacyDb.Parameter2_Visible;
+                this.Parameter2_Name.Text = LegacyDb.GetParameter2_Name(YafContext.Current.PageModuleID);
+                this.Parameter2_Value.Text = LegacyDb.GetParameter2_Value(YafContext.Current.PageModuleID);
+                this.Parameter2_Value.Visible = LegacyDb.GetParameter2_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter3_Name.Text = LegacyDb.Parameter3_Name;
-                this.Parameter3_Value.Text = LegacyDb.Parameter3_Value;
-                this.Parameter3_Value.Visible = LegacyDb.Parameter3_Visible;
+                this.Parameter3_Name.Text = LegacyDb.GetParameter3_Name(YafContext.Current.PageModuleID);
+                this.Parameter3_Value.Text = LegacyDb.GetParameter3_Value(YafContext.Current.PageModuleID);
+                this.Parameter3_Value.Visible = LegacyDb.GetParameter3_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter4_Name.Text = LegacyDb.Parameter4_Name;
-                this.Parameter4_Value.Text = LegacyDb.Parameter4_Value;
-                this.Parameter4_Value.Visible = LegacyDb.Parameter4_Visible;
+                this.Parameter4_Name.Text = LegacyDb.GetParameter4_Name(YafContext.Current.PageModuleID);
+                this.Parameter4_Value.Text = LegacyDb.GetParameter4_Value(YafContext.Current.PageModuleID);
+                this.Parameter4_Value.Visible = LegacyDb.GetParameter4_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter5_Name.Text = LegacyDb.Parameter5_Name;
-                this.Parameter5_Value.Text = LegacyDb.Parameter5_Value;
-                this.Parameter5_Value.Visible = LegacyDb.Parameter5_Visible;
+                this.Parameter5_Name.Text = LegacyDb.GetParameter5_Name(YafContext.Current.PageModuleID);
+                this.Parameter5_Value.Text = LegacyDb.GetParameter5_Value(YafContext.Current.PageModuleID);
+                this.Parameter5_Value.Visible = LegacyDb.GetParameter5_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter6_Name.Text = LegacyDb.Parameter6_Name;
-                this.Parameter6_Value.Text = LegacyDb.Parameter6_Value;
-                this.Parameter6_Value.Visible = LegacyDb.Parameter6_Visible;
+                this.Parameter6_Name.Text = LegacyDb.GetParameter6_Name(YafContext.Current.PageModuleID);
+                this.Parameter6_Value.Text = LegacyDb.GetParameter6_Value(YafContext.Current.PageModuleID);
+                this.Parameter6_Value.Visible = LegacyDb.GetParameter6_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter7_Name.Text = LegacyDb.Parameter7_Name;
-                this.Parameter7_Value.Text = LegacyDb.Parameter7_Value;
-                this.Parameter7_Value.Visible = LegacyDb.Parameter7_Visible;
+                this.Parameter7_Name.Text = LegacyDb.GetParameter7_Name(YafContext.Current.PageModuleID);
+                this.Parameter7_Value.Text = LegacyDb.GetParameter7_Value(YafContext.Current.PageModuleID);
+                this.Parameter7_Value.Visible = LegacyDb.GetParameter7_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter8_Name.Text = LegacyDb.Parameter8_Name;
-                this.Parameter8_Value.Text = LegacyDb.Parameter8_Value;
-                this.Parameter8_Value.Visible = LegacyDb.Parameter8_Visible;
+                this.Parameter8_Name.Text = LegacyDb.GetParameter8_Name(YafContext.Current.PageModuleID);
+                this.Parameter8_Value.Text = LegacyDb.GetParameter8_Value(YafContext.Current.PageModuleID);
+                this.Parameter8_Value.Visible = LegacyDb.GetParameter8_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter9_Name.Text = LegacyDb.Parameter9_Name;
-                this.Parameter9_Value.Text = LegacyDb.Parameter9_Value;
-                this.Parameter9_Value.Visible = LegacyDb.Parameter9_Visible;
+                this.Parameter9_Name.Text = LegacyDb.GetParameter9_Name(YafContext.Current.PageModuleID);
+                this.Parameter9_Value.Text = LegacyDb.GetParameter9_Value(YafContext.Current.PageModuleID);
+                this.Parameter9_Value.Visible = LegacyDb.GetParameter9_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter10_Name.Text = LegacyDb.Parameter10_Name;
-                this.Parameter10_Value.Text = LegacyDb.Parameter10_Value;
-                this.Parameter10_Value.Visible = LegacyDb.Parameter10_Visible;
+                this.Parameter10_Name.Text = LegacyDb.GetParameter10_Name(YafContext.Current.PageModuleID);
+                this.Parameter10_Value.Text = LegacyDb.GetParameter10_Value(YafContext.Current.PageModuleID);
+                this.Parameter10_Value.Visible = LegacyDb.GetParameter10_Visible(YafContext.Current.PageModuleID);
 
                 // Connection string parameters  check boxes
-                this.Parameter11_Value.Text = LegacyDb.Parameter11_Name;
-                this.Parameter11_Value.Checked = LegacyDb.Parameter11_Value;
-                this.Parameter11_Value.Visible = LegacyDb.Parameter11_Visible;
+                this.Parameter11_Value.Text = LegacyDb.GetParameter11_Name(YafContext.Current.PageModuleID);
+                this.Parameter11_Value.Checked = LegacyDb.GetParameter11_Value(YafContext.Current.PageModuleID);
+                this.Parameter11_Value.Visible = LegacyDb.GetParameter11_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter12_Value.Text = LegacyDb.Parameter12_Name;
-                this.Parameter12_Value.Checked = LegacyDb.Parameter12_Value;
-                this.Parameter12_Value.Visible = LegacyDb.Parameter12_Visible;
+                this.Parameter12_Value.Text = LegacyDb.GetParameter12_Name(YafContext.Current.PageModuleID);
+                this.Parameter12_Value.Checked = LegacyDb.GetParameter12_Value(YafContext.Current.PageModuleID);
+                this.Parameter12_Value.Visible = LegacyDb.GetParameter12_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter13_Value.Text = LegacyDb.Parameter13_Name;
-                this.Parameter13_Value.Checked = LegacyDb.Parameter13_Value;
-                this.Parameter13_Value.Visible = LegacyDb.Parameter13_Visible;
+                this.Parameter13_Value.Text = LegacyDb.GetParameter13_Name(YafContext.Current.PageModuleID);
+                this.Parameter13_Value.Checked = LegacyDb.GetParameter13_Value(YafContext.Current.PageModuleID);
+                this.Parameter13_Value.Visible = LegacyDb.GetParameter13_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter14_Value.Text = LegacyDb.Parameter14_Name;
-                this.Parameter14_Value.Checked = LegacyDb.Parameter14_Value;
-                this.Parameter14_Value.Visible = LegacyDb.Parameter14_Visible;
+                this.Parameter14_Value.Text = LegacyDb.GetParameter14_Name(YafContext.Current.PageModuleID);
+                this.Parameter14_Value.Checked = LegacyDb.GetParameter14_Value(YafContext.Current.PageModuleID);
+                this.Parameter14_Value.Visible = LegacyDb.GetParameter14_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter15_Value.Text = LegacyDb.Parameter15_Name;
-                this.Parameter15_Value.Checked = LegacyDb.Parameter15_Value;
-                this.Parameter15_Value.Visible = LegacyDb.Parameter15_Visible;
+                this.Parameter15_Value.Text = LegacyDb.GetParameter15_Name(YafContext.Current.PageModuleID);
+                this.Parameter15_Value.Checked = LegacyDb.GetParameter15_Value(YafContext.Current.PageModuleID);
+                this.Parameter15_Value.Visible = LegacyDb.GetParameter15_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter16_Value.Text = LegacyDb.Parameter16_Name;
-                this.Parameter16_Value.Checked = LegacyDb.Parameter16_Value;
-                this.Parameter16_Value.Visible = LegacyDb.Parameter16_Visible;
+                this.Parameter16_Value.Text = LegacyDb.GetParameter16_Name(YafContext.Current.PageModuleID);
+                this.Parameter16_Value.Checked = LegacyDb.GetParameter16_Value(YafContext.Current.PageModuleID);
+                this.Parameter16_Value.Visible = LegacyDb.GetParameter16_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter17_Value.Text = LegacyDb.Parameter17_Name;
-                this.Parameter17_Value.Checked = LegacyDb.Parameter17_Value;
-                this.Parameter17_Value.Visible = LegacyDb.Parameter17_Visible;
+                this.Parameter17_Value.Text = LegacyDb.GetParameter17_Name(YafContext.Current.PageModuleID);
+                this.Parameter17_Value.Checked = LegacyDb.GetParameter17_Value(YafContext.Current.PageModuleID);
+                this.Parameter17_Value.Visible = LegacyDb.GetParameter17_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter18_Value.Text = LegacyDb.Parameter18_Name;
-                this.Parameter18_Value.Checked = LegacyDb.Parameter18_Value;
-                this.Parameter18_Value.Visible = LegacyDb.Parameter18_Visible;
+                this.Parameter18_Value.Text = LegacyDb.GetParameter18_Name(YafContext.Current.PageModuleID);
+                this.Parameter18_Value.Checked = LegacyDb.GetParameter18_Value(YafContext.Current.PageModuleID);
+                this.Parameter18_Value.Visible = LegacyDb.GetParameter18_Visible(YafContext.Current.PageModuleID);
 
-                this.Parameter19_Value.Text = LegacyDb.Parameter19_Name;
-                this.Parameter19_Value.Checked = LegacyDb.Parameter19_Value;
-                this.Parameter19_Value.Visible = LegacyDb.Parameter19_Visible;
+                this.Parameter19_Value.Text = LegacyDb.GetParameter19_Name(YafContext.Current.PageModuleID);
+                this.Parameter19_Value.Checked = LegacyDb.GetParameter19_Value(YafContext.Current.PageModuleID);
+                this.Parameter19_Value.Visible = LegacyDb.GetParameter19_Visible(YafContext.Current.PageModuleID);
 
                 // Hide New User on DNN
                 if (Config.IsDotNetNuke)
@@ -1403,7 +1403,7 @@ namespace YAF.Install
                 {
                     if (
                         !this._config.WriteConnectionString(
-                            Config.ConnectionStringName, this.CurrentConnString, LegacyDb.ProviderAssemblyName))
+                            Config.ConnectionStringName, this.CurrentConnString, LegacyDb.GetProviderAssemblyName(YafContext.Current.PageModuleID)))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;
@@ -1431,14 +1431,14 @@ namespace YAF.Install
                 // try
                 this.FixAccess(false);
 
-                foreach (string script in LegacyDb.ScriptList)
+                foreach (string script in LegacyDb.GetScriptList(YafContext.Current.PageModuleID))
                 {
                     this.ExecuteScript(script, true);
                 }
 
                 this.FixAccess(true);
 
-                int prevVersion = LegacyDb.GetDBVersion();
+                int prevVersion = LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
 
                 LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
@@ -1449,7 +1449,7 @@ namespace YAF.Install
                 // upgrade providers...
                 // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);
 
-                if (LegacyDb.GetIsForumInstalled() && prevVersion < 30
+                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 30
                     || this.IsForumInstalled && this.UpgradeExtensions.Checked)
                 {
                     // load default bbcode if available...
@@ -1486,13 +1486,13 @@ namespace YAF.Install
                     }
                 }
 
-                if (LegacyDb.GetIsForumInstalled() && prevVersion < 42)
+                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 42)
                 {
                     // un-html encode all topic subject names...
                     LegacyDb.unencode_all_topics_subjects(YafContext.Current.PageModuleID, t => Server.HtmlDecode(t));
                 }
 
-                if (LegacyDb.GetIsForumInstalled() && prevVersion < 49)
+                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 49)
                 {
                     // Reset The UserBox Template
                     this.Get<YafBoardSettings>().UserBox = Constants.UserBox.DisplayTemplateDefault;
@@ -1511,11 +1511,11 @@ namespace YAF.Install
       }*/
 
             // attempt to apply fulltext support if desired
-            if (fullText && LegacyDb.FullTextSupported)
+            if (fullText && LegacyDb.GetFullTextSupported(YafContext.Current.PageModuleID))
             {
                 try
                 {
-                    this.ExecuteScript(LegacyDb.FullTextScript, false);
+                    this.ExecuteScript(LegacyDb.GetFullTextScript(YafContext.Current.PageModuleID), false);
                 }
                 catch (Exception x)
                 {

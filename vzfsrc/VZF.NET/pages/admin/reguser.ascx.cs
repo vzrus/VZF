@@ -112,8 +112,7 @@ namespace YAF.Pages.Admin
         userProfile.Save();
 
         // save the time zone...
-        LegacyDb.user_save(
-            UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
+        LegacyDb.user_save(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -156,8 +155,7 @@ namespace YAF.Pages.Admin
             this.Get<YafBoardSettings>().DefaultNotificationSetting.Equals(
                 UserNotificationSetting.TopicsIPostToOrSubscribeTo);
 
-        LegacyDb.user_savenotification(
-            UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey),
+        LegacyDb.user_savenotification(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey),
             true,
             autoWatchTopicsEnabled,
             this.Get<YafBoardSettings>().DefaultNotificationSetting,

@@ -227,7 +227,7 @@ namespace YAF.Core.Nntp
 
                 if (createUsers)
                 {
-                  guestUserId = LegacyDb.user_nntp(boardID, fromName, string.Empty, article.Header.TimeZoneOffset);
+                    guestUserId = LegacyDb.user_nntp(YafContext.Current.PageModuleID, boardID, fromName, string.Empty, article.Header.TimeZoneOffset);
                 }
 
                 string body = this.ReplaceBody(article.Body.Text.Trim());

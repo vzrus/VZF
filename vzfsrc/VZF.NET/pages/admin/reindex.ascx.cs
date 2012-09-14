@@ -58,10 +58,10 @@ namespace YAF.Pages.Admin
         }
 
         // Check and see if it should make panels enable or not
-        this.PanelReindex.Visible = LegacyDb.PanelReindex;
-        this.PanelShrink.Visible = LegacyDb.PanelShrink;
-        this.PanelRecoveryMode.Visible = LegacyDb.PanelRecoveryMode;
-        this.PanelGetStats.Visible = LegacyDb.PanelGetStats;
+        this.PanelReindex.Visible = LegacyDb.GetPanelReindex(YafContext.Current.PageModuleID);
+        this.PanelShrink.Visible = LegacyDb.GetPanelShrink(YafContext.Current.PageModuleID);
+        this.PanelRecoveryMode.Visible = LegacyDb.GetPanelRecoveryMode(YafContext.Current.PageModuleID);
+        this.PanelGetStats.Visible = LegacyDb.GetPanelGetStats(YafContext.Current.PageModuleID);
 
         // Get the name of buttons
         this.btnReindex.Text = this.GetText("ADMIN_REINDEX", "REINDEXTBL_BTN");
@@ -175,7 +175,7 @@ namespace YAF.Pages.Admin
         try
         {
             this.txtIndexStatistics.Text = LegacyDb.db_shrink_warning(PageContext.PageModuleID) + @"\r\n\{0}\r\n\".FormatWith(LegacyDb.db_shrink_new(PageContext.PageModuleID));
-            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(LegacyDb.GetDBSize()) ;
+            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(LegacyDb.GetDBSize(PageContext.PageModuleID)) ;
         }
         catch (Exception error)
         {

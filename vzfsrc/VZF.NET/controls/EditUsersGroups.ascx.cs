@@ -146,7 +146,7 @@ namespace YAF.Controls
         bool isChecked = ((CheckBox)item.FindControl("GroupMember")).Checked;
 
         // save user in role
-        LegacyDb.usergroup_save(this.CurrentUserID, roleID, isChecked);
+        LegacyDb.usergroup_save(PageContext.PageModuleID, this.CurrentUserID, roleID, isChecked);
 
         // empty out access table
         LegacyDb.activeaccess_reset(PageContext.PageModuleID);

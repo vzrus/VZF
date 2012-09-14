@@ -324,7 +324,7 @@ namespace YAF.Controls
         {
             this.Get<IRaiseEvent>().Raise(new SuccessfulUserLoginEvent(this.PageContext.PageUserID));
 
-            LegacyDb.user_update_single_sign_on_status(this.PageContext.PageUserID, false, false);
+            LegacyDb.user_update_single_sign_on_status(PageContext.PageModuleID, this.PageContext.PageUserID, false, false);
         }
     }
 }

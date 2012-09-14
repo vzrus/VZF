@@ -25,6 +25,7 @@ namespace YAF.Controls
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
+    
     using YAF.Types.Interfaces;
     using YAF.Utils;
 
@@ -149,7 +150,8 @@ namespace YAF.Controls
 
             if (username != null && this.messageTextBox.Text != string.Empty)
             {
-                LegacyDb.shoutbox_savemessage(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                LegacyDb.shoutbox_savemessage(PageContext.PageModuleID,
+                    this.PageContext.PageBoardID,
                     this.messageTextBox.Text,
                     username,
                     this.PageContext.PageUserID,

@@ -102,7 +102,7 @@ namespace YAF.Core
             get
             {
                 return
-                    LegacyDb.user_list(YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
+                    LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
             }
         }
 
@@ -570,14 +570,14 @@ namespace YAF.Core
         {
             if (!allowCached)
             {
-                return LegacyDb.user_list(YafContext.Current.PageBoardID, userID, DBNull.Value).GetFirstRow();
+                return LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value).GetFirstRow();
             }
 
             // get the item cached...
             return
                 YafContext.Current.Get<IDataCache>().GetOrSet(
                     Constants.Cache.UserListForID.FormatWith(userID),
-                    () => LegacyDb.user_list(YafContext.Current.PageBoardID, userID, DBNull.Value),
+                    () => LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value),
                     TimeSpan.FromMinutes(5)).GetFirstRow();
         }
 

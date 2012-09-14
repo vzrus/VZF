@@ -813,6 +813,18 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        ///     Gets the config value as string.
+        /// </summary>
+        /// <param name="configKey"> The config key. </param>
+        /// <returns> Returns String Value </returns>
+        public static string GetConfigValueAsStringByPattern([NotNull] string configKey, string pattern)
+        {
+            return (from key in WebConfigurationManager.AppSettings.AllKeys
+                    where (key.Contains(configKey) && key.Contains(pattern))
+                    select WebConfigurationManager.AppSettings[key]).FirstOrDefault();
+        }
+
+        /// <summary>
         ///     Gets a Provider type string from the config.
         /// </summary>
         /// <param name="providerName"> The provider Name. </param>

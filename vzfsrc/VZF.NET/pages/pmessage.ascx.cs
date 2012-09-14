@@ -455,7 +455,7 @@ namespace YAF.Pages
 
                 if (int.TryParse(this.Request.QueryString.GetFirstOrDefault("u"), out toUserId))
                 {
-                    DataRow currentRow = LegacyDb.user_list(YafContext.Current.PageBoardID, toUserId, true).GetFirstRow();
+                    DataRow currentRow = LegacyDb.user_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, toUserId, true).GetFirstRow();
 
                     if (currentRow != null)
                     {
@@ -512,7 +512,7 @@ namespace YAF.Pages
                 return;
             }
 
-            using (DataTable userDT = LegacyDb.user_list(YafContext.Current.PageBoardID, YafContext.Current.PageUserID, true))
+            using (DataTable userDT = LegacyDb.user_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.PageUserID, true))
             {
                 if (!userDT.Rows[0].IsNull("Signature"))
                 {
@@ -607,7 +607,7 @@ namespace YAF.Pages
 
                 // test sending user's PM count
                 // get user's name
-                DataRow drPMInfo = LegacyDb.user_pmcount(YafContext.Current.PageUserID).Rows[0];
+                DataRow drPMInfo = LegacyDb.user_pmcount(PageContext.PageModuleID, YafContext.Current.PageUserID).Rows[0];
 
                 if ((drPMInfo["NumberTotal"].ToType<int>() > drPMInfo["NumberAllowed"].ToType<int>() + recipients.Count) &&
                     !YafContext.Current.IsAdmin)
@@ -644,8 +644,8 @@ namespace YAF.Pages
                     }
 
                     // test receiving user's PM count
-                    if ((LegacyDb.user_pmcount(userId.Value).Rows[0]["NumberTotal"].ToType<int>() <
-                         LegacyDb.user_pmcount(userId.Value).Rows[0]["NumberAllowed"].ToType<int>()) ||
+                    if ((LegacyDb.user_pmcount(PageContext.PageModuleID, userId.Value).Rows[0]["NumberTotal"].ToType<int>() <
+                         LegacyDb.user_pmcount(PageContext.PageModuleID, userId.Value).Rows[0]["NumberAllowed"].ToType<int>()) ||
                         YafContext.Current.IsAdmin ||
                         (bool)
                         Convert.ChangeType(

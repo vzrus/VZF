@@ -410,8 +410,7 @@ namespace YAF.Controls
             }
 
             // save remaining settings to the DB
-            LegacyDb.user_save(
-              this.currentUserID,
+            LegacyDb.user_save(PageContext.PageModuleID, this.currentUserID,
               this.PageContext.PageBoardID,
               null,
               displayName,
@@ -431,7 +430,7 @@ namespace YAF.Controls
               null);
 
             // vzrus: If it's a guest edited by an admin registry value should be changed
-            DataTable dt = LegacyDb.user_list(this.PageContext.PageBoardID, this.currentUserID, true, null, null, false);
+            DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.currentUserID, true, null, null, false);
 
             if (dt.Rows.Count > 0 && dt.Rows[0]["IsGuest"].ToType<bool>())
             {

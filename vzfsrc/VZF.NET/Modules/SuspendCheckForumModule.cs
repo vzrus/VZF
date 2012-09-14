@@ -81,7 +81,7 @@ namespace YAF.Modules
       {
         if (this.PageContext.SuspendedUntil < DateTime.UtcNow)
         {
-          LegacyDb.user_suspend(this.PageContext.PageUserID, null);
+          LegacyDb.user_suspend(PageContext.PageModuleID, this.PageContext.PageUserID, null);
           HttpContext.Current.Response.Redirect(General.GetSafeRawUrl());
         }
         else

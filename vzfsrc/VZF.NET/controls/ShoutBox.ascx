@@ -32,7 +32,7 @@
     }
 
     function checkForNewMessages() {
-        <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'mid', <%=this.PageContext.PageBoardID %>);
+        <%=YAF.Classes.Config.JQueryAlias %>.PageMethod('<%= YafForumInfo.ForumClientFileRoot %>YafAjax.asmx', 'RefreshShoutBox', refreshShoutBoxPanel, refreshShoutBoxFailed, 'boardId', <%=this.PageContext.PageBoardID %>);
 
         setTimeout('checkForNewMessages()', 2000);
     }
@@ -109,8 +109,8 @@
                                             <ItemTemplate>
                                                 <div style="padding: 0; margin: 0" class="shoutBoxChatLine">
                                                     <strong>
-                                                        <YAF:UserLink ID="UserLink1" runat="server" ReplaceName='<%# ((System.Data.DataRow)Container.DataItem)["UserDisplayName"].ToType<string>() %>' BlankTarget="true" UserID='<%# ((System.Data.DataRow)Container.DataItem)["UserID"].ToType<int>() %>'
-                                                             Style='<%# ((System.Data.DataRow)Container.DataItem)["Style"] %>'>
+                                                        <YAF:UserLink ID="UserLink1" runat="server" BlankTarget="true" UserID='<%# ((System.Data.DataRow)Container.DataItem)["UserID"].ToType<int>() %>'
+                                                            Style='<%# ((System.Data.DataRow)Container.DataItem)["Style"] %>'>
                                                         </YAF:UserLink>
                                                     </strong>(<em><YAF:DisplayDateTime ID="PostedDateTime" runat="server" Format="BothTopic"
                                                         DateTime='<%#((System.Data.DataRow)Container.DataItem)["Date"]%>'>

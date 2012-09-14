@@ -100,7 +100,7 @@ namespace YAF.Pages.Admin
 
                     // get user(s) we are about to delete                
                     using (
-                        DataTable dt = LegacyDb.user_list(this.PageContext.PageBoardID, e.CommandArgument, DBNull.Value))
+                        DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, DBNull.Value))
                     {
                         // examine each if he's possible to delete
                         foreach (DataRow row in dt.Rows)
@@ -451,11 +451,10 @@ namespace YAF.Pages.Admin
 
             // get users, eventually filter by groups or ranks
             using (
-                DataTable dt = LegacyDb.user_list(
-                    this.PageContext.PageBoardID,
+                DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
                     null,
                     null,
-                    this.group.SelectedIndex <= 0 ? null : this.group.SelectedValue,
+                    this.@group.SelectedIndex <= 0 ? null : this.@group.SelectedValue,
                     this.rank.SelectedIndex <= 0 ? null : this.rank.SelectedValue,
                     false))
             {
@@ -504,7 +503,7 @@ namespace YAF.Pages.Admin
         /// </param>
         private void ExportAllUsers(string type)
         {
-            var usersList = LegacyDb.user_list(this.PageContext.PageBoardID, null, true);
+            var usersList = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, true);
 
             usersList.DataSet.DataSetName = "YafUserList";
 

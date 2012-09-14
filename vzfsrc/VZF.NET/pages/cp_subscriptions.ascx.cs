@@ -194,8 +194,7 @@ namespace YAF.Pages
         }
 
         // save the settings...
-        LegacyDb.user_savenotification(
-            this.PageContext.PageUserID, 
+        LegacyDb.user_savenotification(PageContext.PageModuleID, this.PageContext.PageUserID, 
             this.PMNotificationEnabled.Checked, 
             autoWatchTopicsEnabled, 
             this.rblNotificationType.SelectedValue, 
@@ -225,7 +224,7 @@ namespace YAF.Pages
               continue;
           }
 
-          LegacyDb.watchforum_delete(lbl.Text);
+          LegacyDb.watchforum_delete(PageContext.PageModuleID, lbl.Text);
           noneChecked = false;
       }
 
@@ -258,7 +257,7 @@ namespace YAF.Pages
               continue;
           }
 
-          LegacyDb.watchtopic_delete(lbl.Text);
+          LegacyDb.watchtopic_delete(PageContext.PageModuleID, lbl.Text);
           noneChecked = false;
       }
 
@@ -289,10 +288,10 @@ namespace YAF.Pages
     /// </summary>
     private void BindData()
     {
-      this.ForumList.DataSource = LegacyDb.watchforum_list(this.PageContext.PageUserID).AsEnumerable();
+      this.ForumList.DataSource = LegacyDb.watchforum_list(PageContext.PageModuleID, this.PageContext.PageUserID).AsEnumerable();
 
       // we are going to page results
-      var dt = LegacyDb.watchtopic_list(this.PageContext.PageUserID);
+      var dt = LegacyDb.watchtopic_list(PageContext.PageModuleID, this.PageContext.PageUserID);
 
       // set pager and datasource
       this.PagerTop.Count = dt.Rows.Count;

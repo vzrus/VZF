@@ -162,6 +162,7 @@ namespace YAF.Classes.Data
                 // create the connection
                 this._connection = new MySqlConnection {ConnectionString = connectionString};
                 this._connection.InfoMessage += new MySqlInfoMessageEventHandler(Connection_InfoMessage);
+             
             }
             else if (this._connection.State != ConnectionState.Open)
             {
