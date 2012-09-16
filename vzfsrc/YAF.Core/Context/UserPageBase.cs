@@ -447,7 +447,7 @@ namespace YAF.Core
         {
             get
             {
-                return YafControlSettings.Current == null ? 0 : YafControlSettings.Current.ModuleID;
+                return YafControlSettings.Current == null ? 2 : YafControlSettings.Current.ModuleID;
             }
         }
 

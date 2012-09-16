@@ -619,7 +619,7 @@ namespace YAF.Classes.Data
     
         public static bool TestConnection([NotNull] out string exceptionMessage, string connectionString)
         {
-            int boardId = 99;
+            int boardId = 1;
             exceptionMessage = string.Empty;
             string dataEngine = GetProviderNameFromConnectionString(connectionString);
            

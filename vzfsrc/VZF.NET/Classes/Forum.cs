@@ -193,7 +193,7 @@ namespace YAF
 
             set
             {
-                YafControlSettings.Current.ModuleID = value;
+                this.Session["InstallModuleID"] = YafControlSettings.Current.ModuleID = value;
             }
         }
 

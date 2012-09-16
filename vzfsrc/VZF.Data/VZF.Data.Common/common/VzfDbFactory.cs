@@ -2511,13 +2511,13 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumpage_validateversion(connectionString, appVersion);
-                 case "Npgsql": return Postgre.Db.forumpage_validateversion(connectionString, appVersion);
-                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forumpage_validateversion(connectionString, appVersion);
-                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumpage_validateversion(connectionString, appVersion);
-                 // case "oracle":  return orPostgre.Db.forumpage_validateversion(connectionString, appVersion);
-                 // case "db2":  return db2Postgre.Db.forumpage_validateversion(connectionString, appVersion);
-                 // case "other":  return othPostgre.Db.forumpage_validateversion(connectionString, appVersion); 
+                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumpage_validateversion(connectionString, mid, appVersion);
+                 case "Npgsql": return Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                 // case "oracle":  return orPostgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                 // case "db2":  return db2Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                 // case "other":  return othPostgre.Db.forumpage_validateversion(connectionString, mid, appVersion); 
                  default:
                      throw new ApplicationException("No return type");
              }
@@ -8660,30 +8660,7 @@ namespace YAF.Classes.Data
                     throw new ApplicationException("No return type");
             }
         }
-                public static bool GetParametes(int? mid)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Visible;
-                case "Npgsql":
-                    return Postgre.Db.Parameter19_Visible;
-                case "MySql.Data.MySqlClient":
-                    return MySqlDb.Db.Parameter19_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
-                    return FirebirdDb.Db.Parameter19_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter19_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter19_Visible;
-                    // case "other":  return othPostgre.Db.Parameter19_Visible; 
-                default:
-                    throw new ApplicationException("No return type");
-            }
-        }
-        
+       
            
         #endregion
 
@@ -8836,6 +8813,17 @@ namespace YAF.Classes.Data
                     throw new ApplicationException("No return type");
                     
             }
+        }
+
+        public static string DataEngineName(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            return dataEngine;
         }
     }
 

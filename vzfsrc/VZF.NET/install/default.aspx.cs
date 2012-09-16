@@ -135,7 +135,7 @@ namespace YAF.Install
         {
             get
             {
-                return LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID);
+                return LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>());
             }
         }
 
@@ -437,7 +437,7 @@ namespace YAF.Install
 
                     break;
                 case "WizCreateForum":
-                    if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID))
+                    if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
                     {
                         this.InstallWizard.ActiveStepIndex++;
                     }
@@ -451,9 +451,10 @@ namespace YAF.Install
                     }
                     else
                     {
-                        object version = this.Cache["DBVersion"] ?? LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
+                        object version = this.Cache["DBVersion"] ??
+                                         LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                        if (((int)version) >= 30 || ((int)version) == -1)
+                        if (((int) version) >= 30 || ((int) version) == -1)
                         {
                             // migration is NOT needed...
                             this.CurrentWizardStepID = "WizFinished";
@@ -466,10 +467,20 @@ namespace YAF.Install
                     if (this.CurrentWizardStepID == "WizMigrateUsers")
                     {
                         this.lblMigrateUsersCount.Text =
-                            LegacyDb.user_list((int?) YafContext.Current.PageModuleID, this.PageBoardID, null, true).Rows.Count.ToString();
+                            LegacyDb.user_list(this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null,
+                                               true).Rows.Count.ToString();
                     }
 
                     break;
+                case "WizSelectModule":
+                    previousVisible = true;
+                    int mid = 1;
+                    if (int.TryParse(ModuleID.Text, out mid))
+                    {
+                        ModuleID.Text = "1";
+                        this.AddLoadMessage("You should enter you YAF moduleID (1 by default)");
+                    }
+                   break;
                 case "WizDatabaseConnection":
                     previousVisible = true;
 
@@ -571,6 +582,10 @@ namespace YAF.Install
                 case "WizValidatePermission":
                     e.Cancel = false;
                     break;
+                case "WizSelectModule":
+                    e.Cancel = false;
+                    this.CurrentWizardStepID = "WizTestSettings";
+                    break; 
                 case "WizDatabaseConnection":
 
                     // save the database settings...
@@ -646,7 +661,7 @@ namespace YAF.Install
                         e.Cancel = false;
 
                         // move to test settings...
-                        this.CurrentWizardStepID = "WizTestSettings";
+                        this.CurrentWizardStepID = "WizSelectModule";
                     }
                     else
                     {
@@ -725,23 +740,35 @@ namespace YAF.Install
         {
             // attempt to connect DB...
             string message;
+            try
+            {
+                if (!TestDatabaseConnection(out message, this.CurrentConnString))
+                {
+                    UpdateInfoPanel(
+                        this.ManualConnectionInfoHolder,
+                        this.lblConnectionDetailsManual,
+                        "Failed to connect:<br /><br />{0}".FormatWith(message),
+                        "errorinfo");
+                }
+                else
+                {
+                    UpdateInfoPanel(
+                        this.ManualConnectionInfoHolder,
+                        this.lblConnectionDetailsManual,
+                        "Connection Succeeded",
+                        "successinfo");
+                }
+            }
+            catch (Exception)
+            {
 
-            if (!TestDatabaseConnection(out message))
-            {
                 UpdateInfoPanel(
-                    this.ManualConnectionInfoHolder,
-                    this.lblConnectionDetailsManual,
-                    "Failed to connect:<br /><br />{0}".FormatWith(message),
-                    "errorinfo");
+                       this.ManualConnectionInfoHolder,
+                       this.lblConnectionDetailsManual,
+                       "Status unknown, try to proceed anyway.",
+                       "errorinfo");
             }
-            else
-            {
-                UpdateInfoPanel(
-                    this.ManualConnectionInfoHolder,
-                    this.lblConnectionDetailsManual,
-                    "Connection Succeeded",
-                    "successinfo");
-            }
+          
         }
 
         /// <summary>
@@ -755,7 +782,7 @@ namespace YAF.Install
             YafContext.Current["ConnectionString"] = this.CurrentConnString;
             string message;
 
-            if (!TestDatabaseConnection(out message))
+            if (!TestDatabaseConnection(out message, this.CurrentConnString))
             {
                 UpdateInfoPanel(
                     this.ConnectionInfoHolder,
@@ -893,9 +920,9 @@ namespace YAF.Install
         /// <returns>
         /// The test database connection.
         /// </returns>
-        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage)
+        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)
         {
-            return CommonSqlDbAccess.TestConnection(out exceptionMessage);
+            return CommonSqlDbAccess.TestConnection(out exceptionMessage,  connectionString);
         }
 
         /// <summary>
@@ -973,7 +1000,7 @@ namespace YAF.Install
         /// </returns>
         private bool CreateForum()
         {
-            if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID))
+            if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
             {
                 this.AddLoadMessage("Forum is already installed.");
                 return false;
@@ -1082,7 +1109,7 @@ namespace YAF.Install
                     langFile = (string)drow["CultureFile"];
                 }
 
-                LegacyDb.system_initialize(YafContext.Current.PageModuleID, this.TheForumName.Text,
+                LegacyDb.system_initialize(this.Session["InstallModuleID"].ToType<int?>(), this.TheForumName.Text,
                     this.TimeZones.SelectedValue,
                     this.Culture.SelectedValue,
                     langFile,
@@ -1093,8 +1120,8 @@ namespace YAF.Install
                     user.ProviderUserKey,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty);
 
-                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
-                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // vzrus: uncomment it to not keep install/upgrade objects in db for a place and better security
                 // YAF.Classes.Data.DB.system_deleteinstallobjects();
@@ -1169,7 +1196,7 @@ namespace YAF.Install
                 throw new IOException("Failed to read {0}".FormatWith(fileName), x);
             }
 
-            LegacyDb.system_initialize_executescripts(YafContext.Current.PageModuleID, script, scriptFile, useTransactions);
+            LegacyDb.system_initialize_executescripts(this.Session["InstallModuleID"].ToType<int?>(), script, scriptFile, useTransactions);
         }
 
         /// <summary>
@@ -1181,13 +1208,40 @@ namespace YAF.Install
             {
                 return;
             }
-
+           
             foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
+                
                 this.lbConnections.Items.Add(connectionString.Name);
             }
-
-            ListItem item = this.lbConnections.Items.FindByText("yafnet");
+            string con = string.Empty;
+           foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
+            {
+                switch (connectionString.ProviderName)
+                {
+                    case "System.Data.SqlClient": 
+                        con = "yafnet_my";
+                        break;
+                    case "Npgsql":
+                        con = "yafnet_pg";
+                        break;
+                    case "MySql.Data.MySqlClient":
+                       con = "yafnet_my";
+                        break;
+                    case "FirebirdSql.Data.FirebirdClient":
+                       con = "yafnet_fb";
+                        break;
+                        // case "oracle":  con = "yafnet_or";
+                       // break;
+                        // case "db2":  con = "yafnet_db2";
+                      //  break;
+                        // case "other": con = "yafnet_oth";
+                       // break;
+                    default:
+                        throw new ApplicationException("No return type");
+                }
+            }
+           ListItem item = this.lbConnections.Items.FindByText("con");
 
             if (item != null)
             {
@@ -1203,7 +1257,7 @@ namespace YAF.Install
         /// </param>
         private void FixAccess(bool bGrant)
         {
-            LegacyDb.system_initialize_fixaccess(YafContext.Current.PageModuleID, bGrant);
+            LegacyDb.system_initialize_fixaccess(this.Session["InstallModuleID"].ToType<int?>(), bGrant);
         }
 
         /// <summary>
@@ -1236,6 +1290,12 @@ namespace YAF.Install
         /// </param>
         private void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            if (YafContext.Current.QueryIDs != null && YafContext.Current.QueryIDs["md"] != null)
+            {
+                this.Session["InstallModuleID"] = YafContext.Current.QueryIDs["md"] == null
+                                                    ? 1
+                                                    : YafContext.Current.QueryIDs["md"].ToType<int>();
+            }
             if (this.IsPostBack)
             {
                 return;
@@ -1248,7 +1308,9 @@ namespace YAF.Install
             }
             else
             {
-                this.Cache["DBVersion"] = LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
+                this.ModuleID.Text = this.Session["InstallModuleID"] != null ? this.Session["InstallModuleID"].ToString() : "1";
+                SelectModuleLbl.Text = "Enter required module ID";
+                this.Cache["DBVersion"] = LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.CurrentWizardStepID = this.IsInstalled ? "WizEnterPassword" : "WizValidatePermission";
 
@@ -1258,8 +1320,9 @@ namespace YAF.Install
                     // fake the board settings
                     YafContext.Current.BoardSettings = new YafBoardSettings();
                 }
-
-                this.FullTextSupport.Visible = LegacyDb.GetFullTextSupported(YafContext.Current.PageModuleID);
+                // YafContext.Current.QueryIDs = new QueryStringIDHelper("md");
+               
+                this.FullTextSupport.Visible = LegacyDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");
 
@@ -1275,85 +1338,85 @@ namespace YAF.Install
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
 
-                this.DBUsernamePasswordHolder.Visible = LegacyDb.GetPasswordPlaceholderVisible(YafContext.Current.PageModuleID);
+                this.DBUsernamePasswordHolder.Visible = LegacyDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Connection string parameters text boxes
-                this.Parameter1_Name.Text = LegacyDb.GetParameter1_Name(YafContext.Current.PageModuleID);
-                this.Parameter1_Value.Text = LegacyDb.GetParameter1_Value(YafContext.Current.PageModuleID);
-                this.Parameter1_Value.Visible = LegacyDb.GetParameter1_Visible(YafContext.Current.PageModuleID);
+                this.Parameter1_Name.Text = LegacyDb.GetParameter1_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter1_Value.Text = LegacyDb.GetParameter1_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter1_Value.Visible = LegacyDb.GetParameter1_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter2_Name.Text = LegacyDb.GetParameter2_Name(YafContext.Current.PageModuleID);
-                this.Parameter2_Value.Text = LegacyDb.GetParameter2_Value(YafContext.Current.PageModuleID);
-                this.Parameter2_Value.Visible = LegacyDb.GetParameter2_Visible(YafContext.Current.PageModuleID);
+                this.Parameter2_Name.Text = LegacyDb.GetParameter2_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter2_Value.Text = LegacyDb.GetParameter2_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter2_Value.Visible = LegacyDb.GetParameter2_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter3_Name.Text = LegacyDb.GetParameter3_Name(YafContext.Current.PageModuleID);
-                this.Parameter3_Value.Text = LegacyDb.GetParameter3_Value(YafContext.Current.PageModuleID);
-                this.Parameter3_Value.Visible = LegacyDb.GetParameter3_Visible(YafContext.Current.PageModuleID);
+                this.Parameter3_Name.Text = LegacyDb.GetParameter3_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter3_Value.Text = LegacyDb.GetParameter3_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter3_Value.Visible = LegacyDb.GetParameter3_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter4_Name.Text = LegacyDb.GetParameter4_Name(YafContext.Current.PageModuleID);
-                this.Parameter4_Value.Text = LegacyDb.GetParameter4_Value(YafContext.Current.PageModuleID);
-                this.Parameter4_Value.Visible = LegacyDb.GetParameter4_Visible(YafContext.Current.PageModuleID);
+                this.Parameter4_Name.Text = LegacyDb.GetParameter4_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter4_Value.Text = LegacyDb.GetParameter4_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter4_Value.Visible = LegacyDb.GetParameter4_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter5_Name.Text = LegacyDb.GetParameter5_Name(YafContext.Current.PageModuleID);
-                this.Parameter5_Value.Text = LegacyDb.GetParameter5_Value(YafContext.Current.PageModuleID);
-                this.Parameter5_Value.Visible = LegacyDb.GetParameter5_Visible(YafContext.Current.PageModuleID);
+                this.Parameter5_Name.Text = LegacyDb.GetParameter5_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter5_Value.Text = LegacyDb.GetParameter5_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter5_Value.Visible = LegacyDb.GetParameter5_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter6_Name.Text = LegacyDb.GetParameter6_Name(YafContext.Current.PageModuleID);
-                this.Parameter6_Value.Text = LegacyDb.GetParameter6_Value(YafContext.Current.PageModuleID);
-                this.Parameter6_Value.Visible = LegacyDb.GetParameter6_Visible(YafContext.Current.PageModuleID);
+                this.Parameter6_Name.Text = LegacyDb.GetParameter6_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter6_Value.Text = LegacyDb.GetParameter6_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter6_Value.Visible = LegacyDb.GetParameter6_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter7_Name.Text = LegacyDb.GetParameter7_Name(YafContext.Current.PageModuleID);
-                this.Parameter7_Value.Text = LegacyDb.GetParameter7_Value(YafContext.Current.PageModuleID);
-                this.Parameter7_Value.Visible = LegacyDb.GetParameter7_Visible(YafContext.Current.PageModuleID);
+                this.Parameter7_Name.Text = LegacyDb.GetParameter7_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter7_Value.Text = LegacyDb.GetParameter7_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter7_Value.Visible = LegacyDb.GetParameter7_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter8_Name.Text = LegacyDb.GetParameter8_Name(YafContext.Current.PageModuleID);
-                this.Parameter8_Value.Text = LegacyDb.GetParameter8_Value(YafContext.Current.PageModuleID);
-                this.Parameter8_Value.Visible = LegacyDb.GetParameter8_Visible(YafContext.Current.PageModuleID);
+                this.Parameter8_Name.Text = LegacyDb.GetParameter8_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter8_Value.Text = LegacyDb.GetParameter8_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter8_Value.Visible = LegacyDb.GetParameter8_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter9_Name.Text = LegacyDb.GetParameter9_Name(YafContext.Current.PageModuleID);
-                this.Parameter9_Value.Text = LegacyDb.GetParameter9_Value(YafContext.Current.PageModuleID);
-                this.Parameter9_Value.Visible = LegacyDb.GetParameter9_Visible(YafContext.Current.PageModuleID);
+                this.Parameter9_Name.Text = LegacyDb.GetParameter9_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter9_Value.Text = LegacyDb.GetParameter9_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter9_Value.Visible = LegacyDb.GetParameter9_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter10_Name.Text = LegacyDb.GetParameter10_Name(YafContext.Current.PageModuleID);
-                this.Parameter10_Value.Text = LegacyDb.GetParameter10_Value(YafContext.Current.PageModuleID);
-                this.Parameter10_Value.Visible = LegacyDb.GetParameter10_Visible(YafContext.Current.PageModuleID);
+                this.Parameter10_Name.Text = LegacyDb.GetParameter10_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter10_Value.Text = LegacyDb.GetParameter10_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter10_Value.Visible = LegacyDb.GetParameter10_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Connection string parameters  check boxes
-                this.Parameter11_Value.Text = LegacyDb.GetParameter11_Name(YafContext.Current.PageModuleID);
-                this.Parameter11_Value.Checked = LegacyDb.GetParameter11_Value(YafContext.Current.PageModuleID);
-                this.Parameter11_Value.Visible = LegacyDb.GetParameter11_Visible(YafContext.Current.PageModuleID);
+                this.Parameter11_Value.Text = LegacyDb.GetParameter11_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter11_Value.Checked = LegacyDb.GetParameter11_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter11_Value.Visible = LegacyDb.GetParameter11_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter12_Value.Text = LegacyDb.GetParameter12_Name(YafContext.Current.PageModuleID);
-                this.Parameter12_Value.Checked = LegacyDb.GetParameter12_Value(YafContext.Current.PageModuleID);
-                this.Parameter12_Value.Visible = LegacyDb.GetParameter12_Visible(YafContext.Current.PageModuleID);
+                this.Parameter12_Value.Text = LegacyDb.GetParameter12_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter12_Value.Checked = LegacyDb.GetParameter12_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter12_Value.Visible = LegacyDb.GetParameter12_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter13_Value.Text = LegacyDb.GetParameter13_Name(YafContext.Current.PageModuleID);
-                this.Parameter13_Value.Checked = LegacyDb.GetParameter13_Value(YafContext.Current.PageModuleID);
-                this.Parameter13_Value.Visible = LegacyDb.GetParameter13_Visible(YafContext.Current.PageModuleID);
+                this.Parameter13_Value.Text = LegacyDb.GetParameter13_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter13_Value.Checked = LegacyDb.GetParameter13_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter13_Value.Visible = LegacyDb.GetParameter13_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter14_Value.Text = LegacyDb.GetParameter14_Name(YafContext.Current.PageModuleID);
-                this.Parameter14_Value.Checked = LegacyDb.GetParameter14_Value(YafContext.Current.PageModuleID);
-                this.Parameter14_Value.Visible = LegacyDb.GetParameter14_Visible(YafContext.Current.PageModuleID);
+                this.Parameter14_Value.Text = LegacyDb.GetParameter14_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter14_Value.Checked = LegacyDb.GetParameter14_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter14_Value.Visible = LegacyDb.GetParameter14_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter15_Value.Text = LegacyDb.GetParameter15_Name(YafContext.Current.PageModuleID);
-                this.Parameter15_Value.Checked = LegacyDb.GetParameter15_Value(YafContext.Current.PageModuleID);
-                this.Parameter15_Value.Visible = LegacyDb.GetParameter15_Visible(YafContext.Current.PageModuleID);
+                this.Parameter15_Value.Text = LegacyDb.GetParameter15_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter15_Value.Checked = LegacyDb.GetParameter15_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter15_Value.Visible = LegacyDb.GetParameter15_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter16_Value.Text = LegacyDb.GetParameter16_Name(YafContext.Current.PageModuleID);
-                this.Parameter16_Value.Checked = LegacyDb.GetParameter16_Value(YafContext.Current.PageModuleID);
-                this.Parameter16_Value.Visible = LegacyDb.GetParameter16_Visible(YafContext.Current.PageModuleID);
+                this.Parameter16_Value.Text = LegacyDb.GetParameter16_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter16_Value.Checked = LegacyDb.GetParameter16_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter16_Value.Visible = LegacyDb.GetParameter16_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter17_Value.Text = LegacyDb.GetParameter17_Name(YafContext.Current.PageModuleID);
-                this.Parameter17_Value.Checked = LegacyDb.GetParameter17_Value(YafContext.Current.PageModuleID);
-                this.Parameter17_Value.Visible = LegacyDb.GetParameter17_Visible(YafContext.Current.PageModuleID);
+                this.Parameter17_Value.Text = LegacyDb.GetParameter17_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter17_Value.Checked = LegacyDb.GetParameter17_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter17_Value.Visible = LegacyDb.GetParameter17_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter18_Value.Text = LegacyDb.GetParameter18_Name(YafContext.Current.PageModuleID);
-                this.Parameter18_Value.Checked = LegacyDb.GetParameter18_Value(YafContext.Current.PageModuleID);
-                this.Parameter18_Value.Visible = LegacyDb.GetParameter18_Visible(YafContext.Current.PageModuleID);
+                this.Parameter18_Value.Text = LegacyDb.GetParameter18_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter18_Value.Checked = LegacyDb.GetParameter18_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter18_Value.Visible = LegacyDb.GetParameter18_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter19_Value.Text = LegacyDb.GetParameter19_Name(YafContext.Current.PageModuleID);
-                this.Parameter19_Value.Checked = LegacyDb.GetParameter19_Value(YafContext.Current.PageModuleID);
-                this.Parameter19_Value.Visible = LegacyDb.GetParameter19_Visible(YafContext.Current.PageModuleID);
+                this.Parameter19_Value.Text = LegacyDb.GetParameter19_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter19_Value.Checked = LegacyDb.GetParameter19_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter19_Value.Visible = LegacyDb.GetParameter19_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Hide New User on DNN
                 if (Config.IsDotNetNuke)
@@ -1403,7 +1466,7 @@ namespace YAF.Install
                 {
                     if (
                         !this._config.WriteConnectionString(
-                            Config.ConnectionStringName, this.CurrentConnString, LegacyDb.GetProviderAssemblyName(YafContext.Current.PageModuleID)))
+                            Config.ConnectionStringName, this.CurrentConnString, LegacyDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;
@@ -1431,25 +1494,25 @@ namespace YAF.Install
                 // try
                 this.FixAccess(false);
 
-                foreach (string script in LegacyDb.GetScriptList(YafContext.Current.PageModuleID))
+                foreach (string script in LegacyDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
                 {
                     this.ExecuteScript(script, true);
                 }
 
                 this.FixAccess(true);
 
-                int prevVersion = LegacyDb.GetDBVersion(YafContext.Current.PageModuleID);
+                int prevVersion = LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                LegacyDb.system_updateversion(YafContext.Current.PageModuleID, YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // Ederon : 9/7/2007
                 // resync all boards - necessary for propr last post bubbling
-                LegacyDb.board_resync(YafContext.Current.PageModuleID);
+                LegacyDb.board_resync(this.Session["InstallModuleID"].ToType<int?>());
 
                 // upgrade providers...
                 // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);
 
-                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 30
+                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 30
                     || this.IsForumInstalled && this.UpgradeExtensions.Checked)
                 {
                     // load default bbcode if available...
@@ -1486,13 +1549,13 @@ namespace YAF.Install
                     }
                 }
 
-                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 42)
+                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
                 {
                     // un-html encode all topic subject names...
-                    LegacyDb.unencode_all_topics_subjects(YafContext.Current.PageModuleID, t => Server.HtmlDecode(t));
+                    LegacyDb.unencode_all_topics_subjects(this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
                 }
 
-                if (LegacyDb.GetIsForumInstalled(YafContext.Current.PageModuleID) && prevVersion < 49)
+                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
                 {
                     // Reset The UserBox Template
                     this.Get<YafBoardSettings>().UserBox = Constants.UserBox.DisplayTemplateDefault;
@@ -1511,11 +1574,11 @@ namespace YAF.Install
       }*/
 
             // attempt to apply fulltext support if desired
-            if (fullText && LegacyDb.GetFullTextSupported(YafContext.Current.PageModuleID))
+            if (fullText && LegacyDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>()))
             {
                 try
                 {
-                    this.ExecuteScript(LegacyDb.GetFullTextScript(YafContext.Current.PageModuleID), false);
+                    this.ExecuteScript(LegacyDb.GetFullTextScript(this.Session["InstallModuleID"].ToType<int?>()), false);
                 }
                 catch (Exception x)
                 {

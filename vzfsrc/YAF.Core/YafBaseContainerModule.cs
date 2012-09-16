@@ -145,6 +145,8 @@ namespace YAF.Core
                 PreserveExistingDefaults();
             builder.RegisterType<CurrentBoardId>().As<IHaveBoardId>().InstancePerLifetimeScope().
                 PreserveExistingDefaults();
+            builder.RegisterType<CurrentModuleId>().As<IHaveModuleId>().InstancePerLifetimeScope().
+            PreserveExistingDefaults();
 
             builder.RegisterType<YafReadTrackCurrentUser>().As<IReadTrackCurrentUser>().InstancePerYafContext().
                 PreserveExistingDefaults();

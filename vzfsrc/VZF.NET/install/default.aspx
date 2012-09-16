@@ -102,6 +102,13 @@
                     <p>
                         Click "Next" when you are ready.</p>
                 </asp:WizardStep>
+                <asp:WizardStep runat="server" Title="Select Module" ID="WizSelectModule">
+                    <h3 class="lined">
+                        Select module</h3>
+                     <asp:Label ID="SelectModuleLbl" runat="server" Width="500px" />
+                        <asp:TextBox runat="server" ID="ModuleID" Width="500px" /><br />
+                        <br />
+                </asp:WizardStep>
                 <asp:WizardStep runat="server" Title="Database Connection" ID="WizDatabaseConnection">
                     <h3 class="lined">
                         YAF Database Connection</h3>

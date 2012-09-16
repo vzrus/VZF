@@ -8466,7 +8466,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 
 		}
-        public static string forumpage_validateversion(string connectionString, int appVersion)
+        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
 		{
             string redirect = string.Empty;
 			try
@@ -8476,7 +8476,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				if ((registry.Rows.Count == 0) || (Convert.ToInt32(registry.Rows[0]["VALUE"]) < appVersion))
 				{
 					// needs upgrading...
-					redirect = "install/default.aspx?upgrade=" + Convert.ToInt32(registry.Rows[0]["Value"]);
+                    redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1);
 				}
 			}
 			catch (FbException)

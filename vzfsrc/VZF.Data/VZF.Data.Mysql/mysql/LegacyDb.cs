@@ -9534,7 +9534,7 @@ namespace YAF.Classes.Data.MySqlDb
             return true;
         }
 
-        public static string forumpage_validateversion(string connectionString, int appVersion)
+        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
         {
             string redirect = "";
             try
@@ -9544,7 +9544,7 @@ namespace YAF.Classes.Data.MySqlDb
                 if ( ( registry.Rows.Count == 0 ) || ( Convert.ToInt32(registry.Rows[0]["Value"] ) < appVersion ) )
                 {
                     // needs upgrading...
-                    redirect = "install/default.aspx?upgrade={0}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0);
+                    redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1 );
                 }
             }
             catch ( MySql.Data.MySqlClient.MySqlException )

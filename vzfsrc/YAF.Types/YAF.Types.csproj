@@ -54,6 +54,7 @@
     <Compile Include="Attributes\StringValueAttribute.cs" />
     <Compile Include="Attributes\YafModule.cs" />
     <Compile Include="BadWordReplaceItem.cs" />
+    <Compile Include="Interfaces\IHaveModuleId.cs" />
     <Compile Include="Interfaces\Data\IDataLoadable.cs" />
     <Compile Include="Interfaces\Data\IDbAccessProvider.cs" />
     <Compile Include="Interfaces\Data\IDbAccessV2.cs" />

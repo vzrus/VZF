@@ -8641,7 +8641,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 
 		}
-        public static string forumpage_validateversion(string connectionString, int appVersion)
+        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
 		{
 			string redirect = "";
             
@@ -8652,7 +8652,7 @@ namespace YAF.Classes.Data.Postgre
 				if ((registry.Rows.Count == 0) || (Convert.ToInt32(registry.Rows[0]["Value"]) < appVersion))
 				{
 					// needs upgrading..
-					redirect = "install/default.aspx?upgrade=" + Convert.ToInt32(registry.Rows[0]["Value"]);
+                    redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1);
 				}
 			}
 			catch (Npgsql.NpgsqlException)

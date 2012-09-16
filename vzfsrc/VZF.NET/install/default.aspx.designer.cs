@@ -184,6 +184,33 @@ namespace YAF.Install {
         protected global::System.Web.UI.WebControls.Label lblAppSettingsFile2;
         
         /// <summary>
+        /// WizSelectModule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.WizardStep WizSelectModule;
+        
+        /// <summary>
+        /// SelectModuleLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SelectModuleLbl;
+        
+        /// <summary>
+        /// ModuleID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ModuleID;
+        
+        /// <summary>
         /// WizDatabaseConnection control.
         /// </summary>
         /// <remarks>

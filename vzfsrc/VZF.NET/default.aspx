@@ -22,7 +22,7 @@
     </asp:HyperLink>
     <br />
     <form id="form1" runat="server" enctype="multipart/form-data">
-    <YAF:Forum runat="server" ID="forum" ModuleID="0" BoardID="1">
+    <YAF:Forum runat="server" ID="forum" ModuleID="1" BoardID="1">
     </YAF:Forum>
     </form>
 </body>
