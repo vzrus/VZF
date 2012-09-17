@@ -6628,7 +6628,7 @@ BEGIN
                  AND e.BoardID = ',i_BoardID,
 				 ' AND (a.Flags & 24) = 16
                 AND (c.Flags & 8) = 0
-        ORDER BY a.Posted DESC LIMIT ',I_NumberOfMessages,'');
+        ORDER BY a.Posted DESC LIMIT ',COALESCE(I_NumberOfMessages,10000000),'');
         PREPARE stmt_pau FROM @stmtstrpau;
 		EXECUTE stmt_pau;
 		DEALLOCATE PREPARE stmt_pau;         
@@ -9191,6 +9191,7 @@ BEGIN
         DECLARE ici_RankID INT;
         DECLARE ici_approvedFlag INT;
         DECLARE ici_DisplayName VARCHAR(128);
+		DECLARE ici_tz int;
  	SET ici_approvedFlag = 0;
  	IF (i_IsApproved = 1) THEN SET ici_approvedFlag = 2;END IF;	
  	
@@ -9215,9 +9216,14 @@ BEGIN
 		THEN
 			SET i_DisplayName = i_UserName;
 		END IF;		
-
-                  INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password,Email,Joined,LastVisit,NumPosts,TimeZone,Flags,ProviderUserKey)
-                  VALUES(i_BoardID,ici_RankID,i_UserName,i_DisplayName,'-',i_Email,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,(SELECT CAST(CAST(Value AS CHAR(10)) AS SIGNED) from {databaseName}.{objectQualifier}Registry where Name LIKE 'timezone' and BoardID = i_BoardID),ici_approvedFlag,i_ProviderUserKey);
+		          set   ici_tz =(COALESCE((SELECT CAST(CAST(Value AS CHAR(10)) AS SIGNED) from {databaseName}.{objectQualifier}Registry where Name LIKE 'timezone' and BoardID = i_BoardID),(SELECT CAST(CAST(Value AS CHAR(10)) AS SIGNED) from {databaseName}.{objectQualifier}Registry where Name LIKE 'timezone')));
+                  if ici_tz is null then
+				  insert into {databaseName}.{objectQualifier}Registry(Name) values ('timezone');
+				  insert into {databaseName}.{objectQualifier}Registry(Name, BoardID) values ('timezone',i_BoardID);
+				  set ici_tz = 0;
+				  end if;
+				  INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password,Email,Joined,LastVisit,NumPosts,TimeZone,Flags,ProviderUserKey)
+                  VALUES(i_BoardID,ici_RankID,i_UserName,i_DisplayName,'-',i_Email,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,ici_tz,ici_approvedFlag,i_ProviderUserKey);
 
                   SET ici_UserID = LAST_INSERT_ID();
        END IF;

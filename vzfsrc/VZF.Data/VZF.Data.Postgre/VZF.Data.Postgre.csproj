@@ -63,7 +63,7 @@
   <ItemGroup>
     <Compile Include="pgsql\AccessClassess.cs" />
     <Compile Include="pgsql\Fts\Search.cs" />
-    <Compile Include="pgsql\LegacyDB.cs" />
+    <Compile Include="pgsql\Db.cs" />
     <Compile Include="pgsql\SettingsPropertyColumn.cs" />
     <Compile Include="pgsql\YafDBAccess.cs" />
     <Compile Include="pgsql\YafDBConnManager.cs" />

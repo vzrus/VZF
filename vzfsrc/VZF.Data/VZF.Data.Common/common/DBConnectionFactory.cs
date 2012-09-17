@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
 using YAF.Types;
 using YAF.Types.Interfaces;
 using YAF.Utils;

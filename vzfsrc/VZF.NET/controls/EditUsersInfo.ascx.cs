@@ -100,7 +100,7 @@ namespace YAF.Controls
          MembershipUser user = UserMembershipHelper.GetUser(this.Name.Text.Trim());
          var usr = new CombinedUserDataHelper(user);
          string userName = this.Get<MembershipProvider>().GetUserNameByEmail(this.Email.Text.Trim());
-         if (userName != user.UserName)
+         if (userName != null && userName != user.UserName)
          {
              this.PageContext.AddLoadMessage(this.GetText("PROFILE", "BAD_EMAIL"));
              return;

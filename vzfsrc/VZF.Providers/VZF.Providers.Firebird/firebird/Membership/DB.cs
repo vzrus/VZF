@@ -1,12 +1,12 @@
-/* Yet Another Forum.NET
- * Copyright (C) 2006-2008 Jaben Cargman
- * http://www.yetanotherforum.net/
- * 
+/* VZF by vzrus
+ * Copyright (C) 2006-2012 Vladimir Zakharov
+ * https://github.com/vzrus
+ * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
+ * as published by the Free Software Foundation; version 2 only
+ * General class structure was primarily based on MS SQL Server code,
+ * created by YAF(YetAnotherForum) developers  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,8 +17,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 using System;
-using System.Web;
-using System.Configuration;
 using System.Web.Security;
 using System.Data;
 using FirebirdSql.Data.FirebirdClient;
@@ -29,7 +27,7 @@ using YAF.Classes.Pattern;
 
 namespace YAF.Providers.Membership
 {
-    public class VzfFirebirdMembershipDBConnManager : FbDbConnectionManager
+    public class VzfFirebirdMembershipDbConnManager : FbDbConnectionManager
     {
         public override string ConnectionString
         {
@@ -56,11 +54,7 @@ namespace YAF.Providers.Membership
                 return PageSingleton<FbDB>.Instance;
             }
         }
-
-        public FbDB()
-        {
-            // FbDbAccess.SetConnectionManagerAdapter<VzfFirebirdMembershipDBConnManager>();
-        }
+      
         public void UpgradeMembership(string connectionString, int I_PREVIOUSVERSION, int I_NEWVERSION)
         {
             using (var cmd = new FbCommand(FbDbAccess.GetObjectName("p_upgrade")))
@@ -72,7 +66,6 @@ namespace YAF.Providers.Membership
 
                 FbDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
-
         }
 
         //int totalRecords = 0;
@@ -81,25 +74,14 @@ namespace YAF.Providers.Membership
             using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_changepassword")))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;              
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;  
                
 				// Nonstandard args
-
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = username;
-                
-                cmd.Parameters.Add(new FbParameter("@i_password", FbDbType.VarChar));
-                cmd.Parameters[2].Value = newPassword;
-                
-                cmd.Parameters.Add(new FbParameter("@i_passwordsalt", FbDbType.VarChar));
-                cmd.Parameters[3].Value = newSalt;
-                
-                cmd.Parameters.Add(new FbParameter("@i_passwordformat", FbDbType.VarChar));
-                cmd.Parameters[4].Value = passwordFormat;
-                
-                cmd.Parameters.Add(new FbParameter("@i_passwordanswer", FbDbType.VarChar));
-                cmd.Parameters[5].Value = newPasswordAnswer; 				
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = username;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORD", FbDbType.VarChar)).Value = newPassword;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORDSALT", FbDbType.VarChar)).Value = newSalt;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORDFORMAT", FbDbType.VarChar)).Value = passwordFormat;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORDANSWER", FbDbType.VarChar)).Value = newPasswordAnswer; 				
 
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
 			}
@@ -111,19 +93,14 @@ namespace YAF.Providers.Membership
 			{
 				
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;   
-				// Nonstandard args
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = username;
-
-                cmd.Parameters.Add(new FbParameter("@i_passwordquestion", FbDbType.VarChar));
-                cmd.Parameters[2].Value = passwordQuestion;
-
-                cmd.Parameters.Add(new FbParameter("@i_passwordanswer", FbDbType.VarChar));
-                cmd.Parameters[3].Value = passwordAnswer;
-
-				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;   
+				
+                // Nonstandard args
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = username;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORDQUESTION", FbDbType.VarChar)).Value = passwordQuestion;
+                cmd.Parameters.Add(new FbParameter("@I_PASSWORDANSWER", FbDbType.VarChar)).Value = passwordAnswer;
+				
+                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
 			}
 		}
 
@@ -168,7 +145,7 @@ namespace YAF.Providers.Membership
 			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_deleteuser" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar)).Value = appName;
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
                 
 				// Nonstandard args
 
@@ -184,21 +161,14 @@ namespace YAF.Providers.Membership
             using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_FINDUSERSBYEMAIL")))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-				 cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
-				// Nonstandard args
-
-                cmd.Parameters.Add(new FbParameter("@i_emailaddress", FbDbType.VarChar));
-                cmd.Parameters[1].Value = emailToMatch;
-
-                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer));
-                cmd.Parameters[2].Value = pageIndex;
-
-                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer));
-                cmd.Parameters[3].Value = pageSize;
+				cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
+				
+                // Nonstandard args
+                cmd.Parameters.Add(new FbParameter("@i_emailaddress", FbDbType.VarChar)).Value = emailToMatch;
+                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer)).Value = pageSize;
                 
-
-				return FbDbAccess.GetData(cmd,connectionString );
+                return FbDbAccess.GetData(cmd,connectionString );
 			}
 		}
 
@@ -207,20 +177,17 @@ namespace YAF.Providers.Membership
             using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_FINDUSERSBYNAME")))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar));
                 cmd.Parameters[0].Value = appName;
 
 				// Nonstandard args
 
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = usernameToMatch;
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = usernameToMatch;
+               
                 //TODO:fix overflow bug
-                
-                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer));
-                cmd.Parameters[2].Value = pageIndex;
+                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer)).Value = pageIndex;
                 if (pageSize == int.MaxValue) { pageSize = 1; }
-                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer));
-                cmd.Parameters[3].Value = pageSize;
+                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer)).Value = pageSize;
                 		
 				return FbDbAccess.GetData(cmd,connectionString );
 			}
@@ -231,19 +198,12 @@ namespace YAF.Providers.Membership
 			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_getallusers" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
-				// Nonstandard args
-
-
-                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer));
-                cmd.Parameters[1].Value = pageIndex;
-
-                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer));
-                cmd.Parameters[2].Value = pageSize;
-
-           
-
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
+				
+                // Nonstandard args
+                cmd.Parameters.Add(new FbParameter("@i_pageindex", FbDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new FbParameter("@i_pagesize", FbDbType.Integer)).Value = pageSize;
+                
 				return FbDbAccess.GetData(cmd,connectionString );
 			}
 		}
@@ -253,21 +213,16 @@ namespace YAF.Providers.Membership
 			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_getnumberofusersonline" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
-				// Nonstandard args
-
-                cmd.Parameters.Add(new FbParameter("@I_TIMEWINDOW", FbDbType.Integer));
-                cmd.Parameters[1].Value = TimeWindow;
-
-                cmd.Parameters.Add(new FbParameter("@i_currenttimeutc", FbDbType.TimeStamp));
-                cmd.Parameters[2].Value = DateTime.UtcNow;				
-              
-				var p = new FbParameter( "@i_returnvalue",DbType.Int32 ) {Direction = ParameterDirection.ReturnValue};
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
+				
+                // Nonstandard args
+                cmd.Parameters.Add(new FbParameter("@I_TIMEWINDOW", FbDbType.Integer)).Value = TimeWindow;
+                cmd.Parameters.Add(new FbParameter("@i_currenttimeutc", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+                
+                var p = new FbParameter( "@i_returnvalue",DbType.Int32 ) {Direction = ParameterDirection.ReturnValue};
 			    cmd.Parameters.Add( p );
-
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
-				return Convert.ToInt32( cmd.Parameters ["@i_returnvalue"].Value );
+				return Convert.ToInt32(cmd.Parameters ["@i_returnvalue"].Value );
 			}
 		}
 
@@ -284,21 +239,12 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new FbParameter("@I_USERISONLINE", FbDbType.Boolean)).Value = Convert.ToInt32(userIsOnline);
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;              		
 				
-				using ( var dt = FbDbAccess.GetData(cmd,connectionString ) )
+				using ( var dt = FbDbAccess.GetData(cmd,connectionString ))
 				{
 				    var dr = dt.Rows[0];
 				    return dr["UserID"] !=DBNull.Value ? dt.Rows[0] : null;
-				    /*  if (dt.Rows.Count > 0)
-                    {
-                        dr
-                        DataRow dr = dt.Rows[0];
-                        return dt.Rows[0];
-                    }
-                    else
-                        return null;*/
-				}
+                }
 			}
-
 		}
 
 		public  DataTable GetUserPasswordInfo(string connectionString, string appName, string username, bool updateUser )
@@ -324,12 +270,9 @@ namespace YAF.Providers.Membership
             using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_GETUSERNAMEBYEMAL")))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
 				// Nonstandard args
-                cmd.Parameters.Add(new FbParameter("@I_EMAIL", FbDbType.VarChar));
-                cmd.Parameters[1].Value = email;
-
+                cmd.Parameters.Add(new FbParameter("@I_EMAIL", FbDbType.VarChar)).Value = email;
 				
 				return FbDbAccess.GetData(cmd,connectionString );
 			}
@@ -341,33 +284,16 @@ namespace YAF.Providers.Membership
 			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_resetpassword" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
-				// Nonstandard args
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = userName;
-
-                cmd.Parameters.Add(new FbParameter("@i_password", FbDbType.VarChar));
-                cmd.Parameters[2].Value = password;
-
-                cmd.Parameters.Add(new FbParameter("@i_passwordsalt", FbDbType.VarChar));
-                cmd.Parameters[3].Value = passwordSalt;
-
-                cmd.Parameters.Add(new FbParameter("@i_passwordformat", FbDbType.VarChar));
-                cmd.Parameters[4].Value = passwordFormat;
-
-                cmd.Parameters.Add(new FbParameter("@i_maxinvalidattempts", FbDbType.Integer));
-                cmd.Parameters[5].Value = maxInvalidPasswordAttempts;
-
-                cmd.Parameters.Add(new FbParameter("@i_passwordattemptwindow", FbDbType.Integer));
-                cmd.Parameters[6].Value = passwordAttemptWindow;
-
-                cmd.Parameters.Add(new FbParameter("@i_currenttimeutc", FbDbType.TimeStamp));
-                cmd.Parameters[7].Value = DateTime.UtcNow;
-                		
-				
-				
-
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
+                // Nonstandard args
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = userName;
+                cmd.Parameters.Add(new FbParameter("@i_password", FbDbType.VarChar)).Value = password;
+                cmd.Parameters.Add(new FbParameter("@i_passwordsalt", FbDbType.VarChar)).Value = passwordSalt;
+                cmd.Parameters.Add(new FbParameter("@i_passwordformat", FbDbType.VarChar)).Value = passwordFormat;
+                cmd.Parameters.Add(new FbParameter("@i_maxinvalidattempts", FbDbType.Integer)).Value = maxInvalidPasswordAttempts;
+                cmd.Parameters.Add(new FbParameter("@i_passwordattemptwindow", FbDbType.Integer)).Value = passwordAttemptWindow;
+                cmd.Parameters.Add(new FbParameter("@i_currenttimeutc", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+                
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
 			}
 
@@ -375,14 +301,12 @@ namespace YAF.Providers.Membership
 
         public void UnlockUser(string connectionString, string appName, string userName)
 		{
-			using ( FbCommand cmd = new FbCommand( FbDbAccess.GetObjectName( "P_unlockuser" ) ) )
+			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_unlockuser" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
 				// Nonstandard args
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = userName;
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = userName;
 				
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
 			}
@@ -390,36 +314,20 @@ namespace YAF.Providers.Membership
 
         public int UpdateUser(string connectionString, object appName, MembershipUser user, bool requiresUniqueEmail)
 		{
-			using ( FbCommand cmd = new FbCommand( FbDbAccess.GetObjectName( "P_updateuser" ) ) )
+			using ( var cmd = new FbCommand( FbDbAccess.GetObjectName( "P_updateuser" ) ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar)).Value = appName;
 				// Nonstandard args
-                cmd.Parameters.Add(new FbParameter("@i_userkey", FbDbType.VarChar));
-                cmd.Parameters[1].Value = user.ProviderUserKey;
-
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[2].Value = user.UserName;
-
-                cmd.Parameters.Add(new FbParameter("@I_EMAIL", FbDbType.VarChar));
-                cmd.Parameters[3].Value = user.Email;
-
-                cmd.Parameters.Add(new FbParameter("@I_COMMENT", FbDbType.Text));
-                cmd.Parameters[4].Value = user.Comment;
-
-                cmd.Parameters.Add(new FbParameter("@i_isapproved", FbDbType.Boolean));
-                cmd.Parameters[5].Value = user.IsApproved;
-
-                cmd.Parameters.Add(new FbParameter("@I_LASTLOGIN", FbDbType.TimeStamp));
-                cmd.Parameters[6].Value = user.LastLoginDate;
-
-                cmd.Parameters.Add(new FbParameter("@I_LASTACTIVITY", FbDbType.TimeStamp));
-                cmd.Parameters[7].Value = user.LastActivityDate.ToUniversalTime();
-
-                cmd.Parameters.Add(new FbParameter("@I_UNIQUEEMAIL", FbDbType.Boolean));
-                cmd.Parameters[8].Value = requiresUniqueEmail;			
-     
+                cmd.Parameters.Add(new FbParameter("@i_userkey", FbDbType.VarChar)).Value = user.ProviderUserKey;
+                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = user.UserName;
+                cmd.Parameters.Add(new FbParameter("@I_EMAIL", FbDbType.VarChar)).Value = user.Email;
+                cmd.Parameters.Add(new FbParameter("@I_COMMENT", FbDbType.Text)).Value = user.Comment;
+                cmd.Parameters.Add(new FbParameter("@i_isapproved", FbDbType.Boolean)).Value = user.IsApproved;
+                cmd.Parameters.Add(new FbParameter("@I_LASTLOGIN", FbDbType.TimeStamp)).Value = user.LastLoginDate;
+                cmd.Parameters.Add(new FbParameter("@I_LASTACTIVITY", FbDbType.TimeStamp)).Value = user.LastActivityDate.ToUniversalTime();
+                cmd.Parameters.Add(new FbParameter("@I_UNIQUEEMAIL", FbDbType.Boolean)).Value = requiresUniqueEmail;
+                
                 return Convert.ToInt32(FbDbAccess.ExecuteScalar(cmd,connectionString ));
 			}
 		}

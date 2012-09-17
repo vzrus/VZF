@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mysql\LegacyDb.cs" />
+    <Compile Include="mysql\Db.cs" />
     <Compile Include="mysql\Search\SearchBuilder.cs" />
     <Compile Include="mysql\Search\SearchBuilderExtensions.cs" />
     <Compile Include="mysql\Search\SearchCondition.cs" />

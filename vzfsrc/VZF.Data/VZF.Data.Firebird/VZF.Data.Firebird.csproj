@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="firebird\LegacyDb.cs" />
+    <Compile Include="firebird\Db.cs" />
     <Compile Include="firebird\SettingsPropertyColumn.cs" />
     <Compile Include="firebird\YafDBAccess.cs" />
     <Compile Include="firebird\YafDBConnManager.cs" />

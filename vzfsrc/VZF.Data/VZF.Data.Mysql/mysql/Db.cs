@@ -18,10 +18,7 @@
  */
 
 
-using System.Configuration;
-using System.Globalization;
-using VZF.Data.MySqlDb;
-using YAF.Types.Handlers;
+
 namespace YAF.Classes.Data.MySqlDb
 {
     using System;
@@ -31,13 +28,15 @@ namespace YAF.Classes.Data.MySqlDb
     using System.Linq;
     using System.Web.Hosting;
     using System.Web.Security;
-    using YAF.Classes.Pattern;
     using System.Text;
     using YAF.Types.Objects;
-
+    using System.Configuration;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web.Hosting;
     using System.Web.Security;
+
+    using MySql.Data.MySqlClient;
 
     using YAF.Types;
     using YAF.Types.Constants;
@@ -46,9 +45,12 @@ namespace YAF.Classes.Data.MySqlDb
     using YAF.Utils;
     using YAF.Utils.Helpers;
     using YAF.Utils.Helpers.StringUtils;
-    using MySql.Data.MySqlClient;
+    using YAF.Types.Handlers;
+    using YAF.Classes.Pattern;
 
-    public static partial class Db
+    using VZF.Data.MySqlDb;
+
+    public static class Db
 	{
         //added vzrus
         #region ConnectionStringOptions
