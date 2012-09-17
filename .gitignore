@@ -30,4 +30,6 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+VZF.Providers.Mssql*/
+VZF.Data.Mssql*/
 [Tt]est[Rr]esult*
