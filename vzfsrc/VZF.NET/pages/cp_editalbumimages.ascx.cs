@@ -416,7 +416,7 @@ namespace YAF.Pages
             string[] aImageExtensions = { "jpg", "gif", "png", "bmp" };
 
             // If we don't get a match from the db, then the extension is not allowed
-            DataTable dt = LegacyDb.extension_list(this.PageContext.PageBoardID, extension);
+            var dt = LegacyDb.extension_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, extension);
 
             // also, check to see an image is being uploaded.
             if (Array.IndexOf(aImageExtensions, extension) == -1 || dt.Rows.Count == 0)

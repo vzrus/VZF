@@ -866,7 +866,7 @@ namespace YAF.Classes.Data.MySqlDb
             object isCrawler,
             object isMobileDevice,
             object donttrack)
-		{          
+        {
 			int nTries = 0;
 			while ( true )
 			{

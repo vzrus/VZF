@@ -34,14 +34,14 @@ namespace YAF.Classes.Data
         /// Deletes the access mask.
         /// </summary>
         /// <param name="mid">The module id.</param>
-        /// <param name="accessMaskID">The access mask id</param>
-        /// <returns>Boolean value</returns>
+        /// <param name="accessMaskID"> The access mask id. </param>
+        /// <returns> A <see cref="T:System.Boolean"/> with true if access mask was deleted and false if deletion failed.</returns>
         public static bool accessmask_delete(int? mid, object accessMaskID)
         {
             string dataEngine;
             string connectionString;
             CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
+           
             switch (dataEngine)
             {
                 // case "System.Data.SqlClient": return MsSql.LegacyDb.accessmask_delete(connectionString, accessMaskID);
@@ -138,7 +138,7 @@ namespace YAF.Classes.Data
         /// <param name="mid">The module id.</param>
         /// <param name="boardId">The BoardID</param>
         /// <param name="guests">Show guests, boolean</param>
-        /// <returns>Returns a DataTable of active users</returns>  
+        /// <returns>Returns  a <see cref="T:System.Data.DataTable"/>  of active users</returns>  
         public static DataTable active_list(int? mid, object boardId, object guests, object showCrawlers, int interval, object styledNicks)
         {
             string dataEngine;
@@ -169,7 +169,7 @@ namespace YAF.Classes.Data
         /// <param name="showCrawlers">Show crawlers in the list.</param>
         /// <param name="activeTime">The time to keep an active user in the active table.</param>
         /// <param name="styledNicks">Use styled nicks for a user.</param>
-        /// <returns>A data Table for active list for a specific user.</returns>
+        /// <returns> A <see cref="T:System.Data.DataTable"/>  for active list for a specific user.</returns>
         public static DataTable active_list_user(int? mid, object boardId, object userID, object guests, object showCrawlers, int activeTime, object styledNicks)
         {
             string dataEngine;
@@ -193,10 +193,10 @@ namespace YAF.Classes.Data
         /// <summary>
         /// The list of active users for a forum.
         /// </summary>
-        /// /// <param name="mid"> The module ID.</param>
+        /// <param name="mid"> The module ID.</param>
         /// <param name="forumID"> The forum ID.</param>
         /// <param name="styledNicks"> Should you return styled nicks info? </param>
-        /// <returns> A DataTable with list of active users for a forum.</returns>
+        /// <returns> A <see cref="T:System.Data.DataTable"/> with list of active users for a forum.</returns>
         public static DataTable active_listforum(int? mid, object forumID, object styledNicks)
         {
             string dataEngine;
@@ -217,65 +217,82 @@ namespace YAF.Classes.Data
             }
         }
 
-      public static DataTable active_listtopic(int? mid, object topicID, object styledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.active_listtopic(connectionString, topicID, styledNicks);
-              case "Npgsql": return Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.active_listtopic(connectionString, topicID, styledNicks);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_listtopic(connectionString, topicID, styledNicks);
-              // case "oracle": return orPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-              // case "db2": return db2Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-              // case "other": return othPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-              default:
-                  throw new ApplicationException("No return type");
-          }
-      }
+        /// <summary>
+        /// A list of currently active users in a topic.
+        /// </summary>
+        /// <param name="mid"> The module ID.</param>
+        /// <param name="topicID"> The topic ID. </param>
+        /// <param name="styledNicks"> Return styled nicks info. </param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with a users which are currently active in a topic.</returns>
+        public static DataTable active_listtopic(int? mid, object topicID, object styledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_listtopic(connectionString, topicID, styledNicks);
+                case "Npgsql": return Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.active_listtopic(connectionString, topicID, styledNicks);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_listtopic(connectionString, topicID, styledNicks);
+                // case "oracle": return orPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
+                // case "db2": return db2Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
+                // case "other": return othPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-      public static  DataRow active_stats(int? mid, object boardId)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.active_stats(connectionString, boardId);
-              case "Npgsql": return Postgre.Db.active_stats(connectionString, boardId);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.active_stats(connectionString, boardId);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_stats(connectionString, boardId);
-              // case "oracle": return orPostgre.Db.active_stats(connectionString, boardId);
-              // case "db2": return db2Postgre.Db.active_stats(connectionString, boardId);
-              // case "other": return othPostgre.Db.active_stats(connectionString, boardId);
-              default:
-                  throw new ApplicationException("No return type");
-          }
-      }
-
-      public static void activeaccess_reset(int? mid)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": MsSql.LegacyDb.activeaccess_reset(connectionString); break;
-              case "Npgsql": Postgre.Db.activeaccess_reset(connectionString); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.activeaccess_reset(connectionString); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.activeaccess_reset(connectionString); break;
-              // case "oracle":  orPostgre.Db.activeaccess_reset(connectionString); break;
-              // case "db2": db2Postgre.Db.activeaccess_reset(connectionString); break;
-              // case "other": othPostgre.Db.activeaccess_reset(connectionString); break;
-              default:
-                  throw new ApplicationException("No return type");
-          }
-      }
+        /// <summary>
+        /// List of active users stats without details. 
+        /// </summary>
+        /// <param name="mid"> The module ID.</param>
+        /// <param name="boardId">The board ID.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with a simple active users list.</returns>
+        public static  DataRow active_stats(int? mid, object boardId)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_stats(connectionString, boardId);
+                case "Npgsql": return Postgre.Db.active_stats(connectionString, boardId);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.active_stats(connectionString, boardId);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_stats(connectionString, boardId);
+                // case "oracle": return orPostgre.Db.active_stats(connectionString, boardId);
+                // case "db2": return db2Postgre.Db.active_stats(connectionString, boardId);
+                // case "other": return othPostgre.Db.active_stats(connectionString, boardId);
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
+        
+        /// <summary>
+        /// Resets ActiveAccess cache table contents.
+        /// </summary>
+        /// <param name="mid"> The module ID. </param>
+        public static void activeaccess_reset(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": MsSql.LegacyDb.activeaccess_reset(connectionString); break;
+                case "Npgsql": Postgre.Db.activeaccess_reset(connectionString); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.activeaccess_reset(connectionString); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.activeaccess_reset(connectionString); break;
+                // case "oracle":  orPostgre.Db.activeaccess_reset(connectionString); break;
+                // case "db2": db2Postgre.Db.activeaccess_reset(connectionString); break;
+                // case "other": othPostgre.Db.activeaccess_reset(connectionString); break;
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
       public static DataTable User_ListProfilesByIdsList(int? mid, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
       {

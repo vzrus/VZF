@@ -55,8 +55,8 @@
   <ItemGroup>
     <Compile Include="firebird\Db.cs" />
     <Compile Include="firebird\SettingsPropertyColumn.cs" />
-    <Compile Include="firebird\YafDBAccess.cs" />
-    <Compile Include="firebird\YafDBConnManager.cs" />
+    <Compile Include="firebird\DbAccess.cs" />
+    <Compile Include="firebird\DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypedUserFind.cs" />
   </ItemGroup>

@@ -1,13 +1,12 @@
-/* Yet Another Forum.NET
- * Copyright (C) 2003-2005 Bjørnar Henden
- * Copyright (C) 2006-2009 Jaben Cargman
- * http://www.yetanotherforum.net/
- * 
+/* VZF by vzrus
+ * Copyright (C) 2006-2012 Vladimir Zakharov
+ * https://github.com/vzrus
+ * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
+ * as published by the Free Software Foundation; version 2 only
+ * General class structure was primarily based on MS SQL Server code,
+ * created by YAF(YetAnotherForum) developers  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -443,9 +442,14 @@ namespace YAF.Classes.Data
         [NotNull]
         public static DataSet GetDataset([NotNull] IDbCommand cmd, bool transaction, [NotNull] string connectionString)
         {
-            using (var qc = new QueryCounter(cmd.CommandText))
+            var qc = new QueryCounter(cmd.CommandText);
+            try
             {
                 return GetDatasetBasic(cmd, transaction, connectionString);
+            }
+            finally
+            {
+                qc.Dispose();
             }
         }
 
@@ -487,10 +491,10 @@ namespace YAF.Classes.Data
         }
          public static DataTable GetData(string commandText, bool transaction, string connectionString)
         {
-            QueryCounter qc = new QueryCounter(commandText);
+            var qc = new QueryCounter(commandText);
             try
             {
-                using (NpgsqlCommand cmd = new NpgsqlCommand())
+                using (var cmd = new NpgsqlCommand())
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = commandText;
@@ -523,7 +527,7 @@ namespace YAF.Classes.Data
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
 
-                    Trace.WriteLine(cmd.ToString(), "DbAccess");
+                    Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
 
                     if (transaction)
                     {
@@ -554,30 +558,31 @@ namespace YAF.Classes.Data
         }
          public static int ExecuteNonQueryInt(IDbCommand cmd, bool transaction, [NotNull] string connectionString)
         {
-            QueryCounter qc = new QueryCounter(cmd.CommandText);
+            var qc = new QueryCounter(cmd.CommandText);
             try
             {
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
-                    Trace.WriteLine(cmd.ToString(), "DbAccess");
-                    if (transaction)
-                    {
-                        int result = -1;
-                        // execute using a transaction
-                        using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
-                        {
-                            cmd.Transaction = trans;
-                            result = cmd.ExecuteNonQuery();
-                            trans.Commit();
-                            return result;
-                        }
-                    }
-                    else
+                    Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
+                    if (!transaction)
                     {
                         // don't use a transaction
                         return cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        // execute using a transaction
+                        using (
+                            NpgsqlTransaction trans =
+                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        {
+                            cmd.Transaction = trans;
+                            int result = cmd.ExecuteNonQuery();
+                            trans.Commit();
+                            return result;
+                        }
                     }
                 }
             }
@@ -601,7 +606,7 @@ namespace YAF.Classes.Data
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
-                    Trace.WriteLine(cmd.ToString(), "DbAccess");
+                    Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                     if (transaction)
                     {
                         // get scalar using a transaction
@@ -655,7 +660,7 @@ namespace YAF.Classes.Data
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
-                    Trace.WriteLine(cmd.ToString(), "DbAccess");
+                    Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                     if (transaction)
                     {
 
@@ -741,7 +746,7 @@ namespace YAF.Classes.Data
             var qc = new QueryCounter(cmd.CommandText);
             try
             {
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
@@ -962,7 +967,7 @@ namespace YAF.Classes.Data
         {
 
 
-            DataTable schemaTable = reader.GetSchemaTable();
+            var schemaTable = reader.GetSchemaTable();
             foreach (DataRow myField in schemaTable.Rows)
             {
                 foreach (DataColumn myColumn in schemaTable.Columns)

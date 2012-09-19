@@ -149,7 +149,7 @@ namespace YAF.Pages.Admin
         case "delete":
 
           // attmempt to delete access masks
-          if (LegacyDb.accessmask_delete(this.PageContext.PageModuleID, e.CommandArgument))
+          if (LegacyDb.accessmask_delete(mid: this.PageContext.PageModuleID, accessMaskID: e.CommandArgument))
           {
             // remove cache of forum moderators
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
@@ -214,7 +214,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       // list all access masks for this boeard
-        this.List.DataSource = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+        this.List.DataSource = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
       this.DataBind();
     }
 

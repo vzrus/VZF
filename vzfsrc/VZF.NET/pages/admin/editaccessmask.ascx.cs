@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Diagnostics;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -174,7 +176,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    DataTable dt = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i")))
+                    var dt = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i")))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

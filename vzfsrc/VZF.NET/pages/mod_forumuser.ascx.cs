@@ -72,11 +72,11 @@ namespace YAF.Pages
                 var flags = (int)AccessFlags.Flags.ModeratorAccess;
 
                 // non-admins cannot assign moderation access masks
-                dt = LegacyDb.accessmask_list(this.PageContext.PageBoardID, null, flags);
+                dt = LegacyDb.accessmask_list(mid: this.PageContext.PageBoardID, boardId: null, accessMaskID: flags);
             }
             else
             {
-                dt = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+                dt = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
             }
 
             // setup datasource for access masks dropdown

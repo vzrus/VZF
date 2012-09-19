@@ -8518,12 +8518,14 @@ namespace YAF.Classes.Data.Postgre
 
                                     results.Append("RowNumber");
                                     int gg = 0;
-                                    var columnNames = new string[reader.GetSchemaTable().Rows.Count - 1];
-                                    foreach (DataRow drd in reader.GetSchemaTable().Rows)
+                                    int colCount = reader.GetSchemaTable().Rows.Count;
+                                    var columnNames = new string[colCount];
+                                    for(int i = 0; i < colCount ;i++)
                                     {
+                                        DataRow drd = reader.GetSchemaTable().Rows[i];
                                         columnNames[gg] = drd["ColumnName"].ToString();
                                         results.Append(",");
-                                        results.Append(drd["ColumnName"].ToString());
+                                        results.Append(drd["ColumnName"]);
                                         gg++;
 
                                     }

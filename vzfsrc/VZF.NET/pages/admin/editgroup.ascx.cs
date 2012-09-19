@@ -388,7 +388,7 @@ namespace YAF.Pages.Admin
             {
                 this.AccessList.DataSource = LegacyDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
             }
-            this.AccessMasksList = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.AccessMasksList = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
             // bind data to controls
             this.DataBind();
 

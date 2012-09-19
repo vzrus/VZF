@@ -65,12 +65,9 @@
     <Compile Include="pgsql\Fts\Search.cs" />
     <Compile Include="pgsql\Db.cs" />
     <Compile Include="pgsql\SettingsPropertyColumn.cs" />
-    <Compile Include="pgsql\YafDBAccess.cs" />
-    <Compile Include="pgsql\YafDBConnManager.cs" />
+    <Compile Include="pgsql\DbAccess.cs" />
+    <Compile Include="pgsql\DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypedUserFind.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="YetAnotherForum.NET.snk" />

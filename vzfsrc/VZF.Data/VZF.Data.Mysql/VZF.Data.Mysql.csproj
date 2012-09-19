@@ -59,8 +59,8 @@
     <Compile Include="mysql\Search\SearchCondition.cs" />
     <Compile Include="mysql\Search\SearchConditionType.cs" />
     <Compile Include="mysql\SettingsPropertyColumn.cs" />
-    <Compile Include="mysql\YafDBAccess.cs" />
-    <Compile Include="mysql\YafDBConnManager.cs" />
+    <Compile Include="mysql\DbAccess.cs" />
+    <Compile Include="mysql\DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

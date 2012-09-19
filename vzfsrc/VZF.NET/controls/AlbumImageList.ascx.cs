@@ -220,12 +220,12 @@ namespace YAF.Controls
 
             // Create paged data source for the album image list
             var pds = new PagedDataSource
-                          {
-                              DataSource = dtAlbumImageList.DefaultView,
-                              AllowPaging = true,
-                              CurrentPageIndex = this.PagerTop.CurrentPageIndex,
-                              PageSize = this.PagerTop.PageSize
-                          };
+            {
+                DataSource = dtAlbumImageList.DefaultView,
+                AllowPaging = true,
+                CurrentPageIndex = this.PagerTop.CurrentPageIndex,
+                PageSize = this.PagerTop.PageSize
+            };
 
             this.AlbumImages.DataSource = pds;
             this.DataBind();

@@ -2,10 +2,11 @@
 <%@ Register TagPrefix="YAF" TagName="ReportedPosts" Src="../../controls/ReportedPosts.ascx" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Utils" %>
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <asp:Repeater ID="List" runat="server">
     <HeaderTemplate>
-        <table class="content" width="100%">
+        <table class="content" style="width: 100%">
             <tr>
                 <td colspan="3" class="header1" align="left">
                     <%# PageContext.PageForumName %>
@@ -16,11 +17,11 @@
         </table>
     </HeaderTemplate>
     <ItemTemplate>
-        <table class="content" width="100%">
+        <table class="content" style="width: 100%">
             <tr class="header2">
                 <td colspan="3">
                     <YAF:LocalizedLabel ID="TopicLabel" runat="server" LocalizedTag="TOPIC" />
-                    &nbsp;<a id="TopicLink" href='<%# YafBuildLink.GetLink(ForumPages.posts, "t={0}", Eval("TopicID")) %>'
+                    &nbsp;<a id="TopicLink" href='<%# YAF.Utils.YafBuildLink.GetLink(ForumPages.posts, "t={0}", Eval("TopicID")) %>'
                         runat="server"><%# Eval("Topic") %></a>
                 </td>
             </tr>
