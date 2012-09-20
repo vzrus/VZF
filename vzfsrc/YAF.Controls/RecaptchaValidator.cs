@@ -143,11 +143,11 @@ namespace YAF.Controls
     public RecaptchaResponse Validate()
     {
       string[] strArray;
-      this.CheckNotNull(this.PrivateKey, "PrivateKey");
-      this.CheckNotNull(this.RemoteIP, "RemoteIp");
-      this.CheckNotNull(this.Challenge, "Challenge");
-      this.CheckNotNull(this.Response, "Response");
-      if ((this.challenge == string.Empty) || (this.response == string.Empty))
+      CheckNotNull(this.PrivateKey, "PrivateKey");
+      CheckNotNull(this.RemoteIP, "RemoteIp");
+      CheckNotNull(this.Challenge, "Challenge");
+      CheckNotNull(this.Response, "Response");
+      if ((this.challenge.IsSet()) || (this.response.IsSet()))
       {
         return RecaptchaResponse.InvalidSolution;
       }
@@ -173,9 +173,9 @@ namespace YAF.Controls
 
       try
       {
-        using (WebResponse response = request.GetResponse())
+        using (WebResponse webResponse = request.GetResponse())
         {
-          using (TextReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+          using (TextReader reader = new StreamReader(stream: webResponse.GetResponseStream(), encoding: Encoding.UTF8))
           {
             strArray = reader.ReadToEnd().Split(new char[0]);
           }
@@ -214,7 +214,7 @@ namespace YAF.Controls
     /// </param>
     /// <exception cref="ArgumentNullException">
     /// </exception>
-    private void CheckNotNull([NotNull] object obj, [NotNull] string name)
+    private static void CheckNotNull([NotNull] object obj, [NotNull] string name)
     {
       if (obj == null)
       {

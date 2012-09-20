@@ -386,10 +386,10 @@ gotoForm.fadeIn( 'slow', function() {{
         /// <summary>
         /// The render.
         /// </summary>
-        /// <param name="output">
+        /// <param name="writer">
         /// The output.
         /// </param>
-        protected override void Render([NotNull] HtmlTextWriter output)
+        protected override void Render([NotNull] HtmlTextWriter writer)
         {
             if (this.LinkedPager != null)
             {
@@ -402,7 +402,7 @@ gotoForm.fadeIn( 'slow', function() {{
                 return;
             }
 
-            output.WriteLine(
+            writer.WriteLine(
                 @"<div class=""yafpager"" title=""{0}"" id=""{1}"">".FormatWith(
                     this.Get<ILocalization>().TransPage.IsSet()
                         ? this.GetText("COMMON", "GOTOPAGE_HEADER")
@@ -421,13 +421,13 @@ gotoForm.fadeIn( 'slow', function() {{
             this._pageLabel.Text = @"{0:N0} {1}".FormatWith(this.PageCount, pagesText);
 
             // render this control...
-            this._pageLabel.RenderControl(output);
+            this._pageLabel.RenderControl(writer);
 
-            this.OutputLinks(output, this.UsePostBack);
+            this.OutputLinks(writer, this.UsePostBack);
 
-            this._gotoPageForm.RenderControl(output);
+            this._gotoPageForm.RenderControl(writer);
 
-            output.WriteLine("</div>");
+            writer.WriteLine("</div>");
 
             // base.Render( output );
         }

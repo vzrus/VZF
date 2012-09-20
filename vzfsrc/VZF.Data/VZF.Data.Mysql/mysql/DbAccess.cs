@@ -17,9 +17,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Concurrent;
-using System.Reflection;
-using MySql.Data.MySqlClient;
 namespace YAF.Classes.Data
 {
 	/// <summary>
@@ -29,13 +26,15 @@ namespace YAF.Classes.Data
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
-    using System.Linq;
-
+    using System.Collections.Concurrent;
+    using System.Reflection;
+  
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Utils;
     using YAF.Utils.Helpers;
-    
+
+    using MySql.Data.MySqlClient;
 
     public static class MySqlDbAccess 
 	{
@@ -90,58 +89,6 @@ namespace YAF.Classes.Data
 
         #endregion
 
-
-
-
-
-
-		static public string DatabaseOwner
-		{
-			get
-			{
-				if ( _dbOwner == null )
-				{
-					_dbOwner = Config.SchemaName;
-				}
-
-				return _dbOwner;
-			}
-		}
-
-		static public string ObjectQualifier
-		{
-			get
-			{
-				if ( _objectQualifier.IsNotSet() )
-				{
-					_objectQualifier = Config.DatabaseObjectQualifier;
-				}
-                if (_objectQualifier.IsNotSet())
-                {
-                    _objectQualifier = "yaf_";
-                }
-
-				return _objectQualifier;
-			}
-		}
-        static public string SchemaName
-        {
-            get
-            {
-                if (_schemaName == null)
-                {
-                    _schemaName = Config.SchemaName;
-                }
-                if (_schemaName == null)
-                {
-                   // _schemaName =
-                      //  new MySqlConnectionStringBuilder(new MySqlDbConnectionManager(connectionString).ConnectionString).Database;
-                }
-                return _schemaName ?? (_schemaName = "yafnet");
-            }
-            set { _schemaName = value; }
-        }
-
         /// <summary>
         /// Gets command text replaced with {databaseName} and {objectQualifier}.
         /// </summary>
@@ -167,8 +114,8 @@ namespace YAF.Classes.Data
 		{
 			return String.Format(
 							"`{0}`.`{1}{2}`",
-							SchemaName,
-							ObjectQualifier,
+							Config.DatabaseScheme,
+							Config.DatabaseObjectQualifier,
 							name
 							);
 		}
@@ -201,7 +148,7 @@ namespace YAF.Classes.Data
             string userPassword)
         {
 
-            MySqlConnectionStringBuilder connBuilder = new MySqlConnectionStringBuilder();
+            var connBuilder = new MySqlConnectionStringBuilder();
 
           
             
@@ -236,38 +183,34 @@ namespace YAF.Classes.Data
 
         public static ConcurrentDictionary<string, Type> GetConnectionParams()
         {
-            Type myType = (typeof (MySqlConnectionStringBuilder));
-            PropertyInfo[] myPropertyInfo = myType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var myType = (typeof (MySqlConnectionStringBuilder));
+            var myPropertyInfo = myType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             // Display information for all properties. 
             var cd = new ConcurrentDictionary<string, Type>();
-            foreach (PropertyInfo t in myPropertyInfo)
+            foreach (var t in myPropertyInfo)
             {
-              
                 var dd = t.GetCustomAttributesData();
                 if (dd == null || dd.Count <= 0) continue;
-
+                
                 foreach (var customAttributeData in dd)
                 {
-                                            try
-                        {
-                    if (customAttributeData != null && customAttributeData.ConstructorArguments.Count > 0  
-                        && (customAttributeData.ConstructorArguments[0].Value.ToString() == "Connection"
-                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Pooling"
-                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Security"
-                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Advanced"
-                            || customAttributeData.ConstructorArguments[0].Value.ToString() == "Authentication"))
-                        
+                    try
                     {
+                        if (customAttributeData == null || customAttributeData.ConstructorArguments.Count <= 0 ||
+                            (customAttributeData.ConstructorArguments[0].Value.ToString() != "Connection" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Pooling" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Security" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Advanced" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Authentication"))
+                            continue;
 
-                            cd.AddOrUpdate(t.Name, t.PropertyType, (key, value) => value);
-                            break;
-                       
-                       
+                        cd.AddOrUpdate(t.Name, t.PropertyType, (key, value) => value);
+                        break;
                     }
-                        }
-                                            catch (Exception)
-                                            {
-                                            }
+                    catch (Exception)
+                    {
+                        
+                    }
                 }
             }
             return cd;
@@ -331,8 +274,8 @@ namespace YAF.Classes.Data
             {                
 
                 // commandText = commandText.Replace("{databaseName}", DatabaseOwner);
-                commandText = commandText.Replace("{objectQualifier}", ObjectQualifier);
-                commandText = commandText.Replace("{databaseName}", SchemaName);               
+                commandText = commandText.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
+                commandText = commandText.Replace("{databaseName}", Config.DatabaseScheme);               
 
                 MySqlCommand cmd = new MySqlCommand();
 
@@ -364,11 +307,13 @@ namespace YAF.Classes.Data
         /// <returns>New MySqlCommand</returns>
         static public MySqlCommand GetCommand(string storedProcedure, MySqlConnection connection)
         {
-            MySqlCommand cmd = new MySqlCommand();
+            var cmd = new MySqlCommand
+                {
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = GetObjectName(storedProcedure),
+                    Connection = connection
+                };
 
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = GetObjectName(storedProcedure);
-            cmd.Connection = connection;
             return cmd;
         }
         /// <summary>
@@ -835,33 +780,27 @@ namespace YAF.Classes.Data
             }
             return dt;
         }
+
         public static Guid GuidConverter(Guid gd)
         {
-            byte[] barr = gd.ToByteArray();
-            byte[] barr_out = new byte[16];
+            var barrIn = gd.ToByteArray();
+            var barrOut = new byte[16];
 
-            barr_out[0] = barr[3];
-            barr_out[1] = barr[2];
-            barr_out[2] = barr[1];
-            barr_out[3] = barr[0];
+            barrOut[0] = barrIn[3];
+            barrOut[1] = barrIn[2];
+            barrOut[2] = barrIn[1];
+            barrOut[3] = barrIn[0];
+            barrOut[4] = barrIn[5];
+            barrOut[5] = barrIn[4];
 
-            barr_out[4] = barr[5];
-            barr_out[5] = barr[4];
+            barrOut[6] = barrIn[7];
+            barrOut[7] = barrIn[6];
 
-            barr_out[6] = barr[7];
-            barr_out[7] = barr[6];
-
-            barr_out[8] = barr[8];
-            barr_out[9] = barr[9];
-            barr_out[10] = barr[10];
-            barr_out[11] = barr[11];
-            barr_out[12] = barr[12];
-            barr_out[13] = barr[13];
-            barr_out[14] = barr[14];
-            barr_out[15] = barr[15];
-
-
-            return new Guid(barr_out);
+            for (var i = 8; i < 16; i++)
+            {
+                barrOut[i] = barrIn[i];
+            }
+            return new Guid(barrOut);
         }
 
         #region Methods

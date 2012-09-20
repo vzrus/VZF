@@ -182,13 +182,13 @@ namespace YAF.Controls
     /// <summary>
     /// Shows the localized text string (if available)
     /// </summary>
-    /// <param name="output">
+    /// <param name="writer">
     /// </param>
-    protected override void Render(HtmlTextWriter output)
+    protected override void Render(HtmlTextWriter writer)
     {
-      output.BeginRender();
-      output.Write(this.LocalizeAndRender(this));
-      output.EndRender();
+      writer.BeginRender();
+      writer.Write(this.LocalizeAndRender(this));
+      writer.EndRender();
     }
 
     #endregion

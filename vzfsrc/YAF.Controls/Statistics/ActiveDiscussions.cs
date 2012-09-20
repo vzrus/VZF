@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Globalization;
+
 namespace YAF.Controls.Statistics
 {
   #region Using
@@ -121,7 +124,7 @@ namespace YAF.Controls.Statistics
       foreach (DataRow r in topicLatest.Rows)
       {
         // Output Topic Link
-        html.AppendFormat(
+        html.AppendFormat(CultureInfo.InvariantCulture,
           "{2}.&nbsp;<a href=\"{1}\">{0}</a> ({3})", 
           this.Get<IBadWordReplace>().Replace(this.HtmlEncode(Convert.ToString(r["Topic"]))), 
           YafBuildLink.GetLink(ForumPages.posts, "m={0}#{0}", r["LastMessageID"]), 
@@ -140,6 +143,8 @@ namespace YAF.Controls.Statistics
 
       // render control to the output
       writer.Write(html.ToString());
+
+      
     }
 
     #endregion

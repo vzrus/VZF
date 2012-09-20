@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Collections.ObjectModel;
+
 namespace YAF.Controls
 {
     #region Using
@@ -44,7 +46,7 @@ namespace YAF.Controls
         /// <summary>
         ///   The buttons.
         /// </summary>
-        private List<HyperLink> buttons;
+        private Collection<HyperLink> _buttons;
 
         #endregion
 
@@ -59,11 +61,11 @@ namespace YAF.Controls
         ///   Gets Buttons.
         /// </summary>
         [NotNull]
-        public List<HyperLink> Buttons
+        public Collection<HyperLink> Buttons
         {
             get
             {
-                return this.buttons ?? (this.buttons = new List<HyperLink>());
+                return this._buttons ?? (this._buttons = new Collection<HyperLink>());
             }
         }
 

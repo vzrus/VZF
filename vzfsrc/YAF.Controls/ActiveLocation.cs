@@ -267,28 +267,28 @@ namespace YAF.Controls
             // We find here a page name start position
             if (forumPageName.Contains("g="))
             {
-                forumPageName = forumPageName.Substring(forumPageName.IndexOf("g=") + 2);
+                forumPageName = forumPageName.Substring(forumPageName.IndexOf("g=", StringComparison.OrdinalIgnoreCase) + 2);
 
                 // We find here a page name end position
                 if (forumPageName.Contains("&"))
                 {
-                    forumPageAttributes = forumPageName.Substring(forumPageName.IndexOf("&") + 1);
-                    forumPageName = forumPageName.Substring(0, forumPageName.IndexOf("&"));
+                    forumPageAttributes = forumPageName.Substring(forumPageName.IndexOf("&", StringComparison.OrdinalIgnoreCase) + 1);
+                    forumPageName = forumPageName.Substring(0, forumPageName.IndexOf("&", StringComparison.OrdinalIgnoreCase));
                 }
             }
             else
             {
                 if (Config.IsDotNetNuke)
                 {
-                    int idxfrst = forumPageName.IndexOf("&");
+                    int idxfrst = forumPageName.IndexOf("&", StringComparison.OrdinalIgnoreCase);
                     forumPageName = forumPageName.Substring(idxfrst + 1);
                 }
 
-                int idx = forumPageName.IndexOf("=");
+                int idx = forumPageName.IndexOf("=", StringComparison.OrdinalIgnoreCase);
                 if (idx > 0)
                 {
                     forumPageAttributes = forumPageName.Substring(
-                        0, forumPageName.IndexOf("&") > 0 ? forumPageName.IndexOf("&") : forumPageName.Length - 1);
+                        0, forumPageName.IndexOf("&", StringComparison.OrdinalIgnoreCase) > 0 ? forumPageName.IndexOf("&", StringComparison.OrdinalIgnoreCase) : forumPageName.Length - 1);
                     forumPageName = forumPageName.Substring(0, idx);
                 }
             }
@@ -534,7 +534,7 @@ namespace YAF.Controls
     {
       string outstring = string.Empty;
 
-      string userID = forumPageAttributes.Substring(forumPageAttributes.IndexOf("u=") + 2).Substring(0).Trim();
+      string userID = forumPageAttributes.Substring(forumPageAttributes.IndexOf("u=", StringComparison.OrdinalIgnoreCase) + 2).Substring(0).Trim();
 
       if (ValidationHelper.IsValidInt(userID))
       {
@@ -568,11 +568,11 @@ namespace YAF.Controls
     private string Profile([NotNull] string forumPageAttributes)
     {
       string outstring = string.Empty;
-      string userID = forumPageAttributes.Substring(forumPageAttributes.IndexOf("u=") + 2);
+      string userID = forumPageAttributes.Substring(forumPageAttributes.IndexOf("u=", StringComparison.OrdinalIgnoreCase) + 2);
 
       if (userID.Contains("&"))
       {
-        userID = userID.Substring(0, userID.IndexOf("&")).Trim();
+          userID = userID.Substring(0, userID.IndexOf("&", StringComparison.OrdinalIgnoreCase)).Trim();
       }
       else
       {

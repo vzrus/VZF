@@ -707,16 +707,6 @@ namespace YAF.Classes.Data.Postgre
             }
         }
 
-        /// <summary>
-        /// Listes all forums accessible to a user
-        /// </summary>
-        /// <param name="boardId">BoardID</param>
-        /// <param name="userId">ID of user</param>
-        /// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(string connectionString, object boardId, object userId)
-        {
-            return forum_listall(connectionString, boardId, userId, 0);
-        }
 
         static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions)
         {
@@ -734,14 +724,11 @@ namespace YAF.Classes.Data.Postgre
                 if (startAt != 0)
                 {
                     // find the base ids..
-                    foreach (DataRow dataRow in dataTable.Rows)
+                    foreach (DataRow dataRow in dataTable.Rows.Cast<DataRow>().Where(dataRow => Convert.ToInt32(dataRow["ForumID"]) == startAt))
                     {
-                        if (Convert.ToInt32(dataRow["ForumID"]) == startAt)
-                        {
-                            baseForumId = Convert.ToInt32(dataRow["ParentID"]);
-                            baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
-                            break;
-                        }
+                        baseForumId = Convert.ToInt32(dataRow["ParentID"]);
+                        baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
+                        break;
                     }
                 }
 
@@ -778,11 +765,12 @@ namespace YAF.Classes.Data.Postgre
 			while ( true )
 			{
 
-
+                
+                    
 				try
 				{
-            
 
+                   // var dd = PostgreDBAccess.GetConnectionParams();
 					DataTable dt1 = null;
 					using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "pageload" ) )
 					{
@@ -1632,26 +1620,16 @@ namespace YAF.Classes.Data.Postgre
             }
         }
 
-        /// <summary>
-        /// Recalculates topic and post numbers and updates last post for all forums in all boards
-        /// </summary>
-        static public void board_resync(string connectionString)
-        {
-            board_resync(connectionString,null);
-        }
 		/// <summary>
 		/// Recalculates topic and post numbers and updates last post for specified board
 		/// </summary>
 		/// <param name="boardId">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
         static public void board_resync(string connectionString, object boardId)
 		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_resync" ) )
+			using (var cmd = PostgreDBAccess.GetCommand("board_resync"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-			   
-				NpgsqlCommandBuilder cb = new NpgsqlCommandBuilder();             
 			   
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -1663,7 +1641,7 @@ namespace YAF.Classes.Data.Postgre
 
         static public DataRow board_stats(string connectionString, object boardId)
 		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_stats" ) )
+			using ( var cmd = PostgreDBAccess.GetCommand( "board_stats" ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1683,7 +1661,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="allowThreaded">Boolen value, allowThreaded</param>
         static public int board_save(string connectionString, object boardId, object languageFile, object culture, object name, object allowThreaded)
 		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_save" ) )
+			using ( var cmd = PostgreDBAccess.GetCommand( "board_save" ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1726,7 +1704,7 @@ namespace YAF.Classes.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
                 
                 int res =  Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString)); 
-                forum__ns_recreate(connectionString);
+                forum_ns_recreate(connectionString);
 			    return res;
 			}
 		}
@@ -1736,7 +1714,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">ID of board to delete</param>
         static public void board_delete(string connectionString, object boardId)
 		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_delete" ) )
+			using ( var cmd = PostgreDBAccess.GetCommand( "board_delete" ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1761,7 +1739,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = CategoryID;
                 bool res = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString) != 0;
-                forum__ns_recreate(connectionString);
+                forum_ns_recreate(connectionString);
 				return res;
 			}
 		}
@@ -1845,7 +1823,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryimage", NpgsqlDbType.Varchar)).Value = categoryImage;
  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-                forum__ns_recreate(connectionString);
+                forum_ns_recreate(connectionString);
 			}
 		}
 		#endregion
@@ -2301,20 +2279,17 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
         static private void forum_deleteAttachments(string connectionString, object forumID)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listtopics"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_listtopics"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 												
-				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				using (var dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
-					foreach (DataRow row in dt.Rows)
+					foreach (DataRow row in dt.Rows.Cast<DataRow>().Where(row => row != null && row["TopicID"] != DBNull.Value))
 					{
-					   if ( row != null && row["TopicID"] != DBNull.Value )
-						{
-							topic_delete(connectionString, row["TopicID"], true );
-						}
+					    topic_delete(connectionString, row["TopicID"], true );
 					}
 				}
 			}
@@ -2347,7 +2322,7 @@ namespace YAF.Classes.Data.Postgre
 
 			            PostgreDBAccess.ExecuteNonQuery(cmd_new,connectionString);
 			        }
-                    forum__ns_recreate(connectionString);
+                    forum_ns_recreate(connectionString);
 			        return true;
 			    }
 			}
@@ -2405,7 +2380,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>DataTable with list of topics from a forum</returns>
         static public DataTable forum_list(string connectionString, object boardId, object forumID)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_list"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_list"))
 			{
 				if (forumID == null) { forumID = DBNull.Value; }
 				cmd.CommandType = CommandType.StoredProcedure;
@@ -2445,7 +2420,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>DataTable of all accessible forums</returns>
         static public DataTable forum_listall(string connectionString, object boardId, object userId, object startAt)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listall"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_listall"))
 			{
 				if (startAt == null) { startAt = 0; }
 				cmd.CommandType = CommandType.StoredProcedure;
@@ -2473,24 +2448,27 @@ namespace YAF.Classes.Data.Postgre
             forumIds.Add(startForumId);
             tempForumIds.Add(startForumId);
 
+            IEnumerable<TypedForumListAll> typedForumListAlls = allForums as List<TypedForumListAll> ?? allForums.ToList();
             while (true)
             {
-                var temp = allForums.Where(f => tempForumIds.Contains(f.ParentID ?? 0));
+                var ids = tempForumIds;
+                var temp = typedForumListAlls.Where(f => ids.Contains(f.ParentID ?? 0));
 
-                if (!temp.Any())
+                var forumListAlls = temp as List<TypedForumListAll> ?? temp.ToList();
+                if (!forumListAlls.Any())
                 {
                     break;
                 }
 
                 // replace temp forum ids with these..
-                tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
+                tempForumIds = forumListAlls.Select(f => f.ForumID ?? 0).Distinct().ToList();
 
                 // add them..
                 forumIds.AddRange(tempForumIds);
             }
 
             // return filtered forums..
-            return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
+            return typedForumListAlls.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
         }
 
 
@@ -2502,7 +2480,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns></returns>
         static public DataTable forum_simplelist(string connectionString, int startID, int limit)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_simplelist"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_simplelist"))
 			{
 				if (startID <= 0) { startID = 0; }
 				if (limit <= 0) { limit = 500; }
@@ -2517,49 +2495,46 @@ namespace YAF.Classes.Data.Postgre
 
         static public void forum_sort_list_recursive(DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent)
         {
-            DataRow newRow;
-
             foreach (DataRow row in listSource.Rows)
             {
                 // see if this is a root-forum
                 if (row["ParentID"] == DBNull.Value)
                     row["ParentID"] = 0;
 
-                if ((int)row["ParentID"] == parentID)
+                if ((int) row["ParentID"] != parentID) continue;
+
+                DataRow newRow;
+                if ((int)row["CategoryID"] != categoryID)
                 {
-                    if ((int)row["CategoryID"] != categoryID)
-                    {
-                        categoryID = (int)row["CategoryID"];
+                    categoryID = (int)row["CategoryID"];
 
-                        newRow = listDestination.NewRow();
-                        newRow["ForumID"] = -categoryID;		// Ederon : 9/4/2007
-                        newRow["Title"] = string.Format("{0}", row["Category"].ToString());
-                        listDestination.Rows.Add(newRow);
-                    }
-
-                    string sIndent = "";
-
-                    for (int j = 0; j < currentIndent; j++)
-                        sIndent += "--";
-
-                    // import the row into the destination
                     newRow = listDestination.NewRow();
-
-                    newRow["ForumID"] = row["ForumID"];
-                    newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
-
+                    newRow["ForumID"] = -categoryID;		// Ederon : 9/4/2007
+                    newRow["Title"] = string.Format("{0}", row["Category"].ToString());
                     listDestination.Rows.Add(newRow);
-
-                    // recurse through the list..
-                    forum_sort_list_recursive(listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1);
                 }
+
+                string sIndent = "";
+
+                for (int j = 0; j < currentIndent; j++)
+                    sIndent += "--";
+
+                // import the row into the destination
+                newRow = listDestination.NewRow();
+
+                newRow["ForumID"] = row["ForumID"];
+                newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+
+                listDestination.Rows.Add(newRow);
+
+                // recurse through the list..
+                forum_sort_list_recursive(listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1);
             }
         }
 
         static public DataTable forum_sort_list(DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow)
         {
-            DataTable listDestination = new DataTable();
-            listDestination.TableName = "forum_sort_list";
+            var listDestination = new DataTable {TableName = "forum_sort_list"};
             listDestination.Columns.Add("ForumID", typeof(String));
             listDestination.Columns.Add("Title", typeof(String));
 
@@ -2578,12 +2553,12 @@ namespace YAF.Classes.Data.Postgre
                 string strExclusions = "";
                 bool bFirst = true;
 
-                foreach (int forumID in forumidExclusions)
+                foreach (int forumId in forumidExclusions)
                 {
                     if (bFirst) bFirst = false;
                     else strExclusions += ",";
 
-                    strExclusions += forumID.ToString();
+                    strExclusions += forumId.ToString();
                 }
 
                 dv.RowFilter = string.Format("ForumID NOT IN ({0})", strExclusions);
@@ -2612,11 +2587,11 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
 				
 				
-				int intCategoryID = Convert.ToInt32(categoryID.ToString());
+				int intCategoryId = Convert.ToInt32(categoryID.ToString());
 
 				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
-                    return Db.forum_sort_list(dt, 0, intCategoryID, 0, null, emptyFirstRow);
+                    return Db.forum_sort_list(dt, 0, intCategoryId, 0, null, emptyFirstRow);
 				}
 			}
 		}
@@ -2829,7 +2804,7 @@ namespace YAF.Classes.Data.Postgre
 
         static public DataTable forum_moderators(string connectionString, bool useStyledNicks)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_moderators"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_moderators"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
@@ -2863,7 +2838,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="forumID">If null, all forums in board are updated</param>
         static public void forum_resync(string connectionString, object boardId, object forumID)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_resync"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_resync"))
 			{
 				if (forumID == null) { forumID = DBNull.Value; }
 				cmd.CommandType = CommandType.StoredProcedure;
@@ -2885,7 +2860,7 @@ namespace YAF.Classes.Data.Postgre
 			object styles,
 	   bool dummy)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_save"))
+			using (var cmd = PostgreDBAccess.GetCommand("forum_save"))
 			{
 				if (parentID == null) { parentID = DBNull.Value; }
 				if (remoteURL == null) { remoteURL = DBNull.Value; }
@@ -2921,7 +2896,7 @@ namespace YAF.Classes.Data.Postgre
 				{ return 0; }
 				else
 				{
-				    forum__ns_recreate(connectionString);
+				    forum_ns_recreate(connectionString);
 				    return long.Parse(resultop);
 				}
 			}
@@ -2936,7 +2911,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>Integer value for a found dependency</returns>
         public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("SELECT " + PostgreDBAccess.GetObjectName("forum_save_parentschecker") + "(@ForumID,@ParentID)", true))
+			using (var cmd = PostgreDBAccess.GetCommand("SELECT " + PostgreDBAccess.GetObjectName("forum_save_parentschecker") + "(@ForumID,@ParentID)", true))
 			{
 				cmd.CommandType = CommandType.Text;
 				cmd.Parameters.Add(new NpgsqlParameter("@ForumID", NpgsqlDbType.Integer)).Value =  forumID;
@@ -2949,7 +2924,7 @@ namespace YAF.Classes.Data.Postgre
         /// <summary>
         /// Recreate tree.
         /// </summary>
-        static public void forum__ns_recreate(string connectionString)
+        static public void forum_ns_recreate(string connectionString)
         {
             using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_recreate"))
             {
@@ -6289,7 +6264,7 @@ namespace YAF.Classes.Data.Postgre
 	/// <returns>A DataRow, it should never return a null value.</returns>
         public static DataRow user_lazydata(string connectionString, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
 	{
-		using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_lazydata"))
+		using (var cmd = PostgreDBAccess.GetCommand("user_lazydata"))
 		{
 			cmd.CommandType = CommandType.StoredProcedure;
 			cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
@@ -6334,24 +6309,16 @@ namespace YAF.Classes.Data.Postgre
 		/// </returns>
         static public DataTable user_list(string connectionString, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_list"))
+			using (var cmd = PostgreDBAccess.GetCommand("user_list"))
 			{
-				if (userId == null) { userId = DBNull.Value; }
-				if (approved == null) { approved = DBNull.Value; }
-				if (groupID == null) { groupID = DBNull.Value; }
-				if (rankID == null) { rankID = DBNull.Value; }
-				if (useStyledNicks == null) { useStyledNicks = DBNull.Value; }
-				
-
-
 				cmd.CommandType = CommandType.StoredProcedure;
 
-				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-				cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
-				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
-				cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID;
-				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value =  boardId ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks ?? DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				  
 				return PostgreDBAccess.GetData(cmd,connectionString);

@@ -17,6 +17,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Collections.Concurrent;
+using System.Reflection;
 using Autofac;
 using Autofac.Core.Registration;
 using YAF.Types;
@@ -273,7 +275,7 @@ namespace YAF.Classes.Data
          // connBuilder.SslMode =SslMode.Allow
          // connBuilder.SearchPath
          // connBuilder.Timeout
-            connBuilder.Pooling = parm13;
+            connBuilder.Pooling= parm13;
             connBuilder.PreloadReader = parm14;
             connBuilder.SyncNotification = parm15;
             connBuilder.UseExtendedTypes = parm16;
@@ -284,6 +286,41 @@ namespace YAF.Classes.Data
 
             return connBuilder.ConnectionString;
 
+        }
+        public static ConcurrentDictionary<string, Type> GetConnectionParams()
+        {
+            var myType = (typeof(NpgsqlConnectionStringBuilder));
+            var myPropertyInfo = myType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // Display information for all properties. 
+            var cd = new ConcurrentDictionary<string, Type>();
+            foreach (var t in myPropertyInfo)
+            {
+                var dd = t.GetCustomAttributesData();
+                if (dd == null || dd.Count <= 0) continue;
+
+                foreach (var customAttributeData in dd)
+                {
+                    try
+                    {
+                        cd.AddOrUpdate(t.Name, t.PropertyType, (key, value) => value);
+                        if (customAttributeData == null || customAttributeData.ConstructorArguments.Count <= 0 ||
+                            (customAttributeData.ConstructorArguments[0].Value.ToString() != "Connection" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Pooling" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Security" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Advanced" &&
+                             customAttributeData.ConstructorArguments[0].Value.ToString() != "Authentication"))
+                            continue;
+
+                        cd.AddOrUpdate(t.Name, t.PropertyType, (key, value) => value);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+            return cd;
         }
 
         /// <summary>

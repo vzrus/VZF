@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Globalization;
+
 namespace YAF.Controls
 {
     #region Using
@@ -156,6 +159,10 @@ namespace YAF.Controls
         /// </param>
         public void Attach([NotNull] UserLink userLinkControl)
         {
+            if (userLinkControl == null)
+            {
+                throw new ArgumentNullException("userLinkControl");
+            }
             userLinkControl.OnClick = this.ControlOnClick;
             userLinkControl.OnMouseOver = this.ControlOnMouseOver;
         }
@@ -277,7 +284,7 @@ namespace YAF.Controls
             sb.Append("</ul>");
             sb.Append("</div>");
 
-            sb.AppendFormat("</ul></div></div></div>");
+            sb.AppendFormat(CultureInfo.InvariantCulture,"</ul></div></div></div>");
 
             writer.WriteLine(sb.ToString());
 

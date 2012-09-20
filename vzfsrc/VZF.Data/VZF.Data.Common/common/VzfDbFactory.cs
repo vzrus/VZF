@@ -293,47 +293,60 @@ namespace YAF.Classes.Data
                     throw new ApplicationException("No return type");
             }
         }
+        
+        /// <summary>
+        /// List user profile by a comma-delimited ID list input.
+        /// </summary>
+        /// <param name="mid"> The module ID. </param>
+        /// <param name="boardID"> The board ID. </param>
+        /// <param name="userIdsList"> A comma-delimited id list. </param>
+        /// <param name="useStyledNicks"> Return styled nicks string. </param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with profiles info. </returns>
+        public static DataTable User_ListProfilesByIdsList(int? mid, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                case "Npgsql": return Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                // case "oracle":  return orPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
+                // case "db2":  return db2Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
+                // case "other":  return othPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
-      public static DataTable User_ListProfilesByIdsList(int? mid, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
-              case "Npgsql": return Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
-              // case "oracle":  return orPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
-              // case "db2":  return db2Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
-              // case "other":  return othPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
-              default:
-                  throw new ApplicationException("No return type");
-          }
-      }
-
-      public static DataTable User_ListTodaysBirthdays(int? mid, object boardId, object useStyledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-              case "Npgsql": return Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-              // case "oracle":  return orPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-              // case "db2":  return db2Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-              // case "other":  return othPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-              default:
-                  throw new ApplicationException("No return type");
-
-          }
-      }
+        /// <summary>
+        /// Lists birthdays list for today.
+        /// </summary>
+        /// <param name="mid"> The module ID. </param>
+        /// <param name="boardId"> The board ID. </param>
+        /// <param name="useStyledNicks"> Return styled nicks string. </param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with today's birdays list. </returns>
+        public static DataTable User_ListTodaysBirthdays(int? mid, object boardId, object useStyledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
+                case "Npgsql": return Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
+                // case "oracle":  return orPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                // case "db2":  return db2Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                // case "other":  return othPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                default:
+                    throw new ApplicationException("No return type");
+            }
+        }
 
       public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
       {
@@ -2089,6 +2102,11 @@ namespace YAF.Classes.Data
 
             return listDestination;
         }
+        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
+        {
+            return forum_listall_sorted(mid, boardId, userId, null, false, 0);
+        }
+
         static public DataTable forum_listall_sorted(int? mid, object boardId, object userId)
         {
             if (!Config.LargeForumTree)
@@ -2121,12 +2139,6 @@ namespace YAF.Classes.Data
                 default:
                     throw new ApplicationException("No return type");
             }
-        }
-
-       
-        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
-        {
-            return forum_listall_sorted(mid, boardId, userId, null, false, 0);
         }
 
 

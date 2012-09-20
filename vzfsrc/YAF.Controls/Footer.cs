@@ -228,7 +228,8 @@ namespace YAF.Controls
 				footer.AppendFormat(@"<span id=""themecredit"" style=""color:#999999"">{0}</span>", themeCredit);
 				footer.Append("<br />");
 			}
-            switch (LegacyDb.DataEngineName(YafContext.Current.PageModuleID))
+		    string s = LegacyDb.DataEngineName(YafContext.Current.PageModuleID);
+            switch (s)
             {
                 case "System.Data.SqlClient":  
                 footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
@@ -258,7 +259,7 @@ namespace YAF.Controls
                 // case "db2":  
                 // case "other":  
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentNullException(s);
 
             }    
             
