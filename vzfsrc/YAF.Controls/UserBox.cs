@@ -490,7 +490,7 @@ namespace YAF.Controls
                     // DataTable dtt = LegacyDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows;
                     foreach (DataRow role in LegacyDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
-                        // LegacyDb.eventlog_create(this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
+                        // LegacyDb.eventlog_create(PageContext.PageModuleID,this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
                         if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0) continue;
 
                         string role1 = role["Name"].ToString();

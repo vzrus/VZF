@@ -8496,8 +8496,7 @@ namespace YAF.Classes.Data.Postgre
                 {
                     connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(runSql_InfoMessage);
                     sql = PostgreDBAccess.GetCommandTextReplaced(sql.Trim());
-
-                   var results = new System.Text.StringBuilder();
+                    var results = new System.Text.StringBuilder();
 
                    using (var cmd = new NpgsqlCommand(sql, connMan.OpenDBConnection(connectionString)))
                     {

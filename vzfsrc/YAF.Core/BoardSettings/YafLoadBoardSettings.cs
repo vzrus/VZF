@@ -101,7 +101,7 @@ namespace YAF.Core
     {
       DataTable dataTable;
 
-      using (dataTable = LegacyDb.registry_list((int?)YafContext.Current.PageModuleID))
+      using (dataTable = LegacyDb.registry_list(YafContext.Current.PageModuleID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)
@@ -110,7 +110,7 @@ namespace YAF.Core
         }
       }
 
-      using (dataTable = LegacyDb.registry_list(null, this._boardID))
+      using (dataTable = LegacyDb.registry_list(YafContext.Current.PageModuleID,null, this._boardID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)

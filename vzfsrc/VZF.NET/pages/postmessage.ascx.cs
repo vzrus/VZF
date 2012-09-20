@@ -628,8 +628,8 @@ namespace YAF.Pages
                 ////this.Attachments1.Visible = !this.PageContext.IsGuest;
 
                 // get topic and forum information
-                /*DataRow topicInfo = LegacyDb.topic_info(this.PageContext.PageTopicID);
-                                using (DataTable dt = LegacyDb.forum_list(this.PageContext.PageBoardID, this.PageContext.PageForumID))
+                /*DataRow topicInfo = LegacyDb.topic_info(YafContext.Current.PageModuleID,this.PageContext.PageTopicID);
+                                using (DataTable dt = LegacyDb.forum_list(YafContext.Current.PageModuleID,this.PageContext.PageBoardID, this.PageContext.PageForumID))
                                 {
                                         DataRow forumInfo = dt.Rows[0];
                                 }*/

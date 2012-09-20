@@ -1031,7 +1031,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(null, this.GetType().ToString(), x, 1);
+                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, 1);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }

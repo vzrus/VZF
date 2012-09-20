@@ -47,9 +47,10 @@ namespace YAF.Classes.Data
     { string dataEngine = string.Empty;
             string connectionString = string.Empty;
             int connBoardOrObject = 1; string namePattern = string.Empty;
+            return;
             CommonSqlDbAccess.GetConnectionData(connBoardOrObject, namePattern,out dataEngine, out connectionString);
-
-         /*   switch (dataEngine)
+        
+        /*   switch (dataEngine)
             {
                     // case "System.Data.SqlClient":  builder.RegisterType<MsSqlSrvDbAccess>().As<IDbAccess>().InstancePerDependency();
                     // builder.RegisterType<MsSqlSrvDbConnectionManager>().As<IDbConnectionManager>().InstancePerLifetimeScope();

@@ -328,7 +328,7 @@ namespace YAF.Pages
 
                 DataTable sigData = LegacyDb.user_getalbumsdata(PageContext.PageModuleID, this.PageContext.PageUserID, YafContext.Current.PageBoardID);
 
-                // int[] albumSize = LegacyDb.album_getstats(this.PageContext.PageUserID, null);
+                // int[] albumSize = LegacyDb.album_getstats(YafContext.Current.PageModuleID,this.PageContext.PageUserID, null);
                 var usrAlbumImagesAllowed = sigData.GetFirstRowColumnAsValue<int?>("UsrAlbumImages", null);
 
                 // Has the user uploaded maximum number of images?   

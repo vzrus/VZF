@@ -86,17 +86,17 @@ namespace YAF.Pages.Admin
       this.txtResult.Text = string.Empty;
       this.ResultHolder.Visible = true;
 
-    /*  using (var connMan = new MsSqlDbConnectionManager())
-      {
-        connMan.InfoMessage += this.connMan_InfoMessage;
-        string sql = this.txtQuery.Text.Trim();
+      /*  using (var connMan = new MsSqlDbConnectionManager())
+        {
+          connMan.InfoMessage += this.connMan_InfoMessage;
+          string sql = this.txtQuery.Text.Trim();
 
-        // connMan.DBConnection.FireInfoMessageEventOnUserErrors = true;
-        sql = sql.Replace("{databaseOwner}", Config.DatabaseOwner);
-        sql = sql.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
+          // connMan.DBConnection.FireInfoMessageEventOnUserErrors = true;
+          sql = sql.Replace("{databaseOwner}", Config.DatabaseOwner);
+          sql = sql.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
 
-        this.txtResult.Text = LegacyDb.db_runsql(sql, connMan, this.chkRunInTransaction.Checked);
-      } */
+          this.txtResult.Text = LegacyDb.db_runsql(YafContext.Current.PageModuleID, sql, connMan, this.chkRunInTransaction.Checked);
+        } */
       this.txtResult.Text = LegacyDb.db_runsql_new(PageContext.PageModuleID, this.txtQuery.Text.Trim(), this.chkRunInTransaction.Checked);
     }
 

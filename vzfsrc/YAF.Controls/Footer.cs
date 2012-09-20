@@ -240,13 +240,13 @@ namespace YAF.Controls
                     footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
                       "ICONS",
                       "POSTGRESQL_SMALL",
-                      YafForumInfo.GetURLToResource("images/postgresql_small.png")), "{0} PostgreSQL".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+                      YafForumInfo.GetURLToResource("images/postgresql_small.png")), " {0} PostgreSQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
                     break;
                 case "MySql.Data.MySqlClient":
                     footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
                       "ICONS",
                       "MYSQL_SMALL",
-                      YafForumInfo.GetURLToResource("images/mysql_small.png")), " {0} MySQL".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+                      YafForumInfo.GetURLToResource("images/mysql_small.png")), " {0} MySQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     footer.Append("<img src=\"{0}\" title=\"{1}\"  alt=\"{1}\"/>&nbsp;".FormatWith(this.PageContext.Get<ITheme>().GetItem(

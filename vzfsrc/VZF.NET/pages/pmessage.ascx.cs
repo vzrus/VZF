@@ -406,7 +406,7 @@ namespace YAF.Pages
                     {
                         // get quoted message
                         DataRow messagesRow =
-                            LegacyDb.message_listreporters(
+                            LegacyDb.message_listreporters(PageContext.PageModuleID,
                                 Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("r")).ToType<int>(),
                                 Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u")).ToType<int>()).GetFirstRow();
 

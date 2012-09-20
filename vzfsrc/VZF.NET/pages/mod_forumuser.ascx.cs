@@ -69,10 +69,10 @@ namespace YAF.Pages
             if (!this.PageContext.IsAdmin)
             {
                 // do not include access masks with this flags set
-                var flags = (int)AccessFlags.Flags.ModeratorAccess;
+                const int flags = (int)AccessFlags.Flags.ModeratorAccess;
 
                 // non-admins cannot assign moderation access masks
-                dt = LegacyDb.accessmask_list(mid: this.PageContext.PageBoardID, boardId: null, accessMaskID: flags);
+                dt = LegacyDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags);
             }
             else
             {

@@ -686,7 +686,7 @@ namespace YAF.Pages
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(this.PageContext.PageUserID, this, x);
+                LegacyDb.eventlog_create(PageContext.PageModuleiD,this.PageContext.PageUserID, this, x);
 
                 this.PageContext.AddLoadMessage(
                     this.PageContext.IsAdmin ? "{0}".FormatWith(x) : "An error occurred while searching.");

@@ -150,14 +150,14 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void btnReindex_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-     /* using (var connMan = new MsSqlDbConnectionManager())
-      {
-        connMan.InfoMessage += this.connMan_InfoMessage;
-        this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning();
-        LegacyDb.db_reindex(connMan);
-      } */
+        /* using (var connMan = new MsSqlDbConnectionManager())
+         {
+           connMan.InfoMessage += this.connMan_InfoMessage;
+           this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(YafContext.Current.PageModuleID);
+           LegacyDb.db_reindex(connMan);
+         } */
 
-      this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(PageContext.PageModuleID) + LegacyDb.db_reindex_new(PageContext.PageModuleID);
+        this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(PageContext.PageModuleID) + LegacyDb.db_reindex_new(PageContext.PageModuleID);
     }
 
     /// <summary>
