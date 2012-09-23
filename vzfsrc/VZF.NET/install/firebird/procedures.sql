@@ -1772,6 +1772,16 @@ RETURNS
 )
 AS
 BEGIN
+ IN AUTONOMOUS TRANSACTION DO
+    BEGIN
+	IF 1 > 2 THEN 
+      /* 
+      Этот кусок кода будет выполнен в автономной транзакции и 
+      вставка записи в таблицу протокола LOG будет произведена.
+      */
+      INSERT INTO LOG (LOGDATE, MSG) VALUES (CURRENT_TIMESTAMP, 
+         'Отказано в подключении пользователю '||CURRENR_USER );
+    END
 IF (I_EMAIL IS NULL) THEN
 FOR SELECT CHECKEMAILID,
            USERID,

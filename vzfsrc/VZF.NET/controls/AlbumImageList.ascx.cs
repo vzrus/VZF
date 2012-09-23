@@ -41,16 +41,7 @@ namespace YAF.Controls
     /// </summary>
     public partial class AlbumImageList : BaseUserControl
     {
-        #region Constants and Fields
-
-        /// <summary>
-        ///   The _attach group id.
-        /// </summary>
-        protected string _attachGroupID = string.Empty;
-
-        #endregion
-
-        #region Properties
+       #region Properties
 
         /// <summary>
         ///   Gets or sets the Album ID.
@@ -163,8 +154,6 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            this._attachGroupID = Guid.NewGuid().ToString().Substring(0, 5);
-
             if (this.UserID == this.PageContext.PageUserID)
             {
                 this.ltrTitleOnly.Visible = false;
@@ -220,12 +209,12 @@ namespace YAF.Controls
 
             // Create paged data source for the album image list
             var pds = new PagedDataSource
-            {
-                DataSource = dtAlbumImageList.DefaultView,
-                AllowPaging = true,
-                CurrentPageIndex = this.PagerTop.CurrentPageIndex,
-                PageSize = this.PagerTop.PageSize
-            };
+                          {
+                              DataSource = dtAlbumImageList.DefaultView,
+                              AllowPaging = true,
+                              CurrentPageIndex = this.PagerTop.CurrentPageIndex,
+                              PageSize = this.PagerTop.PageSize
+                          };
 
             this.AlbumImages.DataSource = pds;
             this.DataBind();

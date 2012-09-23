@@ -52,7 +52,7 @@ namespace YAF.Classes.Data
                 // case "db2": return Db2LegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
                 // case "other": return OtherLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -88,7 +88,7 @@ namespace YAF.Classes.Data
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -127,7 +127,7 @@ namespace YAF.Classes.Data
                 // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder);break;
                 // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder);break;
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         } 
         #endregion
@@ -155,7 +155,7 @@ namespace YAF.Classes.Data
                 // case "db2": return db2Postgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 // case "other": return othPostgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         
@@ -186,7 +186,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               // case "other": return othPostgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         
@@ -213,7 +213,7 @@ namespace YAF.Classes.Data
                 // case "db2": return db2Postgre.Db.active_listforum(connectionString,  forumID, styledNicks);
                 // case "other": return othPostgre.Db.active_listforum(connectionString,  forumID, styledNicks);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -240,7 +240,7 @@ namespace YAF.Classes.Data
                 // case "db2": return db2Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
                 // case "other": return othPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -266,7 +266,7 @@ namespace YAF.Classes.Data
                 // case "db2": return db2Postgre.Db.active_stats(connectionString, boardId);
                 // case "other": return othPostgre.Db.active_stats(connectionString, boardId);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         
@@ -290,7 +290,7 @@ namespace YAF.Classes.Data
                 // case "db2": db2Postgre.Db.activeaccess_reset(connectionString); break;
                 // case "other": othPostgre.Db.activeaccess_reset(connectionString); break;
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         
@@ -318,7 +318,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
                 // case "other":  return othPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -344,71 +344,90 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
                 // case "other":  return othPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
-      public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              case "Npgsql": return Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              // case "oracle":  return orPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              // case "other":  return othPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              default:
-                  throw new ApplicationException("No return type");
-
-          }
-      }
-
-      public static DataTable admin_pageaccesslist(int? mid, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks); 
-              case "Npgsql": return Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-              // case "oracle":  return orPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-              // case "db2":  return db2Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-              // case "other":  return othPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-              default:
-                  throw new ApplicationException("No return type");
-          }
-      }
-      public static DataTable adminpageaccess_list(int? mid, [CanBeNull] object userId, [CanBeNull] object pageName)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_list(connectionString, userId, pageName); 
-              case "Npgsql": return Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.adminpageaccess_list(connectionString, userId, pageName); 
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.adminpageaccess_list(connectionString, userId, pageName); 
-              // case "oracle":  return orPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
-              // case "db2":  return db2Postgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
-              // case "other":  return othPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
-              default:
-                  throw new ApplicationException("No return type");
-
-          }
-      }
-
+        
+        /// <summary>
+        /// A list to show admins for the board.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="boardId">The board ID.</param>
+        /// <param name="useStyledNicks">Return styled nicks string.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with list of a board admins. </returns>
+        public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                case "Npgsql": return Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                // case "oracle":  return orPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                // case "other":  return othPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// A list of page access for admins.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="boardId">The board ID.</param>
+        /// <param name="useStyledNicks">Return styled nicks string.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with list of pages access for admins. </returns>
+        public static DataTable admin_pageaccesslist(int? mid, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks); 
+                case "Npgsql": return Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                // case "oracle":  return orPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                // case "db2":  return db2Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                // case "other":  return othPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// The list of permissions for a page access.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="pageName">The page name to check for access.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with list page access for admins. </returns>
+        public static DataTable adminpageaccess_list(int? mid, [CanBeNull] object userId, [CanBeNull] object pageName)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_list(connectionString, userId, pageName);
+                case "Npgsql": return Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.adminpageaccess_list(connectionString, userId, pageName);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.adminpageaccess_list(connectionString, userId, pageName);
+                // case "oracle":  return orPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
+                // case "db2":  return db2Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
+                // case "other":  return othPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
       public static void adminpageaccess_delete(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
       {
@@ -426,7 +445,7 @@ namespace YAF.Classes.Data
               // case "db2":   db2Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
               // case "other":   othPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -447,7 +466,7 @@ namespace YAF.Classes.Data
               // case "db2":   db2Postgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
               // case "other":   othPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -467,7 +486,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.album_delete(connectionString, AlbumID); break;
               // case "other": othPostgre.Db.album_delete(connectionString, AlbumID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -488,7 +507,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
               // case "other": return othPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -509,7 +528,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.album_gettitle(connectionString, AlbumID);
               // case "other": return othPostgre.Db.album_gettitle(connectionString, AlbumID);
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -530,7 +549,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.album_image_delete(connectionString, ImageID); break;
               // case "other": othPostgre.Db.album_image_delete(connectionString, ImageID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -552,7 +571,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.album_image_download(connectionString, ImageID); break;
               // case "other": othPostgre.Db.album_image_download(connectionString, ImageID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -574,7 +593,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.album_images_by_user(connectionString, userID); 
               // case "other":  return othPostgre.Db.album_images_by_user(connectionString, userID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -595,7 +614,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
               // case "other":  return othPostgre.Db.album_image_list(connectionString, AlbumID, ImageID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
                   break;
 
           }
@@ -618,7 +637,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
               // case "other": othPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -639,7 +658,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
               // case "other":  return othPostgre.Db.album_list(connectionString, UserID,  AlbumID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -660,7 +679,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
               // case "other":  return othPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -681,7 +700,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
               // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static void attachment_download(int? mid, object attachmentID)
@@ -701,7 +720,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
               // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable attachment_list(int? mid, object messageID, object attachmentID, object boardId, object pageIndex, object pageSize)
@@ -721,7 +740,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
               // case "other":  return othPostgre.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -742,7 +761,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
               // case "other": othPostgre.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -763,7 +782,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.bannedip_delete(connectionString, ID); break;
               // case "other": othPostgre.Db.bannedip_delete(connectionString, ID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -784,7 +803,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
               // case "other":  return othPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static void bannedip_save(int? mid, object ID, object boardId, object Mask, string reason, int userID)
@@ -804,7 +823,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
               // case "other": othPostgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -825,7 +844,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
               // case "other": othPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -846,7 +865,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
               // case "other":  return othPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
 
       }
@@ -868,7 +887,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               // case "other": othPostgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
                   break;
 
           }
@@ -891,7 +910,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
               // case "other":  return othPostgre.Db.BBCodeList(connectionString, boardId, bbcodeID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
                   break;
           }
       }
@@ -913,7 +932,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
               // case "other":  return othPostgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -934,7 +953,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.board_delete(connectionString, boardId); break;
               // case "other": othPostgre.Db.board_delete(connectionString, boardId); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -955,7 +974,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_list(connectionString, boardId);
               // case "other":  return othPostgre.Db.board_list(connectionString, boardId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -976,7 +995,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
               // case "other":  return othPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1008,7 +1027,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.board_resync(connectionString, boardId); break;
               // case "other": othPostgre.Db.board_resync(connectionString, boardId); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -1029,7 +1048,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
               // case "other":  return othPostgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public DataRow board_stats(int? mid)
@@ -1053,7 +1072,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_stats(connectionString, boardId);
               // case "other":  return othPostgre.Db.board_stats(connectionString, boardId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1074,7 +1093,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.board_userstats(connectionString, boardId);
               // case "other":  return othPostgre.Db.board_userstats(connectionString, boardId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static string[] buddy_addrequest(int? mid, object FromUserID, object ToUserID)
@@ -1094,7 +1113,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
               // case "other":  return othPostgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1115,7 +1134,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
               // case "other":  return othPostgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1136,7 +1155,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
               // case "other":  return othPostgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1157,7 +1176,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.buddy_list(connectionString, FromUserID);
               // case "other":  return othPostgre.Db.buddy_list(connectionString, FromUserID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1178,7 +1197,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
               // case "other":  return othPostgre.Db.buddy_remove(connectionString, FromUserID, ToUserID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1199,7 +1218,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.category_delete(connectionString, CategoryID);
               // case "other":  return othPostgre.Db.category_delete(connectionString, CategoryID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1220,7 +1239,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.category_list(connectionString,  boardId, categoryID);
               // case "other":  return othPostgre.Db.category_list(connectionString,  boardId, categoryID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable category_listread(int? mid, object boardId, object userId, object categoryID)
@@ -1240,7 +1259,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.category_listread(connectionString, boardId, userId, categoryID);
               // case "other":  return othPostgre.Db.category_listread(connectionString, boardId, userId, categoryID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1261,7 +1280,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.category_simplelist(connectionString, startID, limit);
               // case "other":  return othPostgre.Db.category_simplelist(connectionString, startID, limit); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void category_save(int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
@@ -1281,7 +1300,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
               // case "other": othPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable checkemail_list(int? mid, object email)
@@ -1301,7 +1320,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.checkemail_list(connectionString, email);
               // case "other":  return othPostgre.Db.checkemail_list(connectionString, email); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void checkemail_save(int? mid, object userId, object hash, object email)
@@ -1321,7 +1340,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
               // case "other": othPostgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1342,7 +1361,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.checkemail_update(connectionString, hash);
               // case "other":  return othPostgre.Db.checkemail_update(connectionString, hash); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1363,7 +1382,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
               // case "other": othPostgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1384,7 +1403,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.choice_delete(connectionString, choiceID); break;
               // case "other": othPostgre.Db.choice_delete(connectionString, choiceID); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void choice_update(int? mid, object choiceID, object choice, object path, object mime)
@@ -1404,7 +1423,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
               // case "other": othPostgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void choice_vote(int? mid, object choiceID, object userId, object remoteIP)
@@ -1424,7 +1443,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
               // case "other": othPostgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1445,7 +1464,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.db_getstats_new(connectionString); break;
               // case "other": return othPostgre.Db.db_getstats_new(connectionString); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
         
       }
@@ -1467,7 +1486,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2_db_getstats_warning(); break;
               // case "other": return othPostgre.Db.db_getstats_warning(); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1488,7 +1507,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
               // case "other": return othPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
     /*  public static string db_getstats_warning()
@@ -1508,7 +1527,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2_db_getstats_warning(); break;
               // case "other": return othPostgre.Db.db_getstats_warning(); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
                   break;
 
           }
@@ -1537,7 +1556,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
               // case "other": return othPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1558,7 +1577,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.db_reindex_new(connectionString); break;
               // case "other": return othPostgre.Db.db_reindex_new(connectionString); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static string db_reindex_warning(int? mid)
@@ -1578,7 +1597,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.db_reindex_warning();
               // case "other":  return othPostgre.Db.db_reindex_warning(); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static string db_runsql_new(int? mid, string sql, bool useTransaction)
@@ -1598,7 +1617,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.db_runsql_new(connectionString, sql,  useTransaction);
               // case "other":  return othPostgre.Db.db_runsql_new(connectionString, sql, useTransaction); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public string  db_shrink_new(int? mid)
@@ -1618,7 +1637,7 @@ namespace YAF.Classes.Data
               // case "db2": return db2Postgre.Db.db_shrink(connectionString); break;
               // case "other": return othPostgre.Db.db_shrink(connectionString); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1639,7 +1658,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.db_shrink_warning(connectionStringe);
               // case "other":  return othPostgre.Db.db_shrink_warning(connectionString); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataSet ds_forumadmin(int? mid, object boardId)
@@ -1659,7 +1678,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.ds_forumadmin(connectionString, boardId);
               // case "other":  return othPostgre.Db.ds_forumadmin(connectionString, boardId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void eventlog_create(int? mid, object userId, object source, object description)
@@ -1684,7 +1703,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.eventlog_create(connectionString,  userId, source, description,type); break;
               // case "other": othPostgre.Db.eventlog_create(connectionString,  userId, source, description,type); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1720,7 +1739,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
               // case "other": othPostgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
 
           }
       }
@@ -1741,7 +1760,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
               // case "other": othPostgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable eventlog_list(int? mid, object boardId, [NotNull] object pageUserID, [NotNull] object maxRows, [NotNull] object maxDays, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object eventIDs)
@@ -1761,7 +1780,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
               // case "other":  return othPostgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable eventloggroupaccess_list(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId)
@@ -1781,7 +1800,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
               // case "other":  return othPostgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable group_eventlogaccesslist(int? mid, [NotNull] object boardId)
@@ -1801,7 +1820,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.group_eventlogaccesslist(connectionString, boardId);
               // case "other":  return othPostgre.Db.group_eventlogaccesslist(connectionString, boardId);
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void eventloggroupaccess_save(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
@@ -1821,7 +1840,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
               // case "other": othPostgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       static public void extension_delete(int? mid, object extensionId)
@@ -1841,7 +1860,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.extension_delete(connectionString, extensionId); break;
               // case "other": othPostgre.Db.extension_delete(connectionString, extensionId); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1862,7 +1881,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
               // case "other": othPostgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1883,7 +1902,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.extension_edit(connectionString, extensionId);
               // case "other":  return othPostgre.Db.extension_edit(connectionString, extensionId); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1911,7 +1930,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.extension_list(connectionString, boardId, extension);
               // case "other":  return othPostgre.Db.extension_list(connectionString, boardId, extension); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -1932,7 +1951,7 @@ namespace YAF.Classes.Data
               // case "db2": db2Postgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               // case "other": othPostgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static bool forum_delete(int? mid, object forumID)
@@ -1952,7 +1971,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.forum_delete(connectionString, forumID);
               // case "other":  return othPostgre.Db.forum_delete(connectionString, forumID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static bool forum_move(int? mid, [NotNull] object forumOldID, [NotNull] object forumNewID)
@@ -1972,7 +1991,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.forum_move(connectionString, forumOldID, forumNewID);
               // case "other":  return othPostgre.Db.forum_move(connectionString, forumOldID, forumNewID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
       public static DataTable forum_list(int? mid, object boardId, object forumID)
@@ -1992,7 +2011,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.forum_list(connectionString, boardId, forumID);
               // case "other":  return othPostgre.Db.forum_list(connectionString, boardId, forumID); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -2025,7 +2044,7 @@ namespace YAF.Classes.Data
               // case "db2":  return db2Postgre.Db.forum_listall(connectionString, boardId, userId, startAt);
               // case "other":  return othPostgre.Db.forum_listall(connectionString, boardId, userId, startAt); 
               default:
-                  throw new ApplicationException("No return type");
+                  throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
 
@@ -2059,7 +2078,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
                 // case "other":  return othPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
                     break;
             }
         }
@@ -2137,7 +2156,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
                 // case "other":  return othPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2246,7 +2265,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_listallMyModerated(connectionString, boardId, userId);
                 // case "other":  return othPostgre.Db.forum_listallMyModerated(connectionString, boardId, userId); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         public static DataTable forum_listpath(int? mid, object forumID)
@@ -2266,7 +2285,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_listpath(connectionString, forumID);
                 // case "other":  return othPostgre.Db.forum_listpath(connectionString, forumID); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
         public static DataTable forum_listread(int? mid, object boardID, object userID, object categoryID, object parentID, object useStyledNicks, bool findLastRead)
@@ -2286,7 +2305,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead);
                 // case "other":  return othPostgre.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2307,7 +2326,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
                 // case "other":  return othPostgre.Db.forum_moderatelist(connectionString, userId, boardId); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2328,7 +2347,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_moderators(connectionString, useStyledNicks);
                 // case "other":  return othPostgre.Db.forum_moderators(connectionString, useStyledNicks); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2359,7 +2378,7 @@ namespace YAF.Classes.Data
                 // case "db2":   db2Postgre.Db.forum_resync(connectionString, boardId, forumID); break;
                 // case "other":   othPostgre.Db.forum_resync(connectionString, boardId, forumID); break;
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2380,7 +2399,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
                 // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2401,7 +2420,7 @@ namespace YAF.Classes.Data
                 // case "db2":  return db2Postgre.Db.forum_save_parentschecker(connectionString, forumID, parentID);
                 // case "other":  return othPostgre.Db.forum_save_parentschecker(connectionString, forumID, parentID); 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -2422,7 +2441,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.forum_simplelist(connectionString, startID, limit);
                  // case "other":  return othPostgre.Db.forum_simplelist(connectionString, startID, limit); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable forumaccess_group(int? mid, object groupID)
@@ -2442,7 +2461,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.forumaccess_group(connectionString, groupID);
                  // case "other":  return othPostgre.Db.forumaccess_group(connectionString, groupID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable forumaccess_list(int? mid, object forumID)
@@ -2462,7 +2481,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.forumaccess_list(connectionString, forumID);
                  // case "other":  return othPostgre.Db.forumaccess_list(connectionString, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2483,7 +2502,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  // case "other":   othPostgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId)
@@ -2507,7 +2526,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.ForumListAll(connectionString, boardId, userId, startForumId);
                  // case "other":  return othPostgre.Db.ForumListAll(connectionString, boardId, userId, startForumId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2528,7 +2547,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
                  // case "other":  return othPostgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static string forumpage_validateversion(int? mid, int appVersion)
@@ -2548,7 +2567,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
                  // case "other":  return othPostgre.Db.forumpage_validateversion(connectionString, mid, appVersion); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2569,7 +2588,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
                  // case "other":  return othPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2590,7 +2609,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.group_delete(connectionString, groupID); break;
                  // case "other":   othPostgre.Db.group_delete(connectionString, groupID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable group_list(int? mid, object boardId, object groupID)
@@ -2610,7 +2629,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.group_list(connectionString, boardId, groupID);
                  // case "other":  return othPostgre.Db.group_list(connectionString, boardId, groupID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void group_medal_delete(int? mid, object groupID, object medalID)
@@ -2630,7 +2649,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
                  // case "other":   othPostgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable group_medal_list(int? mid, object groupID, object medalID)
@@ -2650,7 +2669,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.group_medal_list(connectionString, groupID, medalID);
                  // case "other":  return othPostgre.Db.group_medal_list(connectionString, groupID, medalID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void group_medal_save(int? mid, object groupID, object medalID, object message, object hide, object onlyRibbon, object sortOrder)
@@ -2670,7 +2689,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  // case "other":   othPostgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable group_member(int? mid, object boardId, object userId)
@@ -2690,7 +2709,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.group_member(connectionString, boardId, userId);
                  // case "other":  return othPostgre.Db.group_member(connectionString, boardId, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable group_rank_style(int? mid, object boardID)
@@ -2710,7 +2729,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.group_rank_style(connectionString, boardID);
                  // case "other":  return othPostgre.Db.group_rank_style(connectionString, boardID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                      break;
              }
          }
@@ -2732,7 +2751,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
                  // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void mail_create(int? mid, object @from, object fromName, object to, object toName, object subject, object body, object bodyHtml)
@@ -2752,7 +2771,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  // case "other":   othPostgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void mail_createwatch(int? mid, object topicID, object @from, object fromName, object subject, object body, object bodyHtml, object userId)
@@ -2772,7 +2791,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2_mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  // case "other":   othPostgre.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void mail_delete(int? mid, object mailID)
@@ -2792,7 +2811,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2_mail_delete(connectionString, mailID); break;
                  // case "other":   othPostgre.Db.mail_delete(connectionString, mailID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static IEnumerable<TypedMailList> MailList(int? mid, long processId)
@@ -2812,7 +2831,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.MailList(connectionString, processId);
                  // case "other":  return othPostgre.Db.MailList(connectionString, processId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2854,7 +2873,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                  // case "other":   othPostgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -2880,7 +2899,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.medal_list(connectionString, null, medalID, null);
                  // case "other":  return othPostgre.Db.medal_list(connectionString, null, medalID, null); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
              
@@ -2909,7 +2928,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.medal_list(connectionString, boardId, null, category);
                  // case "other":  return othPostgre.Db.medal_list(connectionString, boardId, null, category); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -2940,7 +2959,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.medal_listusers(connectionString, medalID);
                  // case "other":  return othPostgre.Db.medal_listusers(connectionString, medalID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -2962,7 +2981,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
                  // case "other":   othPostgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public bool medal_save(int? mid, object boardId, object medalID, object name, object description, object message, object category, object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth, object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
@@ -2982,7 +3001,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
                  // case "other":  return othPostgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3003,7 +3022,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
                  // case "other":  return othPostgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3024,7 +3043,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_approve(connectionString, messageID); break;
                  // case "other":   othPostgre.Db.message_approve(connectionString, messageID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public void message_delete(int? mid, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
@@ -3049,7 +3068,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  // case "other":   othPostgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable message_findunread(int? mid, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
@@ -3069,7 +3088,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
                  // case "other":  return othPostgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3090,7 +3109,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_getRepliesList(connectionString, messageID);
                  // case "other":  return othPostgre.Db.message_getRepliesList(connectionString, messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3111,7 +3130,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_GetTextByIds(connectionString, messageIDs);
                  // case "other":  return othPostgre.Db.message_GetTextByIds(connectionString, messageIDs); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3132,7 +3151,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_GetThanks(connectionString, messageID);
                  // case "other":  return othPostgre.Db.message_GetThanks(connectionString, messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3153,7 +3172,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_list(connectionString, messageID);
                  // case "other":  return othPostgre.Db.message_list(connectionString, messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3174,7 +3193,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_listreported(connectionString, forumID);
                  // case "other":  return othPostgre.Db.message_listreported(connectionString, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3207,7 +3226,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_listreporters(connectionString, messageID, userID);
                  // case "other":  return othPostgre.Db.message_listreporters(connectionString, messageID, userID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void message_move(int? mid, object messageID, object moveToTopic, bool moveAll)
@@ -3227,7 +3246,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  // case "other":   othPostgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public string message_RemoveThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
@@ -3247,7 +3266,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
                  // case "other":  return othPostgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3268,7 +3287,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  // case "other":   othPostgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void message_reportcopyover(int? mid, object messageID)
@@ -3288,7 +3307,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_reportcopyover(connectionString, messageID); break;
                  // case "other":   othPostgre.Db.message_reportcopyover(connectionString, messageID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void message_reportresolve(int? mid, object messageFlag, object messageID, object userId)
@@ -3308,7 +3327,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  // case "other":   othPostgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public bool message_save(int? mid, [NotNull] object topicId, [NotNull] object userId, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags, ref long messageId)
@@ -3328,7 +3347,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
                  // case "other":  return othPostgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3349,7 +3368,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_secdata(connectionString, MessageID, pageUserId);
                  // case "other":  return othPostgre.Db.message_secdata(connectionString, MessageID, pageUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3370,7 +3389,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_simplelist(connectionString, StartID, Limit);
                  // case "other":  return othPostgre.Db.message_simplelist(connectionString, StartID, Limit); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3391,7 +3410,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_ThanksNumber(connectionString, messageID);
                  // case "other":  return othPostgre.Db.message_ThanksNumber(connectionString, messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3412,7 +3431,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.message_unapproved(connectionString, forumID);
                  // case "other":  return othPostgre.Db.message_unapproved(connectionString, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3434,7 +3453,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.message_update(connectionString, messageID, priority, message, description, status,styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
                  // case "other":   othPostgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3455,7 +3474,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
                  // case "other":  return othPostgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3476,7 +3495,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.messagehistory_list(connectionString, messageID, daysToClean);
                  // case "other":  return othPostgre.Db.messagehistory_list(connectionString, messageID, daysToClean); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3498,7 +3517,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.MessageList(connectionString, messageID);
                  // case "other":  return othPostgre.Db.MessageList(connectionString, messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3519,7 +3538,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.moderators_team_list( connectionString,  useStyledNicks);
                  // case "other":  return othPostgre.Db.moderators_team_list( connectionString,  useStyledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void Readtopic_AddOrUpdate(int? mid, [NotNull] object userID, [NotNull] object topicID)
@@ -3539,7 +3558,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  // case "other":   othPostgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3560,7 +3579,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.Readtopic_delete(connectionString, trackingID); break;
                  // case "other":   othPostgre.Db.Readtopic_delete(connectionString, trackingID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                      break;
              }
          } */
@@ -3600,7 +3619,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.User_LastRead( connectionString,  userID);
                  // case "other":  return othPostgre.Db.User_LastRead( connectionString,  userID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DateTime? Readtopic_lastread(int? mid, [NotNull] object userID, [NotNull] object topicID)
@@ -3620,7 +3639,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.Readtopic_lastread(connectionString, userID, topicID);
                  // case "other":  return othPostgre.Db.Readtopic_lastread(connectionString, userID, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void ReadForum_AddOrUpdate(int? mid, [NotNull] object userID, [NotNull] object forumID)
@@ -3640,7 +3659,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  // case "other":   othPostgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          /* public static void ReadForum_delete([NotNull] object trackingID)
@@ -3660,7 +3679,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.ReadForum_delete(connectionString, trackingID); break;
                  // case "other":   othPostgre.Db.ReadForum_delete(connectionString, trackingID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                      break;
              }
          } */
@@ -3682,7 +3701,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.ReadForum_lastread(connectionString,userID, forumID);
                  // case "other":  return othPostgre.Db.ReadForum_lastread(connectionString,userID, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                    
              }
          }
@@ -3703,7 +3722,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
                  // case "other":   othPostgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3724,7 +3743,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
                  // case "other":  return othPostgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3746,7 +3765,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  // case "other":   othPostgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3767,7 +3786,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  // case "other":   othPostgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public IEnumerable<TypedNntpForum> NntpForumList(int? mid, int boardId, int? minutes, int? nntpForumID, bool? active)
@@ -3787,7 +3806,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
                  // case "other":  return othPostgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3808,7 +3827,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
                  // case "other":   othPostgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3829,7 +3848,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
                  // case "other":  return othPostgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3850,7 +3869,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  // case "other":   othPostgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3871,7 +3890,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.nntptopic_list(connectionString, thread);
                  // case "other":  return othPostgre.Db.nntptopic_list(connectionString, thread); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3892,7 +3911,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  // case "other":   othPostgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataRow pageload(int? mid, object sessionID, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryID, object forumID, object topicID, object messageID, object isCrawler, object isMobileDevice, object donttrack)
@@ -3912,7 +3931,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
                  // case "other":  return othPostgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -3933,7 +3952,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pmessage_archive(connectionString, userPMessageID); break;
                  // case "other":   othPostgre.Db.pmessage_archive(connectionString, userPMessageID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -3964,7 +3983,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  // case "other":   othPostgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable pmessage_info(int? mid)
@@ -3984,7 +4003,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pmessage_info(connectionString);
                  // case "other":  return othPostgre.Db.pmessage_info(connectionString); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4022,7 +4041,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
                  // case "other":  return othPostgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4043,7 +4062,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pmessage_markread(connectionString, userPMessageID); break;
                  // case "other":   othPostgre.Db.pmessage_markread(connectionString, userPMessageID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void pmessage_prune(int? mid, object daysRead, object daysUnread)
@@ -4063,7 +4082,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  // case "other":   othPostgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void pmessage_save(int? mid, object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
@@ -4083,7 +4102,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  // case "other":   othPostgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void poll_remove(int? mid, object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
@@ -4103,7 +4122,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  // case "other":   othPostgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int? poll_save(int? mid, List<PollSaveList> pollList)
@@ -4123,7 +4142,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.poll_save(connectionString, pollList);
                  // case "other":  return othPostgre.Db.poll_save(connectionString, pollList); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4144,7 +4163,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.poll_stats(connectionString, pollId);
                  // case "other":  return othPostgre.Db.poll_stats(connectionString, pollId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4165,7 +4184,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
                  // case "other":  return othPostgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4186,7 +4205,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  // case "other":   othPostgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable pollgroup_stats(int? mid, int? pollGroupId)
@@ -4206,7 +4225,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pollgroup_stats(connectionString, pollGroupId);
                  // case "other":  return othPostgre.Db.pollgroup_stats(connectionString, pollGroupId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4227,7 +4246,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  // case "other":   othPostgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable pollgroup_votecheck(int? mid, object pollGroupId, object userId, object remoteIp)
@@ -4247,7 +4266,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
                  // case "other":  return othPostgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4268,7 +4287,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.PollGroupList(connectionString, userID, forumId, boardId);
                  // case "other":  return othPostgre.Db.PollGroupList(connectionString, userID, forumId, boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4290,7 +4309,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
                  // case "other":  return othPostgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4312,7 +4331,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
                  // case "other":  return othPostgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4334,7 +4353,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
                  // case "other":  return othPostgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4355,7 +4374,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.post_list_reverse10(connectionString, topicID);
                  // case "other":  return othPostgre.Db.post_list_reverse10(connectionString, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4376,7 +4395,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.rank_delete(connectionString, rankID); break;
                  // case "other":   othPostgre.Db.rank_delete(connectionString, rankID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable rank_list(int? mid, object boardId, object rankID)
@@ -4396,7 +4415,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.rank_list(connectionString, boardId, rankID);
                  // case "other":  return othPostgre.Db.rank_list(connectionString, boardId, rankID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4417,7 +4436,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  // case "other":   othPostgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                     
              }
          }
@@ -4438,7 +4457,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
                  // case "other":  return othPostgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4481,7 +4500,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.registry_list(connectionString, name,  boardId);
                  // case "other":  return othPostgre.Db.registry_list(connectionString, name,  boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                     
              }
 
@@ -4518,7 +4537,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.registry_save(connectionString, name, value, boardId); break;
                  // case "other":   othPostgre.Db.registry_save(connectionString, name, value, boardId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void replace_words_delete(int? mid, object id)
@@ -4538,7 +4557,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.replace_words_delete(connectionString, id); break;
                  // case "other":   othPostgre.Db.replace_words_delete(connectionString, id); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable replace_words_list(int? mid, object boardId, object id)
@@ -4558,7 +4577,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.replace_words_list(connectionString, boardId, id);
                  // case "other":  return othPostgre.Db.replace_words_list(connectionString, boardId, id); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4579,7 +4598,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  // case "other":   othPostgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable rss_topic_latest(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
@@ -4599,7 +4618,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
                  // case "other":  return othPostgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4624,7 +4643,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
                  // case "other":  return othPostgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4645,7 +4664,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                  // case "other":   othPostgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
        
@@ -4666,7 +4685,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.shoutbox_clearmessages(connectionString, boardId);
                  // case "other":  return othPostgre.Db.shoutbox_clearmessages(connectionString, boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4687,7 +4706,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
                  // case "other":  return othPostgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4708,7 +4727,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
                  // case "other":  return othPostgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4729,7 +4748,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.smiley_delete(connectionString, smileyID); break;
                  // case "other":   othPostgre.Db.smiley_delete(connectionString, smileyID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable smiley_list(int? mid, object boardId, object smileyID)
@@ -4749,7 +4768,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.smiley_list(connectionString, boardId, smileyID);
                  // case "other":  return othPostgre.Db.smiley_list(connectionString, boardId, smileyID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4770,7 +4789,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.smiley_listunique(connectionString, boardId);
                  // case "other":  return othPostgre.Db.smiley_listunique(connectionString, boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4791,7 +4810,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  // case "other":   othPostgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void smiley_save(int? mid, object smileyID, object boardId, object code, object icon, object emoticon, object sortOrder, object replace)
@@ -4811,7 +4830,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  // case "other":   othPostgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public IEnumerable<TypedSmileyList> SmileyList(int? mid, int boardId, int? smileyID)
@@ -4831,7 +4850,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.SmileyList(connectionString, boardId, smileyID);
                  // case "other":  return othPostgre.Db.SmileyList(connectionString, boardId, smileyID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4852,7 +4871,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.system_deleteinstallobjects(connectionString); break;
                  // case "other":   othPostgre.Db.system_deleteinstallobjects(connectionString); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void system_initialize(int? mid, string forumName, string timeZone, string culture, string languageFile, string forumEmail, string smtpServer, string userName, string userEmail, object providerUserKey, string rolePrefix)
@@ -4872,7 +4891,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  // case "other":   othPostgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void system_initialize_executescripts(int? mid, string script, string scriptFile, bool useTransactions)
@@ -4892,7 +4911,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  // case "other":   othPostgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void system_initialize_fixaccess(int? mid, bool bGrant)
@@ -4912,7 +4931,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                  // case "other":   othPostgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable system_list(int? mid)
@@ -4932,7 +4951,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.system_list(connectionString);
                  // case "other":  return othPostgre.Db.system_list(connectionString); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4953,7 +4972,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.system_updateversion(connectionString, version, name); break;
                  // case "other":   othPostgre.Db.system_updateversion(connectionString, version, name); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static DataTable topic_active(int? mid, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull] bool findLastRead)
@@ -4974,7 +4993,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  // case "other":  return othPostgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -4996,7 +5015,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
                  // case "other":  return othPostgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5018,7 +5037,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  // case "other":  return othPostgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5039,7 +5058,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  // case "other":  return othPostgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5062,7 +5081,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  // case "other":  return othPostgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5084,7 +5103,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
                  // case "other":   othPostgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -5105,7 +5124,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
                  // case "other":  return othPostgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5126,7 +5145,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.TopicStatus_List(connectionString,  topicStatusID);
                  // case "other":  return othPostgre.Db.TopicStatus_List(connectionString,  topicStatusID);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void TopicStatus_Save(int? mid, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
@@ -5146,7 +5165,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  // case "other":   othPostgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public long topic_create_by_message(int? mid, object messageID, object forumId, object newTopicSubj)
@@ -5166,7 +5185,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
                  // case "other":  return othPostgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5192,7 +5211,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                  // case "other":   othPostgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void topic_favorite_add(int? mid, object userID, object topicID)
@@ -5212,7 +5231,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
                  // case "other":   othPostgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -5233,7 +5252,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  // case "other":  return othPostgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5254,7 +5273,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_favorite_list(connectionString, userID);
                  // case "other":  return othPostgre.Db.topic_favorite_list(connectionString, userID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5275,7 +5294,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                  // case "other":   othPostgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -5296,7 +5315,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_findduplicate(connectionString, topicName);
                  // case "other":  return othPostgre.Db.topic_findduplicate(connectionString, topicName); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5317,7 +5336,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_findnext(connectionString, topicID);
                  // case "other":  return othPostgre.Db.topic_findnext(connectionString, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5338,7 +5357,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_findprev(connectionString, topicID);
                  // case "other":  return othPostgre.Db.topic_findprev(connectionString, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5359,7 +5378,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_info(connectionString, topicID);
                  // case "other":  return othPostgre.Db.topic_info(connectionString, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5380,7 +5399,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
                  // case "other":  return othPostgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5401,7 +5420,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
                  // case "other":  return othPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5423,7 +5442,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
                  // case "other":  return othPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5444,7 +5463,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_lock(connectionString, topicID, locked); break;
                  // case "other":   othPostgre.Db.topic_lock(connectionString, topicID, locked); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void topic_move(int? mid, object topicID, object forumID, object showMoved, object linkDays)
@@ -5464,7 +5483,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  // case "other":   othPostgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int topic_prune(int? mid, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
@@ -5484,7 +5503,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
                  // case "other":  return othPostgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5505,7 +5524,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID);
                  // case "other":  return othPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5526,7 +5545,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.topic_simplelist(connectionString, StartID, Limit);
                  // case "other":  return othPostgre.Db.topic_simplelist(connectionString, StartID, Limit); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5547,7 +5566,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
                  // case "other":   othPostgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int  TopicFavoriteCount(int? mid, int topicId)
@@ -5567,7 +5586,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.TopicFavoriteCount(connectionString, topicId);
                  // case "other":  return othPostgre.Db.TopicFavoriteCount(connectionString, topicId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5589,7 +5608,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  // case "other":   othPostgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable user_accessmasks(int? mid, object boardId, object userId)
@@ -5609,7 +5628,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_accessmasks(connectionString, boardId, userId);
                  // case "other":  return othPostgre.Db.user_accessmasks(connectionString, boardId, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5630,7 +5649,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
                  // case "other":  return othPostgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5651,7 +5670,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  // case "other":   othPostgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_addpoints(int? mid, object userId, object forumUserId, object points)
@@ -5671,7 +5690,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                  // case "other":   othPostgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_adminsave
@@ -5692,7 +5711,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  // case "other":   othPostgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_approve(int? mid, object userId)
@@ -5712,7 +5731,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_approve(connectionString, userId); break;
                  // case "other":   othPostgre.Db.user_approve(connectionString, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -5733,7 +5752,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_approveall(connectionString, boardId); break;
                  // case "other":   othPostgre.Db.user_approveall(connectionString, boardId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int user_aspnet(int? mid, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
@@ -5753,7 +5772,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
                  // case "other":  return othPostgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5774,7 +5793,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_avatarimage(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_avatarimage(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5795,7 +5814,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
                  // case "other":  return othPostgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5816,7 +5835,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_delete(connectionString, userId); break;
                  // case "other":   othPostgre.Db.user_delete(connectionString, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_deleteavatar(int? mid, object userId)
@@ -5836,7 +5855,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_deleteavatar(connectionString, userId); break;
                  // case "other":   othPostgre.Db.user_deleteavatar(connectionString, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_deleteold(int? mid, object boardId, object days)
@@ -5856,7 +5875,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_deleteold(connectionString, boardId, days); break;
                  // case "other":   othPostgre.Db.user_deleteold(connectionString, boardId, days); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -5877,7 +5896,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_emails(connectionString, boardId, groupID);
                  // case "other":  return othPostgre.Db.user_emails(connectionString, boardId, groupID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5899,7 +5918,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_get(connectionString, boardId, providerUserKey);
                  // case "other":  return othPostgre.Db.user_get(connectionString, boardId, providerUserKey); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5920,7 +5939,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_getalbumsdata(connectionString, userID, boardID);
                  // case "other":  return othPostgre.Db.user_getalbumsdata(connectionString, userID, boardID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5941,7 +5960,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_getpoints(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_getpoints(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                    
              }
 
@@ -5963,7 +5982,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_user_getsignature(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_user_getsignature(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -5984,7 +6003,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_getsignaturedata(connectionString, userID, boardID);
                  // case "other":  return othPostgre.Db.user_getsignaturedata(connectionString, userID, boardID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                     
              }
 
@@ -6006,7 +6025,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_getthanks_from(connectionString, userID, pageUserId);
                  // case "other":  return othPostgre.Db.user_getthanks_from(connectionString, userID, pageUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int[] user_getthanks_to(int? mid, object userID, object pageUserId)
@@ -6026,7 +6045,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_getthanks_to(connectionString, userID, pageUserId);
                  // case "other":  return othPostgre.Db.user_getthanks_to(connectionString, userID, pageUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int? user_guest(int? mid, object boardId)
@@ -6046,7 +6065,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_guest(connectionString, boardId);
                  // case "other":  return othPostgre.Db.user_guest(connectionString, boardId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable user_ignoredlist(int? mid, object userId)
@@ -6066,7 +6085,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_ignoredlist(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_ignoredlist(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6087,7 +6106,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_isuserignored(connectionString, userId, ignoredUserId);
                  // case "other":  return othPostgre.Db.user_isuserignored(connectionString, userId, ignoredUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataRow user_lazydata(int? mid, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
@@ -6107,7 +6126,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
                  // case "other":  return othPostgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6188,7 +6207,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                  // case "other":  return othPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6209,7 +6228,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_listmedals(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_listmedals(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6230,7 +6249,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
                  // case "other":  return othPostgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6252,7 +6271,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_medal_delete(connectionString, userId, medalID); break;
                  // case "other":   othPostgre.Db.user_medal_delete(connectionString, userId, medalID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable user_medal_list(int? mid, object userId, object medalID)
@@ -6272,7 +6291,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_medal_list(connectionString, userId, medalID);
                  // case "other":  return othPostgre.Db.user_medal_list(connectionString, userId, medalID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6294,7 +6313,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  // case "other":   othPostgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_migrate(int? mid, object userId, object providerUserKey, object updateProvider)
@@ -6314,7 +6333,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  // case "other":   othPostgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public int user_nntp(int? mid, object boardId, object userName, object email, int? timeZone)
@@ -6334,7 +6353,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
                  // case "other":  return othPostgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable user_pmcount(int? mid, object userId)
@@ -6354,7 +6373,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_pmcount(connectionString, userId);
                  // case "other":  return othPostgre.Db.user_pmcount(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6375,7 +6394,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_recoverpassword(connectionString, boardId, userName, email);
                  // case "other":  return othPostgre.Db.user_recoverpassword(connectionString, boardId, userName, email); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6396,7 +6415,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
                  // case "other":  return othPostgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6417,7 +6436,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  // case "other":   othPostgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -6438,7 +6457,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                  // case "other":   othPostgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_removepointsByTopicID(int? mid, object topicID, object points)
@@ -6458,7 +6477,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
                  // case "other":   othPostgre.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public bool  user_RepliedTopic(int? mid, [NotNull] object messageId, [NotNull] object userId)
@@ -6478,7 +6497,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_RepliedTopic(connectionString, messageId, userId);
                  // case "other":  return othPostgre.Db.user_RepliedTopic(connectionString, messageId, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6499,7 +6518,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  // case "other":   othPostgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_saveavatar(int? mid, object userId, object avatar, Stream stream, object avatarImageType)
@@ -6519,7 +6538,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  // case "other":   othPostgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_savenotification(int? mid, object userId, object pmNotification, object autoWatchTopics, object notificationType, object dailyDigest)
@@ -6539,7 +6558,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  // case "other":   othPostgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_savepassword(int? mid, object userId, object password)
@@ -6559,7 +6578,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_savepassword(connectionString, userId, password); break;
                  // case "other":   othPostgre.Db.user_savepassword(connectionString, userId, password); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_savesignature(int? mid, object userId, object signature)
@@ -6579,7 +6598,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_savesignature(connectionString, userId, signature); break;
                  // case "other":   othPostgre.Db.user_savesignature(connectionString, userId, signature); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_setinfo(int? mid, int boardId, MembershipUser user)
@@ -6599,7 +6618,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_setinfo(connectionString, boardId, user); break;
                  // case "other":   othPostgre.Db.user_setinfo(connectionString, boardId, user); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_setnotdirty(int? mid, int boardId, int userId)
@@ -6619,7 +6638,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
                  // case "other":   othPostgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_setpoints(int? mid, object userId, object points)
@@ -6639,7 +6658,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_setpoints(connectionString, userId, points); break;
                  // case "other":   othPostgre.Db.user_setpoints(connectionString, userId, points); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          public static void user_setrole(int? mid, int boardId, object providerUserKey, object role)
@@ -6659,7 +6678,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  // case "other":   othPostgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -6680,7 +6699,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_simplelist(connectionString, StartID, Limit);
                  // case "other":  return othPostgre.Db.user_simplelist(connectionString, StartID, Limit); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6701,7 +6720,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_suspend(connectionString, userId, suspend); break;
                  // case "other":   othPostgre.Db.user_suspend(connectionString, userId, suspend); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -6722,7 +6741,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
                  // case "other":   othPostgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser);break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
 
@@ -6743,7 +6762,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_ThankedMessage(connectionString, messageId, userId);
                  // case "other":  return othPostgre.Db.user_ThankedMessage(connectionString, messageId, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6764,7 +6783,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_ThankFromCount(connectionString,  userId);
                  // case "other":  return othPostgre.Db.user_ThankFromCount(connectionString,  userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6785,7 +6804,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.user_viewallthanks(connectionString, UserID, pageUserId);
                  // case "other":  return othPostgre.Db.user_viewallthanks(connectionString, UserID, pageUserId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6810,7 +6829,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
                  // case "other":  return othPostgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6831,7 +6850,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.userforum_delete(connectionString, userId, forumID); break;
                  // case "other":   othPostgre.Db.userforum_delete(connectionString, userId, forumID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable userforum_list(int? mid, object userId, object forumID)
@@ -6851,7 +6870,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.userforum_list(connectionString, userId, forumID);
                  // case "other":  return othPostgre.Db.userforum_list(connectionString, userId, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6872,7 +6891,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  // case "other":   othPostgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
                     
              }
          }
@@ -6893,7 +6912,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.usergroup_list(connectionString, userId);
                  // case "other":  return othPostgre.Db.usergroup_list(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6914,7 +6933,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                  // case "other":   othPostgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public IEnumerable<TypedUserList> UserList(int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
@@ -6934,7 +6953,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
                  // case "other":  return othPostgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6955,7 +6974,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.watchforum_add(connectionString, userId, forumID); break;
                  // case "other":   othPostgre.Db.watchforum_add(connectionString, userId, forumID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable watchforum_check(int? mid, object userId, object forumID)
@@ -6975,7 +6994,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.watchforum_check(connectionString, userId, forumID);
                  // case "other":  return othPostgre.Db.watchforum_check(connectionString, userId, forumID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -6997,7 +7016,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.watchforum_delete(connectionString, watchForumID); break;
                  // case "other":   othPostgre.Db.watchforum_delete(connectionString, watchForumID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable watchforum_list(int? mid, object userId)
@@ -7017,7 +7036,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.watchforum_list(connectionString, userId);
                  // case "other":  return othPostgre.Db.watchforum_list(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -7038,7 +7057,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.watchtopic_add(connectionString, userId, topicID); break;
                  // case "other":   othPostgre.Db.watchtopic_add(connectionString, userId, topicID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable watchtopic_check(int? mid, object userId, object topicID)
@@ -7058,7 +7077,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.watchtopic_check(connectionString, userId, topicID);
                  // case "other":  return othPostgre.Db.watchtopic_check(connectionString, userId, topicID); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -7079,7 +7098,7 @@ namespace YAF.Classes.Data
                  // case "db2":   db2Postgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
                  // case "other":   othPostgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
          static public DataTable watchtopic_list(int? mid, object userId)
@@ -7099,7 +7118,7 @@ namespace YAF.Classes.Data
                  // case "db2":  return db2Postgre.Db.watchtopic_list(connectionString, userId);
                  // case "other":  return othPostgre.Db.watchtopic_list(connectionString, userId); 
                  default:
-                     throw new ApplicationException("No return type");
+                     throw new ArgumentOutOfRangeException(dataEngine);
              }
 
          }
@@ -7221,7 +7240,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.fullTextScript;
                     // case "other":  return othPostgre.Db.fullTextScript; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
                 
             }
         }
@@ -7257,7 +7276,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.ProviderAssemblyName;
                     // case "other":  return othPostgre.Db.ProviderAssemblyName; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7281,7 +7300,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.PasswordPlaceholderVisible;
                     // case "other":  return othPostgre.Db.PasswordPlaceholderVisible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7307,7 +7326,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter1_Name;
                     // case "other":  return othPostgre.Db.Parameter1_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7331,7 +7350,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter1_Value;
                     // case "other":  return othPostgre.Db.Parameter1_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7355,7 +7374,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter1_Visible;
                     // case "other":  return othPostgre.Db.Parameter1_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7381,7 +7400,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter2_Name;
                     // case "other":  return othPostgre.Db.Parameter2_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7405,7 +7424,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter2_Value;
                     // case "other":  return othPostgre.Db.Parameter2_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7429,7 +7448,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter2_Visible;
                     // case "other":  return othPostgre.Db.Parameter2_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7455,7 +7474,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter3_Name;
                     // case "other":  return othPostgre.Db.Parameter3_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7479,7 +7498,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter3_Value;
                     // case "other":  return othPostgre.Db.Parameter3_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7503,7 +7522,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter3_Visible;
                     // case "other":  return othPostgre.Db.Parameter3_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7529,7 +7548,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter4_Name;
                     // case "other":  return othPostgre.Db.Parameter4_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7553,7 +7572,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter4_Value;
                     // case "other":  return othPostgre.Db.Parameter4_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7577,7 +7596,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter4_Visible;
                     // case "other":  return othPostgre.Db.Parameter4_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7603,7 +7622,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter5_Name;
                     // case "other":  return othPostgre.Db.Parameter5_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7627,7 +7646,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter5_Value;
                     // case "other":  return othPostgre.Db.Parameter5_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7651,7 +7670,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter5_Visible;
                     // case "other":  return othPostgre.Db.Parameter5_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7677,7 +7696,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter6_Name;
                     // case "other":  return othPostgre.Db.Parameter6_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7701,7 +7720,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter6_Value;
                     // case "other":  return othPostgre.Db.Parameter6_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7725,7 +7744,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter6_Visible;
                     // case "other":  return othPostgre.Db.Parameter6_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7751,7 +7770,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter7_Name;
                     // case "other":  return othPostgre.Db.Parameter7_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7775,7 +7794,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter7_Value;
                     // case "other":  return othPostgre.Db.Parameter7_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7799,7 +7818,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter7_Visible;
                     // case "other":  return othPostgre.Db.Parameter7_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7825,7 +7844,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter8_Name;
                     // case "other":  return othPostgre.Db.Parameter8_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7849,7 +7868,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter8_Value;
                     // case "other":  return othPostgre.Db.Parameter8_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7873,7 +7892,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter8_Visible;
                     // case "other":  return othPostgre.Db.Parameter8_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7899,7 +7918,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter9_Name;
                     // case "other":  return othPostgre.Db.Parameter9_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7923,7 +7942,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter9_Value;
                     // case "other":  return othPostgre.Db.Parameter9_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7947,7 +7966,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter9_Visible;
                     // case "other":  return othPostgre.Db.Parameter9_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7973,7 +7992,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter10_Name;
                     // case "other":  return othPostgre.Db.Parameter10_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -7997,7 +8016,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter10_Value;
                     // case "other":  return othPostgre.Db.Parameter10_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8021,7 +8040,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter10_Visible;
                     // case "other":  return othPostgre.Db.Parameter10_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8050,7 +8069,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter11_Name;
                     // case "other":  return othPostgre.Db.Parameter11_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8074,7 +8093,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter11_Value;
                     // case "other":  return othPostgre.Db.Parameter11_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8098,7 +8117,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter11_Visible;
                     // case "other":  return othPostgre.Db.Parameter11_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8122,7 +8141,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter12_Name;
                     // case "other":  return othPostgre.Db.Parameter12_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8146,7 +8165,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter12_Value;
                     // case "other":  return othPostgre.Db.Parameter12_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8170,7 +8189,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter12_Visible;
                     // case "other":  return othPostgre.Db.Parameter12_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8194,7 +8213,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter13_Name;
                     // case "other":  return othPostgre.Db.Parameter13_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8218,7 +8237,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter13_Value;
                     // case "other":  return othPostgre.Db.Parameter13_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8242,7 +8261,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter13_Visible;
                     // case "other":  return othPostgre.Db.Parameter13_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8268,7 +8287,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter14_Name;
                     // case "other":  return othPostgre.Db.Parameter14_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8292,7 +8311,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter14_Value;
                     // case "other":  return othPostgre.Db.Parameter4_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8316,7 +8335,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter14_Visible;
                     // case "other":  return othPostgre.Db.Parameter14_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8342,7 +8361,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter15_Name;
                     // case "other":  return othPostgre.Db.Parameter15_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8366,7 +8385,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter15_Value;
                     // case "other":  return othPostgre.Db.Parameter15_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8390,7 +8409,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter15_Visible;
                     // case "other":  return othPostgre.Db.Parameter15_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8416,7 +8435,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter16_Name;
                     // case "other":  return othPostgre.Db.Parameter16_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8440,7 +8459,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter16_Value;
                     // case "other":  return othPostgre.Db.Parameter16_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8464,7 +8483,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter16_Visible;
                     // case "other":  return othPostgre.Db.Parameter16_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8490,7 +8509,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter17_Name;
                     // case "other":  return othPostgre.Db.Parameter17_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8514,7 +8533,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter17_Value;
                     // case "other":  return othPostgre.Db.Parameter17_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8538,7 +8557,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter17_Visible;
                     // case "other":  return othPostgre.Db.Parameter17_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8564,7 +8583,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter18_Name;
                     // case "other":  return othPostgre.Db.Parameter18_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8588,7 +8607,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter18_Value;
                     // case "other":  return othPostgre.Db.Parameter18_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8612,7 +8631,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter18_Visible;
                     // case "other":  return othPostgre.Db.Parameter18_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8638,7 +8657,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter19_Name;
                     // case "other":  return othPostgre.Db.Parameter19_Name; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8662,7 +8681,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter19_Value;
                     // case "other":  return othPostgre.Db.Parameter19_Value; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8686,7 +8705,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.Parameter19_Visible;
                     // case "other":  return othPostgre.Db.Parameter19_Visible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
        
@@ -8714,7 +8733,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.scriptList;
                     // case "other":  return othPostgre.Db.scriptList; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
                   
             }
         }
@@ -8739,7 +8758,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.PanelGetStats;
                     // case "other":  return othPostgre.Db.PanelGetStats; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8763,7 +8782,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.PanelRecoveryMode;
                     // case "other":  return othPostgre.Db.PanelRecoveryMode; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8787,7 +8806,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.PanelReindex;
                     // case "other":  return othPostgre.Db.PanelReindex; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
@@ -8812,7 +8831,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.PanelShrink;
                     // case "other":  return othPostgre.Db.PanelShrink; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
                     
             }
         }
@@ -8839,7 +8858,7 @@ namespace YAF.Classes.Data
                     // case "db2":  return db2Postgre.Db.btnReindexVisible;
                     // case "other":  return othPostgre.Db.btnReindexVisible; 
                 default:
-                    throw new ApplicationException("No return type");
+                    throw new ArgumentOutOfRangeException(dataEngine);
                     
             }
         }

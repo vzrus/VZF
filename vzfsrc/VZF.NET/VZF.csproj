@@ -3617,7 +3617,13 @@
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
     <Content Include="resources\js\yaf.js" />
+    <Content Include="resources\js\_src\jquery.ceebox.js" />
+    <Content Include="resources\js\_src\jquery.hovercard.js" />
+    <Content Include="resources\js\_src\jquery.notification.js" />
     <Content Include="resources\js\_src\jquery.spellchecker.js" />
+    <Content Include="resources\js\_src\jquery.timeago.js" />
+    <Content Include="resources\js\_src\jquery.yafmodaldialog.js" />
+    <Content Include="resources\js\_src\yaf.js" />
     <Content Include="resources\ProviderExceptions.xml" />
     <Compile Include="controls\AlbumImageList.ascx.cs">
       <DependentUpon>AlbumImageList.ascx</DependentUpon>

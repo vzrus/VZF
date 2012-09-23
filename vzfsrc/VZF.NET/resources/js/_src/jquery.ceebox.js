@@ -1,4 +1,3 @@
-//ceebox
 /*
  * CeeBox 2.1.4 jQuery Plugin (minimized version)
  * Requires jQuery 1.3.2 and swfobject.jquery.js plugin to work
@@ -31,6 +30,7 @@
             B(this, f, a, d);
         });
         b(c).live("click", function (f) {
+
             var e = b(f.target).closest("[href]"),
                 g = e.data("ceebox");
             if (g) {
@@ -56,9 +56,9 @@
                 }, {
                     gallery: g.gallery
                 }));
+
                 return false;
             }
-            return false;
         });
     }
     function w(c) {
@@ -99,22 +99,22 @@
         document.onkeydown = function (c) {
             c = c || window.event;
             switch (c.keyCode || c.which) {
-            case 13:
-                return false;
-            case 27:
-                b.fn.ceebox.closebox();
-                document.onkeydown = null;
-                break;
-            case 188:
-            case 37:
-                b("#cee_prev").trigger("click");
-                break;
-            case 190:
-            case 39:
-                b("#cee_next").trigger("click");
-                break;
-            default:
-                break;
+                case 13:
+                    return false;
+                case 27:
+                    b.fn.ceebox.closebox();
+                    document.onkeydown = null;
+                    break;
+                case 188:
+                case 37:
+                    b("#cee_prev").trigger("click");
+                    break;
+                case 190:
+                case 39:
+                    b("#cee_next").trigger("click");
+                    break;
+                default:
+                    break;
             }
             return true;
         };
@@ -514,7 +514,7 @@
                 if (h > 0) k.prevId = g[h - 1];
                 if (h < m - 1) k.nextId = g[h + 1];
                 h++;
-            }!b.support.opacity && b(c).is("map") && b(e[j].linkObj).click(function (o) {
+            } !b.support.opacity && b(c).is("map") && b(e[j].linkObj).click(function (o) {
                 o.preventDefault();
             });
             b.data(e[j].linkObj, "ceebox", {

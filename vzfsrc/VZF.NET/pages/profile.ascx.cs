@@ -343,8 +343,7 @@ namespace YAF.Pages
             }
 
             var userNameOrDisplayName =
-                this.Get<HttpServerUtilityBase>().HtmlEncode(
-                    this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName);
+                    this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName;
 
             this.SetupUserProfileInfo(this.UserId, user, userData, userNameOrDisplayName);
 

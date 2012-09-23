@@ -250,10 +250,10 @@ namespace YAF.Controls
                       YafForumInfo.GetURLToResource("images/mysql_small.png")), " {0} MySQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
-                    footer.Append("<img src=\"{0}\" title=\"{1}\"  alt=\"{1}\"/>&nbsp;".FormatWith(this.PageContext.Get<ITheme>().GetItem(
-                     "ICONS",
-                     "FIREBIRD_SMALL",
-                     YafForumInfo.GetURLToResource("images/firebird_small.png")), "{0} Firebird".FormatWith(footer.Append(this.GetText("COMMON", "POWERED_BY")))));
+                    footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
+                                         "ICONS",
+                                         "FIREBIRD_SMALL",
+                                         YafForumInfo.GetURLToResource("images/firebird_small.png")), " {0} Firebird ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
                     break;
                 // case "oracle": 
                 // case "db2":  
