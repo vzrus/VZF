@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Active
 	   `Login` DATETIME NOT NULL,
 	   `LastActive` DATETIME NOT NULL,
 	   `Location` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-	   `ForumPage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
+	   `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
 	   `ForumID` INT NULL,
 	   `TopicID` INT NULL,
 	   `Browser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
@@ -866,7 +866,7 @@ DELETE FROM {databaseName}.{objectQualifier}ActiveAccess;
 				 AND (TABLE_NAME='{objectQualifier}Active' 
 				      OR TABLE_NAME=LOWER('{objectQualifier}Active'))
 				 AND COLUMN_NAME='ForumPage' LIMIT 1) THEN
-	 ALTER TABLE  {databaseName}.{objectQualifier}Active ADD `ForumPage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Location`;
+	 ALTER TABLE  {databaseName}.{objectQualifier}Active ADD `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Location`;
   END IF;
   
   -- Check for a right column `ForumPage` size
@@ -875,7 +875,7 @@ DELETE FROM {databaseName}.{objectQualifier}ActiveAccess;
 			 AND (TABLE_NAME='{objectQualifier}Active' 
 			      OR TABLE_NAME=LOWER('{objectQualifier}Active'))
              AND COLUMN_NAME='ForumPage' AND CHARACTER_MAXIMUM_LENGTH < 255 LIMIT 1) THEN
-     ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+     ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `ForumPage` `ForumPage` VARCHAR(1024) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
   END IF;
   
   -- Check for a right column `Location` size

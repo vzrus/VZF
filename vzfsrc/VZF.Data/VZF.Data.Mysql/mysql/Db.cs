@@ -7409,13 +7409,15 @@ namespace YAF.Classes.Data.MySqlDb
                 sqlBuilder.Append(" up JOIN ");
                 sqlBuilder.Append(MySqlDbAccess.GetObjectName("User"));
                 sqlBuilder.Append(" u ON u.UserID = up.UserID");
-                sqlBuilder.Append("  where u.BoardID = @i_BoardID AND DAY(up.Birthday) = DAY(@i_CurrentDate) AND MONTH(up.Birthday) = MONTH(@i_CurrentDate) ");
+                sqlBuilder.Append("  where u.BoardID = @i_BoardID AND (DAY(up.Birthday) BETWEEN DAY(@i_CurrentDate1) AND DAY(@i_CurrentDate2)) AND (MONTH(up.Birthday) BETWEEN MONTH(@i_CurrentDate3) AND MONTH(@i_CurrentDate4)) ");
                 using (var cmd = MySqlDbAccess.GetCommand(sqlBuilder.ToString(), true))
-               
                 {
                     cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
                     cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardID;
-                    cmd.Parameters.Add("i_CurrentDate", MySqlDbType.Date).Value = DateTime.UtcNow.Date;
+                    cmd.Parameters.Add("i_CurrentDate1", MySqlDbType.Date).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add("i_CurrentDate2", MySqlDbType.Date).Value = DateTime.UtcNow.Date.AddDays(1);
+                    cmd.Parameters.Add("i_CurrentDate3", MySqlDbType.Date).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add("i_CurrentDate4", MySqlDbType.Date).Value = DateTime.UtcNow.Date.AddDays(1);
                     return MySqlDbAccess.GetData(cmd,connectionString);
                 }
             }

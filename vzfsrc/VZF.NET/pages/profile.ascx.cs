@@ -792,9 +792,8 @@ namespace YAF.Pages
             if (this.User != null && userData.Profile.Birthday != DateTime.MinValue)
             {
                 this.BirthdayTR.Visible = true;
-                this.Birthday.Text = this.Get<IDateTime>().FormatDateLong(userData.Profile.Birthday.Date);
-
-                // .Add(-this.Get<IDateTime>().TimeOffset));
+                // time offset for the page user is already included,userData.Profile.Birthday Date is stored in the userData timezone.
+                this.Birthday.Text = this.Get<IDateTime>().FormatDateLong(userData.Profile.Birthday.AddMinutes((double)(-userData.TimeZone))); 
             }
             else
             {

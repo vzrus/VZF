@@ -9090,22 +9090,24 @@ namespace YAF.Classes.Data.FirebirdDb
                 } */
 
                 sqlBuilder = new StringBuilder();
-                sqlBuilder.Append("SELECT up.Birthday, u.USERID as \"UserID\", u.LastVisit as \"LastVisit\", u.Name as \"UserName\",u.DisplayName as \"UserDisplayName\",(case(?) when 1 then  u.USERSTYLE ");
+                sqlBuilder.Append("SELECT up.Birthday, u.USERID as \"UserID\", u.TimeZone as \"TimeZone\", u.LastVisit as \"LastVisit\", u.Name as \"UserName\",u.DisplayName as \"UserDisplayName\",(case(?) when 1 then  u.USERSTYLE ");
                 sqlBuilder.Append(" else '' end) AS Style ");
                 sqlBuilder.Append(" FROM ");
                 sqlBuilder.Append(FbDbAccess.GetObjectName("UserProfile"));
                 sqlBuilder.Append(" up JOIN ");
                 sqlBuilder.Append(FbDbAccess.GetObjectName("USER"));
                 sqlBuilder.Append(" u ON u.USERID = up.USERID ");
-                sqlBuilder.Append(" where u.BOARDID = ?  AND EXTRACT(MONTH FROM up.Birthday) = EXTRACT(MONTH FROM CAST(? AS DATE)) AND EXTRACT(DAY FROM up.Birthday) = EXTRACT(DAY FROM CAST(? AS DATE)) " +
+                sqlBuilder.Append(" where u.BOARDID = ?  AND (EXTRACT(MONTH FROM up.Birthday) BETWEEN EXTRACT(MONTH FROM CAST(? AS DATE)) AND  EXTRACT(MONTH FROM CAST(? AS DATE))) AND (EXTRACT(DAY FROM up.Birthday) BETWEEN EXTRACT(DAY FROM CAST(? AS DATE)) AND EXTRACT(DAY FROM CAST(? AS DATE)))" +
                                   ";");
                
                 using (var cmd = FbDbAccess.GetCommand(sqlBuilder.ToString(), true))
                 {
                     cmd.Parameters.Add(new FbParameter(":I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
                     cmd.Parameters.Add(new FbParameter(":I_BOARDID", FbDbType.Integer)).Value = boardID;
-                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP", FbDbType.Date)).Value = DateTime.UtcNow.Date;
-                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP1", FbDbType.Date)).Value = DateTime.UtcNow.Date;
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP1", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(1);
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP2", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP3", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(1);
                     return FbDbAccess.GetData(cmd,connectionString);
                 }
             }

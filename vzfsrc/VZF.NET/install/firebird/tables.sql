@@ -63,7 +63,7 @@ IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a
                        TOPICID              INTEGER,
                        BROWSER              VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
                        PLATFORM             VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
-                       FORUMPAGE            VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
+                       FORUMPAGE            VARCHAR(1024) CHARACTER SET UTF8 COLLATE UNICODE,
                        FLAGS                INTEGER NOT NULL, 
                        ISACTIVE             SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 1))),
                        ISGUEST              SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 2))),

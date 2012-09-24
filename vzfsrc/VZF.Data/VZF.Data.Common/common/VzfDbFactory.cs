@@ -428,47 +428,59 @@ namespace YAF.Classes.Data
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
-      public static void adminpageaccess_delete(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              case "Npgsql": Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              // case "oracle":   orPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              // case "db2":   db2Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              // case "other":   othPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-              default:
+        
+        /// <summary>
+        /// Delete admin page access for each page.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="pageName">The page name to check for access.</param>
+        public static void adminpageaccess_delete(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                case "Npgsql": Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                // case "oracle":   orPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                // case "db2":   db2Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                // case "other":   othPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                
+                default:
                   throw new ArgumentOutOfRangeException(dataEngine);
-
-          }
-      }
-
-      public static void adminpageaccess_save(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_save(connectionString, userId,  pageName); return;
-              case "Npgsql": Postgre.Db.adminpageaccess_save(connectionString, userId, pageName); return;
-              case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-              case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-              // case "oracle":   orPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-              // case "db2":   db2Postgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-              // case "other":   othPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
+            }
+        }
+        
+        /// <summary>
+        /// Save admin pages access rights.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="pageName">The page name to check for access.</param>
+        public static void adminpageaccess_save(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_save(connectionString, userId,  pageName); return;
+                case "Npgsql": Postgre.Db.adminpageaccess_save(connectionString, userId, pageName); return;
+                case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                // case "oracle":   orPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                // case "db2":   db2Postgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                // case "other":   othPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
       public static void album_delete(int? mid, object AlbumID)
       {

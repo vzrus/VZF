@@ -6397,13 +6397,15 @@ namespace YAF.Classes.Data.Postgre
                 sqlBuilder.Append(" up JOIN ");
                 sqlBuilder.Append(PostgreDBAccess.GetObjectName("user"));
                 sqlBuilder.Append(" u ON u.userid = up.userid ");
-                sqlBuilder.Append(" where u.boardid = :i_boardid AND extract(day  from up.Birthday) = extract(day  from :i_currentdate) and extract(month  from up.Birthday) = extract(month  from :i_currentdate);");
+                sqlBuilder.Append(" where u.boardid = :i_boardid AND (extract(day  from up.Birthday) between extract(day  from :i_currentdate1) and extract(day  from :i_currentdate2)) and (extract(month  from up.birthday) between extract(month  from :i_currentdate3) + extract(month  from :i_currentdate4));");
                 using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
                 {
                     cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
                     cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_currentdate", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-
+                    cmd.Parameters.Add("i_currentdate1", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(-1);
+                    cmd.Parameters.Add("i_currentdate2", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(1);
+                    cmd.Parameters.Add("i_currentdate3", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(-1);
+                    cmd.Parameters.Add("i_currentdate4", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(1);
                     return PostgreDBAccess.GetData(cmd,connectionString);
                 }
             }
@@ -6456,6 +6458,7 @@ namespace YAF.Classes.Data.Postgre
 
             return null;
         }
+
         #region ProfileMirror
 
         /// <summary>
@@ -6778,6 +6781,7 @@ namespace YAF.Classes.Data.Postgre
         }
 
         #endregion
+
         public static DataTable admin_list(string connectionString, int? boardId, object useStyledNicks)
         {
             using (var cmd = PostgreDBAccess.GetCommand("admin_list"))

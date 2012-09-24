@@ -38,7 +38,7 @@ CREATE TABLE databaseSchema.objectQualifier_active
 			 topicid                   integer,
 			 browser                   varchar(128),
 			 platform                  varchar(128),
-			 forumpage                 varchar(255) NOT NULL,
+			 forumpage                 varchar(1024) NOT NULL,
 			 flags                     integer NOT NULL default 0
 			) 
 		WITH (OIDS=withOIDs,fillfactor=10,autovacuum_enabled=true);

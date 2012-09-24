@@ -170,30 +170,12 @@ namespace YAF.Controls
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Get the Users age
-        /// </summary>
-        /// <param name="birthdate">
-        /// Birthdate of the User
-        /// </param>
-        /// <returns>
-        /// The Age
-        /// </returns>
-        private static int GetUserAge(DateTime birthdate)
-        {
-            var userAge = DateTime.Now.Year - birthdate.Year;
 
-            if (DateTime.Now < birthdate.AddYears(userAge))
-            {
-                userAge--;
-            }
-
-            return userAge;
-        }
 
         /// <summary>
         /// Gets the todays birthdays.
         /// </summary>
+        /// TODO: Make DST shift for the user
         private void GetTodaysBirthdays()
         {
             if (!this.Get<YafBoardSettings>().ShowTodaysBirthdays)
@@ -215,24 +197,48 @@ namespace YAF.Controls
 
             foreach (DataRow user in users.Rows)
             {
-                this.BirthdayUsers.Controls.Add(
-                    new UserLink
+                DateTime birth;
+
+                if (!DateTime.TryParse(user["Birthday"].ToString(), out birth)) continue;
+
+                int tz;
+
+                if (!int.TryParse(user["TimeZone"].ToString(), out tz))
+                {
+                    tz = 0;
+                }
+ 
+                // Get the user birhday timezone
+                var dtt = birth.AddYears(DateTime.UtcNow.Year - birth.Year);
+
+                
+                // The user can be congratulated. The time zone in profile is saved in the list user timezone
+                if (DateTime.UtcNow > dtt.AddMinutes(tz) && DateTime.UtcNow < dtt.AddMinutes(tz + 1440))
+                {
+                  
+                    this.BirthdayUsers.Controls.Add(
+                        new UserLink
+                            {
+                                UserID = (int) user["UserID"],
+                                ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
+                                                  ? user["UserDisplayName"].ToString()
+                                                  : user["UserName"].ToString(),
+                                Style =
+                                    this.Get<IStyleTransform>().DecodeStyleByString(user["Style"].ToString(), false),
+                                PostfixText =
+                                    " ({0})".FormatWith(DateTime.Now.Year - user["Birthday"].ToType<DateTime>().Year)
+                            });
+
+                    var separator = new HtmlGenericControl {InnerHtml = "&nbsp;,&nbsp;"};
+
+                    this.BirthdayUsers.Controls.Add(separator);
+                    if (!this.BirthdayUsers.Visible)
                     {
-                        UserID = (int)user["UserID"],
-                        ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
-                                                        ? user["UserDisplayName"].ToString()
-                                                        : user["UserName"].ToString(),
-                        Style = this.Get<IStyleTransform>().DecodeStyleByString(user["Style"].ToString(), false),
-                        PostfixText = " ({0})".FormatWith(GetUserAge(user["Birthday"].ToType<DateTime>()))
-                    });
+                        this.BirthdayUsers.Visible = true;
+                    }
 
-                var separator = new HtmlGenericControl { InnerHtml = "&nbsp;,&nbsp;" };
-
-                this.BirthdayUsers.Controls.Add(separator);
-
-                this.BirthdayUsers.Visible = true;
+                }
             }
-
             if (this.BirthdayUsers.Visible)
             {
                 // Remove last Separator

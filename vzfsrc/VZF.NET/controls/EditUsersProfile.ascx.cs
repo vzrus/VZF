@@ -167,7 +167,7 @@ namespace YAF.Controls
                 YafContext.Current.PageElements.RegisterJQuery();
                 YafContext.Current.PageElements.RegisterJQueryUI();
 
-            var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
+            var ci = CultureInfo.CreateSpecificCulture(this.GetCulture(true));
            
             if (!string.IsNullOrEmpty(this.GetText("COMMON", "CAL_JQ_CULTURE")))
             {
@@ -504,7 +504,7 @@ namespace YAF.Controls
             this.Country.DataValueField = "Value";
             this.Country.DataTextField = "Name";
 
-            string currentCultureLocal = this.GetCulture();
+            string currentCultureLocal = this.GetCulture(true);
             this.currentCulture = currentCultureLocal;
             if (this.UserData.Profile.Country.IsSet())
             {
@@ -527,7 +527,7 @@ namespace YAF.Controls
                 {
                     this.Birthday.Text = this.UserData.Profile.Birthday > DateTime.MinValue ||
                                          this.UserData.Profile.Birthday.IsNullOrEmptyDBField()
-                                             ? PersianDateConverter.ToPersianDate(this.UserData.Profile.Birthday).ToString("d")
+                                         ? PersianDateConverter.ToPersianDate(this.UserData.Profile.Birthday).ToString("d")
                                              : PersianDateConverter.ToPersianDate(PersianDate.MinValue).ToString("d");
                 }
                 else
@@ -730,16 +730,16 @@ namespace YAF.Controls
             if (this.Get<YafBoardSettings>().EnableDNACalendar && this.Birthday.Text.IsSet())
             {
                 DateTime userBirthdate;
-                var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
+                var ci = CultureInfo.CreateSpecificCulture(this.GetCulture(true));
 
                 if (this.Get<YafBoardSettings>().UseFarsiCalender && ci.IsFarsiCulture())
                 {
-                    PersianDate persianDate = new PersianDate(this.Birthday.Text);
+                    var persianDate = new PersianDate(this.Birthday.Text);
                     userBirthdate = PersianDateConverter.ToGregorianDateTime(persianDate);
 
                     if (userBirthdate > DateTime.MinValue.Date)
                     {
-                        userProfile.Birthday = userBirthdate;
+                        userProfile.Birthday = userBirthdate.Date;
                     }
                 }
                 else
@@ -748,7 +748,8 @@ namespace YAF.Controls
 
                     if (userBirthdate > DateTime.MinValue.Date)
                     {
-                        userProfile.Birthday = userBirthdate;
+                        // Attention! This is stored in profile in the user timezone date
+                        userProfile.Birthday = userBirthdate.Date;
                     }
                 }
             }
@@ -789,7 +790,12 @@ namespace YAF.Controls
             }
         }
 
-        #endregion        
+        #endregion 
+       
+        private string GetCulture()
+        {
+            return GetCulture(false);
+        }
 
         /// <summary>
         /// Gets the culture.
@@ -797,27 +803,42 @@ namespace YAF.Controls
         /// <returns>
         /// The get culture.
         /// </returns>
-        private string GetCulture()
+        private string GetCulture(bool overrideByPageUserCulture)
         {
             // Language and culture
             string languageFile = this.Get<YafBoardSettings>().Language;
-            string culture4tag = this.Get<YafBoardSettings>().Culture;
+            string culture4Tag = this.Get<YafBoardSettings>().Culture;
+             if (overrideByPageUserCulture)
+             {
+                 if (this.PageContext.CurrentUserData.LanguageFile.IsSet())
+                 {
+                     languageFile = this.PageContext.CurrentUserData.LanguageFile;
+                 }
 
-            if (!string.IsNullOrEmpty(this.UserData.LanguageFile))
-            {
-                languageFile = this.UserData.LanguageFile;
-            }
+                 if (this.PageContext.CurrentUserData.CultureUser.IsSet())
+                 {
+                     culture4Tag = this.PageContext.CurrentUserData.CultureUser;
+                 }
+             }
+             else
+             {
+                 if (!string.IsNullOrEmpty(this.UserData.LanguageFile))
+                 {
+                     languageFile = this.UserData.LanguageFile;
+                 }
 
-            if (!string.IsNullOrEmpty(this.UserData.CultureUser))
-            {
-                culture4tag = this.UserData.CultureUser;
-            }
+                 if (!string.IsNullOrEmpty(this.UserData.CultureUser))
+                 {
+                     culture4Tag = this.UserData.CultureUser;
+                 }
+             }
 
             // Get first default full culture from a language file tag.
             string langFileCulture = StaticDataHelper.CultureDefaultFromFile(languageFile);
-            return langFileCulture.Substring(0, 2) == culture4tag.Substring(0, 2)
-                                          ? culture4tag
+            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2)
+                                          ? culture4Tag
                                           : langFileCulture;
+            
         }
     }
 }
