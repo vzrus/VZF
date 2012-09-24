@@ -164,7 +164,7 @@ namespace YAF.Core
 #if DEBUG
         catch (Exception ex)
         {
-            LegacyDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, this, ex);
+            CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, this, ex);
           throw new ApplicationException("Error getting User Language." + Environment.NewLine + ex);
         }
 

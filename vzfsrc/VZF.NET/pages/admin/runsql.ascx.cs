@@ -95,9 +95,9 @@ namespace YAF.Pages.Admin
           sql = sql.Replace("{databaseOwner}", Config.DatabaseOwner);
           sql = sql.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
 
-          this.txtResult.Text = LegacyDb.db_runsql(YafContext.Current.PageModuleID, sql, connMan, this.chkRunInTransaction.Checked);
+          this.txtResult.Text = CommonDb.db_runsql(YafContext.Current.PageModuleID, sql, connMan, this.chkRunInTransaction.Checked);
         } */
-      this.txtResult.Text = LegacyDb.db_runsql_new(PageContext.PageModuleID, this.txtQuery.Text.Trim(), this.chkRunInTransaction.Checked);
+      this.txtResult.Text = CommonDb.db_runsql_new(PageContext.PageModuleID, this.txtQuery.Text.Trim(), this.chkRunInTransaction.Checked);
     }
 
     /// <summary>

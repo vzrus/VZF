@@ -86,7 +86,7 @@ namespace YAF.Pages.Admin
                         UserMembershipHelper.DeleteUser(e.CommandArgument.ToType<int>());
                     }
 
-                    LegacyDb.user_delete(PageContext.PageModuleID, e.CommandArgument);
+                    CommonDb.user_delete(PageContext.PageModuleID, e.CommandArgument);
                     this.Get<ILogger>().UserDeleted(this.PageContext.PageUserID, "YAF.Pages.Admin.admin", "User {0} was deleted by {1}.".FormatWith(e.CommandArgument.ToType<int>(), this.PageContext.PageUserID));
                     this.BindData();
                     break;
@@ -110,14 +110,14 @@ namespace YAF.Pages.Admin
                         UserMembershipHelper.DeleteAllUnapproved(DateTime.UtcNow.AddDays(-daysValueAll.ToType<int>()));
                     }
 
-                    LegacyDb.user_deleteold(PageContext.PageModuleID, this.PageContext.PageBoardID, daysValueAll.ToType<int>());
+                    CommonDb.user_deleteold(PageContext.PageModuleID, this.PageContext.PageBoardID, daysValueAll.ToType<int>());
                     this.BindData();
                     break;
                 case "approveall":
                     UserMembershipHelper.ApproveAll();
 
                     // vzrus: Should delete users from send email list
-                    LegacyDb.user_approveall(PageContext.PageModuleID, this.PageContext.PageBoardID);
+                    CommonDb.user_approveall(PageContext.PageModuleID, this.PageContext.PageBoardID);
                     this.BindData();
                     break;
             }
@@ -346,7 +346,7 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            DataTable dt = LegacyDb.board_list(PageContext.PageModuleID, null);
+            DataTable dt = CommonDb.board_list(PageContext.PageModuleID, null);
 
             // add row for "all boards" (null value)
             DataRow r = dt.NewRow();
@@ -371,12 +371,12 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            this.UserList.DataSource = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false);
+            this.UserList.DataSource = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false);
 
             // this.DataBind();
 
             // get stats for current board, selected board or all boards (see function)
-            DataRow row = LegacyDb.board_stats(PageContext.PageModuleID, this.GetSelectedBoardID());
+            DataRow row = CommonDb.board_stats(PageContext.PageModuleID, this.GetSelectedBoardID());
 
             this.NumPosts.Text = "{0:N0}".FormatWith(row["NumPosts"]);
             this.NumTopics.Text = "{0:N0}".FormatWith(row["NumTopics"]);
@@ -403,7 +403,7 @@ namespace YAF.Pages.Admin
 
             try
             {
-                this.DBSize.Text = "{0} MB".FormatWith(LegacyDb.GetDBSize(PageContext.PageModuleID));
+                this.DBSize.Text = "{0} MB".FormatWith(CommonDb.GetDBSize(PageContext.PageModuleID));
             }
             catch (SqlException)
             {
@@ -430,7 +430,7 @@ namespace YAF.Pages.Admin
         private DataTable GetActiveUsersData(bool showGuests, bool showCrawlers)
         {
             // vzrus: Here should not be a common cache as it's should be individual for each user because of ActiveLocationcontrol to hide unavailable places.        
-            DataTable activeUsers = LegacyDb.active_list_user(PageContext.PageModuleID, this.PageContext.PageBoardID,
+            DataTable activeUsers = CommonDb.active_list_user(PageContext.PageModuleID, this.PageContext.PageBoardID,
                 this.PageContext.PageUserID,
                 showGuests,
                 showCrawlers,

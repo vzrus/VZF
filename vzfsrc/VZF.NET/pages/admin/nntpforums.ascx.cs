@@ -115,7 +115,7 @@ namespace YAF.Pages.Admin
           YafBuildLink.Redirect(ForumPages.admin_editnntpforum, "s={0}", e.CommandArgument);
           break;
         case "delete":
-          LegacyDb.nntpforum_delete(PageContext.PageModuleID, e.CommandArgument);
+          CommonDb.nntpforum_delete(PageContext.PageModuleID, e.CommandArgument);
           this.BindData();
           break;
       }
@@ -126,7 +126,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      this.RankList.DataSource = LegacyDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, null, DBNull.Value);
+      this.RankList.DataSource = CommonDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, null, DBNull.Value);
       this.DataBind();
     }
 

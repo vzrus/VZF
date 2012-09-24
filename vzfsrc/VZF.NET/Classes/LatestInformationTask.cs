@@ -85,7 +85,7 @@ namespace YAF.Classes
       }
       catch (Exception x)
       {
-          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, _taskName, "Exception In {1}: {0}".FormatWith(x, _taskName));
+          CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, _taskName, "Exception In {1}: {0}".FormatWith(x, _taskName));
       }
     }
 

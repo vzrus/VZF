@@ -53,7 +53,7 @@ namespace YAF.Core.Services
         {
             var filler = new StringBuilder();
 
-            using (DataTable dt = LegacyDb.message_GetThanks(YafContext.Current.PageModuleID, messageId))
+            using (DataTable dt = CommonDb.message_GetThanks(YafContext.Current.PageModuleID, messageId))
             {
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -134,7 +134,7 @@ namespace YAF.Core.Services
         /// </returns>
         protected static string ThanksNumber([NotNull] string username, int messageID)
         {
-            int thanksNumber = LegacyDb.message_ThanksNumber(YafContext.Current.PageModuleID, messageID);
+            int thanksNumber = CommonDb.message_ThanksNumber(YafContext.Current.PageModuleID, messageID);
 
             string displayName = username;
             if (YafContext.Current.Get<YafBoardSettings>().EnableDisplayName)

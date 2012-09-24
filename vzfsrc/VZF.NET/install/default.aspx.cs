@@ -135,7 +135,7 @@ namespace YAF.Install
         {
             get
             {
-                return LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>());
+                return CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>());
             }
         }
 
@@ -437,7 +437,7 @@ namespace YAF.Install
 
                     break;
                 case "WizCreateForum":
-                    if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
+                    if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
                     {
                         this.InstallWizard.ActiveStepIndex++;
                     }
@@ -452,7 +452,7 @@ namespace YAF.Install
                     else
                     {
                         object version = this.Cache["DBVersion"] ??
-                                         LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                                         CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
                         if (((int) version) >= 30 || ((int) version) == -1)
                         {
@@ -467,7 +467,7 @@ namespace YAF.Install
                     if (this.CurrentWizardStepID == "WizMigrateUsers")
                     {
                         this.lblMigrateUsersCount.Text =
-                            LegacyDb.user_list(this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null,
+                            CommonDb.user_list(this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null,
                                                true).Rows.Count.ToString();
                     }
 
@@ -1000,7 +1000,7 @@ namespace YAF.Install
         /// </returns>
         private bool CreateForum()
         {
-            if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
+            if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()))
             {
                 this.AddLoadMessage("Forum is already installed.");
                 return false;
@@ -1109,7 +1109,7 @@ namespace YAF.Install
                     langFile = (string)drow["CultureFile"];
                 }
 
-                LegacyDb.system_initialize(this.Session["InstallModuleID"].ToType<int?>(), this.TheForumName.Text,
+                CommonDb.system_initialize(this.Session["InstallModuleID"].ToType<int?>(), this.TheForumName.Text,
                     this.TimeZones.SelectedValue,
                     this.Culture.SelectedValue,
                     langFile,
@@ -1120,8 +1120,8 @@ namespace YAF.Install
                     user.ProviderUserKey,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty);
 
-                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
-                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // vzrus: uncomment it to not keep install/upgrade objects in db for a place and better security
                 // YAF.Classes.Data.DB.system_deleteinstallobjects();
@@ -1196,7 +1196,7 @@ namespace YAF.Install
                 throw new IOException("Failed to read {0}".FormatWith(fileName), x);
             }
 
-            LegacyDb.system_initialize_executescripts(this.Session["InstallModuleID"].ToType<int?>(), script, scriptFile, useTransactions);
+            CommonDb.system_initialize_executescripts(this.Session["InstallModuleID"].ToType<int?>(), script, scriptFile, useTransactions);
         }
 
         /// <summary>
@@ -1257,7 +1257,7 @@ namespace YAF.Install
         /// </param>
         private void FixAccess(bool bGrant)
         {
-            LegacyDb.system_initialize_fixaccess(this.Session["InstallModuleID"].ToType<int?>(), bGrant);
+            CommonDb.system_initialize_fixaccess(this.Session["InstallModuleID"].ToType<int?>(), bGrant);
         }
 
         /// <summary>
@@ -1310,7 +1310,7 @@ namespace YAF.Install
             {
                 this.ModuleID.Text = this.Session["InstallModuleID"] != null ? this.Session["InstallModuleID"].ToString() : "1";
                 SelectModuleLbl.Text = "Enter required module ID";
-                this.Cache["DBVersion"] = LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                this.Cache["DBVersion"] = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.CurrentWizardStepID = this.IsInstalled ? "WizEnterPassword" : "WizValidatePermission";
 
@@ -1322,7 +1322,7 @@ namespace YAF.Install
                 }
                 // YafContext.Current.QueryIDs = new QueryStringIDHelper("md");
                
-                this.FullTextSupport.Visible = LegacyDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
+                this.FullTextSupport.Visible = CommonDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");
 
@@ -1338,85 +1338,85 @@ namespace YAF.Install
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
 
-                this.DBUsernamePasswordHolder.Visible = LegacyDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
+                this.DBUsernamePasswordHolder.Visible = CommonDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Connection string parameters text boxes
-                this.Parameter1_Name.Text = LegacyDb.GetParameter1_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter1_Value.Text = LegacyDb.GetParameter1_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter1_Value.Visible = LegacyDb.GetParameter1_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter1_Name.Text = CommonDb.GetParameter1_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter1_Value.Text = CommonDb.GetParameter1_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter1_Value.Visible = CommonDb.GetParameter1_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter2_Name.Text = LegacyDb.GetParameter2_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter2_Value.Text = LegacyDb.GetParameter2_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter2_Value.Visible = LegacyDb.GetParameter2_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter2_Name.Text = CommonDb.GetParameter2_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter2_Value.Text = CommonDb.GetParameter2_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter2_Value.Visible = CommonDb.GetParameter2_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter3_Name.Text = LegacyDb.GetParameter3_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter3_Value.Text = LegacyDb.GetParameter3_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter3_Value.Visible = LegacyDb.GetParameter3_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter3_Name.Text = CommonDb.GetParameter3_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter3_Value.Text = CommonDb.GetParameter3_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter3_Value.Visible = CommonDb.GetParameter3_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter4_Name.Text = LegacyDb.GetParameter4_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter4_Value.Text = LegacyDb.GetParameter4_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter4_Value.Visible = LegacyDb.GetParameter4_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter4_Name.Text = CommonDb.GetParameter4_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter4_Value.Text = CommonDb.GetParameter4_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter4_Value.Visible = CommonDb.GetParameter4_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter5_Name.Text = LegacyDb.GetParameter5_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter5_Value.Text = LegacyDb.GetParameter5_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter5_Value.Visible = LegacyDb.GetParameter5_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter5_Name.Text = CommonDb.GetParameter5_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter5_Value.Text = CommonDb.GetParameter5_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter5_Value.Visible = CommonDb.GetParameter5_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter6_Name.Text = LegacyDb.GetParameter6_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter6_Value.Text = LegacyDb.GetParameter6_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter6_Value.Visible = LegacyDb.GetParameter6_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter6_Name.Text = CommonDb.GetParameter6_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter6_Value.Text = CommonDb.GetParameter6_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter6_Value.Visible = CommonDb.GetParameter6_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter7_Name.Text = LegacyDb.GetParameter7_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter7_Value.Text = LegacyDb.GetParameter7_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter7_Value.Visible = LegacyDb.GetParameter7_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter7_Name.Text = CommonDb.GetParameter7_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter7_Value.Text = CommonDb.GetParameter7_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter7_Value.Visible = CommonDb.GetParameter7_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter8_Name.Text = LegacyDb.GetParameter8_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter8_Value.Text = LegacyDb.GetParameter8_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter8_Value.Visible = LegacyDb.GetParameter8_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter8_Name.Text = CommonDb.GetParameter8_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter8_Value.Text = CommonDb.GetParameter8_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter8_Value.Visible = CommonDb.GetParameter8_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter9_Name.Text = LegacyDb.GetParameter9_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter9_Value.Text = LegacyDb.GetParameter9_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter9_Value.Visible = LegacyDb.GetParameter9_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter9_Name.Text = CommonDb.GetParameter9_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter9_Value.Text = CommonDb.GetParameter9_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter9_Value.Visible = CommonDb.GetParameter9_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter10_Name.Text = LegacyDb.GetParameter10_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter10_Value.Text = LegacyDb.GetParameter10_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter10_Value.Visible = LegacyDb.GetParameter10_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter10_Name.Text = CommonDb.GetParameter10_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter10_Value.Text = CommonDb.GetParameter10_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter10_Value.Visible = CommonDb.GetParameter10_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Connection string parameters  check boxes
-                this.Parameter11_Value.Text = LegacyDb.GetParameter11_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter11_Value.Checked = LegacyDb.GetParameter11_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter11_Value.Visible = LegacyDb.GetParameter11_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter11_Value.Text = CommonDb.GetParameter11_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter11_Value.Checked = CommonDb.GetParameter11_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter11_Value.Visible = CommonDb.GetParameter11_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter12_Value.Text = LegacyDb.GetParameter12_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter12_Value.Checked = LegacyDb.GetParameter12_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter12_Value.Visible = LegacyDb.GetParameter12_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter12_Value.Text = CommonDb.GetParameter12_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter12_Value.Checked = CommonDb.GetParameter12_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter12_Value.Visible = CommonDb.GetParameter12_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter13_Value.Text = LegacyDb.GetParameter13_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter13_Value.Checked = LegacyDb.GetParameter13_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter13_Value.Visible = LegacyDb.GetParameter13_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter13_Value.Text = CommonDb.GetParameter13_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter13_Value.Checked = CommonDb.GetParameter13_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter13_Value.Visible = CommonDb.GetParameter13_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter14_Value.Text = LegacyDb.GetParameter14_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter14_Value.Checked = LegacyDb.GetParameter14_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter14_Value.Visible = LegacyDb.GetParameter14_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter14_Value.Text = CommonDb.GetParameter14_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter14_Value.Checked = CommonDb.GetParameter14_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter14_Value.Visible = CommonDb.GetParameter14_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter15_Value.Text = LegacyDb.GetParameter15_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter15_Value.Checked = LegacyDb.GetParameter15_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter15_Value.Visible = LegacyDb.GetParameter15_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter15_Value.Text = CommonDb.GetParameter15_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter15_Value.Checked = CommonDb.GetParameter15_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter15_Value.Visible = CommonDb.GetParameter15_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter16_Value.Text = LegacyDb.GetParameter16_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter16_Value.Checked = LegacyDb.GetParameter16_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter16_Value.Visible = LegacyDb.GetParameter16_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter16_Value.Text = CommonDb.GetParameter16_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter16_Value.Checked = CommonDb.GetParameter16_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter16_Value.Visible = CommonDb.GetParameter16_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter17_Value.Text = LegacyDb.GetParameter17_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter17_Value.Checked = LegacyDb.GetParameter17_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter17_Value.Visible = LegacyDb.GetParameter17_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter17_Value.Text = CommonDb.GetParameter17_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter17_Value.Checked = CommonDb.GetParameter17_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter17_Value.Visible = CommonDb.GetParameter17_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter18_Value.Text = LegacyDb.GetParameter18_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter18_Value.Checked = LegacyDb.GetParameter18_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter18_Value.Visible = LegacyDb.GetParameter18_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter18_Value.Text = CommonDb.GetParameter18_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter18_Value.Checked = CommonDb.GetParameter18_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter18_Value.Visible = CommonDb.GetParameter18_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter19_Value.Text = LegacyDb.GetParameter19_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter19_Value.Checked = LegacyDb.GetParameter19_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter19_Value.Visible = LegacyDb.GetParameter19_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter19_Value.Text = CommonDb.GetParameter19_Name(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter19_Value.Checked = CommonDb.GetParameter19_Value(this.Session["InstallModuleID"].ToType<int?>());
+                this.Parameter19_Value.Visible = CommonDb.GetParameter19_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Hide New User on DNN
                 if (Config.IsDotNetNuke)
@@ -1466,7 +1466,7 @@ namespace YAF.Install
                 {
                     if (
                         !this._config.WriteConnectionString(
-                            Config.ConnectionStringName, this.CurrentConnString, LegacyDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
+                            Config.ConnectionStringName, this.CurrentConnString, CommonDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;
@@ -1494,25 +1494,25 @@ namespace YAF.Install
                 // try
                 this.FixAccess(false);
 
-                foreach (string script in LegacyDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
+                foreach (string script in CommonDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
                 {
                     this.ExecuteScript(script, true);
                 }
 
                 this.FixAccess(true);
 
-                int prevVersion = LegacyDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                int prevVersion = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                LegacyDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // Ederon : 9/7/2007
                 // resync all boards - necessary for propr last post bubbling
-                LegacyDb.board_resync(this.Session["InstallModuleID"].ToType<int?>());
+                CommonDb.board_resync(this.Session["InstallModuleID"].ToType<int?>());
 
                 // upgrade providers...
                 // YAF.Providers.Membership.DB.Current.UpgradeMembership(prevVersion, YafForumInfo.AppVersion);
 
-                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 30
+                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 30
                     || this.IsForumInstalled && this.UpgradeExtensions.Checked)
                 {
                     // load default bbcode if available...
@@ -1549,13 +1549,13 @@ namespace YAF.Install
                     }
                 }
 
-                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
+                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
                 {
                     // un-html encode all topic subject names...
-                    LegacyDb.unencode_all_topics_subjects(this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
+                    CommonDb.unencode_all_topics_subjects(this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
                 }
 
-                if (LegacyDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
+                if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
                 {
                     // Reset The UserBox Template
                     this.Get<YafBoardSettings>().UserBox = Constants.UserBox.DisplayTemplateDefault;
@@ -1574,11 +1574,11 @@ namespace YAF.Install
       }*/
 
             // attempt to apply fulltext support if desired
-            if (fullText && LegacyDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>()))
+            if (fullText && CommonDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>()))
             {
                 try
                 {
-                    this.ExecuteScript(LegacyDb.GetFullTextScript(this.Session["InstallModuleID"].ToType<int?>()), false);
+                    this.ExecuteScript(CommonDb.GetFullTextScript(this.Session["InstallModuleID"].ToType<int?>()), false);
                 }
                 catch (Exception x)
                 {

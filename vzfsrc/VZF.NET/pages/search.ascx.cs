@@ -463,7 +463,7 @@ namespace YAF.Pages
 
             this.Page.Form.DefaultButton = this.btnSearch.UniqueID;
 
-            this.listForum.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.listForum.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
             this.listForum.DataValueField = "ForumID";
             this.listForum.DataTextField = "Title";
             this.listForum.DataBind();
@@ -642,7 +642,7 @@ namespace YAF.Pages
                     var sfw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchFromWho.SelectedValue);
                     int forumId = int.Parse(this.listForum.SelectedValue);
 
-                    var searchResults = LegacyDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
+                    var searchResults = CommonDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
                         this.SearchWhoCleaned,
                         sfw,
                         sw,
@@ -686,7 +686,7 @@ namespace YAF.Pages
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(PageContext.PageModuleiD,this.PageContext.PageUserID, this, x);
+                CommonDb.eventlog_create(PageContext.PageModuleiD,this.PageContext.PageUserID, this, x);
 
                 this.PageContext.AddLoadMessage(
                     this.PageContext.IsAdmin ? "{0}".FormatWith(x) : "An error occurred while searching.");

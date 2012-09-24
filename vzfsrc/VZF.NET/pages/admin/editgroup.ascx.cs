@@ -151,7 +151,7 @@ namespace YAF.Pages.Admin
 
             // get data about edited role
             using (
-                DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i")))
+                DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i")))
             {
                 // get it as row
                 DataRow row = dt.Rows[0];
@@ -266,7 +266,7 @@ namespace YAF.Pages.Admin
             if (roleID != 0)
             {
                 // get the current role name in the DB
-                using (DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, roleID))
+                using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, roleID))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -276,7 +276,7 @@ namespace YAF.Pages.Admin
             }
 
             // save role and get its ID if it's new (if it's old role, we get it anyway)
-            roleID = LegacyDb.group_save(PageContext.PageModuleID, roleID,
+            roleID = CommonDb.group_save(PageContext.PageModuleID, roleID,
               this.PageContext.PageBoardID,
               roleName,
               this.IsAdminX.Checked,
@@ -295,7 +295,7 @@ namespace YAF.Pages.Admin
               this.UsrAlbumImages.Text.Trim());
 
             // empty out access table
-            LegacyDb.activeaccess_reset(PageContext.PageModuleID);
+            CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
             // see if need to rename an existing role...
             if (oldRoleName.IsSet() && roleName != oldRoleName && RoleMembershipHelper.RoleExists(oldRoleName) && !RoleMembershipHelper.RoleExists(roleName) && !this.IsGuestX.Checked)
@@ -336,7 +336,7 @@ namespace YAF.Pages.Admin
                         int forumID = int.Parse(((Label)item.FindControl("ForumID")).Text);
 
                         // save forum access maks for this role
-                        LegacyDb.forumaccess_save(PageContext.PageModuleID, forumID, roleID,
+                        CommonDb.forumaccess_save(PageContext.PageModuleID, forumID, roleID,
                                                   ((DropDownList)item.FindControl("AccessmaskID")).SelectedValue);
                     }
 
@@ -386,9 +386,9 @@ namespace YAF.Pages.Admin
             // set datasource of access list (list of forums and role's access masks) if we are editing existing mask
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                this.AccessList.DataSource = LegacyDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
+                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
             }
-            this.AccessMasksList = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+            this.AccessMasksList = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
             // bind data to controls
             this.DataBind();
 

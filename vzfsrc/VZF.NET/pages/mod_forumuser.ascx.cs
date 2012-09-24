@@ -72,11 +72,11 @@ namespace YAF.Pages
                 const int flags = (int)AccessFlags.Flags.ModeratorAccess;
 
                 // non-admins cannot assign moderation access masks
-                dt = LegacyDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags);
+                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags);
             }
             else
             {
-                dt = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+                dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
             }
 
             // setup datasource for access masks dropdown
@@ -208,7 +208,7 @@ namespace YAF.Pages
             }
 
             using (
-                DataTable dt = LegacyDb.userforum_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("u"), this.PageContext.PageForumID))
+                DataTable dt = CommonDb.userforum_list(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("u"), this.PageContext.PageForumID))
             {
                 foreach (DataRow row in dt.Rows)
                 {
@@ -269,7 +269,7 @@ namespace YAF.Pages
             }
 
             // save permission
-            LegacyDb.userforum_save(PageContext.PageModuleID, userId.Value, this.PageContext.PageForumID, this.AccessMaskID.SelectedValue);
+            CommonDb.userforum_save(PageContext.PageModuleID, userId.Value, this.PageContext.PageForumID, this.AccessMaskID.SelectedValue);
             
             // clear moderators cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);

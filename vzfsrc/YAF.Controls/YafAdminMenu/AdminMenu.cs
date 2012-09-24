@@ -292,7 +292,7 @@ namespace YAF.Controls
     {
         bool show = false;
 
-        IEnumerable<DataRow> dt = !this.PageContext.IsHostAdmin ? LegacyDb.adminpageaccess_list(PageContext.PageModuleID, this.PageContext.PageUserID, null).AsEnumerable().ToList() : null;
+        IEnumerable<DataRow> dt = !this.PageContext.IsHostAdmin ? CommonDb.adminpageaccess_list(PageContext.PageModuleID, this.PageContext.PageUserID, null).AsEnumerable().ToList() : null;
         
         // build menu...
         foreach (var value in this.GetMenuSections())

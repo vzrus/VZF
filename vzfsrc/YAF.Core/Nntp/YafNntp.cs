@@ -127,7 +127,7 @@ namespace YAF.Core.Nntp
         this._applicationStateBase["WorkingInYafNNTP"] = true;
 
         // Only those not updated in the last 30 minutes
-        foreach (var nntpForum in LegacyDb.NntpForumList(YafContext.Current.PageModuleID, boardID, lastUpdate, null, true))
+        foreach (var nntpForum in CommonDb.NntpForumList(YafContext.Current.PageModuleID, boardID, lastUpdate, null, true))
         {
           using (var nntpConnection = GetNntpConnection(nntpForum))
           {
@@ -168,7 +168,7 @@ namespace YAF.Core.Nntp
               while (behindCutOff);
 
               // update the group lastMessage info...
-              LegacyDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, currentMessage, guestUserId);
+              CommonDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, currentMessage, guestUserId);
             }
 
             for (; currentMessage <= group.High; currentMessage++)
@@ -227,12 +227,12 @@ namespace YAF.Core.Nntp
 
                 if (createUsers)
                 {
-                    guestUserId = LegacyDb.user_nntp(YafContext.Current.PageModuleID, boardID, fromName, string.Empty, article.Header.TimeZoneOffset);
+                    guestUserId = CommonDb.user_nntp(YafContext.Current.PageModuleID, boardID, fromName, string.Empty, article.Header.TimeZoneOffset);
                 }
 
                 string body = this.ReplaceBody(article.Body.Text.Trim());
 
-                LegacyDb.nntptopic_savemessage(YafContext.Current.PageModuleID, nntpForumID,
+                CommonDb.nntptopic_savemessage(YafContext.Current.PageModuleID, nntpForumID,
                   subject.Truncate(75),
                   body,
                   guestUserId,
@@ -256,7 +256,7 @@ namespace YAF.Core.Nntp
                 if (count++ > 1000)
                 {
                   count = 0;
-                  LegacyDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, lastMessageNo, guestUserId);
+                  CommonDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, lastMessageNo, guestUserId);
                 }
               }
               catch (NntpException exception)
@@ -276,7 +276,7 @@ namespace YAF.Core.Nntp
               }
             }
 
-            LegacyDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, lastMessageNo, guestUserId);
+            CommonDb.nntpforum_update(YafContext.Current.PageModuleID, nntpForum.NntpForumID, lastMessageNo, guestUserId);
 
             // Total time x seconds for all groups
             if ((DateTime.UtcNow - dateTimeStart).TotalSeconds > timeToRun)

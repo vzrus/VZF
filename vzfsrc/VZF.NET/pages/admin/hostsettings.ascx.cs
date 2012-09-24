@@ -366,7 +366,7 @@ namespace YAF.Pages.Admin
         {
             this.ForumEditor.DataSource = this.Get<IModuleManager<ForumEditor>>().ActiveAsDataTable("Editors");
 
-            // TODO: vzrus: UseFullTextSearch check box is data layer specific and can be hidden by YAF.Classes.Data.LegacyDb.FullTextSupported  property.)
+            // TODO: vzrus: UseFullTextSearch check box is data layer specific and can be hidden by YAF.Classes.Data.CommonDb.FullTextSupported  property.)
             this.DataBind();
 
             // load Board Setting collection information...

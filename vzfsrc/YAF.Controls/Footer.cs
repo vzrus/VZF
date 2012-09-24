@@ -228,7 +228,7 @@ namespace YAF.Controls
 				footer.AppendFormat(@"<span id=""themecredit"" style=""color:#999999"">{0}</span>", themeCredit);
 				footer.Append("<br />");
 			}
-		    string s = LegacyDb.DataEngineName(YafContext.Current.PageModuleID);
+		    string s = CommonDb.DataEngineName(YafContext.Current.PageModuleID);
             switch (s)
             {
                 case "System.Data.SqlClient":  

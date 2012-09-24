@@ -133,7 +133,7 @@ namespace YAF.Controls
         this.Get<IDataCache>().GetOrSet(
           Constants.Cache.ForumJump.FormatWith(
             this.PageContext.User != null ? this.PageContext.PageUserID.ToString() : "Guest"),
-          () => LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID),
+          () => CommonDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID),
           TimeSpan.FromMinutes(5));
 
       writer.WriteLine(

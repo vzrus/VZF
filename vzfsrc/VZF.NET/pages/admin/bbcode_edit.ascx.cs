@@ -107,7 +107,7 @@ namespace YAF.Pages.Admin
         return;
       }
 
-      LegacyDb.bbcode_save(PageContext.PageModuleID, this.BBCodeID, 
+      CommonDb.bbcode_save(PageContext.PageModuleID, this.BBCodeID, 
         this.PageContext.PageBoardID, 
         this.txtName.Text.Trim(), 
         this.txtDescription.Text, 
@@ -138,7 +138,7 @@ namespace YAF.Pages.Admin
             return;
         }
 
-        DataRow row = LegacyDb.bbcode_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0];
+        DataRow row = CommonDb.bbcode_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.BBCodeID.Value).Rows[0];
 
         // fill the control values...
         this.txtName.Text = row["Name"].ToString();

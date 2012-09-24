@@ -108,9 +108,9 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
         this.PagerTop.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
-        var dt = LegacyDb.attachment_list(PageContext.PageModuleID, null, null, this.PageContext.PageBoardID, this.PagerTop.CurrentPageIndex,
+        var dt = CommonDb.attachment_list(PageContext.PageModuleID, null, null, this.PageContext.PageBoardID, this.PagerTop.CurrentPageIndex,
                                  this.PagerTop.PageSize);
-        this.List.DataSource = LegacyDb.attachment_list(PageContext.PageModuleID, null, null, this.PageContext.PageBoardID, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
+        this.List.DataSource = CommonDb.attachment_list(PageContext.PageModuleID, null, null, this.PageContext.PageBoardID, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
         this.PagerTop.Count = dt != null && dt.Rows.Count > 0
                                      ? dt.AsEnumerable().First().Field<int>("TotalRows")
                                      : 0;
@@ -139,7 +139,7 @@ namespace YAF.Pages.Admin
       switch (e.CommandName)
       {
         case "delete":
-          LegacyDb.attachment_delete(PageContext.PageModuleID, e.CommandArgument);
+          CommonDb.attachment_delete(PageContext.PageModuleID, e.CommandArgument);
           this.BindData();
           break;
       }

@@ -130,7 +130,7 @@ namespace YAF.Controls
         /// </summary>
         protected void BindData()
         {
-            this._sig.Text = LegacyDb.user_getsignature(PageContext.PageModuleID, this.CurrentUserID);
+            this._sig.Text = CommonDb.user_getsignature(PageContext.PageModuleID, this.CurrentUserID);
 
             this.signaturePreview.Signature = this._sig.Text;
             this.signaturePreview.DisplayUserID = this.CurrentUserID;
@@ -176,7 +176,7 @@ namespace YAF.Controls
             this._sig.BaseDir = YafForumInfo.ForumClientFileRoot + "editors";
             this._sig.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
 
-            DataTable sigData = LegacyDb.user_getsignaturedata(PageContext.PageModuleID, this.CurrentUserID, YafContext.Current.PageBoardID);
+            DataTable sigData = CommonDb.user_getsignaturedata(PageContext.PageModuleID, this.CurrentUserID, YafContext.Current.PageBoardID);
             if (sigData.Rows.Count > 0)
             {
                 this._allowedBbcodes = sigData.Rows[0]["UsrSigBBCodes"].ToString().Trim().Trim(',').Trim();
@@ -331,7 +331,7 @@ namespace YAF.Controls
             {
                 if (this._sig.Text.Length <= this._allowedNumberOfCharacters)
                 {
-                    LegacyDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, this.Get<IBadWordReplace>().Replace(body));
+                    CommonDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, this.Get<IBadWordReplace>().Replace(body));
                 }
                 else
                 {
@@ -343,7 +343,7 @@ namespace YAF.Controls
             }
             else
             {
-                LegacyDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, DBNull.Value);
+                CommonDb.user_savesignature(PageContext.PageModuleID, this.CurrentUserID, DBNull.Value);
             }
 
             // clear the cache for this user...

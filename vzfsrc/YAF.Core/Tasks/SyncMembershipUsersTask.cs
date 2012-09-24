@@ -94,7 +94,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception x)
       {
-        LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In SyncMembershipUsers Task: {0}".FormatWith(x));
+        CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In SyncMembershipUsers Task: {0}".FormatWith(x));
       }
     }
 

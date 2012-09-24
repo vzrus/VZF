@@ -99,7 +99,7 @@ public class YafWebService : WebService, IHaveServiceLocator
         long messageId = 0;
         string subjectEncoded = this.Server.HtmlEncode(subject);
 
-        return LegacyDb.topic_save(YafContext.Current.PageModuleID, forumid,
+        return CommonDb.topic_save(YafContext.Current.PageModuleID, forumid,
             subjectEncoded,
             status,
             styles,
@@ -159,9 +159,9 @@ public class YafWebService : WebService, IHaveServiceLocator
                         displayName));
             }
 
-            var userFields = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, Config.BoardID, userId, null).Rows[0];
+            var userFields = CommonDb.user_list((int?) YafContext.Current.PageModuleID, Config.BoardID, userId, null).Rows[0];
 
-            LegacyDb.user_save(YafContext.Current.PageModuleID, userId,
+            CommonDb.user_save(YafContext.Current.PageModuleID, userId,
                 Config.BoardID,
                 null,
                 displayName,

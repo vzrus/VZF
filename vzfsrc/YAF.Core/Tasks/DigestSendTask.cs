@@ -143,7 +143,7 @@ namespace YAF.Core.Tasks
     {
       try
       {
-          var boardIds = LegacyDb.board_list(YafContext.Current.PageModuleID, null).AsEnumerable().Select(b => b.Field<int>("BoardID"));
+          var boardIds = CommonDb.board_list(YafContext.Current.PageModuleID, null).AsEnumerable().Select(b => b.Field<int>("BoardID"));
 
         foreach (var boardId in boardIds)
         {
@@ -157,13 +157,13 @@ namespace YAF.Core.Tasks
           if (Config.BaseUrlMask.IsNotSet())
           {
             // fail...
-              LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, "DigestSendTask", "Failed to send digest because BaseUrlMask value is not set in your appSettings.");
+              CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, "DigestSendTask", "Failed to send digest because BaseUrlMask value is not set in your appSettings.");
             return;
           }
 
           // get users with digest enabled...
           var usersWithDigest =
-            LegacyDb.UserFind(YafContext.Current.PageModuleID, boardId, false, null, null, null, null, true).Where(x => !x.IsGuest && (x.IsApproved ?? false));
+            CommonDb.UserFind(YafContext.Current.PageModuleID, boardId, false, null, null, null, null, true).Where(x => !x.IsGuest && (x.IsApproved ?? false));
 
           if (usersWithDigest.Any())
           {
@@ -174,7 +174,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception ex)
       {
-          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In {0} Task: {1}".FormatWith(TaskName, ex));
+          CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In {0} Task: {1}".FormatWith(TaskName, ex));
       }
     }
 
@@ -196,7 +196,7 @@ namespace YAF.Core.Tasks
             }
             catch (Exception e)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In Creating Digest for User {0}: {1}".FormatWith(user.UserID, e.ToString()));
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Error In Creating Digest for User {0}: {1}".FormatWith(user.UserID, e.ToString()));
             }
 
             if (!digestHtml.IsSet())

@@ -138,7 +138,7 @@ namespace YAF.Pages.Admin
             }
 
             // save it
-            LegacyDb.accessmask_save(this.PageContext.PageModuleID,
+            CommonDb.accessmask_save(this.PageContext.PageModuleID,
                 accessMaskID,
                 this.PageContext.PageBoardID,
                 this.Name.Text,
@@ -156,7 +156,7 @@ namespace YAF.Pages.Admin
                 sortOrder);
 
             // empty out access table
-            LegacyDb.activeaccess_reset(PageContext.PageModuleID);
+            CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
             // clear cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
@@ -176,7 +176,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    var dt = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i")))
+                    var dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i")))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

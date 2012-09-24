@@ -77,7 +77,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+      ((DropDownList)sender).DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }
@@ -207,7 +207,7 @@ namespace YAF.Pages.Admin
       {
           // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
           using (
-          DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+          DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
           {
               int sortOrder = 1;
 
@@ -228,7 +228,7 @@ namespace YAF.Pages.Admin
           }
       }
 
-      using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
+      using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
       {
         DataRow row = dt.Rows[0];
         var flags = new ForumFlags(row["Flags"]);
@@ -301,12 +301,12 @@ namespace YAF.Pages.Admin
     {
       var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
-      this.CategoryList.DataSource = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+      this.CategoryList.DataSource = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
       this.CategoryList.DataBind();
 
       if (forumId.HasValue)
       {
-        this.AccessList.DataSource = LegacyDb.forumaccess_list(PageContext.PageModuleID, forumId.Value);
+        this.AccessList.DataSource = CommonDb.forumaccess_list(PageContext.PageModuleID, forumId.Value);
         this.AccessList.DataBind();
       }
 
@@ -330,7 +330,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindParentList()
     {
-      this.ParentList.DataSource = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue);
+      this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue);
       this.ParentList.DataValueField = "ForumID";
       this.ParentList.DataTextField = "Title";
       this.ParentList.DataBind();
@@ -449,7 +449,7 @@ namespace YAF.Pages.Admin
       // If we update a forum ForumID > 0 
       if (forumId.HasValue && parentID != null)
       {
-        int dependency = LegacyDb.forum_save_parentschecker(PageContext.PageModuleID, forumId.Value, parentID);
+        int dependency = CommonDb.forum_save_parentschecker(PageContext.PageModuleID, forumId.Value, parentID);
         if (dependency > 0)
         {
           this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_CHILD_PARENT"));
@@ -470,7 +470,7 @@ namespace YAF.Pages.Admin
       // duplicate name checking...
       if (!forumId.HasValue)
       {
-        var forumList = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).AsEnumerable();
+        var forumList = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).AsEnumerable();
 
         if (forumList.Any() && !this.Get<YafBoardSettings>().AllowForumsWithSameName &&
             forumList.Any(dr => dr.Field<string>("Name") == this.Name.Text.Trim()))
@@ -487,7 +487,7 @@ namespace YAF.Pages.Admin
         themeUrl = this.ThemeList.SelectedValue;
       }
 
-      var newForumId = LegacyDb.forum_save(PageContext.PageModuleID, forumId, 
+      var newForumId = CommonDb.forum_save(PageContext.PageModuleID, forumId, 
         this.CategoryList.SelectedValue, 
         parentID, 
         this.Name.Text.Trim(), 
@@ -504,7 +504,7 @@ namespace YAF.Pages.Admin
         this.Styles.Text, 
         false);
 
-      LegacyDb.activeaccess_reset(PageContext.PageModuleID);
+      CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
       // Access
       if (forumId.HasValue || forumCopyId.HasValue)
@@ -513,7 +513,7 @@ namespace YAF.Pages.Admin
         {
           int groupId = int.Parse(item.FindControlAs<Label>("GroupID").Text);
 
-          LegacyDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
+          CommonDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
         }
       }
 

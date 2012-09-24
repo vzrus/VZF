@@ -82,7 +82,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = LegacyDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+      ((DropDownList)sender).DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }
@@ -174,7 +174,7 @@ namespace YAF.Pages.Admin
         RoleMembershipHelper.AddUserToRole(newAdmin.UserName, "Administrators");
          
         // Create Board
-        newBoardID = LegacyDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
+        newBoardID = CommonDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
           newAdmin.Email, 
           newAdmin.ProviderUserKey, 
           boardName, 
@@ -191,7 +191,7 @@ namespace YAF.Pages.Admin
         MembershipUser newAdmin = UserMembershipHelper.GetUser();
 
         // Create Board
-        newBoardID = LegacyDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
+        newBoardID = CommonDb.board_create(PageContext.PageModuleID, newAdmin.UserName, 
           newAdmin.Email, 
           newAdmin.ProviderUserKey, 
           boardName, 
@@ -326,7 +326,7 @@ namespace YAF.Pages.Admin
         {
             this.CreateNewAdminHolder.Visible = false;
 
-            using (DataTable dt = LegacyDb.board_list(PageContext.PageModuleID, this.BoardID))
+            using (DataTable dt = CommonDb.board_list(PageContext.PageModuleID, this.BoardID))
             {
                 DataRow row = dt.Rows[0];
                 this.Name.Text = (string)row["Name"];
@@ -393,7 +393,7 @@ namespace YAF.Pages.Admin
         }
 
         // Save current board settings
-        LegacyDb.board_save(PageContext.PageModuleID, this.BoardID, langFile, this.Culture.SelectedItem.Value, this.Name.Text.Trim(), this.AllowThreaded.Checked);
+        CommonDb.board_save(PageContext.PageModuleID, this.BoardID, langFile, this.Culture.SelectedItem.Value, this.Name.Text.Trim(), this.AllowThreaded.Checked);
       }
       else
       {

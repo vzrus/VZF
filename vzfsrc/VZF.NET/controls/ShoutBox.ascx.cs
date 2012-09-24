@@ -150,7 +150,7 @@ namespace YAF.Controls
 
             if (username != null && this.messageTextBox.Text != string.Empty)
             {
-                LegacyDb.shoutbox_savemessage(PageContext.PageModuleID,
+                CommonDb.shoutbox_savemessage(PageContext.PageModuleID,
                     this.PageContext.PageBoardID,
                     this.messageTextBox.Text,
                     username,
@@ -178,7 +178,7 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Clear_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            LegacyDb.shoutbox_clearmessages(PageContext.PageModuleID, this.PageContext.PageBoardID);
+            CommonDb.shoutbox_clearmessages(PageContext.PageModuleID, this.PageContext.PageBoardID);
 
             // cleared... re-load from cache...
             this.Get<IDataCache>().Remove(Constants.Cache.Shoutbox);
@@ -209,7 +209,7 @@ namespace YAF.Controls
 
             if (this.Get<YafBoardSettings>().ShowShoutboxSmiles)
             {
-                this.smiliesRepeater.DataSource = LegacyDb.smiley_listunique(PageContext.PageModuleID, this.PageContext.PageBoardID);
+                this.smiliesRepeater.DataSource = CommonDb.smiley_listunique(PageContext.PageModuleID, this.PageContext.PageBoardID);
             }
         }
 

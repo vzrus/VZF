@@ -92,7 +92,7 @@ namespace YAF.Pages.Admin
             }
 
             using (
-                DataTable dt = LegacyDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                DataTable dt = CommonDb.nntpforum_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
                     null,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("s"),
                     DBNull.Value))
@@ -143,7 +143,7 @@ namespace YAF.Pages.Admin
                 dateCutOff = DateTime.MinValue;
             }
 
-            LegacyDb.nntpforum_save(PageContext.PageModuleID, nntpForumID,
+            CommonDb.nntpforum_save(PageContext.PageModuleID, nntpForumID,
                 this.NntpServerID.SelectedValue,
                 this.GroupName.Text,
                 this.ForumID.SelectedValue,
@@ -158,10 +158,10 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            this.NntpServerID.DataSource = LegacyDb.nntpserver_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.NntpServerID.DataSource = CommonDb.nntpserver_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             this.NntpServerID.DataValueField = "NntpServerID";
             this.NntpServerID.DataTextField = "Name";
-            this.ForumID.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.ForumID.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
             this.ForumID.DataValueField = "ForumID";
             this.ForumID.DataTextField = "Title";
             this.DataBind();

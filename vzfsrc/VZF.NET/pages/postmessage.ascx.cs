@@ -352,7 +352,7 @@ namespace YAF.Pages
             }
 
             if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().AllowCreateTopicsSameName)
-                && LegacyDb.topic_findduplicate(PageContext.PageModuleID, this.TopicSubjectTextBox.Text.Trim()) == 1 && this.TopicID == null
+                && CommonDb.topic_findduplicate(PageContext.PageModuleID, this.TopicSubjectTextBox.Text.Trim()) == 1 && this.TopicID == null
                 && this.EditMessageID == null)
             {
                 this.PageContext.AddLoadMessage(this.GetText("SUBJECT_DUPLICATE"));
@@ -469,13 +469,13 @@ namespace YAF.Pages
             this.PageContext.QueryIDs = new QueryStringIDHelper(new[] { "m", "t", "q", "page" }, false);
 
             TypedMessageList currentMessage = null;
-            DataRow topicInfo = LegacyDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
+            DataRow topicInfo = CommonDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
 
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
                 currentMessage =
-                    LegacyDb.MessageList(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>()).FirstOrDefault();
+                    CommonDb.MessageList(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>()).FirstOrDefault();
 
                 this.OriginalMessage = currentMessage.Message;
 
@@ -505,7 +505,7 @@ namespace YAF.Pages
             }
             else if (this.EditMessageID != null)
             {
-                currentMessage = LegacyDb.MessageList(PageContext.PageModuleID, this.EditMessageID.ToType<int>()).FirstOrDefault();
+                currentMessage = CommonDb.MessageList(PageContext.PageModuleID, this.EditMessageID.ToType<int>()).FirstOrDefault();
 
                 this.OriginalMessage = currentMessage.Message;
 
@@ -586,7 +586,7 @@ namespace YAF.Pages
 
                     this.TopicStatus.Items.Add(new ListItem("   ", "-1"));
 
-                    foreach (DataRow row in LegacyDb.TopicStatus_List(PageContext.PageModuleID, this.PageContext.PageBoardID).Rows)
+                    foreach (DataRow row in CommonDb.TopicStatus_List(PageContext.PageModuleID, this.PageContext.PageBoardID).Rows)
                     {
                         var text = this.GetText("TOPIC_STATUS", row["TopicStatusName"].ToString());
 
@@ -628,8 +628,8 @@ namespace YAF.Pages
                 ////this.Attachments1.Visible = !this.PageContext.IsGuest;
 
                 // get topic and forum information
-                /*DataRow topicInfo = LegacyDb.topic_info(YafContext.Current.PageModuleID,this.PageContext.PageTopicID);
-                                using (DataTable dt = LegacyDb.forum_list(YafContext.Current.PageModuleID,this.PageContext.PageBoardID, this.PageContext.PageForumID))
+                /*DataRow topicInfo = CommonDb.topic_info(YafContext.Current.PageModuleID,this.PageContext.PageTopicID);
+                                using (DataTable dt = CommonDb.forum_list(YafContext.Current.PageModuleID,this.PageContext.PageBoardID, this.PageContext.PageForumID))
                                 {
                                         DataRow forumInfo = dt.Rows[0];
                                 }*/
@@ -689,7 +689,7 @@ namespace YAF.Pages
                                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("q").ToType<int>());
                             }
 
-                            var messages = LegacyDb.post_list(PageContext.PageModuleID, this.TopicID,
+                            var messages = CommonDb.post_list(PageContext.PageModuleID, this.TopicID,
                                 this.PageContext.PageUserID,
                                 this.PageContext.PageUserID,
                                 0,
@@ -798,7 +798,7 @@ namespace YAF.Pages
             // Mek Suggestion: This should be removed, resetting flags on edit is a bit lame.
             // Ederon : now it should be better, but all this code around forum/topic/message flags needs revamp
             // retrieve message flags
-            var messageFlags = new MessageFlags(LegacyDb.message_list(PageContext.PageModuleID, this.EditMessageID).Rows[0]["Flags"])
+            var messageFlags = new MessageFlags(CommonDb.message_list(PageContext.PageModuleID, this.EditMessageID).Rows[0]["Flags"])
                 {
                     IsHtml = this._forumEditor.UsesHTML,
                     IsBBCode = this._forumEditor.UsesBBCode,
@@ -807,7 +807,7 @@ namespace YAF.Pages
 
             bool isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
 
-            LegacyDb.message_update(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
+            CommonDb.message_update(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
                 this.Priority.SelectedValue,
                 this._forumEditor.Text.Trim(),
                 descriptionSave.Trim(),
@@ -858,7 +858,7 @@ namespace YAF.Pages
             DataRow forumInfo;
             bool isForumModerated = false;
 
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -892,7 +892,7 @@ namespace YAF.Pages
             string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);
 
             // Save to Db
-            topicId = LegacyDb.topic_save(PageContext.PageModuleID, this.PageContext.PageForumID,
+            topicId = CommonDb.topic_save(PageContext.PageModuleID, this.PageContext.PageForumID,
                 this.TopicSubjectTextBox.Text.Trim(),
                 this.TopicStatus.SelectedValue.Equals("-1") || this.TopicStatus.SelectedIndex.Equals(0)
                     ? string.Empty
@@ -943,7 +943,7 @@ namespace YAF.Pages
             DataRow forumInfo;
             bool isForumModerated = false;
 
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -976,7 +976,7 @@ namespace YAF.Pages
                     IsApproved = isSpamApproved
                 };
 
-            LegacyDb.message_save(PageContext.PageModuleID, this.TopicID.Value,
+            CommonDb.message_save(PageContext.PageModuleID, this.TopicID.Value,
                 this.PageContext.PageUserID,
                 this._forumEditor.Text,
                 this.User != null ? null : this.From.Text,
@@ -1067,7 +1067,7 @@ namespace YAF.Pages
 
             // Check if message is approved
             bool isApproved = false;
-            using (DataTable dt = LegacyDb.message_list(PageContext.PageModuleID, messageId))
+            using (DataTable dt = CommonDb.message_list(PageContext.PageModuleID, messageId))
             {
                 foreach (DataRow row in dt.Rows)
                 {
@@ -1188,7 +1188,7 @@ namespace YAF.Pages
                 return;
             }
 
-            string userSig = LegacyDb.user_getsignature(PageContext.PageModuleID, this.PageContext.PageUserID);
+            string userSig = CommonDb.user_getsignature(PageContext.PageModuleID, this.PageContext.PageUserID);
 
             if (userSig.IsSet())
             {
@@ -1225,7 +1225,7 @@ namespace YAF.Pages
             DataRow forumInfo;
 
             // get  forum information
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -1266,7 +1266,7 @@ namespace YAF.Pages
             DataRow forumInfo;
 
             // get topic and forum information
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 forumInfo = dt.Rows[0];
             }
@@ -1458,7 +1458,7 @@ namespace YAF.Pages
         /// </summary>
         private void InitReplyToTopic()
         {
-            DataRow topic = LegacyDb.topic_info(PageContext.PageModuleID, this.TopicID);
+            DataRow topic = CommonDb.topic_info(PageContext.PageModuleID, this.TopicID);
             var topicFlags = new TopicFlags(topic["Flags"].ToType<int>());
 
             // Ederon : 9/9/2007 - moderators can reply in locked topics
@@ -1510,7 +1510,7 @@ namespace YAF.Pages
         /// </returns>
         private int? TopicWatchedId(int userId, int topicId)
         {
-            return LegacyDb.watchtopic_check(PageContext.PageModuleID, userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
+            return CommonDb.watchtopic_check(PageContext.PageModuleID, userId, topicId).GetFirstRowColumnAsValue<int?>("WatchTopicID", null);
         }
 
         /// <summary>
@@ -1529,7 +1529,7 @@ namespace YAF.Pages
             if (topicWatchedID.HasValue && !this.PostOptions1.WatchChecked)
             {
                 // unsubscribe...
-                LegacyDb.watchtopic_delete(PageContext.PageModuleID, topicWatchedID.Value);
+                CommonDb.watchtopic_delete(PageContext.PageModuleID, topicWatchedID.Value);
             }
             else if (!topicWatchedID.HasValue && this.PostOptions1.WatchChecked)
             {
@@ -1552,7 +1552,7 @@ namespace YAF.Pages
             if (!this.TopicWatchedId(userId, topicId).HasValue)
             {
                 // subscribe to this forum
-                LegacyDb.watchtopic_add(PageContext.PageModuleID, userId, topicId);
+                CommonDb.watchtopic_add(PageContext.PageModuleID, userId, topicId);
             }
         }
 

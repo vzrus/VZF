@@ -106,7 +106,7 @@ namespace YAF.Pages
             // Add check if Albums Tab is visible 
             if (!this.PageContext.IsGuest && this.Get<YafBoardSettings>().EnableAlbum)
             {
-                int albumCount = LegacyDb.album_getstats(PageContext.PageModuleID, albumUser, null)[0];
+                int albumCount = CommonDb.album_getstats(PageContext.PageModuleID, albumUser, null)[0];
 
                 // Check if the user already has albums.
                 if (albumCount > 0)
@@ -119,7 +119,7 @@ namespace YAF.Pages
                 {
                     // Check if a user have permissions to have albums, even if he has no albums at all.
                     var usrAlbums =
-                        LegacyDb.user_getalbumsdata(PageContext.PageModuleID, albumUser, YafContext.Current.PageBoardID).GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
+                        CommonDb.user_getalbumsdata(PageContext.PageModuleID, albumUser, YafContext.Current.PageBoardID).GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
 
                     if (usrAlbums.HasValue && usrAlbums > 0)
                     {
@@ -366,7 +366,7 @@ namespace YAF.Pages
             if (this.LastPosts.Visible)
             {
                 this.LastPosts.DataSource =
-                    LegacyDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, 
+                    CommonDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, 
                     this.UserId, 
                     this.PageContext.PageUserID, 
                     10).AsEnumerable();
@@ -683,8 +683,8 @@ namespace YAF.Pages
             }
 
             this.ThanksFrom.Text =
-                LegacyDb.user_getthanks_from(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
-            int[] thanksToArray = LegacyDb.user_getthanks_to(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
+                CommonDb.user_getthanks_from(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
+            int[] thanksToArray = CommonDb.user_getthanks_to(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
             this.ThanksToTimes.Text = thanksToArray[0].ToString();
             this.ThanksToPosts.Text = thanksToArray[1].ToString();
             this.ReputationReceived.Text = userData.Points.ToString();

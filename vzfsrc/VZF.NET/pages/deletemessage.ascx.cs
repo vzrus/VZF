@@ -249,7 +249,7 @@ namespace YAF.Pages
       if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m") != null)
       {
           this._messageRow =
-              LegacyDb.message_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"))).
+              CommonDb.message_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"))).
                   GetFirstRowOrInvalid();
 
           if (!this.PageContext.ForumModeratorAccess && this.PageContext.PageUserID != (int)this._messageRow["UserID"])
@@ -306,7 +306,7 @@ namespace YAF.Pages
         // delete message...
         this.PreviewRow.Visible = true;
 
-        DataTable tempdb = LegacyDb.message_getRepliesList(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"));
+        DataTable tempdb = CommonDb.message_getRepliesList(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"));
 
         if (tempdb.Rows.Count > 0 && (this.PageContext.ForumModeratorAccess || this.PageContext.IsAdmin))
         {
@@ -364,7 +364,7 @@ namespace YAF.Pages
       // Toogle delete message -- if the message is currently deleted it will be undeleted.
       // If it's not deleted it will be marked deleted.
       // If it is the last message of the topic, the topic is also deleted
-      LegacyDb.message_delete(PageContext.PageModuleID, tmpMessageID, 
+      CommonDb.message_delete(PageContext.PageModuleID, tmpMessageID, 
         this._isModeratorChanged, 
         HttpUtility.HtmlEncode(this.ReasonEditor.Text), 
         this.PostDeleted ? 0 : 1, 
@@ -372,7 +372,7 @@ namespace YAF.Pages
         this.EraseMessage.Checked);
 
       // retrieve topic information.
-      DataRow topic = LegacyDb.topic_info(PageContext.PageModuleID, tmpTopicID);
+      DataRow topic = CommonDb.topic_info(PageContext.PageModuleID, tmpTopicID);
 
       // If topic has been deleted, redirect to topic list for active forum, else show remaining posts for topic
       if (topic == null)

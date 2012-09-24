@@ -100,7 +100,7 @@ namespace YAF.Pages.Admin
 
                     // get user(s) we are about to delete                
                     using (
-                        DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, DBNull.Value))
+                        DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, DBNull.Value))
                     {
                         // examine each if he's possible to delete
                         foreach (DataRow row in dt.Rows)
@@ -297,7 +297,7 @@ namespace YAF.Pages.Admin
             this.LoadingImage.ImageUrl = YafForumInfo.GetURLToResource("images/loader.gif");
 
             // get list of user groups for filtering
-            using (DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 // add empty item for no filtering
                 DataRow newRow = dt.NewRow();
@@ -311,7 +311,7 @@ namespace YAF.Pages.Admin
             }
 
             // get list of user ranks for filtering
-            using (DataTable dt = LegacyDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 // add empty for for no filtering
                 DataRow newRow = dt.NewRow();
@@ -451,7 +451,7 @@ namespace YAF.Pages.Admin
 
             // get users, eventually filter by groups or ranks
             using (
-                DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
                     null,
                     null,
                     this.@group.SelectedIndex <= 0 ? null : this.@group.SelectedValue,
@@ -503,7 +503,7 @@ namespace YAF.Pages.Admin
         /// </param>
         private void ExportAllUsers(string type)
         {
-            var usersList = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, true);
+            var usersList = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, true);
 
             usersList.DataSet.DataSetName = "YafUserList";
 

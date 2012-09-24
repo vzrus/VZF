@@ -109,7 +109,7 @@ namespace YAF.Controls
     /// </param>
     public void AddForumLinks(int forumID, bool noForumLink)
     {
-      using (DataTable dtLinks = LegacyDb.forum_listpath(PageContext.PageModuleID, forumID))
+      using (DataTable dtLinks = CommonDb.forum_listpath(PageContext.PageModuleID, forumID))
       {
         foreach (DataRow row in dtLinks.Rows)
         {

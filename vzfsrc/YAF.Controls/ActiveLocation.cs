@@ -425,7 +425,7 @@ namespace YAF.Controls
             {
                 if (this.Get<YafBoardSettings>().EnableActiveLocationErrorsLog)
                 {
-                    LegacyDb.eventlog_create(PageContext.PageModuleID, this.UserID,
+                    CommonDb.eventlog_create(PageContext.PageModuleID, this.UserID,
                         this,
                         "Incorrect active location string: ForumID = {0}; ForumName= {1}; ForumPage={2}; TopicID={3}; TopicName={4}; UserID={5}; UserName={6}; Attributes={7}; ForumPageName={8}"
                             .FormatWith(
@@ -487,7 +487,7 @@ namespace YAF.Controls
         string albumName;
 
         // The DataRow should not be missing in the case
-        DataRow dr = LegacyDb.album_list(PageContext.PageModuleID, null, Convert.ToInt32(albumID.Trim())).Rows[0];
+        DataRow dr = CommonDb.album_list(PageContext.PageModuleID, null, Convert.ToInt32(albumID.Trim())).Rows[0];
 
         // If album doesn't have a Title, use his ID.
         if (!string.IsNullOrEmpty(dr["Title"].ToString()))

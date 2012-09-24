@@ -532,6 +532,15 @@ namespace YAF
 
                 var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
                
+                if (forumUrl.IndexOf('&') > 0)
+                {
+                    forumUrl = forumUrl + "&g={0}&u={1}".FormatWith(ForumPages.pmessage, userId);
+                }
+                else
+                {
+                    forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
+                }
+
                 forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
                
                 var pmButton = new ThemeButton
@@ -579,7 +588,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
 
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
@@ -596,7 +605,7 @@ namespace YAF
         {
             try
             {
-                using (DataTable dt = LegacyDb.user_avatarimage(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("u")))
+                using (DataTable dt = CommonDb.user_avatarimage(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("u")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -622,7 +631,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
 
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
@@ -668,7 +677,7 @@ namespace YAF
                 userKey = user.ProviderUserKey;
             }
 
-            DataRow pageRow = LegacyDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
+            DataRow pageRow = CommonDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
                 boardID,
                 userKey,
                 HttpContext.Current.Request.UserHostAddress,
@@ -722,7 +731,7 @@ namespace YAF
                 else
                 {
                     using (
-                        DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("cover")))
+                        DataTable dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("cover")))
                     {
                         if (dt.Rows.Count > 0)
                         {
@@ -754,7 +763,7 @@ namespace YAF
                 // reset position...
                 data.Position = 0;
                 var imagesNumber =
-                    LegacyDb.album_getstats(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("album"))[1];
+                    CommonDb.album_getstats(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("album"))[1];
                 var ms = GetAlbumOrAttachmentImageResized(
                     data, 200, 200, previewCropped, imagesNumber, localizationFile, "ALBUM");
 
@@ -772,7 +781,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -799,7 +808,7 @@ namespace YAF
 
                 // ImageID
                 using (
-                    DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("image")))
+                    DataTable dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("image")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -832,14 +841,14 @@ namespace YAF
                         context.Response.OutputStream.Write(data, 0, data.Length);
 
                         // add a download count...
-                        LegacyDb.album_image_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("image"));
+                        CommonDb.album_image_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("image"));
                         break;
                     }
                 }
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -869,7 +878,7 @@ namespace YAF
             {
                 // ImageID
                 using (
-                    DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("imgprv")))
+                    DataTable dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("imgprv")))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -926,7 +935,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -944,7 +953,7 @@ namespace YAF
             {
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("a"), null, 0, 1000))
+                    DataTable dt = CommonDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("a"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -992,14 +1001,14 @@ namespace YAF
                             "attachment; filename={0}".FormatWith(
                                 HttpUtility.UrlPathEncode(row["FileName"].ToString()).Replace("+", "_")));
                         context.Response.OutputStream.Write(data, 0, data.Length);
-                        LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("a"));
+                        CommonDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("a"));
                         break;
                     }
                 }
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -1031,7 +1040,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, 1);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, 1);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -1056,13 +1065,13 @@ namespace YAF
                 if (CheckETag(context, eTag))
                 {
                     // found eTag... no need to resend/create this image -- just mark another view?
-                    LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
+                    CommonDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
                     return;
                 }
 
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("i"), null, 0, 1000))
+                    DataTable dt = CommonDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("i"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -1110,14 +1119,14 @@ namespace YAF
                         context.Response.OutputStream.Write(data, 0, data.Length);
 
                         // add a download count...
-                        LegacyDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
+                        CommonDb.attachment_download(YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("i"));
                         break;
                     }
                 }
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
@@ -1161,7 +1170,7 @@ namespace YAF
             {
                 // AttachmentID
                 using (
-                    DataTable dt = LegacyDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("p"), null, 0, 1000))
+                    DataTable dt = CommonDb.attachment_list(YafContext.Current.PageModuleID, null, context.Request.QueryString.GetFirstOrDefault("p"), null, 0, 1000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -1235,7 +1244,7 @@ namespace YAF
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
 
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
@@ -1253,7 +1262,7 @@ namespace YAF
             if (General.GetCurrentTrustLevel() < AspNetHostingPermissionLevel.Medium)
             {
                 // don't bother... not supported.
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null,
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null,
                     this.GetType().ToString(),
                     "Remote Avatar is NOT supported on your Hosting Permission Level (must be High)",
                     EventLogTypes.Error);

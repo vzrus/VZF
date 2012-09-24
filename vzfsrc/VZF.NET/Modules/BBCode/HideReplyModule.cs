@@ -83,7 +83,7 @@ namespace YAF.Modules.BBCode
 
 
             if (DisplayUserID == userId ||
-                LegacyDb.user_RepliedTopic(PageContext.PageModuleID, messageId.ToType<int>(), userId))
+                CommonDb.user_RepliedTopic(PageContext.PageModuleID, messageId.ToType<int>(), userId))
             {
                 // Show hiddent content if user is the poster or have thanked the poster.
                 shownContent = hiddenContent;

@@ -99,18 +99,18 @@ namespace YAF.Core
 
             try
             {
-                userID = LegacyDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, displayName, user.Email, user.ProviderUserKey, user.IsApproved);
+                userID = CommonDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, displayName, user.Email, user.ProviderUserKey, user.IsApproved);
 
                 foreach (string role in GetRolesForUser(user.UserName))
                 {
-                    LegacyDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
+                    CommonDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
                 }
 
                 // YAF.Classes.Data.DB.eventlog_create(DBNull.Value, user, string.Format("Created forum user {0}", user.UserName));
             }
             catch (Exception x)
             {
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, DBNull.Value, "CreateForumUser", x);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, DBNull.Value, "CreateForumUser", x);
             }
 
             return userID;
@@ -252,7 +252,7 @@ namespace YAF.Core
         /// <param name="userName">Name of the user.</param>
         public static void SetupUserRoles(int pageBoardID, [NotNull] string userName)
         {
-            using (DataTable dt = LegacyDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
+            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
             {
                 foreach (string roleName in from DataRow row in dt.Rows
                                             let roleFlags = new GroupFlags(row["Flags"])
@@ -296,7 +296,7 @@ namespace YAF.Core
         public static void SyncRoles(int pageModuleID,int pageBoardID)
         {
             // get all the groups in YAF DB and create them if they do not exist as a role in membership
-            using (DataTable dt = LegacyDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
+            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
             {
                 foreach (var name in from DataRow row in dt.Rows let name = (string)row["Name"] let roleFlags = new GroupFlags(row["Flags"]) where name.IsSet() && !roleFlags.IsGuest && !RoleExists(name) select name)
                 {
@@ -331,13 +331,13 @@ namespace YAF.Core
         public static void SyncUsers(int moduleID, int pageBoardID)
         {
             // first sync unapproved users...
-            using (DataTable dt = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, false))
+            using (DataTable dt = CommonDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, false))
             {
                 MigrateUsersFromDataTable(false, dt);
             }
 
             // then sync approved users...
-            using (DataTable dt = LegacyDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, true))
+            using (DataTable dt = CommonDb.user_list((int?) YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, true))
             {
                 MigrateUsersFromDataTable(true, dt);
             }
@@ -371,7 +371,7 @@ namespace YAF.Core
             if (user.ProviderUserKey == null)
             {
                 // problem -- log and move on...
-                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId,
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId,
                     "UpdateForumUser",
                     "Null User Provider Key for UserName {0}. Please check your provider key settings for your ASP.NET membership provider.",
                     user.UserName);
@@ -382,10 +382,10 @@ namespace YAF.Core
             // is this a new user?
             bool isNewUser = userId <= 0;
 
-            userId = LegacyDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, null, user.Email, user.ProviderUserKey, user.IsApproved);
+            userId = CommonDb.user_aspnet(YafContext.Current.PageModuleID, pageBoardID, user.UserName, null, user.Email, user.ProviderUserKey, user.IsApproved);
 
             // get user groups...
-            DataTable groupTable = LegacyDb.group_member(YafContext.Current.PageModuleID, pageBoardID, userId);
+            DataTable groupTable = CommonDb.group_member(YafContext.Current.PageModuleID, pageBoardID, userId);
             string[] userRoles = GetRolesForUser(user.UserName);
 
             if (Config.IsDotNetNuke && roles != null)
@@ -404,7 +404,7 @@ namespace YAF.Core
             foreach (string role in userRoles.Where(role => !GroupInGroupTable(role, groupTable)))
             {
                 // add the role...
-                LegacyDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
+                CommonDb.user_setrole(YafContext.Current.PageModuleID, pageBoardID, user.ProviderUserKey, role);
             }
 
             // remove groups...
@@ -412,7 +412,7 @@ namespace YAF.Core
                 groupTable.AsEnumerable().Where(row => !userRoles.Contains(row["Name"].ToString())))
             {
                 // remove since there is no longer an association in the membership...
-                LegacyDb.usergroup_save(YafContext.Current.PageModuleID, userId, row["GroupID"], 0);
+                CommonDb.usergroup_save(YafContext.Current.PageModuleID, userId, row["GroupID"], 0);
             }
 
             if (isNewUser && userId > 0)
@@ -429,11 +429,11 @@ namespace YAF.Core
                                                   == UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
                     // save the settings...
-                    LegacyDb.user_savenotification(YafContext.Current.PageModuleID, userId, true, autoWatchTopicsEnabled, defaultNotificationSetting, defaultSendDigestEmail);
+                    CommonDb.user_savenotification(YafContext.Current.PageModuleID, userId, true, autoWatchTopicsEnabled, defaultNotificationSetting, defaultSendDigestEmail);
                 }
                 catch (Exception ex)
                 {
-                    LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, "UpdateForumUser", "Failed to save default notifications for new user: {0}".FormatWith(ex));
+                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, "UpdateForumUser", "Failed to save default notifications for new user: {0}".FormatWith(ex));
                 }
             }
 
@@ -534,12 +534,12 @@ namespace YAF.Core
 
                             if (status != MembershipCreateStatus.Success)
                             {
-                                LegacyDb.eventlog_create(YafContext.Current.PageModuleID, 0, "MigrateUsers", "Failed to create user {0}: {1}".FormatWith(name, status));
+                                CommonDb.eventlog_create(YafContext.Current.PageModuleID, 0, "MigrateUsers", "Failed to create user {0}: {1}".FormatWith(name, status));
                             }
                             else
                             {
                                 // update the YAF table with the ProviderKey -- update the provider table if this is the YAF provider...
-                                LegacyDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, isYafProvider);
+                                CommonDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, isYafProvider);
 
                                 user.Comment = "Migrated from YetAnotherForum.NET";
 
@@ -628,11 +628,11 @@ namespace YAF.Core
                         else
                         {
                             // just update the link just in case...
-                            LegacyDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, false);
+                            CommonDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, false);
                         }
 
                         // setup roles for this user...
-                        using (DataTable dtGroups = LegacyDb.usergroup_list(YafContext.Current.PageModuleID, row["UserID"]))
+                        using (DataTable dtGroups = CommonDb.usergroup_list(YafContext.Current.PageModuleID, row["UserID"]))
                         {
                             foreach (DataRow rowGroup in dtGroups.Rows)
                             {

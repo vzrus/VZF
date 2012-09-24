@@ -156,7 +156,7 @@ namespace YAF.Core.Tasks
       {
         this.Logger.Info("Starting Prune Task for ForumID {0}, {1} Days, Perm Delete {2}.", this.ForumId, this.Days, this.PermDelete);
 
-        int count = LegacyDb.topic_prune(YafContext.Current.PageModuleID, (int)this.Data, this.ForumId, this.Days, this.PermDelete);
+        int count = CommonDb.topic_prune(YafContext.Current.PageModuleID, (int)this.Data, this.ForumId, this.Days, this.PermDelete);
 
         this.Logger.Info("Prune Task Complete. Pruned {0} topics.", count);
       }

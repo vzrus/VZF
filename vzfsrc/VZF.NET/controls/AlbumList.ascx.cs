@@ -169,8 +169,8 @@ namespace YAF.Controls
             // vzrus: used if someone moderates usuful if a moderation is implemented 
             /* else 
             {
-                DataTable sigData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
-                DataTable usrAlbumsData = LegacyDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+                DataTable sigData = CommonDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
+                DataTable usrAlbumsData = CommonDb.user_getalbumsdata(this.PageContext.PageUserID, YafContext.Current.PageBoardID);
                 var allowedAlbums = usrAlbumsData.GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
                 var numAlbums = usrAlbumsData.GetFirstRowColumnAsValue<int?>("NumAlbums", null);
           
@@ -206,7 +206,7 @@ namespace YAF.Controls
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().AlbumsPerPage;
 
             // set the Datatable
-            var albumListDT = LegacyDb.album_list(PageContext.PageModuleID, this.UserID, null);
+            var albumListDT = CommonDb.album_list(PageContext.PageModuleID, this.UserID, null);
 
             if ((albumListDT == null) || (albumListDT.Rows.Count <= 0))
             {

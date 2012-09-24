@@ -125,11 +125,11 @@ namespace YAF.Pages
                 case "delete":
                     if (this.IsOutbox)
                     {
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument, true);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument, true);
                     }
                     else
                     {
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, e.CommandArgument);
                     }
 
                     this.BindData();
@@ -200,7 +200,7 @@ namespace YAF.Pages
         {
             using (
                 DataTable dt =
-                    LegacyDb.pmessage_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm"))))
+                    CommonDb.pmessage_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm"))))
             {
                 if (dt.Rows.Count > 0)
                 {
@@ -254,7 +254,7 @@ namespace YAF.Pages
 
             var userPmessageId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("pm").ToType<int>();
 
-            LegacyDb.pmessage_markread(PageContext.PageModuleID, userPmessageId);
+            CommonDb.pmessage_markread(PageContext.PageModuleID, userPmessageId);
             this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(this.PageContext.PageUserID));
             this.Get<IRaiseEvent>().Raise(
                 new UpdateUserPrivateMessageEvent(this.PageContext.PageUserID, userPmessageId));

@@ -112,7 +112,7 @@ namespace YAF.Pages
         this.ReturnModBtn.Visible = true;
       }
 
-      this.originalRow = LegacyDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID);
+      this.originalRow = CommonDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID);
 
       if (this.originalRow.Rows.Count <= 0)
       {
@@ -164,13 +164,13 @@ namespace YAF.Pages
     private void BindData()
     {
       // Fill revisions list repeater.
-      DataTable dt = LegacyDb.messagehistory_list(PageContext.PageModuleID, this.messageID, this.PageContext.BoardSettings.MessageHistoryDaysToLog);
+      DataTable dt = CommonDb.messagehistory_list(PageContext.PageModuleID, this.messageID, this.PageContext.BoardSettings.MessageHistoryDaysToLog);
       this.RevisionsList.DataSource = dt.AsEnumerable();
 
       this.singleReport = dt.Rows.Count <= 1;
 
       // Fill current message repeater
-      this.CurrentMessageRpt.DataSource = LegacyDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID).AsEnumerable();
+      this.CurrentMessageRpt.DataSource = CommonDb.message_secdata(PageContext.PageModuleID, this.messageID, this.PageContext.PageUserID).AsEnumerable();
       this.CurrentMessageRpt.Visible = true;
 
       this.DataBind();

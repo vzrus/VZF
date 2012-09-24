@@ -55,7 +55,7 @@ namespace YAF.Core
                     () =>
                         {
                             // get the guest user for this board...
-                            guestUserID = LegacyDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
+                            guestUserID = CommonDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
 
                             if (!guestUserID.HasValue)
                             {
@@ -63,7 +63,7 @@ namespace YAF.Core
                                 // FixGuestUserForBoard(YafContext.Current.PageBoardID);
 
                                 // attempt to get the guestUser again...
-                                guestUserID = LegacyDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
+                                guestUserID = CommonDb.user_guest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
                             }
 
                             if (!guestUserID.HasValue)
@@ -102,7 +102,7 @@ namespace YAF.Core
             get
             {
                 return
-                    LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
+                    CommonDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
             }
         }
 
@@ -134,7 +134,7 @@ namespace YAF.Core
                     int id = GetUserIDFromProviderUserKey(user.ProviderUserKey);
                     if (id > 0)
                     {
-                        LegacyDb.user_approve(YafContext.Current.PageModuleID, id);
+                        CommonDb.user_approve(YafContext.Current.PageModuleID, id);
                     }
                 }
 
@@ -163,7 +163,7 @@ namespace YAF.Core
                 }
 
                 YafContext.Current.Get<MembershipProvider>().UpdateUser(user);
-                LegacyDb.user_approve(YafContext.Current.PageModuleID, userID);
+                CommonDb.user_approve(YafContext.Current.PageModuleID, userID);
 
                 return true;
             }
@@ -212,7 +212,7 @@ namespace YAF.Core
                     allUsers.Cast<MembershipUser>().Where(user => !user.IsApproved && user.CreationDate < createdCutoff))
                 {
                     // delete this user...
-                    LegacyDb.user_delete(YafContext.Current.PageModuleID, GetUserIDFromProviderUserKey(user.ProviderUserKey));
+                    CommonDb.user_delete(YafContext.Current.PageModuleID, GetUserIDFromProviderUserKey(user.ProviderUserKey));
                     YafContext.Current.Get<MembershipProvider>().DeleteUser(user.UserName, true);
                     YafContext.Current.Get<ILogger>().UserDeleted(YafContext.Current.PageUserID, "UserMembershipHelper.DeleteAllUnapproved", "User {0} was deleted by user id {1} as unapproved.".FormatWith(user.UserName, YafContext.Current.PageUserID));
                 }
@@ -239,7 +239,7 @@ namespace YAF.Core
                     HttpContext.Current.Server.MapPath(
                         string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
 
-                using (DataTable dt = LegacyDb.album_list(YafContext.Current.PageModuleID, userID, null))
+                using (DataTable dt = CommonDb.album_list(YafContext.Current.PageModuleID, userID, null))
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
@@ -248,7 +248,7 @@ namespace YAF.Core
                 }
 
                 YafContext.Current.Get<MembershipProvider>().DeleteUser(userName, true);
-                LegacyDb.user_delete(YafContext.Current.PageModuleID, userID);
+                CommonDb.user_delete(YafContext.Current.PageModuleID, userID);
                 YafContext.Current.Get<ILogger>().UserDeleted(YafContext.Current.PageUserID, "UserMembershipHelper.DeleteUser", "User {0} was deleted by user id {1}.".FormatWith(userName, YafContext.Current.PageUserID));
                 
                 // clear the cache
@@ -504,7 +504,7 @@ namespace YAF.Core
         /// </returns>
         public static int GetUserIDFromProviderUserKey(object providerUserKey)
         {
-            int userID = LegacyDb.user_get(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, providerUserKey.ToString());
+            int userID = CommonDb.user_get(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, providerUserKey.ToString());
             return userID;
         }
 
@@ -570,14 +570,14 @@ namespace YAF.Core
         {
             if (!allowCached)
             {
-                return LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value).GetFirstRow();
+                return CommonDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value).GetFirstRow();
             }
 
             // get the item cached...
             return
                 YafContext.Current.Get<IDataCache>().GetOrSet(
                     Constants.Cache.UserListForID.FormatWith(userID),
-                    () => LegacyDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value),
+                    () => CommonDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, userID, DBNull.Value),
                     TimeSpan.FromMinutes(5)).GetFirstRow();
         }
 
@@ -672,7 +672,7 @@ namespace YAF.Core
 
                 YafContext.Current.Get<MembershipProvider>().UpdateUser(user);
 
-                LegacyDb.user_aspnet(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, user.UserName, null, newEmail, user.ProviderUserKey, user.IsApproved);
+                CommonDb.user_aspnet(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, user.UserName, null, newEmail, user.ProviderUserKey, user.IsApproved);
 
                 return true;
             }

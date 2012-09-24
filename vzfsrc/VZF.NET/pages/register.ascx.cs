@@ -378,7 +378,7 @@ namespace YAF.Pages
         // save the time zone...
         int userId = UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey);
 
-        LegacyDb.user_save(PageContext.PageModuleID, userId, 
+        CommonDb.user_save(PageContext.PageModuleID, userId, 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -401,7 +401,7 @@ namespace YAF.Pages
                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
         // save the settings...
-        LegacyDb.user_savenotification(PageContext.PageModuleID, userId, 
+        CommonDb.user_savenotification(PageContext.PageModuleID, userId, 
             true, 
             autoWatchTopicsEnabled, 
             this.Get<YafBoardSettings>().DefaultNotificationSetting, 
@@ -524,7 +524,7 @@ namespace YAF.Pages
         // Trying to consume data about user IP whereabouts
         if (this.Get<YafBoardSettings>().EnableIPInfoService && this._UserIpLocator["StatusCode"] != "OK")
         {
-            LegacyDb.eventlog_create(PageContext.PageModuleID, null, this.GetType().ToString(), "Geolocation Service reports: " + this._UserIpLocator["StatusMessage"], EventLogTypes.Information);
+            CommonDb.eventlog_create(PageContext.PageModuleID, null, this.GetType().ToString(), "Geolocation Service reports: " + this._UserIpLocator["StatusMessage"], EventLogTypes.Information);
         }
 
         if (this.Get<YafBoardSettings>().EnableIPInfoService && this._UserIpLocator.Count > 0 && this._UserIpLocator["StatusCode"] == "OK")
@@ -645,7 +645,7 @@ namespace YAF.Pages
       string hash = FormsAuthentication.HashPasswordForStoringInConfigFile(hashinput, "md5");
 
       // save verification record...
-      LegacyDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
+      CommonDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
 
       var verifyEmail = new YafTemplateEmail("VERIFYEMAIL");
 
@@ -741,7 +741,7 @@ namespace YAF.Pages
           string.IsNullOrEmpty(this.Get<YafBoardSettings>().RecaptchaPrivateKey))
       {
         // this.PageContext.AddLoadMessage(this.GetText("RECAPTCHA_BADSETTING"));              
-        LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, "Private or public key for Recapture required!");
+        CommonDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this, "Private or public key for Recapture required!");
         YafBuildLink.AccessDenied();
       }
 

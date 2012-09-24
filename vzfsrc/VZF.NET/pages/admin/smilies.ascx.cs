@@ -138,7 +138,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       this.Pager.PageSize = 25;
-      DataView dv = LegacyDb.smiley_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).DefaultView;
+      DataView dv = CommonDb.smiley_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).DefaultView;
       this.Pager.Count = dv.Count;
 
       var pds = new PagedDataSource
@@ -181,7 +181,7 @@ namespace YAF.Pages.Admin
           YafBuildLink.Redirect(ForumPages.admin_smilies_edit, "s={0}", e.CommandArgument);
           break;
         case "moveup":
-          LegacyDb.smiley_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, -1);
+          CommonDb.smiley_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, -1);
 
           // invalidate the cache...
           this.Get<IDataCache>().Remove(Constants.Cache.Smilies);
@@ -189,7 +189,7 @@ namespace YAF.Pages.Admin
           this.Get<IObjectStore>().RemoveOf<IProcessReplaceRules>();
           break;
         case "movedown":
-          LegacyDb.smiley_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, 1);
+          CommonDb.smiley_resort(PageContext.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument, 1);
 
           // invalidate the cache...
           this.Get<IDataCache>().Remove(Constants.Cache.Smilies);
@@ -197,7 +197,7 @@ namespace YAF.Pages.Admin
           this.Get<IObjectStore>().RemoveOf<IProcessReplaceRules>();
           break;
         case "delete":
-          LegacyDb.smiley_delete(PageContext.PageModuleID, e.CommandArgument);
+          CommonDb.smiley_delete(PageContext.PageModuleID, e.CommandArgument);
 
           // invalidate the cache...
           this.Get<IDataCache>().Remove(Constants.Cache.Smilies);

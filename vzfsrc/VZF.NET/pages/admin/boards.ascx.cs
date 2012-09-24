@@ -114,7 +114,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      this.List.DataSource = LegacyDb.board_list(PageContext.PageModuleID, null);
+      this.List.DataSource = CommonDb.board_list(PageContext.PageModuleID, null);
       this.DataBind();
     }
 
@@ -135,7 +135,7 @@ namespace YAF.Pages.Admin
           YafBuildLink.Redirect(ForumPages.admin_editboard, "b={0}", e.CommandArgument);
           break;
         case "delete":
-          LegacyDb.board_delete(PageContext.PageModuleID, e.CommandArgument);
+          CommonDb.board_delete(PageContext.PageModuleID, e.CommandArgument);
           this.BindData();
           break;
       }

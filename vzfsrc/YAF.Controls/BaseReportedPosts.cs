@@ -121,7 +121,7 @@ namespace YAF.Controls
       // TODO: Needs better commentting.
       writer.WriteLine(@"<div id=""{0}"" class=""yafReportedPosts"">".FormatWith(this.ClientID));
 
-      DataTable reportersList = LegacyDb.message_listreporters((int?) PageContext.PageModuleID, this.MessageID);
+      DataTable reportersList = CommonDb.message_listreporters((int?) PageContext.PageModuleID, this.MessageID);
 
         if (reportersList.Rows.Count <= 0)
         {
@@ -147,7 +147,7 @@ namespace YAF.Controls
             if (!string.IsNullOrEmpty(this.ResolvedDate))
             {
                 string resolvedByName =
-                    LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ResolvedBy.ToType<int>(), true).Rows[0]["Name"].ToString();
+                    CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ResolvedBy.ToType<int>(), true).Rows[0]["Name"].ToString();
 
                 writer.Write(@"<tr class=""header2""><td>");
                 writer.Write(

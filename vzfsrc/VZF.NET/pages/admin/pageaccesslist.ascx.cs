@@ -119,7 +119,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       // list admins but not host admins
-        this.List.DataSource = LegacyDb.admin_pageaccesslist(PageContext.PageModuleID, null, true);
+        this.List.DataSource = CommonDb.admin_pageaccesslist(PageContext.PageModuleID, null, true);
         this.DataBind();
     }
 

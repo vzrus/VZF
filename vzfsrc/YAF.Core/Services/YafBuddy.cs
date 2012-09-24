@@ -93,7 +93,7 @@ namespace YAF.Core.Services
     {
       this.ClearCache(toUserID);
 
-      return LegacyDb.buddy_addrequest(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, toUserID);
+      return CommonDb.buddy_addrequest(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, toUserID);
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace YAF.Core.Services
     public string ApproveRequest(int toUserID, bool mutual)
     {
       this.ClearCache(toUserID);
-      return LegacyDb.buddy_approveRequest(YafContext.Current.PageModuleID, toUserID, YafContext.Current.PageUserID, mutual);
+      return CommonDb.buddy_approveRequest(YafContext.Current.PageModuleID, toUserID, YafContext.Current.PageUserID, mutual);
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ namespace YAF.Core.Services
     public string DenyRequest(int toUserID)
     {
       this.ClearCache(toUserID);
-      return LegacyDb.buddy_denyRequest(YafContext.Current.PageModuleID, toUserID, YafContext.Current.PageUserID);
+      return CommonDb.buddy_denyRequest(YafContext.Current.PageModuleID, toUserID, YafContext.Current.PageUserID);
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ namespace YAF.Core.Services
     public string Remove(int toUserID)
     {
       this.ClearCache(toUserID);
-      return LegacyDb.buddy_remove(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, toUserID);
+      return CommonDb.buddy_remove(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, toUserID);
     }
 
     #endregion

@@ -60,7 +60,7 @@ namespace YAF.Controls
     /// </summary>
     private void BindData()
     {
-      DataTable dt = LegacyDb.usergroup_list(PageContext.PageModuleID, this.PageContext.PageUserID);
+      DataTable dt = CommonDb.usergroup_list(PageContext.PageModuleID, this.PageContext.PageUserID);
 
       if (YafContext.Current.BoardSettings.UseStyledNicks)
       {

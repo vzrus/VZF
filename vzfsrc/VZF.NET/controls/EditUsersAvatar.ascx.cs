@@ -99,7 +99,7 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void DeleteAvatar_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            LegacyDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
+            CommonDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
 
             // clear the cache for this user...
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this._currentUserID));
@@ -133,7 +133,7 @@ namespace YAF.Controls
             if (this.Request.QueryString.GetFirstOrDefault("av") != null)
             {
                 // save the avatar right now...
-                LegacyDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID,
+                CommonDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID,
                     "{0}{1}".FormatWith(
                         BaseUrlBuilder.BaseUrl, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("av")),
                     null,
@@ -189,7 +189,7 @@ namespace YAF.Controls
             }
 
             // update
-            LegacyDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID, this.Avatar.Text.Trim(), null, null);
+            CommonDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID, this.Avatar.Text.Trim(), null, null);
 
             // clear the cache for this user...
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this._currentUserID));
@@ -235,9 +235,9 @@ namespace YAF.Controls
                 }
 
                 // Delete old first...
-                LegacyDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
+                CommonDb.user_deleteavatar(PageContext.PageModuleID, this._currentUserID);
 
-                LegacyDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID,
+                CommonDb.user_saveavatar(PageContext.PageModuleID, this._currentUserID,
                     null,
                     resized ?? this.File.PostedFile.InputStream,
                     this.File.PostedFile.ContentType);
@@ -277,7 +277,7 @@ namespace YAF.Controls
         {
             DataRow row;
 
-            using (DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._currentUserID, null))
+            using (DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._currentUserID, null))
             {
                 row = dt.Rows[0];
             }

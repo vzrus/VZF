@@ -451,7 +451,7 @@ namespace YAF.Core.Tasks
                 this.Logger.Info(
                     "Starting Forum Update||Add Task for ForumID {0}, {1} CategoryID, ParentID {2}.",
                     this.ForumId, this.CategoryId, this.ParentId);
-                _forumOut = LegacyDb.forum_save(YafContext.Current.PageModuleID, this.ForumId, this.CategoryId, this.ParentId, this.Name,
+                _forumOut = CommonDb.forum_save(YafContext.Current.PageModuleID, this.ForumId, this.CategoryId, this.ParentId, this.Name,
                                                    this.Description,
                                                    this.SortOrder, this.Locked, this.Hidden, this.IsTest, this.Moderated,
                                                    this.AccessMaskId, this.RemoteURL, this.ThemeURL, this.ImageURL,

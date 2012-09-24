@@ -63,7 +63,7 @@ namespace YAF.Pages.Admin
         /// <summary>
         ///   The board object stats.
         /// </summary>
-        private DataRow boardObjectStats = LegacyDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
+        private DataRow boardObjectStats = CommonDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
 
         /// <summary>
         ///   The random guid.
@@ -137,7 +137,7 @@ namespace YAF.Pages.Admin
 
             string mesRetStr = sb.ToString();
 
-            LegacyDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this.GetType().ToString(), mesRetStr, EventLogTypes.Information);
+            CommonDb.eventlog_create(PageContext.PageModuleID, this.PageContext.PageUserID, this.GetType().ToString(), mesRetStr, EventLogTypes.Information);
 
             this.PageContext.AddLoadMessage(mesRetStr);
             YafBuildLink.Redirect(ForumPages.admin_test_data);
@@ -154,7 +154,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void ForumsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable forums_category = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>());
+            DataTable forums_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>());
             this.ForumsParent.DataSource = forums_category;
             this.ForumsParent.DataBind();
         }
@@ -226,20 +226,20 @@ namespace YAF.Pages.Admin
 
             this.TimeZones.DataSource = StaticDataHelper.TimeZones();
 
-            DataTable categories = LegacyDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            DataTable categories = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
             this.ForumsCategory.DataSource = categories;
             this.TopicsCategory.DataSource = categories;
             this.PostsCategory.DataSource = categories;
 
             // Access Mask Lists               
-            this.ForumsStartMask.DataSource = LegacyDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.ForumsStartMask.DataSource = CommonDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
-            this.ForumsGroups.DataSource = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.ForumsGroups.DataSource = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
             // Board lists
-            this.UsersBoardsList.DataSource = LegacyDb.board_list(PageContext.PageModuleID, null);
+            this.UsersBoardsList.DataSource = CommonDb.board_list(PageContext.PageModuleID, null);
             this.CategoriesBoardsList.DataSource = this.UsersBoardsList.DataSource;
             this.PMessagesBoardsList.DataSource = this.UsersBoardsList.DataSource;
 
@@ -304,7 +304,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void PostsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable posts_category = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>());
+            DataTable posts_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>());
             this.PostsForum.DataSource = posts_category;
             this.PostsForum.DataBind();
         }
@@ -327,7 +327,7 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            DataTable topics = LegacyDb.topic_list(PageContext.PageModuleID, this.PostsForum.SelectedValue.ToType<int>(),
+            DataTable topics = CommonDb.topic_list(PageContext.PageModuleID, this.PostsForum.SelectedValue.ToType<int>(),
                 this.PageContext.PageUserID,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
@@ -352,7 +352,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void TopicsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable topic_forums = LegacyDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>());
+            DataTable topic_forums = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>());
             this.TopicsForum.DataSource = topic_forums;
             this.TopicsForum.DataBind();
         }
@@ -412,7 +412,7 @@ namespace YAF.Pages.Admin
             for (i = 0; i < _boardNumber; i++)
             {
                 string boardName = this.BoardPrefixTB.Text.Trim() + Guid.NewGuid();
-                int curboard = LegacyDb.board_create(PageContext.PageModuleID, this.PageContext.User.UserName,
+                int curboard = CommonDb.board_create(PageContext.PageModuleID, this.PageContext.User.UserName,
                     this.PageContext.User.Email,
                     this.PageContext.User.ProviderUserKey,
                     boardName,
@@ -647,8 +647,8 @@ namespace YAF.Pages.Admin
                         string catName = this.CategoryPrefixTB.Text.Trim() + Guid.NewGuid();
 
                         // TODO: should return number of categories created 
-                        LegacyDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100);
-                        DataTable dt = LegacyDb.category_simplelist(PageContext.PageModuleID, 0, 10000);
+                        CommonDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100);
+                        DataTable dt = CommonDb.category_simplelist(PageContext.PageModuleID, 0, 10000);
 
                         foreach (DataRow dr in dt.Rows.Cast<DataRow>().Where(dr => dr["Name"].ToString() == catName))
                         {
@@ -763,8 +763,8 @@ namespace YAF.Pages.Admin
             {
                 long _forumID = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
-                DataTable _accessForumList = LegacyDb.forumaccess_list(PageContext.PageModuleID, _forumID);
-                _forumID = LegacyDb.forum_save(PageContext.PageModuleID, _forumID,
+                DataTable _accessForumList = CommonDb.forumaccess_list(PageContext.PageModuleID, _forumID);
+                _forumID = CommonDb.forum_save(PageContext.PageModuleID, _forumID,
                     categoryID,
                     parentID,
                     this.ForumPrefixTB.Text.Trim() + this.randomGuid,
@@ -788,12 +788,12 @@ namespace YAF.Pages.Admin
 
                 for (int i1 = 0; i1 < _accessForumList.Rows.Count; i1++)
                 {
-                    LegacyDb.forumaccess_save(PageContext.PageModuleID, _forumID,
+                    CommonDb.forumaccess_save(PageContext.PageModuleID, _forumID,
                         _accessForumList.Rows[i1]["GroupID"],
                         _accessForumList.Rows[i1]["AccessMaskID"].ToType<int>());
                 }
 
-                LegacyDb.forumaccess_save(PageContext.PageModuleID, _forumID, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
+                CommonDb.forumaccess_save(PageContext.PageModuleID, _forumID, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
 
                 if (_topicsToCreate <= 0)
                 {
@@ -843,8 +843,8 @@ namespace YAF.Pages.Admin
             for (i = 0; i < numPMessages; i++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                LegacyDb.pmessage_save(PageContext.PageModuleID, LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_fromUser).ProviderUserKey),
-                    LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey),
+                CommonDb.pmessage_save(PageContext.PageModuleID, CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_fromUser).ProviderUserKey),
+                    CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey),
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     "{0}{1}   {2}".FormatWith(pmessagePrefix, this.randomGuid, this.PMessageText.Text.Trim()),
                     6, 
@@ -853,10 +853,10 @@ namespace YAF.Pages.Admin
 
             if (this.MarkRead.Checked)
             {
-                int userAID = LegacyDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey);
-                foreach (DataRow dr in LegacyDb.pmessage_list(PageContext.PageModuleID, null, userAID, null).Rows)
+                int userAID = CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey);
+                foreach (DataRow dr in CommonDb.pmessage_list(PageContext.PageModuleID, null, userAID, null).Rows)
                 {
-                    LegacyDb.pmessage_markread(PageContext.PageModuleID, dr["PMessageID"]);
+                    CommonDb.pmessage_markread(PageContext.PageModuleID, dr["PMessageID"]);
 
                     // Clearing cache with old permissions data...
                     this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(userAID));
@@ -925,7 +925,7 @@ namespace YAF.Pages.Admin
             for (iposts = 0; iposts < numMessages; iposts++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                LegacyDb.message_save(PageContext.PageModuleID, topicID,
+                CommonDb.message_save(PageContext.PageModuleID, topicID,
                     this.PageContext.PageUserID,
                     "msgd-" + this.randomGuid + "  " + this.MyMessage.Text.Trim(),
                     this.PageContext.User.UserName,
@@ -1013,7 +1013,7 @@ namespace YAF.Pages.Admin
                 this.randomGuid = Guid.NewGuid().ToString();
                 object pollID = null;
 
-                long topicID = LegacyDb.topic_save(PageContext.PageModuleID, forumID,
+                long topicID = CommonDb.topic_save(PageContext.PageModuleID, forumID,
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     string.Empty,
                     string.Empty,
@@ -1062,7 +1062,7 @@ namespace YAF.Pages.Admin
                             false,
                             false,
                             false));
-                    pollID = LegacyDb.poll_save(PageContext.PageModuleID, pollList);
+                    pollID = CommonDb.poll_save(PageContext.PageModuleID, pollList);
                 }
 
                 if (_messagesToCreate > 0)
@@ -1217,7 +1217,7 @@ namespace YAF.Pages.Admin
                         !(this.UsersBoardsList.Items[iboards].Value.ToType<int>() == YafContext.Current.PageBoardID &&
                           _excludeCurrentBoard))
                     {
-                        LegacyDb.user_save(PageContext.PageModuleID, LegacyDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
+                        CommonDb.user_save(PageContext.PageModuleID, CommonDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
                             boardID,
                             null,
                             null,

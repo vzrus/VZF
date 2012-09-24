@@ -396,7 +396,7 @@ namespace YAF.Pages
             using (
                 DataTable dt =
                     this.TabledCleanUpByDate(
-                        LegacyDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                        CommonDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryActiveId,
                             this.PageContext.PageUserID,
                             toActDate,
@@ -516,7 +516,7 @@ namespace YAF.Pages
             using (
                 DataTable dt =
                     this.TabledCleanUpByDate(
-                        LegacyDb.topic_favorite_details(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                        CommonDb.topic_favorite_details(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryActiveId,
                             this.PageContext.PageUserID,
                             toFavDate,
@@ -610,7 +610,7 @@ namespace YAF.Pages
         {
             var syndicationItems = new List<SyndicationItem>();
             using (
-                DataTable dt = LegacyDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false))
+                DataTable dt = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 
@@ -690,7 +690,7 @@ namespace YAF.Pages
         {
             var syndicationItems = new List<SyndicationItem>();
             using (
-                DataTable dt = LegacyDb.topic_announcements(PageContext.PageModuleID, this.PageContext.PageBoardID, 10, this.PageContext.PageUserID))
+                DataTable dt = CommonDb.topic_announcements(PageContext.PageModuleID, this.PageContext.PageBoardID, 10, this.PageContext.PageUserID))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 
@@ -759,7 +759,7 @@ namespace YAF.Pages
         private List<SyndicationLink> GetMediaLinks(int messageId)
         {
             var attachementLinks = new List<SyndicationLink>();
-            using (var attList = LegacyDb.attachment_list(PageContext.PageModuleID, messageId, null, this.PageContext.PageBoardID, 0, 1000))
+            using (var attList = CommonDb.attachment_list(PageContext.PageModuleID, messageId, null, this.PageContext.PageBoardID, 0, 1000))
             {
                 if (attList.Rows.Count > 0)
                 {
@@ -811,7 +811,7 @@ namespace YAF.Pages
             var syndicationItems = new List<SyndicationItem>();
 
             using (
-                DataTable dataTopics = LegacyDb.rss_topic_latest(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                DataTable dataTopics = CommonDb.rss_topic_latest(PageContext.PageModuleID, this.PageContext.PageBoardID,
                     this.Get<YafBoardSettings>().ActiveDiscussionsCount <= 50
                         ? this.Get<YafBoardSettings>().ActiveDiscussionsCount
                         : 50,
@@ -925,7 +925,7 @@ namespace YAF.Pages
             }
 
             using (
-                DataTable dt = LegacyDb.post_list(PageContext.PageModuleID, topicId,
+                DataTable dt = CommonDb.post_list(PageContext.PageModuleID, topicId,
                     this.PageContext.PageUserID,
                     userId,
                     0,
@@ -1044,7 +1044,7 @@ namespace YAF.Pages
             var syndicationItems = new List<SyndicationItem>();
 
             // vzrus changed to separate DLL specific code
-            using (DataTable dt = LegacyDb.rsstopic_list((int?) PageContext.PageModuleID, forumId, this.Get<YafBoardSettings>().TopicsFeedItemsCount))
+            using (DataTable dt = CommonDb.rsstopic_list((int?) PageContext.PageModuleID, forumId, this.Get<YafBoardSettings>().TopicsFeedItemsCount))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 

@@ -87,7 +87,7 @@ namespace YAF.Pages
               linkDays = ld;
           }
           // Ederon : 7/14/2007
-          LegacyDb.topic_move(PageContext.PageModuleID, this.PageContext.PageTopicID, this.ForumList.SelectedValue, this.LeavePointer.Checked, linkDays);
+          CommonDb.topic_move(PageContext.PageModuleID, this.PageContext.PageTopicID, this.ForumList.SelectedValue, this.LeavePointer.Checked, linkDays);
       }
 
       YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
@@ -153,7 +153,7 @@ namespace YAF.Pages
             LinkDays.Text = "1";
         }
 
-        this.ForumList.DataSource = LegacyDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
+        this.ForumList.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
 
         this.DataBind();
 

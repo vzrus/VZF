@@ -116,7 +116,7 @@ namespace YAF.Pages.Admin
 
             this.PageContext.QueryIDs = new QueryStringIDHelper("u", true);
 
-            DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null);
+            DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null);
 
             if (dt.Rows.Count != 1)
             {

@@ -157,9 +157,9 @@ namespace YAF.Controls
         protected void RemoveSuspension_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // un-suspend user
-            LegacyDb.user_suspend(PageContext.PageModuleID, this.CurrentUserID, null);
+            CommonDb.user_suspend(PageContext.PageModuleID, this.CurrentUserID, null);
             var usr =
-                LegacyDb.UserList(PageContext.PageModuleID, this.PageContext.PageBoardID,  (int?) this.CurrentUserID, null, null, null, false).ToList();
+                CommonDb.UserList(PageContext.PageModuleID, this.PageContext.PageBoardID,  (int?) this.CurrentUserID, null, null, null, false).ToList();
             if (usr.Any())
             {
                 this.Get<ILogger>().UserUnsuspended(this.PageContext.PageUserID, "YAF.Controls.EditUsersSuspend", "User {0} was unsuspended by {1}.".FormatWith(this.Get<YafBoardSettings>().EnableDisplayName ? usr.First().DisplayName : usr.First().Name, this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.CurrentUserData.UserName), EventLogTypes.UserUnsuspended);
@@ -184,7 +184,7 @@ namespace YAF.Controls
         {
             // Admins can suspend anyone not admins
             // Forum Moderators can suspend anyone not admin or forum moderator
-            using (DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null))
+            using (DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null))
             {
                 foreach (DataRow row in dt.Rows)
                 {
@@ -247,9 +247,9 @@ namespace YAF.Controls
             }
 
             // suspend user by calling appropriate method
-            LegacyDb.user_suspend(PageContext.PageModuleID, this.CurrentUserID, suspend);
+            CommonDb.user_suspend(PageContext.PageModuleID, this.CurrentUserID, suspend);
             var usr =
-               LegacyDb.UserList(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID.ToType<int?>(), null, null, null, false).ToList();
+               CommonDb.UserList(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID.ToType<int?>(), null, null, null, false).ToList();
 
             if (usr.Any())
             {
@@ -268,7 +268,7 @@ namespace YAF.Controls
         private void BindData()
         {
             // get user's info
-            using (DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null))
+            using (DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, null))
             {
                 // there is no such user
                 if (dt.Rows.Count < 1)

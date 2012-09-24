@@ -107,7 +107,7 @@ namespace YAF.Controls.Statistics
             DataTable rankDt = this.Get<IDataCache>().GetOrSet(
               Constants.Cache.MostActiveUsers,
               () =>
-              LegacyDb.user_activity_rank(PageContext.PageModuleID, this.PageContext.PageBoardID, DateTime.UtcNow.AddDays(-this.LastNumOfDays), this.DisplayNumber),
+              CommonDb.user_activity_rank(PageContext.PageModuleID, this.PageContext.PageBoardID, DateTime.UtcNow.AddDays(-this.LastNumOfDays), this.DisplayNumber),
               TimeSpan.FromMinutes(5));
 
             writer.BeginRender();

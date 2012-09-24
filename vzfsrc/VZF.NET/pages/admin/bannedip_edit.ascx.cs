@@ -149,7 +149,7 @@ namespace YAF.Pages.Admin
         return;
       }
 
-      LegacyDb.bannedip_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), 
+      CommonDb.bannedip_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), 
         this.PageContext.PageBoardID, 
         this.mask.Text.Trim(), 
         this.BanReason.Text.Trim(), 
@@ -174,7 +174,7 @@ namespace YAF.Pages.Admin
         }
 
         DataRow row =
-            LegacyDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), null, null).Rows[0];
+            CommonDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), null, null).Rows[0];
 
         this.mask.Text = row["Mask"].ToString();
         this.BanReason.Text = row["Reason"].ToString();

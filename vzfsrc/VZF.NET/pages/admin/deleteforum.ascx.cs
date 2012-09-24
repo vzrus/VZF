@@ -120,7 +120,7 @@ namespace YAF.Pages.Admin
 
             var forumId = this.GetQueryStringAsInt("f");
 
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
             {
                 DataRow row = dt.Rows[0];
 
@@ -172,7 +172,7 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindParentList()
         {
-            this.ForumList.DataSource = LegacyDb.forum_listall(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            this.ForumList.DataSource = CommonDb.forum_listall(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
 
             this.ForumList.DataValueField = "ForumID";
             this.ForumList.DataTextField = "Forum";

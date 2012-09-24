@@ -410,7 +410,7 @@ namespace YAF.Controls
             }
 
             // save remaining settings to the DB
-            LegacyDb.user_save(PageContext.PageModuleID, this.currentUserID,
+            CommonDb.user_save(PageContext.PageModuleID, this.currentUserID,
               this.PageContext.PageBoardID,
               null,
               displayName,
@@ -430,11 +430,11 @@ namespace YAF.Controls
               null);
 
             // vzrus: If it's a guest edited by an admin registry value should be changed
-            DataTable dt = LegacyDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.currentUserID, true, null, null, false);
+            DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.currentUserID, true, null, null, false);
 
             if (dt.Rows.Count > 0 && dt.Rows[0]["IsGuest"].ToType<bool>())
             {
-                LegacyDb.registry_save(PageContext.PageModuleID, "timezone", this.TimeZones.SelectedValue, this.PageContext.PageBoardID);
+                CommonDb.registry_save(PageContext.PageModuleID, "timezone", this.TimeZones.SelectedValue, this.PageContext.PageBoardID);
             }
 
             // clear the cache for this user...)
@@ -686,7 +686,7 @@ namespace YAF.Controls
             changeEmail.TemplateParams["{forumlink}"] = YafForumInfo.ForumURL;
 
             // save a change email reference to the db
-            LegacyDb.checkemail_save(PageContext.PageModuleID, this.currentUserID, hash, newEmail);
+            CommonDb.checkemail_save(PageContext.PageModuleID, this.currentUserID, hash, newEmail);
 
             // send a change email message...
             changeEmail.SendEmail(
@@ -760,7 +760,7 @@ namespace YAF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            LegacyDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this.currentUserID, settingsPropertyValueCollection);
+            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this.currentUserID, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

@@ -211,7 +211,7 @@ namespace YAF.Pages.Admin
           // save role and get its ID
           const int _initialPMessages = 0;
 
-          long groupID = LegacyDb.group_save(PageContext.PageModuleID, DBNull.Value, 
+          long groupID = CommonDb.group_save(PageContext.PageModuleID, DBNull.Value, 
             this.PageContext.PageBoardID, 
             e.CommandArgument.ToString(), 
             false, 
@@ -265,7 +265,7 @@ namespace YAF.Pages.Admin
         case "delete":
 
           // delete role
-          LegacyDb.group_delete(PageContext.PageModuleID, e.CommandArgument);
+          CommonDb.group_delete(PageContext.PageModuleID, e.CommandArgument);
 
           // remove cache of forum moderators
           this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
@@ -282,7 +282,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       // list roles of this board
-      DataTable dt = LegacyDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+      DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
 
       // set repeater datasource
       this.RoleListYaf.DataSource = dt;

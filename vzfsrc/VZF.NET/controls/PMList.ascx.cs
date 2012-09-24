@@ -93,13 +93,13 @@ namespace YAF.Controls
             }
 
             long archivedCount = 0;
-            using (DataView dv = LegacyDb.pmessage_list(PageContext.PageModuleID, this.PageContext.PageUserID, null, null).DefaultView)
+            using (DataView dv = CommonDb.pmessage_list(PageContext.PageModuleID, this.PageContext.PageUserID, null, null).DefaultView)
             {
                 dv.RowFilter = "IsDeleted = False AND IsArchived = False";
 
                 foreach (DataRowView item in dv)
                 {
-                    LegacyDb.pmessage_archive(PageContext.PageModuleID, item["UserPMessageID"]);
+                    CommonDb.pmessage_archive(PageContext.PageModuleID, item["UserPMessageID"]);
                     archivedCount++;
                 }
             }
@@ -157,7 +157,7 @@ namespace YAF.Controls
                 this.MessagesView.Rows.Cast<GridViewRow>().Where(
                     item => ((CheckBox)item.FindControl("ItemCheck")).Checked))
             {
-                LegacyDb.pmessage_archive(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value);
+                CommonDb.pmessage_archive(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value);
                 archivedCount++;
             }
 
@@ -211,7 +211,7 @@ namespace YAF.Controls
                 toUserID = this.PageContext.PageUserID;
             }
 
-            using (DataView dv = LegacyDb.pmessage_list(PageContext.PageModuleID, toUserID, fromUserID, null).DefaultView)
+            using (DataView dv = CommonDb.pmessage_list(PageContext.PageModuleID, toUserID, fromUserID, null).DefaultView)
             {
                 switch (this.View)
                 {
@@ -230,11 +230,11 @@ namespace YAF.Controls
                 {
                     if (isoutbox)
                     {
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, item["UserPMessageID"], true);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, item["UserPMessageID"], true);
                     }
                     else
                     {
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, item["UserPMessageID"]);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, item["UserPMessageID"]);
                     }
 
                     nItemCount++;
@@ -281,10 +281,10 @@ namespace YAF.Controls
                 switch (this.View)
                 {
                     case PMView.Outbox:
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value, true);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value, true);
                         break;
                     default:
-                        LegacyDb.pmessage_delete(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value);
+                        CommonDb.pmessage_delete(PageContext.PageModuleID, this.MessagesView.DataKeys[item.RowIndex].Value);
                         break;
                 }
 
@@ -548,7 +548,7 @@ namespace YAF.Controls
                 return;
             }
 
-            using (DataView dv = LegacyDb.pmessage_list(PageContext.PageModuleID, this.PageContext.PageUserID, null, null).DefaultView)
+            using (DataView dv = CommonDb.pmessage_list(PageContext.PageModuleID, this.PageContext.PageUserID, null, null).DefaultView)
             {
                 switch (this.View)
                 {
@@ -562,7 +562,7 @@ namespace YAF.Controls
 
                 foreach (DataRowView item in dv)
                 {
-                    LegacyDb.pmessage_markread(PageContext.PageModuleID, item["UserPMessageID"]);
+                    CommonDb.pmessage_markread(PageContext.PageModuleID, item["UserPMessageID"]);
 
                     // Clearing cache with old permissions data...
                     this.ClearCache();
@@ -690,7 +690,7 @@ namespace YAF.Controls
         protected void Stats_Renew()
         {
             // Renew PM Statistics
-            DataTable dt = LegacyDb.user_pmcount(PageContext.PageModuleID, this.PageContext.PageUserID);
+            DataTable dt = CommonDb.user_pmcount(PageContext.PageModuleID, this.PageContext.PageUserID);
             if (dt.Rows.Count > 0)
             {
                 this.PMInfoLink.Text = this.GetPMessageText(
@@ -735,7 +735,7 @@ namespace YAF.Controls
                 toUserID = this.PageContext.PageUserID;
             }
 
-            using (DataView dv = LegacyDb.pmessage_list(PageContext.PageModuleID, toUserID, fromUserID, null).DefaultView)
+            using (DataView dv = CommonDb.pmessage_list(PageContext.PageModuleID, toUserID, fromUserID, null).DefaultView)
             {
                 switch (this.View)
                 {

@@ -74,7 +74,7 @@ namespace YAF.Core
       [CanBeNull] string bodyText, 
       [CanBeNull] string bodyHtml)
     {
-        LegacyDb.mail_create(YafContext.Current.PageModuleID, fromEmail, fromName, toEmail, toName, subject, bodyText, bodyHtml);
+        CommonDb.mail_create(YafContext.Current.PageModuleID, fromEmail, fromName, toEmail, toName, subject, bodyText, bodyHtml);
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ namespace YAF.Core
       [CanBeNull] string subject, 
       [CanBeNull] string body)
     {
-        LegacyDb.mail_create(YafContext.Current.PageModuleID, fromEmail, null, toEmail, null, subject, body, null);
+        CommonDb.mail_create(YafContext.Current.PageModuleID, fromEmail, null, toEmail, null, subject, body, null);
     }
 
     /// <summary>

@@ -69,7 +69,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_addpoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtAddPoints.Text);
+            CommonDb.user_addpoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtAddPoints.Text);
 
             this.BindData();
         }
@@ -115,7 +115,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_removepoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtRemovePoints.Text);
+            CommonDb.user_removepoints(PageContext.PageModuleID, this.CurrentUserID, null, this.txtRemovePoints.Text);
             this.BindData();
         }
 
@@ -135,7 +135,7 @@ namespace YAF.Controls
                 return;
             }
 
-            LegacyDb.user_setpoints(PageContext.PageModuleID, this.CurrentUserID, this.txtUserPoints.Text);
+            CommonDb.user_setpoints(PageContext.PageModuleID, this.CurrentUserID, this.txtUserPoints.Text);
             this.BindData();
         }
 
@@ -144,7 +144,7 @@ namespace YAF.Controls
         /// </summary>
         private void BindData()
         {
-            this.ltrCurrentPoints.Text = LegacyDb.user_getpoints(PageContext.PageModuleID, this.CurrentUserID).ToString();
+            this.ltrCurrentPoints.Text = CommonDb.user_getpoints(PageContext.PageModuleID, this.CurrentUserID).ToString();
         }
 
         #endregion

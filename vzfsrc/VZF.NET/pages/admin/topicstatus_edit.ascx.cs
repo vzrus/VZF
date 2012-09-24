@@ -112,7 +112,7 @@ namespace YAF.Pages.Admin
             }
             else
             {
-                LegacyDb.TopicStatus_Save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"),
+                CommonDb.TopicStatus_Save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"),
                     this.PageContext.PageBoardID,
                     TopicStatusName.Text.Trim(),
                     DefaultDescription.Text.Trim());
@@ -132,7 +132,7 @@ namespace YAF.Pages.Admin
             }
 
             DataRow row =
-                LegacyDb.TopicStatus_Edit(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("i"))).Rows[0];
+                CommonDb.TopicStatus_Edit(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("i"))).Rows[0];
 
             this.TopicStatusName.Text = (string)row["TopicStatusName"];
             this.DefaultDescription.Text = (string)row["DefaultDescription"];

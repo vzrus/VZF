@@ -90,7 +90,7 @@ namespace YAF.Core.Services
     /// </param>
     public void AddIgnored(int ignoredUserId)
     {
-        LegacyDb.user_addignoreduser(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, ignoredUserId);
+        CommonDb.user_addignoreduser(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, ignoredUserId);
       this.ClearIgnoreCache();
     }
 
@@ -135,7 +135,7 @@ namespace YAF.Core.Services
     /// </param>
     public void RemoveIgnored(int ignoredUserId)
     {
-        LegacyDb.user_removeignoreduser(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, ignoredUserId);
+        CommonDb.user_removeignoreduser(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, ignoredUserId);
       this.ClearIgnoreCache();
     }
 

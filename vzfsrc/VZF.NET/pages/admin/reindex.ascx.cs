@@ -58,10 +58,10 @@ namespace YAF.Pages.Admin
         }
 
         // Check and see if it should make panels enable or not
-        this.PanelReindex.Visible = LegacyDb.GetPanelReindex(YafContext.Current.PageModuleID);
-        this.PanelShrink.Visible = LegacyDb.GetPanelShrink(YafContext.Current.PageModuleID);
-        this.PanelRecoveryMode.Visible = LegacyDb.GetPanelRecoveryMode(YafContext.Current.PageModuleID);
-        this.PanelGetStats.Visible = LegacyDb.GetPanelGetStats(YafContext.Current.PageModuleID);
+        this.PanelReindex.Visible = CommonDb.GetPanelReindex(YafContext.Current.PageModuleID);
+        this.PanelShrink.Visible = CommonDb.GetPanelShrink(YafContext.Current.PageModuleID);
+        this.PanelRecoveryMode.Visible = CommonDb.GetPanelRecoveryMode(YafContext.Current.PageModuleID);
+        this.PanelGetStats.Visible = CommonDb.GetPanelGetStats(YafContext.Current.PageModuleID);
 
         // Get the name of buttons
         this.btnReindex.Text = this.GetText("ADMIN_REINDEX", "REINDEXTBL_BTN");
@@ -106,7 +106,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void btnGetStats_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
-        this.txtIndexStatistics.Text = LegacyDb.db_getstats_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(LegacyDb.db_getstats_new(PageContext.PageModuleID));
+        this.txtIndexStatistics.Text = CommonDb.db_getstats_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(CommonDb.db_getstats_new(PageContext.PageModuleID));
     }
 
     /// <summary>
@@ -127,15 +127,15 @@ namespace YAF.Pages.Admin
             case 1: dbRecoveryMode = "SIMPLE"; break;
             case 2: dbRecoveryMode = "BULK_LOGGED"; break;
         }
-        string error = LegacyDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode);
+        string error = CommonDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode);
         if (error.IsSet())
         {
-            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning(PageContext.PageModuleID) + this.GetText("ADMIN_REINDEX", "INDEX_STATS_FAIL").FormatWith(error);
+            this.txtIndexStatistics.Text = CommonDb.db_recovery_mode_warning(PageContext.PageModuleID) + this.GetText("ADMIN_REINDEX", "INDEX_STATS_FAIL").FormatWith(error);
         }
         else
         {
             this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_STATS").FormatWith(dbRecoveryMode);
-            this.txtIndexStatistics.Text = LegacyDb.db_recovery_mode_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(LegacyDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode));
+            this.txtIndexStatistics.Text = CommonDb.db_recovery_mode_warning(PageContext.PageModuleID) + "\r\n{0}".FormatWith(CommonDb.db_recovery_mode_new(PageContext.PageModuleID, dbRecoveryMode));
         }
     }
 
@@ -153,11 +153,11 @@ namespace YAF.Pages.Admin
         /* using (var connMan = new MsSqlDbConnectionManager())
          {
            connMan.InfoMessage += this.connMan_InfoMessage;
-           this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(YafContext.Current.PageModuleID);
-           LegacyDb.db_reindex(connMan);
+           this.txtIndexStatistics.Text = CommonDb.db_reindex_warning(YafContext.Current.PageModuleID);
+           CommonDb.db_reindex(connMan);
          } */
 
-        this.txtIndexStatistics.Text = LegacyDb.db_reindex_warning(PageContext.PageModuleID) + LegacyDb.db_reindex_new(PageContext.PageModuleID);
+        this.txtIndexStatistics.Text = CommonDb.db_reindex_warning(PageContext.PageModuleID) + CommonDb.db_reindex_new(PageContext.PageModuleID);
     }
 
     /// <summary>
@@ -174,8 +174,8 @@ namespace YAF.Pages.Admin
     {
         try
         {
-            this.txtIndexStatistics.Text = LegacyDb.db_shrink_warning(PageContext.PageModuleID) + @"\r\n\{0}\r\n\".FormatWith(LegacyDb.db_shrink_new(PageContext.PageModuleID));
-            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(LegacyDb.GetDBSize(PageContext.PageModuleID)) ;
+            this.txtIndexStatistics.Text = CommonDb.db_shrink_warning(PageContext.PageModuleID) + @"\r\n\{0}\r\n\".FormatWith(CommonDb.db_shrink_new(PageContext.PageModuleID));
+            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(CommonDb.GetDBSize(PageContext.PageModuleID)) ;
         }
         catch (Exception error)
         {

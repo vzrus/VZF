@@ -108,7 +108,7 @@ namespace YAF.Pages.Admin
         if (this.Request.QueryString.GetFirstOrDefault("r") != null)
         {
           using (
-            DataTable dt = LegacyDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("r")))
+            DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("r")))
           {
             DataRow row = dt.Rows[0];
             var flags = new RankFlags(row["Flags"]);
@@ -204,7 +204,7 @@ namespace YAF.Pages.Admin
         rankImage = this.RankImage.SelectedValue;
       }
 
-      LegacyDb.rank_save(PageContext.PageModuleID, rankID, 
+      CommonDb.rank_save(PageContext.PageModuleID, rankID, 
         this.PageContext.PageBoardID, 
         this.Name.Text, 
         this.IsStart.Checked, 

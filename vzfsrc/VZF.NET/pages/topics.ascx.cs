@@ -254,7 +254,7 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied();
             }
 
-            using (DataTable dt = LegacyDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
             {
                 this._forum = dt.Rows[0];
             }
@@ -307,14 +307,14 @@ namespace YAF.Pages
 
             if (this.WatchForumID.InnerText == string.Empty)
             {
-                LegacyDb.watchforum_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID);
+                CommonDb.watchforum_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_WATCH_FORUM"));
             }
             else
             {
                 var tmpID = this.WatchForumID.InnerText.ToType<int>();
-                LegacyDb.watchforum_delete(PageContext.PageModuleID, tmpID);
+                CommonDb.watchforum_delete(PageContext.PageModuleID, tmpID);
 
                 this.PageContext.AddLoadMessage(this.GetText("INFO_UNWATCH_FORUM"));
             }
@@ -353,7 +353,7 @@ namespace YAF.Pages
                 }
             }
 
-            DataTable dt = LegacyDb.announcements_list(PageContext.PageModuleID, this.PageContext.PageForumID,
+            DataTable dt = CommonDb.announcements_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                 userId,
                 null,
                 DateTime.UtcNow,
@@ -387,7 +387,7 @@ namespace YAF.Pages
 
             if (this._showTopicListSelected == 0)
             {
-                dtTopics = LegacyDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
+                dtTopics = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                     userId,
                     DateTimeHelper.SqlDbMinTime(),
                     DateTime.UtcNow,
@@ -407,7 +407,7 @@ namespace YAF.Pages
 
                 DateTime date = DateTime.UtcNow.AddDays(-days[this._showTopicListSelected]);
 
-                dtTopics = LegacyDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
+                dtTopics = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                     userId,
                     date,
                     DateTime.UtcNow,
@@ -447,7 +447,7 @@ namespace YAF.Pages
             }
 
             // check if this forum is being watched by this user
-            using (DataTable dt = LegacyDb.watchforum_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID))
+            using (DataTable dt = CommonDb.watchforum_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID))
             {
                 if (dt.Rows.Count > 0)
                 {

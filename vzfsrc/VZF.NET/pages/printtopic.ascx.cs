@@ -155,7 +155,7 @@ namespace YAF.Pages
                 userId = this.PageContext.PageUserID;
             }
 
-            var dt = LegacyDb.post_list(PageContext.PageModuleID, this.PageContext.PageTopicID,
+            var dt = CommonDb.post_list(PageContext.PageModuleID, this.PageContext.PageTopicID,
                 this.PageContext.PageUserID,
                 userId,
                 !PageContext.IsCrawler ? 1 : 0,

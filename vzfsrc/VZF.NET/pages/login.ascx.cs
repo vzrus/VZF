@@ -163,7 +163,7 @@ namespace YAF.Pages
         protected void Login1_LoggedIn([NotNull] object sender, [NotNull] EventArgs e)
         {
             this.Get<IRaiseEvent>().Raise(new SuccessfulUserLoginEvent(this.PageContext.PageUserID));
-            LegacyDb.user_update_single_sign_on_status(PageContext.PageModuleID, this.PageContext.PageUserID, false, false);
+            CommonDb.user_update_single_sign_on_status(PageContext.PageModuleID, this.PageContext.PageUserID, false, false);
         }
 
         /// <summary>

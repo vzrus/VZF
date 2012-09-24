@@ -184,7 +184,7 @@ namespace YAF.Core
       }
 
       // TODO: come up with userid if the database is available.
-      LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, typeName, message, logTypes);
+      CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, typeName, message, logTypes);
     }
 
       /// <summary>
@@ -209,7 +209,7 @@ namespace YAF.Core
         }
 
         // TODO: come up with userid if the database is available.
-        LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, typeName, message, logTypes);
+        CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, typeName, message, logTypes);
     }
 
     /// <summary>
@@ -400,7 +400,7 @@ namespace YAF.Core
     {
       if (this.IsUserSuspendedEnabled)
       {
-          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserUnsuspended);
+          CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserUnsuspended);
       }
     }
 
@@ -423,7 +423,7 @@ namespace YAF.Core
     {
         if (this.IsUserSuspendedEnabled)
         {
-            LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserSuspended);
+            CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserSuspended);
         }
     }
 
@@ -446,7 +446,7 @@ namespace YAF.Core
     {
         if (this.IsUserDeletedEnabled)
         {
-            LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserDeleted);
+            CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.UserDeleted);
         }
     }
 
@@ -469,7 +469,7 @@ namespace YAF.Core
     {
         if (this.IsLogBannedIP)
         {
-            LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.IpBanSet);
+            CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.IpBanSet);
         }
     }
 
@@ -492,7 +492,7 @@ namespace YAF.Core
     {
         if (this.IsLogBannedIP)
         {
-            LegacyDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.IpBanLifted);
+            CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId, source, String.Format(format, args), EventLogTypes.IpBanLifted);
         }
     }
 

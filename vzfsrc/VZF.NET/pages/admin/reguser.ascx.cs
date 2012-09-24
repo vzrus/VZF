@@ -112,7 +112,7 @@ namespace YAF.Pages.Admin
         userProfile.Save();
 
         // save the time zone...
-        LegacyDb.user_save(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
+        CommonDb.user_save(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -134,7 +134,7 @@ namespace YAF.Pages.Admin
         if (this.Get<YafBoardSettings>().EmailVerification)
         {
             // save verification record...
-            LegacyDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
+            CommonDb.checkemail_save(PageContext.PageModuleID, userID, hash, user.Email);
 
             // send template email
             var verifyEmail = new YafTemplateEmail("VERIFYEMAIL");
@@ -155,7 +155,7 @@ namespace YAF.Pages.Admin
             this.Get<YafBoardSettings>().DefaultNotificationSetting.Equals(
                 UserNotificationSetting.TopicsIPostToOrSubscribeTo);
 
-        LegacyDb.user_savenotification(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey),
+        CommonDb.user_savenotification(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey),
             true,
             autoWatchTopicsEnabled,
             this.Get<YafBoardSettings>().DefaultNotificationSetting,

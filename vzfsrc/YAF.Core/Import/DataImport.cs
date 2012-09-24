@@ -60,7 +60,7 @@ namespace YAF.Core
                 dsBBCode.Tables["YafBBCode"].Columns["SearchRegex"] != null &&
                 dsBBCode.Tables["YafBBCode"].Columns["ExecOrder"] != null)
             {
-                var bbcodeList = LegacyDb.BBCodeList(YafContext.Current.PageModuleID, boardId, null);
+                var bbcodeList = CommonDb.BBCodeList(YafContext.Current.PageModuleID, boardId, null);
 
                 // import any extensions that don't exist...
                 foreach (var row in from DataRow row in dsBBCode.Tables["YafBBCode"].Rows
@@ -69,7 +69,7 @@ namespace YAF.Core
                                         select row)
                 {
                     // add this bbcode...
-                    LegacyDb.bbcode_save(YafContext.Current.PageModuleID, null,
+                    CommonDb.bbcode_save(YafContext.Current.PageModuleID, null,
                         boardId,
                         row["Name"],
                         row["Description"],
@@ -118,7 +118,7 @@ namespace YAF.Core
             if (dsExtensions.Tables["YafExtension"] != null &&
                 dsExtensions.Tables["YafExtension"].Columns["Extension"] != null)
             {
-                DataTable extensionList = LegacyDb.extension_list((int?)YafContext.Current.PageModuleID, boardId);
+                DataTable extensionList = CommonDb.extension_list((int?)YafContext.Current.PageModuleID, boardId);
 
                 // import any extensions that don't exist...
                 foreach (string ext in
@@ -126,7 +126,7 @@ namespace YAF.Core
                     ext => extensionList.Select("Extension = '{0}'".FormatWith(ext)).Length == 0))
                 {
                     // add this...
-                    LegacyDb.extension_save(YafContext.Current.PageModuleID, null, boardId, ext);
+                    CommonDb.extension_save(YafContext.Current.PageModuleID, null, boardId, ext);
                     importedCount++;
                 }
             }
@@ -165,7 +165,7 @@ namespace YAF.Core
                 dsStates.Tables["YafTopicStatus"].Columns["TopicStatusName"] != null &&
                 dsStates.Tables["YafTopicStatus"].Columns["DefaultDescription"] != null)
             {
-                var topicStatusList = LegacyDb.TopicStatus_List(YafContext.Current.PageModuleID, boardId);
+                var topicStatusList = CommonDb.TopicStatus_List(YafContext.Current.PageModuleID, boardId);
 
                 // import any topic status that don't exist...
                 foreach (
@@ -176,7 +176,7 @@ namespace YAF.Core
                             0))
                 {
                     // add this...
-                    LegacyDb.TopicStatus_Save(YafContext.Current.PageModuleID, null, boardId, row["TopicStatusName"].ToString(), row["DefaultDescription"].ToString());
+                    CommonDb.TopicStatus_Save(YafContext.Current.PageModuleID, null, boardId, row["TopicStatusName"].ToString(), row["DefaultDescription"].ToString());
                     importedCount++;
                 }
             }
@@ -204,7 +204,7 @@ namespace YAF.Core
         {
             int importedCount = 0;
 
-            var existingBannedIPList = LegacyDb.bannedip_list(YafContext.Current.PageModuleID, boardId, null, 0, 1000000);
+            var existingBannedIPList = CommonDb.bannedip_list(YafContext.Current.PageModuleID, boardId, null, 0, 1000000);
 
             using (var streamReader = new StreamReader(imputStream))
             {
@@ -223,7 +223,7 @@ namespace YAF.Core
                         continue;
                     }
 
-                    LegacyDb.bannedip_save(YafContext.Current.PageModuleID, null, boardId, importAddress.ToString(), "Imported IP Adress", userId);
+                    CommonDb.bannedip_save(YafContext.Current.PageModuleID, null, boardId, importAddress.ToString(), "Imported IP Adress", userId);
                     importedCount++;
                 }
             }

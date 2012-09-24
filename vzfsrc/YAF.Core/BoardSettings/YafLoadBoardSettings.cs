@@ -53,7 +53,7 @@ namespace YAF.Core
       this._boardID = boardID;
 
       // get the board table
-      DataTable dataTable = LegacyDb.board_list(YafContext.Current.PageModuleID, this._boardID);
+      DataTable dataTable = CommonDb.board_list(YafContext.Current.PageModuleID, this._boardID);
 
       if (dataTable.Rows.Count == 0)
       {
@@ -79,12 +79,12 @@ namespace YAF.Core
       // loop through all values and commit them to the DB
       foreach (string key in this._reg.Keys)
       {
-        LegacyDb.registry_save((int?) YafContext.Current.PageModuleID, key, this._reg[key]);
+        CommonDb.registry_save((int?) YafContext.Current.PageModuleID, key, this._reg[key]);
       }
 
       foreach (string key in this._regBoard.Keys)
       {
-          LegacyDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key], this._boardID);
+          CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._regBoard[key], this._boardID);
       }
     }
 
@@ -101,7 +101,7 @@ namespace YAF.Core
     {
       DataTable dataTable;
 
-      using (dataTable = LegacyDb.registry_list(YafContext.Current.PageModuleID))
+      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)
@@ -110,7 +110,7 @@ namespace YAF.Core
         }
       }
 
-      using (dataTable = LegacyDb.registry_list(YafContext.Current.PageModuleID,null, this._boardID))
+      using (dataTable = CommonDb.registry_list(YafContext.Current.PageModuleID,null, this._boardID))
       {
         // get all the registry settings into our hash table
         foreach (DataRow dr in dataTable.Rows)

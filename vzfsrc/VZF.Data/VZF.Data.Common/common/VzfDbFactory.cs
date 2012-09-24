@@ -27,7 +27,7 @@ using YAF.Types.Objects;
 
 namespace YAF.Classes.Data
 {
-    public static class LegacyDb
+    public static class CommonDb
     {
         #region Access Masks
         /// <summary>
@@ -44,7 +44,7 @@ namespace YAF.Classes.Data
            
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.accessmask_delete(connectionString, accessMaskID);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.accessmask_delete(connectionString, accessMaskID);
                 case "Npgsql": return Postgre.Db.accessmask_delete(connectionString, accessMaskID);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.accessmask_delete(connectionString, accessMaskID);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.accessmask_delete(connectionString, accessMaskID);
@@ -83,7 +83,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.accessmask_list(connectionString,boardId, accessMaskID); 
+                // case "System.Data.SqlClient": return MsSql.CommonDb.accessmask_list(connectionString,boardId, accessMaskID); 
                 case "Npgsql": return Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
@@ -119,7 +119,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": MsSql.LegacyDb.accessmask_save(connectionString,accessMaskID, boardId,  name,  readAccess,  postAccess,  replyAccess,  priorityAccess,  pollAccess, voteAccess,  moderatorAccess,editAccess, deleteAccess, uploadAccess,downloadAccess,sortOrder);break;
+                // case "System.Data.SqlClient": MsSql.CommonDb.accessmask_save(connectionString,accessMaskID, boardId,  name,  readAccess,  postAccess,  replyAccess,  priorityAccess,  pollAccess, voteAccess,  moderatorAccess,editAccess, deleteAccess, uploadAccess,downloadAccess,sortOrder);break;
                 case "Npgsql": Postgre.Db.accessmask_save(connectionString, accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder); break;
                 case "MySql.Data.MySqlClient": MySqlDb.Db.accessmask_save(connectionString, accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder); break;
                 case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.accessmask_save(connectionString, accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder); break;
@@ -147,7 +147,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 case "Npgsql": return Postgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
@@ -178,7 +178,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               case "Npgsql": return Postgre.Db.active_list_user(connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
@@ -205,7 +205,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_listforum(connectionString,  forumID, styledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.active_listforum(connectionString,  forumID, styledNicks);
                 case "Npgsql": return Postgre.Db.active_listforum(connectionString, forumID, styledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.active_listforum(connectionString,  forumID, styledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_listforum(connectionString,  forumID, styledNicks);
@@ -232,7 +232,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_listtopic(connectionString, topicID, styledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.active_listtopic(connectionString, topicID, styledNicks);
                 case "Npgsql": return Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.active_listtopic(connectionString, topicID, styledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_listtopic(connectionString, topicID, styledNicks);
@@ -258,7 +258,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.active_stats(connectionString, boardId);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.active_stats(connectionString, boardId);
                 case "Npgsql": return Postgre.Db.active_stats(connectionString, boardId);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.active_stats(connectionString, boardId);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.active_stats(connectionString, boardId);
@@ -282,7 +282,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": MsSql.LegacyDb.activeaccess_reset(connectionString); break;
+                // case "System.Data.SqlClient": MsSql.CommonDb.activeaccess_reset(connectionString); break;
                 case "Npgsql": Postgre.Db.activeaccess_reset(connectionString); break;
                 case "MySql.Data.MySqlClient": MySqlDb.Db.activeaccess_reset(connectionString); break;
                 case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.activeaccess_reset(connectionString); break;
@@ -310,7 +310,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
                 case "Npgsql": return Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
@@ -336,7 +336,7 @@ namespace YAF.Classes.Data
             CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
                 case "Npgsql": return Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
@@ -363,7 +363,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                // case "System.Data.SqlClient": return MsSql.CommonDb.admin_list(connectionString, (int)boardId, useStyledNicks); 
                 case "Npgsql": return Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
@@ -390,7 +390,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks); 
+                // case "System.Data.SqlClient": return MsSql.CommonDb.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks); 
                 case "Npgsql": return Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
@@ -417,7 +417,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_list(connectionString, userId, pageName);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.adminpageaccess_list(connectionString, userId, pageName);
                 case "Npgsql": return Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.adminpageaccess_list(connectionString, userId, pageName);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.adminpageaccess_list(connectionString, userId, pageName);
@@ -443,7 +443,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                // case "System.Data.SqlClient": return MsSql.CommonDb.adminpageaccess_delete(connectionString, userId,  pageName); return;
                 case "Npgsql": Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
                 case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
                 case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
@@ -470,7 +470,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.adminpageaccess_save(connectionString, userId,  pageName); return;
+                // case "System.Data.SqlClient": return MsSql.CommonDb.adminpageaccess_save(connectionString, userId,  pageName); return;
                 case "Npgsql": Postgre.Db.adminpageaccess_save(connectionString, userId, pageName); return;
                 case "MySql.Data.MySqlClient":  MySqlDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
                 case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
@@ -490,7 +490,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": MsSql.LegacyDb.album_delete(connectionString, AlbumID); break;
+              // case "System.Data.SqlClient": MsSql.CommonDb.album_delete(connectionString, AlbumID); break;
               case "Npgsql": Postgre.Db.album_delete(connectionString, AlbumID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.album_delete(connectionString, AlbumID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_delete(connectionString, AlbumID); break;
@@ -511,7 +511,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_getstats(connectionString,  UserID,  AlbumID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_getstats(connectionString,  UserID,  AlbumID);
               case "Npgsql": return Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
@@ -532,7 +532,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_gettitle(connectionString, AlbumID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_gettitle(connectionString, AlbumID);
               case "Npgsql": return Postgre.Db.album_gettitle(connectionString, AlbumID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_gettitle(connectionString, AlbumID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_gettitle(connectionString, AlbumID);
@@ -553,7 +553,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": MsSql.LegacyDb.album_image_delete(connectionString, ImageID); break;
+              // case "System.Data.SqlClient": MsSql.CommonDb.album_image_delete(connectionString, ImageID); break;
               case "Npgsql": Postgre.Db.album_image_delete(connectionString, ImageID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_delete(connectionString, ImageID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_delete(connectionString, ImageID); break;
@@ -575,7 +575,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": MsSql.LegacyDb.album_image_download(connectionString, ImageID); break;
+              // case "System.Data.SqlClient": MsSql.CommonDb.album_image_download(connectionString, ImageID); break;
               case "Npgsql": Postgre.Db.album_image_download(connectionString, ImageID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_download(connectionString, ImageID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_download(connectionString, ImageID); break;
@@ -597,7 +597,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_images_by_user(connectionString, userID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_images_by_user(connectionString, userID);
               case "Npgsql": return Postgre.Db.album_images_by_user(connectionString, userID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_images_by_user(connectionString, userID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_images_by_user(connectionString, userID);
@@ -618,7 +618,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_image_list(connectionString, AlbumID, ImageID); 
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_image_list(connectionString, AlbumID, ImageID); 
               case "Npgsql": return Postgre.Db.album_image_list(connectionString, AlbumID, ImageID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_image_list(connectionString, AlbumID, ImageID); 
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_image_list(connectionString, AlbumID, ImageID); 
@@ -641,7 +641,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
               case "Npgsql": Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
@@ -662,7 +662,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_list(connectionString, UserID,  AlbumID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_list(connectionString, UserID,  AlbumID);
               case "Npgsql": return Postgre.Db.album_list(connectionString, UserID,  AlbumID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_list(connectionString, UserID,  AlbumID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_list(connectionString, UserID,  AlbumID);
@@ -683,7 +683,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
               case "Npgsql": return Postgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
@@ -704,7 +704,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.attachment_delete(connectionString, attachmentID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.attachment_delete(connectionString, attachmentID); break;
               case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
@@ -724,7 +724,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.attachment_delete(connectionString, attachmentID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.attachment_delete(connectionString, attachmentID); break;
               case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
@@ -744,7 +744,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
               case "Npgsql": return Postgre.Db.attachment_list(connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
@@ -765,7 +765,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
               case "Npgsql": Postgre.Db.attachment_save(connectionString, messageID, fileName, bytes, contentType, stream); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
@@ -786,7 +786,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.bannedip_delete(connectionString, ID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.bannedip_delete(connectionString, ID); break;
               case "Npgsql": Postgre.Db.bannedip_delete(connectionString, ID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.bannedip_delete(connectionString, ID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bannedip_delete(connectionString, ID); break;
@@ -807,7 +807,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
               case "Npgsql": return Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
@@ -827,7 +827,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
               case "Npgsql": Postgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
@@ -848,7 +848,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.bbcode_delete(connectionString, bbcodeID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.bbcode_delete(connectionString, bbcodeID); break;
               case "Npgsql": Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.bbcode_delete(connectionString, bbcodeID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bbcode_delete(connectionString, bbcodeID); break;
@@ -869,7 +869,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.bbcode_list( connectionString,  boardId,  bbcodeID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.bbcode_list( connectionString,  boardId,  bbcodeID);
               case "Npgsql": return Postgre.Db.bbcode_list(connectionString, boardId, bbcodeID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.bbcode_list(connectionString, boardId, bbcodeID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bbcode_list(connectionString, boardId, bbcodeID);
@@ -891,7 +891,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               case "Npgsql": Postgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
@@ -914,7 +914,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.BBCodeList(connectionString, boardId, bbcodeID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.BBCodeList(connectionString, boardId, bbcodeID);
               case "Npgsql": return Postgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.BBCodeList(connectionString, boardId, bbcodeID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.BBCodeList(connectionString, boardId, bbcodeID);
@@ -936,7 +936,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
               case "Npgsql": return Postgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
@@ -957,7 +957,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.board_delete(connectionString, boardId); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.board_delete(connectionString, boardId); break;
               case "Npgsql": Postgre.Db.board_delete(connectionString, boardId); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.board_delete(connectionString, boardId); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.board_delete(connectionString, boardId); break;
@@ -978,7 +978,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_list(connectionString, boardId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_list(connectionString, boardId);
               case "Npgsql": return Postgre.Db.board_list(connectionString, boardId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_list(connectionString, boardId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_list(connectionString, boardId);
@@ -999,7 +999,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
               case "Npgsql": return Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
@@ -1031,7 +1031,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.board_resync(connectionString, boardId); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.board_resync(connectionString, boardId); break;
               case "Npgsql": Postgre.Db.board_resync(connectionString, boardId); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.board_resync(connectionString, boardId); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.board_resync(connectionString, boardId); break;
@@ -1052,7 +1052,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
               case "Npgsql": return Postgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
@@ -1076,7 +1076,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_stats(connectionString, boardId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_stats(connectionString, boardId);
               case "Npgsql": return Postgre.Db.board_stats(connectionString, boardId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_stats(connectionString, boardId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_stats(connectionString, boardId);
@@ -1097,7 +1097,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.board_userstats(connectionString, boardId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.board_userstats(connectionString, boardId);
               case "Npgsql": return Postgre.Db.board_userstats(connectionString, boardId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.board_userstats(connectionString, boardId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_userstats(connectionString, boardId);
@@ -1117,7 +1117,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.buddy_addrequest(connectionString,  FromUserID, ToUserID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.buddy_addrequest(connectionString,  FromUserID, ToUserID);
               case "Npgsql": return Postgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
@@ -1138,7 +1138,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
               case "Npgsql": return Postgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
@@ -1159,7 +1159,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.buddy_denyRequest(connectionString, FromUserID, ToUserID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.buddy_denyRequest(connectionString, FromUserID, ToUserID);
               case "Npgsql": return Postgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
@@ -1180,7 +1180,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.buddy_list(connectionString, FromUserID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.buddy_list(connectionString, FromUserID);
               case "Npgsql": return Postgre.Db.buddy_list(connectionString, FromUserID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.buddy_list(connectionString, FromUserID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.buddy_list(connectionString, FromUserID);
@@ -1201,7 +1201,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.buddy_remove(connectionString, FromUserID, ToUserID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.buddy_remove(connectionString, FromUserID, ToUserID);
               case "Npgsql": return Postgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.buddy_remove(connectionString, FromUserID, ToUserID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.buddy_remove(connectionString, FromUserID, ToUserID);
@@ -1222,7 +1222,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.category_delete(connectionString, CategoryID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.category_delete(connectionString, CategoryID);
               case "Npgsql": return Postgre.Db.category_delete(connectionString, CategoryID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.category_delete(connectionString, CategoryID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.category_delete(connectionString, CategoryID);
@@ -1243,7 +1243,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.category_list(connectionString,  boardId, categoryID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.category_list(connectionString,  boardId, categoryID);
               case "Npgsql": return Postgre.Db.category_list(connectionString,  boardId, categoryID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.category_list(connectionString,  boardId, categoryID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.category_list(connectionString,  boardId, categoryID);
@@ -1263,7 +1263,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.category_listread(connectionString, boardId, userId, categoryID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.category_listread(connectionString, boardId, userId, categoryID);
               case "Npgsql": return Postgre.Db.category_listread(connectionString, boardId, userId, categoryID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.category_listread(connectionString, boardId, userId, categoryID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.category_listread(connectionString, boardId, userId, categoryID);
@@ -1284,7 +1284,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.category_simplelist(connectionString, startID, limit);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.category_simplelist(connectionString, startID, limit);
               case "Npgsql": return Postgre.Db.category_simplelist(connectionString, startID, limit);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.category_simplelist(connectionString, startID, limit);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.category_simplelist(connectionString, startID, limit);
@@ -1304,7 +1304,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
               case "Npgsql": Postgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
@@ -1324,7 +1324,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.checkemail_list(connectionString, email);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.checkemail_list(connectionString, email);
               case "Npgsql": return Postgre.Db.checkemail_list(connectionString, email);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.checkemail_list(connectionString, email);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.checkemail_list(connectionString, email);
@@ -1344,7 +1344,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.checkemail_save(connectionString, userId,  hash,  email); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.checkemail_save(connectionString, userId,  hash,  email); break;
               case "Npgsql": Postgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.checkemail_save(connectionString, userId,  hash,  email); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.checkemail_save(connectionString, userId,  hash,  email); break;
@@ -1365,7 +1365,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.checkemail_update(connectionString, hash);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.checkemail_update(connectionString, hash);
               case "Npgsql": return Postgre.Db.checkemail_update(connectionString, hash);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.checkemail_update(connectionString, hash);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.checkemail_update(connectionString, hash);
@@ -1386,7 +1386,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.choice_add(connectionString, pollID, choice, path, mime); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.choice_add(connectionString, pollID, choice, path, mime); break;
               case "Npgsql": Postgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.choice_add(connectionString, pollID, choice, path, mime); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.choice_add(connectionString, pollID, choice, path, mime); break;
@@ -1407,7 +1407,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.choice_delete(connectionString, choiceID); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.choice_delete(connectionString, choiceID); break;
               case "Npgsql": Postgre.Db.choice_delete(connectionString, choiceID); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.choice_delete(connectionString, choiceID); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.choice_delete(connectionString, choiceID); break;
@@ -1427,7 +1427,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.choice_update(connectionString, choiceID, choice, path, mime); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.choice_update(connectionString, choiceID, choice, path, mime); break;
               case "Npgsql": Postgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
@@ -1447,7 +1447,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.choice_vote(connectionString, choiceID, userId, remoteIP); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.choice_vote(connectionString, choiceID, userId, remoteIP); break;
               case "Npgsql": Postgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
@@ -1468,7 +1468,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return  MsSql.LegacyDb.db_getstats_new(connectionString); break;
+              // case "System.Data.SqlClient": return  MsSql.CommonDb.db_getstats_new(connectionString); break;
               case "Npgsql": return Postgre.Db.db_getstats_new(connectionString); ; break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_getstats_new(connectionString); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_getstats_new(connectionString); break;
@@ -1490,7 +1490,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return  MsSql.LegacyDb.db_getstats_warning(); break;
+              // case "System.Data.SqlClient": return  MsSql.CommonDb.db_getstats_warning(); break;
               case "Npgsql": return Postgre.Db.db_getstats_warning(); ; break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_getstats_warning(); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_getstats_warning(); break;
@@ -1511,7 +1511,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.db_recovery_mode_warning(); break;
+              // case "System.Data.SqlClient": return MsSql.CommonDb.db_recovery_mode_warning(); break;
               case "Npgsql": return Postgre.Db.db_recovery_mode_warning(); break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_recovery_mode_warning(); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_recovery_mode_warning(); break;
@@ -1531,7 +1531,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return  MsSql.LegacyDb.db_getstats_warning(); break;
+              // case "System.Data.SqlClient": return  MsSql.CommonDb.db_getstats_warning(); break;
               case "Npgsql": return Postgre.Db.db_getstats_warning(); ; break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_getstats_warning(); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_getstats_warning(); break;
@@ -1560,7 +1560,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return  MsSql.LegacyDb.db_recovery_mode_new(connectionString, dbRecoveryMode); break;
+              // case "System.Data.SqlClient": return  MsSql.CommonDb.db_recovery_mode_new(connectionString, dbRecoveryMode); break;
               case "Npgsql": return Postgre.Db.db_recovery_mode_new(connectionString,dbRecoveryMode); break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_recovery_mode_new(connectionString,dbRecoveryMode); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_recovery_mode_new(connectionString,dbRecoveryMode); break;
@@ -1581,7 +1581,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return  MsSql.LegacyDb.db_reindex_new(connectionString); break;
+              // case "System.Data.SqlClient": return  MsSql.CommonDb.db_reindex_new(connectionString); break;
               case "Npgsql": return Postgre.Db.db_reindex_new(connectionString); break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_reindex_new(connectionString); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_reindex_new(connectionString); break;
@@ -1601,7 +1601,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.db_reindex_warning();
+              // case "System.Data.SqlClient": return MsSql.CommonDb.db_reindex_warning();
               case "Npgsql": return Postgre.Db.db_reindex_warning();
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_reindex_warning();
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_reindex_warning();
@@ -1621,7 +1621,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.db_runsql_new(connectionString, sql,   useTransaction);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.db_runsql_new(connectionString, sql,   useTransaction);
               case "Npgsql": return Postgre.Db.db_runsql_new(connectionString, sql, useTransaction);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_runsql_new(connectionString, sql,  useTransaction);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_runsql_new(connectionString, sql,   useTransaction);
@@ -1641,7 +1641,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.db_shrink_new(connectionString); break;
+              // case "System.Data.SqlClient": return MsSql.CommonDb.db_shrink_new(connectionString); break;
               case "Npgsql": return Postgre.Db.db_shrink_new(connectionString); break;
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_shrink_new(connectionString); break;
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_shrink_new(connectionString); break;
@@ -1662,7 +1662,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.db_shrink_warning();
+              // case "System.Data.SqlClient": return MsSql.CommonDb.db_shrink_warning();
               case "Npgsql": return Postgre.Db.db_shrink_warning(connectionString);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.db_shrink_warning();
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_shrink_warning();
@@ -1682,7 +1682,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.ds_forumadmin(connectionString, boardId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.ds_forumadmin(connectionString, boardId);
               case "Npgsql": return Postgre.Db.ds_forumadmin(connectionString, boardId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.ds_forumadmin(connectionString, boardId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.ds_forumadmin(connectionString, boardId);
@@ -1707,7 +1707,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.eventlog_create(connectionString,  userId, source, description,type); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.eventlog_create(connectionString,  userId, source, description,type); break;
               case "Npgsql": Postgre.Db.eventlog_create(connectionString, userId, source, description, type); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.eventlog_create(connectionString,  userId, source, description,type); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.eventlog_create(connectionString,  userId, source, description,type); break;
@@ -1743,7 +1743,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
               case "Npgsql": Postgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
@@ -1764,7 +1764,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.eventlog_deletebyuser(connectionString,boardID,userId); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.eventlog_deletebyuser(connectionString,boardID,userId); break;
               case "Npgsql": Postgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
@@ -1784,7 +1784,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
               case "Npgsql": return Postgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
@@ -1804,7 +1804,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
               case "Npgsql": return Postgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
@@ -1824,7 +1824,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.group_eventlogaccesslist(connectionString, boardId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.group_eventlogaccesslist(connectionString, boardId);
               case "Npgsql": return Postgre.Db.group_eventlogaccesslist(connectionString, boardId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.group_eventlogaccesslist(connectionString, boardId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_eventlogaccesslist(connectionString, boardId);
@@ -1844,7 +1844,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
               case "Npgsql": Postgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
@@ -1864,7 +1864,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.extension_delete(connectionString, extensionId); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.extension_delete(connectionString, extensionId); break;
               case "Npgsql": Postgre.Db.extension_delete(connectionString, extensionId); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.extension_delete(connectionString, extensionId); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.extension_delete(connectionString, extensionId); break;
@@ -1885,7 +1885,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
               case "Npgsql": Postgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
@@ -1906,7 +1906,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.extension_edit(connectionString, extensionId);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.extension_edit(connectionString, extensionId);
               case "Npgsql": return Postgre.Db.extension_edit(connectionString, extensionId);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.extension_edit(connectionString, extensionId);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.extension_edit(connectionString, extensionId);
@@ -1934,7 +1934,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.extension_list(connectionString, boardId, extension);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.extension_list(connectionString, boardId, extension);
               case "Npgsql": return Postgre.Db.extension_list(connectionString, boardId, extension);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.extension_list(connectionString, boardId, extension);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.extension_list(connectionString, boardId, extension);
@@ -1955,7 +1955,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient":  MsSql.LegacyDb.extension_save(connectionString, extensionId, boardId, extension); break;
+              // case "System.Data.SqlClient":  MsSql.CommonDb.extension_save(connectionString, extensionId, boardId, extension); break;
               case "Npgsql": Postgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               case "MySql.Data.MySqlClient": MySqlDb.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.extension_save(connectionString, extensionId, boardId, extension); break;
@@ -1975,7 +1975,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_delete(connectionString, forumID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.forum_delete(connectionString, forumID);
               case "Npgsql": return Postgre.Db.forum_delete(connectionString, forumID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_delete(connectionString, forumID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_delete(connectionString, forumID);
@@ -1995,7 +1995,7 @@ namespace YAF.Classes.Data
 
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_move(connectionString, forumOldID, forumNewID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.forum_move(connectionString, forumOldID, forumNewID);
               case "Npgsql": return Postgre.Db.forum_move(connectionString, forumOldID, forumNewID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_move(connectionString, forumOldID, forumNewID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_move(connectionString, forumOldID, forumNewID);
@@ -2015,7 +2015,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_list(connectionString, boardId, forumID);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.forum_list(connectionString, boardId, forumID);
               case "Npgsql": return Postgre.Db.forum_list(connectionString, boardId, forumID);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_list(connectionString, boardId, forumID);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_list(connectionString, boardId, forumID);
@@ -2048,7 +2048,7 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_listall(connectionString, boardId, userId, startAt);
+              // case "System.Data.SqlClient": return MsSql.CommonDb.forum_listall(connectionString, boardId, userId, startAt);
               case "Npgsql": return Postgre.Db.forum_listall(connectionString, boardId, userId, startAt);
               case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listall(connectionString, boardId, userId, startAt);
               case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listall(connectionString, boardId, userId, startAt);
@@ -2082,7 +2082,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
                 case "Npgsql": return Postgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
@@ -2160,7 +2160,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
                 case "Npgsql": return Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid, categoryid, forumid, userid, notincluded, immediateonly, indentchars);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid, categoryid, forumid, userid, notincluded, immediateonly, indentchars);
@@ -2269,7 +2269,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_listallMyModerated(connectionString, boardId, userId);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_listallMyModerated(connectionString, boardId, userId);
                 case "Npgsql": return Postgre.Db.forum_listallMyModerated(connectionString, boardId, userId);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listallMyModerated(connectionString, boardId, userId);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listallMyModerated(connectionString, boardId, userId);
@@ -2289,7 +2289,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_listpath(connectionString, forumID);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_listpath(connectionString, forumID);
                 case "Npgsql": return Postgre.Db.forum_listpath(connectionString, forumID);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listpath(connectionString, forumID);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listpath(connectionString, forumID);
@@ -2309,7 +2309,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead);
                 case "Npgsql": return Postgre.Db.forum_listread(connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listread(connectionString,boardID,userID, categoryID, parentID, useStyledNicks, findLastRead);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listread(connectionString,boardID,userID, categoryID, parentID, useStyledNicks, findLastRead);
@@ -2330,7 +2330,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_moderatelist(connectionString, userId, boardId);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_moderatelist(connectionString, userId, boardId);
                 case "Npgsql": return Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_moderatelist(connectionString, userId, boardId);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_moderatelist(connectionString, userId, boardId);
@@ -2351,7 +2351,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_moderators(connectionString, useStyledNicks);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_moderators(connectionString, useStyledNicks);
                 case "Npgsql": return Postgre.Db.forum_moderators(connectionString, useStyledNicks);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_moderators(connectionString, useStyledNicks);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_moderators(connectionString, useStyledNicks);
@@ -2382,7 +2382,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": MsSql.LegacyDb.forum_resync(connectionString, boardId, forumID); break;
+                // case "System.Data.SqlClient": MsSql.CommonDb.forum_resync(connectionString, boardId, forumID); break;
                 case "Npgsql": Postgre.Db.forum_resync(connectionString, boardId, forumID); break;
                 case "MySql.Data.MySqlClient":  MySqlDb.Db.forum_resync(connectionString, boardId, forumID); break;
                 case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.forum_resync(connectionString, boardId, forumID); break;;
@@ -2403,7 +2403,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
                 case "Npgsql": return Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
@@ -2424,7 +2424,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_save_parentschecker(connectionString, forumID, parentID);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.forum_save_parentschecker(connectionString, forumID, parentID);
                 case "Npgsql": return Postgre.Db.forum_save_parentschecker(connectionString, forumID, parentID);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_save_parentschecker(connectionString, forumID, parentID);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_save_parentschecker(connectionString, forumID, parentID);
@@ -2445,7 +2445,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forum_simplelist(connectionString, startID, limit);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.forum_simplelist(connectionString, startID, limit);
                  case "Npgsql": return Postgre.Db.forum_simplelist(connectionString, startID, limit);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_simplelist(connectionString, startID, limit);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_simplelist(connectionString, startID, limit);
@@ -2465,7 +2465,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumaccess_group(connectionString, groupID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.forumaccess_group(connectionString, groupID);
                  case "Npgsql": return Postgre.Db.forumaccess_group(connectionString, groupID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.forumaccess_group(connectionString, groupID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumaccess_group(connectionString, groupID);
@@ -2485,7 +2485,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumaccess_list(connectionString, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.forumaccess_list(connectionString, forumID);
                  case "Npgsql": return Postgre.Db.forumaccess_list(connectionString, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.forumaccess_list(connectionString, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumaccess_list(connectionString, forumID);
@@ -2506,7 +2506,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  case "Npgsql": Postgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;;
@@ -2530,7 +2530,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.ForumListAll(connectionString, boardId, userId, startForumId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.ForumListAll(connectionString, boardId, userId, startForumId);
                  case "Npgsql": return Postgre.Db.ForumListAll(connectionString, boardId, userId, startForumId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.ForumListAll(connectionString, boardId, userId, startForumId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.ForumListAll(connectionString, boardId, userId, startForumId);
@@ -2551,7 +2551,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumpage_initdb(connectionString, out  errorStr,  debugging);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.forumpage_initdb(connectionString, out  errorStr,  debugging);
                  case "Npgsql": return Postgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
@@ -2571,7 +2571,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.forumpage_validateversion(connectionString, mid, appVersion);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.forumpage_validateversion(connectionString, mid, appVersion);
                  case "Npgsql": return Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.forumpage_validateversion(connectionString, mid, appVersion);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forumpage_validateversion(connectionString, mid, appVersion);
@@ -2592,7 +2592,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
                  case "Npgsql": return Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
@@ -2613,7 +2613,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.group_delete(connectionString, groupID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.group_delete(connectionString, groupID); break;
                  case "Npgsql": Postgre.Db.group_delete(connectionString, groupID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.group_delete(connectionString, groupID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.group_delete(connectionString, groupID); break;;
@@ -2633,7 +2633,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.group_list(connectionString, boardId, groupID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.group_list(connectionString, boardId, groupID);
                  case "Npgsql": return Postgre.Db.group_list(connectionString, boardId, groupID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.group_list(connectionString, boardId, groupID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_list(connectionString, boardId, groupID);
@@ -2653,7 +2653,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.group_medal_delete(connectionString, groupID, medalID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.group_medal_delete(connectionString, groupID, medalID); break;
                  case "Npgsql": Postgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.group_medal_delete(connectionString, groupID, medalID); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.group_medal_delete(connectionString, groupID, medalID); break;
@@ -2673,7 +2673,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.group_medal_list(connectionString, groupID, medalID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.group_medal_list(connectionString, groupID, medalID);
                  case "Npgsql": return Postgre.Db.group_medal_list(connectionString, groupID, medalID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.group_medal_list(connectionString, groupID, medalID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_medal_list(connectionString, groupID, medalID);
@@ -2693,7 +2693,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  case "Npgsql": Postgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon, sortOrder); break;
@@ -2713,7 +2713,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.group_member(connectionString, boardId, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.group_member(connectionString, boardId, userId);
                  case "Npgsql": return Postgre.Db.group_member(connectionString, boardId, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.group_member(connectionString, boardId, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_member(connectionString, boardId, userId);
@@ -2733,7 +2733,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.group_rank_style(connectionString, boardID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.group_rank_style(connectionString, boardID);
                  case "Npgsql": return Postgre.Db.group_rank_style(connectionString, boardID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.group_rank_style(connectionString, boardID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_rank_style(connectionString, boardID);
@@ -2755,7 +2755,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
                  case "Npgsql": return Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
@@ -2775,7 +2775,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  case "Npgsql": Postgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
@@ -2795,7 +2795,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  case "Npgsql": Postgre.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.mail_createwatch(connectionString, topicID, from, fromName, subject, body, bodyHtml, userId); break;
@@ -2815,7 +2815,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.mail_delete(connectionString, mailID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.mail_delete(connectionString, mailID); break;
                  case "Npgsql": Postgre.Db.mail_delete(connectionString, mailID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.mail_delete(connectionString, mailID); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.mail_delete(connectionString, mailID); break;
@@ -2835,7 +2835,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.MailList(connectionString, processId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.MailList(connectionString, processId);
                  case "Npgsql": return Postgre.Db.MailList(connectionString, processId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.MailList(connectionString, processId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.MailList(connectionString, processId);
@@ -2877,7 +2877,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.medal_delete(connectionString, boardId,  medalID, category); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.medal_delete(connectionString, boardId,  medalID, category); break;
                  case "Npgsql": Postgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.medal_delete(connectionString, boardId, medalID, category); break;
@@ -2903,7 +2903,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.medal_list(connectionString, null, medalID, null);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.medal_list(connectionString, null, medalID, null);
                  case "Npgsql": return Postgre.Db.medal_list(connectionString, null, medalID, null);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.medal_list(connectionString, null, medalID, null);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.medal_list(connectionString, null, medalID, null);
@@ -2932,7 +2932,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.medal_list(connectionString, boardId, null, category);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.medal_list(connectionString, boardId, null, category);
                  case "Npgsql": return Postgre.Db.medal_list(connectionString, boardId, null, category);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.medal_list(connectionString, boardId, null, category);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.medal_list(connectionString, boardId, null, category);
@@ -2963,7 +2963,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.medal_listusers(connectionString, medalID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.medal_listusers(connectionString, medalID);
                  case "Npgsql": return Postgre.Db.medal_listusers(connectionString, medalID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.medal_listusers(connectionString, medalID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.medal_listusers(connectionString, medalID);
@@ -2985,7 +2985,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.medal_resort(connectionString, boardId, medalID, move); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.medal_resort(connectionString, boardId, medalID, move); break;
                  case "Npgsql": Postgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.medal_resort(connectionString, boardId, medalID, move); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.medal_resort(connectionString, boardId, medalID, move); break;
@@ -3005,7 +3005,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
                  case "Npgsql": return Postgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
@@ -3026,7 +3026,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
                  case "Npgsql": return Postgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_AddThanks(connectionString, fromUserID, messageID, useDisplayName);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_AddThanks(connectionString, fromUserID, messageID, useDisplayName);
@@ -3047,7 +3047,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_approve(connectionString, messageID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_approve(connectionString, messageID); break;
                  case "Npgsql": Postgre.Db.message_approve(connectionString, messageID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_approve(connectionString, messageID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_approve(connectionString, messageID); break;
@@ -3072,7 +3072,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  case "Npgsql": Postgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
@@ -3092,7 +3092,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
                  case "Npgsql": return Postgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
@@ -3113,7 +3113,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_getRepliesList(connectionString, messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_getRepliesList(connectionString, messageID);
                  case "Npgsql": return Postgre.Db.message_getRepliesList(connectionString, messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_getRepliesList(connectionString, messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_getRepliesList(connectionString, messageID);
@@ -3134,7 +3134,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_GetTextByIds(connectionString, messageIDs);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_GetTextByIds(connectionString, messageIDs);
                  case "Npgsql": return Postgre.Db.message_GetTextByIds(connectionString, messageIDs);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_GetTextByIds(connectionString, messageIDs);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_GetTextByIds(connectionString, messageIDs);
@@ -3155,7 +3155,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_GetThanks(connectionString, messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_GetThanks(connectionString, messageID);
                  case "Npgsql": return Postgre.Db.message_GetThanks(connectionString, messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_GetThanks(connectionString, messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_GetThanks(connectionString, messageID);
@@ -3176,7 +3176,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_list(connectionString, messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_list(connectionString, messageID);
                  case "Npgsql": return Postgre.Db.message_list(connectionString, messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_list(connectionString, messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_list(connectionString, messageID);
@@ -3197,7 +3197,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_listreported(connectionString, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_listreported(connectionString, forumID);
                  case "Npgsql": return Postgre.Db.message_listreported(connectionString, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_listreported(connectionString, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_listreported(connectionString, forumID);
@@ -3230,7 +3230,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_listreporters(connectionString, messageID, userID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_listreporters(connectionString, messageID, userID);
                  case "Npgsql": return Postgre.Db.message_listreporters(connectionString, messageID, userID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_listreporters(connectionString, messageID, userID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_listreporters(connectionString, messageID, userID);
@@ -3250,7 +3250,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_move(connectionString, messageID, moveToTopic, moveAll); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  case "Npgsql": Postgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
@@ -3270,7 +3270,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
                  case "Npgsql": return Postgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID, useDisplayName);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_RemoveThanks(connectionString, fromUserID, messageID, useDisplayName);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
@@ -3291,7 +3291,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  case "Npgsql": Postgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
@@ -3311,7 +3311,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_reportcopyover(connectionString, messageID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_reportcopyover(connectionString, messageID); break;
                  case "Npgsql": Postgre.Db.message_reportcopyover(connectionString, messageID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_reportcopyover(connectionString, messageID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_reportcopyover(connectionString, messageID); break;
@@ -3331,7 +3331,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  case "Npgsql": Postgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
@@ -3351,7 +3351,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
                  case "Npgsql": return Postgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
@@ -3372,7 +3372,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_secdata(connectionString, MessageID, pageUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_secdata(connectionString, MessageID, pageUserId);
                  case "Npgsql": return Postgre.Db.message_secdata(connectionString, MessageID, pageUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_secdata(connectionString, MessageID, pageUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_secdata(connectionString, MessageID, pageUserId);
@@ -3393,7 +3393,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_simplelist(connectionString, StartID, Limit);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_simplelist(connectionString, StartID, Limit);
                  case "Npgsql": return Postgre.Db.message_simplelist(connectionString, StartID, Limit);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_simplelist(connectionString, StartID, Limit);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_simplelist(connectionString, StartID, Limit);
@@ -3414,7 +3414,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_ThanksNumber(connectionString, messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_ThanksNumber(connectionString, messageID);
                  case "Npgsql": return Postgre.Db.message_ThanksNumber(connectionString, messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_ThanksNumber(connectionString, messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_ThanksNumber(connectionString, messageID);
@@ -3435,7 +3435,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.message_unapproved(connectionString, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.message_unapproved(connectionString, forumID);
                  case "Npgsql": return Postgre.Db.message_unapproved(connectionString, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.message_unapproved(connectionString, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.message_unapproved(connectionString, forumID);
@@ -3457,7 +3457,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.message_update(connectionString, messageID, priority, message, description,status,styles, subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.message_update(connectionString, messageID, priority, message, description,status,styles, subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
                  case "Npgsql": Postgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
                  case "MySql.Data.MySqlClient": MySqlDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
@@ -3478,7 +3478,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
                  case "Npgsql": return Postgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
@@ -3499,7 +3499,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.messagehistory_list(connectionString, messageID, daysToClean);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.messagehistory_list(connectionString, messageID, daysToClean);
                  case "Npgsql": return Postgre.Db.messagehistory_list(connectionString, messageID, daysToClean);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.messagehistory_list(connectionString, messageID, daysToClean);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.messagehistory_list(connectionString, messageID, daysToClean);
@@ -3521,7 +3521,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.MessageList(connectionString, messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.MessageList(connectionString, messageID);
                  case "Npgsql": return Postgre.Db.MessageList(connectionString, messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.MessageList(connectionString, messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.MessageList(connectionString, messageID);
@@ -3542,7 +3542,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.moderators_team_list( connectionString,  useStyledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.moderators_team_list( connectionString,  useStyledNicks);
                  case "Npgsql": return Postgre.Db.moderators_team_list( connectionString,  useStyledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.moderators_team_list( connectionString,  useStyledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.moderators_team_list( connectionString,  useStyledNicks);
@@ -3562,7 +3562,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  case "Npgsql": Postgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
@@ -3583,7 +3583,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.Readtopic_delete(connectionString, trackingID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.Readtopic_delete(connectionString, trackingID); break;
                  case "Npgsql": Postgre.Db.Readtopic_delete(connectionString, trackingID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.Readtopic_delete(connectionString, trackingID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.Readtopic_delete(connectionString, trackingID); break;
@@ -3623,7 +3623,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.User_LastRead( connectionString,  userID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.User_LastRead( connectionString,  userID);
                  case "Npgsql": return Postgre.Db.User_LastRead(connectionString, userID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.User_LastRead(connectionString, userID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.User_LastRead(connectionString, userID);
@@ -3643,7 +3643,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.Readtopic_lastread(connectionString, userID, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.Readtopic_lastread(connectionString, userID, topicID);
                  case "Npgsql": return Postgre.Db.Readtopic_lastread(connectionString, userID, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.Readtopic_lastread(connectionString, userID, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Readtopic_lastread(connectionString, userID, topicID);
@@ -3663,7 +3663,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  case "Npgsql": Postgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
@@ -3683,7 +3683,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.ReadForum_delete(connectionString, trackingID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.ReadForum_delete(connectionString, trackingID); break;
                  case "Npgsql": Postgre.Db.ReadForum_delete(connectionString, trackingID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.ReadForum_delete(connectionString, trackingID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.ReadForum_delete(connectionString, trackingID); break;
@@ -3705,7 +3705,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.ReadForum_lastread(connectionString,userID, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.ReadForum_lastread(connectionString,userID, forumID);
                  case "Npgsql": return Postgre.Db.ReadForum_lastread(connectionString,userID, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.ReadForum_lastread(connectionString,userID, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.ReadForum_lastread(connectionString,userID, forumID);
@@ -3726,7 +3726,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntpforum_delete(connectionString, nntpForumID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntpforum_delete(connectionString, nntpForumID); break;
                  case "Npgsql": Postgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntpforum_delete(connectionString, nntpForumID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntpforum_delete(connectionString, nntpForumID); break;
@@ -3747,7 +3747,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
                  case "Npgsql": return Postgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
@@ -3769,7 +3769,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  case "Npgsql": Postgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
@@ -3790,7 +3790,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  case "Npgsql": Postgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
@@ -3810,7 +3810,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
                  case "Npgsql": return Postgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
@@ -3831,7 +3831,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntpserver_delete(connectionString, nntpServerID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntpserver_delete(connectionString, nntpServerID); break;
                  case "Npgsql": Postgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntpserver_delete(connectionString, nntpServerID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntpserver_delete(connectionString, nntpServerID); break;
@@ -3852,7 +3852,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.nntpserver_list(connectionString,  boardId, nntpServerID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.nntpserver_list(connectionString,  boardId, nntpServerID);
                  case "Npgsql": return Postgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
@@ -3873,7 +3873,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  case "Npgsql": Postgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
@@ -3894,7 +3894,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.nntptopic_list(connectionString, thread);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.nntptopic_list(connectionString, thread);
                  case "Npgsql": return Postgre.Db.nntptopic_list(connectionString, thread);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.nntptopic_list(connectionString, thread);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.nntptopic_list(connectionString, thread);
@@ -3915,7 +3915,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  case "Npgsql": Postgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
@@ -3935,7 +3935,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
                  case "Npgsql": return Postgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
@@ -3956,7 +3956,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pmessage_archive(connectionString, userPMessageID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pmessage_archive(connectionString, userPMessageID); break;
                  case "Npgsql": Postgre.Db.pmessage_archive(connectionString, userPMessageID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pmessage_archive(connectionString, userPMessageID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pmessage_archive(connectionString, userPMessageID); break;
@@ -3987,7 +3987,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  case "Npgsql": Postgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
@@ -4007,7 +4007,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pmessage_info(connectionString);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pmessage_info(connectionString);
                  case "Npgsql": return Postgre.Db.pmessage_info(connectionString);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pmessage_info(connectionString);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pmessage_info(connectionString);
@@ -4045,7 +4045,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
                  case "Npgsql": return Postgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
@@ -4066,7 +4066,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pmessage_markread(connectionString, userPMessageID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pmessage_markread(connectionString, userPMessageID); break;
                  case "Npgsql": Postgre.Db.pmessage_markread(connectionString, userPMessageID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pmessage_markread(connectionString, userPMessageID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pmessage_markread(connectionString, userPMessageID); break;
@@ -4086,7 +4086,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pmessage_prune(connectionString, daysRead, daysUnread); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  case "Npgsql": Postgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
@@ -4106,7 +4106,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  case "Npgsql": Postgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
@@ -4126,7 +4126,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  case "Npgsql": Postgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
@@ -4146,7 +4146,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.poll_save(connectionString, pollList);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.poll_save(connectionString, pollList);
                  case "Npgsql": return Postgre.Db.poll_save(connectionString, pollList);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.poll_save(connectionString, pollList);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.poll_save(connectionString, pollList);
@@ -4167,7 +4167,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.poll_stats(connectionString, pollId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.poll_stats(connectionString, pollId);
                  case "Npgsql": return Postgre.Db.poll_stats(connectionString, pollId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.poll_stats(connectionString, pollId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.poll_stats(connectionString, pollId);
@@ -4188,7 +4188,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
                  case "Npgsql": return Postgre.Db.pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
@@ -4209,7 +4209,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  case "Npgsql": Postgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
@@ -4229,7 +4229,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pollgroup_stats(connectionString, pollGroupId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pollgroup_stats(connectionString, pollGroupId);
                  case "Npgsql": return Postgre.Db.pollgroup_stats(connectionString, pollGroupId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pollgroup_stats(connectionString, pollGroupId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pollgroup_stats(connectionString, pollGroupId);
@@ -4250,7 +4250,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  case "Npgsql": Postgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
@@ -4270,7 +4270,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
                  case "Npgsql": return Postgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
@@ -4291,7 +4291,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.PollGroupList(connectionString, userID, forumId, boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.PollGroupList(connectionString, userID, forumId, boardId);
                  case "Npgsql": return Postgre.Db.PollGroupList(connectionString, userID, forumId, boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.PollGroupList(connectionString, userID, forumId, boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.PollGroupList(connectionString, userID, forumId, boardId);
@@ -4313,7 +4313,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.pollvote_check(connectionString, pollid,  userid,  remoteip);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.pollvote_check(connectionString, pollid,  userid,  remoteip);
                  case "Npgsql": return Postgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
@@ -4335,7 +4335,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
                  case "Npgsql": return Postgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
@@ -4357,7 +4357,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
                  case "Npgsql": return Postgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
@@ -4378,7 +4378,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.post_list_reverse10(connectionString, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.post_list_reverse10(connectionString, topicID);
                  case "Npgsql": return Postgre.Db.post_list_reverse10(connectionString, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.post_list_reverse10(connectionString, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.post_list_reverse10(connectionString, topicID);
@@ -4399,7 +4399,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.rank_delete(connectionString, rankID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.rank_delete(connectionString, rankID); break;
                  case "Npgsql": Postgre.Db.rank_delete(connectionString, rankID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.rank_delete(connectionString, rankID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.rank_delete(connectionString, rankID); break;
@@ -4419,7 +4419,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.rank_list(connectionString, boardId, rankID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.rank_list(connectionString, boardId, rankID);
                  case "Npgsql": return Postgre.Db.rank_list(connectionString, boardId, rankID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.rank_list(connectionString, boardId, rankID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.rank_list(connectionString, boardId, rankID);
@@ -4440,7 +4440,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  case "Npgsql": Postgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
@@ -4461,7 +4461,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
                  case "Npgsql": return Postgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
@@ -4504,7 +4504,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.registry_list(connectionString, name,  boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.registry_list(connectionString, name,  boardId);
                  case "Npgsql": return Postgre.Db.registry_list(connectionString, name,  boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.registry_list(connectionString, name,  boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.registry_list(connectionString, name,  boardId);
@@ -4541,7 +4541,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.registry_save(connectionString, name, value, boardId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.registry_save(connectionString, name, value, boardId); break;
                  case "Npgsql": Postgre.Db.registry_save(connectionString, name, value, boardId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.registry_save(connectionString, name, value, boardId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.registry_save(connectionString, name, value, boardId); break;
@@ -4561,7 +4561,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.replace_words_delete(connectionString, id); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.replace_words_delete(connectionString, id); break;
                  case "Npgsql": Postgre.Db.replace_words_delete(connectionString, id); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.replace_words_delete(connectionString, id); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.replace_words_delete(connectionString, id); break;
@@ -4581,7 +4581,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.replace_words_list(connectionString, boardId, id);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.replace_words_list(connectionString, boardId, id);
                  case "Npgsql": return Postgre.Db.replace_words_list(connectionString, boardId, id);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.replace_words_list(connectionString, boardId, id);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.replace_words_list(connectionString, boardId, id);
@@ -4602,7 +4602,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  case "Npgsql": Postgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
@@ -4622,7 +4622,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
                  case "Npgsql": return Postgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
@@ -4647,7 +4647,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.rsstopic_list(connectionString, forumID, topicStart, topicCount);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.rsstopic_list(connectionString, forumID, topicStart, topicCount);
                  case "Npgsql": return Postgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
@@ -4668,7 +4668,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                  case "Npgsql": Postgre.Db.SetPropertyValues(connectionString, boardId, appname, userId, collection, dirtyOnly); break;
                  case "MySql.Data.MySqlClient": MySqlDb.Db.SetPropertyValues(connectionString, boardId, appname, userId, collection, dirtyOnly); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.SetPropertyValues(connectionString, boardId, appname, userId, collection, dirtyOnly); break;
@@ -4689,7 +4689,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.shoutbox_clearmessages(connectionString, boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.shoutbox_clearmessages(connectionString, boardId);
                  case "Npgsql": return Postgre.Db.shoutbox_clearmessages(connectionString, boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.shoutbox_clearmessages(connectionString, boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.shoutbox_clearmessages(connectionString, boardId);
@@ -4710,7 +4710,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
                  case "Npgsql": return Postgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
@@ -4731,7 +4731,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
                  case "Npgsql": return Postgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
@@ -4752,7 +4752,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.smiley_delete(connectionString, smileyID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.smiley_delete(connectionString, smileyID); break;
                  case "Npgsql": Postgre.Db.smiley_delete(connectionString, smileyID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.smiley_delete(connectionString, smileyID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.smiley_delete(connectionString, smileyID); break;
@@ -4772,7 +4772,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.smiley_list(connectionString, boardId, smileyID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.smiley_list(connectionString, boardId, smileyID);
                  case "Npgsql": return Postgre.Db.smiley_list(connectionString, boardId, smileyID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.smiley_list(connectionString, boardId, smileyID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.smiley_list(connectionString, boardId, smileyID);
@@ -4793,7 +4793,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.smiley_listunique(connectionString, boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.smiley_listunique(connectionString, boardId);
                  case "Npgsql": return Postgre.Db.smiley_listunique(connectionString, boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.smiley_listunique(connectionString, boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.smiley_listunique(connectionString, boardId);
@@ -4814,7 +4814,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.smiley_resort(connectionString, boardId,  smileyID,  move); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  case "Npgsql": Postgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
@@ -4834,7 +4834,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  case "Npgsql": Postgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
@@ -4854,7 +4854,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.SmileyList(connectionString, boardId, smileyID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.SmileyList(connectionString, boardId, smileyID);
                  case "Npgsql": return Postgre.Db.SmileyList(connectionString, boardId, smileyID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.SmileyList(connectionString, boardId, smileyID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.SmileyList(connectionString, boardId, smileyID);
@@ -4875,7 +4875,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.system_deleteinstallobjects(connectionString); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.system_deleteinstallobjects(connectionString); break;
                  case "Npgsql": Postgre.Db.system_deleteinstallobjects(connectionString); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.system_deleteinstallobjects(connectionString); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.system_deleteinstallobjects(connectionString); break;
@@ -4895,7 +4895,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  case "Npgsql": Postgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
@@ -4915,7 +4915,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  case "Npgsql": Postgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
@@ -4935,7 +4935,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.system_initialize_fixaccess(connectionString, bGrant); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.system_initialize_fixaccess(connectionString, bGrant); break;
                  case "Npgsql": Postgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.system_initialize_fixaccess(connectionString, bGrant); break;
@@ -4955,7 +4955,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.system_list(connectionString);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.system_list(connectionString);
                  case "Npgsql": return Postgre.Db.system_list(connectionString);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.system_list(connectionString);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.system_list(connectionString);
@@ -4976,7 +4976,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.system_updateversion(connectionString, version, name); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.system_updateversion(connectionString, version, name); break;
                  case "Npgsql": Postgre.Db.system_updateversion(connectionString, version, name); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.system_updateversion(connectionString, version, name); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.system_updateversion(connectionString, version, name); break;
@@ -4997,7 +4997,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  case "Npgsql": return Postgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
@@ -5019,7 +5019,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
                  case "Npgsql": return Postgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
@@ -5041,7 +5041,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_unanswered(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_unanswered(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "Npgsql": return Postgre.Db.topic_unanswered(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_unanswered(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
@@ -5062,7 +5062,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "Npgsql": return Postgre.Db.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
@@ -5085,7 +5085,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_unread(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "Npgsql": return Postgre.Db.Topics_ByUser(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.Topics_ByUser(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.Topics_ByUser(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, findLastRead);
@@ -5107,7 +5107,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.TopicStatus_Delete(connectionString,  topicStatusID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.TopicStatus_Delete(connectionString,  topicStatusID); break;
                  case "Npgsql": Postgre.Db.TopicStatus_Delete(connectionString, topicStatusID); break;
                  case "MySql.Data.MySqlClient": MySqlDb.Db.TopicStatus_Delete(connectionString, topicStatusID); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.TopicStatus_Delete(connectionString, topicStatusID); break;
@@ -5128,7 +5128,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.TopicStatus_Edit(connectionString,  topicStatusID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.TopicStatus_Edit(connectionString,  topicStatusID);
                  case "Npgsql": return Postgre.Db.TopicStatus_Edit(connectionString, topicStatusID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.TopicStatus_Edit(connectionString, topicStatusID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.TopicStatus_Edit(connectionString, topicStatusID);
@@ -5149,7 +5149,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.TopicStatus_List(connectionString, topicStatusID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.TopicStatus_List(connectionString, topicStatusID);
                  case "Npgsql": return Postgre.Db.TopicStatus_List(connectionString, topicStatusID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.TopicStatus_List(connectionString, topicStatusID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.TopicStatus_List(connectionString, topicStatusID);
@@ -5169,7 +5169,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  case "Npgsql": Postgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  case "MySql.Data.MySqlClient": MySqlDb.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
@@ -5189,7 +5189,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
                  case "Npgsql": return Postgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
@@ -5215,7 +5215,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_delete(connectionString, topicID, eraseTopic); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_delete(connectionString, topicID, eraseTopic); break;
                  case "Npgsql": Postgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_delete(connectionString, topicID, eraseTopic); break;
@@ -5235,7 +5235,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_favorite_add(connectionString, userID, topicID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_favorite_add(connectionString, userID, topicID); break;
                  case "Npgsql": Postgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_favorite_add(connectionString, userID, topicID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_favorite_add(connectionString, userID, topicID); break;
@@ -5256,7 +5256,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  case "Npgsql": return Postgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
@@ -5277,7 +5277,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_favorite_list(connectionString, userID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_favorite_list(connectionString, userID);
                  case "Npgsql": return Postgre.Db.topic_favorite_list(connectionString, userID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_favorite_list(connectionString, userID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_favorite_list(connectionString, userID);
@@ -5298,7 +5298,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_favorite_remove(connectionString, userID, topicID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_favorite_remove(connectionString, userID, topicID); break;
                  case "Npgsql": Postgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_favorite_remove(connectionString, userID, topicID); break;
@@ -5319,7 +5319,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_findduplicate(connectionString, topicName);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_findduplicate(connectionString, topicName);
                  case "Npgsql": return Postgre.Db.topic_findduplicate(connectionString, topicName);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_findduplicate(connectionString, topicName);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_findduplicate(connectionString, topicName);
@@ -5340,7 +5340,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_findnext(connectionString, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_findnext(connectionString, topicID);
                  case "Npgsql": return Postgre.Db.topic_findnext(connectionString, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_findnext(connectionString, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_findnext(connectionString, topicID);
@@ -5361,7 +5361,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_findprev(connectionString, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_findprev(connectionString, topicID);
                  case "Npgsql": return Postgre.Db.topic_findprev(connectionString, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_findprev(connectionString, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_findprev(connectionString, topicID);
@@ -5382,7 +5382,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_info(connectionString, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_info(connectionString, topicID);
                  case "Npgsql": return Postgre.Db.topic_info(connectionString, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_info(connectionString, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_info(connectionString, topicID);
@@ -5403,7 +5403,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
                  case "Npgsql": return Postgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
@@ -5424,7 +5424,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
                  case "Npgsql": return Postgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
@@ -5446,7 +5446,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
                  case "Npgsql": return Postgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize, useStyledNicks, showMoved, findLastRead);
@@ -5467,7 +5467,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_lock(connectionString, topicID, locked); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_lock(connectionString, topicID, locked); break;
                  case "Npgsql": Postgre.Db.topic_lock(connectionString, topicID, locked); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_lock(connectionString, topicID, locked); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_lock(connectionString, topicID, locked); break;
@@ -5487,7 +5487,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  case "Npgsql": Postgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
@@ -5507,7 +5507,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_prune(connectionString, boardID,  forumID, days, permDelete);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_prune(connectionString, boardID,  forumID, days, permDelete);
                  case "Npgsql": return Postgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
@@ -5528,7 +5528,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
                  case "Npgsql": return Postgre.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_save(connectionString, forumID, subject, status,styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
@@ -5549,7 +5549,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.topic_simplelist(connectionString, StartID, Limit);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.topic_simplelist(connectionString, StartID, Limit);
                  case "Npgsql": return Postgre.Db.topic_simplelist(connectionString, StartID, Limit);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_simplelist(connectionString, StartID, Limit);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_simplelist(connectionString, StartID, Limit);
@@ -5570,7 +5570,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.topic_updatetopic(connectionString, topicId, topic); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.topic_updatetopic(connectionString, topicId, topic); break;
                  case "Npgsql": Postgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.topic_updatetopic(connectionString, topicId, topic); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.topic_updatetopic(connectionString, topicId, topic); break;
@@ -5590,7 +5590,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.TopicFavoriteCount(connectionString, topicId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.TopicFavoriteCount(connectionString, topicId);
                  case "Npgsql": return Postgre.Db.TopicFavoriteCount(connectionString, topicId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.TopicFavoriteCount(connectionString, topicId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.TopicFavoriteCount(connectionString, topicId);
@@ -5612,7 +5612,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  case "Npgsql": Postgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
@@ -5632,7 +5632,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_accessmasks(connectionString, boardId, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_accessmasks(connectionString, boardId, userId);
                  case "Npgsql": return Postgre.Db.user_accessmasks(connectionString, boardId, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_accessmasks(connectionString, boardId, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_accessmasks(connectionString, boardId, userId);
@@ -5653,7 +5653,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
                  case "Npgsql": return Postgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
@@ -5674,7 +5674,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_addignoreduser(connectionString, userId, ignoredUserId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  case "Npgsql": Postgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
@@ -5694,7 +5694,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_addpoints(connectionString, userId, forumUserId, points); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_addpoints(connectionString, userId, forumUserId, points); break;
                  case "Npgsql": Postgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
@@ -5715,7 +5715,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  case "Npgsql": Postgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
@@ -5735,7 +5735,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_approve(connectionString, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_approve(connectionString, userId); break;
                  case "Npgsql": Postgre.Db.user_approve(connectionString, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_approve(connectionString, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_approve(connectionString, userId); break;
@@ -5756,7 +5756,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_approveall(connectionString, boardId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_approveall(connectionString, boardId); break;
                  case "Npgsql": Postgre.Db.user_approveall(connectionString, boardId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_approveall(connectionString, boardId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_approveall(connectionString, boardId); break;
@@ -5776,7 +5776,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
                  case "Npgsql": return Postgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
@@ -5797,7 +5797,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_avatarimage(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_avatarimage(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_avatarimage(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_avatarimage(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_avatarimage(connectionString, userId);
@@ -5818,7 +5818,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_changepassword(connectionString, userId,  oldPassword, newPassword);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_changepassword(connectionString, userId,  oldPassword, newPassword);
                  case "Npgsql": return Postgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
@@ -5839,7 +5839,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_delete(connectionString, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_delete(connectionString, userId); break;
                  case "Npgsql": Postgre.Db.user_delete(connectionString, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_delete(connectionString, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_delete(connectionString, userId); break;
@@ -5859,7 +5859,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_deleteavatar(connectionString, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_deleteavatar(connectionString, userId); break;
                  case "Npgsql": Postgre.Db.user_deleteavatar(connectionString, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_deleteavatar(connectionString, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_deleteavatar(connectionString, userId); break;
@@ -5879,7 +5879,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_deleteold(connectionString, boardId, days); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_deleteold(connectionString, boardId, days); break;
                  case "Npgsql": Postgre.Db.user_deleteold(connectionString, boardId, days); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_deleteold(connectionString, boardId, days); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_deleteold(connectionString, boardId, days); break;
@@ -5900,7 +5900,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_emails(connectionString, boardId, groupID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_emails(connectionString, boardId, groupID);
                  case "Npgsql": return Postgre.Db.user_emails(connectionString, boardId, groupID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_emails(connectionString, boardId, groupID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_emails(connectionString, boardId, groupID);
@@ -5922,7 +5922,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_get(connectionString, boardId, providerUserKey);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_get(connectionString, boardId, providerUserKey);
                  case "Npgsql": return Postgre.Db.user_get(connectionString, boardId, providerUserKey);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_get(connectionString, boardId, providerUserKey);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_get(connectionString, boardId, providerUserKey);
@@ -5943,7 +5943,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getalbumsdata(connectionString, userID, boardID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getalbumsdata(connectionString, userID, boardID);
                  case "Npgsql": return Postgre.Db.user_getalbumsdata(connectionString, userID, boardID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getalbumsdata(connectionString, userID, boardID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getalbumsdata(connectionString, userID, boardID);
@@ -5964,7 +5964,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getpoints(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getpoints(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_getpoints(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getpoints(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getpoints(connectionString, userId);
@@ -5986,7 +5986,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getsignature(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getsignature(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_getsignature(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getsignature(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getsignature(connectionString, userId);
@@ -6007,7 +6007,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getsignaturedata(connectionString, userID, boardID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getsignaturedata(connectionString, userID, boardID);
                  case "Npgsql": return Postgre.Db.user_getsignaturedata(connectionString, userID, boardID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getsignaturedata(connectionString, userID, boardID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getsignaturedata(connectionString, userID, boardID);
@@ -6029,7 +6029,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getthanks_from(connectionString, userID, pageUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getthanks_from(connectionString, userID, pageUserId);
                  case "Npgsql": return Postgre.Db.user_getthanks_from(connectionString, userID, pageUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getthanks_from(connectionString, userID, pageUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getthanks_from(connectionString, userID, pageUserId);
@@ -6049,7 +6049,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_getthanks_to(connectionString, userID, pageUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_getthanks_to(connectionString, userID, pageUserId);
                  case "Npgsql": return Postgre.Db.user_getthanks_to(connectionString, userID, pageUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_getthanks_to(connectionString, userID, pageUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_getthanks_to(connectionString, userID, pageUserId);
@@ -6069,7 +6069,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_guest(connectionString, boardId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_guest(connectionString, boardId);
                  case "Npgsql": return Postgre.Db.user_guest(connectionString, boardId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_guest(connectionString, boardId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_guest(connectionString, boardId);
@@ -6089,7 +6089,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_ignoredlist(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_ignoredlist(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_ignoredlist(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_ignoredlist(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_ignoredlist(connectionString, userId);
@@ -6110,7 +6110,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_isuserignored(connectionString, userId, ignoredUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_isuserignored(connectionString, userId, ignoredUserId);
                  case "Npgsql": return Postgre.Db.user_isuserignored(connectionString, userId, ignoredUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_isuserignored(connectionString, userId, ignoredUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_isuserignored(connectionString, userId, ignoredUserId);
@@ -6130,7 +6130,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
                  case "Npgsql": return Postgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
@@ -6211,7 +6211,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                  case "Npgsql": return Postgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
@@ -6232,7 +6232,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_listmedals(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_listmedals(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_listmedals(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_listmedals(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_listmedals(connectionString, userId);
@@ -6253,7 +6253,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
                  case "Npgsql": return Postgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
@@ -6275,7 +6275,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_medal_delete(connectionString, userId, medalID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_medal_delete(connectionString, userId, medalID); break;
                  case "Npgsql": Postgre.Db.user_medal_delete(connectionString, userId, medalID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_medal_delete(connectionString, userId, medalID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_medal_delete(connectionString, userId, medalID); break;
@@ -6295,7 +6295,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_medal_list(connectionString, userId, medalID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_medal_list(connectionString, userId, medalID);
                  case "Npgsql": return Postgre.Db.user_medal_list(connectionString, userId, medalID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_medal_list(connectionString, userId, medalID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_medal_list(connectionString, userId, medalID);
@@ -6317,7 +6317,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  case "Npgsql": Postgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
@@ -6337,7 +6337,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  case "Npgsql": Postgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
@@ -6357,7 +6357,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_nntp(connectionString, boardId, userName,  email,timeZone);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_nntp(connectionString, boardId, userName,  email,timeZone);
                  case "Npgsql": return Postgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
@@ -6377,7 +6377,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_pmcount(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_pmcount(connectionString, userId);
                  case "Npgsql": return Postgre.Db.user_pmcount(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_pmcount(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_pmcount(connectionString, userId);
@@ -6398,7 +6398,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_recoverpassword(connectionString, boardId, userName, email);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_recoverpassword(connectionString, boardId, userName, email);
                  case "Npgsql": return Postgre.Db.user_recoverpassword(connectionString, boardId, userName, email);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_recoverpassword(connectionString, boardId, userName, email);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_recoverpassword(connectionString, boardId, userName, email);
@@ -6419,7 +6419,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
                  case "Npgsql": return Postgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
                  case "MySql.Data.MySqlClient": return true;
                  case "FirebirdSql.Data.FirebirdClient": return true;
@@ -6440,7 +6440,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  case "Npgsql": Postgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
@@ -6461,7 +6461,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_removepoints(connectionString, userId, fromUserID, points); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_removepoints(connectionString, userId, fromUserID, points); break;
                  case "Npgsql": Postgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
@@ -6481,7 +6481,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_removepointsByTopicID(connectionString, topicID, points); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_removepointsByTopicID(connectionString, topicID, points); break;
                  case "Npgsql": Postgre.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_removepointsByTopicID(connectionString, topicID, points); break;
@@ -6501,7 +6501,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_RepliedTopic(connectionString, messageId, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_RepliedTopic(connectionString, messageId, userId);
                  case "Npgsql": return Postgre.Db.user_RepliedTopic(connectionString, messageId, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_RepliedTopic(connectionString, messageId, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_RepliedTopic(connectionString, messageId, userId);
@@ -6522,7 +6522,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  case "Npgsql": Postgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
@@ -6542,7 +6542,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  case "Npgsql": Postgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
@@ -6562,7 +6562,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  case "Npgsql": Postgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
@@ -6582,7 +6582,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_savepassword(connectionString, userId, password); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_savepassword(connectionString, userId, password); break;
                  case "Npgsql": Postgre.Db.user_savepassword(connectionString, userId, password); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_savepassword(connectionString, userId, password); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_savepassword(connectionString, userId, password); break;
@@ -6602,7 +6602,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_savesignature(connectionString, userId, signature); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_savesignature(connectionString, userId, signature); break;
                  case "Npgsql": Postgre.Db.user_savesignature(connectionString, userId, signature); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_savesignature(connectionString, userId, signature); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_savesignature(connectionString, userId, signature); break;
@@ -6622,7 +6622,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_setinfo(connectionString, boardId, user); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_setinfo(connectionString, boardId, user); break;
                  case "Npgsql": Postgre.Db.user_setinfo(connectionString, boardId, user); break;
                  case "MySql.Data.MySqlClient":  break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_setinfo(connectionString, boardId, user); break;
@@ -6642,7 +6642,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_setnotdirty(connectionString, boardId, userId); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_setnotdirty(connectionString, boardId, userId); break;
                  case "Npgsql": Postgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_setnotdirty(connectionString, boardId, userId); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_setnotdirty(connectionString, boardId, userId); break;
@@ -6662,7 +6662,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_setpoints(connectionString, userId, points); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_setpoints(connectionString, userId, points); break;
                  case "Npgsql": Postgre.Db.user_setpoints(connectionString, userId, points); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_setpoints(connectionString, userId, points); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_setpoints(connectionString, userId, points); break;
@@ -6682,7 +6682,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_setrole(connectionString, boardId, providerUserKey, role); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  case "Npgsql": Postgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
@@ -6703,7 +6703,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_simplelist(connectionString, StartID, Limit);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_simplelist(connectionString, StartID, Limit);
                  case "Npgsql": return Postgre.Db.user_simplelist(connectionString, StartID, Limit);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_simplelist(connectionString, StartID, Limit);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_simplelist(connectionString, StartID, Limit);
@@ -6724,7 +6724,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_suspend(connectionString, userId, suspend); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_suspend(connectionString, userId, suspend); break;
                  case "Npgsql": Postgre.Db.user_suspend(connectionString, userId, suspend); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.user_suspend(connectionString, userId, suspend); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.user_suspend(connectionString, userId, suspend); break;
@@ -6745,7 +6745,7 @@ namespace YAF.Classes.Data
 
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
                  case "Npgsql": Postgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
                  case "MySql.Data.MySqlClient": MySqlDb.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
                  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
@@ -6766,7 +6766,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_ThankedMessage(connectionString, messageId, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_ThankedMessage(connectionString, messageId, userId);
                  case "Npgsql": return Postgre.Db.user_ThankedMessage(connectionString, messageId, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_ThankedMessage(connectionString, messageId, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_ThankedMessage(connectionString, messageId, userId);
@@ -6787,7 +6787,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_ThankFromCount(connectionString,  userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_ThankFromCount(connectionString,  userId);
                  case "Npgsql": return Postgre.Db.user_ThankFromCount(connectionString,  userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_ThankFromCount(connectionString,  userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_ThankFromCount(connectionString,  userId);
@@ -6808,7 +6808,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.user_viewallthanks(connectionString, UserID, pageUserId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.user_viewallthanks(connectionString, UserID, pageUserId);
                  case "Npgsql": return Postgre.Db.user_viewallthanks(connectionString, UserID, pageUserId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.user_viewallthanks(connectionString, UserID, pageUserId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_viewallthanks(connectionString, UserID, pageUserId);
@@ -6829,7 +6829,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
                  case "Npgsql":   DataTable dt = Postgre.Db.UserFind(connectionString, boardId, filter, userName, email, displayName, notificationType, dailyDigest);
                      return dt.AsEnumerable().Select(u => new TypedUserFind(u));
                  case "MySql.Data.MySqlClient":
@@ -6854,7 +6854,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.userforum_delete(connectionString, userId, forumID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.userforum_delete(connectionString, userId, forumID); break;
                  case "Npgsql": Postgre.Db.userforum_delete(connectionString, userId, forumID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.userforum_delete(connectionString, userId, forumID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.userforum_delete(connectionString, userId, forumID); break;
@@ -6874,7 +6874,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.userforum_list(connectionString, userId, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.userforum_list(connectionString, userId, forumID);
                  case "Npgsql": return Postgre.Db.userforum_list(connectionString, userId, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.userforum_list(connectionString, userId, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.userforum_list(connectionString, userId, forumID);
@@ -6895,7 +6895,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.userforum_save(connectionString, userId, forumID, accessMaskID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  case "Npgsql": Postgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
@@ -6916,7 +6916,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.usergroup_list(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.usergroup_list(connectionString, userId);
                  case "Npgsql": return Postgre.Db.usergroup_list(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.usergroup_list(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.usergroup_list(connectionString, userId);
@@ -6937,7 +6937,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.usergroup_save(connectionString, userId,  groupID, member); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.usergroup_save(connectionString, userId,  groupID, member); break;
                  case "Npgsql": Postgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.usergroup_save(connectionString, userId,  groupID, member); break;
@@ -6957,7 +6957,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
                  case "Npgsql": return Postgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
@@ -6978,7 +6978,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.watchforum_add(connectionString, userId, forumID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.watchforum_add(connectionString, userId, forumID); break;
                  case "Npgsql": Postgre.Db.watchforum_add(connectionString, userId, forumID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.watchforum_add(connectionString, userId, forumID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.watchforum_add(connectionString, userId, forumID); break;
@@ -6998,7 +6998,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.watchforum_check(connectionString, userId, forumID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.watchforum_check(connectionString, userId, forumID);
                  case "Npgsql": return Postgre.Db.watchforum_check(connectionString, userId, forumID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.watchforum_check(connectionString, userId, forumID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.watchforum_check(connectionString, userId, forumID);
@@ -7020,7 +7020,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.watchforum_delete(connectionString, watchForumID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.watchforum_delete(connectionString, watchForumID); break;
                  case "Npgsql": Postgre.Db.watchforum_delete(connectionString, watchForumID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.watchforum_delete(connectionString, watchForumID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.watchforum_delete(connectionString, watchForumID); break;
@@ -7040,7 +7040,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.watchforum_list(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.watchforum_list(connectionString, userId);
                  case "Npgsql": return Postgre.Db.watchforum_list(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.watchforum_list(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.watchforum_list(connectionString, userId);
@@ -7061,7 +7061,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.watchtopic_add(connectionString, userId, topicID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.watchtopic_add(connectionString, userId, topicID); break;
                  case "Npgsql": Postgre.Db.watchtopic_add(connectionString, userId, topicID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.watchtopic_add(connectionString, userId, topicID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.watchtopic_add(connectionString, userId, topicID); break;
@@ -7081,7 +7081,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.watchtopic_check(connectionString, userId, topicID);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.watchtopic_check(connectionString, userId, topicID);
                  case "Npgsql": return Postgre.Db.watchtopic_check(connectionString, userId, topicID);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.watchtopic_check(connectionString, userId, topicID);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.watchtopic_check(connectionString, userId, topicID);
@@ -7102,7 +7102,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": MsSql.LegacyDb.watchtopic_delete(connectionString, watchTopicID); break;
+                 // case "System.Data.SqlClient": MsSql.CommonDb.watchtopic_delete(connectionString, watchTopicID); break;
                  case "Npgsql": Postgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
                  case "MySql.Data.MySqlClient":  MySqlDb.Db.watchtopic_delete(connectionString, watchTopicID); break;
                  case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.watchtopic_delete(connectionString, watchTopicID); break;
@@ -7122,7 +7122,7 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 // case "System.Data.SqlClient": return MsSql.LegacyDb.watchtopic_list(connectionString, userId);
+                 // case "System.Data.SqlClient": return MsSql.CommonDb.watchtopic_list(connectionString, userId);
                  case "Npgsql": return Postgre.Db.watchtopic_list(connectionString, userId);
                  case "MySql.Data.MySqlClient": return MySqlDb.Db.watchtopic_list(connectionString, userId);
                  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.watchtopic_list(connectionString, userId);
@@ -7147,7 +7147,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.GetDBSize(connectionString);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.GetDBSize(connectionString);
                 case "Npgsql": return Postgre.Db.GetDBSize(connectionString);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.GetDBSize(connectionString);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetDBSize(connectionString);
@@ -7169,7 +7169,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.GetIsForumInstalled(connectionString);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.GetIsForumInstalled(connectionString);
                 case "Npgsql": return Postgre.Db.GetIsForumInstalled(connectionString);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.GetIsForumInstalled(connectionString);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetIsForumInstalled(connectionString);
@@ -7192,7 +7192,7 @@ namespace YAF.Classes.Data
             
             switch (dataEngine)
             {
-                // case "System.Data.SqlClient": return MsSql.LegacyDb.GetDBVersion(connectionString);
+                // case "System.Data.SqlClient": return MsSql.CommonDb.GetDBVersion(connectionString);
                 case "Npgsql": return Postgre.Db.GetDBVersion(connectionString);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.GetDBVersion(connectionString);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetDBVersion(connectionString);
@@ -7214,7 +7214,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextSupported;;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.FullTextSupported;;
                 case "Npgsql":
                     return Postgre.Db.FullTextSupported;
                 case "MySql.Data.MySqlClient":
@@ -7241,7 +7241,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.FullTextScript;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.FullTextScript;
                 case "Npgsql":
                     return Postgre.Db.FullTextScript;
                 case "MySql.Data.MySqlClient":
@@ -7277,7 +7277,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.ProviderAssemblyName;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.ProviderAssemblyName;
                 case "Npgsql":
                     return Postgre.Db.ProviderAssemblyName;
                 case "MySql.Data.MySqlClient":
@@ -7301,7 +7301,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PasswordPlaceholderVisible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.PasswordPlaceholderVisible;
                 case "Npgsql":
                     return Postgre.Db.PasswordPlaceholderVisible;
                 case "MySql.Data.MySqlClient":
@@ -7327,7 +7327,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter1_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter1_Name;
                 case "MySql.Data.MySqlClient":
@@ -7351,7 +7351,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter1_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter1_Value;
                 case "MySql.Data.MySqlClient":
@@ -7375,7 +7375,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter1_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter1_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter1_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7401,7 +7401,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter2_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter2_Name;
                 case "MySql.Data.MySqlClient":
@@ -7425,7 +7425,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter2_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter2_Value;
                 case "MySql.Data.MySqlClient":
@@ -7449,7 +7449,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter2_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter2_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter2_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7475,7 +7475,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter3_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter3_Name;
                 case "MySql.Data.MySqlClient":
@@ -7499,7 +7499,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter3_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter3_Value;
                 case "MySql.Data.MySqlClient":
@@ -7523,7 +7523,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter3_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter3_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter3_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7549,7 +7549,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter4_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter4_Name;
                 case "MySql.Data.MySqlClient":
@@ -7573,7 +7573,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter4_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter4_Value;
                 case "MySql.Data.MySqlClient":
@@ -7597,7 +7597,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter4_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter4_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter4_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7623,7 +7623,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter5_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter5_Name;
                 case "MySql.Data.MySqlClient":
@@ -7647,7 +7647,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter5_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter5_Value;
                 case "MySql.Data.MySqlClient":
@@ -7671,7 +7671,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter5_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter5_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter5_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7697,7 +7697,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter6_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter6_Name;
                 case "MySql.Data.MySqlClient":
@@ -7721,7 +7721,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter6_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter6_Value;
                 case "MySql.Data.MySqlClient":
@@ -7745,7 +7745,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter6_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter6_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter6_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7771,7 +7771,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter7_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter7_Name;
                 case "MySql.Data.MySqlClient":
@@ -7795,7 +7795,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter7_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter7_Value;
                 case "MySql.Data.MySqlClient":
@@ -7819,7 +7819,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter7_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter7_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter7_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7845,7 +7845,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter8_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter8_Name;
                 case "MySql.Data.MySqlClient":
@@ -7869,7 +7869,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter8_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter8_Value;
                 case "MySql.Data.MySqlClient":
@@ -7893,7 +7893,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter8_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter8_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter8_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7919,7 +7919,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter9_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter9_Name;
                 case "MySql.Data.MySqlClient":
@@ -7943,7 +7943,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter9_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter9_Value;
                 case "MySql.Data.MySqlClient":
@@ -7967,7 +7967,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter9_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter9_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter9_Visible;
                 case "MySql.Data.MySqlClient":
@@ -7993,7 +7993,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter10_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter10_Name;
                 case "MySql.Data.MySqlClient":
@@ -8017,7 +8017,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter10_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter10_Value;
                 case "MySql.Data.MySqlClient":
@@ -8041,7 +8041,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter10_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter10_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter10_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8070,7 +8070,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter11_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter11_Name;
                 case "MySql.Data.MySqlClient":
@@ -8094,7 +8094,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter11_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter11_Value;
                 case "MySql.Data.MySqlClient":
@@ -8118,7 +8118,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter11_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter11_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter11_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8142,7 +8142,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter12_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter12_Name;
                 case "MySql.Data.MySqlClient":
@@ -8166,7 +8166,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter12_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter12_Value;
                 case "MySql.Data.MySqlClient":
@@ -8190,7 +8190,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter12_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter12_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter12_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8214,7 +8214,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter13_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter13_Name;
                 case "MySql.Data.MySqlClient":
@@ -8238,7 +8238,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter13_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter13_Value;
                 case "MySql.Data.MySqlClient":
@@ -8262,7 +8262,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter13_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter13_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter13_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8288,7 +8288,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter14_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter14_Name;
                 case "MySql.Data.MySqlClient":
@@ -8312,7 +8312,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter14_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter14_Value;
                 case "MySql.Data.MySqlClient":
@@ -8336,7 +8336,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter14_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter14_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter14_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8362,7 +8362,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter15_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter15_Name;
                 case "MySql.Data.MySqlClient":
@@ -8386,7 +8386,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter15_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter15_Value;
                 case "MySql.Data.MySqlClient":
@@ -8410,7 +8410,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter15_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter15_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter15_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8436,7 +8436,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter16_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter16_Name;
                 case "MySql.Data.MySqlClient":
@@ -8460,7 +8460,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter16_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter16_Value;
                 case "MySql.Data.MySqlClient":
@@ -8484,7 +8484,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter16_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter16_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter16_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8510,7 +8510,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter17_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter17_Name;
                 case "MySql.Data.MySqlClient":
@@ -8534,7 +8534,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter17_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter17_Value;
                 case "MySql.Data.MySqlClient":
@@ -8558,7 +8558,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter17_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter17_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter17_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8584,7 +8584,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter18_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter18_Name;
                 case "MySql.Data.MySqlClient":
@@ -8608,7 +8608,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter18_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter18_Value;
                 case "MySql.Data.MySqlClient":
@@ -8632,7 +8632,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter18_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter18_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter18_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8658,7 +8658,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Name;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter19_Name;
                 case "Npgsql":
                     return Postgre.Db.Parameter19_Name;
                 case "MySql.Data.MySqlClient":
@@ -8682,7 +8682,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Value;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter19_Value;
                 case "Npgsql":
                     return Postgre.Db.Parameter19_Value;
                 case "MySql.Data.MySqlClient":
@@ -8706,7 +8706,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.Parameter19_Visible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.Parameter19_Visible;
                 case "Npgsql":
                     return Postgre.Db.Parameter19_Visible;
                 case "MySql.Data.MySqlClient":
@@ -8734,7 +8734,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.ScriptList;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.ScriptList;
                 case "Npgsql":
                     return Postgre.Db.ScriptList;
                 case "MySql.Data.MySqlClient":
@@ -8759,7 +8759,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelGetStats;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.PanelGetStats;
                 case "Npgsql":
                     return Postgre.Db.PanelGetStats;
                 case "MySql.Data.MySqlClient":
@@ -8783,7 +8783,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelRecoveryMode;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.PanelRecoveryMode;
                 case "Npgsql":
                     return Postgre.Db.PanelRecoveryMode;
                 case "MySql.Data.MySqlClient":
@@ -8807,7 +8807,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelReindex;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.PanelReindex;
                 case "Npgsql":
                     return Postgre.Db.PanelReindex;
                 case "MySql.Data.MySqlClient":
@@ -8832,7 +8832,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.PanelShrink;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.PanelShrink;
                 case "Npgsql":
                     return Postgre.Db.PanelShrink;
                 case "MySql.Data.MySqlClient":
@@ -8859,7 +8859,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                    // case "System.Data.SqlClient": return MsSql.LegacyDb.btnReindexVisible;
+                    // case "System.Data.SqlClient": return MsSql.CommonDb.btnReindexVisible;
                 case "Npgsql":
                     return Postgre.Db.btnReindexVisible;
                 case "MySql.Data.MySqlClient":

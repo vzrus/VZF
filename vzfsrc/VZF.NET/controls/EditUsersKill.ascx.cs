@@ -65,7 +65,7 @@ namespace YAF.Controls
       {
           return this._allPostsByUser ??
                  (this._allPostsByUser =
-                  LegacyDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, this.PageContext.PageUserID, null));
+                  CommonDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CurrentUserID, this.PageContext.PageUserID, null));
       }
     }
 
@@ -162,7 +162,7 @@ namespace YAF.Controls
     {
 
       var ips = this.IPAddresses;
-      var allIps = LegacyDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000).GetColumnAsList<string>("Mask").ToList();
+      var allIps = CommonDb.bannedip_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000).GetColumnAsList<string>("Mask").ToList();
 
       // remove all IPs from ips if they already exist in allIps...
       ips.RemoveAll(allIps.Contains);
@@ -177,7 +177,7 @@ namespace YAF.Controls
 
       this.IPAddresses.ForEach(
         x =>
-        LegacyDb.bannedip_save(PageContext.PageModuleID, null, 
+        CommonDb.bannedip_save(PageContext.PageModuleID, null, 
           this.PageContext.PageBoardID, 
           x, 
           this.Get<ILocalization>().GetText("ADMIN_EDITUSER", "LINK_USER_BAN").FormatWith(
@@ -213,7 +213,7 @@ namespace YAF.Controls
       var messageIds =
         (from m in this.AllPostsByUser.AsEnumerable() select m.Field<int>("MessageID")).Distinct().ToList();
 
-      messageIds.ForEach(x => LegacyDb.message_delete(PageContext.PageModuleID, x, true, string.Empty, 1, true));
+      messageIds.ForEach(x => CommonDb.message_delete(PageContext.PageModuleID, x, true, string.Empty, 1, true));
     }
 
     #endregion

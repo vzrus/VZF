@@ -108,7 +108,7 @@ namespace YAF.Controls
     /// </param>
     protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
     {
-      this._dtSmileys = LegacyDb.smiley_listunique(PageContext.PageModuleID, this.PageContext.PageBoardID);
+      this._dtSmileys = CommonDb.smiley_listunique(PageContext.PageModuleID, this.PageContext.PageBoardID);
 
       if (this._dtSmileys.Rows.Count == 0)
       {

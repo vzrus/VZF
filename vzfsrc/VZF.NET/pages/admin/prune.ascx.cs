@@ -117,7 +117,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-        this.forumlist.DataSource = LegacyDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, null, null, false, false);
+        this.forumlist.DataSource = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, null, null, false, false);
 
         this.forumlist.DataValueField = "ForumID";
         this.forumlist.DataTextField = "Forum";

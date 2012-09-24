@@ -106,7 +106,7 @@ namespace YAF.Core.Services
                 this.DataCache.GetOrSet(
                     Constants.Cache.ActiveUserLazyData.FormatWith(userId), 
                     () =>
-                    LegacyDb.user_lazydata(YafContext.Current.PageModuleID, userId, 
+                    CommonDb.user_lazydata(YafContext.Current.PageModuleID, userId, 
                         YafContext.Current.PageBoardID, 
                         this.Get<YafBoardSettings>().AllowEmailSending, 
                         this.Get<YafBoardSettings>().EnableBuddyList, 
@@ -134,7 +134,7 @@ namespace YAF.Core.Services
 
             // Iterate through all the thanks relating to this topic and make appropriate
             // changes in columns.
-            var allThanks = LegacyDb.MessageGetAllThanks(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
+            var allThanks = CommonDb.MessageGetAllThanks(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
 
             foreach (var f in
                 allThanks.Where(t => t.FromUserID != null && t.FromUserID == YafContext.Current.PageUserID).SelectMany(
@@ -219,7 +219,7 @@ namespace YAF.Core.Services
                     Constants.Cache.ForumCategory, 
                     () =>
                         {
-                            var catDt = LegacyDb.category_list(YafContext.Current.PageModuleID, boardID, null);
+                            var catDt = CommonDb.category_list(YafContext.Current.PageModuleID, boardID, null);
                             catDt.TableName = CommonSqlDbAccess.GetObjectName("Category");
                             return catDt;
                         }, 
@@ -243,7 +243,7 @@ namespace YAF.Core.Services
                     categoryTable.AcceptChanges();
                 }
 
-                DataTable forum = LegacyDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
+                DataTable forum = CommonDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                 forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
                 ds.Tables.Add(forum.Copy());
 
@@ -299,7 +299,7 @@ namespace YAF.Core.Services
             if (favoriteTopicList == null)
             {
                 // get fresh values
-                DataTable favoriteTopicListDt = LegacyDb.topic_favorite_list(YafContext.Current.PageModuleID, userID);
+                DataTable favoriteTopicListDt = CommonDb.topic_favorite_list(YafContext.Current.PageModuleID, userID);
 
                 // convert to list...
                 favoriteTopicList = favoriteTopicListDt.GetColumnAsList<int>("TopicID");
@@ -347,7 +347,7 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    LegacyDb.active_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
+                    CommonDb.active_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
                         guests, 
                         crawlers, 
                         activeTime, 
@@ -398,7 +398,7 @@ namespace YAF.Core.Services
         public IEnumerable<TypedBBCode> GetCustomBBCode()
         {
             return this.DataCache.GetOrSet(
-                Constants.Cache.CustomBBCode, () => LegacyDb.BBCodeList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).ToList());
+                Constants.Cache.CustomBBCode, () => CommonDb.BBCodeList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).ToList());
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    LegacyDb.topic_latest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
+                    CommonDb.topic_latest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
                         numberOfPosts, 
                         userId, 
                         this.Get<YafBoardSettings>().UseStyledNicks, 
@@ -468,7 +468,7 @@ namespace YAF.Core.Services
         /// </returns>
         public DataTable GetModerators()
         {
-            DataTable moderator = LegacyDb.forum_moderators(YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
+            DataTable moderator = CommonDb.forum_moderators(YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
             moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
 
             return moderator;
@@ -487,7 +487,7 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    LegacyDb.recent_users(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, timeSinceLastLogin, this.Get<YafBoardSettings>().UseStyledNicks));
+                    CommonDb.recent_users(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, timeSinceLastLogin, this.Get<YafBoardSettings>().UseStyledNicks));
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace YAF.Core.Services
                 Constants.Cache.Shoutbox, 
                 () =>
                     {
-                        var messages = LegacyDb.shoutbox_getmessages(YafContext.Current.PageModuleID, boardId, 
+                        var messages = CommonDb.shoutbox_getmessages(YafContext.Current.PageModuleID, boardId, 
                             this.Get<YafBoardSettings>().ShoutboxShowMessageCount, 
                             this.Get<YafBoardSettings>().UseStyledNicks);
 
@@ -553,7 +553,7 @@ namespace YAF.Core.Services
         public List<SimpleForum> GetSimpleForumTopic(int boardId, int userId, DateTime timeFrame, int maxCount)
         {
             var forumData =
-                LegacyDb.forum_listall((int?)YafContext.Current.PageModuleID, boardId, userId).SelectTypedList(
+                CommonDb.forum_listall((int?)YafContext.Current.PageModuleID, boardId, userId).SelectTypedList(
                     x => new SimpleForum { ForumID = x.Field<int>("ForumID"), Name = x.Field<string>("Forum") }).ToList();
 
             // get topics for all forums...
@@ -563,7 +563,7 @@ namespace YAF.Core.Services
 
                 // add topics
                 var topics =
-                    LegacyDb.topic_list(YafContext.Current.PageModuleID, forum.ForumID, userId, timeFrame, DateTime.UtcNow, 0, maxCount, false, false, false).
+                    CommonDb.topic_list(YafContext.Current.PageModuleID, forum.ForumID, userId, timeFrame, DateTime.UtcNow, 0, maxCount, false, false, false).
                         SelectTypedList(x => this.LoadSimpleTopic(x, forum1)).Where(x => x.LastPostDate >= timeFrame).ToList();
 
                 forum.Topics = topics;
@@ -582,7 +582,7 @@ namespace YAF.Core.Services
         {
             return this.DataCache.GetOrSet(
                 Constants.Cache.Smilies,
-                () => LegacyDb.SmileyList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).ToList(), 
+                () => CommonDb.SmileyList(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, null).ToList(), 
                 TimeSpan.FromMinutes(60));
         }
 
@@ -598,7 +598,7 @@ namespace YAF.Core.Services
                 dataRows.AsEnumerable().Where(x => x.Field<string>("Message").IsNotSet()).Select(
                     x => x.Field<int>("MessageID"));
 
-            var messageTextTable = LegacyDb.message_GetTextByIds(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
+            var messageTextTable = CommonDb.message_GetTextByIds(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
 
             if (messageTextTable == null)
             {
@@ -681,7 +681,7 @@ namespace YAF.Core.Services
         {
             return this.DataCache.GetOrSet(
                 Constants.Cache.UserBuddies.FormatWith(userID), 
-                () => LegacyDb.buddy_list(YafContext.Current.PageModuleID, userID), 
+                () => CommonDb.buddy_list(YafContext.Current.PageModuleID, userID), 
                 TimeSpan.FromMinutes(10));
         }
 
@@ -705,7 +705,7 @@ namespace YAF.Core.Services
             if (userList == null)
             {
                 // get fresh values
-                DataTable userListDt = LegacyDb.user_ignoredlist(YafContext.Current.PageModuleID, userId);
+                DataTable userListDt = CommonDb.user_ignoredlist(YafContext.Current.PageModuleID, userId);
 
                 // convert to list...
                 userList = userListDt.GetColumnAsList<int>("IgnoredUserID");
@@ -732,7 +732,7 @@ namespace YAF.Core.Services
 
             // get the medals cached...
             DataTable dt = this.DataCache.GetOrSet(
-                key, () => LegacyDb.user_listmedals(YafContext.Current.PageModuleID, userId), TimeSpan.FromMinutes(10));
+                key, () => CommonDb.user_listmedals(YafContext.Current.PageModuleID, userId), TimeSpan.FromMinutes(10));
 
             return dt;
         }
@@ -775,7 +775,7 @@ namespace YAF.Core.Services
                     LastUserName = UserMembershipHelper.GetDisplayNameFromID(row.Field<int>("LastUserID")), 
                     LastMessageID = row.Field<int>("LastMessageID"), 
                     FirstMessage = row.Field<string>("FirstMessage"),
-                    LastMessage = LegacyDb.MessageList(YafContext.Current.PageModuleID, row.Field<int>("LastMessageID")).First().Message, 
+                    LastMessage = CommonDb.MessageList(YafContext.Current.PageModuleID, row.Field<int>("LastMessageID")).First().Message, 
                     Forum = forum
                 };
         }

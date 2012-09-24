@@ -68,13 +68,13 @@ namespace YAF.Core.Tasks
       try
       {
         // get all boards...
-          List<int> boardIds = LegacyDb.board_list(YafContext.Current.PageModuleID, null).GetColumnAsList<int>("BoardID");
+          List<int> boardIds = CommonDb.board_list(YafContext.Current.PageModuleID, null).GetColumnAsList<int>("BoardID");
 
         // go through each board...
         foreach (int boardId in boardIds)
         {
           // get users for this board...
-          List<DataRow> users = LegacyDb.user_list(YafContext.Current.PageModuleID, boardId, null, null).Rows.Cast<DataRow>().ToList();
+          List<DataRow> users = CommonDb.user_list(YafContext.Current.PageModuleID, boardId, null, null).Rows.Cast<DataRow>().ToList();
 
           // handle unsuspension...
           var suspendedUsers = from u in users
@@ -84,7 +84,7 @@ namespace YAF.Core.Tasks
           // unsuspend these users...
           foreach (var user in suspendedUsers)
           {
-            LegacyDb.user_suspend(YafContext.Current.PageModuleID, user["UserId"], null);
+            CommonDb.user_suspend(YafContext.Current.PageModuleID, user["UserId"], null);
 
             // sleep for a quarter of a second so we don't pound the server...
             Thread.Sleep(250);
@@ -96,7 +96,7 @@ namespace YAF.Core.Tasks
       }
       catch (Exception x)
       {
-          LegacyDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Exception In {1}: {0}".FormatWith(x, TaskName));
+          CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Exception In {1}: {0}".FormatWith(x, TaskName));
       }
     }
   }

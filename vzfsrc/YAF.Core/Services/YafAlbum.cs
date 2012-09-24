@@ -59,7 +59,7 @@ namespace YAF.Core.Services
     {
       if (albumID != null)
       {
-        var dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, albumID, null);
+        var dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, albumID, null);
 
         foreach (var fullName in from DataRow dr in dt.Rows
                                  select "{0}/{1}.{2}.{3}.yafalbum".FormatWith(upDir, userID, albumID, dr["FileName"]) into fullName 
@@ -70,11 +70,11 @@ namespace YAF.Core.Services
             File.Delete(fullName);
         }
 
-        LegacyDb.album_delete(YafContext.Current.PageModuleID, albumID);
+        CommonDb.album_delete(YafContext.Current.PageModuleID, albumID);
       }
       else
       {
-          using (DataTable dt = LegacyDb.album_image_list(YafContext.Current.PageModuleID, null, imageID))
+          using (DataTable dt = CommonDb.album_image_list(YafContext.Current.PageModuleID, null, imageID))
         {
           var dr = dt.Rows[0];
           var fileName = dr["FileName"].ToString();
@@ -87,7 +87,7 @@ namespace YAF.Core.Services
           }
         }
 
-        LegacyDb.album_image_delete(YafContext.Current.PageModuleID, imageID);
+        CommonDb.album_image_delete(YafContext.Current.PageModuleID, imageID);
       }
     }
 
@@ -111,7 +111,7 @@ namespace YAF.Core.Services
       YafContext.Current.Get<StartupInitializeDb>().Run();
 
       // newTitle = System.Web.HttpUtility.HtmlEncode(newTitle);
-      LegacyDb.album_save(YafContext.Current.PageModuleID, albumID, null, newTitle, null);
+      CommonDb.album_save(YafContext.Current.PageModuleID, albumID, null, newTitle, null);
 
       var returnObject = new ReturnClass { NewTitle = newTitle };
 
@@ -142,7 +142,7 @@ namespace YAF.Core.Services
       YafContext.Current.Get<StartupInitializeDb>().Run();
 
       // newCaption = System.Web.HttpUtility.HtmlEncode(newCaption);
-      LegacyDb.album_image_save(YafContext.Current.PageModuleID, imageID, null, newCaption, null, null, null);
+      CommonDb.album_image_save(YafContext.Current.PageModuleID, imageID, null, newCaption, null, null, null);
       var returnObject = new ReturnClass { NewTitle = newCaption };
 
         returnObject.NewTitle = (newCaption == string.Empty)
