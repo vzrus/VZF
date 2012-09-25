@@ -26,13 +26,9 @@ using YAF.Utils.Helpers;
 namespace YAF.Classes.Data
 {
   using System;
-  using System.Collections.Generic;
   using System.Configuration;
   using System.Data;
-  using System.Linq;
   using FirebirdSql.Data.FirebirdClient;
-  using YAF.Classes.Pattern;
-  using System.Diagnostics.CodeAnalysis;
 
   /// <summary>
   /// The yaf db access for SQL Server.
@@ -182,14 +178,26 @@ namespace YAF.Classes.Data
           bool parm17,
           bool parm18,
           bool parm19,
-          string userID,
+          string userId,
           string userPassword)
       {
           String st = parm1.Replace(@"\\", @"\");
 
-          FbConnectionStringBuilder connBuilder =
+          var connBuilder =
               new FbConnectionStringBuilder("Database=" + st + ";Port=" +
-                  parm4 + ";Dialect=" + parm2 + ";Charset=" + parm3 + ";UserID=" + userID + ";userPassword=" + userPassword);
+                  parm4 + ";Dialect=" + parm2 + ";Charset=" + parm3 + ";UserID=" + userId + ";userPassword=" + userPassword)
+                  {
+                      Database = parm1,
+                      ConnectionLifeTime = Convert.ToInt32(parm9),
+                      Dialect = Convert.ToInt32(parm2),
+                      Charset = parm3,
+                      Port = Convert.ToInt32(parm4),
+                      Role = parm7,
+                      ConnectionTimeout = Convert.ToInt32(parm8),
+                      Pooling = parm13,
+                      UserID = userId,
+                      Password = userPassword
+                  };
 
           /* switch (Convert.ToInt32(parm5))
            {
@@ -207,18 +215,6 @@ namespace YAF.Classes.Data
                    break;
            }*/
 
-
-
-          connBuilder.Database = parm1;
-          connBuilder.ConnectionLifeTime = Convert.ToInt32(parm9);
-          connBuilder.Dialect = Convert.ToInt32(parm2);
-          connBuilder.Charset = parm3;
-          connBuilder.Port = Convert.ToInt32(parm4);
-          connBuilder.Role = parm7;
-          connBuilder.ConnectionTimeout = Convert.ToInt32(parm8);
-          connBuilder.Pooling = parm13;
-          connBuilder.UserID = userID;
-          connBuilder.Password = userPassword;
 
           //  connBuilder.PacketSize
           // connBuilder.ClientLibrary = "";

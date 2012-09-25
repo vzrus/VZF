@@ -20,7 +20,7 @@
             <th align="left" class="header2 headerForum">
                 <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
             </th>
-<%--            <th id="Th1" width="15%" runat="server" class="header2 headerModerators" visible="<%# PageContext.BoardSettings.ShowModeratorList %>">
+<%--            <th id="Th1" width="15%" runat="server" class="header2 headerModerators" visible="<%# PageContext.BoardSettings.ShowModeratorList && PageContext.BoardSettings.ShowModeratorListAsColumn %>">
                 <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="moderators" />
             </th>
             <th width="4%" class="header2 headerTopics">

@@ -30,6 +30,11 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
-VZF.Providers.Mssql*/
-VZF.Data.Mssql*/
+VZF.Providers.Mssql/
+VZF.Data.Mssql/
 [Tt]est[Rr]esult*
+vzfsrc/VZF.NET/uploads/
+vzfsrc/VZF.NET/web.config
+vzfsrc/VZF.NET/app.config
+vzfsrc/VZF.NET/app.config
+vzfsrc/VZF.NET/web.config

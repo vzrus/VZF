@@ -14,7 +14,7 @@
                         <th colspan="2" align="left" class="header1 headerForum">
                             <YAF:LocalizedLabel ID="ForumHeaderLabel" runat="server" LocalizedTag="FORUM" />
                         </th>
-                        <th id="Td1" class="header1 headerModerators" width="15%" runat="server" visible="<%# PageContext.BoardSettings.ShowModeratorList && PageContext.BoardSettings.ShowModeratorListAsColumn %>">
+                        <th id="Td1" class="header1 headerModerators" width="15%" runat="server" visible='<%# PageContext.BoardSettings.ShowModeratorList && PageContext.BoardSettings.ShowModeratorListAsColumn %>'>
                             <YAF:LocalizedLabel ID="ModeratorsHeaderLabel" runat="server" LocalizedTag="MODERATORS" />
                         </th>
                         <th class="header1 headerTopics" width="4%">

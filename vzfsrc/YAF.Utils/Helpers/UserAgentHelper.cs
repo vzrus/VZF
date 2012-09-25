@@ -39,7 +39,7 @@ namespace YAF.Utils.Helpers
     /// <summary>
     /// The spider contains.
     /// </summary>
-    private static readonly string[] spiderContains = {
+    private static readonly string[] spiderContains = { 
                                                         "abachoBOT", "abcdatos_botlink", "ah-ha.com crawler", "antibot", 
                                                         "appie", "AltaVista-Intranet", "Acoon Robot", "Atomz", 
                                                         "Arachnoidea", "AESOP_com_SpiderMan", "AxmoRobot", 
@@ -60,7 +60,7 @@ namespace YAF.Utils.Helpers
                                                         "OnetSzukaj", "PicoSearch", "PJspider", "nttdirectory_robot", 
                                                         "maxbot.com", "Openfind", "psbot", "QweeryBot", "StackRambler", 
                                                         "SeznamBot", "Search-10", "Scrubby", "speedfind ramBot xtreme", 
-                                                        "Kototoi", "SearchByUsa", "Searchspider", "SightQuestBot", 
+                                                        "Kototoi", "SearchByUsa", "Searchspider", "SightQuestBot","Sogou", 
                                                         "Spider_Monkey", "Surfnomore", "teoma", "UK Searcher Spider", 
                                                         "Nazilla", "MuscatFerret", "ZyBorg", "WIRE WebRefiner", "WSCbot", 
                                                         "Yandex", "Yellopet-Spider", "YBSbot", "OceanSpiders", 

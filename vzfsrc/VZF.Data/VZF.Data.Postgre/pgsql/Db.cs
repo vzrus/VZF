@@ -6390,22 +6390,22 @@ namespace YAF.Classes.Data.Postgre
             // Profile columns cannot yet exist when we first are gettinng data.
             try
             {
-                var sqlBuilder = new StringBuilder("SELECT up.Birthday, up.UserID, u.TimeZone, u.name as UserName,u.DisplayName AS UserDisplayName, (case(:i_stylednicks) when TRUE then  u.UserStyle ");
+                var sqlBuilder = new StringBuilder("SELECT up.Birthday, up.UserID, u.TimeZone, u.name as UserName,u.DisplayName AS UserDisplayName, (case(:i_stylednicks) when TRUE then  u.userstyle ");
                 sqlBuilder.Append(" else '' end) AS Style ");
                 sqlBuilder.Append(" FROM ");
                 sqlBuilder.Append(PostgreDBAccess.GetObjectName("userprofile"));
                 sqlBuilder.Append(" up JOIN ");
                 sqlBuilder.Append(PostgreDBAccess.GetObjectName("user"));
                 sqlBuilder.Append(" u ON u.userid = up.userid ");
-                sqlBuilder.Append(" where u.boardid = :i_boardid AND (extract(day  from up.Birthday) between extract(day  from :i_currentdate1) and extract(day  from :i_currentdate2)) and (extract(month  from up.birthday) between extract(month  from :i_currentdate3) + extract(month  from :i_currentdate4));");
+                sqlBuilder.Append(" where u.boardid = :i_boardid AND (extract(day  from up.Birthday) between :i_currentday1 and :i_currentday2) and (extract(month  from up.birthday) between :i_currentmonth3 and :i_currentmonth4);");
                 using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
                 {
                     cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
                     cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_currentdate1", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(-1);
-                    cmd.Parameters.Add("i_currentdate2", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(1);
-                    cmd.Parameters.Add("i_currentdate3", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(-1);
-                    cmd.Parameters.Add("i_currentdate4", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow.AddDays(1);
+                    cmd.Parameters.Add("i_currentday1", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(-1).Day;
+                    cmd.Parameters.Add("i_currentday2", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(1).Day;
+                    cmd.Parameters.Add("i_currentmonth3", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(-1).Month;
+                    cmd.Parameters.Add("i_currentmonth4", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(1).Month;
                     return PostgreDBAccess.GetData(cmd,connectionString);
                 }
             }

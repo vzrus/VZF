@@ -481,47 +481,58 @@ namespace YAF.Classes.Data
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
-      public static void album_delete(int? mid, object AlbumID)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": MsSql.CommonDb.album_delete(connectionString, AlbumID); break;
-              case "Npgsql": Postgre.Db.album_delete(connectionString, AlbumID); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.album_delete(connectionString, AlbumID); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_delete(connectionString, AlbumID); break;
-              // case "oracle":  orPostgre.Db.album_delete(connectionString, AlbumID); break;
-              // case "db2": db2Postgre.Db.album_delete(connectionString, AlbumID); break;
-              // case "other": othPostgre.Db.album_delete(connectionString, AlbumID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-
-          }
-      }
-
-      public static int[] album_getstats(int? mid, object UserID, object AlbumID)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              // case "System.Data.SqlClient": return MsSql.CommonDb.album_getstats(connectionString,  UserID,  AlbumID);
-              case "Npgsql": return Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              // case "oracle":  return orPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              // case "db2": return db2Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              // case "other": return othPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
+        
+        /// <summary>
+        /// Deletes a user album.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        public static void album_delete(int? mid, object AlbumID)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": MsSql.CommonDb.album_delete(connectionString, AlbumID); break;
+                case "Npgsql": Postgre.Db.album_delete(connectionString, AlbumID); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.album_delete(connectionString, AlbumID); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_delete(connectionString, AlbumID); break;
+                // case "oracle":  orPostgre.Db.album_delete(connectionString, AlbumID); break;
+                // case "db2": db2Postgre.Db.album_delete(connectionString, AlbumID); break;
+                // case "other": othPostgre.Db.album_delete(connectionString, AlbumID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Gets stats row on album.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="UserID">The user ID.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <returns>Returns a <see cref="T:System.Int32"/> array with satst row.</returns>
+        public static int[] album_getstats(int? mid, object UserID, object AlbumID)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                // case "System.Data.SqlClient": return MsSql.CommonDb.album_getstats(connectionString,  UserID,  AlbumID);
+                case "Npgsql": return Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                // case "oracle":  return orPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                // case "db2": return db2Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                // case "other": return othPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
       public static string album_gettitle(int? mid, object AlbumID)
       {

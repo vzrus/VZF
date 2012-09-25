@@ -16,6 +16,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Web.UI.HtmlControls;
+using YAF.Utils.Helpers;
+
 namespace YAF.Controls
 {
 	#region Using
@@ -103,6 +107,7 @@ namespace YAF.Controls
 		/// </param>
 		protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
 		{
+           
 			this.BindData();
 		}
 
@@ -113,9 +118,11 @@ namespace YAF.Controls
 		{
 			DataSet ds = this.Get<IDBBroker>().BoardLayout(
 					this.PageContext.PageBoardID, this.PageContext.PageUserID, this.PageContext.PageCategoryID, null);
-
+            /* this.CategoryList.FindControlRecursiveAs<HtmlTableCell>("Td1").Visible = PageContext.BoardSettings.ShowModeratorList &&
+                              PageContext.BoardSettings.ShowModeratorListAsColumn; */
             this.CategoryList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
 			this.CategoryList.DataBind();
+           
 		}
 
 		#endregion
