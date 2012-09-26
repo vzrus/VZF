@@ -208,36 +208,30 @@ namespace YAF.Controls
                     tz = 0;
                 }
  
-                // Get the user birhday timezone
+                // Get the user birhday based on his timezone date.
                 var dtt = birth.AddYears(DateTime.UtcNow.Year - birth.Year);
-
-                var ss = dtt.AddMinutes(-tz);
-                var ddd = dtt.AddMinutes(-tz + 1440);
+              
                 // The user can be congratulated. The time zone in profile is saved in the list user timezone
-                if (DateTime.UtcNow > dtt.AddMinutes(-tz).ToUniversalTime() && DateTime.UtcNow < dtt.AddMinutes(-tz + 1440).ToUniversalTime())
-                {
-                  
-                    this.BirthdayUsers.Controls.Add(
-                        new UserLink
-                            {
-                                UserID = (int) user["UserID"],
-                                ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
-                                                  ? user["UserDisplayName"].ToString()
-                                                  : user["UserName"].ToString(),
-                                Style =
-                                    this.Get<IStyleTransform>().DecodeStyleByString(user["Style"].ToString(), false),
-                                PostfixText =
-                                    " ({0})".FormatWith(DateTime.Now.Year - user["Birthday"].ToType<DateTime>().Year)
-                            });
-
-                    var separator = new HtmlGenericControl {InnerHtml = "&nbsp;,&nbsp;"};
-
-                    this.BirthdayUsers.Controls.Add(separator);
-                    if (!this.BirthdayUsers.Visible)
+                if (DateTime.UtcNow <= dtt.AddMinutes(-tz).ToUniversalTime() ||
+                    DateTime.UtcNow >= dtt.AddMinutes(-tz + 1440).ToUniversalTime()) continue;
+                
+                this.BirthdayUsers.Controls.Add(
+                    new UserLink
                     {
-                        this.BirthdayUsers.Visible = true;
-                    }
+                        UserID = (int) user["UserID"],
+                        ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
+                                              ? user["UserDisplayName"].ToString()
+                                              : user["UserName"].ToString(),
+                        Style = this.Get<IStyleTransform>().DecodeStyleByString(user["Style"].ToString(), false),
+                        PostfixText =  " ({0})".FormatWith(DateTime.Now.Year - user["Birthday"].ToType<DateTime>().Year)
+                        });
 
+                var separator = new HtmlGenericControl {InnerHtml = "&nbsp;,&nbsp;"};
+
+                this.BirthdayUsers.Controls.Add(separator);
+                if (!this.BirthdayUsers.Visible)
+                {
+                    this.BirthdayUsers.Visible = true;
                 }
             }
             if (this.BirthdayUsers.Visible)
@@ -259,7 +253,7 @@ namespace YAF.Controls
         private void ForumStatistics_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             // Active users : Call this before forum_stats to clean up active users
-            DataTable activeUsers = this.Get<IDataCache>().GetOrSet(
+            var activeUsers = this.Get<IDataCache>().GetOrSet(
               Constants.Cache.UsersOnlineStatus,
               () => this.Get<IDBBroker>().GetActiveList(false, this.Get<YafBoardSettings>().ShowCrawlersInActiveList),
               TimeSpan.FromMilliseconds(this.Get<YafBoardSettings>().OnlineStatusCacheTimeout));
