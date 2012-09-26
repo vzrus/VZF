@@ -211,9 +211,10 @@ namespace YAF.Controls
                 // Get the user birhday timezone
                 var dtt = birth.AddYears(DateTime.UtcNow.Year - birth.Year);
 
-                
+                var ss = dtt.AddMinutes(-tz);
+                var ddd = dtt.AddMinutes(-tz + 1440);
                 // The user can be congratulated. The time zone in profile is saved in the list user timezone
-                if (DateTime.UtcNow > dtt.AddMinutes(tz) && DateTime.UtcNow < dtt.AddMinutes(tz + 1440))
+                if (DateTime.UtcNow > dtt.AddMinutes(-tz).ToUniversalTime() && DateTime.UtcNow < dtt.AddMinutes(-tz + 1440).ToUniversalTime())
                 {
                   
                     this.BirthdayUsers.Controls.Add(
