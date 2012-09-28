@@ -532,7 +532,7 @@ namespace YAF
 
                 var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
                
-                if (forumUrl.IndexOf('&') > 0)
+                if (Config.IsMojoPortal && forumUrl.IndexOf('&') > 0)
                 {
                     forumUrl = forumUrl + "&g={0}&u={1}".FormatWith(ForumPages.pmessage, userId);
                 }
@@ -541,7 +541,7 @@ namespace YAF
                     forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
                 }
 
-                // forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
+                forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
                
                 var pmButton = new ThemeButton
                                    {
@@ -680,7 +680,7 @@ namespace YAF
             DataRow pageRow = CommonDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
                 boardID,
                 userKey,
-                HttpContext.Current.Request.UserHostAddress,
+                HttpContext.Current.Request.GetUserRealIPAddress(),
                 HttpContext.Current.Request.FilePath,
                 HttpContext.Current.Request.QueryString.ToString(),
                 browser,

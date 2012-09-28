@@ -6397,15 +6397,13 @@ namespace YAF.Classes.Data.Postgre
                 sqlBuilder.Append(" up JOIN ");
                 sqlBuilder.Append(PostgreDBAccess.GetObjectName("user"));
                 sqlBuilder.Append(" u ON u.userid = up.userid ");
-                sqlBuilder.Append(" where u.boardid = :i_boardid AND (extract(day  from up.Birthday) between :i_currentday1 and :i_currentday2) and (extract(month  from up.birthday) between :i_currentmonth3 and :i_currentmonth4);");
+                sqlBuilder.Append(" where u.boardid = :i_boardid AND (up.birthday + (:i_currentyear - extract(year  from up.birthday))*interval '1 year' between (:i_currentutc - interval '24 hours') and (:i_currentutc + interval '24 hours'));");
                 using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
                 {
                     cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
                     cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_currentday1", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(-1).Day;
-                    cmd.Parameters.Add("i_currentday2", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(1).Day;
-                    cmd.Parameters.Add("i_currentmonth3", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(-1).Month;
-                    cmd.Parameters.Add("i_currentmonth4", NpgsqlDbType.Integer).Value = DateTime.UtcNow.AddDays(1).Month;
+                    cmd.Parameters.Add("i_currentyear", NpgsqlDbType.Integer).Value = DateTime.UtcNow.Year;
+                    cmd.Parameters.Add("i_currentutc", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
                     return PostgreDBAccess.GetData(cmd,connectionString);
                 }
             }
@@ -7695,18 +7693,6 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public void user_removepointsByTopicID(string connectionString, object topicID, object points)
-		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_removepointsbytopicid"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
-
-				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
-				cmd.Parameters.Add(new NpgsqlParameter("i_points", NpgsqlDbType.Integer)).Value = points;
-							 
-				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-			}
-		}
 
         /// <summary>
         /// Remove Repuatation Points from the specified user id.
@@ -8158,7 +8144,7 @@ namespace YAF.Classes.Data.Postgre
         /// <returns>
         /// Returns the Last Read DateTime
         /// </returns>
-        public static DateTime ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = PostgreDBAccess.GetCommand("readforum_lastread"))
             {

@@ -67,6 +67,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Firebird.dll</HintPath>
     </Reference>
+    <Reference Include="VZF.Data.Mssql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Data.Mssql.dll</HintPath>
+    </Reference>
     <Reference Include="VZF.Data.Mysql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Mysql.dll</HintPath>

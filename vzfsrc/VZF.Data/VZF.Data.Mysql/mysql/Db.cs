@@ -8600,18 +8600,6 @@ namespace YAF.Classes.Data.MySqlDb
 			}
 		}
 
-        static public void user_removepointsByTopicID(string connectionString, object topicID, object points)
-		{
-			using (var cmd = MySqlDbAccess.GetCommand( "user_removepointsbytopicid" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
-				
-                cmd.Parameters.Add( "i_TopicID", MySqlDbType.Int32 ).Value = topicID;
-                cmd.Parameters.Add( "i_Points", MySqlDbType.Int32 ).Value = points;
-				
-                MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
-			}
-		}
 
         static public void user_removepoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
 		{
@@ -9057,7 +9045,7 @@ namespace YAF.Classes.Data.MySqlDb
         /// <returns>
         /// Returns the Last Read DateTime
         /// </returns>
-        public static DateTime ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("readforum_lastread"))
             {
@@ -9910,10 +9898,9 @@ namespace YAF.Classes.Data.MySqlDb
             using (var cmd = MySqlDbAccess.GetCommand("system_updateversion"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new MySqlParameter("i_Version", MySqlDbType.Int32));
-                cmd.Parameters[0].Value = version;
-                cmd.Parameters.Add(new MySqlParameter("i_VersionName", MySqlDbType.VarChar));
-                cmd.Parameters[1].Value = name;
+
+                cmd.Parameters.Add(new MySqlParameter("i_Version", MySqlDbType.Int32)).Value = version;
+                cmd.Parameters.Add(new MySqlParameter("i_VersionName", MySqlDbType.VarChar)).Value = name;
 
                 YAF.Classes.Data.MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
             }

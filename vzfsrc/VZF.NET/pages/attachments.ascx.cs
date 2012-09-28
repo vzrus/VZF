@@ -356,7 +356,7 @@ namespace YAF.Pages
       extension = extension.Replace(".", string.Empty);
 
       // If we don't get a match from the db, then the extension is not allowed
-      DataTable dt = CommonDb.extension_list(this.PageContext.PageBoardID, extension);
+      DataTable dt = CommonDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID, extension);
 
       bool bInList = dt.Rows.Count > 0;
       bool bError = false;

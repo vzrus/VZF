@@ -4784,8 +4784,8 @@ BEGIN
  	/*should it be physically deleter or not*/
  	IF i_EraseMessage = 1 THEN
  		DELETE FROM {databaseName}.{objectQualifier}Attachment WHERE MessageID = i_MessageID;
- 		DELETE FROM {databaseName}.{objectQualifier}MessageReported WHERE MessageID = i_MessageID;
- 		DELETE FROM {databaseName}.{objectQualifier}MessageReportedAudit WHERE MessageID = i_MessageID;
+		DELETE FROM {databaseName}.{objectQualifier}MessageReportedAudit WHERE MessageID = i_MessageID;
+ 		DELETE FROM {databaseName}.{objectQualifier}MessageReported WHERE MessageID = i_MessageID; 		
  		DELETE FROM {databaseName}.{objectQualifier}MessageHistory WHERE MessageID = i_MessageID;
  		DELETE FROM {databaseName}.{objectQualifier}Thanks where MessageID = i_MessageID;
 	
@@ -10505,15 +10505,6 @@ END;
 	END IF;
 	END IF;
     END;
---GO
-
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}user_removepointsbytopicid(i_TopicID INT,i_Points INT) 
-BEGIN
- 	DECLARE ici_UserID INT;
- 	SELECT UserID INTO ici_UserID FROM {databaseName}.{objectQualifier}Topic WHERE TopicID = i_TopicID;
- 	UPDATE {databaseName}.{objectQualifier}User SET Points = Points - i_Points WHERE UserID = ici_UserID;
-END;
 --GO
 
 CREATE PROCEDURE {databaseName}.{objectQualifier}user_savenotification(

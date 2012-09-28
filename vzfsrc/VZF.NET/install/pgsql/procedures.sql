@@ -5540,8 +5540,8 @@ BEGIN
  	-- should it be physically deleter or not
  	IF i_erasemessage IS TRUE THEN
  		DELETE FROM databaseSchema.objectQualifier_attachment WHERE messageid = i_messageid;
- 		DELETE FROM databaseSchema.objectQualifier_messagereported WHERE messageid = i_messageid;
  		DELETE FROM databaseSchema.objectQualifier_messagereportedaudit WHERE messageid = i_messageid;
+		DELETE FROM databaseSchema.objectQualifier_messagereported WHERE messageid = i_messageid;
  		DELETE FROM databaseSchema.objectQualifier_messagehistory WHERE messageid = i_messageid;
  		DELETE FROM databaseSchema.objectQualifier_thanks WHERE messageid = i_messageid;
  		DELETE FROM databaseSchema.objectQualifier_message WHERE messageid = i_messageid; 	
@@ -11791,19 +11791,6 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;
---GO
-
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_removepointsbytopicid(
-                           i_topicid integer, 
-						   i_points integer)
-                  RETURNS void AS 	
- 	'UPDATE databaseSchema.objectQualifier_user 
- 	SET points = points - $2 
- 	WHERE userid = (SELECT userid
- 	FROM databaseSchema.objectQualifier_topic 
- 	WHERE topicid = $1 LIMIT 1);'
-  LANGUAGE 'sql' VOLATILE SECURITY DEFINER
-  COST 100; 
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_resetpoints()

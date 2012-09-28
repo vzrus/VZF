@@ -52,7 +52,7 @@ namespace YAF.Core.Services
                 return false;
             }
 
-            string ipAdress = YafContext.Current.Get<HttpRequestBase>().UserHostAddress;
+            string ipAdress = YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress();
 
             if (ipAdress.Equals("::1"))
             {

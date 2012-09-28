@@ -7578,19 +7578,6 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_removepointsByTopicID(string connectionString, object topicId, object points)
-		{
-			using (FbCommand cmd = FbDbAccess.GetCommand("user_removepointsbytopicid"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
-
-				cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId;
-				cmd.Parameters.Add(new FbParameter("@I_POINTS", FbDbType.Integer)).Value = points;
-		 
-				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
-			}
-		}
-
     public static void user_removepoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
     {
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_removepoints"))
@@ -8063,7 +8050,7 @@ namespace YAF.Classes.Data.FirebirdDb
     /// <returns>
     /// Returns the Last Read DateTime
     /// </returns>
-    public static DateTime ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+    public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
     {
         using (var cmd = FbDbAccess.GetCommand("readforum_lastread"))
         {

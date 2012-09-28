@@ -114,7 +114,7 @@ namespace YAF.Classes.Data
 		{
 			return String.Format(
 							"`{0}`.`{1}{2}`",
-							Config.DatabaseScheme,
+							Config.SchemaName,
 							Config.DatabaseObjectQualifier,
 							name
 							);

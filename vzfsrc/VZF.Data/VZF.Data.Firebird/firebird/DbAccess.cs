@@ -94,12 +94,12 @@ namespace YAF.Classes.Data
      
       static public string SchemaName
       {
-          get { return _schemaName ?? (_schemaName = ConfigurationManager.AppSettings["YAF.DatabaseSchemaName"]); }
+          get { return _schemaName ?? (_schemaName = Config.SchemaName); }
       }
       
       static public string DatabaseEncoding
       {
-          get { return _databaseEncoding ?? (_databaseEncoding = ConfigurationManager.AppSettings["YAF.DatabaseEncoding"]); }
+          get { return _databaseEncoding ?? (_databaseEncoding = Config.DatabaseEncoding); }
       }
       
       static public string DatabaseCollation

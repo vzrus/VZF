@@ -4211,12 +4211,8 @@
     <Content Include="web_fb.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="app.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="app.config" />
+    <Content Include="web.config" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\GoogleSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\PSpell.php" />
@@ -5937,7 +5933,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4225</DevelopmentServerPort>
+          <DevelopmentServerPort>27988</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
