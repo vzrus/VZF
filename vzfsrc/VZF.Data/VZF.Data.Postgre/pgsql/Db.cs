@@ -772,7 +772,7 @@ namespace YAF.Classes.Data.Postgre
 
                    // var dd = PostgreDBAccess.GetConnectionParams();
 					DataTable dt1 = null;
-					using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "pageload" ) )
+					using ( var cmd = PostgreDBAccess.GetCommand( "pageload" ) )
 					{
 						cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1066,7 +1066,7 @@ namespace YAF.Classes.Data.Postgre
             }
 
 
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand(searchSql, true))
+            using (var cmd = PostgreDBAccess.GetCommand(searchSql, true))
             {
                 return PostgreDBAccess.GetData(cmd, connectionString);
             }

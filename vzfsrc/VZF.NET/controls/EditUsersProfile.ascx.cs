@@ -58,22 +58,17 @@ namespace YAF.Controls
         /// <summary>
         ///   The admin edit mode.
         /// </summary>
-        private bool adminEditMode;
+        private bool _adminEditMode;
 
         /// <summary>
         ///   The current user id.
         /// </summary>
-        private int currentUserID;
+        private int _currentUserId;
 
         /// <summary>
         ///   The _user data.
         /// </summary>
         private CombinedUserDataHelper _userData;
-
-        /// <summary>
-        ///   The current culture.
-        /// </summary>
-        private string currentCulture = "en-US";
 
         #endregion
 
@@ -86,12 +81,12 @@ namespace YAF.Controls
         {
             get
             {
-                return this.adminEditMode;
+                return this._adminEditMode;
             }
 
             set
             {
-                this.adminEditMode = value;
+                this._adminEditMode = value;
             }
         }
 
@@ -119,7 +114,7 @@ namespace YAF.Controls
         {
             get
             {
-                return this._userData ?? (this._userData = new CombinedUserDataHelper(this.currentUserID));
+                return this._userData ?? (this._userData = new CombinedUserDataHelper(this._currentUserId));
             }
         }
 
@@ -138,7 +133,7 @@ namespace YAF.Controls
         /// </param>
         protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(this.adminEditMode ? ForumPages.admin_users : ForumPages.cp_profile);
+            YafBuildLink.Redirect(this._adminEditMode ? ForumPages.admin_users : ForumPages.cp_profile);
         }
 
         /// <summary>
@@ -215,13 +210,13 @@ namespace YAF.Controls
 
             this.PageContext.QueryIDs = new QueryStringIDHelper("u");
 
-            if (this.adminEditMode && this.PageContext.IsAdmin && this.PageContext.QueryIDs.ContainsKey("u"))
+            if (this._adminEditMode && this.PageContext.IsAdmin && this.PageContext.QueryIDs.ContainsKey("u"))
             {
-                this.currentUserID = this.PageContext.QueryIDs["u"].ToType<int>();
+                this._currentUserId = this.PageContext.QueryIDs["u"].ToType<int>();
             }
             else
             {
-                this.currentUserID = this.PageContext.PageUserID;
+                this._currentUserId = this.PageContext.PageUserID;
             }
 
             if (this.IsPostBack)
@@ -338,7 +333,7 @@ namespace YAF.Controls
                 }
             }
 
-            string userName = UserMembershipHelper.GetUserNameFromID(this.currentUserID);
+            string userName = UserMembershipHelper.GetUserNameFromID(this._currentUserId);
             if (this.UpdateEmailFlag)
             {
                 string newEmail = this.Email.Text.Trim();
@@ -365,12 +360,12 @@ namespace YAF.Controls
                     // just update the e-mail...
                     try
                     {
-                        UserMembershipHelper.UpdateEmail(this.currentUserID, this.Email.Text.Trim());
+                        UserMembershipHelper.UpdateEmail(this._currentUserId, this.Email.Text.Trim());
                     }
                     catch (ApplicationException)
                     {
                         this.PageContext.AddLoadMessage(this.GetText("PROFILE", "DUPLICATED_EMAIL"));
-
+                        
                         return;
                     }
                 }
@@ -410,7 +405,7 @@ namespace YAF.Controls
             }
 
             // save remaining settings to the DB
-            CommonDb.user_save(PageContext.PageModuleID, this.currentUserID,
+            CommonDb.user_save(PageContext.PageModuleID, this._currentUserId,
               this.PageContext.PageBoardID,
               null,
               displayName,
@@ -430,7 +425,7 @@ namespace YAF.Controls
               null);
 
             // vzrus: If it's a guest edited by an admin registry value should be changed
-            DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.currentUserID, true, null, null, false);
+            DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._currentUserId, true, null, null, false);
 
             if (dt.Rows.Count > 0 && dt.Rows[0]["IsGuest"].ToType<bool>())
             {
@@ -438,16 +433,17 @@ namespace YAF.Controls
             }
 
             // clear the cache for this user...)
-            this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this.currentUserID));
+            this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this._currentUserId));
 
             YafContext.Current.Get<IDataCache>().Clear();
 
-            if (!this.adminEditMode)
+            if (!this._adminEditMode)
             {
                 YafBuildLink.Redirect(ForumPages.cp_profile);
             }
             else
             {
+                _userData = null;
                 this.BindData();
             }
         }
@@ -505,7 +501,7 @@ namespace YAF.Controls
             this.Country.DataTextField = "Name";
 
             string currentCultureLocal = this.GetCulture(true);
-            this.currentCulture = currentCultureLocal;
+           
             if (this.UserData.Profile.Country.IsSet())
             {
                 this.LookForNewRegionsBind(this.UserData.Profile.Country);
@@ -686,7 +682,7 @@ namespace YAF.Controls
             changeEmail.TemplateParams["{forumlink}"] = YafForumInfo.ForumURL;
 
             // save a change email reference to the db
-            CommonDb.checkemail_save(PageContext.PageModuleID, this.currentUserID, hash, newEmail);
+            CommonDb.checkemail_save(PageContext.PageModuleID, this._currentUserId, hash, newEmail);
 
             // send a change email message...
             changeEmail.SendEmail(
@@ -760,7 +756,7 @@ namespace YAF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this.currentUserID, settingsPropertyValueCollection);
+            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this._currentUserId, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

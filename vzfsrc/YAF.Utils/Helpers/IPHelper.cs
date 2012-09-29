@@ -70,35 +70,7 @@ namespace YAF.Utils.Helpers
                   return ipString;
           return httpRequest.UserHostAddress;
       }
-      /// <summary>
-      /// Gets User IP considering X-Forwarded-For and X-Real-IP HTTP headers
-      /// </summary>
-      /// <see cref="http://wiki.nginx.org/HttpRealipModule"/>
-      /// <see cref="http://en.wikipedia.org/wiki/X-Forwarded-For"/>
-      /// <see cref="http://dev.opera.com/articles/view/opera-mini-request-headers/#x-forwarded-for"/>
-      /// <param name="httpRequest"> </param>
-      /// <returns>
-      /// Client ip
-      /// </returns>
-      public static string GetUserRealIPAddress([NotNull] this HttpRequest httpRequest)
-      {
-          CodeContracts.ArgumentNotNull(httpRequest, "httpContext");
-          IPAddress ipAddress;
-          string ipString;
-          ipString = httpRequest.Headers["X-Forwarded-For"];
-          if (!String.IsNullOrEmpty(ipString))
-          {
-              string[] ipAddresses = ipString.Split(',');
-              string firstNonLocalAddress = ipAddresses.FirstOrDefault(ip => IPAddress.TryParse(ipString.Split(',')[0].Trim(), out ipAddress) && !IsNonRoutableIpAddress(ipAddress));
-              if (!String.IsNullOrEmpty(firstNonLocalAddress))
-                  return firstNonLocalAddress;
-          }
-          ipString = httpRequest.Headers["X-Real-IP"];
-          if (!String.IsNullOrEmpty(ipString))
-              if (IPAddress.TryParse((ipString.Split(',').LastOrDefault() ?? "").Trim(), out ipAddress))
-                  return ipString;
-          return httpRequest.UserHostAddress;
-      }
+    
     /// <summary>
     /// The ip str to long.
     /// </summary>

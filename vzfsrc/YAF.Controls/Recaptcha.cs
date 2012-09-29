@@ -17,6 +17,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Web;
+using YAF.Core;
+using YAF.Types.Interfaces;
 using YAF.Utils.Helpers;
 
 namespace YAF.Controls
@@ -314,7 +317,7 @@ namespace YAF.Controls
       {
         var validator = new RecaptchaValidator();
         validator.PrivateKey = this.PrivateKey;
-        validator.RemoteIP = this.Context.Request.GetUserRealIPAddress(); 
+        validator.RemoteIP = YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress(); 
         validator.Challenge = this.Context.Request.Form["recaptcha_challenge_field"];
         validator.Response = this.Context.Request.Form["recaptcha_response_field"];
         try

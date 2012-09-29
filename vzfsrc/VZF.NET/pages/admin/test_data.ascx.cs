@@ -5,6 +5,8 @@
  * Creation date:10/3/09
  */
 
+using System.Web;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -929,7 +931,7 @@ namespace YAF.Pages.Admin
                     this.PageContext.PageUserID,
                     "msgd-" + this.randomGuid + "  " + this.MyMessage.Text.Trim(),
                     this.PageContext.User.UserName,
-                     this.Request.GetUserRealIPAddress(), 
+                    this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                     null,
                     _replyTo,
                     this.GetMessageFlags(),
@@ -1022,7 +1024,7 @@ namespace YAF.Pages.Admin
                     this.PageContext.PageUserID,
                     _priority,
                     this.PageContext.User.UserName,
-                     this.Request.GetUserRealIPAddress(), 
+                    this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                     DateTime.UtcNow,
                     string.Empty,
                     this.GetMessageFlags(),

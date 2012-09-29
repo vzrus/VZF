@@ -680,7 +680,7 @@ namespace YAF
             DataRow pageRow = CommonDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
                 boardID,
                 userKey,
-                HttpContext.Current.Request.GetUserRealIPAddress(),
+                this.Get<HttpRequestBase>().GetUserRealIPAddress(),
                 HttpContext.Current.Request.FilePath,
                 HttpContext.Current.Request.QueryString.ToString(),
                 browser,
