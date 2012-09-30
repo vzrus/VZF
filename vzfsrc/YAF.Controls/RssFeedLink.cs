@@ -183,6 +183,22 @@ namespace YAF.Controls
     }
 
     /// <summary>
+    ///   Gets or Sets if Show an extra Text Description for a link to atom/rss feed. (Default <see langword = "false" />)
+    /// </summary>
+    public bool ShowTextDescription
+    {
+        get
+        {
+            return this.ViewState.ToTypeOrDefault("ShowTextDescription", false);
+        }
+
+        set
+        {
+            this.ViewState["ShowTextDescription"] = value;
+        }
+    }
+
+    /// <summary>
     ///   Gets or Sets if a spacer should be inserted after the link. (Default <see langword = "false" />)
     /// </summary>
     public bool ShowSpacerAfter
@@ -402,7 +418,7 @@ namespace YAF.Controls
       // render the text if available
       if (this._localizedLabel.LocalizedTag.IsSet())
       {
-        this.Controls.Add(this._localizedLabel);
+        // this.Controls.Add(this._localizedLabel);
       }
 
       if (this._themeImage.ThemeTag.IsSet())

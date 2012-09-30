@@ -50,10 +50,10 @@
                         <td colspan="<%# ColumnCount() %>" align="right">
                             <asp:LinkButton runat="server" OnClick="MarkAll_Click" ID="MarkAll" Text='<%# this.GetText("MARKALL") %>' />
                             <YAF:RssFeedLink ID="RssFeed1" runat="server" FeedType="Forum" AdditionalParameters='<%# this.PageContext.PageCategoryID != 0 ? string.Format("c={0}", this.PageContext.PageCategoryID) : null %>'
-                                ShowSpacerBefore="true" Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.ForumFeedAccess) %>"
+                                Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.ForumFeedAccess) %>"
                                 TitleLocalizedTag="RSSICONTOOLTIPFORUM" />
                             <YAF:RssFeedLink ID="AtomFeed1" runat="server" FeedType="Forum" AdditionalParameters='<%# this.PageContext.PageCategoryID != 0 ? string.Format("c={0}", this.PageContext.PageCategoryID) : null %>'
-                                ShowSpacerBefore="true" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.ForumFeedAccess) %>"
+                                IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.ForumFeedAccess) %>"
                                 ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPFORUM" />
                         </td>
                     </tr>

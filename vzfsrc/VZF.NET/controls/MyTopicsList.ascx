@@ -44,8 +44,8 @@
     <tr>
         <td class="footer1" align="right" width="100%" colspan="5">
             <asp:LinkButton runat="server" OnClick="MarkAll_Click" ID="MarkAll" />
-            <YAF:RssFeedLink ID="RssFeed" runat="server" ShowSpacerBefore="true" Visible="False" />
-            <YAF:RssFeedLink ID="AtomFeed" runat="server" ShowSpacerBefore="true" Visible="False"  />   
+            <YAF:RssFeedLink ID="RssFeed" runat="server"  Visible="False" />
+            <YAF:RssFeedLink ID="AtomFeed" runat="server" Visible="False"  />   
         </td>
     </tr>
 </table>

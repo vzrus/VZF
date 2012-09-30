@@ -514,7 +514,7 @@ namespace YAF.Classes.Data
         /// <param name="mid">The module ID.</param>
         /// <param name="UserID">The user ID.</param>
         /// <param name="AlbumID">The album Id.</param>
-        /// <returns>Returns a <see cref="T:System.Int32"/> array with satst row.</returns>
+        /// <returns>Returns a <see cref="T:System.Int32"/> array with stats row.</returns>
         public static int[] album_getstats(int? mid, object UserID, object AlbumID)
         {
             string dataEngine;
@@ -534,28 +534,32 @@ namespace YAF.Classes.Data
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
-      public static string album_gettitle(int? mid, object AlbumID)
-      {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": return MsSql.Db.album_gettitle(connectionString, AlbumID);
-              case "Npgsql": return Postgre.Db.album_gettitle(connectionString, AlbumID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_gettitle(connectionString, AlbumID);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_gettitle(connectionString, AlbumID);
-              // case "oracle":  return orPostgre.Db.album_gettitle(connectionString, AlbumID);
-              // case "db2": return db2Postgre.Db.album_gettitle(connectionString, AlbumID);
-              // case "other": return othPostgre.Db.album_gettitle(connectionString, AlbumID);
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-
-          }
-      }
+        
+        /// <summary>
+        /// Gets a title for an album with specified id. 
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <returns>Returns a <see cref="T:System.String"/> with album title.</returns>
+        public static string album_gettitle(int? mid, object AlbumID)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": return MsSql.Db.album_gettitle(connectionString, AlbumID);
+                case "Npgsql": return Postgre.Db.album_gettitle(connectionString, AlbumID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_gettitle(connectionString, AlbumID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_gettitle(connectionString, AlbumID);
+                // case "oracle":  return orPostgre.Db.album_gettitle(connectionString, AlbumID);
+                // case "db2": return db2Postgre.Db.album_gettitle(connectionString, AlbumID);
+                // case "other": return othPostgre.Db.album_gettitle(connectionString, AlbumID);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
       public static void album_image_delete(int? mid, object ImageID)
       {
