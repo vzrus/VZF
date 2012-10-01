@@ -312,8 +312,7 @@ namespace YAF.Install
         /// </param>
         protected void Page_Init([NotNull] object sender, [NotNull] EventArgs e)
         {
-            // set the connection manager to the dynamic...
-           // CommonSqlDbAccess.Current.SetConnectionManagerAdapter<MsSqlDynamicDbConnectionManager>();
+          
         }
 
         /// <summary>

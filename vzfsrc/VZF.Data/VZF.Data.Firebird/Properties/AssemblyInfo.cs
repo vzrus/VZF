@@ -38,7 +38,7 @@ using System.Security;
 
 #if (!COMPACT_FRAMEWORK)
 
-[assembly: AllowPartiallyTrustedCallers]
+[assembly: SecurityRules(SecurityRuleSet.Level2)]
 #endif
 
 [assembly: AssemblyDelaySign(false)]

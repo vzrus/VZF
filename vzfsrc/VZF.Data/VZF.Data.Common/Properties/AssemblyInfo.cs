@@ -35,12 +35,6 @@ using System.Security;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-
-#if (!COMPACT_FRAMEWORK)
-
-[assembly: AllowPartiallyTrustedCallers]
-#endif
-
 [assembly: AssemblyDelaySign(false)]
+[assembly: SecurityRules(SecurityRuleSet.Level1)]
 [assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
