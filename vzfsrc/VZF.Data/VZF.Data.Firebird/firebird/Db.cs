@@ -8379,17 +8379,16 @@ namespace YAF.Classes.Data.FirebirdDb
                             }
                             catch (Exception x)
                             {
-                                if (reader != null)
-                                {
-                                    reader.Close();
-                                }
 
                                 // rollback...
                                 trans.Rollback();
                                 results.AppendLine();
                                 results.AppendFormat("SQL ERROR: {0}", x);
                             }
-
+                            if (reader != null)
+                            {
+                                reader.Close();
+                            }
                             return results.ToString();
                         }
                     }

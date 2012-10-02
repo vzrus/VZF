@@ -41,9 +41,6 @@ namespace YAF.Classes.Data
         
         #region Constants and Fields
 
-        static private string _dbOwner;
-        static private string _objectQualifier;
-        static private string _schemaName;
         /// <summary>
         ///   Result filter list
         /// </summary>
@@ -215,7 +212,18 @@ namespace YAF.Classes.Data
             }
             return cd;
         }
-
+        /// <summary>
+        ///   Gets the Result Filter List.
+        /// </summary>
+        /// <exception cref = "NotImplementedException">
+        /// </exception>
+        public static IList<IDataTableResultFilter> ResultFilterList
+        {
+            get
+            {
+                return _resultFilterList;
+            }
+        } 
         /// <summary>
         /// Test the DB Connection.
         /// </summary>

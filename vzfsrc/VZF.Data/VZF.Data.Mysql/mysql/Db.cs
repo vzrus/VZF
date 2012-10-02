@@ -5373,7 +5373,7 @@ namespace YAF.Classes.Data.MySqlDb
                         } 
                         finally
                       {
-                          connMan.CloseConnection();
+                          // connMan.CloseConnection();
                       }
                     }
                 }
@@ -8937,7 +8937,7 @@ namespace YAF.Classes.Data.MySqlDb
         static public DataTable db_getstats_table(string connectionString)
         {
 
-            using (MySqlCommand cmd = new MySqlCommand(String.Format("SHOW TABLE STATUS FROM {0};", Config.SchemaName, Config.DatabaseObjectQualifier)))
+            using (MySqlCommand cmd = new MySqlCommand(String.Format("SHOW TABLE STATUS FROM {0};", Config.SchemaName)))
             {
 
                 cmd.CommandType = CommandType.Text;               
@@ -9274,11 +9274,6 @@ namespace YAF.Classes.Data.MySqlDb
             }
             catch (Exception x)
             {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-
                 results.AppendLine();
                 results.AppendFormat("SQL ERROR: {0}", x);
             }
@@ -9327,7 +9322,7 @@ namespace YAF.Classes.Data.MySqlDb
                     redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1 );
                 }
             }
-            catch ( MySql.Data.MySqlClient.MySqlException )
+            catch ( MySqlException )
             {
                 // needs to be setup...
                 redirect = "install/";

@@ -84,7 +84,7 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient": return MsSql.Db.accessmask_list(connectionString,boardId, accessMaskID); 
+                case "System.Data.SqlClient": return MsSql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags); 
                 case "Npgsql": return Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 case "MySql.Data.MySqlClient": return MySqlDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);

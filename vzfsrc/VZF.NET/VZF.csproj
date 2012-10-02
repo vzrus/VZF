@@ -4211,8 +4211,6 @@
     <Content Include="web_fb.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="app.config" />
-    <Content Include="web.config" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\GoogleSpell.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\PSpell.php" />
@@ -5857,6 +5855,16 @@
     <Content Include="webconfigs\recommended-NET-web.config" />
     <Content Include="webconfigs\v191-upgrade-web.config" />
     <Content Include="web_my.config" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Deploy.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">

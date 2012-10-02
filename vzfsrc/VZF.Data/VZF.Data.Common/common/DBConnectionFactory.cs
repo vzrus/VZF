@@ -434,7 +434,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                    return CommonSqlDbAccess.GetObjectName(name);
+                    return MsSqlDbAccess.GetObjectName(name);
                 case "Npgsql":
                     return PostgreDBAccess.GetObjectName(name);
                 case "MySql.Data.MySqlClient":
@@ -490,7 +490,27 @@ namespace YAF.Classes.Data
             switch (provName)
             {
                 case "System.Data.SqlClient":
-                    return string.Empty;
+                    return MsSqlDbAccess.GetConnectionString(parm1,
+                        parm2,
+                        parm3,
+                        parm4,
+                        parm5,
+                        parm6,
+                        parm7,
+                        parm8,
+                        parm9,
+                        parm10,
+                        parm11,
+                        parm12,
+                        parm13,
+                        parm14,
+                        parm15,
+                        parm16,
+                        parm17,
+                        parm18,
+                        parm19,
+                        userId,
+                        userPassword);
                 case "Npgsql":
                     return PostgreDBAccess.GetConnectionString(parm1,
                         parm2,
@@ -625,7 +645,7 @@ namespace YAF.Classes.Data
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return false;
+                    return MsSqlDbAccess.TestConnection(connectionString, out exceptionMessage);
                 case "Npgsql":
                     return PostgreDBAccess.TestConnection(connectionString, out exceptionMessage);
                 case "MySql.Data.MySqlClient":
@@ -658,7 +678,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    return MsSqlDbAccess.GetCommand(commandText, isText);
                 case "Npgsql":
                     return PostgreDBAccess.GetCommand(commandText,isText);
                 case "MySql.Data.MySqlClient":
@@ -692,7 +712,7 @@ namespace YAF.Classes.Data
               switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                  //  return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                  return MsSqlDbAccess.GetCommandTextReplaced(commandText);
                 case "Npgsql":
                     return PostgreDBAccess.GetCommandTextReplaced(commandText);
                 case "MySql.Data.MySqlClient":
@@ -731,7 +751,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                return MsSqlDbAccess.GetDataset(cmd,transaction,connectionString);
                 case "Npgsql":
                     throw new ApplicationException("Not implemented for the data layer.");
                 case "MySql.Data.MySqlClient":
@@ -793,7 +813,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    return MsSqlDbAccess.GetData(commandText, transaction, connectionString);
                 case "Npgsql":
                     return PostgreDBAccess.GetData(commandText, transaction, connectionString);
                 case "MySql.Data.MySqlClient":
@@ -829,7 +849,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  MsSqlDBAccess.Current.ExecuteNonQuery(cmd, transaction, connectionString); break;
+                    MsSqlDbAccess.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "Npgsql":
                     PostgreDBAccess.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "MySql.Data.MySqlClient":
@@ -888,7 +908,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    return MsSqlDbAccess.ExecuteScalar(cmd, transaction, connectionString);
                 case "Npgsql":
                     return PostgreDBAccess.ExecuteScalar( cmd, transaction, connectionString);
                 case "MySql.Data.MySqlClient":
@@ -930,7 +950,7 @@ namespace YAF.Classes.Data
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                //  return PostgreDBAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                 return MsSqlDbAccess.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "Npgsql":
                     return PostgreDBAccess.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "MySql.Data.MySqlClient":
