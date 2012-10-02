@@ -560,27 +560,31 @@ namespace YAF.Classes.Data
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
-      public static void album_image_delete(int? mid, object ImageID)
-      {
-          string dataEngine;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": MsSql.Db.album_image_delete(connectionString, ImageID); break;
-              case "Npgsql": Postgre.Db.album_image_delete(connectionString, ImageID); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_delete(connectionString, ImageID); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_delete(connectionString, ImageID); break;
-              // case "oracle":  orPostgre.Db.album_image_delete(connectionString, ImageID); break;
-              // case "db2": db2Postgre.Db.album_image_delete(connectionString, ImageID); break;
-              // case "other": othPostgre.Db.album_image_delete(connectionString, ImageID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-
-          }
-      }
+        
+        /// <summary>
+        /// Deletes an image with a specified Id.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="ImageID">The image id.</param>
+        public static void album_image_delete(int? mid, object ImageID)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": MsSql.Db.album_image_delete(connectionString, ImageID); break;
+                case "Npgsql": Postgre.Db.album_image_delete(connectionString, ImageID); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_delete(connectionString, ImageID); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_delete(connectionString, ImageID); break;
+                // case "oracle":  orPostgre.Db.album_image_delete(connectionString, ImageID); break;
+                // case "db2": db2Postgre.Db.album_image_delete(connectionString, ImageID); break;
+                // case "other": othPostgre.Db.album_image_delete(connectionString, ImageID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
       public static void album_image_download(int? mid, object ImageID)
       {

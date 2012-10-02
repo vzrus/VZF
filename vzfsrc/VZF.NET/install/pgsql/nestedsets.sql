@@ -25,7 +25,7 @@ CREATE TABLE databaseSchema.objectQualifier_forum_ns
   _trigger_lock_update boolean NOT NULL DEFAULT false,
   _trigger_for_delete boolean NOT NULL DEFAULT false, 
   sortorder integer NOT NULL DEFAULT 0,
-  path_cache character varying(255),
+  path_cache character varying(1024),
   CONSTRAINT databaseSchema_objectQualifier_ns_tree_pkey PRIMARY KEY (nid)
 )
 WITH 

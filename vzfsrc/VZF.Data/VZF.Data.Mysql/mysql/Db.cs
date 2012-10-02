@@ -6356,8 +6356,8 @@ namespace YAF.Classes.Data.MySqlDb
                         cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value = 1;
                         cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
                             DateTime.UtcNow;
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = false;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = false;
+                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
                         return MySqlDbAccess.GetData(cmd,connectionString);
                     }
@@ -6369,73 +6369,23 @@ namespace YAF.Classes.Data.MySqlDb
 
         public static DataTable topic_unread(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
-            DataTable dtt;
-            int rowNumber = 0;
+        
             using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_unread"))
             {
-
-                if (pageUserId == null) { pageUserId = DBNull.Value; }
-                if (sinceDate == null) { sinceDate = DBNull.Value; }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
+                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate ?? DBNull.Value;
                 cmd.Parameters.Add("i_ToDate", MySqlDbType.Timestamp).Value = toDate;
                 cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
                 cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
-                dtt = MySqlDbAccess.GetData(cmd,connectionString);
-                cmd.Parameters.Clear();
+                return MySqlDbAccess.GetData(cmd,connectionString);
             }
-
-            if (dtt != null && dtt.Columns.Count > 1)
-            {
-                if (dtt.Rows.Count > 0)
-                {
-                    rowNumber = 0;
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_unread_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = dtt.Rows[rowNumber]["PageIndex"];
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value =
-                            dtt.Rows[rowNumber]["i_TopicTotalRowsNumber"];
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            dtt.Rows[rowNumber]["i_FirstSelectLastPosted"];
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    }
-                }
-                else
-                {
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_unread_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = (int)pageIndex + 1;
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value = 1;
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            DateTime.UtcNow;
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = false;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = false;
-
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    }
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -6478,8 +6428,8 @@ namespace YAF.Classes.Data.MySqlDb
                 cmd.Parameters.Add("i_ToDate", MySqlDbType.Timestamp).Value = toDate;
                 cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
                 cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = false;
-                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = false;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
                 return MySqlDbAccess.GetData(cmd,connectionString);
             }
@@ -6768,73 +6718,22 @@ namespace YAF.Classes.Data.MySqlDb
 
         public static DataTable topic_favorite_details(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
-            DataTable dtt;
-            int rowNumber = 0;
-            using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_favorite_details"))
+            using (var cmd = MySqlDbAccess.GetCommand("topic_favorite_details"))
             {
-
-                if (pageUserId == null) { pageUserId = DBNull.Value; }
-                if (sinceDate == null) { sinceDate = DBNull.Value; }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
+                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate ?? DBNull.Value;
                 cmd.Parameters.Add("i_ToDate", MySqlDbType.Timestamp).Value = toDate;
                 cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
                 cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
-                dtt = MySqlDbAccess.GetData(cmd,connectionString);
-                cmd.Parameters.Clear();
+                return MySqlDbAccess.GetData(cmd,connectionString);
             }
-
-            if (dtt != null && dtt.Columns.Count > 1)
-            {
-                if(dtt.Rows.Count > 0)
-                {
-                    rowNumber = 0;
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_favorite_details_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = dtt.Rows[rowNumber]["PageIndex"];
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value = 
-                            dtt.Rows[rowNumber]["i_TopicTotalRowsNumber"];
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            dtt.Rows[rowNumber]["i_FirstSelectLastPosted"];
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-                        
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    }
-                }
-                else
-                {
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_favorite_details_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = (int)pageIndex + 1;
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value = 1;
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            DateTime.UtcNow;
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = false;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = false;
-                        
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    } 
-                }
-            }
-            
-            return null;
         }
        
         /// <summary>
