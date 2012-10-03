@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\YetAnotherForum.NET\Bin\</OutputPath>
+    <OutputPath>..\VZF.NET\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,9 +33,15 @@
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,7 +49,142 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Procedures\accessmask_list_Result.cs" />
+    <Compile Include="Data\Procedures\active_listforum_Result.cs" />
+    <Compile Include="Data\Procedures\active_listtopic_Result.cs" />
+    <Compile Include="Data\Procedures\active_list_Result.cs" />
+    <Compile Include="Data\Procedures\active_list_user_Result.cs" />
+    <Compile Include="Data\Procedures\active_stats_Result.cs" />
+    <Compile Include="Data\Procedures\adminpageaccess_list_Result.cs" />
+    <Compile Include="Data\Procedures\admin_list_Result.cs" />
+    <Compile Include="Data\Procedures\admin_pageaccesslist_Result.cs" />
+    <Compile Include="Data\Procedures\album_images_by_user_Result.cs" />
+    <Compile Include="Data\Procedures\album_image_list_Result.cs" />
+    <Compile Include="Data\Procedures\album_list_Result.cs" />
+    <Compile Include="Data\Procedures\announcements_list_Result.cs" />
+    <Compile Include="Data\Procedures\attachment_list_Result.cs" />
+    <Compile Include="Data\Procedures\bannedip_list_Result.cs" />
+    <Compile Include="Data\Procedures\bbcode_list_Result.cs" />
+    <Compile Include="Data\Procedures\board_list_Result.cs" />
+    <Compile Include="Data\Procedures\board_poststats_Result.cs" />
+    <Compile Include="Data\Procedures\board_stats_Result.cs" />
+    <Compile Include="Data\Procedures\board_userstats_Result.cs" />
+    <Compile Include="Data\Procedures\buddy_list_Result.cs" />
+    <Compile Include="Data\Procedures\category_listread_Result.cs" />
+    <Compile Include="Data\Procedures\category_list_Result.cs" />
+    <Compile Include="Data\Procedures\category_simplelist_Result.cs" />
+    <Compile Include="Data\Procedures\checkemail_list_Result.cs" />
+    <Compile Include="Data\Procedures\checkemail_update_Result.cs" />
+    <Compile Include="Data\Procedures\eventloggroupaccess_list_Result.cs" />
+    <Compile Include="Data\Procedures\eventlog_list_Result.cs" />
+    <Compile Include="Data\Procedures\extension_edit_Result.cs" />
+    <Compile Include="Data\Procedures\extension_list_Result.cs" />
+    <Compile Include="Data\Procedures\forumaccess_group_Result.cs" />
+    <Compile Include="Data\Procedures\forumaccess_list_Result.cs" />
+    <Compile Include="Data\Procedures\forum_lastposted_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listallmymoderated_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listall_fromcat_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listall_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listpath_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listread_Result.cs" />
+    <Compile Include="Data\Procedures\forum_listtopics_Result.cs" />
+    <Compile Include="Data\Procedures\forum_list_Result.cs" />
+    <Compile Include="Data\Procedures\forum_moderatelist_Result.cs" />
+    <Compile Include="Data\Procedures\forum_moderators_Result.cs" />
+    <Compile Include="Data\Procedures\forum_simplelist_Result.cs" />
+    <Compile Include="Data\Procedures\group_eventlogaccesslist_Result.cs" />
+    <Compile Include="Data\Procedures\group_list_Result.cs" />
+    <Compile Include="Data\Procedures\group_medal_list_Result.cs" />
+    <Compile Include="Data\Procedures\group_member_Result.cs" />
+    <Compile Include="Data\Procedures\group_rank_style_Result.cs" />
+    <Compile Include="Data\Procedures\mail_list_Result.cs" />
+    <Compile Include="Data\Procedures\medal_listusers_Result.cs" />
+    <Compile Include="Data\Procedures\medal_list_Result.cs" />
+    <Compile Include="Data\Procedures\messagehistory_list_Result.cs" />
+    <Compile Include="Data\Procedures\message_findunread_Result.cs" />
+    <Compile Include="Data\Procedures\message_getallthanks_Result.cs" />
+    <Compile Include="Data\Procedures\message_gettextbyids_Result.cs" />
+    <Compile Include="Data\Procedures\message_getthanks_Result.cs" />
+    <Compile Include="Data\Procedures\message_listreported_Result.cs" />
+    <Compile Include="Data\Procedures\message_listreporters_Result.cs" />
+    <Compile Include="Data\Procedures\message_list_Result.cs" />
+    <Compile Include="Data\Procedures\message_reply_list_Result.cs" />
+    <Compile Include="Data\Procedures\message_secdata_Result.cs" />
+    <Compile Include="Data\Procedures\message_simplelist_Result.cs" />
+    <Compile Include="Data\Procedures\message_unapproved_Result.cs" />
+    <Compile Include="Data\Procedures\nntpforum_list_Result.cs" />
+    <Compile Include="Data\Procedures\nntpserver_list_Result.cs" />
+    <Compile Include="Data\Procedures\nntptopic_list_Result.cs" />
+    <Compile Include="Data\Procedures\pageaccess_path_Result.cs" />
+    <Compile Include="Data\Procedures\pageaccess_Result.cs" />
+    <Compile Include="Data\Procedures\pageload_Result.cs" />
+    <Compile Include="Data\Procedures\pmessage_info_Result.cs" />
+    <Compile Include="Data\Procedures\pmessage_list_Result.cs" />
+    <Compile Include="Data\Procedures\pollgroup_list_Result.cs" />
+    <Compile Include="Data\Procedures\pollgroup_stats_Result.cs" />
+    <Compile Include="Data\Procedures\pollgroup_votecheck_Result.cs" />
+    <Compile Include="Data\Procedures\poll_stats_Result.cs" />
+    <Compile Include="Data\Procedures\post_alluser_Result.cs" />
+    <Compile Include="Data\Procedures\post_list_Result.cs" />
+    <Compile Include="Data\Procedures\post_list_reverse10_Result.cs" />
+    <Compile Include="Data\Procedures\prov_getuser_Result.cs" />
+    <Compile Include="Data\Procedures\prov_role_findusersinrole_Result.cs" />
+    <Compile Include="Data\Procedures\prov_role_getroles_Result.cs" />
+    <Compile Include="Data\Procedures\prov_role_isuserinrole_Result.cs" />
+    <Compile Include="Data\Procedures\rank_list_Result.cs" />
+    <Compile Include="Data\Procedures\recent_users_Result.cs" />
+    <Compile Include="Data\Procedures\registry_list_Result.cs" />
+    <Compile Include="Data\Procedures\replace_words_list_Result.cs" />
+    <Compile Include="Data\Procedures\rss_topic_latest_Result.cs" />
+    <Compile Include="Data\Procedures\shoutbox_getmessages_Result.cs" />
+    <Compile Include="Data\Procedures\smiley_listunique_Result.cs" />
+    <Compile Include="Data\Procedures\smiley_list_Result.cs" />
+    <Compile Include="Data\Procedures\TopicStatus_Edit_Result.cs" />
+    <Compile Include="Data\Procedures\TopicStatus_List_Result.cs" />
+    <Compile Include="Data\Procedures\topics_byuser_old_Result.cs" />
+    <Compile Include="Data\Procedures\topics_byuser_Result.cs" />
+    <Compile Include="Data\Procedures\topic_active_Result.cs" />
+    <Compile Include="Data\Procedures\topic_create_by_message_Result.cs" />
+    <Compile Include="Data\Procedures\topic_favorite_details_Result.cs" />
+    <Compile Include="Data\Procedures\topic_info_Result.cs" />
+    <Compile Include="Data\Procedures\topic_latest_Result.cs" />
+    <Compile Include="Data\Procedures\topic_listmessages_Result.cs" />
+    <Compile Include="Data\Procedures\topic_list_Result.cs" />
+    <Compile Include="Data\Procedures\topic_save_Result.cs" />
+    <Compile Include="Data\Procedures\topic_simplelist_Result.cs" />
+    <Compile Include="Data\Procedures\topic_unanswered_Result.cs" />
+    <Compile Include="Data\Procedures\topic_unread_Result.cs" />
+    <Compile Include="Data\Procedures\userforum_list_Result.cs" />
+    <Compile Include="Data\Procedures\usergroup_list_Result.cs" />
+    <Compile Include="Data\Procedures\userpmessage_list_Result.cs" />
+    <Compile Include="Data\Procedures\user_accessmasks_Result.cs" />
+    <Compile Include="Data\Procedures\user_activity_rank_Result.cs" />
+    <Compile Include="Data\Procedures\user_avatarimage_Result.cs" />
+    <Compile Include="Data\Procedures\user_find_Result.cs" />
+    <Compile Include="Data\Procedures\user_getalbumsdata_Result.cs" />
+    <Compile Include="Data\Procedures\user_getsignaturedata_Result.cs" />
+    <Compile Include="Data\Procedures\user_ignoredlist_Result.cs" />
+    <Compile Include="Data\Procedures\user_lazydata_Result.cs" />
+    <Compile Include="Data\Procedures\user_listmedals_Result.cs" />
+    <Compile Include="Data\Procedures\user_listmembers_Result.cs" />
+    <Compile Include="Data\Procedures\user_list_Result.cs" />
+    <Compile Include="Data\Procedures\user_medal_list_Result.cs" />
+    <Compile Include="Data\Procedures\user_pmcount_Result.cs" />
+    <Compile Include="Data\Procedures\user_simplelist_Result.cs" />
+    <Compile Include="Data\Procedures\user_viewallthanks_Result.cs" />
+    <Compile Include="Data\Procedures\watchforum_list_Result.cs" />
+    <Compile Include="Data\Procedures\watchtopic_list_Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Tables\" />
+    <Folder Include="Data\Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

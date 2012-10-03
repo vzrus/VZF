@@ -78,6 +78,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Mysql.dll</HintPath>
     </Reference>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDataTableResultFilter.cs" />

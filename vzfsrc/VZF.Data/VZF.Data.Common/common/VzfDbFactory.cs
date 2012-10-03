@@ -22,6 +22,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web.Security;
+using VZF.Types.Data;
 using YAF.Types;
 using YAF.Types.Constants;
 using YAF.Types.Objects;
@@ -1083,11 +1084,8 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public DataRow board_stats(int? mid)
-      {
-          return board_stats(mid, null);
-      }
-      public static DataRow board_stats(int? mid, object boardId)
+
+      public static board_stats_Result board_stats(int? mid, object boardId)
       {
           string dataEngine;
           string connectionString;
@@ -1096,10 +1094,10 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              case "System.Data.SqlClient": return MsSql.Db.board_stats(connectionString, boardId);
-              case "Npgsql": return Postgre.Db.board_stats(connectionString, boardId);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.board_stats(connectionString, boardId);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_stats(connectionString, boardId);
+              case "System.Data.SqlClient": return MsSql.Db.board_stats(connectionString, boardId).Table.AsEnumerable().Select(r => new board_stats_Result(r)).ToList()[0];
+              case "Npgsql": return Postgre.Db.board_stats(connectionString, boardId).Table.AsEnumerable().Select(r => new board_stats_Result(r)).ToList()[0];
+              case "MySql.Data.MySqlClient": return MySqlDb.Db.board_stats(connectionString, boardId).Table.AsEnumerable().Select(r => new board_stats_Result(r)).ToList()[0]; ;
+              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_stats(connectionString, boardId).Table.AsEnumerable().Select(r => new board_stats_Result(r)).ToList()[0]; ;
               // case "oracle":  return orPostgre.Db.board_stats(connectionString, boardId);
               // case "db2":  return db2Postgre.Db.board_stats(connectionString, boardId);
               // case "other":  return othPostgre.Db.board_stats(connectionString, boardId); 

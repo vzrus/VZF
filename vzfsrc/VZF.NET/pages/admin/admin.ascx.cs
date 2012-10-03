@@ -18,6 +18,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Collections.Generic;
+using VZF.Types.Data;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -376,20 +379,20 @@ namespace YAF.Pages.Admin
             // this.DataBind();
 
             // get stats for current board, selected board or all boards (see function)
-            DataRow row = CommonDb.board_stats(PageContext.PageModuleID, this.GetSelectedBoardID());
+            var ss = CommonDb.board_stats(PageContext.PageModuleID, this.GetSelectedBoardID());
+           
+            this.NumPosts.Text = "{0:N0}".FormatWith(ss.NumPosts);
+            this.NumTopics.Text = "{0:N0}".FormatWith(ss.NumTopics);
+            this.NumUsers.Text = "{0:N0}".FormatWith(ss.NumUsers);
 
-            this.NumPosts.Text = "{0:N0}".FormatWith(row["NumPosts"]);
-            this.NumTopics.Text = "{0:N0}".FormatWith(row["NumTopics"]);
-            this.NumUsers.Text = "{0:N0}".FormatWith(row["NumUsers"]);
-
-            TimeSpan span = DateTime.UtcNow - (DateTime)row["BoardStart"];
+            TimeSpan span = DateTime.UtcNow - (DateTime)ss.BoardStart;
             double days = span.Days;
 
             this.BoardStart.Text =
                 this.GetText("ADMIN_ADMIN", "DAYS_AGO").FormatWith(
                     this.Get<YafBoardSettings>().UseFarsiCalender
-                        ? PersianDateConverter.ToPersianDate((DateTime)row["BoardStart"])
-                        : row["BoardStart"],
+                        ? (object) PersianDateConverter.ToPersianDate((DateTime)ss.BoardStart)
+                        : ss.BoardStart,
                     days);
 
             if (days < 1)
@@ -397,15 +400,15 @@ namespace YAF.Pages.Admin
                 days = 1;
             }
 
-            this.DayPosts.Text = "{0:N2}".FormatWith(row["NumPosts"].ToType<int>() / days);
-            this.DayTopics.Text = "{0:N2}".FormatWith(row["NumTopics"].ToType<int>() / days);
-            this.DayUsers.Text = "{0:N2}".FormatWith(row["NumUsers"].ToType<int>() / days);
+            this.DayPosts.Text = "{0:N2}".FormatWith(ss.NumPosts.ToType<int>() / days);
+            this.DayTopics.Text = "{0:N2}".FormatWith(ss.NumTopics.ToType<int>() / days);
+            this.DayUsers.Text = "{0:N2}".FormatWith(ss.NumUsers.ToType<int>() / days);
 
             try
             {
                 this.DBSize.Text = "{0} MB".FormatWith(CommonDb.GetDBSize(PageContext.PageModuleID));
             }
-            catch (SqlException)
+            catch (Exception)
             {
                 this.DBSize.Text = this.GetText("ADMIN_ADMIN", "ERROR_DATABASESIZE");
             }

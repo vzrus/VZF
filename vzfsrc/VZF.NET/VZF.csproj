@@ -180,6 +180,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Classes\LatestInformationTask.cs" />
+    <Compile Include="Classes\SitemapHandler .cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks.cs" />
     <Compile Include="Classes\Utilities\MetaWeblog.cs">
       <SubType>Component</SubType>
@@ -5855,7 +5856,9 @@
     <Content Include="webconfigs\recommended-NET-web.config" />
     <Content Include="webconfigs\v191-upgrade-web.config" />
     <Content Include="web_my.config" />
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -5882,6 +5885,10 @@
     <ProjectReference Include="..\VZF.Providers\VZF.Providers.Common\VZF.Providers.Common.csproj">
       <Project>{E9ABBE0E-2961-4D7C-A7D9-8C114747E5C1}</Project>
       <Name>VZF.Providers.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
+      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
+      <Name>VZF.Types</Name>
     </ProjectReference>
     <ProjectReference Include="..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
       <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>

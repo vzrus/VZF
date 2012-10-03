@@ -51,6 +51,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="firebird\Db.cs" />

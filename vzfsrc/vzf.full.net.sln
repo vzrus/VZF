@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VZF.Data.Mssql", "VZF.Data\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VZF.Providers.Mssql", "VZF.Providers\VZF.Providers.Mssql\VZF.Providers.Mssql.csproj", "{95A44CD9-4399-4DB9-823F-1A264083A390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VZF.Types", "VZF.Types\VZF.Types.csproj", "{60FC8775-E129-48E0-B5BA-FE9136F9331F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -188,6 +190,12 @@ Global
 		{95A44CD9-4399-4DB9-823F-1A264083A390}.Deploy|Any CPU.Build.0 = Debug|Any CPU
 		{95A44CD9-4399-4DB9-823F-1A264083A390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95A44CD9-4399-4DB9-823F-1A264083A390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Deploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Deploy|Any CPU.Build.0 = Debug|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FC8775-E129-48E0-B5BA-FE9136F9331F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
