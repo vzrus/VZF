@@ -45,7 +45,7 @@ namespace YAF
 
                 //Add home page
                 writer.WriteStartElement("url");
-                writer.WriteElementString("loc", "http://forum.yetanotherforum.net/");
+                writer.WriteElementString("loc", YafForumInfo.ForumBaseUrl);
                 writer.WriteElementString("lastmod",
                                           DateTime.Now.ToString("yyy-MM-dd",
                                                                 System.Globalization.CultureInfo.InvariantCulture));

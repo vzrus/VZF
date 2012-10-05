@@ -1011,7 +1011,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      public static DataRow board_poststats(int? mid, int? boardId, bool useStyledNicks, bool showNoCountPosts)
+      public static board_poststats_Result board_poststats(int? mid, int? boardId, bool useStyledNicks, bool showNoCountPosts)
       {
           string dataEngine;
           string connectionString;
@@ -1020,13 +1020,13 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              case "System.Data.SqlClient": return MsSql.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              case "Npgsql": return Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              // case "oracle":  return orPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              // case "db2":  return db2Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts);
-              // case "other":  return othPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts); 
+              case "System.Data.SqlClient": return MsSql.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];;
+              case "Npgsql": return Postgre.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];
+              case "MySql.Data.MySqlClient": return MySqlDb.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];
+              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];
+              // case "oracle":  return orPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
+              // case "db2":  return db2Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
+              // case "other":  return othPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
               default:
                   throw new ArgumentOutOfRangeException(dataEngine);
           }

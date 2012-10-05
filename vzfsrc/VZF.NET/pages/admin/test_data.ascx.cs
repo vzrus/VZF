@@ -6,6 +6,7 @@
  */
 
 using System.Web;
+using VZF.Types.Data;
 
 namespace YAF.Pages.Admin
 {
@@ -65,7 +66,7 @@ namespace YAF.Pages.Admin
         /// <summary>
         ///   The board object stats.
         /// </summary>
-        private DataRow boardObjectStats = CommonDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
+        private board_poststats_Result boardObjectStats = CommonDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
 
         /// <summary>
         ///   The random guid.

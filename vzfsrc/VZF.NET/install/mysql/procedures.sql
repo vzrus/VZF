@@ -677,9 +677,6 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_thankfromcount;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_repliedtopic;
 --GO
 
- 
-
-
 
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_viewallthanks;
 --GO
@@ -939,7 +936,6 @@ END;
 --GO 
 
  /* Create procedures */
- 
  
 
 CREATE  PROCEDURE {databaseName}.{objectQualifier}active_list(
@@ -1392,7 +1388,7 @@ WHERE  BoardID = i_BoardID
 AND `Name` = CONVERT('maxusers' USING {databaseEncoding})),'1');
 
 SET ici_max =(SELECT CAST(ici_maxStr AS SIGNED));
-/* Here we transform the rest*/
+/* Here we transform the rest */
 
 	
 
@@ -11409,38 +11405,34 @@ set @tlpreps = CONCAT('SELECT
  	i_PageUserID int
  )
 
- BEGIN
- 
+ BEGIN 
  	DECLARE ici_SQL VARCHAR(500);
-        DECLARE ici_numPosts CHAR;
-        
-
- 
+    DECLARE ici_numPosts CHAR;
+	 
  	SET @ici_SQL = CONCAT('SELECT t.Topic, 
 					       t.LastPosted, 
 						   t.Posted,
 						   t.TopicID,
 						   t.LastMessageID, 
 						   t.LastMessageFlags FROM
-                        {databaseName}.{objectQualifier}Topic t 
-                          INNER JOIN {databaseName}.{objectQualifier}Category c
-						  ON c.CategoryID = f.CategoryID 
-                          INNER JOIN {databaseName}.{objectQualifier}Forum f                          
-                          ON t.ForumID = f.ForumID
-						  join {databaseName}.{objectQualifier}ActiveAccess v 
-						  on v.ForumID=f.ForumID  
-                        WHERE c.BoardID = ',CONVERT(i_BoardID, CHAR),'
-                        AND v.UserID=',CONVERT(i_PageUserID, CHAR),'
-					     (v.ReadAccess) <> 0                        
-                       OR (f.Flags & 2) = 0) 
-                       AND (t.Flags & 8) != 8 
-					   AND t.TopicMovedID IS NULL
-                       AND (t.Priority = 2) ORDER BY t.LastPosted DESC LIMIT ',CONVERT (i_NumPosts, CHAR),'');
+                           {databaseName}.{objectQualifier}Topic t 
+                           INNER JOIN {databaseName}.{objectQualifier}Category c
+						   ON c.CategoryID = f.CategoryID 
+                           INNER JOIN {databaseName}.{objectQualifier}Forum f                          
+                           ON t.ForumID = f.ForumID
+						   join {databaseName}.{objectQualifier}ActiveAccess v 
+						   on v.ForumID=f.ForumID  
+                           WHERE c.BoardID = ',CONVERT(i_BoardID, CHAR),'
+                           AND v.UserID=',CONVERT(i_PageUserID, CHAR),'
+					       (v.ReadAccess) <> 0                        
+                           OR (f.Flags & 2) = 0) 
+                           AND (t.Flags & 8) != 8 
+					       AND t.TopicMovedID IS NULL
+                           AND (t.Priority = 2) ORDER BY t.LastPosted DESC LIMIT ',CONVERT (i_NumPosts, CHAR),'');
 
-
-        PREPARE stmt_ta FROM @ici_SQL;
-        EXECUTE stmt_ta;
-        DEALLOCATE PREPARE stmt_ta;	
+     PREPARE stmt_ta FROM @ici_SQL;
+     EXECUTE stmt_ta;
+     DEALLOCATE PREPARE stmt_ta;	
  
  END;  
  --GO
@@ -11511,21 +11503,15 @@ END;
     DECLARE l_StartID INT DEFAULT 0;
         IF i_StartID IS NOT NULL THEN SET l_StartID =i_StartID ;END IF;
         IF i_Limit IS NOT NULL THEN SET l_Limit=i_Limit;END IF;
-    
-          SET @_uvp6_start1 := l_StartID,
-            @_uvp6_start2 := l_StartID,   
-            @_uvp6_limit1 := l_Limit,
-            @_uvp6_start3 := l_StartID,
-            @_uvp6_limit2 := l_Limit;
            
-         PREPARE stmt_fsl FROM 'SELECT   f.`ForumID`,
+         SET @stmt_fsl_rec = CONCAT('SELECT   f.`ForumID`,
                   f.`Name`
          FROM     {databaseName}.{objectQualifier}Forum f
-         WHERE    f.ForumID >= ?
-         AND f.ForumID < (? + ?)
-         ORDER BY f.`ForumID` LIMIT ?, ?';
-       
-           EXECUTE stmt_fsl USING @_uvp6_start1, @_uvp6_start2, @_uvp6_limit1, @_uvp6_start3, @_uvp6_limit2;
+         WHERE    f.ForumID >= ',l_StartID,'   
+		 AND    f.ForumID < ',(l_StartID+l_Limit),'     
+         ORDER BY f.`ForumID` LIMIT ',l_Limit,'');
+       PREPARE stmt_fsl FROM  @stmt_fsl_rec;
+           EXECUTE stmt_fsl;
            DEALLOCATE PREPARE stmt_fsl;          
      END;
  --GO
@@ -11536,15 +11522,14 @@ CREATE  PROCEDURE {databaseName}.{objectQualifier}category_simplelist(
 i_StartID INT,
 i_Limit   INT)
 BEGIN
-SET @start_csl = i_StartID, @limit_csl = i_Limit;
-PREPARE stmt_csl FROM 'SELECT   c.CategoryID,
+SET @stmt_csl_rec = CONCAT('SELECT c.CategoryID,
 c.Name
 FROM     {databaseName}.{objectQualifier}Category c
-WHERE    c.CategoryID >= ?
-AND c.CategoryID < (? + ?)
-        ORDER BY c.CategoryID LIMIT ?';
-
-    EXECUTE stmt_csl USING @start_csl, @start_csl, @limit_csl, @limit_csl;
+WHERE    c.CategoryID >= ',i_StartID,'
+AND c.CategoryID < ',(i_StartID + i_Limit),'
+ORDER BY c.CategoryID LIMIT ',i_Limit,'');
+PREPARE stmt_csl FROM @stmt_csl_rec;
+    EXECUTE stmt_csl;
     DEALLOCATE PREPARE stmt_csl;         
     END;
 --GO
@@ -11568,16 +11553,16 @@ BEGIN
                     INTO  firstMessage  
         FROM     {databaseName}.{objectQualifier}Message m
         WHERE    m.`MessageID` >= i_StartID LIMIT 1;
+       
 
-        SET @_uvp7_start = firstMessage, @_uvp7_limit = ici_Limit;
-
-    PREPARE stmt_msl FROM 'SELECT  m.`MessageID`,
+    set @stmt_msl_rec = CONCAT('SELECT  m.`MessageID`,
                  m.`TopicID`        
         FROM     {databaseName}.{objectQualifier}Message m
-        WHERE    m.`MessageID` >= ?     
-        AND m.`TopicID` IS NOT NULL ORDER BY m.`MessageID` LIMIT ?';
-
-    EXECUTE stmt_msl USING @_uvp7_start,@_uvp7_limit;
+        WHERE    m.`MessageID` >= ',firstMessage,'    
+		AND     m.`MessageID` < ',(firstMessage + i_StartID),'   
+        AND m.`TopicID` IS NOT NULL ORDER BY m.`MessageID` LIMIT ',i_Limit,' ;');
+    PREPARE stmt_msl FROM  @stmt_msl_rec;
+    EXECUTE stmt_msl;
     DEALLOCATE PREPARE stmt_msl;       
         
     END;
@@ -11597,15 +11582,9 @@ BEGIN
 
         CREATE  PROCEDURE {databaseName}.{objectQualifier}rsstopic_list(
         i_ForumID INT, i_StartID INT, i_Limit INT)
-        BEGIN
-                SET @_rsstl_forumid = i_ForumID, 
-                    @_rsstl_start = i_StartID, 
-                    @_rsstl_limit = i_Limit;
+        BEGIN               
     -- check for IsDeleted flag a.Flags & 8
-
-
-
-    PREPARE stmt_rsstl FROM 'SELECT a.Topic,
+    SET @stmt_rsstl_rec = CONCAT('SELECT a.Topic,
                a.TopicID, 
                b.Name, 
 			   IFNULL(a.LastPosted,a.Posted) AS LastPosted,
@@ -11618,12 +11597,12 @@ BEGIN
                FROM {databaseName}.{objectQualifier}Topic a
                INNER JOIN {databaseName}.{objectQualifier}Forum b 
                ON b.ForumID = a.ForumID
-               WHERE a.ForumID = ?  AND IFNULL(SIGN(a.Flags & 8),0) <> 8  
+               WHERE a.ForumID = ',i_ForumID,'  AND IFNULL(SIGN(a.Flags & 8),0) <> 8  
                AND a.TopicMovedID IS NULL
                ORDER BY a.Posted DESC
-               LIMIT ?,?';
-    
-    EXECUTE stmt_rsstl USING @_rsstl_forumid,@_rsstl_start, @_rsstl_limit;
+               LIMIT ',i_StartID,',',i_Limit,' ;');
+    PREPARE stmt_rsstl FROM  @stmt_rsstl_rec;
+    EXECUTE stmt_rsstl;
     DEALLOCATE PREPARE stmt_rsstl;    
     END;
 --GO

@@ -296,16 +296,16 @@ namespace YAF.Controls
               () =>
               {
                   // get the post stats
-                  DataRow dr = CommonDb.board_poststats(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks, true);
-
+                  var dr = CommonDb.board_poststats(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks, true);
+                  
                   // Set colorOnly parameter to false, as we get here color from data field in the place
-                  dr["LastUserStyle"] = this.Get<YafBoardSettings>().UseStyledNicks
+                  dr.LastUserStyle = this.Get<YafBoardSettings>().UseStyledNicks
                                           ? this.Get<IStyleTransform>().DecodeStyleByString(
-                                            dr["LastUserStyle"].ToString(), false)
+                                            dr.LastUserStyle, false)
                                           : null;
-                  return dr.Table;
+                  return dr;
               },
-              TimeSpan.FromMinutes(this.Get<YafBoardSettings>().ForumStatisticsCacheTimeout)).Rows[0];
+              TimeSpan.FromMinutes(this.Get<YafBoardSettings>().ForumStatisticsCacheTimeout));
 
             // Forum Statistics
             var userStatisticsDataRow = this.Get<IDataCache>().GetOrSet(
@@ -330,25 +330,25 @@ namespace YAF.Controls
             // Posts and Topic Count...
             this.StatsPostsTopicCount.Text = this.GetTextFormatted(
               "stats_posts",
-              postsStatisticsDataRow["posts"],
-              postsStatisticsDataRow["topics"],
-              postsStatisticsDataRow["forums"]);
+              postsStatisticsDataRow.Posts,
+              postsStatisticsDataRow.Topics,
+              postsStatisticsDataRow.Forums);
 
             // Last post
-            if (!postsStatisticsDataRow.IsNull("LastPost"))
+            if (!postsStatisticsDataRow.LastPost.IsNullOrEmptyDBField())
             {
                 this.StatsLastPostHolder.Visible = true;
 
-                this.LastPostUserLink.UserID = postsStatisticsDataRow["LastUserID"].ToType<int>();
+                this.LastPostUserLink.UserID = postsStatisticsDataRow.LastUserID;
                 this.LastPostUserLink.ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
-                                                        ? postsStatisticsDataRow["LastUserDisplayName"].ToString()
-                                                        : postsStatisticsDataRow["LastUser"].ToString();
-                this.LastPostUserLink.Style = postsStatisticsDataRow["LastUserStyle"].ToString();
+                                                        ? postsStatisticsDataRow.LastUserDisplayName
+                                                        : postsStatisticsDataRow.LastUser;
+                this.LastPostUserLink.Style = postsStatisticsDataRow.LastUserStyle;
                 this.StatsLastPost.Text = this.GetTextFormatted(
                     "stats_lastpost",
                     new DisplayDateTime
                         {
-                            DateTime = postsStatisticsDataRow["LastPost"], 
+                            DateTime = postsStatisticsDataRow.LastPost, 
                             Format = DateTimeFormat.BothTopic
                         }.RenderToString());
             }
