@@ -406,9 +406,7 @@ BEGIN
              c.topicid,
              (SELECT x.name 
                 FROM   databaseSchema.objectQualifier_forum x
-                  INNER JOIN 
-                    databaseSchema.objectQualifier_active c
-                  ON c.forumid=x.forumid
+                                   ON c.forumid=x.forumid
                   WHERE  x.forumid = c.forumid  LIMIT 1) as ForumName,
              (SELECT x.topic
                 FROM   databaseSchema.objectQualifier_topic x
@@ -448,9 +446,7 @@ elseif i_showcrawlers IS TRUE and i_guests IS FALSE THEN
              c.topicid,
              (SELECT x.name 
                 FROM   databaseSchema.objectQualifier_forum x
-                  INNER JOIN 
-                    databaseSchema.objectQualifier_active c
-                  ON c.forumid=x.forumid
+                 ON c.forumid=x.forumid
                   WHERE  x.forumid = c.forumid  LIMIT 1) as ForumName,
              (SELECT x.topic
                 FROM   databaseSchema.objectQualifier_topic x
@@ -491,10 +487,7 @@ ELSE
              c.forumid,
              c.topicid,
              (SELECT x.name 
-                FROM   databaseSchema.objectQualifier_forum x
-                  INNER JOIN 
-                    databaseSchema.objectQualifier_active c
-                  ON c.forumid=x.forumid
+                FROM   databaseSchema.objectQualifier_forum x               
                   WHERE  x.forumid = c.forumid  LIMIT 1) as ForumName,
              (SELECT x.topic
                 FROM   databaseSchema.objectQualifier_topic x
