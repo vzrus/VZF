@@ -570,10 +570,7 @@ WHERE    lastactive < i_utctimestamp - (i_interval::varchar(11) || ' minute')::i
              c.topicid,
 			 -- ForumName
              (SELECT x.name 
-                FROM   databaseSchema.objectQualifier_forum x
-                  INNER JOIN 
-                    databaseSchema.objectQualifier_active c
-                  ON c.forumid=x.forumid
+                FROM   databaseSchema.objectQualifier_forum x                
                   WHERE  x.forumid = c.forumid  LIMIT 1),
 				  -- TopicName
              (select topic from databaseSchema.objectQualifier_topic x 
@@ -613,9 +610,6 @@ ELSEIF (i_guests IS FALSE AND i_showcrawlers IS TRUE) THEN
              c.topicid,
              (SELECT x.name 
                 FROM   databaseSchema.objectQualifier_forum x
-                  INNER JOIN 
-                    databaseSchema.objectQualifier_active c
-                  ON c.forumid=x.forumid
                   WHERE  x.forumid = c.forumid  LIMIT 1),
             (select topic from databaseSchema.objectQualifier_topic x 
 			 where x.topicid=c.topicid limit 1),
