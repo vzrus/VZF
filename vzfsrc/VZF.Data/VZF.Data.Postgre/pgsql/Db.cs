@@ -8642,8 +8642,7 @@ namespace YAF.Classes.Data.Postgre
 														"pgsql/providers/types.sql",
 														"pgsql/providers/procedures.sql",
 														"pgsql/postinstall.sql",
-                                                        "pgsql/nestedsets.sql",
-                                                        "pgsql/fulltext.sql"
+                                                        "pgsql/nestedsets.sql"
 													   };
         static public string[] ScriptList
         {
