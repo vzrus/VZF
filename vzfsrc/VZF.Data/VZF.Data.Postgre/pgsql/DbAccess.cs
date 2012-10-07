@@ -117,7 +117,7 @@ namespace YAF.Classes.Data
             {
                 if (string.IsNullOrEmpty(_schemaName))
                 {
-                    _schemaName = Config.SchemaName;
+                    _schemaName = Config.DatabaseScheme;
                 }
                 if (string.IsNullOrEmpty(_schemaName) || _schemaName =="dbo")
                 {

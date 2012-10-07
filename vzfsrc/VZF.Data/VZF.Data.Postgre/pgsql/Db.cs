@@ -876,11 +876,11 @@ namespace YAF.Classes.Data.Postgre
             { limitString += String.Format(" LIMIT {0} ", maxResults.ToString()); }
 
             searchSql += " a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags ";
-            searchSql += "FROM " + (Config.SchemaName.IsSet() ? Config.SchemaName : "public") +
+            searchSql += "FROM " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") +
                 "." + Config.DatabaseObjectQualifier + "topic a LEFT JOIN " +
-                (Config.SchemaName.IsSet() ? Config.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
-                "message c ON a.topicid = c.topicid LEFT JOIN " + (Config.SchemaName.IsSet() ? Config.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
-                "user b ON c.userid = b.userid join " + (Config.SchemaName.IsSet() ? Config.SchemaName : "public") + "." + Config.DatabaseObjectQualifier
+                (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
+                "message c ON a.topicid = c.topicid LEFT JOIN " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
+                "user b ON c.userid = b.userid join " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier
                 + "vaccess x ON x.forumid=a.forumid ";
             searchSql += String.Format(@"WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE ", userId);
             orderString += "ORDER BY a.forumid ";
@@ -8272,7 +8272,7 @@ namespace YAF.Classes.Data.Postgre
                 {
                     connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(reindexDb_InfoMessage);
                     using (NpgsqlCommand cmd = new NpgsqlCommand(String.Format(
-                        @"REINDEX DATABASE {0};", Config.SchemaName.IsSet() ? Config.SchemaName : "public"),
+                        @"REINDEX DATABASE {0};", PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public"),
                                                                  connMan.OpenDBConnection(connectionString)))
                     {
 
@@ -8642,7 +8642,8 @@ namespace YAF.Classes.Data.Postgre
 														"pgsql/providers/types.sql",
 														"pgsql/providers/procedures.sql",
 														"pgsql/postinstall.sql",
-                                                        "pgsql/nestedsets.sql"
+                                                        "pgsql/nestedsets.sql",
+                                                        "pgsql/fulltext.sql"
 													   };
         static public string[] ScriptList
         {

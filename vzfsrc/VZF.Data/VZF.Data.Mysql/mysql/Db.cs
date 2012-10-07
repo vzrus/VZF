@@ -549,7 +549,7 @@ namespace YAF.Classes.Data.MySqlDb
             using (MySqlCommand cmd = MySqlDbAccess.GetCommand("db_size"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_TableSchema", MySqlDbType.VarChar).Value = Config.SchemaName;
+                cmd.Parameters.Add("i_TableSchema", MySqlDbType.VarChar).Value = MySqlDbAccess.SchemaName;
                 //This is not really an integer, but a decimal, and by this we cast it to integer
                 return Convert.ToInt32(MySqlDbAccess.ExecuteScalar(cmd,connectionString));
             }
@@ -6297,74 +6297,22 @@ namespace YAF.Classes.Data.MySqlDb
 
         public static DataTable topic_active(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
-
-            DataTable dtt;
-            int rowNumber = 0;
-            using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_active"))
+            using (var cmd = MySqlDbAccess.GetCommand("topic_active"))
             {
-
-                if (pageUserId == null) { pageUserId = DBNull.Value; }
-                if (sinceDate == null) { sinceDate = DBNull.Value; }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
+                cmd.Parameters.Add("i_SinceDate", MySqlDbType.Timestamp).Value = sinceDate ?? DBNull.Value;
                 cmd.Parameters.Add("i_ToDate", MySqlDbType.Timestamp).Value = toDate;
                 cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
                 cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
-                dtt = MySqlDbAccess.GetData(cmd,connectionString);
-                cmd.Parameters.Clear();
+                return MySqlDbAccess.GetData(cmd,connectionString);
             }
-
-            if (dtt != null && dtt.Columns.Count > 1)
-            {
-                if (dtt.Rows.Count > 0)
-                {
-                    rowNumber = 0;
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_active_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = dtt.Rows[rowNumber]["PageIndex"];
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value =
-                            dtt.Rows[rowNumber]["i_TopicTotalRowsNumber"];
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            dtt.Rows[rowNumber]["i_FirstSelectLastPosted"];
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    }
-                }
-                else
-                {
-                    using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_active_result"))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                        cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
-                        cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
-                        cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = (int)pageIndex + 1;
-                        cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-                        cmd.Parameters.Add("i_TopicTotalRowsNumber", MySqlDbType.Int32).Value = 1;
-                        cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-                            DateTime.UtcNow;
-                        cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-                        cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-
-                        return MySqlDbAccess.GetData(cmd,connectionString);
-                    }
-                }
-            }
-
-            return null;
         }
 
         public static DataTable topic_unread(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
@@ -8875,7 +8823,7 @@ namespace YAF.Classes.Data.MySqlDb
         static public void db_getstats(string connectionString)
         {
            
-            using (var cmd = new MySqlCommand( String.Format( "ANALYZE TABLE {0}.{1}user;", Config.SchemaName, Config.DatabaseObjectQualifier ) ) )
+            using (var cmd = new MySqlCommand( String.Format( "ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName, Config.DatabaseObjectQualifier ) ) )
             {
                 cmd.CommandType = CommandType.Text;
                 // up the command timeout...
@@ -8899,7 +8847,7 @@ namespace YAF.Classes.Data.MySqlDb
                     connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(getStats_InfoMessage);
                     using (
                        var cmd =
-                            new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", Config.SchemaName,
+                            new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName,
                                                            Config.DatabaseObjectQualifier)))
                     {
 
@@ -8937,7 +8885,7 @@ namespace YAF.Classes.Data.MySqlDb
         static public DataTable db_getstats_table(string connectionString)
         {
 
-            using (MySqlCommand cmd = new MySqlCommand(String.Format("SHOW TABLE STATUS FROM {0};", Config.SchemaName)))
+            using (MySqlCommand cmd = new MySqlCommand(String.Format("SHOW TABLE STATUS FROM {0};", MySqlDbAccess.SchemaName)))
             {
 
                 cmd.CommandType = CommandType.Text;               
@@ -8948,7 +8896,7 @@ namespace YAF.Classes.Data.MySqlDb
         static public DataTable db_getstats_alltables(string connectionString)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.Append(String.Format( "SELECT table_name FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE' AND t.table_schema='{0}' ", Config.SchemaName));
+            sb.Append(String.Format( "SELECT table_name FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE' AND t.table_schema='{0}' ", MySqlDbAccess.SchemaName));
             sb.Append(";");            
      
                 using (MySqlCommand cmd = new MySqlCommand(sb.ToString()))
@@ -8973,7 +8921,7 @@ namespace YAF.Classes.Data.MySqlDb
             DataTable tables = Db.db_getstats_alltables(connectionString);
             foreach ( DataRow drtables in tables.Rows )
                 {
-                    using (var cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1};", Config.SchemaName,drtables[0] ) ) )
+                    using (var cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1};", MySqlDbAccess.SchemaName,drtables[0] ) ) )
                     {
                         
                         cmd.CommandType = CommandType.Text;
@@ -9074,7 +9022,7 @@ namespace YAF.Classes.Data.MySqlDb
                 using (var connMan = new MySqlDbConnectionManager(connectionString))
                 {
                     connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(my_reindexDb_InfoMessage);
-            using (MySqlCommand cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", Config.SchemaName, Config.DatabaseObjectQualifier)))
+            using (MySqlCommand cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName, Config.DatabaseObjectQualifier)))
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 cmd.CommandType = CommandType.Text;
@@ -9129,7 +9077,7 @@ namespace YAF.Classes.Data.MySqlDb
             DataTable dtt = new DataTable();            
                 for (int i = 0; i < dtc.Rows.Count; i++)           
             {
-                using (MySqlCommand cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", Config.SchemaName, Config.DatabaseObjectQualifier)))
+                using (MySqlCommand cmd = new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName, Config.DatabaseObjectQualifier)))
                 {
                     cmd.CommandType = CommandType.Text;
                     DataTable dttmp = MySqlDbAccess.GetData(cmd, false,connectionString);
@@ -9363,12 +9311,12 @@ namespace YAF.Classes.Data.MySqlDb
              // apply database name
              if (optionValue[0].Trim().ToLower() == "database")
              {
-                 if (optionValue[1].Trim() != Config.SchemaName || !string.IsNullOrEmpty(optionValue[1].Trim()))
+                 if (optionValue[1].Trim() != MySqlDbAccess.SchemaName || !string.IsNullOrEmpty(optionValue[1].Trim()))
                  {
                      script = script.Replace("{databaseName}", optionValue[1].Trim());
                  }
                  else
-                     script = script.Replace("{databaseName}", Config.SchemaName);
+                     script = script.Replace("{databaseName}", MySqlDbAccess.SchemaName);
              }
 
              // apply user name from connection string to override defaults in config

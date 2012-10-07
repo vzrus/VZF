@@ -56,6 +56,8 @@ namespace YAF.Classes.Data
         /// </summary>
         private static  Type _connectionManagerType = typeof(MySqlDbConnectionManager);
 
+        private static string _schemaName;
+
         #endregion
 
         #region Properties
@@ -82,7 +84,22 @@ namespace YAF.Classes.Data
             }
         }
 
+        static public string SchemaName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_schemaName))
+                {
+                    _schemaName = Config.DatabaseScheme;
+                }
+                if (string.IsNullOrEmpty(_schemaName) || _schemaName == "dbo")
+                {
+                    _schemaName = "public";
+                }
+                return _schemaName;
 
+            }
+        }
 
         #endregion
 
@@ -111,7 +128,7 @@ namespace YAF.Classes.Data
 		{
 			return String.Format(
 							"`{0}`.`{1}{2}`",
-							Config.SchemaName,
+							SchemaName,
 							Config.DatabaseObjectQualifier,
 							name
 							);

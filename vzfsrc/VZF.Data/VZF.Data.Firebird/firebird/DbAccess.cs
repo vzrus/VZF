@@ -94,7 +94,7 @@ namespace YAF.Classes.Data
      
       static public string SchemaName
       {
-          get { return _schemaName ?? (_schemaName = Config.SchemaName); }
+          get { return _schemaName ?? (_schemaName = Config.DatabaseScheme); }
       }
       
       static public string DatabaseEncoding

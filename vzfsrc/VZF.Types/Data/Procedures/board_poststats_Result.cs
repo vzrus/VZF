@@ -30,9 +30,9 @@ namespace VZF.Types.Data
             Posts = dr.Field<int>("Posts");
             Topics = dr.Field<int>("Topics");
             Forums = dr.Field<int>("Forums");
-            LastPostInfoID = dr.Field<int>("LastPostInfoID");
-            LastPost = dr.Field<DateTime>("LastPost");
-            LastUserID = dr.Field<int>("LastUserID");
+            LastPostInfoID = dr.Field<int?>("LastPostInfoID");
+            LastPost = dr.Field<DateTime?>("LastPost");
+            LastUserID = dr.Field<int?>("LastUserID");
             LastUser = dr.Field<string>("LastUser");
             LastUserDisplayName = dr.Field<string>("LastUserDisplayName");
             LastUserStyle = dr.Field<string>("LastUserStyle");
@@ -41,9 +41,9 @@ namespace VZF.Types.Data
         public int? Posts { get; set; }
         public int? Topics { get; set; }
         public int? Forums { get; set; }
-        public int LastPostInfoID { get; set; }
-        public System.DateTime LastPost { get; set; }
-        public int LastUserID { get; set; }
+        public int? LastPostInfoID { get; set; }
+        public DateTime? LastPost { get; set; }
+        public int? LastUserID { get; set; }
         public string LastUser { get; set; }
         public string LastUserDisplayName { get; set; }
         public string LastUserStyle { get; set; }

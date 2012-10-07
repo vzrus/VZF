@@ -405,15 +405,14 @@ BEGIN
              c.forumid,
              c.topicid,
              (SELECT x.name 
-                FROM   databaseSchema.objectQualifier_forum x
-                                   ON c.forumid=x.forumid
+                FROM   databaseSchema.objectQualifier_forum x                                 
                   WHERE  x.forumid = c.forumid  LIMIT 1) as ForumName,
              (SELECT x.topic
                 FROM   databaseSchema.objectQualifier_topic x
                   WHERE  x.topicid = c.topicid) as TopicName,
              COALESCE(SIGN(c.flags & 2)::integer::boolean,FALSE) as IsGuest,
 		     COALESCE(SIGN(c.flags & 8)::integer::boolean,FALSE) AS IsCrawler,		
-             COALESCE(SIGN(a.flags & 16)::integer::boolean,FALSE) AS IsHidden,
+             a.isactiveexcluded AS IsHidden,
              CASE(i_stylednicks)
 	         WHEN TRUE THEN  a.userstyle  
 	         ELSE '' END,
@@ -445,15 +444,14 @@ elseif i_showcrawlers IS TRUE and i_guests IS FALSE THEN
              c.forumid,
              c.topicid,
              (SELECT x.name 
-                FROM   databaseSchema.objectQualifier_forum x
-                 ON c.forumid=x.forumid
+                FROM   databaseSchema.objectQualifier_forum x            
                   WHERE  x.forumid = c.forumid  LIMIT 1) as ForumName,
              (SELECT x.topic
                 FROM   databaseSchema.objectQualifier_topic x
                   WHERE  x.topicid = c.topicid) as TopicName,
              COALESCE(SIGN(c.flags & 2)::integer::boolean,FALSE) as IsGuest,
 		     COALESCE(SIGN(c.flags & 8)::integer::boolean,FALSE) AS IsCrawler,		
-             COALESCE(SIGN(a.flags & 16)::integer::boolean,FALSE) AS IsHidden,
+             a.isactiveexcluded AS IsHidden,
              CASE(i_stylednicks)
 	         WHEN TRUE THEN  a.userstyle 
 	         ELSE '' END,
@@ -494,7 +492,7 @@ ELSE
                   WHERE  x.topicid = c.topicid) as TopicName,
              COALESCE(SIGN(c.flags & 2)::integer::boolean,FALSE) as IsGuest,
 		     COALESCE(SIGN(c.flags & 8)::integer::boolean,FALSE) AS IsCrawler,		
-             COALESCE(SIGN(a.flags & 16)::integer::boolean,FALSE) AS IsHidden,
+             a.isactiveexcluded AS IsHidden,
              CASE(i_stylednicks)
 	         WHEN TRUE THEN  a.userstyle  
 	         ELSE '' END,
@@ -570,7 +568,7 @@ WHERE    lastactive < i_utctimestamp - (i_interval::varchar(11) || ' minute')::i
 			 where x.topicid=c.topicid limit 1),
              COALESCE(((c.flags & 2)=2)::boolean,FALSE) as IsGuest,
 		     COALESCE(((c.flags & 8)=8)::boolean,FALSE) AS IsCrawler,		
-             COALESCE((a.flags & 16)::integer::boolean,FALSE) AS IsHidden,
+              a.isactiveexcluded AS IsHidden,
              (CASE(i_stylednicks)
 	         WHEN TRUE THEN  a.userstyle  
 	         ELSE '' END),
@@ -608,7 +606,7 @@ ELSEIF (i_guests IS FALSE AND i_showcrawlers IS TRUE) THEN
 			 where x.topicid=c.topicid limit 1),
              COALESCE(SIGN(c.flags & 2)::integer::boolean,FALSE) as IsGuest,
 		     COALESCE(SIGN(c.flags & 8)::integer::boolean,FALSE) AS IsCrawler,		
-             COALESCE(SIGN(a.flags & 16)::integer::boolean,FALSE) AS IsHidden,
+             a.isactiveexcluded AS IsHidden,
              (CASE(i_stylednicks)
 	         WHEN TRUE THEN  a.userstyle  
 	         ELSE '' END),
@@ -8748,8 +8746,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_rss_topic_latest(
 						   i_stylednicks boolean,
 						   i_shownocountposts boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_rss_topic_latest_return_type AS
-$BODY$DECLARE	
-             _counter integer := 0;
+$BODY$DECLARE            
 			 _rec databaseSchema.objectQualifier_rss_topic_latest_return_type%ROWTYPE; 
 BEGIN		
 	
@@ -8793,11 +8790,9 @@ BEGIN
 		AND
 		f.flags & 4 <> (CASE WHEN i_shownocountposts IS TRUE THEN -1 ELSE 4 END)
 	ORDER BY
-		t.lastposted DESC 
-		LOOP
-		IF _counter > i_numposts THEN EXIT;END IF;		
-		return next _rec;
-		_counter = _counter + 1;
+		t.lastposted DESC LIMIT i_numposts
+		LOOP			
+		return next _rec;		
 		END LOOP;
     END;
 $BODY$
@@ -9307,8 +9302,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_latest(
 						   i_findlastunread boolean,
 						   i_utctimestamp timestampTZ)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_latest_return_type AS
-$BODY$DECLARE
-             cntr integer:=0;
+$BODY$DECLARE           
 			 i_StartID integer:=0;
 			 _rec databaseSchema.objectQualifier_topic_latest_return_type%ROWTYPE;
 BEGIN 	
@@ -9366,11 +9360,9 @@ WHERE x.userid = t.lastuserid)) AS LastUserDisplayName,
     AND t.lastposted IS NOT NULL
 	AND f.flags & 4 <> (CASE WHEN i_shownocountposts IS TRUE THEN -1 ELSE 4 END)	
     ORDER BY
-    t.lastposted DESC
-LOOP   
-EXIT WHEN cntr >= i_numposts OR cntr > 1000;
+    t.lastposted DESC LIMIT i_numposts
+LOOP  
 RETURN NEXT _rec;
-cntr:=cntr+1;
 END LOOP;
    
     END;$BODY$

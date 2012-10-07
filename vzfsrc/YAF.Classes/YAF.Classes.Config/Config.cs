@@ -281,7 +281,7 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsString("YAF.DatabaseScheme") ?? "public";
+                return GetConfigValueAsString("YAF.DatabaseSchemaName") ?? "public";
             }
         }
 
@@ -630,16 +630,6 @@ namespace YAF.Classes
             }
         }
 
-        /// <summary>
-        ///     Gets SchemaName.
-        /// </summary>
-        public static string SchemaName
-        {
-            get
-            {
-                return GetConfigValueAsString("YAF.DatabaseSchemaName");
-            }
-        }
 
         /// <summary>
         ///     Gets ServerFileRoot.

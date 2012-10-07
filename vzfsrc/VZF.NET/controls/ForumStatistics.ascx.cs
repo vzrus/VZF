@@ -335,11 +335,11 @@ namespace YAF.Controls
               postsStatisticsDataRow.Forums);
 
             // Last post
-            if (!postsStatisticsDataRow.LastPost.IsNullOrEmptyDBField())
+            if (postsStatisticsDataRow.LastPost != null)
             {
                 this.StatsLastPostHolder.Visible = true;
 
-                this.LastPostUserLink.UserID = postsStatisticsDataRow.LastUserID;
+                this.LastPostUserLink.UserID = postsStatisticsDataRow.LastUserID ?? 0;
                 this.LastPostUserLink.ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
                                                         ? postsStatisticsDataRow.LastUserDisplayName
                                                         : postsStatisticsDataRow.LastUser;
