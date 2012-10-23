@@ -186,9 +186,12 @@
     <Resource tag="SUBFORUM">~/icon_subforum.gif</Resource>
     <Resource tag="SUBFORUM_NEW">~/icon_subforum_new.gif</Resource>
     <Resource tag="FORUM">~/topic.gif</Resource>
+    <Resource tag="FORUM_HASNOACCESS">~/minus-circle.png</Resource>
+    <Resource tag="FORUM_HASACCESS">~/plus-circle.png</Resource>
     <Resource tag="FORUM_NEW">~/topic_new.gif</Resource>
     <Resource tag="FORUM_ADDNEW_SMALL">~/plus_small_icon.png</Resource>
     <Resource tag="FORUM_LOCKED">~/topic_lock.gif</Resource>
+    <Resource tag="FORUM_JUMP">~/frog3.gif</Resource>
     <Resource tag="FORUM_STATS">~/folder_stats.gif</Resource>
     <Resource tag="FORUM_USERS">~/folder_who.gif</Resource>
     <Resource tag="ICON_NEWEST">~/icon_newest_reply.gif</Resource>

@@ -892,7 +892,7 @@ This CSS already works on FireFox.
 	margin: 2px;
 }
 
-.yafnet table.content postContainer {
+.yafnet table.content .postContainer {
 height:80em;
 }
 
@@ -1442,3 +1442,4 @@ height:80em;
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_signature{background-position: 0 -330px}
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_subscriptions{background-position: 0 -198px;}
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_changepassword {background-position: 0 -66px;}
+.yafnet .ui-tabs-hide {display:none !important;}

@@ -50,8 +50,11 @@
     <Resource tag="SUBFORUM_NEW">~/icon_subforum_new.png</Resource>
 	  <Resource tag="FORUM">~/forum.png</Resource>
     <Resource tag="FORUM_ADDNEW_SMALL">~/plus_small_icon.png</Resource>
+    <Resource tag="FORUM_HASNOACCESS">~/minus-circle.png</Resource>
+    <Resource tag="FORUM_HASACCESS">~/plus-circle.png</Resource>
 	  <Resource tag="FORUM_NEW">~/forum_new.png</Resource>
 	  <Resource tag="FORUM_LOCKED">~/forum_locked.png</Resource>
+    <Resource tag="FORUM_JUMP">~/frog3.gif</Resource>
     <Resource tag="FORUM_STATS">~/folder_stats.gif</Resource>
     <Resource tag="FORUM_USERS">~/folder_who.gif</Resource>
 	  <Resource tag="ICON_NEWEST">~/icon_newest_reply.png</Resource>

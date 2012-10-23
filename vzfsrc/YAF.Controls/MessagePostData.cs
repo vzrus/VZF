@@ -314,6 +314,7 @@ namespace YAF.Controls
                 if (this.Edited > this.Posted)
                 {
                     editedMessageDateTime = this.Edited;
+                    this.IsModeratorChanged = this.DataRow["IsModeratorChanged"].ToType<bool>();
                 }
 
                 var formattedMessage =

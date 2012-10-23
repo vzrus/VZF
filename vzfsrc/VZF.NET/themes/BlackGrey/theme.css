@@ -951,7 +951,7 @@ height:80em;
 	-webkit-box-shadow: 0 0 3px #555555;
 	-moz-box-shadow: 0 0 3px #555555;
 }
-* html #tiptip_content {background-color: rgb(3,51,51));}
+* html #tiptip_content {background-color: rgb(3,51,51);}
 *:first-child+html #tiptip_content {background-color: rgb(3,51,51);}
 
 #tiptip_arrow, #tiptip_arrow_inner {
@@ -1422,3 +1422,4 @@ height:80em;
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_signature{background-position: 0 -330px}
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_subscriptions{background-position: 0 -198px;}
 .yafnet #yafprofilepersonal li.yafprofilemenu_cp_changepassword {background-position: 0 -66px;}
+.yafnet .ui-tabs-hide {display:none !important;}

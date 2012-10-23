@@ -965,3 +965,5 @@ This CSS already works on FireFox.
 	top:10px;
 	right:10px
 }
+
+.yafnet .ui-tabs-hide {display:none !important;}

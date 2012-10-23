@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Xml;
+using YAF.Classes;
 using YAF.Classes.Data;
 using YAF.Core;
 using YAF.Types.Constants;
@@ -16,13 +17,13 @@ namespace YAF
     {
         protected enum ChangeFrequency
         {
-            always,
-            hourly,
-            daily,
-            weekly,
-            monthly,
-            yearly,
-            never
+            Always,
+            Hourly,
+            Daily,
+            Weekly,
+            Monthly,
+            Yearly,
+            Never
         }
 
         #region IHttpHandler Members
@@ -34,7 +35,12 @@ namespace YAF
 
         public void ProcessRequest(HttpContext context)
         {
-            using (TextWriter textWriter = new StreamWriter(context.Response.OutputStream, System.Text.Encoding.UTF8))
+
+            if (context.Request.UrlReferrer == null ||
+                !context.Request.UrlReferrer.AbsoluteUri.Contains(BaseUrlBuilder.BaseUrl)) return;
+
+            using (
+                TextWriter textWriter = new StreamWriter(context.Response.OutputStream, System.Text.Encoding.UTF8))
             {
                 var writer = new XmlTextWriter(textWriter) {Formatting = Formatting.Indented};
                 writer.WriteStartDocument();
@@ -49,26 +55,29 @@ namespace YAF
                 writer.WriteElementString("lastmod",
                                           DateTime.Now.ToString("yyy-MM-dd",
                                                                 System.Globalization.CultureInfo.InvariantCulture));
-                writer.WriteElementString("changefreq", ChangeFrequency.always.ToString());
+                writer.WriteElementString("changefreq", ChangeFrequency.Always.ToString().ToLowerInvariant());
                 writer.WriteElementString("priority", "0.8");
                 writer.WriteEndElement(); // url
 
                 // Forums here
-               var dt = CommonDb.forum_simplelist(YafContext.Current.PageModuleID, 1,10);
+                var dt = CommonDb.forum_simplelist(YafContext.Current.PageModuleID, 1, 1000);
                 foreach (DataRow r in dt.Rows)
                 {
                     writer.WriteStartElement("url");
-                    writer.WriteElementString("loc", YafBuildLink.GetLinkNotEscaped(ForumPages.topics, true, "f={0}", r["ForumID"]));
+                    writer.WriteElementString("loc",
+                                              YafBuildLink.GetLinkNotEscaped(ForumPages.topics, true, "f={0}",
+                                                                             r["ForumID"]));
                     writer.WriteElementString("lastmod",
                                               DateTime.Now.ToString("yyy-MM-dd",
-                                                                    System.Globalization.CultureInfo.InvariantCulture));
-                    writer.WriteElementString("changefreq", ChangeFrequency.always.ToString());
+                                                                    System.Globalization.CultureInfo.
+                                                                        InvariantCulture));
+                    writer.WriteElementString("changefreq", ChangeFrequency.Always.ToString());
                     writer.WriteElementString("priority", "0.8");
                     writer.WriteEndElement(); // url
                 }
 
                 writer.WriteEndElement(); // urlset 
-              
+
             }
             context.Response.ContentType = "text/xml";
         }
