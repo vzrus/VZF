@@ -76,13 +76,22 @@ namespace YAF.Pages.Admin {
         protected global::YAF.Controls.HelpLabel LocalizedLabel4;
         
         /// <summary>
-        /// ForumID control.
+        /// divactive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ForumID;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divactive;
+        
+        /// <summary>
+        /// phForums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phForums;
         
         /// <summary>
         /// HelpLabel10 control.

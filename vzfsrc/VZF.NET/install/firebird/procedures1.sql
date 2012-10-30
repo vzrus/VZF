@@ -2544,6 +2544,100 @@ CREATE  PROCEDURE objQual_USER_ACCESSMASKS(
     --  "AccessMaskName","AccessMaskID","ForumID"
      END;   
 --GO
+
+CREATE  PROCEDURE objQual_USER_ACCESSMASKSBYFORUM(
+     I_BOARDID INTEGER,
+     I_USERID  INTEGER)
+     RETURNS
+     (
+"AccessMaskID" integer,
+"AccessMaskName" VARCHAR(128),
+"AccessMaskFlags" integer,
+"IsUserMask" bool,
+"ForumID" integer,
+"ForumName" varchar(128),
+"CategoryID" integer,
+"ParentID" integer,
+"GroupID" integer,
+"GroupName" varchar(128)
+)
+     AS
+     BEGIN
+    FOR SELECT  
+     x.ACCESSMASKID,
+     x."AccessMaskName",
+	 x.FLAGS,
+	 x."IsUserMask",
+	 x.FORUMID,
+     x."ForumName",
+     x.CATEGORYID,
+     x.PARENTID,
+	 x.GROUPID,
+	 x.NAME     FROM  
+     
+     (SELECT  
+     e.ACCESSMASKID,
+     e.NAME AS "AccessMaskName",
+	 e.FLAGS,
+	 (SELECT 1 FROM RDB$DATABASE) as "IsUserMask",
+     f.FORUMID AS FORUMID,
+     f.NAME AS "ForumName",
+     f.CATEGORYID AS CATEGORYID,
+	 f.PARENTID AS PARENTID,
+	 c.GROUPID,
+	 c.NAME
+     FROM     objQual_USER a
+     JOIN objQual_USERGROUP b
+     ON b.USERID = a.USERID
+     JOIN objQual_GROUP c
+     ON c.GROUPID = b.GROUPID
+     JOIN objQual_FORUMACCESS d
+     ON d.GROUPID = c.GROUPID
+     JOIN objQual_ACCESSMASK e
+     ON e.ACCESSMASKID = d.ACCESSMASKID
+     JOIN objQual_FORUM f
+     ON f.FORUMID = d.FORUMID
+     WHERE    a.USERID = :I_USERID
+     AND c.BOARDID = :I_BOARDID
+    
+     
+     UNION
+     
+     SELECT   c.ACCESSMASKID AS "AccessMaskID",
+     c.NAME AS "AccessMaskName",
+	 c.FLAGS,
+	 (SELECT 0 FROM RDB$DATABASE) as "IsUserMask",
+     d.FORUMID AS FORUMID,
+     d.NAME AS  "ForumName",
+     d.CATEGORYID AS "CategoryID",
+	 d.PARENTID AS PARENTID,
+	 (SELECT 0 FROM RDB$DATABASE),
+	 (SELECT '' FROM RDB$DATABASE)
+     FROM     objQual_USER a
+     JOIN objQual_USERFORUM b
+     ON b.USERID = a.USERID
+     JOIN objQual_ACCESSMASK c
+     ON c.ACCESSMASKID = b.ACCESSMASKID
+     JOIN objQual_FORUM d
+     ON d.FORUMID = b.FORUMID
+     WHERE    a.USERID = :I_USERID
+     AND c.BOARDID = :I_BOARDID ) x
+     INTO
+     :"AccessMaskID",
+     :"AccessMaskName",
+	 :"AccessMaskFlags", 
+	 :"IsUserMask",
+     :"ForumID",
+     :"ForumName",
+     :"CategoryID",
+     :"ParentID",
+	 :"GroupID",
+     :"GroupName"
+      DO SUSPEND;
+    
+     END;   
+--GO
+
 create procedure objQual_USER_GUEST
 (
 	I_BOARDID INTEGER
@@ -2784,7 +2878,7 @@ end;
 
 
 
-CREATE PROCEDURE objQual_FORUM_LISTALL (I_BOARDID INTEGER,I_USERID INTEGER, I_ROOT INTEGER)
+CREATE PROCEDURE objQual_FORUM_LISTALL (I_BOARDID INTEGER,I_USERID INTEGER, I_ROOT INTEGER, I_RETURNALL BOOL)
 RETURNS 
 (
 "CategoryID" integer,
@@ -2793,7 +2887,9 @@ RETURNS
 "Forum" varchar(128),
 "Indent" integer,
 "ParentID" integer,
-"PollGroupID" integer
+"PollGroupID" integer,
+"IsHidden" bool,
+"ReadAccess" bool
 )
 AS
    BEGIN
@@ -2806,7 +2902,9 @@ AS
                     a.NAME AS "Forum",
                     (SELECT 0 FROM RDB$DATABASE)  AS INDENT,
                     a.PARENTID,
-					a.POLLGROUPID
+					a.POLLGROUPID,
+					SIGN(BIN_AND(a.FLAGS, 2)),
+					c.READACCESS
               FROM
                     objQual_FORUM a
                     JOIN objQual_CATEGORY b 
@@ -2816,7 +2914,7 @@ AS
               WHERE
                     c.USERID=:I_USERID AND
                     b.BOARDID=:I_BOARDID AND
-                    c.READACCESS>0
+                    (:I_RETURNALL = 1 OR c.READACCESS>0)
               ORDER BY
                     b.SORTORDER,
                     a.SORTORDER,
@@ -2829,7 +2927,9 @@ AS
                     :"Forum",
                     :"Indent",
                     :"ParentID",
-					:"PollGroupID"
+					:"PollGroupID",
+					:"IsHidden",
+					:"ReadAccess"
                      DO SUSPEND;
 
               ELSE IF  (I_ROOT > 0)  THEN
@@ -2841,7 +2941,9 @@ AS
         a.NAME AS "Forum",
         (SELECT 0 FROM RDB$DATABASE) AS INDENT,
         a.PARENTID,
-		a.POLLGROUPID
+		a.POLLGROUPID,
+		SIGN(BIN_AND(a.FLAGS, 2)),
+		c.READACCESS
     FROM
         objQual_FORUM a
         JOIN objQual_CATEGORY b 
@@ -2851,7 +2953,7 @@ AS
     WHERE
         c.USERID=:I_USERID AND
         b.BOARDID=:I_BOARDID AND
-        c.READACCESS>0 AND
+        (:I_RETURNALL = 1 OR c.READACCESS>0) AND
         a.FORUMID = :I_ROOT
     ORDER BY
         b.SORTORDER,
@@ -2865,7 +2967,9 @@ AS
                     :"Forum",
                     :"Indent",
                     :"ParentID",
-					:"PollGroupID"
+					:"PollGroupID",
+					:"IsHidden",
+					:"ReadAccess"
                      DO SUSPEND;
 ELSE 
    FOR SELECT
@@ -2875,7 +2979,9 @@ ELSE
         a.NAME AS "Forum",
         (SELECT 0 FROM RDB$DATABASE) AS INDENT,
         a.PARENTID,
-		a.POLLGROUPID
+		a.POLLGROUPID,
+		SIGN(BIN_AND(a.FLAGS, 2)),
+		c.READACCESS
     FROM
         objQual_FORUM a
         JOIN objQual_CATEGORY b 
@@ -2885,7 +2991,7 @@ ELSE
     WHERE
         c.USERID=:I_USERID AND
         b.BOARDID=:I_BOARDID AND
-        c.READACCESS>0 AND
+       (:I_RETURNALL = 1 OR c.READACCESS>0) AND
         b.CATEGORYID = -(:I_ROOT)
     ORDER BY
         b.SORTORDER,
@@ -2899,7 +3005,9 @@ ELSE
                     :"Forum",
                     :"Indent",
                     :"ParentID",
-					:"PollGroupID"
+					:"PollGroupID",
+					:"IsHidden",
+					:"ReadAccess"
                      DO SUSPEND;
 
 END;
@@ -4426,6 +4534,30 @@ if (:I_EVENTTYPEID is null)  THEN
 		:"DeleteAccess",
 		:"GroupName"
 		DO SUSPEND;
+END;
+--GO
+
+CREATE PROCEDURE objQual_FORUM_CATACCESS_ACTIVEUSER(I_BOARDID integer, I_USERID integer)
+ 
+RETURNS (
+"CategoryID" integer,
+"CategoryName"  VARCHAR(255),
+"SortOrder" integer
+) AS
+BEGIN		
+		for select
+			   DISTINCT(c.CATEGORYID),
+			   c.NAME, c.SORTORDER
+			   from objQual_CATEGORY c			  
+			   join objQual_FORUM f
+			   ON f.CATEGORYID = c.CATEGORYID
+			   JOIN objQual_ACTIVEACCESS access ON (f.FORUMID = access.FORUMID and access.USERID = :I_USERID)  
+               WHERE c.BOARDID = :I_BOARDID and f.PARENTID IS NULL and  (access.READACCESS = 1 or (access.READACCESS <= 0 and BIN_AND(f.FLAGS, 2) <> 2)) ORDER BY c.SORTORDER, f.CATEGORYID, c.NAME			  
+			   into
+			   :"CategoryID",			  
+			   :"CategoryName",
+			   :"SortOrder"
+			    DO SUSPEND;			 
 END;
 --GO
 

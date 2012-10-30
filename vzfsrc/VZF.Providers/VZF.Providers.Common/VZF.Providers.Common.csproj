@@ -47,6 +47,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="common\profile\GeneralProviderSettings.cs" />
@@ -59,20 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="common\membership\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
-      <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>
-      <Name>YAF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\YAF.Types\YAF.Types.csproj">
-      <Project>{B9CF38B0-39CF-43C7-9589-166DCC665652}</Project>
-      <Name>YAF.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\YAF.Utils\YAF.Utils.csproj">
-      <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
-      <Name>YAF.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="YetAnotherForum.NET.snk" />

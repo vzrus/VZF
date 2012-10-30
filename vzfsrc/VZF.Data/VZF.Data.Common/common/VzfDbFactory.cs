@@ -26,6 +26,7 @@ using VZF.Types.Data;
 using YAF.Types;
 using YAF.Types.Constants;
 using YAF.Types.Objects;
+using YAF.Utils;
 
 namespace YAF.Classes.Data
 {
@@ -1939,7 +1940,7 @@ namespace YAF.Classes.Data
       // Returns an extension list for a given Board
       static public DataTable extension_list(int? mid, object boardId)
       {
-          return extension_list(mid,boardId, null);
+          return extension_list(mid, boardId, string.Empty);
 
       }
 
@@ -1980,6 +1981,27 @@ namespace YAF.Classes.Data
               // case "oracle":  orPostgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               // case "db2": db2Postgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
               // case "other": othPostgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
+              default:
+                  throw new ArgumentOutOfRangeException(dataEngine);
+          }
+      }
+
+      public static DataTable forum_categoryaccess_activeuser(int? mid, object boardId, object userId)
+      {
+          string dataEngine;
+          string connectionString;
+          string namePattern = string.Empty;
+          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+          switch (dataEngine)
+          {
+              case "System.Data.SqlClient": return MsSql.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              case "Npgsql": return Postgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              // case "oracle":  return orPostgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              // case "db2":  return db2Postgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+              // case "other":  return othPostgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId); 
               default:
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
@@ -2052,12 +2074,12 @@ namespace YAF.Classes.Data
         /// <param name="boardId">BoardID</param>
         /// <param name="userId">ID of user</param>
         /// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(int? mid, object boardId, object userId)
+      static public DataTable forum_listall(int? mid, object boardId, object userId)
 		{
-			return forum_listall(mid,boardId, userId, 0);
+			return forum_listall(mid,boardId, userId, 0,false);
 		}
 
-        public static DataTable  forum_listall(int? mid, object boardId, object userId, object startAt)
+      public static DataTable forum_listall(int? mid, object boardId, object userId, object startAt, bool returnAll)
       {
           string dataEngine;
           string connectionString;
@@ -2066,13 +2088,13 @@ namespace YAF.Classes.Data
           
           switch (dataEngine)
           {
-              case "System.Data.SqlClient": return MsSql.Db.forum_listall(connectionString, boardId, userId, startAt);
-              case "Npgsql": return Postgre.Db.forum_listall(connectionString, boardId, userId, startAt);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listall(connectionString, boardId, userId, startAt);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listall(connectionString, boardId, userId, startAt);
-              // case "oracle":  return orPostgre.Db.forum_listall(connectionString, boardId, userId, startAt);
-              // case "db2":  return db2Postgre.Db.forum_listall(connectionString, boardId, userId, startAt);
-              // case "other":  return othPostgre.Db.forum_listall(connectionString, boardId, userId, startAt); 
+              case "System.Data.SqlClient": return MsSql.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              case "Npgsql": return Postgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              // case "oracle":  return orPostgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              // case "db2":  return db2Postgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+              // case "other":  return othPostgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll); 
               default:
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
@@ -2083,8 +2105,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <param name="boardId">BoardID</param>
-        /// <param name="categoryID"> </param>
-        /// <param name="CategoryID">CategoryID</param>
+        /// <param name="categoryID">The category ID. </param>
         /// <returns>DataTable with list</returns>
         static public DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID)
         {
@@ -2113,18 +2134,25 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow)
+        static public DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow, bool returnAll)
         {
-            DataTable listDestination = new DataTable();
-            listDestination.TableName = "forum_sort_list";
+            var listDestination = new DataTable {TableName = "forum_sort_list"};
             listDestination.Columns.Add("ForumID", typeof(String));
+            listDestination.Columns.Add("ParentID", typeof(String));
             listDestination.Columns.Add("Title", typeof(String));
+            listDestination.Columns.Add("Level", typeof(int));
+            listDestination.Columns.Add("IsHidden", typeof(bool));
+            listDestination.Columns.Add("ReadAccess", typeof(bool));
 
             if (emptyFirstRow)
             {
                 DataRow blankRow = listDestination.NewRow();
                 blankRow["ForumID"] = string.Empty;
+                blankRow["ParentID"] = string.Empty;
                 blankRow["Title"] = string.Empty;
+                blankRow["Level"] = string.Empty;
+                blankRow["IsHidden"] = string.Empty;
+                blankRow["ReadAccess"] = string.Empty;
                 listDestination.Rows.Add(blankRow);
             }
             // filter the forum list -- not sure if this code actually works
@@ -2147,13 +2175,13 @@ namespace YAF.Classes.Data
                 dv.ApplyDefaultSort = true;
             }
 
-            forum_sort_list_recursive(mid, dv.ToTable(), listDestination, parentID, categoryID, startingIndent);
+            forum_sort_list_recursive(mid, dv.ToTable(), listDestination, parentID, categoryID, startingIndent, returnAll);
 
             return listDestination;
         }
         static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
         {
-            return forum_listall_sorted(mid, boardId, userId, null, false, 0);
+            return forum_listall_sorted(mid, boardId, userId, null, false, 0, false );
         }
 
         static public DataTable forum_listall_sorted(int? mid, object boardId, object userId)
@@ -2161,7 +2189,7 @@ namespace YAF.Classes.Data
             if (!Config.LargeForumTree)
             {
                 
-                return forum_listall_sorted(mid,boardId, userId, null, false, 0);
+                return forum_listall_sorted(mid,boardId, userId, null, false, 0, false);
             }
             else
             {
@@ -2169,7 +2197,51 @@ namespace YAF.Classes.Data
             }
         }
 
-        public static DataTable forum_ns_getchildren_activeuser(int? mid, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        static public DataTable forum_listall_sorted_all(int? mid, object boardId, object userId, bool returnAll)
+        {
+            if (!Config.LargeForumTree)
+            {
+
+                return forum_listall_sorted(mid, boardId, userId, null, false, 0, returnAll);
+            }
+            else
+            {
+                return forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
+            }
+        }
+
+        public static DataTable forum_ns_getchildren_activeuser(int? mid, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        {
+
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            DataTable dtTable; 
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": dtTable = MsSql.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                case "Npgsql": dtTable = Postgre.Db.forum_ns_getchildren_activeuser(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, userid, notincluded, immediateonly, indentchars); break;
+                case "MySql.Data.MySqlClient": dtTable = MySqlDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, userid, notincluded, immediateonly, indentchars); break;
+                case "FirebirdSql.Data.FirebirdClient": dtTable = FirebirdDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, userid, notincluded, immediateonly, indentchars); break;
+                // case "oracle":  dtTable = orPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                // case "db2":  dtTable = db2Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                // case "other":  dtTable = othPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+
+            }
+          
+                return dtTable;
+            
+
+               
+           
+
+        }
+
+
+        public static DataTable forum_ns_getchildren(int? mid, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
         {
             string dataEngine;
             string connectionString;
@@ -2178,13 +2250,13 @@ namespace YAF.Classes.Data
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient": return MsSql.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
-                case "Npgsql": return Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
-                case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid, categoryid, forumid, userid, notincluded, immediateonly, indentchars);
-                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_ns_getchildren_activeuser(connectionString, boardid, categoryid, forumid, userid, notincluded, immediateonly, indentchars);
-                // case "oracle":  return orPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
-                // case "db2":  return db2Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars);
-                // case "other":  return othPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid,  categoryid,  forumid,  userid,  notincluded,  immediateonly,  indentchars); 
+                case "System.Data.SqlClient": return MsSql.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                case "Npgsql": return Postgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                // case "oracle":  return orPostgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                // case "db2":  return db2Postgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
+                // case "other":  return othPostgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2192,10 +2264,29 @@ namespace YAF.Classes.Data
 
 
 
-        //Here
-        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt)
+        /// <summary>
+        /// The forum_listall_sorted.
+        /// </summary>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="forumidExclusions">
+        /// The forumid exclusions.
+        /// </param>
+        /// <param name="emptyFirstRow">
+        /// The empty first row.
+        /// </param>
+        /// <param name="startAt">
+        /// The start at.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt, bool returnAll)
         {
-            using (DataTable dataTable = forum_listall(mid, boardId, userId, startAt))
+            using (DataTable dataTable = forum_listall(mid, boardId, userId, startAt, returnAll))
             {
                 int baseForumId = 0;
                 int baseCategoryId = 0;
@@ -2214,7 +2305,7 @@ namespace YAF.Classes.Data
                     }
                 }
 
-                return forum_sort_list(mid, dataTable, baseForumId, baseCategoryId, 0, forumidExclusions, emptyFirstRow);
+                return forum_sort_list(mid, dataTable, baseForumId, baseCategoryId, 0, forumidExclusions, emptyFirstRow, returnAll);
             }
         }
 
@@ -2238,7 +2329,7 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public void forum_sort_list_recursive(int? mid, DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent)
+        static public void forum_sort_list_recursive(int? mid, DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent, bool returnAll)
         {
             DataRow newRow;
 
@@ -2274,7 +2365,7 @@ namespace YAF.Classes.Data
                     listDestination.Rows.Add(newRow);
 
                     // recurse through the list...
-                    forum_sort_list_recursive(mid, listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1);
+                    forum_sort_list_recursive(mid, listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1, returnAll);
                 }
             }
         }
@@ -2535,11 +2626,56 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId)
+         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, bool includeNoAccess)
          {
-             return forum_listall(mid,boardId, userId, 0).AsEnumerable().Select(r => new TypedForumListAll(r));
+             return forum_listall(mid,boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
          }
-         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, int startForumId)
+         /// <summary>
+         /// The forum list all.
+         /// </summary>
+         /// <param name="boardId">
+         /// The board id.
+         /// </param>
+         /// <param name="userId">
+         /// The user id.
+         /// </param>
+         /// <param name="startForumId">
+         /// The start forum id.
+         /// </param>
+         /// <returns>
+         /// The forum list all.
+         /// </returns>
+         [NotNull]
+         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, int startForumId)
+         {
+             var allForums = ForumListAll(connectionString, boardId, userId, 0);
+
+             var forumIds = new List<int>();
+             var tempForumIds = new List<int>();
+
+             forumIds.Add(startForumId);
+             tempForumIds.Add(startForumId);
+
+             while (true)
+             {
+                 var temp = allForums.Where(f => tempForumIds.Contains(f.ParentID ?? 0));
+
+                 if (!temp.Any())
+                 {
+                     break;
+                 }
+
+                 // replace temp forum ids with these...
+                 tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
+
+                 // add them...
+                 forumIds.AddRange(tempForumIds);
+             }
+
+             // return filtered forums...
+             return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
+         }
+         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, int startForumId, bool includeNoAccess)
          {
              string dataEngine;
              string connectionString;
@@ -5657,6 +5793,48 @@ namespace YAF.Classes.Data
                  // case "oracle":  return orPostgre.Db.user_accessmasks(connectionString, boardId, userId);
                  // case "db2":  return db2Postgre.Db.user_accessmasks(connectionString, boardId, userId);
                  // case "other":  return othPostgre.Db.user_accessmasks(connectionString, boardId, userId); 
+                 default:
+                     throw new ArgumentOutOfRangeException(dataEngine);
+             }
+
+         }
+         static public DataTable user_accessmasksbyforum(int? mid, object boardId, object userId)
+         {
+             string dataEngine;
+             string connectionString;
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+             switch (dataEngine)
+             {
+                 case "System.Data.SqlClient": return MsSql.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 case "Npgsql": return Postgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 // case "oracle":  return orPostgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 // case "db2":  return db2Postgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                 // case "other":  return othPostgre.Db.user_accessmasksbyforum(connectionString, boardId, userId); 
+                 default:
+                     throw new ArgumentOutOfRangeException(dataEngine);
+             }
+
+         }
+         static public DataTable user_accessmasksbygroup(int? mid, object boardId, object userId)
+         {
+             string dataEngine;
+             string connectionString;
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+             switch (dataEngine)
+             {
+                 case "System.Data.SqlClient": return MsSql.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 case "Npgsql": return Postgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 // case "oracle":  return orPostgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 // case "db2":  return db2Postgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                 // case "other":  return othPostgre.Db.user_accessmasksbygroup(connectionString, boardId, userId); 
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
              }

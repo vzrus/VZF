@@ -132,6 +132,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}extension_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}extension_save;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}objectQualifier_forum_categoryaccess_activeuser;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_delete;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_move;
@@ -419,6 +421,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topics_byuser;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topics_byuser_result;
 --GO 
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_accessmasks;
+--GO 
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_accessmasksbyforum;
 --GO 
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_addpoints;
 --GO
@@ -3038,7 +3042,7 @@ END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
- CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listall (i_BoardID INT,i_UserID INT, i_Root INT)
+ CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listall (i_BoardID INT,i_UserID INT, i_Root INT, i_ReturnAll TINYINT(1))
    READS SQL DATA
    BEGIN
             IF i_Root IS NULL THEN SET i_Root = 0 ; END IF;
@@ -3050,7 +3054,9 @@ END;
                     a.Name AS Forum,
                     0 AS Indent,
                     a.ParentID,
-		            a.PollGroupID
+		            a.PollGroupID,			
+					a.Flags & 2 = 2,
+					CAST(c.ReadAccess AS UNSIGNED) > 0
               FROM
                     {databaseName}.{objectQualifier}Forum a
                     JOIN {databaseName}.{objectQualifier}Category b ON b.CategoryID=a.CategoryID
@@ -3058,7 +3064,7 @@ END;
               WHERE                    
                     b.BoardID = i_BoardID AND
 					c.UserID = i_UserID AND
-                     CAST(c.ReadAccess AS UNSIGNED) > 0 
+                    (i_ReturnAll = 1 OR CAST(c.ReadAccess AS UNSIGNED) > 0) 
               ORDER BY
                     b.SortOrder,
                     a.SortOrder,
@@ -3074,7 +3080,9 @@ END;
         a.Name AS Forum,
         0 AS Indent,
         a.ParentID,
-		a.PollGroupID
+		a.PollGroupID,
+		a.Flags & 2 = 2,
+		CAST(c.ReadAccess AS UNSIGNED) > 0
     FROM
         {databaseName}.{objectQualifier}Forum a
         JOIN {databaseName}.{objectQualifier}Category b ON b.CategoryID=a.CategoryID 
@@ -3082,7 +3090,7 @@ END;
     WHERE       
         b.BoardID=i_BoardID AND
 		c.UserID = i_UserID AND
-        CAST(c.ReadAccess AS UNSIGNED) > 0 AND
+        (i_ReturnAll = 1 OR CAST(c.ReadAccess AS UNSIGNED) > 0)  AND
         a.ForumID = i_Root
     ORDER BY
         b.SortOrder,
@@ -3097,14 +3105,16 @@ ELSE
         a.Name AS Forum,
         0 AS Indent,
         a.ParentID,
-		a.PollGroupID
+		a.PollGroupID,
+		a.Flags & 2 = 2,
+		CAST(c.ReadAccess AS UNSIGNED) > 0
     FROM
         {databaseName}.{objectQualifier}Forum a
         JOIN {databaseName}.{objectQualifier}Category b ON b.CategoryID=a.CategoryID
 		JOIN {databaseName}.{objectQualifier}ActiveAccess c ON c.ForumID=a.ForumID     
     WHERE      
         b.BoardID=i_BoardID AND
-        CAST(c.ReadAccess AS UNSIGNED) > 0 AND
+         (i_ReturnAll = 1 OR CAST(c.ReadAccess AS UNSIGNED) > 0)  AND
         b.CategoryID = -i_Root
     ORDER BY
         b.SortOrder,
@@ -5557,7 +5567,8 @@ BEGIN
  		b.LastUpdate,
  		b.Active,	
 		b.DateCutOff,
- 		c.Name AS ForumName 
+ 		c.Name AS ForumName,
+		c.CategoryID 
  	FROM
  		{databaseName}.{objectQualifier}NntpServer a
  		JOIN {databaseName}.{objectQualifier}NntpForum b 
@@ -8946,6 +8957,57 @@ end;
      AccessMaskName;
      END;   
 --GO
+     /* STORED PROCEDURE CREATED BY VZ-TEAM */     
+     CREATE  PROCEDURE {databaseName}.{objectQualifier}user_accessmasksbyforum(
+     i_BoardID INT,
+     i_UserID  INT)
+     BEGIN
+     (SELECT   e.AccessMaskID AS AccessMaskID,
+     e.Name AS AccessMaskName,
+	 e.Flags AS AccessMaskFlags,
+	 {databaseName}.{objectQualifier}biginttobool(0) as IsUserMask,
+     f.ForumID AS ForumID,
+     f.Name AS ForumName,
+     f.CategoryID,
+	 f.ParentID,
+	 c.GroupID,
+	 c.Name	as GroupName
+     FROM     {databaseName}.{objectQualifier}User a
+     JOIN {databaseName}.{objectQualifier}UserGroup b
+     ON b.UserID = a.UserID
+     JOIN {databaseName}.{objectQualifier}Group c
+     ON c.GroupID = b.GroupID
+     JOIN {databaseName}.{objectQualifier}ForumAccess d
+     ON d.GroupID = c.GroupID
+     JOIN {databaseName}.{objectQualifier}AccessMask e
+     ON e.AccessMaskID = d.AccessMaskID
+     JOIN {databaseName}.{objectQualifier}Forum f
+     ON f.ForumID = d.ForumID
+     WHERE    a.UserID = i_UserID
+     AND c.BoardID = i_BoardID)
+     UNION
+     (SELECT   c.AccessMaskID AS AccessMaskID,
+     c.Name AS AccessMaskName,
+	 c.Flags AS AccessMaskFlags,
+	 {databaseName}.{objectQualifier}biginttobool(1) as IsUserMask,
+     d.ForumID AS ForumID,
+     d.Name AS  ForumName,
+     d.CategoryID,
+	 d.ParentID,
+	 {databaseName}.{objectQualifier}biginttobool(0) AS GroupID,
+	 ''	as GroupName
+     FROM     {databaseName}.{objectQualifier}User a
+     JOIN {databaseName}.{objectQualifier}UserForum b
+     ON b.UserID = a.UserID
+     JOIN {databaseName}.{objectQualifier}AccessMask c
+     ON c.AccessMaskID = b.AccessMaskID
+     JOIN {databaseName}.{objectQualifier}Forum d
+     ON d.ForumID = b.ForumID
+     WHERE    a.UserID = i_UserID
+     AND c.BoardID = i_BoardID);
+     END;   
+--GO
+
 
 
      /* STORED PROCEDURE CREATED BY VZ-TEAM */     
@@ -13425,6 +13487,19 @@ if i_EventTypeID is null   then
 		select e.*, g.Name as GroupName from {databaseName}.{objectQualifier}EventLogGroupAccess e 
 		join {databaseName}.{objectQualifier}Group g on g.GroupID = e.GroupID where  e.GroupID = i_GroupID and e.EventTypeID = i_EventTypeID;
 		end if;
+end;
+--GO
+
+create procedure {databaseName}.{objectQualifier}objectQualifier_forum_categoryaccess_activeuser(i_BoardID int, i_UserID int) 
+begin	
+	select 
+	DISTINCT(a.CategoryID),
+	b.Name, b.SortOrder  
+	from {databaseName}.{objectQualifier}Forum a 
+	join {databaseName}.{objectQualifier}Category b 
+	on b.CategoryID=a.CategoryID
+	JOIN {databaseName}.{objectQualifier}ActiveAccess access ON (f.ForumID = access.ForumID and access.UserID = i_UserID)  
+    WHERE c.BoardID = i_BoardID and f.ParentID IS NULL and  (access.ReadAccess > 0 or (access.ReadAccess <= 0 and (f.Flags & 2) <> 2)) ORDER BY c.SortOrder, f.CategoryID, c.Name;
 end;
 --GO
 

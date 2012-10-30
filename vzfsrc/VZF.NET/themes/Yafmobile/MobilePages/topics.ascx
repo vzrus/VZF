@@ -3,6 +3,7 @@
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Register TagPrefix="YAF" TagName="ForumList" Src="ForumList.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="TopicLine" Src="TopicLine.ascx" %>
+<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
@@ -129,8 +130,7 @@
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump" runat="server" visible="false">
-        <YAF:LocalizedLabel ID="ForumJumpLabel" runat="server" LocalizedTag="FORUM_JUMP" />
-        &nbsp;<YAF:ForumJump ID="ForumJump1" runat="server" />
+        &nbsp;<div id="Div2"><YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper></div>
     </div>
 </asp:PlaceHolder>
 <div id="DivIconLegend">

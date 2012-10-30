@@ -52,17 +52,21 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="YAF.Classes.Config">
-      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Classes.Config.dll</HintPath>
+    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
     </Reference>
-    <Reference Include="YAF.Core">
-      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Core.dll</HintPath>
+    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Core.dll</HintPath>
     </Reference>
-    <Reference Include="YAF.Types">
-      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Types.dll</HintPath>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
     </Reference>
-    <Reference Include="YAF.Utils">
-      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Utils.dll</HintPath>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

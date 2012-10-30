@@ -739,7 +739,7 @@ namespace YAF.Classes.Data.MySqlDb
         //Here
         static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt)
         {
-            using (var dataTable = forum_listall(connectionString, boardId, userId, startAt))
+            using (var dataTable = forum_listall(connectionString, boardId, userId, startAt,false))
             {
                 int baseForumId = 0;
                 int baseCategoryId = 0;
@@ -2399,6 +2399,25 @@ namespace YAF.Classes.Data.MySqlDb
 		#endregion
 
       	#region yaf_Forum
+
+        /// <summary>
+        /// List of categories accessible for an active user
+        /// </summary>
+        /// <param name="boardId">The board id.</param>
+        /// <param name="userId">The user Id.</param>
+        /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
+        static public DataTable forum_categoryaccess_activeuser(string connectionString, object boardId, object userId)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("forum_categoryaccess_activeuser"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
         static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
         {
             using (MySqlCommand cmd = MySqlDbAccess.GetCommand("forum_ns_getchildren_anyuser"))
@@ -2451,7 +2470,23 @@ namespace YAF.Classes.Data.MySqlDb
             }
         }
 
-        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        static public DataTable forum_ns_getchildren(string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
+        {
+            using (MySqlCommand cmd = MySqlDbAccess.GetCommand("forum_ns_getchildren"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("i_boardid", MySqlDbType.Int32)).Value = boardid;
+                cmd.Parameters.Add(new MySqlParameter("i_categoryid", MySqlDbType.Int32)).Value = categoryid;
+                cmd.Parameters.Add(new MySqlParameter("i_forumid", MySqlDbType.Int32)).Value = forumid;
+                cmd.Parameters.Add(new MySqlParameter("i_notincluded", MySqlDbType.Byte)).Value = notincluded;
+                cmd.Parameters.Add(new MySqlParameter("i_immediateonly", MySqlDbType.Byte)).Value = immediateonly;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
         {
             using (MySqlCommand cmd = MySqlDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
             {
@@ -2464,49 +2499,7 @@ namespace YAF.Classes.Data.MySqlDb
                 cmd.Parameters.Add(new MySqlParameter("i_notincluded", MySqlDbType.Byte)).Value = notincluded;
                 cmd.Parameters.Add(new MySqlParameter("i_immediateonly", MySqlDbType.Byte)).Value = immediateonly;
 
-                DataTable dt = MySqlDbAccess.GetData(cmd, connectionString);
-                DataTable sorted = dt.Clone();
-                int categoryId = 0;
-                foreach (DataRow row in dt.Rows)
-                {
-                    DataRow newRow = sorted.NewRow();
-                    newRow.ItemArray = row.ItemArray;
-
-                    int currentIndent = (int)row["Level"];
-                    string sIndent = "";
-
-
-                    if (currentIndent >= 2)
-                    {
-                        for (int j = 0; j < currentIndent - 1; j++)
-                        {
-                            sIndent += "-";
-                            if (currentIndent > 2)
-                            {
-                                sIndent += "-";
-                            }
-                        }
-                    }
-
-                    if ((int)row["CategoryID"] != categoryId)
-                    {
-                        DataRow cRow = sorted.NewRow();
-                        // we add a category
-                        cRow["ForumID"] = -(int)row["CategoryID"];
-                        cRow["Title"] = string.Format(" {0}", row["CategoryName"]);
-                        categoryId = (int)row["CategoryID"];
-                        sorted.Rows.Add(cRow);
-
-                    }
-
-                    newRow["ForumID"] = row["ForumID"];
-                    newRow["Title"] = string.Format(" {0} {1}", sIndent, row["Title"]);
-                    sorted.Rows.Add(newRow);
-
-
-                }
-                return sorted;
-
+                return MySqlDbAccess.GetData(cmd, connectionString);
             }
         }
 		/// <summary>
@@ -2646,7 +2639,10 @@ namespace YAF.Classes.Data.MySqlDb
                 return Convert.ToInt32(MySqlDbAccess.ExecuteScalar(cmd,connectionString));
             }
         }
-
+        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
+        {
+            return forum_listall(connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
+        }
 		/// <summary>
 		/// Lists all forums accessible to a user
 		/// </summary>
@@ -2654,7 +2650,7 @@ namespace YAF.Classes.Data.MySqlDb
 		/// <param name="userID">ID of user</param>
 		/// <param name="startAt">startAt ID</param>
 		/// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(string connectionString, object boardId, object userID, object startAt)
+        static public DataTable forum_listall(string connectionString, object boardId, object userID, object startAt, bool returnAll)
 		{
 			using (var cmd = MySqlDbAccess.GetCommand( "forum_listall" ) )
 			{
@@ -2665,6 +2661,7 @@ namespace YAF.Classes.Data.MySqlDb
 				cmd.Parameters.Add( "i_BoardID", MySqlDbType.Int32 ).Value = boardId;
 				cmd.Parameters.Add( "i_UserID", MySqlDbType.Int32 ).Value = userID;
                 cmd.Parameters.Add( "i_Root", MySqlDbType.Int32 ).Value = startAt;
+                cmd.Parameters.Add("i_ReturnAll", MySqlDbType.Byte).Value = returnAll;
 				
                 return MySqlDbAccess.GetData(cmd,connectionString);
 			}
@@ -2672,7 +2669,7 @@ namespace YAF.Classes.Data.MySqlDb
 
         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, int startForumId)
         {
-            var allForums = ForumListAll(connectionString,boardId, userId,0);
+            var allForums = ForumListAll(connectionString, boardId, userId);
 
             var forumIds = new List<int>();
             var tempForumIds = new List<int>();
@@ -4686,6 +4683,7 @@ namespace YAF.Classes.Data.MySqlDb
                 cmd.Parameters.Add( "i_Minutes", MySqlDbType.Int32 ).Value = minutes;
                 cmd.Parameters.Add( "i_NntpForumID", MySqlDbType.Int32 ).Value = nntpForumID;
                 cmd.Parameters.Add( "i_Active", MySqlDbType.Byte ).Value = active;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 return MySqlDbAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedNntpForum(r));
             }
@@ -7984,6 +7982,30 @@ namespace YAF.Classes.Data.MySqlDb
 				return userforumaccess_sort_list(connectionString, MySqlDbAccess.GetData(cmd,connectionString), 0, 0, 0 );
 			}
 		}
+
+        static public DataTable user_accessmasksbyforum(string connectionString, object boardId, object userID)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("user_accessmasksbyforum"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        static public DataTable user_accessmasksbygroup(string connectionString, object boardId, object userID)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("user_accessmasksbygroup"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
 
 		//adds some convenience while editing group's access rights (indent forums)
         static private DataTable userforumaccess_sort_list(string connectionString, DataTable listSource, int parentID, int categoryID, int startingIndent)

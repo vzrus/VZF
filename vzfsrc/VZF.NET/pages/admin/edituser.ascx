@@ -8,7 +8,7 @@
 <%@ Register TagPrefix="uc1" TagName="AvatarEdit" Src="../../controls/EditUsersAvatar.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ResetPasswordEdit" Src="../../controls/EditUsersResetPass.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="KillEdit" Src="../../controls/EditUsersKill.ascx" %>
-<%@ Register TagPrefix="uc1" TagName="ForumAccess" Src="../../controls/ForumProfileAccess.ascx" %>
+
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <YAF:AdminMenu runat="server">
     <asp:Panel id="EditUserTabs" runat="server">
@@ -22,7 +22,7 @@
                  <li><a href="#View7"><YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="USER_REPUTATION" LocalizedPage="ADMIN_EDITUSER" /></a></li>
                  <li runat="server" id="View8Li" Visible="<%#!IsGuestUser%>"><a href='#<%# this.View8.ClientID %>'><YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="USER_SUSPEND" LocalizedPage="ADMIN_EDITUSER" /></a></li>
                  <li runat="server" id="View9Li" Visible="<%#!IsGuestUser%>"><a href='#<%# this.View9.ClientID %>'><YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="USER_KILL" LocalizedPage="ADMIN_EDITUSER" /></a></li>
-                 <li runat="server" id="View10Li" Visible="<%#!IsGuestUser%>"><a href='#<%# this.View10.ClientID %>'><YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="MODERATION" LocalizedPage="PROFILE" /></a></li>
+
                </ul>
                 <div id="View1">
                    <uc1:QuickEdit ID="QuickEditControl" runat="server" />
@@ -50,9 +50,6 @@
                 </div>
                 <div id="View9" runat="server" Visible="<%#!IsGuestUser%>">
                   <uc1:KillEdit runat="server" ID="KillEdit1" />
-                </div>
-               <div id="View10" runat="server" Visible="<%#!IsGuestUser%>">
-                  <uc1:ForumAccess runat="server" ID="ForumAccess1" />
                 </div>
              </asp:Panel>
     <asp:HiddenField runat="server" ID="hidLastTab" Value="0" />

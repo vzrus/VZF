@@ -16,6 +16,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System;
+
 namespace YAF.Utilities
 {
     #region Using
@@ -368,6 +371,7 @@ namespace YAF.Utilities
                     .FormatWith(YafForumInfo.ForumClientFileRoot, Config.JQueryAlias, remberMeId);
         }
 
+
         /// <summary>
         /// The Post to Facebook Js
         /// </summary>
@@ -694,6 +698,270 @@ namespace YAF.Utilities
             return
                 @"{3}(document).ready(function() {{{3}('{0}').YafModalDialog({{Dialog : '{1}',ImagePath : '{2}'}}); }});"
                     .FormatWith(openLink, dialogId, YafForumInfo.GetURLToResource("images/"), Config.JQueryAlias);
+        }
+
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Opens and closes dividers or things like this.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string ToggleDivider(string id)
+        {
+            return @"function toggle_visibility(id) {
+                              var e = document.getElementById(id);
+                              if(e.style.display == 'block')
+                              e.style.display = 'none';
+                              else
+                               e.style.display = 'block';};";
+        } 
+
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Gets Dynatree complete data as parsed JSON string. .
+        /// </summary>
+        /// <param name="treeId"></param>
+        /// <param name="echoActive"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string DynatreeGetNodesAllJS(string treeId, string echoActive, int userId, string jsonData)
+        {
+            // treeId = "tree";
+
+            return
+                String.Format(@"$(function() 
+                {{
+                $('#{0}').dynatree(
+                        {{
+                           title: 'Lazy Tree',                         
+                           fx: {{ height: 'toggle', duration: 200 }},
+                           children:[
+                                       {2}
+                                     ],
+                           minExpandLevel: 2,
+
+                           onActivate: function (dtnode) {{
+                                                            $('#{1}').text(dtnode.data.title);
+                                                           
+                                                         }} 
+                        }} );
+
+              }});", treeId, echoActive, jsonData);
+        }
+
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Gets Dynatree complete data as parsed JSON string. .
+        /// </summary>
+        /// <param name="treeId"></param>
+        /// <param name="echoActive"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string DynatreeGetNodesJumpAllJS(string treeId, int userId, string jsonData)
+        {
+            // treeId = "tree";
+
+            return
+                String.Format(@"$(function() 
+                {{
+                $('#{0}').dynatree(
+                        {{
+                           title: 'Lazy Tree',                         
+                           fx: {{ height: 'toggle', duration: 200 }},
+                           autoFocus: false,
+                           initAjax: {{
+                                       url: '{1}' 
+                                     }},
+                           minExpandLevel: 1,
+
+                           onActivate: function (dtnode) {{  
+                                                           if( node.data.href ){{window.open(node.data.href, dtnode.data.target);}}                                                      
+                                                           
+                                                         }} 
+                        }} );
+
+              }});", treeId, jsonData);
+        }
+
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Gets Dynatree complete data as parsed JSON string. .
+        /// </summary>
+        /// <param name="treeId"></param>
+        /// <param name="echoActive"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string DynatreeGetNodesJumpLazyJS(string treeId, int userId, int boardId, string arguments, string jsonData)
+        {
+            // treeId = "tree";
+
+            return
+                String.Format(@"$(function() 
+                {{
+                $('#{0}').dynatree(
+                        {{
+                           title: 'Lazy Tree',                         
+                           fx: {{ height: 'toggle', duration: 200 }},
+                           autoFocus: false,
+                            initAjax: {{
+                                       url: '{1}' + 's={2}' 
+                                     }},
+
+                           onActivate: function (dtnode) {{                                                          
+                                                            if( node.data.href ){{window.open(node.data.href, dtnode.data.target);}} 
+                                                         }},
+
+                           onLazyRead: function (dtnode) {{
+                                                          dtnode.appendAjax({{
+                           url: '{1}=' + dtnode.data.key + '{3}'                    }});
+                                                          }} 
+                        }} );
+
+              }});", treeId, jsonData, boardId, arguments);
+        }
+
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Gets Dynatree complete data as parsed JSON string. .
+        /// </summary>
+        /// <param name="treeId"></param>
+        /// <param name="echoActive"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string DynatreeSelectSingleNodeLazyJS(string treeId, int userId, int boardId, string echoActive, string activeNode, string arguments, string jsonData)
+        {
+            // treeId = "tree";
+
+            return
+                String.Format(@"$(function() 
+                {{
+                $('#{0}').dynatree(
+                        {{
+                           title: 'Lazy Tree',                         
+                           fx: {{ height: 'toggle', duration: 200 }},
+                           autoFocus: false,
+                           initAjax: {{
+                                       url: '{1}' + 's={2}{3}'  
+                                     }},
+
+                           onActivate: function (dtnode) {{
+                                                            $('#{4}').text(dtnode.data.title);                                                                                                                                      
+                                                            {5}.get('{1}=-100'+'&active=' + dtnode.data.key, function(data)
+{{
+
+                                                       
+                                                              }});
+                                                         }},
+ 
+
+                           onLazyRead: function (dtnode) {{
+                                                          dtnode.appendAjax({{
+                           url: '{1}=' + dtnode.data.key + '{3}'                    }});
+                                                          }} 
+                        }} );
+
+              }});", treeId, jsonData, boardId, arguments, echoActive,Config.JQueryAlias);
+
+    /*                                   onPostInit:
+ function (dtnode) {{ $('#{0}').loadKeyPath('{5}', function(dtnode, status){{
+        if(status == 'loaded') {{         
+          dtnode.expand();
+        }}else if(status == 'ok') {{          
+          dtnode.activate();
+        }}
+      }}); }}
+, */
+        }
+        public static  string ButtonShowForumInNNTPTree(string treeId, string btnId, string path)
+        {
+            return String.Format(
+                @"$(function() 
+                {{
+                   $('#{1}').click(function()
+                         {{ 
+                             var tree = $('#{0}').dynatree('getTree');
+                            tree.loadKeyPath('{2}', true, function(dtnode, path, isOk){{
+                          if(status == 'loaded') {{   dtnode.activate();  
+          dtnode.expand();
+        }}else if(status == 'ok') {{       
+          dtnode.activate();
+        }}else if(status == 'notfound') {{
+       alert(dtnode.data.key + ' is not found');
+
+    }}
+
+}});
+                         }}
+                                             );
+               }});", treeId,btnId,path);
+
+  
+        }
+        // Written by vzrus(Vladimir Zakharov).
+        /// <summary>
+        /// Gets Dynatree complete data as parsed JSON string. .
+        /// </summary>
+        /// <param name="treeId"></param>
+        /// <param name="echoActive"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static string DynatreeGetNodesAdminLazyJS(string treeId, int userId, int boardId, string echoActive, string arguments, string jsonData)
+        {
+            // treeId = "tree";
+
+            return
+                String.Format(@"$(function() 
+                {{
+                $('#{0}').dynatree(
+                        {{
+                           title: 'Lazy Tree',                         
+                           fx: {{ height: 'toggle', duration: 200 }},
+                           autoFocus: false,
+                           initAjax: {{
+                                       url: '{1}' + 's={2}' 
+                                     }},
+
+                           onActivate: function (dtnode) {{
+                                                            $('#{4}').text(dtnode.data.title);                                                           
+                                                         }},
+
+                           onLazyRead: function (dtnode) {{
+                                                          dtnode.appendAjax({{
+                           url: '{1}=' + dtnode.data.key + '{3}'                    }});
+                                                          }},
+    dnd: {{
+      onDragStart: function(dtnode) {{       
+          return true;
+      }},
+      onDragStop: function(dtnode) {{
+      }},
+      autoExpandMS: 1000,
+      preventVoidMoves: true, 
+      onDragEnter: function(dtnode, sourceNode) {{       
+        return true;
+      }},
+      onDragOver: function(dtnode, sourceNode, hitMode) {{       
+         if(dtnode.isDescendantOf(sourceNode)){{
+          return false;
+        }}      
+        if( !dtnode.data.isFolder && hitMode === 'over'){{
+          return 'after';
+        }}
+      }},
+      onDrop: function(dtnode, sourceNode, hitMode, ui, draggable) {{       
+         sourceNode.move(dtnode, hitMode);
+         
+            $.get('resource.ashx?tnm=' + dtnode.data.key + '!' + sourceNode.data.key);
+            alert( dtnode.data.key + ' source node - ' + sourceNode.data.key + ' -parent ' + dtnode.getParent().data.key+ ' -nextsibling ' + dtnode.getNextSibling().data.key);         
+       
+      }},
+      onDragLeave: function(dtnode, sourceNode) {{      
+      }}
+}}
+ 
+                        }} );
+
+              }});", treeId, jsonData, boardId, arguments, echoActive);
         }
 
         /// <summary>

@@ -18,6 +18,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Text;
+using VZF.Kernel;
+using YAF.Utilities;
+using YAF.Utils.Extensions;
+
 namespace YAF.Pages.Admin
 {
     #region Using
@@ -55,7 +62,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void DeleteCategory_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((ThemeButton)sender).Attributes["onclick"] =
+            ((ThemeButton) sender).Attributes["onclick"] =
                 "return confirm('{0}')".FormatWith(this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_CAT"));
         }
 
@@ -70,7 +77,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ((ThemeButton)sender).Attributes["onclick"] =
+            ((ThemeButton) sender).Attributes["onclick"] =
                 "return (confirm('{0}') && confirm('{1}'))".FormatWith(
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
@@ -158,7 +165,20 @@ namespace YAF.Pages.Admin
                 return;
             }
 
-            this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
+           
+           /* if (Config.LargeForumTree)
+            {
+                YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
+                YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                this.divactive.Visible = true;
+                YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
+                   JavaScriptBlocks.DynatreeGetNodesAdminLazyJS("tree",
+                   PageContext.PageUserID, PageContext.PageBoardID,"echoActive", "&v=2", "{0}resource.ashx?tjl".FormatWith(
+                   YafForumInfo.ForumClientFileRoot)));
+            } */
+          
+
+            PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
             this.PageLinks.AddLink(
                 this.GetText("ADMIN_ADMIN", "Administration"), YafBuildLink.GetLink(ForumPages.admin_admin));
             this.PageLinks.AddLink(this.GetText("TEAM", "FORUMS"), string.Empty);
@@ -179,7 +199,8 @@ namespace YAF.Pages.Admin
         {
             using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID))
             {
-                this.CategoryList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                this.CategoryList.DataSource = dd;
             }
 
             // Hide the New Forum Button if there are no Categories.

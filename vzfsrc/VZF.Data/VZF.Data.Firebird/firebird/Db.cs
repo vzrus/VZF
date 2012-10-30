@@ -670,7 +670,7 @@ namespace YAF.Classes.Data.FirebirdDb
         /// </returns>
         /// <exception cref="ApplicationException">
         /// </exception>
-        static public DataRow pageload(
+        public static DataRow pageload(
             string connectionString,
             object sessionID, 
             object boardID, 
@@ -756,7 +756,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="fid"></param>
 		/// <param name="UserID">ID of user</param>
 		/// <returns>Results</returns>
-        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
+        public static DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
 		{
 
             /*     if (toSearchWhat == "*")
@@ -1026,7 +1026,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardID">BoardID</param>
 		/// <returns>DataSet with categories</returns>
-        static public DataSet ds_forumadmin(string connectionString,
+        public static DataSet ds_forumadmin(string connectionString,
             [NotNull] object boardID)
 		{
             using (FbDbConnectionManager connMan = new FbDbConnectionManager(connectionString))
@@ -1074,7 +1074,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">ID of Board</param>
 		/// <param name="accessMaskID">ID of access mask</param>
 		/// <returns></returns>
-        static public DataTable accessmask_list(string connectionString, object boardID, object accessMaskID, object excludeFlags)
+        public static DataTable accessmask_list(string connectionString, object boardID, object accessMaskID, object excludeFlags)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "accessmask_list" ) )
 			{
@@ -1094,7 +1094,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="accessMaskID">ID of access mask</param>
 		/// <returns></returns>
-        static public bool accessmask_delete(string connectionString, object accessMaskID)
+        public static bool accessmask_delete(string connectionString, object accessMaskID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "accessmask_delete" ) )
 			{
@@ -1122,7 +1122,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="deleteAccess">Delete Access?</param>
 		/// <param name="uploadAccess">Upload Access?</param>
 		/// <param name="downloadAccess">Download Access?</param>
-        static public void accessmask_save(string connectionString, object accessMaskID, object boardID, object name, object readAccess, object postAccess, object replyAccess, object priorityAccess, object pollAccess, object voteAccess, object moderatorAccess, object editAccess, object deleteAccess, object uploadAccess, object downloadAccess, object sortOrder)
+        public static void accessmask_save(string connectionString, object accessMaskID, object boardID, object name, object readAccess, object postAccess, object replyAccess, object priorityAccess, object pollAccess, object voteAccess, object moderatorAccess, object editAccess, object deleteAccess, object uploadAccess, object downloadAccess, object sortOrder)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "accessmask_save" ) )
 			{
@@ -1169,7 +1169,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="Guests"></param>
 		/// <returns>Returns a DataTable of active users</returns>
 		///         
-        static public DataTable active_list(string connectionString, object boardID, object Guests, object showCrawlers, int interval, object styledNicks)
+        public static DataTable active_list(string connectionString, object boardID, object Guests, object showCrawlers, int interval, object styledNicks)
 		{
 		   if (Guests == null) { Guests = 0; }
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "active_list" ) )
@@ -1230,7 +1230,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="forumID">forumID</param>
 		/// <returns>DataTable of all ative users in a forum</returns>
-        static public DataTable active_listforum(string connectionString, object forumID, object styledNicks)
+        public static DataTable active_listforum(string connectionString, object forumID, object styledNicks)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "active_listforum" ) )
 			{
@@ -1245,7 +1245,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="topicID">ID of topic </param>
 		/// <returns>DataTable of all users that are in a topic</returns>
-        static public DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
+        public static DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "active_listtopic" ) )
 			{
@@ -1264,7 +1264,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardID">boardID</param>
 		/// <returns>DataRow of activity stata</returns>
-        static public DataRow active_stats(string connectionString, object boardID)
+        public static DataRow active_stats(string connectionString, object boardID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "active_stats" ) )
 			{
@@ -1311,7 +1311,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="bytes">number of bytes</param>
 		/// <param name="contentType">type of attchment</param>
 		/// <param name="stream">stream of bytes</param>
-        static public void attachment_save(string connectionString, object messageID, object fileName, object bytes, object contentType, System.IO.Stream stream)
+        public static void attachment_save(string connectionString, object messageID, object fileName, object bytes, object contentType, System.IO.Stream stream)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "attachment_save" ) )
 			{
@@ -1338,7 +1338,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Delete attachment
 		/// </summary>
 		/// <param name="attachmentID">ID of attachment to delete</param>
-        static public void attachment_delete(string connectionString, [NotNull] object attachmentID)
+        public static void attachment_delete(string connectionString, [NotNull] object attachmentID)
 		{
 			bool UseFileTable = GetBooleanRegistryValue(connectionString,"UseFileTable");
 
@@ -1394,7 +1394,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Attachement dowload
 		/// </summary>
 		/// <param name="attachmentID">ID of attachemnt to download</param>
-        static public void attachment_download(string connectionString, object attachmentID)
+        public static void attachment_download(string connectionString, object attachmentID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "attachment_download" ) )
 			{
@@ -1433,7 +1433,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="ID">ID</param>
 		/// <param name="boardID">BoardID</param>
 		/// <param name="Mask">Mask</param>
-        static public void bannedip_save(string connectionString, object ID, object boardID, object Mask, string reason, int userID)
+        public static void bannedip_save(string connectionString, object ID, object boardID, object Mask, string reason, int userID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "bannedip_save" ) )
 			{
@@ -1455,7 +1455,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Deletes Banned IP
 		/// </summary>
 		/// <param name="ID">ID of banned ip to delete</param>
-        static public void bannedip_delete(string connectionString, object ID)
+        public static void bannedip_delete(string connectionString, object ID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "bannedip_delete" ) )
 			{
@@ -1474,7 +1474,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardID">board id</param>
 		/// <returns>DataTable</returns>
-        static public DataTable board_list(string connectionString, object boardID)
+        public static DataTable board_list(string connectionString, object boardID)
 		{
 			String _systemInfo = String.Concat(" OS: ", Platform.VersionString,
 				 " - Runtime: ", Platform.RuntimeName, " ", Platform.RuntimeString,
@@ -1496,7 +1496,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardId">BoardID</param>
 		/// <returns>DataRow of Poststats</returns>
-        static public DataRow board_poststats(string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
+        public static DataRow board_poststats(string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "board_poststats" ) )
 			{
@@ -1561,7 +1561,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <summary>
 		/// Recalculates topic and post numbers and updates last post for all forums in all boards
 		/// </summary>
-        static public void board_resync(string connectionString)
+        public static void board_resync(string connectionString)
 		{
             board_resync(connectionString, null);
 		}
@@ -1570,7 +1570,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Recalculates topic and post numbers and updates last post for specified board
 		/// </summary>
 		/// <param name="boardID">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
-        static public void board_resync(string connectionString, object boardID)
+        public static void board_resync(string connectionString, object boardID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "board_resync" ) )
 			{
@@ -1585,11 +1585,11 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Gets statistica about number of posts etc.
 		/// </summary>
 		/// <returns>DataRow</returns>
-        static public DataRow board_stats(string connectionString)
+        public static DataRow board_stats(string connectionString)
 		{
 			return board_stats( connectionString,  null );
 		}
-        static public DataRow board_stats(string connectionString, object boardID)
+        public static DataRow board_stats(string connectionString, object boardID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "board_stats" ) )
 			{
@@ -1606,7 +1606,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">BoardID</param>
 		/// <param name="name">Name of Board</param>
 		/// <param name="allowThreaded">Boolen value, allowThreaded</param>
-        static public int board_save(string connectionString, object boardID, object languageFile, object culture, object name, object allowThreaded)
+        public static int board_save(string connectionString, object boardID, object languageFile, object culture, object name, object allowThreaded)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "BOARD_SAVE" ) )
 			{
@@ -1657,7 +1657,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Deletes a board
 		/// </summary>
 		/// <param name="boardID">ID of board to delete</param>
-        static public void board_delete(string connectionString, object boardID)
+        public static void board_delete(string connectionString, object boardID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "board_delete" ) )
 			{
@@ -1676,7 +1676,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="CategoryID">ID of category to delete</param>
 		/// <returns>Bool value indicationg if category was deleted</returns>
-        static public bool category_delete(string connectionString, object CategoryID)
+        public static bool category_delete(string connectionString, object CategoryID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "category_delete" ) )
 			{
@@ -1694,7 +1694,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">boardID</param>
 		/// <param name="categoryID">categotyID</param>
 		/// <returns>DataTable with a list of forums in a category</returns>
-        static public DataTable category_list(string connectionString, object boardID, object categoryID)
+        public static DataTable category_list(string connectionString, object boardID, object categoryID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "category_list" ) )
 			{
@@ -1715,7 +1715,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="userID"></param>
 		/// <param name="categoryID"></param>
 		/// <returns></returns>
-        static public DataTable category_listread(string connectionString, object boardID, object userID, object categoryID)
+        public static DataTable category_listread(string connectionString, object boardID, object userID, object categoryID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "category_listread" ) )
 			{
@@ -1740,7 +1740,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable category_simplelist(string connectionString, int startID, int limit)
+        public static DataTable category_simplelist(string connectionString, int startID, int limit)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "category_simplelist" ) )
 			{
@@ -1759,7 +1759,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="CategoryID">CategoryID so save changes to</param>
 		/// <param name="Name">Name of the category</param>
 		/// <param name="SortOrder">Sort Order</param>
-        static public void category_save(string connectionString, object boardID, object categoryId, object name, object categoryImage, object sortOrder)
+        public static void category_save(string connectionString, object boardID, object categoryId, object name, object categoryImage, object sortOrder)
 		{
 
 			int sortOrderChecked = 0;
@@ -1787,7 +1787,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="UserID">ID of user to verify</param>
 		/// <param name="Hash">Hash of user</param>
 		/// <param name="Email">email of user</param>
-        static public void checkemail_save(string connectionString, object userID, object hash, object email)
+        public static void checkemail_save(string connectionString, object userID, object hash, object email)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "checkemail_save" ) )
 			{
@@ -1807,7 +1807,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="hash">New hash</param>
 		/// <returns>DataTable with user information</returns>
-        static public DataTable checkemail_update(string connectionString, object hash)
+        public static DataTable checkemail_update(string connectionString, object hash)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "checkemail_update" ) )
 			{
@@ -1824,7 +1824,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="email">Associated email</param>
 		/// <returns>DataTable with check email information</returns>
-        static public DataTable checkemail_list(string connectionString, object email)
+        public static DataTable checkemail_list(string connectionString, object email)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "checkemail_list" ) )
 			{
@@ -1843,7 +1843,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Saves a vote in the database
 		/// </summary>
 		/// <param name="choiceID">Choice of the vote</param>
-        static public void choice_vote(string connectionString, object choiceID, object userID, object remoteIP)
+        public static void choice_vote(string connectionString, object choiceID, object userID, object remoteIP)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "choice_vote" ) )
 			{
@@ -1865,7 +1865,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 		
 		#region yaf_EventLog
-        static public void eventlog_create(string connectionString, object userID, object source, object description, object type)
+        public static void eventlog_create(string connectionString, object userID, object source, object description, object type)
 		{
 			try
 			{
@@ -1892,7 +1892,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 
-        static public void eventlog_create(string connectionString, object userID, object source, object description)
+        public static void eventlog_create(string connectionString, object userID, object source, object description)
 		{
             eventlog_create(connectionString, userID, (object)source.GetType().ToString(), description, (object)0);
 		}
@@ -1901,7 +1901,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Deletes all event log entries for given board.
 		/// </summary>
 		/// <param name="boardID">ID of board.</param>
-        static public void eventlog_delete(string connectionString, int boardID, int pageUserId)
+        public static void eventlog_delete(string connectionString, int boardID, int pageUserId)
 		{
             eventlog_delete(connectionString,null, boardID, pageUserId);
 		}
@@ -1909,7 +1909,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Deletes event log entry of given ID.
 		/// </summary>
 		/// <param name="eventLogID">ID of event log entry.</param>
-        static public void eventlog_delete(string connectionString, object eventLogID, int pageUserId)
+        public static void eventlog_delete(string connectionString, object eventLogID, int pageUserId)
 		{
             eventlog_delete(connectionString,eventLogID, null, pageUserId);
 		}
@@ -1918,7 +1918,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="eventLogID">When not null, only given event log entry is deleted.</param>
 		/// <param name="boardID">Specifies board. It is ignored if eventLogID parameter is not null.</param>
-        static public void eventlog_delete(string connectionString, object eventLogID, object boardID, object pageUserId)
+        public static void eventlog_delete(string connectionString, object eventLogID, object boardID, object pageUserId)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "eventlog_delete" ) )
 			{
@@ -2071,7 +2071,7 @@ namespace YAF.Classes.Data.FirebirdDb
 	   
 		#region yaf_Extensions
 
-        static public void extension_delete(string connectionString, object extensionId)
+        public static void extension_delete(string connectionString, object extensionId)
 		{
 			try
 			{
@@ -2092,7 +2092,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// Get Extension record by extensionId
-        static public DataTable extension_edit(string connectionString, object extensionId)
+        public static DataTable extension_edit(string connectionString, object extensionId)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "extension_edit" ) )
 			{
@@ -2107,7 +2107,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// Used to validate a file before uploading
-        static public DataTable extension_list(string connectionString, object boardID, object extension)
+        public static DataTable extension_list(string connectionString, object boardID, object extension)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "extension_list" ) )
 			{
@@ -2125,7 +2125,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// Returns an extension list for a given Board
-        static public DataTable extension_list(string connectionString, object boardID)
+        public static DataTable extension_list(string connectionString, object boardID)
 		{
 			using ( FbCommand cmd = FbDbAccess.GetCommand( "extension_list" ) )
 			{
@@ -2145,7 +2145,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// Saves / creates extension
-        static public void extension_save(string connectionString, object extensionId, object boardID, object extension)
+        public static void extension_save(string connectionString, object extensionId, object boardID, object extension)
 		{
 			try
 			{
@@ -2178,7 +2178,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Checks for a vote in the database
 		/// </summary>
 		/// <param name="choiceID">Choice of the vote</param>
-        static public DataTable pollvote_check(string connectionString,
+        public static DataTable pollvote_check(string connectionString,
             object pollid, 
             object userid, 
             object remoteip )
@@ -2226,9 +2226,9 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		#region yaf_Forum
 
-        static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        public static DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_ns_getchildren_anyuser"))
+            using (var cmd = FbDbAccess.GetCommand("forum_ns_getchildren_anyuser"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2275,65 +2275,94 @@ namespace YAF.Classes.Data.FirebirdDb
                     sorted.Rows.Add(newRow);
                 }
                 return sorted;
+
             }
         }
 
-        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        public static DataTable forum_ns_getchildren(string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
+            using (var cmd = FbDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("i_boardid", FbDbType.Integer)).Value = boardid;
                 cmd.Parameters.Add(new FbParameter("i_categoryid", FbDbType.Integer)).Value = categoryid;
                 cmd.Parameters.Add(new FbParameter("i_forumid", FbDbType.Integer)).Value = forumid;
-                cmd.Parameters.Add(new FbParameter("i_userid", FbDbType.Integer)).Value = userid;
+                cmd.Parameters.Add(new FbParameter("i_notincluded", FbDbType.Boolean)).Value = notincluded;
+                cmd.Parameters.Add(new FbParameter("i_immediateonly", FbDbType.Boolean)).Value = immediateonly;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable forum_ns_getchildren_activeuser(string connectionString, int? boardid, int? categoryid, int? forumid, int? userId, bool notincluded, bool immediateonly, string indentchars)
+        {
+            using (var cmd = FbDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("i_boardid", FbDbType.Integer)).Value = boardid;
+                cmd.Parameters.Add(new FbParameter("i_categoryid", FbDbType.Integer)).Value = categoryid;
+                cmd.Parameters.Add(new FbParameter("i_forumid", FbDbType.Integer)).Value = forumid;
+                cmd.Parameters.Add(new FbParameter("i_userid", FbDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new FbParameter("i_notincluded", FbDbType.Boolean)).Value = notincluded;
                 cmd.Parameters.Add(new FbParameter("i_immediateonly", FbDbType.Boolean)).Value = immediateonly;
 
                 DataTable dt = FbDbAccess.GetData(cmd, connectionString);
                 DataTable sorted = dt.Clone();
-                int categoryId = 0;
+                bool forumRow = false;
                 foreach (DataRow row in dt.Rows)
                 {
                     DataRow newRow = sorted.NewRow();
                     newRow.ItemArray = row.ItemArray;
+                    newRow = row;
 
                     int currentIndent = (int)row["Level"];
                     string sIndent = "";
 
-
-                    if (currentIndent >= 2)
+                    for (int j = 0; j < currentIndent; j++)
+                        sIndent += "--";
+                    if (currentIndent == 1 && !forumRow)
                     {
-                        for (int j = 0; j < currentIndent - 1; j++)
-                        {
-                            sIndent += "-";
-                            if (currentIndent > 2)
-                            {
-                                sIndent += "-";
-                            }
-                        }
+                        newRow["ForumID"] = currentIndent;
+                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["CategoryName"]);
+                        forumRow = true;
+                    }
+                    else
+                    {
+                        newRow["ForumID"] = currentIndent;
+                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Title"]);
+                        forumRow = false;
                     }
 
-                    if ((int)row["CategoryID"] != categoryId)
-                    {
-                        DataRow cRow = sorted.NewRow();
-                        // we add a category
-                        cRow["ForumID"] = -(int)row["CategoryID"];
-                        cRow["Title"] = string.Format(" {0}", row["CategoryName"]);
-                        categoryId = (int)row["CategoryID"];
-                        sorted.Rows.Add(cRow);
 
-                    }
+                    // import the row into the destination
 
-                    newRow["ForumID"] = row["ForumID"];
-                    newRow["Title"] = string.Format(" {0} {1}", sIndent, row["Title"]);
+
+
+
                     sorted.Rows.Add(newRow);
-
-
                 }
                 return sorted;
 
+            }
+        }
+        /// <summary>
+        /// List of categories accessible for an active user
+        /// </summary>
+        /// <param name="boardId">The board id.</param>
+        /// <param name="userId">The user Id.</param>
+        /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
+        public static DataTable forum_categoryaccess_activeuser(string connectionString, object boardID, object userID)
+        {
+            using (FbCommand cmd = FbDbAccess.GetCommand("forum_cataccess_activeuser"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+
+                return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 		//ABOT NEW 16.04.04
@@ -2368,7 +2397,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="ForumID">forum to delete</param>
 		/// <returns>bool to indicate that forum has been deleted</returns>
-        static public bool forum_delete(string connectionString, object forumID)
+        public static bool forum_delete(string connectionString, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_listSubForums"))
 			{
@@ -2399,7 +2428,7 @@ namespace YAF.Classes.Data.FirebirdDb
         /// </summary>
         /// <param name="ForumID">forum to delete</param>
         /// <returns>bool to indicate that forum has been deleted</returns>
-        static public bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
+        public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
             using (FbCommand cmd = FbDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -2429,7 +2458,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">board if of moderators</param>
 		/// <param name="userID">user id</param>
 		/// <returns>DataTable of moderated forums</returns>
-        static public DataTable forum_listallMyModerated(string connectionString, object boardID, object userID)
+        public static DataTable forum_listallMyModerated(string connectionString, object boardID, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_listallmymoderated"))
 			{
@@ -2448,7 +2477,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">boardID</param>
 		/// <param name="ForumID">forumID</param>
 		/// <returns>DataTable with list of topics from a forum</returns>
-        static public DataTable forum_list(string connectionString, object boardID, object forumID)
+        public static DataTable forum_list(string connectionString, object boardID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_list"))
 			{
@@ -2472,9 +2501,9 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">BoardID</param>
 		/// <param name="userID">ID of user</param>
 		/// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(string connectionString, object boardID, object userID)
+        public static DataTable forum_listall(string connectionString, object boardID, object userID)
 		{
-            return forum_listall(connectionString, boardID, userID, 0);
+            return forum_listall(connectionString, boardID, userID, 0,false);
 		}
 
 		/// <summary>
@@ -2484,29 +2513,24 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="userID">ID of user</param>
 		/// <param name="startAt">startAt ID</param>
 		/// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(string connectionString, object boardID, object userID, object startAt)
+        public static DataTable forum_listall(string connectionString, object boardID, object userID, object startAt, bool returnAll)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_listall"))
 			{
 				if (startAt == null) { startAt = 0; }
 				cmd.CommandType = CommandType.StoredProcedure;
 
-				cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-				cmd.Parameters[0].Value = boardID;
-
-				cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-				cmd.Parameters[1].Value = userID;
-
-				cmd.Parameters.Add(new FbParameter("@I_ROOT", FbDbType.Integer));
-				cmd.Parameters[2].Value = startAt;
-
+				cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new FbParameter("@I_ROOT", FbDbType.Integer)).Value = startAt;
+                cmd.Parameters.Add(new FbParameter("@I_RETURNALL", FbDbType.Integer)).Value = returnAll;
 			   
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
     {
-        return forum_listall(connectionString, boardId, userId, 0).AsEnumerable().Select(r => new TypedForumListAll(r));
+        return forum_listall(connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
     }
          [NotNull]
         public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
@@ -2550,7 +2574,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-         static public DataTable forum_simplelist(string connectionString, int StartID, int Limit)
+         public static DataTable forum_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_simplelist"))
 			{
@@ -2571,7 +2595,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="CategoryID">CategoryID</param>
 		/// <param name="EmptyFirstRow">EmptyFirstRow</param>
 		/// <returns>DataTable with list</returns>
-         static public DataTable forum_listall_fromCat(string connectionString, object boardID, object categoryID, bool emptyFirstRow)
+         public static DataTable forum_listall_fromCat(string connectionString, object boardID, object categoryID, bool emptyFirstRow)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_listall_fromCat"))
 			{
@@ -2598,7 +2622,7 @@ namespace YAF.Classes.Data.FirebirdDb
          /// </summary>
          /// <param name="forumID"></param>
          /// <returns></returns>
-         static public DataTable forum_listpath(string connectionString, object forumID)
+         public static DataTable forum_listpath(string connectionString, object forumID)
          {
              if (!Config.LargeForumTree)
              {
@@ -2631,7 +2655,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="CategoryID">CategoryID</param>
 		/// <param name="parentID">ParentID</param>
 		/// <returns>DataTable with list</returns> 
-         static public DataTable forum_listread(
+         public static DataTable forum_listread(
              string connectionString,
             [NotNull] object boardID, 
             [NotNull] object userID, 
@@ -2733,7 +2757,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">BoardID</param>
 		/// <param name="userID">UserID</param>
 		/// <returns>DataSet with categories</returns>
-         static public DataSet forum_moderatelist(string connectionString, object userID, object boardID)
+         public static DataSet forum_moderatelist(string connectionString, object userID, object boardID)
 		{
             using (var connMan = new FbDbConnectionManager(connectionString))
 			{
@@ -2810,7 +2834,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-         static public DataTable forum_moderators(string connectionString, object styledNicks)
+         public static DataTable forum_moderators(string connectionString, object styledNicks)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_moderators"))
 			{
@@ -2844,7 +2868,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardID">BoardID</param>
 		/// <param name="forumID">If null, all forums in board are updated</param>
-         static public void forum_resync(string connectionString, object boardID, object forumID)
+         public static void forum_resync(string connectionString, object boardID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forum_resync"))
 			{
@@ -2861,7 +2885,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-         static public long forum_save(string connectionString,
+         public static long forum_save(string connectionString,
             [NotNull] object forumID, 
             [NotNull] object categoryID, 
             [NotNull] object parentID, 
@@ -2983,20 +3007,11 @@ namespace YAF.Classes.Data.FirebirdDb
 
 			return listDestination;
 		}
+ 
 
-         static public DataTable forum_listall_sorted(string connectionString, object boardID, object userID)
+         public static DataTable forum_listall_sorted(string connectionString, object boardID, object userID, int[] forumidExclusions, bool emptyFirstRow, int startAt)
 		{
-			return forum_listall_sorted(connectionString,boardID, userID, null, false, 0);
-		}
-
-         static public DataTable forum_listall_sorted(string connectionString, object boardID, object userID, int[] forumidExclusions)
-		{
-            return forum_listall_sorted(connectionString, boardID, userID, null, false, 0);
-		}
-
-         static public DataTable forum_listall_sorted(string connectionString, object boardID, object userID, int[] forumidExclusions, bool emptyFirstRow, int startAt)
-		{
-            using (DataTable dataTable = forum_listall(connectionString, boardID, userID, startAt))
+            using (DataTable dataTable = forum_listall(connectionString, boardID, userID, startAt,false))
 			{
 				int baseForumId = 0;
 				int baseCategoryId = 0;
@@ -3086,7 +3101,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_ForumAccess
-         static public DataTable forumaccess_list(string connectionString, object forumID)
+         public static DataTable forumaccess_list(string connectionString, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_list"))
 			{
@@ -3098,7 +3113,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-         static public void forumaccess_save(string connectionString, object forumID, object groupID, object accessMaskID)
+         public static void forumaccess_save(string connectionString, object forumID, object groupID, object accessMaskID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_save"))
 			{
@@ -3111,7 +3126,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-         static public DataTable forumaccess_group(string connectionString, object groupID)
+         public static DataTable forumaccess_group(string connectionString, object groupID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_group"))
 			{
@@ -3125,7 +3140,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_Group
-         static public DataTable group_list(string connectionString,
+         public static DataTable group_list(string connectionString,
             [NotNull] object boardID, 
             [NotNull] object groupID)
 		{
@@ -3139,7 +3154,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-         static public void group_delete(string connectionString, object groupID)
+         public static void group_delete(string connectionString, object groupID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("group_delete"))
 			{
@@ -3150,7 +3165,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-         static public DataTable group_member(string connectionString, object boardID, object userID)
+         public static DataTable group_member(string connectionString, object boardID, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("group_member"))
 			{
@@ -3162,7 +3177,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-         static public long group_save(string connectionString,
+         public static long group_save(string connectionString,
             [NotNull] object groupID, 
             [NotNull] object boardID, 
             [NotNull] object name, 
@@ -3213,7 +3228,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_Mail
-         static public void mail_delete(string connectionString, object mailID)
+         public static void mail_delete(string connectionString, object mailID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("mail_delete"))
 			{
@@ -3244,7 +3259,7 @@ namespace YAF.Classes.Data.FirebirdDb
         return FbDbAccess.GetData(cmd,connectionString).SelectTypedList(x => new TypedMailList(x));
       }
     }
-         static public void mail_createwatch(string connectionString, object topicID, object from, object fromName, object subject, object body, object bodyHtml, object userID)
+         public static void mail_createwatch(string connectionString, object topicID, object from, object fromName, object subject, object body, object bodyHtml, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("mail_createwatch"))
 			{
@@ -3265,7 +3280,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-         static public void mail_create(string connectionString,
+         public static void mail_create(string connectionString,
             [NotNull] object from, 
             [NotNull] object fromName, 
             [NotNull] object to, 
@@ -3347,7 +3362,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				
 			}
 		}
-         static public DataTable post_list_reverse10(string connectionString, object topicID)
+         public static DataTable post_list_reverse10(string connectionString, object topicID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("post_list_reverse10"))
 			{
@@ -3368,7 +3383,7 @@ namespace YAF.Classes.Data.FirebirdDb
             return post_alluser(connectionString, boardID, userID, pageUserID, 10);
 		}
 
-        static public DataTable post_alluser(string connectionString,
+        public static DataTable post_alluser(string connectionString,
             object boardID, 
             object userID, 
             object pageUserID, 
@@ -3388,7 +3403,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// gets list of replies to message
-        static public DataTable message_getRepliesList(string connectionString, object messageID)
+        public static DataTable message_getRepliesList(string connectionString, object messageID)
 		{
 			DataTable list = new DataTable();
 
@@ -3460,7 +3475,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		//creates new topic, using some parameters from message itself
-        static public long topic_create_by_message(string connectionString,
+        public static long topic_create_by_message(string connectionString,
             object messageId, 
             object forumId, 
             object newTopicSubj)
@@ -3479,7 +3494,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
         [Obsolete("Use MessageList(int messageId) instead")]
-        static public DataTable message_list(string connectionString, object messageID)
+        public static DataTable message_list(string connectionString, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_list"))
 			{
@@ -3511,17 +3526,17 @@ namespace YAF.Classes.Data.FirebirdDb
       }
     }
 
-        static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
+        public static void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
 		{
 			message_delete(connectionString,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
 		}
-        static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool eraseMessage)
+        public static void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool eraseMessage)
 		{
             message_deleteRecursively(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false, eraseMessage);
 		}
 
 		// <summary> Retrieve all reported messages with the correct forumID argument. </summary>
-        static public DataTable message_listreported(string connectionString, object forumID)
+        public static DataTable message_listreported(string connectionString, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_listreported"))
 			{
@@ -3537,12 +3552,12 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>       
 		/// <param name="MessageID">Should not be NULL</param>
 		/// <returns>Returns reporters DataTable for a reported message.</returns>
-        static public DataTable message_listreporters(string connectionString, int messageID)
+        public static DataTable message_listreporters(string connectionString, int messageID)
 		{
 
             return message_listreporters(connectionString, messageID, null);            
 		}
-        static public DataTable message_listreporters(string connectionString, int messageID, object userID)
+        public static DataTable message_listreporters(string connectionString, int messageID, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_LISTREPORTERS"))
 			{
@@ -3553,7 +3568,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 		// <summary> Save reported message back to the database. </summary>
-        static public void message_report(string connectionString,
+        public static void message_report(string connectionString,
             [NotNull] object messageID, 
             [NotNull] object userID, 
             [NotNull] object reportedDateTime, 
@@ -3574,7 +3589,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// <summary> Copy current Message text over reported Message text. </summary>
-        static public void message_reportcopyover(string connectionString, object messageID)
+        public static void message_reportcopyover(string connectionString, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_reportcopyover"))
 			{
@@ -3587,7 +3602,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// <summary> Copy current Message text over reported Message text. </summary>
-        static public void message_reportresolve(string connectionString,
+        public static void message_reportresolve(string connectionString,
             [NotNull] object messageFlag, 
             [NotNull] object messageID, 
             [NotNull] object userID)
@@ -3733,7 +3748,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// <summary> Set flag on message to approved and store in DB </summary>
-        static public void message_approve(string connectionString, object messageID)
+        public static void message_approve(string connectionString, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_approve"))
 			{
@@ -3750,7 +3765,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable message_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable message_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_simplelist"))
 			{
@@ -3768,7 +3783,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 
-        static public void message_update(
+        public static void message_update(
             string connectionString,
             [NotNull] object messageID, 
             [NotNull] object priority, 
@@ -3809,7 +3824,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 		// <summary> Save message to DB. </summary>
-        static public bool message_save(
+        public static bool message_save(
             string connectionString,
             [NotNull] object topicID, 
             [NotNull] object userID, 
@@ -3852,7 +3867,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return true;
 			}
 		}
-        static public DataTable message_unapproved(string connectionString, object forumID)
+        public static DataTable message_unapproved(string connectionString, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_unapproved"))
 			{
@@ -3863,7 +3878,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable message_findunread(
+        public static DataTable message_findunread(
             string connectionString,
             [NotNull] object topicID, 
             [NotNull] object messageId, 
@@ -3886,7 +3901,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// message movind function
-        static public void message_move(
+        public static void message_move(
             string connectionString,
             [NotNull] object messageID, 
             [NotNull] object moveToTopic, 
@@ -3956,7 +3971,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		// <summary> Checks if the message with the provided messageID is thanked 
 		//           by the user with the provided UserID. if so, returns true,
 		//           otherwise returns false. </summary>
-        static public bool message_isThankedByUser(string connectionString, object userID, object messageID)
+        public static bool message_isThankedByUser(string connectionString, object userID, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_isthankedbyuser"))
 			{
@@ -3973,7 +3988,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		// <summary> Return the number of times the message with the provided messageID
 		//           has been thanked. </summary>
-        static public int message_ThanksNumber(string connectionString, object messageID)
+        public static int message_ThanksNumber(string connectionString, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_thanksnumber"))
 			{
@@ -3989,7 +4004,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		// <summary> Returns the UserIDs and UserNames who have thanked the message
 		//           with the provided messageID. </summary>
-        static public DataTable message_GetThanks(string connectionString, object messageID)
+        public static DataTable message_GetThanks(string connectionString, object messageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_GETTHANKS"))
 			{
@@ -4021,7 +4036,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// delimited string variable MessageIDs 
         ///</summary>
         [Obsolete("Use MessageGetAllThanks(string messageIdsSeparatedWithColon) instead")]
-        static public DataTable message_GetAllThanks(string connectionString, object MessageIDs)
+        public static DataTable message_GetAllThanks(string connectionString, object MessageIDs)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("message_getallthanks"))
 			{
@@ -4051,7 +4066,7 @@ namespace YAF.Classes.Data.FirebirdDb
       }
     }
 
-        static public string message_AddThanks(string connectionString, object FromUserID, object MessageID, bool useDisplayName)
+        public static string message_AddThanks(string connectionString, object FromUserID, object MessageID, bool useDisplayName)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_ADDTHANKS"))
 			{
@@ -4065,7 +4080,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public string message_RemoveThanks(string connectionString, object FromUserID, object MessageID, bool useDisplayName)
+        public static string message_RemoveThanks(string connectionString, object FromUserID, object MessageID, bool useDisplayName)
 		{
 			using (var cmd = FbDbAccess.GetCommand("MESSAGE_REMOVETHANKS"))
 			{
@@ -4133,7 +4148,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Lists given medal.
 		/// </summary>
 		/// <param name="medalID">ID of medal to list.</param>
-        static public DataTable medal_list(string connectionString, object medalID)
+        public static DataTable medal_list(string connectionString, object medalID)
 		{
 			return medal_list(connectionString,null, medalID, null);
 		}
@@ -4142,7 +4157,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="boardID">ID of board of which medals to list. Required.</param>
 		/// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-        static public DataTable medal_list(string connectionString, object boardID, object category)
+        public static DataTable medal_list(string connectionString, object boardID, object category)
 		{
             return medal_list(connectionString, boardID, null, category);
 		}
@@ -4152,7 +4167,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">ID of board of which medals to list. Can be null if medalID parameter is specified.</param>
 		/// <param name="medalID">ID of medal to list. When specified, boardID and category parameters are ignored.</param>
 		/// <param name="category">Cateogry of medals to list. Must be complemented with not-null boardID parameter.</param>
-        static public DataTable medal_list(string connectionString, object boardID, object medalID, object category)
+        public static DataTable medal_list(string connectionString, object boardID, object medalID, object category)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("medal_list"))
 			{
@@ -4172,7 +4187,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="medalID">Medal of which owners to get.</param>
 		/// <returns>List of users with their user id and usernames, who own this medal.</returns>
-        static public DataTable medal_listusers(string connectionString,
+        public static DataTable medal_listusers(string connectionString,
             object medalID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("medal_listusers"))
@@ -4202,7 +4217,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">ID of board of which medals to delete. Can be null if medalID parameter is specified.</param>
 		/// <param name="medalID">ID of medal to delete. When specified, boardID and category parameters are ignored.</param>
 		/// <param name="category">Cateogry of medals to delete. Must be complemented with not-null boardID parameter.</param>
-        static public void medal_delete(string connectionString, object boardID, object medalID, object category)
+        public static void medal_delete(string connectionString, object boardID, object medalID, object category)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("medal_delete"))
 			{
@@ -4237,7 +4252,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="sortOrder">Default order of medal as it will be displayed in user box.</paramHeight
 		/// <param name="flags">Medal's flags.</param>
 		/// <returns>True if medal was successfully created or updated. False otherwise.</returns>
-        static public bool medal_save(string connectionString,
+        public static bool medal_save(string connectionString,
             [NotNull] object boardID, 
             [NotNull] object medalID, 
             [NotNull] object name, 
@@ -4305,7 +4320,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="boardID">ID of board.</param>
 		/// <param name="medalID">ID of medal to re-sort.</param>
 		/// <param name="move">Change of sort.</param>
-        static public void medal_resort(string connectionString, object boardID, object medalID, int move)
+        public static void medal_resort(string connectionString, object boardID, object medalID, int move)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("medal_resort"))
 			{
@@ -4325,7 +4340,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="groupID">ID of group owning medal.</param>
 		/// <param name="medalID">ID of medal.</param>
-        static public void group_medal_delete(string connectionString, object groupID, object medalID)
+        public static void group_medal_delete(string connectionString, object groupID, object medalID)
 		{
 			using (var cmd = FbDbAccess.GetCommand("group_medal_delete"))
 			{
@@ -4344,7 +4359,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="groupID">ID of group of which to list medals.</param>
 		/// <param name="medalID">ID of medal to list.</param>
-        static public DataTable group_medal_list(string connectionString,
+        public static DataTable group_medal_list(string connectionString,
             [NotNull] object groupID, 
             [NotNull] object medalID)
 		{
@@ -4372,7 +4387,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="hide">Hide medal in user box.</param>
 		/// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
 		/// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
-        static public void group_medal_save(string connectionString,
+        public static void group_medal_save(string connectionString,
             [NotNull] object groupID, 
             [NotNull] object medalID, 
             [NotNull] object message, 
@@ -4411,7 +4426,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="userID">ID of user owning medal.</param>
 		/// <param name="medalID">ID of medal.</param>
-        static public void user_medal_delete(string connectionString, object userID, object medalID)
+        public static void user_medal_delete(string connectionString, object userID, object medalID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_medal_delete"))
 			{
@@ -4431,7 +4446,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="userID">ID of user who was given medal.</param>
 		/// <param name="medalID">ID of medal to list.</param>
-        static public DataTable user_medal_list(string connectionString, object userID, object medalID)
+        public static DataTable user_medal_list(string connectionString, object userID, object medalID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_medal_list"))
 			{
@@ -4457,7 +4472,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
 		/// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
 		/// <param name="dateAwarded">Date when medal was awarded to a user. Is ignored when existing user-medal allocation is edited.</param>
-        static public void user_medal_save(string connectionString,
+        public static void user_medal_save(string connectionString,
 			object userID, object medalID, object message,
 			object hide, object onlyRibbon, object sortOrder, object dateAwarded)
 		{
@@ -4488,7 +4503,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="userID">ID of user.</param>
 		/// <returns>List of medals, ribbon bar only first.</returns>
-        static public DataTable user_listmedals(string connectionString,
+        public static DataTable user_listmedals(string connectionString,
             [NotNull]object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_listmedals"))
@@ -4504,7 +4519,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion        
 
 		#region yaf_NntpForum
-        static public DataTable nntpforum_list(string connectionString, object boardID, object minutes, object nntpForumID, object active)
+        public static DataTable nntpforum_list(string connectionString, object boardID, object minutes, object nntpForumID, object active)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_list"))
 			{
@@ -4536,11 +4551,12 @@ namespace YAF.Classes.Data.FirebirdDb
                 cmd.Parameters.Add(new FbParameter("@I_MINUTES", FbDbType.Integer)).Value = minutes;
                 cmd.Parameters.Add(new FbParameter("@I_NNTPFORUMID", FbDbType.Integer)).Value = nntpForumID;
                 cmd.Parameters.Add(new FbParameter("@I_ACTIVE", FbDbType.Boolean)).Value = active;
+                cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
                 return FbDbAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedNntpForum(r));
             }
         }
-        static public void nntpforum_update(string connectionString,
+        public static void nntpforum_update(string connectionString,
             [NotNull] object nntpForumID, 
             [NotNull] object lastMessageNo, 
             [NotNull] object userID)
@@ -4557,7 +4573,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpforum_save(string connectionString,
+        public static void nntpforum_save(string connectionString,
             [NotNull] object nntpForumID, 
             [NotNull] object nntpServerID, 
             [NotNull] object groupName, 
@@ -4583,7 +4599,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpforum_delete(string connectionString, object nntpForumID)
+        public static void nntpforum_delete(string connectionString, object nntpForumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_delete"))
 			{
@@ -4596,7 +4612,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 	   
 		#region yaf_NntpServer
-        static public DataTable nntpserver_list(string connectionString,
+        public static DataTable nntpserver_list(string connectionString,
             object boardID, 
             object nntpServerID)
 		{
@@ -4613,7 +4629,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void nntpserver_save(string connectionString,
+        public static void nntpserver_save(string connectionString,
             [NotNull] object nntpServerID, 
             [NotNull] object boardID, 
             [NotNull] object name, 
@@ -4641,7 +4657,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpserver_delete(string connectionString, object nntpServerID)
+        public static void nntpserver_delete(string connectionString, object nntpServerID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("nntpserver_delete"))
 			{
@@ -4655,7 +4671,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion        
 
 		#region yaf_NntpTopic
-        static public DataTable nntptopic_list(string connectionString,
+        public static DataTable nntptopic_list(string connectionString,
             object thread)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("nntptopic_list"))
@@ -4669,7 +4685,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void nntptopic_savemessage(string connectionString,
+        public static void nntptopic_savemessage(string connectionString,
             [NotNull] object nntpForumID, 
             [NotNull] object topic, 
             [NotNull] object body, 
@@ -4727,7 +4743,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="fromUserID"></param>
 		/// <param name="pMessageID">The id of the private message</param>
 		/// <returns></returns>
-        static public DataTable pmessage_list(string connectionString, object toUserID, object fromUserID, object userPMessageID)
+        public static DataTable pmessage_list(string connectionString, object toUserID, object fromUserID, object userPMessageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("PMESSAGE_LIST"))
 			{
@@ -4751,7 +4767,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="fromUserID"></param>
 		/// <param name="pMessageID">The id of the private message</param>
 		/// <returns></returns>
-        static public DataTable pmessage_list(string connectionString, object userPMessageID)
+        public static DataTable pmessage_list(string connectionString, object userPMessageID)
 		{
             return pmessage_list(connectionString, null, null, userPMessageID);
 		}
@@ -4761,7 +4777,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="pMessageID"></param>
 		/// <param name="fromOutbox">If true, removes the message from the outbox.  Otherwise deletes the message completely.</param>
-        static public void pmessage_delete(string connectionString,
+        public static void pmessage_delete(string connectionString,
             object userPMessageID, 
             bool fromOutbox)
 		{
@@ -4780,7 +4796,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
 		/// </summary>
 		/// <param name="userPMessageID"></param>
-        static public void pmessage_delete(string connectionString, object userPMessageID)
+        public static void pmessage_delete(string connectionString, object userPMessageID)
 		{
             pmessage_delete(connectionString, userPMessageID, false);
 		}
@@ -4803,7 +4819,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public void pmessage_save(string connectionString,
+        public static void pmessage_save(string connectionString,
             object fromUserID, 
             object toUserID, 
             object subject, 
@@ -4826,7 +4842,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void pmessage_markread(string connectionString, object userPMessageID)
+        public static void pmessage_markread(string connectionString, object userPMessageID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_markread"))
 			{
@@ -4839,7 +4855,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable pmessage_info(string connectionString)
+        public static DataTable pmessage_info(string connectionString)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_info"))
 			{
@@ -4847,7 +4863,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void pmessage_prune(string connectionString,
+        public static void pmessage_prune(string connectionString,
             object daysRead, 
             object daysUnread)
 		{
@@ -4907,7 +4923,7 @@ namespace YAF.Classes.Data.FirebirdDb
                 return Convert.ToInt32(FbDbAccess.ExecuteScalar(cmd,connectionString));
             }
         }
-        static public DataTable poll_stats(string connectionString, object pollID)
+        public static DataTable poll_stats(string connectionString, object pollID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("poll_stats"))
 			{
@@ -5202,7 +5218,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			return null;
 		}
 
-        static public void poll_update(
+        public static void poll_update(
         string connectionString,
         [NotNull] object pollID,
         [NotNull] object question,
@@ -5235,7 +5251,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void poll_remove(
+        public static void poll_remove(
             string connectionString,
             object pollGroupID, object 
             pollID, object boardId, 
@@ -5325,7 +5341,7 @@ namespace YAF.Classes.Data.FirebirdDb
         }
     }
 
-        static public void choice_delete(string connectionString,
+        public static void choice_delete(string connectionString,
           [NotNull] object choiceID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("CHOICE_DELETE"))
@@ -5337,7 +5353,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void choice_update(string connectionString,
+        public static void choice_update(string connectionString,
             [NotNull] object choiceID, 
             [NotNull] object choice, 
             [NotNull] object path, 
@@ -5355,7 +5371,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void choice_add(string connectionString,
+        public static void choice_add(string connectionString,
             [NotNull] object pollId, 
             [NotNull] object choice, 
             [NotNull] object path, 
@@ -5378,7 +5394,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 	   
 		#region yaf_Rank
-        static public DataTable rank_list(string connectionString,
+        public static DataTable rank_list(string connectionString,
             object boardID, 
             object rankID)
 		{
@@ -5393,7 +5409,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void rank_save(string connectionString,
+        public static void rank_save(string connectionString,
             object rankID, 
             object boardID, 
             object name, 
@@ -5436,7 +5452,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void rank_delete(string connectionString,
+        public static void rank_delete(string connectionString,
             [NotNull]object rankID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("rank_delete"))
@@ -5454,7 +5470,7 @@ namespace YAF.Classes.Data.FirebirdDb
         [NotNull]
 
 
-        static public DataTable smiley_list(string connectionString, object boardID, object smileyID)
+        public static DataTable smiley_list(string connectionString, object boardID, object smileyID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("smiley_list"))
 			{
@@ -5494,7 +5510,7 @@ namespace YAF.Classes.Data.FirebirdDb
         return FbDbAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedSmileyList(r));
       }
     }
-        static public DataTable smiley_listunique(string connectionString, object boardID)
+        public static DataTable smiley_listunique(string connectionString, object boardID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("smiley_listunique"))
 			{
@@ -5505,7 +5521,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void smiley_delete(string connectionString, object smileyID)
+        public static void smiley_delete(string connectionString, object smileyID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("smiley_delete"))
 			{
@@ -5517,7 +5533,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void smiley_save(
+        public static void smiley_save(
             string connectionString,
             object smileyID, 
             object boardID, 
@@ -5543,7 +5559,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void smiley_resort(string connectionString,
+        public static void smiley_resort(string connectionString,
             object boardID, 
             object smileyID, 
             int move)
@@ -5562,7 +5578,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 	   
 		#region yaf_BBCode
-        static public DataTable bbcode_list(string connectionString,
+        public static DataTable bbcode_list(string connectionString,
             [NotNull] object boardID, 
             [NotNull] object bbcodeID)
 		{
@@ -5577,7 +5593,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void bbcode_delete(string connectionString,
+        public static void bbcode_delete(string connectionString,
             [NotNull] object bbcodeID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("bbcode_delete"))
@@ -5590,7 +5606,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void bbcode_save(string connectionString,
+        public static void bbcode_save(string connectionString,
             [NotNull] object bbcodeID, 
             [NotNull] object boardID, 
             [NotNull] object name, 
@@ -5651,7 +5667,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
 		/// <returns>DataTable filled will registry entries</returns>
-        static public DataTable registry_list(string connectionString,
+        public static DataTable registry_list(string connectionString,
             object name, 
             object boardID)
 		{
@@ -5669,7 +5685,7 @@ namespace YAF.Classes.Data.FirebirdDb
         /// Retrieves all the entries in the board settings registry
         /// </summary>
         /// <returns>DataTable filled will all registry entries</returns>
-        static public DataTable registry_list(string connectionString)
+        public static DataTable registry_list(string connectionString)
         {
             return registry_list(connectionString,null, null);
         }
@@ -5678,7 +5694,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
 		/// <returns>DataTable filled will registry entries</returns>
-        static public DataTable registry_list(string connectionString,
+        public static DataTable registry_list(string connectionString,
             [NotNull]object name)
 		{
             return registry_list(connectionString, name, null);
@@ -5689,7 +5705,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// </summary>
 		/// <param name="Name">Unique name associated with this entry</param>
 		/// <param name="Value">Value associated with this entry which can be null</param>
-        static public void registry_save(string connectionString,
+        public static void registry_save(string connectionString,
             [NotNull]object name,
             [NotNull]object value)
 		{
@@ -5710,7 +5726,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="Name">Unique name associated with this entry</param>
 		/// <param name="Value">Value associated with this entry which can be null</param>
 		/// <param name="BoardID">The BoardID for this entry</param>
-        static public void registry_save(string connectionString,
+        public static void registry_save(string connectionString,
             [NotNull]object name,
             [NotNull]object value,
             [NotNull]object boardID)
@@ -5733,7 +5749,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Not in use anymore. Only required for old database versions.
 		/// </summary>
 		/// <returns></returns>
-        static public DataTable system_list(string connectionString)
+        public static DataTable system_list(string connectionString)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("system_list"))
 			{
@@ -5759,7 +5775,7 @@ namespace YAF.Classes.Data.FirebirdDb
     }
 
 
-        static public int topic_prune(string connectionString, object forumID, object days)
+        public static int topic_prune(string connectionString, object forumID, object days)
 		{
 			int boardID = 0;
 			using (FbCommand cmd = FbDbAccess.GetCommand(String.Format(@"SELECT c.BOARDID FROM {0} f INNER JOIN {1} c ON f.CATEGORYID=c.CATEGORYID  WHERE FORUMID={2};", FbDbAccess.GetObjectName("Forum"), FbDbAccess.GetObjectName("Category"), forumID), true))
@@ -5772,7 +5788,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				
 		}
 
-        static public int topic_prune(string connectionString,
+        public static int topic_prune(string connectionString,
             
             object boardId, 
             object forumId, 
@@ -5792,7 +5808,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public DataTable topic_list(
+        public static DataTable topic_list(
             string connectionString,
             object forumID, 
             [NotNull] object userId, 
@@ -5851,7 +5867,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="startId"></param>
 		/// <param name="limit"></param>
 		/// <returns></returns>
-        static public DataTable topic_simplelist(string connectionString,
+        public static DataTable topic_simplelist(string connectionString,
             int startId, 
             int limit)
 		{
@@ -5868,7 +5884,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void topic_move(string connectionString, object topicId, object forumId, object showMoved, object linkDays)
+        public static void topic_move(string connectionString, object topicId, object forumId, object showMoved, object linkDays)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("topic_move"))
 			{
@@ -5884,7 +5900,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public DataTable topic_announcements(string connectionString,
+        public static DataTable topic_announcements(string connectionString,
             object boardId, 
             object numOfPostsToRetrieve,
             object pageUserId)
@@ -5917,7 +5933,7 @@ namespace YAF.Classes.Data.FirebirdDb
 	/// </param>
 	/// <returns>
 	/// </returns>
-        static public DataTable topic_latest(string connectionString,
+        public static DataTable topic_latest(string connectionString,
             object boardID, 
             object numOfPostsToRetrieve, 
             object pageUserId, 
@@ -6028,11 +6044,11 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public void topic_delete(string connectionString, object topicId)
+        public static void topic_delete(string connectionString, object topicId)
 		{
 			topic_delete(connectionString,topicId, false);
 		}
-        static public void topic_delete(string connectionString, object topicId, object eraseTopic)
+        public static void topic_delete(string connectionString, object topicId, object eraseTopic)
 		{          
 			topic_deleteAttachments(connectionString,topicId);
 		  
@@ -6048,7 +6064,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable topic_findprev(string connectionString, object topicId)
+        public static DataTable topic_findprev(string connectionString, object topicId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FINDPREV"))
 			{
@@ -6057,7 +6073,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable topic_findnext(string connectionString, object topicId)
+        public static DataTable topic_findnext(string connectionString, object topicId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FINDNEXT"))
 			{
@@ -6066,7 +6082,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void topic_lock(string connectionString, object topicId, object locked)
+        public static void topic_lock(string connectionString, object topicId, object locked)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("topic_lock"))
 			{
@@ -6078,7 +6094,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public long topic_save(
+        public static long topic_save(
             string connectionString,
             [NotNull] object forumId, 
             [NotNull] object subject,
@@ -6119,7 +6135,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return long.Parse(dt.Rows[0]["TopicID"].ToString());
 			}
 		}
-        static public DataRow topic_info(
+        public static DataRow topic_info(
             string connectionString,
             object topicId)
 		{
@@ -6491,7 +6507,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Gets a list of replace words
 		/// </summary>
 		/// <returns>DataTable with replace words</returns>
-        static public DataTable replace_words_list(string connectionString,
+        public static DataTable replace_words_list(string connectionString,
             [NotNull]object boardId,
             [NotNull]object id)
 		{
@@ -6512,7 +6528,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="id">ID of bad/good word</param>
 		/// <param name="badword">bad word</param>
 		/// <param name="goodword">good word</param>
-        static public void replace_words_save(string connectionString,
+        public static void replace_words_save(string connectionString,
             object boardId, 
             object id, 
             object badword, 
@@ -6535,7 +6551,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// Deletes a bad/good word
 		/// </summary>
 		/// <param name="ID">ID of bad/good word to delete</param>
-        static public void replace_words_delete(string connectionString,
+        public static void replace_words_delete(string connectionString,
             object id)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("replace_words_delete"))
@@ -6551,7 +6567,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		#region IgnoreUser
 
-        static public void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("USER_ADDIGNOREDUSER"))
 			{
@@ -6564,7 +6580,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("USER_REMOVEIGNOREDUSER"))
 			{
@@ -6576,7 +6592,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-        static public bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
+        public static bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("USER_ISUSERIGNORED"))
 			{
@@ -6587,7 +6603,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return Convert.ToBoolean(FbDbAccess.ExecuteScalar(cmd,connectionString));
 			}
 		}
-        static public DataTable user_ignoredlist(string connectionString, object userId)
+        public static DataTable user_ignoredlist(string connectionString, object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("USER_IGNOREDLIST"))
 			{
@@ -6867,7 +6883,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-    static public DataTable user_simplelist(string connectionString, int StartID, int Limit)
+    public static DataTable user_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_simplelist"))
 			{
@@ -6883,7 +6899,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_delete(string connectionString, object userId)
+    public static void user_delete(string connectionString, object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_delete"))
 			{
@@ -6895,7 +6911,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_setrole(string connectionString, int boardID, object providerUserKey, object role)
+    public static void user_setrole(string connectionString, int boardID, object providerUserKey, object role)
 		{
 		   // System.Guid guid = new System.Guid(providerUserKey.ToString());
 
@@ -6911,7 +6927,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_setinfo(string connectionString, int boardID, System.Web.Security.MembershipUser user)
+    public static void user_setinfo(string connectionString, int boardID, System.Web.Security.MembershipUser user)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("update {databaseOwner}.objQual_USER set Name=@I_USERNAME,Email=@I_EMAIL where BoardID=@I_BOARDID and ProviderUserKey=@I_PROVIDERUSERKEY", true))
 			{
@@ -6926,7 +6942,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_migrate(string connectionString,
+    public static void user_migrate(string connectionString,
             object userID, 
             object providerUserKey, 
             object updateProvider)
@@ -6944,7 +6960,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_deleteold(string connectionString,
+    public static void user_deleteold(string connectionString,
             [NotNull]object boardId,
             [NotNull]object days)
 		{
@@ -6960,7 +6976,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_approve(string connectionString, object userID)
+    public static void user_approve(string connectionString, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_approve"))
 			{
@@ -6972,7 +6988,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_approveall(string connectionString,
+    public static void user_approveall(string connectionString,
             object boardId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_approveall"))
@@ -6985,7 +7001,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_suspend(string connectionString, object userID, object suspend)
+    public static void user_suspend(string connectionString, object userID, object suspend)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_suspend"))
 			{
@@ -7040,7 +7056,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public bool user_changepassword(string connectionString,
+    public static bool user_changepassword(string connectionString,
             object userId, 
             object oldPassword, 
             object newPassword)
@@ -7057,7 +7073,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public DataTable user_pmcount(string connectionString,
+    public static DataTable user_pmcount(string connectionString,
             object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_pmcount"))
@@ -7070,7 +7086,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_save(string connectionString,
+    public static void user_save(string connectionString,
             [NotNull] object userID, 
             [NotNull] object boardID, 
             [NotNull] object userName, 
@@ -7164,7 +7180,7 @@ namespace YAF.Classes.Data.FirebirdDb
             }
         }
 
-    static public void user_adminsave
+    public static void user_adminsave
             (string connectionString, object boardId, 
             object userId, 
             object name, 
@@ -7190,7 +7206,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public DataTable user_emails(string connectionString,
+    public static DataTable user_emails(string connectionString,
             object boardId, 
             object groupId)
 		{
@@ -7206,7 +7222,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public DataTable user_accessmasks(string connectionString,
+        public static DataTable user_accessmasks(string connectionString,
             object boardID,
             object userID)
 		{
@@ -7220,6 +7236,36 @@ namespace YAF.Classes.Data.FirebirdDb
 				return userforumaccess_sort_list(connectionString,FbDbAccess.GetData(cmd,connectionString), 0, 0, 0);
 			}
 		}
+
+        public static DataTable user_accessmasksbygroup(string connectionString,
+           object boardID,
+           object userID)
+        {
+            using (var cmd = FbDbAccess.GetCommand("user_accessmasksbygroup"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+
+                return FbDbAccess.GetData(cmd,connectionString);
+            }
+        }
+
+        public static DataTable user_accessmasksbyforum(string connectionString,
+   object boardID,
+   object userID)
+        {
+            using (var cmd = FbDbAccess.GetCommand("user_accessmasksbyforum"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
 
 		//adds some convenience while editing group's access rights (indent forums)
     static private DataTable userforumaccess_sort_list(string connectionString, DataTable listSource, int parentID, int categoryID, int startingIndent)
@@ -7300,7 +7346,7 @@ namespace YAF.Classes.Data.FirebirdDb
                 return FbDbAccess.GetData(cmd,connectionString);
             }
         }
-    static public object user_recoverpassword(string connectionString,
+    public static object user_recoverpassword(string connectionString,
             object boardID, 
             object userName, 
             object email)
@@ -7317,7 +7363,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_savepassword(string connectionString, object userID, object password)
+    public static void user_savepassword(string connectionString, object userID, object password)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_savepassword"))
 			{
@@ -7331,7 +7377,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public object user_login(string connectionString, object boardID, object name, object password)
+    public static object user_login(string connectionString, object boardID, object name, object password)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_login"))
 			{
@@ -7345,7 +7391,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public DataTable user_avatarimage(string connectionString,
+    public static DataTable user_avatarimage(string connectionString,
             object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_avatarimage"))
@@ -7358,7 +7404,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int user_get(string connectionString,
+    public static int user_get(string connectionString,
             int boardId, 
             object providerUserKey)
 		{
@@ -7391,7 +7437,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 
-    static public string user_getsignature(string connectionString, object userId)
+    public static string user_getsignature(string connectionString, object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_getsignature"))
 			{
@@ -7403,7 +7449,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_savesignature(string connectionString, object userID, object signature)
+    public static void user_savesignature(string connectionString, object userID, object signature)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_savesignature"))
 			{
@@ -7416,7 +7462,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_saveavatar(string connectionString, object userID, object avatar, System.IO.Stream stream, object avatarImageType)
+    public static void user_saveavatar(string connectionString, object userID, object avatar, System.IO.Stream stream, object avatarImageType)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_saveavatar"))
 			{
@@ -7444,7 +7490,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public void user_deleteavatar(string connectionString,
+    public static void user_deleteavatar(string connectionString,
             [NotNull]object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_deleteavatar"))
@@ -7457,7 +7503,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int user_aspnet(
+    public static int user_aspnet(
             string connectionString,
             int boardId, 
             string userName, 
@@ -7490,7 +7536,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int? user_guest(string connectionString,
+    public static int? user_guest(string connectionString,
             [NotNull]object boardID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_guest"))
@@ -7522,7 +7568,7 @@ namespace YAF.Classes.Data.FirebirdDb
             }
         }
 
-    static public DataTable user_activity_rank(string connectionString,
+    public static DataTable user_activity_rank(string connectionString,
             [NotNull]object boardId, 
             object startDate, 
             object displayNumber)
@@ -7539,7 +7585,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int user_nntp(string connectionString, object boardID, object userName, object email, object timeZone)
+    public static int user_nntp(string connectionString, object boardID, object userName, object email, object timeZone)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("USER_NNTP"))
 			{
@@ -7601,7 +7647,7 @@ namespace YAF.Classes.Data.FirebirdDb
                 FbDbAccess.ExecuteNonQuery(cmd,connectionString);
             }
         }
-    static public void user_setpoints(string connectionString, object userId, object points)
+    public static void user_setpoints(string connectionString, object userId, object points)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_setpoints"))
 			{
@@ -7614,7 +7660,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int user_getpoints(string connectionString,
+    public static int user_getpoints(string connectionString,
             object userId)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("user_getpoints"))
@@ -7627,7 +7673,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int user_getthanks_from(string connectionString,
+    public static int user_getthanks_from(string connectionString,
             object userID, 
             object pageUserId)
 		{
@@ -7641,7 +7687,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-    static public int[] user_getthanks_to(string connectionString,
+    public static int[] user_getthanks_to(string connectionString,
             object userID, 
             object pageUserId)
 		{
@@ -7720,7 +7766,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 		
 		#region yaf_UserForum
-    static public DataTable userforum_list(string connectionString, object userID, object forumID)
+    public static DataTable userforum_list(string connectionString, object userID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("userforum_list"))
 			{
@@ -7740,7 +7786,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public void userforum_delete(string connectionString, object userID, object forumID)
+    public static void userforum_delete(string connectionString, object userID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("userforum_delete"))
 			{
@@ -7752,7 +7798,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-    static public void userforum_save(string connectionString, object userID, object forumID, object accessMaskID)
+    public static void userforum_save(string connectionString, object userID, object forumID, object accessMaskID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("userforum_save"))
 			{
@@ -7769,7 +7815,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 	  
 		#region yaf_UserGroup
-    static public DataTable usergroup_list(string connectionString, object userID)
+    public static DataTable usergroup_list(string connectionString, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("usergroup_list"))
 			{
@@ -7781,7 +7827,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public void usergroup_save(string connectionString, object userID, object groupID, object member)
+    public static void usergroup_save(string connectionString, object userID, object groupID, object member)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("usergroup_save"))
 			{
@@ -7803,7 +7849,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_WatchForum
-    static public void watchforum_add(string connectionString, object userID, object forumID)
+    public static void watchforum_add(string connectionString, object userID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_add"))
 			{
@@ -7816,7 +7862,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-    static public DataTable watchforum_list(string connectionString, object userID)
+    public static DataTable watchforum_list(string connectionString, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_list"))
 			{
@@ -7830,7 +7876,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public DataTable watchforum_check(string connectionString, object userID, object forumID)
+    public static DataTable watchforum_check(string connectionString, object userID, object forumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_check"))
 			{
@@ -7845,7 +7891,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public void watchforum_delete(string connectionString, object watchForumID)
+    public static void watchforum_delete(string connectionString, object watchForumID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_delete"))
 			{
@@ -7860,7 +7906,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#endregion
 
 		#region yaf_WatchTopic
-    static public DataTable watchtopic_list(string connectionString, object userID)
+    public static DataTable watchtopic_list(string connectionString, object userID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_list"))
 			{
@@ -7872,7 +7918,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public DataTable watchtopic_check(string connectionString, object userID, object topicID)
+    public static DataTable watchtopic_check(string connectionString, object userID, object topicID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_check"))
 			{
@@ -7885,7 +7931,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
-    static public void watchtopic_delete(string connectionString, object watchTopicID)
+    public static void watchtopic_delete(string connectionString, object watchTopicID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_delete"))
 			{
@@ -7898,7 +7944,7 @@ namespace YAF.Classes.Data.FirebirdDb
 				FbDbAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-    static public void watchtopic_add(string connectionString, object userID, object topicID)
+    public static void watchtopic_add(string connectionString, object userID, object topicID)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_add"))
 			{
@@ -8143,7 +8189,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		#region reindex page controls
  
 
-    static public DataTable rsstopic_list(string connectionString, int forumID, int start, int limit)
+    public static DataTable rsstopic_list(string connectionString, int forumID, int start, int limit)
 		{
 			using (FbCommand cmd = FbDbAccess.GetCommand("rsstopic_list"))
 			{
@@ -8215,7 +8261,7 @@ namespace YAF.Classes.Data.FirebirdDb
         {
             getStatsMessage += "\r\n{0}".FormatWith(e.Message);
         }
-        static public void db_getstats(string connectionString, FbDbConnectionManager conn)
+        public static void db_getstats(string connectionString, FbDbConnectionManager conn)
 		{
 			DataTable indexList = Db.db_index_simplelist(connectionString);            
 			foreach (DataRow indexName in indexList.Rows)
@@ -8230,12 +8276,12 @@ namespace YAF.Classes.Data.FirebirdDb
 				}
 			}
 		}
-        static public string db_getstats_warning()
+        public static string db_getstats_warning()
 		{
 			return "Recalculate index statistics is made or in progress.";
 		}
         private static string reindexDbMessage;
-        static public string db_reindex_new(string connectionString)
+        public static string db_reindex_new(string connectionString)
 		{
             DataTable indexList = Db.db_index_simplelist(connectionString);
             foreach (DataRow indexName in indexList.Rows)
@@ -8285,7 +8331,7 @@ namespace YAF.Classes.Data.FirebirdDb
         {
             reindexDbMessage += "\r\n{0}".FormatWith(e.Message);
         }
-        static public string db_reindex_warning()
+        public static string db_reindex_warning()
 		{
 			return "Indexes recreating.";
 		}
@@ -8705,7 +8751,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		   
 		}
- static public void system_updateversion(string connectionString,
+ public static void system_updateversion(string connectionString,
             int version, 
             string name)
 		{
@@ -8829,7 +8875,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
 		#region Touradg Mods
 		//Shinking Operation
-        static public string db_shrink_warning()
+        public static string db_shrink_warning()
 		{
 			return null;
 		}
@@ -8851,7 +8897,7 @@ namespace YAF.Classes.Data.FirebirdDb
             return string.Empty;
 		}
 		//Set Recovery
-        static public string db_recovery_mode_warning()
+        public static string db_recovery_mode_warning()
 		{
             return string.Empty;
 		}
@@ -9091,8 +9137,8 @@ namespace YAF.Classes.Data.FirebirdDb
                     cmd.Parameters.Add(new FbParameter(":I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
                     cmd.Parameters.Add(new FbParameter(":I_BOARDID", FbDbType.Integer)).Value = boardID;
                     cmd.Parameters.Add(new FbParameter(":I_THISYEAR", FbDbType.Integer)).Value = DateTime.UtcNow.Date.Year;
-                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP1", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(1);
-                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP2", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP1", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(-1);
+                    cmd.Parameters.Add(new FbParameter(":I_UTCTIMESTAMP2", FbDbType.Date)).Value = DateTime.UtcNow.Date.AddDays(1);
                     return FbDbAccess.GetData(cmd,connectionString);
                 }
             }

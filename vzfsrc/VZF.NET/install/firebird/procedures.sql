@@ -1772,16 +1772,16 @@ RETURNS
 )
 AS
 BEGIN
- IN AUTONOMOUS TRANSACTION DO
+ /* IN AUTONOMOUS TRANSACTION DO
     BEGIN
-	IF 1 > 2 THEN 
-      /* 
+	IF (1 > 2) THEN 
+       
       Этот кусок кода будет выполнен в автономной транзакции и 
       вставка записи в таблицу протокола LOG будет произведена.
-      */
+      
       INSERT INTO LOG (LOGDATE, MSG) VALUES (CURRENT_TIMESTAMP, 
-         'Отказано в подключении пользователю '||CURRENR_USER );
-    END
+         'Отказано в подключении пользователю '||CURRENT_USER );
+    END */
 IF (I_EMAIL IS NULL) THEN
 FOR SELECT CHECKEMAILID,
            USERID,
@@ -4766,6 +4766,7 @@ RETURNS
 "NntpForumID" integer,
 "GroupName" varchar(128),
 "ForumID" integer,
+"CategoryID" integer,
 "LastMessageNo" integer,
 "LastUpdate" timestamp,
 "Active" BOOL,
@@ -4784,6 +4785,7 @@ BEGIN
 		b.NNTPFORUMID,		
 		b.GROUPNAME,
 		b.FORUMID,
+		c.CATEGORYID,
 		b.LASTMESSAGENO,
 		b.LASTUPDATE,
 		b."ACTIVE",
@@ -4814,6 +4816,7 @@ BEGIN
 		:"NntpForumID",
 		:"GroupName",
 		:"ForumID",
+		:"CategoryID",
 		:"LastMessageNo",
 		:"LastUpdate",
 		:"Active",

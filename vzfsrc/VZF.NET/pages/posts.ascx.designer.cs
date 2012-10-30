@@ -31,15 +31,6 @@ namespace YAF.Pages {
         protected global::YAF.Controls.PollList PollList;
         
         /// <summary>
-        /// Pager control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.Pager Pager;
-        
-        /// <summary>
         /// TagFavorite1 control.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,15 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::YAF.Controls.ThemeButton TagFavorite1;
+        
+        /// <summary>
+        /// NoButtonsMobile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder NoButtonsMobile;
         
         /// <summary>
         /// MoveTopic1 control.
@@ -101,6 +101,15 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::YAF.Controls.ThemeButton PostReplyLink1;
+        
+        /// <summary>
+        /// Pager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.Pager Pager;
         
         /// <summary>
         /// TopicLink control.
@@ -254,6 +263,15 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::YAF.Controls.LocalizedLabel LocalizedLabel8;
+        
+        /// <summary>
+        /// Div1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
         
         /// <summary>
         /// TrackTopic control.
@@ -418,31 +436,22 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.Button QuickReply;
         
         /// <summary>
-        /// tbFeeds control.
+        /// PagerBottom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tbFeeds;
+        protected global::YAF.Controls.Pager PagerBottom;
         
         /// <summary>
-        /// RssFeed control.
+        /// mobileHolder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.RssFeedLink RssFeed;
-        
-        /// <summary>
-        /// AtomFeed control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.RssFeedLink AtomFeed;
+        protected global::System.Web.UI.WebControls.PlaceHolder mobileHolder;
         
         /// <summary>
         /// ForumUsers1 control.
@@ -452,15 +461,6 @@ namespace YAF.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::YAF.Controls.ForumUsers ForumUsers1;
-        
-        /// <summary>
-        /// PagerBottom control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.Pager PagerBottom;
         
         /// <summary>
         /// TagFavorite2 control.
@@ -544,22 +544,13 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.PlaceHolder ForumJumpHolder;
         
         /// <summary>
-        /// ForumJumpLabel control.
+        /// fj1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ForumJumpLabel;
-        
-        /// <summary>
-        /// ForumJump1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ForumJump ForumJump1;
+        protected global::YAF.controls.ForumJumper fj1;
         
         /// <summary>
         /// PageAccess1 control.

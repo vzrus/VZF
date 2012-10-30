@@ -449,6 +449,26 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected override void OnInit([NotNull] EventArgs e)
         {
+            // get the forum editor based on the settings
+            string editorId = this.Get<YafBoardSettings>().ForumEditor;
+
+            if (this.Get<YafBoardSettings>().AllowUsersTextEditor)
+            {
+                // Text editor
+                editorId = !string.IsNullOrEmpty(this.PageContext.TextEditor)
+                               ? this.PageContext.TextEditor
+                               : this.Get<YafBoardSettings>().ForumEditor;
+            }
+
+            // Check if Editor exists, if not fallback to default editorid=1
+            this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy(editorId, false)
+                                ?? this.Get<IModuleManager<ForumEditor>>().GetBy("1");
+
+            // Override Editor when mobile device with default Yaf BBCode Editor
+            if (this.PageContext.IsMobileDevice)
+            {
+                this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy("1");
+            }
             // Quick Reply Modification Begin
             this._quickReplyEditor = new BasicBBCodeEditor();
             this.QuickReplyLine.Controls.Add(this._quickReplyEditor);

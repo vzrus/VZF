@@ -33,7 +33,16 @@
                 <YAF:HelpLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FORUM" LocalizedPage="ADMIN_EDITNNTPFORUM" />
             </td>
             <td class="post">
-                <asp:DropDownList ID="ForumID" runat="server" Width="250" />
+                    <div id="divactive" class="active" runat="server">
+        <b><span id="echoActive">-</span></b></div>
+        <div class="container">
+    <div id="tree">
+       
+    </div>
+           <!-- <input id="btnshowtree" value="show tree" type="button"/> -->
+        </div>
+                <asp:PlaceHolder ID="phForums" runat="server"></asp:PlaceHolder>
+              
             </td>
         </tr>
         <tr>

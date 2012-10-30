@@ -1137,7 +1137,7 @@ IF i_id IS NULL THEN
             userid,
 			ici_totalrows as TotalRows		
      FROM  databaseSchema.objectQualifier_bannedip
-	 WHERE boardid = i_boardid order by id  OFFSET ici_firstselectrownumber LIMIT i_pagesize
+	 WHERE boardid = i_boardid order by mask  OFFSET ici_firstselectrownumber LIMIT i_pagesize
   LOOP
 	  RETURN NEXT _rec;
   END LOOP;
@@ -1178,6 +1178,7 @@ BEGIN
 IF i_id IS NULL
 OR i_id = 0 THEN
 BEGIN
+
 INSERT INTO databaseSchema.objectQualifier_bannedip
 (boardid,
 mask,
@@ -1981,7 +1982,7 @@ END LOOP;
 			 categoryimage,
 			 sortorder,
 			 pollgroupid
-	    FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid
+	    FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid LIMIT 1
          LOOP
 	RETURN NEXT _rec;
 END LOOP; 	
@@ -2022,7 +2023,7 @@ AND (i_categoryid IS NULL
 OR a.categoryid = i_categoryid)
 AND b.parentid IS NULL
 GROUP BY a.categoryid,a.name,a.sortorder,
-a.categoryimage
+a.categoryimage, b.forumid, b.flags
 ORDER BY a.sortorder
 LOOP
 IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1) > 0 OR (_rec."Flags" & 2) = 0 THEN
@@ -2830,7 +2831,8 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listall(
                            i_boardid integer, 
 						   i_userid integer, 
-						   i_root integer)
+						   i_root integer,
+						   i_returnall boolean)
 				  RETURNS SETOF databaseSchema.objectQualifier_forum_listall_return_type AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_listall_return_type%ROWTYPE;
@@ -2840,16 +2842,18 @@ _rec databaseSchema.objectQualifier_forum_listall_return_type%ROWTYPE;
                  SELECT
                     b.categoryid,
                     b.name AS Category,
-                    a.forumid,
+                    a.forumid,					
                     a.name AS Forum,
                     0 AS Indent,
                     a.parentid,
                     a.flags,
-					a.pollgroupid
+					a.pollgroupid,
+					(a.flags & 2 = 2),
+					false as ReadAccess
               FROM
                     databaseSchema.objectQualifier_forum a
                     JOIN databaseSchema.objectQualifier_category b ON b.categoryid=a.categoryid
-                   /* JOIN databaseSchema.objectQualifier_vaccess c ON c.forumid=a.forumid */
+                   
               WHERE
                    /* c.userid=i_userid AND */
                     b.boardid=i_boardid /* AND
@@ -2860,7 +2864,8 @@ _rec databaseSchema.objectQualifier_forum_listall_return_type%ROWTYPE;
                     b.categoryid,
                     a.forumid
 LOOP
-IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1) > 0 THEN
+SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1 INTO _rec."ReadAccess";
+IF (i_returnall OR _rec."ReadAccess") THEN
 RETURN NEXT _rec;
 END IF;
 END LOOP;
@@ -2869,10 +2874,14 @@ FOR _rec IN
     SELECT
         b.categoryid,
         b.name AS Category,
-        a.forumid,
+        a.forumid,					
         a.name AS Forum,
         0 AS Indent,
-        a.parentid
+        a.parentid,
+        a.flags,
+		a.pollgroupid,
+		(a.flags & 2 = 2),
+		false as ReadAccess
     FROM
         databaseSchema.objectQualifier_forum a
         JOIN databaseSchema.objectQualifier_category b ON b.categoryid=a.categoryid
@@ -2888,7 +2897,8 @@ FOR _rec IN
         b.categoryid,
         a.forumid
         LOOP
-IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1) > 0 OR (_rec."Flags" & 2) = 0 THEN
+SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1 INTO _rec."ReadAccess";
+IF (i_returnall OR _rec."ReadAccess") THEN
 RETURN NEXT _rec;
 END IF;
 END LOOP;
@@ -2900,7 +2910,9 @@ ELSE
         a.forumid,
         a.name AS Forum,
         0 AS Indent,
-        a.parentid
+        a.parentid,
+		(a.flags & 2 = 2),
+		false as ReadAccess
     FROM
         databaseSchema.objectQualifier_forum a
         JOIN databaseSchema.objectQualifier_category b ON b.categoryid=a.categoryid
@@ -2916,7 +2928,8 @@ ELSE
         b.categoryid,
         a.forumid
 LOOP
-IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1) > 0 OR (_rec."Flags" & 2) = 0 THEN
+SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1 INTO _rec."ReadAccess";
+IF (i_returnall OR _rec."ReadAccess") THEN
 RETURN NEXT _rec;
 END IF;
 END LOOP;
@@ -3885,7 +3898,7 @@ BEGIN
     WHERE sortorder = ici_sortorder AND categoryid = i_categoryid) THEN
     UPDATE databaseSchema.objectQualifier_forum
  			SET sortorder = sortorder+1				
- 		WHERE sortorder BETWEEN ici_sortorder AND 254;
+ 		WHERE (sortorder BETWEEN ici_sortorder AND 254) AND sortorder > ici_sortorder and forumid != ici_ForumID;
     END IF;
     ELSE
      SELECT MAX(sortorder) INTO ici_sortorder FROM databaseSchema.objectQualifier_forum WHERE categoryid = i_categoryid;
@@ -6584,7 +6597,8 @@ BEGIN
  		b.lastupdate,
  		b.active,
 		b.datecutoff,
- 		c.name AS "ForumName" 
+ 		c.name AS "ForumName",
+		c.categoryid 
  	FROM
  		databaseSchema.objectQualifier_nntpserver a
  		JOIN databaseSchema.objectQualifier_nntpforum b 
@@ -6838,7 +6852,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(
 						   i_ip varchar, 
 						   i_posted timestampTZ, 
 						   i_externalmessageid varchar(255),
-						   i_referencemessageid varchar(255))
+						   i_referencemessageid varchar(255),
+						   i_utctimestamp timestampTZ)
                   RETURNS void AS
 $BODY$DECLARE
              ici_ForumID	integer;
@@ -9448,7 +9463,7 @@ BEGIN
 		t.styles,
  		t.userid,
  		COALESCE(t.username,b.name) AS Starter,
-		COALESCE(t.userdisplayname,b.displayname) AS Starter,
+		COALESCE(t.userdisplayname,b.displayname) AS StarterDisplay,
  		t.numposts - 1 AS Replies,
  		(SELECT COUNT(1) FROM
          databaseSchema.objectQualifier_message mes 
@@ -10155,6 +10170,116 @@ FOR _rec IN
      GROUP BY c.accessmaskid,c.name,d.categoryid,d.parentid,d.forumid,d.name)) AS x
      ORDER BY forumname,
      accessmaskname
+LOOP
+RETURN NEXT _rec;
+END LOOP;
+
+     END;   $BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+--GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_accessmasksbygroup(
+                           i_boardid integer, 
+						   i_userid integer)
+                 RETURNS SETOF databaseSchema.objectQualifier_user_accessmasks_by_type AS
+$BODY$DECLARE
+             _rec databaseSchema.objectQualifier_user_accessmasks_by_type%ROWTYPE;
+BEGIN
+FOR _rec IN
+SELECT
+     e.accessmaskid AS accessmaskid,
+     e.name AS accessmaskname,
+	 e.flags AS accessmaskflags,
+	 false as IsUserMask,
+     f.forumid AS forumid,
+     f.name AS forumname,
+     f.categoryid,
+	 f.parentid,
+	 c.groupid,
+	 c.name
+     FROM     databaseSchema.objectQualifier_user a
+     JOIN databaseSchema.objectQualifier_usergroup b
+     ON b.userid = a.userid
+     JOIN databaseSchema.objectQualifier_group c
+     ON c.groupid = b.groupid
+     JOIN databaseSchema.objectQualifier_forumaccess d
+     ON d.groupid = c.groupid
+     JOIN databaseSchema.objectQualifier_accessmask e
+     ON e.accessmaskid = d.accessmaskid
+     JOIN databaseSchema.objectQualifier_forum f
+     ON f.forumid = d.forumid
+	 JOIN databaseSchema.objectQualifier_category cat
+     ON cat.categoryid = f.categoryid
+     WHERE    a.userid = i_userid
+     AND c.boardid = i_boardid	    
+LOOP
+RETURN NEXT _rec;
+END LOOP;
+
+     END;   $BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+--GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_accessmasksbyforum(
+                           i_boardid integer, 
+						   i_userid integer)
+                 RETURNS SETOF databaseSchema.objectQualifier_user_accessmasks_by_type AS
+$BODY$DECLARE
+             _rec databaseSchema.objectQualifier_user_accessmasks_by_type%ROWTYPE;
+BEGIN
+FOR _rec IN
+     SELECT   c.accessmaskid AS accessmaskid,
+     c.name AS accessmaskname,
+	 c.flags AS accessmaskflags,
+	 true as IsUserMask,
+     d.forumid AS forumid,
+     d.name AS  forumname,
+     d.categoryid,
+	 d.parentid,
+	 0,
+	 ''
+     FROM     databaseSchema.objectQualifier_user a
+     JOIN databaseSchema.objectQualifier_userforum b
+     ON b.userid = a.userid
+     JOIN databaseSchema.objectQualifier_accessmask c
+     ON c.accessmaskid = b.accessmaskid
+     JOIN databaseSchema.objectQualifier_forum d
+     ON d.forumid = b.forumid
+	 JOIN databaseSchema.objectQualifier_category cat
+     ON cat.categoryid = d.categoryid
+     WHERE    a.userid = i_userid
+     AND c.boardid = i_boardid 
+	 UNION
+	 SELECT
+     e.accessmaskid AS accessmaskid,
+     e.name AS accessmaskname,
+	 e.flags AS accessmaskflags,
+	 false as IsUserMask,
+     f.forumid AS forumid,
+     f.name AS forumname,
+     f.categoryid,
+	 f.parentid,
+	 c.groupid,
+	 c.name
+     FROM     databaseSchema.objectQualifier_user a
+     JOIN databaseSchema.objectQualifier_usergroup b
+     ON b.userid = a.userid
+     JOIN databaseSchema.objectQualifier_group c
+     ON c.groupid = b.groupid
+     JOIN databaseSchema.objectQualifier_forumaccess d
+     ON d.groupid = c.groupid
+     JOIN databaseSchema.objectQualifier_accessmask e
+     ON e.accessmaskid = d.accessmaskid
+     JOIN databaseSchema.objectQualifier_forum f
+     ON f.forumid = d.forumid
+	 JOIN databaseSchema.objectQualifier_category cat
+     ON cat.categoryid = f.categoryid
+     WHERE    a.userid = i_userid
+     AND c.boardid = i_boardid	     
 LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -15577,6 +15702,29 @@ if i_eventtypeid is null   then
 END;$BODY$
     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
     COST 100 ROWS 1000;  
+--GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_categoryaccess_activeuser(i_boardid integer, i_userid integer)
+                   RETURNS SETOF databaseSchema.objectQualifier_forum_categoryaccess_activeuser_rt AS
+$BODY$DECLARE
+_rec databaseSchema.objectQualifier_forum_categoryaccess_activeuser_rt%ROWTYPE;
+_nid integer; 
+BEGIN
+
+FOR _rec IN SELECT DISTINCT(f.categoryid), c.name, c.sortorder 
+FROM databaseSchema.objectQualifier_forum f 
+JOIN databaseSchema.objectQualifier_category c on c.categoryid = f.categoryid
+JOIN databaseSchema.objectQualifier_activeaccess access ON (f.forumid = access.forumid and access.userid = i_userid)  
+WHERE c.boardid = i_boardid and f.parentid IS NULL and  (access.readaccess is true or (access.readaccess is false and f.flags & 2 <> 2)) ORDER BY c.sortorder, f.categoryid, c.name
+LOOP
+RETURN NEXT _rec;
+END LOOP;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  COST 100;
+--GO
+COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_categoryaccess_activeuser(integer,integer) IS 'Returns categories where a user has access.';
 --GO
 
 

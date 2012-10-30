@@ -3,17 +3,18 @@
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Register TagPrefix="YAF" TagName="ForumList" Src="../controls/ForumList.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="TopicLine" Src="../controls/TopicLine.ascx" %>
+<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
 <asp:PlaceHolder runat="server" ID="SubForums" Visible="false">
-    <table class="content subForum" width="100%">
+    <table class="content subForum"  width="100%">
         <tr class="topicTitle">
             <th colspan="6" class="header1">
                 <%=GetSubForumTitle()%>
             </th>
         </tr>
-        <tr class="topicSubTitle">
+            <tr class="topicSubTitle">
             <th width="1%" class="header2">
                 &nbsp;
             </th>
@@ -130,8 +131,7 @@
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
-        <YAF:LocalizedLabel ID="ForumJumpLabel" runat="server" LocalizedTag="FORUM_JUMP" />
-        &nbsp;<YAF:ForumJump ID="ForumJump1" runat="server" />
+        <YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper>
     </div>
 </asp:PlaceHolder>
 <div class="clearItem"></div>

@@ -41,6 +41,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\YetAnotherForum.NET\Bin\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Npgsql, Version=2.0.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\Npgsql.dll</HintPath>
@@ -55,13 +56,21 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Core.dll</HintPath>
+    </Reference>
     <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
     </Reference>
-    <Reference Include="YAF.Types, Version=1.9.6.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\YetAnotherForum.NET\Bin\YAF.Types.dll</HintPath>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -77,14 +86,6 @@
     <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\YAF.Classes\YAF.Classes.Config\YAF.Classes.Config.csproj">
-      <Project>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</Project>
-      <Name>YAF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\YAF.Utils\YAF.Utils.csproj">
-      <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
-      <Name>YAF.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Mysql\VZF.Data.Mysql.csproj">
       <Project>{41C7A2FC-480D-4F44-9D04-FD318BE5B306}</Project>
       <Name>VZF.Data.Mysql</Name>

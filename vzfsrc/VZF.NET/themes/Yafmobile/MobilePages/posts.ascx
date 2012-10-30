@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="YAF" TagName="DisplayPost" Src="DisplayPost.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="DisplayAd" Src="DisplayAd.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="PollList" Src="../../../controls/PollList.ascx" %>
-
+<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
 <YAF:PageLinks ID="PageLinks" runat="server" />
 <YAF:PollList ID="PollList" TopicId='<%# PageContext.PageTopicID %>' ShowButtons='<%# ShowPollButtons() %>' Visible='<%# PollGroupId() > 0 %>' PollGroupId='<%# PollGroupId() %>' runat="server"/>
 <a id="top"  name="top"></a>
@@ -175,8 +175,7 @@
 <YAF:PageLinks ID="PageLinksBottom" runat="server" LinkedPageLinkID="PageLinks" />
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
-        <YAF:LocalizedLabel ID="ForumJumpLabel" runat="server" LocalizedTag="FORUM_JUMP" />
-        &nbsp;<YAF:ForumJump ID="ForumJump1" runat="server" />
+        <YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper>
     </div>
 </asp:PlaceHolder>
 <div id="DivPageAccess" class="smallfont">

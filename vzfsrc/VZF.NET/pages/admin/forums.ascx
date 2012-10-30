@@ -8,6 +8,16 @@
 				<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUMS" LocalizedPage="TEAM" />
 			</td>
 		</tr>
+        <tr>
+        <td colspan="3">
+                  <div id="divactive" class="active" Visible="false" runat="server">
+        Active node: <b><span id="echoActive">-</span></b><div id="treebuttons"><input id="deleteforumbtn" type="submit"    value="Delete"><input id="copyforumbtn" type="submit"  value="Copy"><input id="editforumbtn" type="submit"  value="Edit"></div></div>
+        <div class="container">
+    <div id="tree">
+    </div>
+    </div>   
+            </td>
+        </tr>
 		<asp:Repeater ID="CategoryList" runat="server">
 			<ItemTemplate>
 				<tr>

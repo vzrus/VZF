@@ -319,22 +319,13 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.PlaceHolder ForumJumpHolder;
         
         /// <summary>
-        /// ForumJumpLabel control.
+        /// fj1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ForumJumpLabel;
-        
-        /// <summary>
-        /// ForumJump1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ForumJump ForumJump1;
+        protected global::YAF.controls.ForumJumper fj1;
         
         /// <summary>
         /// IconLegend1 control.

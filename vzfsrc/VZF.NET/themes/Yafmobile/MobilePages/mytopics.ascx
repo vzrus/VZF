@@ -1,5 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="../../../pages/mytopics.ascx.cs" Inherits="YAF.Pages.mytopics" %>
 <%@ Register TagPrefix="YAF" TagName="MyTopicsList" Src="mytopicslist.ascx" %>
+<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
@@ -44,9 +45,8 @@
         <asp:Button id="ChangeTab" OnClick="ChangeTabClick" runat="server" style="display:none" />
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump" runat="server" visible="false">
-        <YAF:LocalizedLabel ID="ForumJumpLabel" runat="server" LocalizedTag="FORUM_JUMP" />
-        &nbsp;<YAF:ForumJump ID="ForumJump1" runat="server" />
-    </div>
+        <YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper></div>
+   
 </asp:PlaceHolder>
 <div id="DivSmartScroller">
     <YAF:SmartScroller ID="SmartScroller1" runat="server" />

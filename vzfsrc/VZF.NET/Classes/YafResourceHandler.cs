@@ -16,6 +16,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Collections.Generic;
+using VZF.Kernel;
+using VZF.Types;
+
 namespace YAF
 {
     #region Using
@@ -106,17 +111,17 @@ namespace YAF
                 var previewCropped = false;
                 var localizationFile = "english.xml";
 
-                if (context.Session["imagePreviewCropped"] != null && context.Session["imagePreviewCropped"] is bool)
+                if (context.Session["imagePreviewCropped"] is bool)
                 {
                     previewCropped = (bool)context.Session["imagePreviewCropped"];
                 }
 
-                if (context.Session["localizationFile"] != null && context.Session["localizationFile"] is string)
+                if (context.Session["localizationFile"] is string)
                 {
                     localizationFile = context.Session["localizationFile"].ToString();
                 }
 
-                if (context.Session["localizationFile"] != null && context.Session["localizationFile"] is string)
+                if (context.Session["localizationFile"] is string)
                 {
                     localizationFile = context.Session["localizationFile"].ToString();
                 }
@@ -177,6 +182,24 @@ namespace YAF
                 {
                     GetResponseGoogleSpell(context);
                 }
+                else if (context.Request.QueryString.GetFirstOrDefault("fj") != null
+                         && context.Request.QueryString.GetFirstOrDefault("node") == null)
+                {
+                    GetForumsJumpTreeNodesAll(context);
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("tjl") != null || context.Request.QueryString.GetFirstOrDefault("tjls") != null)
+                {
+                    GetForumsJumpTreeNodesLevel(context);
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("tnm") != null)
+                {
+                    GetForumsAdminTreeNodeMove(context);
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("fp") != null)
+                {
+                    GetForumPath(context);
+                }
+               
             }
             else
             {
@@ -476,7 +499,7 @@ namespace YAF
             {
                 var userId = context.Request.QueryString.GetFirstOrDefault("userinfo").ToType<int>();
 
-                MembershipUser user = UserMembershipHelper.GetMembershipUserById(userId);
+                var user = UserMembershipHelper.GetMembershipUserById(userId);
 
                 if (user == null || user.ProviderUserKey.ToString() == "0")
                 {
@@ -582,6 +605,162 @@ namespace YAF
                 }
 
                 context.Response.Write(userInfo.ToJson());
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+
+        // Written by vzrus.
+        /// <summary>
+        /// Gets the forum tree nodes info as a json string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void GetForumsJumpTreeNodesAll([NotNull] HttpContext context)
+        {
+            try
+            {
+                var userId = YafContext.Current.CurrentUserData.UserID;
+
+                context.Response.Clear();
+
+                context.Response.ContentType = "application/json";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Cache.SetCacheability(HttpCacheability.Private);
+                context.Response.Cache.SetExpires(
+                    DateTime.UtcNow.AddMinutes(5));
+                context.Response.Cache.SetLastModified(DateTime.UtcNow);
+                context.Response.Write(Dynatree.GetAllUserAccessJumpTree(userId));
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+
+        // Written by vzrus.
+        /// <summary>
+        /// Gets the forum tree nodes info as a json string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void GetForumsAdminTreeNodeMove([NotNull] HttpContext context)
+        {
+            try
+            {
+                var userId = YafContext.Current.CurrentUserData.UserID;
+
+                context.Response.Clear();
+
+                context.Response.ContentType = "text/plain";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Cache.SetCacheability(HttpCacheability.Private);
+                context.Response.Cache.SetExpires(
+                    DateTime.UtcNow.AddMinutes(5));
+                context.Response.Cache.SetLastModified(DateTime.UtcNow);
+                context.Response.Write(Dynatree.MoveForum(userId, context.Request.QueryString.GetFirstOrDefault("tnm")));
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+        // Written by vzrus.
+        /// <summary>
+        /// Gets the forum tree nodes info as a json string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void GetForumsJumpTreeNodesLevel([NotNull] HttpContext context)
+        {
+            try
+            {
+                int access = 0;
+                int view = 0;
+                // var userId = YafContext.Current.CurrentUserData.UserID;
+               if ( context.Request.QueryString.GetFirstOrDefault("tjla") != null)
+               {
+                   access = 1;
+               }
+               if (context.Request.QueryString.GetFirstOrDefault("active") != null)
+               {
+                   this.Get<IYafSession>().NntpTreeActiveNode = context.Request.QueryString.GetFirstOrDefault("active");
+                   
+               }
+
+               if (context.Request.QueryString.GetFirstOrDefault("v") != null)
+               {
+                   view = context.Request.QueryString.GetFirstOrDefault("v").ToType<int>();
+                   if (view == 0) access = 1;
+               }
+                context.Response.Clear();
+                context.Response.ContentType = "application/json";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                if (context.Request.QueryString.GetFirstOrDefault("tjl") != "-100")
+                {
+
+
+                    context.Response.Write(
+                        Dynatree.GetForumsJumpTreeNodesLevel(context.Request.QueryString.GetFirstOrDefault("tjl"), view,
+                                                             access,
+                                                             context.Request.QueryString.GetFirstOrDefault("active")).
+                            ToJson());
+                }
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+        // Written by vzrus.
+        /// <summary>
+        /// Gets the forum tree nodes info as a json string
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="forumId"> The forumId. </param>
+        private void GetForumPath([NotNull] HttpContext context)
+        {
+            try
+            {
+                var userId = YafContext.Current.CurrentUserData.UserID;
+
+                MembershipUser user = UserMembershipHelper.GetMembershipUserById(userId);
+
+                if (user == null || user.ProviderUserKey.ToString() == "0")
+                {
+                    context.Response.Write(
+                   "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+
+                    return;
+                }
+
+                var forumId = context.Request.QueryString.GetFirstOrDefault("fp").ToType<int>();
+                context.Response.Clear();
+
+                context.Response.ContentType = "application/json";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                DataTable dtLinks = CommonDb.forum_listpath(YafContext.Current.PageModuleID, forumId);
+                
+                string dd = @"[{""title"": ""Item 1""},{""title"": ""Folder 2"", ""isFolder"": true, ""key"": ""folder2"",""children"": [{""title"": ""Sub-item 2.1""},{""title"": ""Sub-item 2.2""}]},{""title"": ""Folder 3"", ""isFolder"": true, ""key"": ""folder3"",""children"": [{""title"": ""Sub-item 3.1""},{""title"": ""Sub-item 3.2""}]},{""title"": ""Item 5""}]";
+                context.Response.Write(dtLinks.ToJson());
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
@@ -1155,12 +1334,12 @@ namespace YAF
             var previewMaxWidth = 200;
             var previewMaxHeight = 200;
 
-            if (context.Session["imagePreviewWidth"] != null && context.Session["imagePreviewWidth"] is int)
+            if (context.Session["imagePreviewWidth"] is int)
             {
                 previewMaxWidth = (int)context.Session["imagePreviewWidth"];
             }
 
-            if (context.Session["imagePreviewHeight"] != null && context.Session["imagePreviewHeight"] is int)
+            if (context.Session["imagePreviewHeight"] is int)
             {
                 previewMaxHeight = (int)context.Session["imagePreviewHeight"];
             }

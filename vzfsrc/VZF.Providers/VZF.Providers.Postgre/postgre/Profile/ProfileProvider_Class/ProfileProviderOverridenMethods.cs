@@ -7,16 +7,9 @@ using System.Web.Profile;
 namespace YAF.Providers.Profile
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Configuration;
     using System.Data;
     using System.Text;
-    using YAF.Core;
-    using YAF.Classes.Pattern;
     using YAF.Providers.Utils;
-    using YAF.Types.Interfaces;
-    using Npgsql;
 
     /// <summary>
     /// YAF Custom Profile Provider

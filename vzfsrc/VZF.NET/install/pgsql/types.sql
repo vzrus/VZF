@@ -453,7 +453,9 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listall_return_type AS
 "Indent" integer,
 "ParentID" integer,
 "Flags" integer,
-"PollGroupID" integer
+"PollGroupID" integer,
+"IsHidden" boolean,
+"ReadAccess" boolean
 );
 --GO
 
@@ -938,7 +940,8 @@ CREATE TYPE databaseSchema.objectQualifier_nntpforum_list_return_type AS
 "LastUpdate" timestampTZ,
 "Active" boolean,
 "DateCutOff"  timestampTZ,
-"ForumName" varchar(128) 
+"ForumName" varchar(128),
+"CategoryID" integer 
 );
 --GO
 
@@ -1604,6 +1607,23 @@ CREATE TYPE databaseSchema.objectQualifier_topic_simplelist_return_type AS
 (
 "TopicID" integer,
 "Topic" varchar(128)
+);
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_accessmasks_by_type');
+--GO
+CREATE TYPE  databaseSchema.objectQualifier_user_accessmasks_by_type AS
+(
+"AccessMaskID" integer,
+"AccessMaskName" varchar(128),
+"AccessMaskFlags" integer,
+"IsUserMask" boolean,
+"ForumID" integer,
+"ForumName" varchar(128),
+"CategoryID" integer,
+"ParentID" integer,
+"GroupID" integer,
+"GroupName" varchar(255)
 );
 --GO
 
@@ -2631,12 +2651,25 @@ SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifie
 --GO
 CREATE TYPE databaseSchema.objectQualifier_forum_ns_getchildren_rt AS
 (
+"BoardID" integer,
+"BoardName" varchar(255),
 "CategoryID"  integer,
 "CategoryName" varchar(255),
 "Title" varchar(255),
+"NoAccess" boolean,
 "ForumID"  integer,
 "ParentID" integer,
-"Level" integer 
+"Level" integer,
+"HasChildren" boolean 
+);
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_forum_categoryaccess_activeuser_rt');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_forum_categoryaccess_activeuser_rt AS
+(
+"CategoryID"  integer,
+"CategoryName" varchar(255)
 );
 --GO
 

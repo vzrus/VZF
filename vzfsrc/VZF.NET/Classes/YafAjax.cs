@@ -17,6 +17,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+using System.Threading;
+
+
 namespace YAF.Classes
 {
     #region Using
@@ -379,6 +382,28 @@ namespace YAF.Classes
             return YafThankYou.CreateThankYou(username, "BUTTON_THANKS", "BUTTON_THANKS_TT", messageID);
         }
 
+        /// <summary>
+        /// This method is called asynchronously when the user clicks on "Remove Thank" button.
+        /// </summary>
+        /// <param name="msgID">
+        /// Message Id
+        /// </param>
+        /// <returns>
+        /// Returns ThankYou Info
+        /// </returns>
+        [NotNull]
+        [WebMethod(EnableSession = true)]
+        public ThankYouInfo GetForums([NotNull] object frmID, int? currentNode)
+        {
+            var messageID = frmID.ToType<int>();
+
+            var username =
+                CommonDb.message_RemoveThanks(YafContext.Current.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(Membership.GetUser().ProviderUserKey), messageID, this.Get<YafBoardSettings>().EnableDisplayName);
+
+            return YafThankYou.CreateThankYou(username, "BUTTON_THANKS", "BUTTON_THANKS_TT", messageID);
+        }
+
+       
         #endregion
 
         #endregion
@@ -489,7 +514,7 @@ namespace YAF.Classes
 
             byte[] buffer = Encoding.UTF8.GetBytes(requestContentXml);
 
-            WebClient webClient = new WebClient();
+            var webClient = new WebClient();
             webClient.Headers.Add("Content-Type", "text/xml");
             byte[] response = webClient.UploadData(requestUrl, "POST", buffer);
             return Encoding.UTF8.GetString(response);
