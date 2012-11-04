@@ -19,8 +19,6 @@
 
 using System.Collections.Concurrent;
 using System.Reflection;
-using Autofac;
-using Autofac.Core.Registration;
 using YAF.Types;
 using YAF.Types.Interfaces;
 using YAF.Utils;
@@ -28,15 +26,12 @@ using YAF.Utils;
 namespace YAF.Classes.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
-    using System.Text;
     using System.Data;
     using System.Diagnostics;
-    using YAF.Classes.Pattern;
     using YAF.Utils.Helpers;
     using Npgsql;
-    using System.Linq;
+  
 
     /// <summary>
     /// The yaf db access for PostgreSQL.

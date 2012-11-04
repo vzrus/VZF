@@ -51,7 +51,6 @@ namespace FarsiLibrary
 
         public static PersianDate EndOfMonth(this PersianDate dateTime)
         {
-            var dt = dateTime.ToDateTime();
             var start = StartOfMonth(dateTime).ToDateTime();
             var pc = CultureHelper.PersianCalendar;
             var nextMonth = pc.AddMonths(start, 1);

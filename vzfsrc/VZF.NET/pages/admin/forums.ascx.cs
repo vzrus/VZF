@@ -21,6 +21,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using VZF.Kernel;
 using YAF.Utilities;
 using YAF.Utils.Extensions;
@@ -166,7 +167,7 @@ namespace YAF.Pages.Admin
             }
 
            
-           /* if (Config.LargeForumTree)
+          if (Config.LargeForumTree)
             {
                 YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
@@ -174,8 +175,8 @@ namespace YAF.Pages.Admin
                 YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
                    JavaScriptBlocks.DynatreeGetNodesAdminLazyJS("tree",
                    PageContext.PageUserID, PageContext.PageBoardID,"echoActive", "&v=2", "{0}resource.ashx?tjl".FormatWith(
-                   YafForumInfo.ForumClientFileRoot)));
-            } */
+                   YafForumInfo.ForumClientFileRoot), "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
+            } 
           
 
             PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));

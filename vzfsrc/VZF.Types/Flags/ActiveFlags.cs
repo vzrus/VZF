@@ -119,7 +119,7 @@ namespace YAF.Types.Flags
     /// Use for bit comparisons
     /// </summary>
     [Flags]
-    public enum Flags : int
+    public enum Flags
     {
       None = 0,
         

@@ -14,20 +14,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using YAF.Classes;
+
 namespace VZF.Kernel
 {
+    #region Using
+
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Text;
+    using System.Globalization;
+    using System.Web;
     using VZF.Types;
     using YAF.Classes.Data;
     using YAF.Core;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using YAF.Utils; 
+
+    #endregion
+
     /// <summary>
     /// This class wraps Dynatree JQuery plug-in functionality. 
     /// </summary>
@@ -235,7 +245,7 @@ namespace VZF.Kernel
                     var sb = new StringBuilder();
                     
                     // level counter
-                    int closeBlockTimes = 0;
+                    // int closeBlockTimes = 0;
                     int currentCategory = 0;
                     
 
@@ -270,7 +280,7 @@ namespace VZF.Kernel
                             // add an entry for children 
                             sb.Append(", children: [");
                             // increase level counter for the next node
-                            closeBlockTimes++;
+                           // closeBlockTimes++;
 
                         }
                         else if (amr.NextLevel == amr.CurrentLevel)
@@ -286,7 +296,7 @@ namespace VZF.Kernel
                             {
                                 sb.Append("}]");
                             }
-                            closeBlockTimes = amr.NextLevel;
+                            // closeBlockTimes = amr.NextLevel;
                             // close all nodes children
                             sb.Append("}");
 
@@ -447,7 +457,7 @@ namespace VZF.Kernel
                             currentCategory = forumId;
                         }
 
-                        string path = forumId > 0 ? YafBuildLink.GetLinkNotEscaped(ForumPages.topics, true, "f={0}".FormatWith(forumId)) : YafBuildLink.GetLinkNotEscaped(ForumPages.forum, true, "c={0}".FormatWith(-forumId));
+                        string path = forumId > 0 ? YafBuildLink.GetLinkNotEscaped(ForumPages.topics,  "f={0}".FormatWith(forumId)) : YafBuildLink.GetLinkNotEscaped(ForumPages.forum, true, "c={0}".FormatWith(-forumId));
 
                         // write the node beginning
                         sb.AppendFormat("{{\"id\": \"{0}.{1}.{2}\", \"title\": \"{3}\"{4}", YafContext.Current.PageBoardID,
@@ -496,13 +506,13 @@ namespace VZF.Kernel
             }
             return null;
         }
-        public static List<TreeNode> GetForumsJumpTreeNodesLevel(string nodeIdString, int view, int access, string activeNodeId)
+        public static List<TreeNode> GetForumsJumpTreeNodesLevel(string nodeIdString, int view, int access, string initializeArguments, bool boardFirst, string forumUrl)
         {
             var collection = new List<TreeNode>();
 
-            int boardII = YafContext.Current.PageBoardID;
-            int categoryII = 0;
-            int forumII = 0;
+            int boardId = 0;
+            int categoryId = 0; 
+            int forumId = 0;
             var nodeIds = nodeIdString;
             if (nodeIds.IsSet())
             {
@@ -510,13 +520,13 @@ namespace VZF.Kernel
                 switch (nodeId.Count())
                 {
                     case 1:
-                        boardII = nodeId[0].ToType<int>();
+                        boardId = nodeId[0].ToType<int>();
                         break;
                     case 2:
-                        categoryII = nodeId[1].ToType<int>();
+                        categoryId = nodeId[1].ToType<int>();
                         break;
                     case 3:
-                        forumII = nodeId[2].ToType<int>();
+                        forumId = nodeId[2].ToType<int>();
                         break;
                 }
             }
@@ -524,13 +534,39 @@ namespace VZF.Kernel
             const bool notIncluded = true;
             const bool immediateOnly = true;
 
-            if (boardII < 0)
+            if (boardId <= 0)
             {
-                boardII = YafContext.Current.PageBoardID;
+                boardId = YafContext.Current.PageBoardID;
+            }
+            if (forumId == 0 && categoryId == 0)
+            {
             }
 
+            if (boardFirst)
+            {
+                var bdt = CommonDb.board_list(YafContext.Current.PageModuleID, boardId);
+                if (bdt != null && bdt.Rows.Count > 0)
+                {
+                    string boardName = bdt.Rows[0]["Name"].ToString();
+                    var tn = new TreeNode
+                        {
+                            key = YafContext.Current.PageBoardID.ToString(CultureInfo.InvariantCulture),
+                            title = HttpUtility.HtmlEncode(boardName),
+                            isLazy = true,
+                            isFolder = true,
+                            addClass = "",
+                            tooltip = YafContext.Current.Get<ILocalization>().GetText(
+                                                                    "COMMON", "VIEW_FORUM")
+                        };
+                    collection.Add(tn);
+                    return collection;
+                }
+                return null;
+            }
+           
+
             // Get a list of category nodes separately as we don't know access. 
-            if (forumII == 0 && categoryII == 0)
+            if (forumId == 0 && categoryId == 0)
             {
                 var tc = CommonDb.forum_categoryaccess_activeuser(YafContext.Current.PageModuleID,
                                                                   YafContext.Current.PageBoardID,
@@ -542,50 +578,63 @@ namespace VZF.Kernel
                     yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
                     noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
 
+                    string pathStart;
+                    if (Config.IsMojoPortal)
+                    {
+                        pathStart = HttpUtility.UrlDecode(forumUrl) + "&g={0}&c=***".FormatWith(ForumPages.forum);
+                    }
+                    else
+                    {
+                        pathStart = forumUrl.Replace(".aspx", ".aspx?g={0}&c=***".FormatWith(ForumPages.forum));
+                    }
+                    string dd = HttpUtility.UrlDecode(forumUrl);
+                    
+                string realU = Config.IsAnyPortal ? pathStart : YafBuildLink.GetLinkNotEscaped(ForumPages.forum, "c=***").Replace("resource.ashx", "default.aspx");
                     foreach (DataRow row in tc.Rows)
                     {
-                        string path = YafBuildLink.GetLinkNotEscaped(ForumPages.forum, true,
-                                                                     "c={0}".FormatWith(row["CategoryID"]));
-                        var tn = new TreeNode();
-
-                        tn.key = YafContext.Current.PageBoardID +
-                                 "_" + row["CategoryID"];
-
-                        // tn.activate = false;
-                        tn.title = (row["CategoryName"].ToString().IsNotSet())
-                                       ? ""
-                                       : @"<a href='{0}' target='_top' title='{1}'>{1}</a>".FormatWith(
-                                           path.Replace("resource.ashx", "default.aspx"), row["CategoryName"].ToString());
-                            // GetNodeTitle(row["Title"].ToString(), path, Convert.ToInt32(YafContext.Current.PageUserID), forumII, access);
-
-
-                        tn.isLazy = true;
-                        tn.isFolder = true;
+                        var tn = new TreeNode
+                            {
+                                key = YafContext.Current.PageBoardID +
+                                      "_" + row["CategoryID"],
+                                title = (row["CategoryName"].ToString().IsNotSet())
+                                            ? ""
+                                            : @"<a href='{0}' target='_top' title='{1}'>{1}</a>".FormatWith(
+                                                realU.Replace("***", row["CategoryID"].ToString()),
+                                                HttpUtility.HtmlEncode(row["CategoryName"])),
+                                isLazy = true,
+                                isFolder = true,
+                                addClass = "",
+                                tooltip = YafContext.Current.Get<ILocalization>().GetText(
+                                                                    "COMMON", "VIEW_CATEGORY")
+                            };
 
                         collection.Add(tn);
-
                     }
-
-
                 }
             }
             else
             {
                 var ss = CommonDb.forum_ns_getchildren_activeuser(YafContext.Current.PageModuleID,
-                                                                       boardII, categoryII, forumII, Convert.ToInt32(YafContext.Current.PageUserID), notIncluded, immediateOnly, "-");
+                                                                       boardId, categoryId, forumId, Convert.ToInt32(YafContext.Current.PageUserID), notIncluded, immediateOnly, "-");
 
                 if (ss != null && ss.Rows.Count > 0)
                 {
                     yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
                     noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
+                    string pathStart;
+                    if (Config.IsMojoPortal)
+                    {
+                        pathStart = HttpUtility.UrlDecode(forumUrl) + "&g={0}&f=***".FormatWith(ForumPages.topics);
+                    }
+                    else
+                    {
+                        pathStart = HttpUtility.UrlDecode(forumUrl).Replace(".aspx", ".aspx?g={0}&f=***".FormatWith(ForumPages.topics));
+                    }
 
+
+                    string realU = Config.IsAnyPortal ? pathStart : YafBuildLink.GetLinkNotEscaped(ForumPages.topics, "f=***").Replace("resource.ashx", "default.aspx");
                     foreach (DataRow row in ss.Rows)
                     {
-                        string path = (categoryII > 0 || forumII > 0)
-                                   ? YafBuildLink.GetLinkNotEscaped(ForumPages.topics, true,
-                                                                    "f={0}".FormatWith(row["ForumID"]))
-                                   : YafBuildLink.GetLinkNotEscaped(ForumPages.forum, true,
-                                                                    "c={0}".FormatWith(row["CategoryID"]));
                         var tn = new TreeNode
                             {
                                 key = YafContext.Current.PageBoardID +
@@ -601,7 +650,7 @@ namespace VZF.Kernel
                         }
                         if (view == 3)
                         {
-                            tn.title = row["Title"].ToString();
+                            tn.title = HttpUtility.HtmlEncode(row["Title"]);
                         }
                         else
                         {
@@ -610,21 +659,15 @@ namespace VZF.Kernel
                                                                 YafContext.Current.Get<ILocalization>().GetText(
                                                                     "DEFAULT", "NO_FORUM_ACCESS"))
                                           : @"<a href='{0}' target='_top' title='{1}'>{1}</a>{2}".FormatWith(
-                                              path.Replace("resource.ashx", "default.aspx"), row["Title"].ToString(),
+                                               realU.Replace("***", row["ForumID"].ToString()), HttpUtility.HtmlEncode(row["Title"]),
                                               accessRow);
                         }
-                       /* if (activeNodeId != null)
-                        {
-                            tn.activate = true;
-                        }
-                        else
-                        {
-                            tn.activate = false;
-                        }
-                        tn.activate = false; */
-                       
+                      
                         tn.isLazy = row["HasChildren"].ToType<bool>();
                         tn.isFolder = false;
+                        tn.addClass = "";
+                        tn.tooltip = YafContext.Current.Get<ILocalization>().GetText(
+                            "COMMON", "VIEW_FORUM");
                         
                         collection.Add(tn);
                     }

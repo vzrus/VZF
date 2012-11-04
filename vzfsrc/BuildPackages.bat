@@ -4,4 +4,4 @@
 @SET PATH=%FrameworkDir%;%FrameworkSDKDir%;%PATH%
 @SET LANGDIR=EN
 
-msbuild.exe YetAnotherForum.NET.sln /p:Configuration=Deploy /t:Clean;Build /p:WarningLevel=0
+msbuild.exe vzf.full.net.sln /p:Configuration=Deploy /t:Clean;Build /p:WarningLevel=0

@@ -51,7 +51,7 @@ namespace YAF.Core.Nntp
     /// <summary>
     /// The password.
     /// </summary>
-    private string password = null;
+    private string password;
 
     /// <summary>
     /// The port.
@@ -71,7 +71,7 @@ namespace YAF.Core.Nntp
     /// <summary>
     /// The tcp client.
     /// </summary>
-    private TcpClient tcpClient = null;
+    private TcpClient tcpClient;
 
     /// <summary>
     /// The timeout.
@@ -81,7 +81,7 @@ namespace YAF.Core.Nntp
     /// <summary>
     /// The username.
     /// </summary>
-    private string username = null;
+    private string username;
 
     /// <summary>
     /// The on request.

@@ -1,22 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="Autofac 2.6.3.862" Category="Package" Bounds="319.256666666667,167.88,110.94,25.96" Label="Autofac 2.6.3.862" />
-    <Node Id="MySql.Data 6.5.4" Category="Package" Bounds="122.53,223.84,108.12,25.96" Label="MySql.Data 6.5.4" />
-    <Node Id="Newtonsoft.Json 4.5.8" Category="Package" Bounds="0,167.88,135.453333333333,25.96" Label="Newtonsoft.Json 4.5.8" />
-    <Node Id="Npgsql 2.0.11" Category="Package" Bounds="0,223.84,92.53,25.96" Label="Npgsql 2.0.11" />
-    <Node Id="VZF" Category="Project" Bounds="163.726666666667,111.92,50,25.96" Label="VZF" />
-    <Node Id="YAF.Controls" Category="Project" Bounds="60.2183333333333,0,87.3533333333334,25.96" Label="YAF.Controls" />
-    <Node Id="YAF.Core" Category="Project" Bounds="243.855,111.92,67.7433333333333,25.96" Label="YAF.Core" />
-    <Node Id="YAF.Utils" Category="Project" Bounds="341.701666666667,111.92,66.05,25.96" Label="YAF.Utils" />
-    <Node Id="xmlrpcnet 3.0.0.266" Category="Package" Bounds="166.446666666667,167.88,122.56,25.96" Label="xmlrpcnet 3.0.0.266" />
+    <Node Id="VZF" Category="Project" Bounds="125.28,0,50,25.96" Label="VZF" />
+    <Node Id="VZF.Core" Category="Project" Bounds="27.4466666666667,0,67.6666666666667,25.96" Label="VZF.Core" />
+    <Node Id="xmlrpcnet 3.0.0.266" Category="Package" Bounds="0,55.96,122.56,25.96" Label="xmlrpcnet 3.0.0.266" />
   </Nodes>
   <Links>
-    <Link Source="VZF" Target="Newtonsoft.Json 4.5.8" Category="Installed Package" Bounds="103.961494445801,136.29736328125,60.1211166381836,27.8047790527344" />
-    <Link Source="VZF" Target="xmlrpcnet 3.0.0.266" Category="Installed Package" Bounds="197.772766113281,137.880004882813,15.7618713378906,22.6162567138672" />
-    <Link Source="YAF.Core" Target="Autofac 2.6.3.862" Category="Installed Package" Bounds="300.225952148438,137.880004882813,44.2057189941406,25.5025787353516" />
-    <Link Source="YAF.Core" Target="xmlrpcnet 3.0.0.266" Category="Installed Package" Bounds="245.320755004883,137.880004882813,20.8083343505859,23.2886810302734" />
-    <Link Source="YAF.Utils" Target="Autofac 2.6.3.862" Category="Installed Package" Bounds="374.726654052734,137.880004882813,0,21" />
+    <Link Source="VZF" Target="xmlrpcnet 3.0.0.266" Category="Installed Package" Bounds="89.5427398681641,25.9599990844727,40.0935821533203,25.2094039916992" />
+    <Link Source="VZF.Core" Target="xmlrpcnet 3.0.0.266" Category="Installed Package" Bounds="61.2799987792969,25.9599990844727,0,21" />
   </Links>
   <Categories>
     <Category Id="Installed Package" />
@@ -38,10 +29,6 @@
     <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
       <Condition Expression="HasCategory('Project')" />
       <Setter Property="Background" Value="Blue" />
-    </Style>
-    <Style TargetType="Link" GroupLabel="Package Dependency" ValueLabel="True">
-      <Condition Expression="HasCategory('Package Dependency')" />
-      <Setter Property="Background" Value="Yellow" />
     </Style>
   </Styles>
 </DirectedGraph>

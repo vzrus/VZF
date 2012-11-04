@@ -58,7 +58,7 @@ namespace YAF.Core
     /// <summary>
     /// The _user profile.
     /// </summary>
-    private YafUserProfile _userProfile = null;
+    private YafUserProfile _userProfile;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PostDataHelperWrapper"/> class.

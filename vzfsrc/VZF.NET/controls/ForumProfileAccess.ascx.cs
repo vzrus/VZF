@@ -4,8 +4,8 @@
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * as published by the Free Software Foundation version 2
+ * of the License only.
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,8 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Generic;
-using System.Linq;
+using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using VZF.Kernel;
@@ -83,7 +82,7 @@ namespace YAF.Controls
                 YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
                     JavaScriptBlocks.DynatreeGetNodesJumpLazyJS("tree",
                     PageContext.PageUserID,PageContext.PageBoardID,"&v=1", "{0}resource.ashx?tjl".FormatWith(
-                    YafForumInfo.ForumClientFileRoot)));
+                    YafForumInfo.ForumClientFileRoot),"&root=0","&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
             }
             else
             {

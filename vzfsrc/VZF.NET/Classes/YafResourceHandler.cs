@@ -504,7 +504,7 @@ namespace YAF
                 if (user == null || user.ProviderUserKey.ToString() == "0")
                 {
                     context.Response.Write(
-                   "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+                        "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
 
                     return;
                 }
@@ -523,8 +523,8 @@ namespace YAF
                 var avatarUrl = this.Get<IAvatars>().GetAvatarUrlForUser(userId);
 
                 avatarUrl = avatarUrl.IsNotSet()
-                           ? "{0}images/noavatar.gif".FormatWith(YafForumInfo.ForumClientFileRoot)
-                           : avatarUrl;
+                                ? "{0}images/noavatar.gif".FormatWith(YafForumInfo.ForumClientFileRoot)
+                                : avatarUrl;
 
                 var activeUsers = this.Get<IDataCache>().GetOrSet(
                     Constants.Cache.UsersOnlineStatus,
@@ -553,7 +553,7 @@ namespace YAF
                     location += ", {0}".FormatWith(YafContext.Current.Get<IHaveLocalization>().GetText("REGION", tag));
                 }
 
-                var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
+                var forumUrl = HttpUtility.UrlDecode(context.Request.QueryString.GetFirstOrDefault("forumUrl"));
                
                 if (Config.IsMojoPortal)
                 {
@@ -691,15 +691,21 @@ namespace YAF
             {
                 int access = 0;
                 int view = 0;
+                bool boardFirst = false;
+                
                 // var userId = YafContext.Current.CurrentUserData.UserID;
-               if ( context.Request.QueryString.GetFirstOrDefault("tjla") != null)
+               if ( context.Request.QueryString.GetFirstOrDefault("tjls") != null)
                {
-                   access = 1;
+                   access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
                }
                if (context.Request.QueryString.GetFirstOrDefault("active") != null)
                {
                    this.Get<IYafSession>().NntpTreeActiveNode = context.Request.QueryString.GetFirstOrDefault("active");
                    
+               }
+               if (context.Request.QueryString.GetFirstOrDefault("selected") != null)
+               {
+                   this.Get<IYafSession>().SearchTreeSelectedNodes = context.Request.QueryString.GetFirstOrDefault("selected").Split('!');
                }
 
                if (context.Request.QueryString.GetFirstOrDefault("v") != null)
@@ -707,17 +713,26 @@ namespace YAF
                    view = context.Request.QueryString.GetFirstOrDefault("v").ToType<int>();
                    if (view == 0) access = 1;
                }
+               if (context.Request.QueryString.GetFirstOrDefault("root") != null)
+               {
+                  if (context.Request.QueryString.GetFirstOrDefault("root").ToType<int>() == 0)
+                  {
+                      boardFirst = true;
+                  }
+                   
+               }
                 context.Response.Clear();
                 context.Response.ContentType = "application/json";
                 context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 if (context.Request.QueryString.GetFirstOrDefault("tjl") != "-100")
                 {
 
-
+                    var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
                     context.Response.Write(
                         Dynatree.GetForumsJumpTreeNodesLevel(context.Request.QueryString.GetFirstOrDefault("tjl"), view,
                                                              access,
-                                                             context.Request.QueryString.GetFirstOrDefault("active")).
+                                                             context.Request.QueryString.GetFirstOrDefault("active"), boardFirst, forumUrl).
                             ToJson());
                 }
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -759,7 +774,7 @@ namespace YAF
                 context.Response.ContentEncoding = Encoding.UTF8;
                 DataTable dtLinks = CommonDb.forum_listpath(YafContext.Current.PageModuleID, forumId);
                 
-                string dd = @"[{""title"": ""Item 1""},{""title"": ""Folder 2"", ""isFolder"": true, ""key"": ""folder2"",""children"": [{""title"": ""Sub-item 2.1""},{""title"": ""Sub-item 2.2""}]},{""title"": ""Folder 3"", ""isFolder"": true, ""key"": ""folder3"",""children"": [{""title"": ""Sub-item 3.1""},{""title"": ""Sub-item 3.2""}]},{""title"": ""Item 5""}]";
+               // string dd = @"[{""title"": ""Item 1""},{""title"": ""Folder 2"", ""isFolder"": true, ""key"": ""folder2"",""children"": [{""title"": ""Sub-item 2.1""},{""title"": ""Sub-item 2.2""}]},{""title"": ""Folder 3"", ""isFolder"": true, ""key"": ""folder3"",""children"": [{""title"": ""Sub-item 3.1""},{""title"": ""Sub-item 3.2""}]},{""title"": ""Item 5""}]";
                 context.Response.Write(dtLinks.ToJson());
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();

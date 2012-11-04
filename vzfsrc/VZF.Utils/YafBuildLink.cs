@@ -120,6 +120,22 @@ namespace YAF.Utils
     }
 
     /// <summary>
+    /// Gets base path to the page without ampersand.
+    /// </summary>
+    /// <param name="page">Page to which to create a base path link.</param>
+    /// <param name="fullUrl">if set to <c>true</c> [full URL].</param>
+    /// <returns>
+    /// Base URL to the given page.
+    /// </returns>
+    public static string GetBasePath(bool fullUrl = false)
+    {
+        return fullUrl
+                 ? YafFactoryProvider.UrlBuilder.BuildUrlFull("").TrimEnd('&')
+                 : YafFactoryProvider.UrlBuilder.BuildUrl("").TrimEnd('&');
+
+    }
+
+    /// <summary>
     /// Gets link to the page with given parameters.
     /// </summary>
     /// <param name="page">
@@ -139,7 +155,7 @@ namespace YAF.Utils
     /// </returns>
     public static string GetLink(ForumPages page, bool fullUrl, string format, params object[] args)
     {
-      return fullUrl
+      return fullUrl 
                ? YafFactoryProvider.UrlBuilder.BuildUrlFull("g={0}&{1}".FormatWith(page, format.FormatWith(args)))
                : YafFactoryProvider.UrlBuilder.BuildUrl("g={0}&{1}".FormatWith(page, format.FormatWith(args)));
     }

@@ -102,8 +102,6 @@ namespace YAF.Controls.Statistics
         /// </param>
         protected override void Render([NotNull] HtmlTextWriter writer)
         {
-            string actRank = string.Empty;
-
             DataTable rankDt = this.Get<IDataCache>().GetOrSet(
               Constants.Cache.MostActiveUsers,
               () =>

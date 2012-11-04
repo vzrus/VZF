@@ -98,7 +98,7 @@ namespace YAF.Controls
       if (!this.IsGuestX.Checked)
       {
          MembershipUser user = UserMembershipHelper.GetUser(this.Name.Text.Trim());
-         var usr = new CombinedUserDataHelper(user);
+         // var usr = new CombinedUserDataHelper(user);
          string userName = this.Get<MembershipProvider>().GetUserNameByEmail(this.Email.Text.Trim());
          if (userName != null && userName != user.UserName)
          {

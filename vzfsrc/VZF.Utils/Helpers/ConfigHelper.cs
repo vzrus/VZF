@@ -34,17 +34,17 @@ namespace YAF.Utils.Helpers
     /// <summary>
     /// The _app settings full.
     /// </summary>
-    private AppSettingsSection _appSettingsFull = null;
+    private AppSettingsSection _appSettingsFull;
 
     /// <summary>
     /// The _trust level.
     /// </summary>
-    private AspNetHostingPermissionLevel? _trustLevel = null;
+    private AspNetHostingPermissionLevel? _trustLevel;
 
     /// <summary>
     /// The _web config.
     /// </summary>
-    private Configuration _webConfig = null;
+    private Configuration _webConfig;
 
     /// <summary>
     /// Gets TrustLevel.

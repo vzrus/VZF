@@ -104,7 +104,7 @@ namespace YAF.Classes.Pattern
       }
     }
 
-    private object _instance = null;
+    private object _instance;
 
     /// <summary>
     /// Gets or sets ApplicationInstance.

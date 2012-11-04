@@ -34,7 +34,7 @@ namespace YAF.Classes.Pattern
     /// <summary>
     /// The _default set override.
     /// </summary>
-    private bool _defaultSetOverride = false;
+    private bool _defaultSetOverride;
 
     /// <summary>
     /// Gets or sets a value indicating whether DefaultGetOverride.

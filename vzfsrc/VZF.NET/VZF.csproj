@@ -108,14 +108,15 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=2.6.3.862, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\xmlrpcnet.3.0.0.266\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
+      <HintPath>Bin\CookComputing.XmlRpcV2.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="nStuff.UpdateControls, Version=1.2.0.0, Culture=neutral, PublicKeyToken=72f3f55dd4809977, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Bin\nStuff.UpdateControls.dll</HintPath>
@@ -150,22 +151,6 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Classes.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Controls, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Utils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="auth.aspx.cs">
@@ -832,6 +817,65 @@
       <DependentUpon>Database4.mdf</DependentUpon>
     </Content>
     <Content Include="auth.aspx" />
+    <Content Include="Bin\Autofac.Configuration.dll" />
+    <Content Include="Bin\Autofac.dll" />
+    <Content Include="Bin\Autofac.xml" />
+    <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
+    <Content Include="Bin\FarsiLibrary.dll" />
+    <Content Include="Bin\FarsiLibrary.pdb" />
+    <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
+    <Content Include="Bin\Intelligencia.UrlRewriter.dll" />
+    <Content Include="Bin\Intelligencia.UrlRewriter.pdb" />
+    <Content Include="Bin\Microsoft.QualityTools.Testing.Fakes.dll" />
+    <Content Include="Bin\Mono.Security.dll" />
+    <Content Include="Bin\Mono.Security.Protocol.Tls.dll" />
+    <Content Include="Bin\Moq.dll" />
+    <Content Include="Bin\Moq.xml" />
+    <Content Include="Bin\MySql.Data.dll" />
+    <Content Include="Bin\MySql.Data.Entity.dll" />
+    <Content Include="Bin\MySql.Web.dll" />
+    <Content Include="Bin\Npgsql.dll" />
+    <Content Include="Bin\Npgsql.XML" />
+    <Content Include="Bin\nStuff.UpdateControls.dll" />
+    <Content Include="Bin\policy.2.0.Npgsql.dll" />
+    <Content Include="Bin\VZF.Classes.Config.dll" />
+    <Content Include="Bin\VZF.Classes.Config.pdb" />
+    <Content Include="Bin\VZF.Controls.dll" />
+    <Content Include="Bin\VZF.Controls.pdb" />
+    <Content Include="Bin\VZF.Core.dll" />
+    <Content Include="Bin\VZF.Core.pdb" />
+    <Content Include="Bin\VZF.Data.Common.dll" />
+    <Content Include="Bin\VZF.Data.Common.pdb" />
+    <Content Include="Bin\VZF.Data.Firebird.dll" />
+    <Content Include="Bin\VZF.Data.Firebird.pdb" />
+    <Content Include="Bin\VZF.Data.Mssql.dll" />
+    <Content Include="Bin\VZF.Data.Mssql.pdb" />
+    <Content Include="Bin\VZF.Data.Mysql.dll" />
+    <Content Include="Bin\VZF.Data.Mysql.pdb" />
+    <Content Include="Bin\VZF.Data.Postgre.dll" />
+    <Content Include="Bin\VZF.Data.Postgre.pdb" />
+    <Content Include="Bin\VZF.Data.Utils.dll" />
+    <Content Include="Bin\VZF.Data.Utils.pdb" />
+    <Content Include="Bin\VZF.dll" />
+    <Content Include="Bin\VZF.Kernel.dll" />
+    <Content Include="Bin\VZF.Kernel.pdb" />
+    <Content Include="Bin\VZF.pdb" />
+    <Content Include="Bin\VZF.Providers.Common.dll" />
+    <Content Include="Bin\VZF.Providers.Common.pdb" />
+    <Content Include="Bin\VZF.Providers.Firebird.dll" />
+    <Content Include="Bin\VZF.Providers.Firebird.pdb" />
+    <Content Include="Bin\VZF.Providers.MsSql.dll" />
+    <Content Include="Bin\VZF.Providers.MsSql.pdb" />
+    <Content Include="Bin\VZF.Providers.Mysql.dll" />
+    <Content Include="Bin\VZF.Providers.Mysql.pdb" />
+    <Content Include="Bin\VZF.Providers.Postgre.dll" />
+    <Content Include="Bin\VZF.Providers.Postgre.pdb" />
+    <Content Include="Bin\VZF.Tools.dll" />
+    <Content Include="Bin\VZF.Tools.pdb" />
+    <Content Include="Bin\VZF.Types.dll" />
+    <Content Include="Bin\VZF.Types.pdb" />
+    <Content Include="Bin\VZF.Utils.dll" />
+    <Content Include="Bin\VZF.Utils.pdb" />
     <Content Include="controls\AlbumImageList.ascx" />
     <Content Include="controls\AlbumList.ascx" />
     <Content Include="controls\BuddyList.ascx" />
@@ -4231,6 +4275,9 @@
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
     <Content Include="app_my.config" />
+    <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
+    <Content Include="Bin\policy.2.0.Npgsql.config" />
+    <Content Include="Bin\VZF.dll.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -4329,9 +4376,6 @@
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
     <None Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -5976,21 +6020,37 @@
       <Project>{F8516C67-92BE-43FF-A8A9-B71A3EA4BE0D}</Project>
       <Name>Intelligencia.UrlRewriter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
+      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
+      <Name>VZF.Classes.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Controls\VZF.Controls.csproj">
+      <Project>{c72a5fc8-4b1c-4a24-a306-fb550729dbf0}</Project>
+      <Name>VZF.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Core\VZF.Core.csproj">
+      <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
+      <Name>VZF.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
-      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
+      <Project>{80f590ea-cc91-4286-b8ed-b173fecf0d90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Kernel\VZF.Kernel.csproj">
-      <Project>{7C5BB2BF-C385-49D2-937F-F4CE8E368CC3}</Project>
+      <Project>{7c5bb2bf-c385-49d2-937f-f4ce8e368cc3}</Project>
       <Name>VZF.Kernel</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Providers\VZF.Providers.Common\VZF.Providers.Common.csproj">
-      <Project>{E9ABBE0E-2961-4D7C-A7D9-8C114747E5C1}</Project>
+      <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
       <Name>VZF.Providers.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
-      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
+      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
       <Name>VZF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Utils\VZF.Utils.csproj">
+      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
+      <Name>VZF.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -6029,7 +6089,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>11457</DevelopmentServerPort>
+          <DevelopmentServerPort>25541</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

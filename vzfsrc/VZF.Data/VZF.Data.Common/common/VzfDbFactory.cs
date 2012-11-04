@@ -588,175 +588,229 @@ namespace YAF.Classes.Data
             }
         }
 
-      public static void album_image_download(int? mid, object ImageID)
-      {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": MsSql.Db.album_image_download(connectionString, ImageID); break;
-              case "Npgsql": Postgre.Db.album_image_download(connectionString, ImageID); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_download(connectionString, ImageID); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_download(connectionString, ImageID); break;
-              // case "oracle":  orPostgre.Db.album_image_download(connectionString, ImageID); break;
-              // case "db2": db2Postgre.Db.album_image_download(connectionString, ImageID); break;
-              // case "other": othPostgre.Db.album_image_download(connectionString, ImageID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-
+        /// <summary>
+        /// Saved downloaded image.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="ImageID">The image id.</param>
+        public static void album_image_download(int? mid, object ImageID)
+        {
+            string dataEngine;
+            string namePattern = string.Empty;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": MsSql.Db.album_image_download(connectionString, ImageID); break;
+                case "Npgsql": Postgre.Db.album_image_download(connectionString, ImageID); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_download(connectionString, ImageID); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_download(connectionString, ImageID); break;
+                // case "oracle":  orPostgre.Db.album_image_download(connectionString, ImageID); break;
+                // case "db2": db2Postgre.Db.album_image_download(connectionString, ImageID); break;
+                // case "other": othPostgre.Db.album_image_download(connectionString, ImageID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// All album images for a user.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="userID">The user ID.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with album images for a user.</returns>
+        public static DataTable album_images_by_user(int? mid, [NotNull] object userID)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": return MsSql.Db.album_images_by_user(connectionString, userID);
+                case "Npgsql": return Postgre.Db.album_images_by_user(connectionString, userID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_images_by_user(connectionString, userID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_images_by_user(connectionString, userID);
+                // case "oracle":  return orPostgre.Db.album_images_by_user(connectionString, userID); 
+                // case "db2":  return db2Postgre.Db.album_images_by_user(connectionString, userID); 
+                // case "other":  return othPostgre.Db.album_images_by_user(connectionString, userID); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Image list in an album.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <param name="ImageID">The image ID.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with album images for an album.</returns>
+        public static DataTable album_image_list(int? mid, object AlbumID, object ImageID)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": return MsSql.Db.album_image_list(connectionString, AlbumID, ImageID);
+                case "Npgsql": return Postgre.Db.album_image_list(connectionString, AlbumID, ImageID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_image_list(connectionString, AlbumID, ImageID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_image_list(connectionString, AlbumID, ImageID);
+                // case "oracle":  return orPostgre.Db.album_image_list(connectionString, AlbumID, ImageID);
+                // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                // case "other":  return othPostgre.Db.album_image_list(connectionString, AlbumID, ImageID); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+                    break;
           }
-      }
+        }
+        
+        /// <summary>
+        /// Saves an image in an album.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="ImageID">The image Id.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <param name="Caption">The album caption.</param>
+        /// <param name="FileName">The image file name.</param>
+        /// <param name="Bytes">Image size in bytes.</param>
+        /// <param name="ContentType">The content type.</param>
+        public static void album_image_save(int? mid, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
+        {
+            string dataEngine;
+            string namePattern = string.Empty;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":  MsSql.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                case "Npgsql": Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                // case "oracle":  orPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                // case "db2": db2Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                // case "other": othPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Album list.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="UserID">The userId.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with an album list.</returns>
+        public static DataTable album_list(int? mid, object UserID, object AlbumID)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": return MsSql.Db.album_list(connectionString, UserID,  AlbumID);
+                case "Npgsql": return Postgre.Db.album_list(connectionString, UserID,  AlbumID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_list(connectionString, UserID,  AlbumID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_list(connectionString, UserID,  AlbumID);
+                // case "oracle":  return orPostgre.Db.album_list(connectionString, UserID,  AlbumID);
+                // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
+                // case "other":  return othPostgre.Db.album_list(connectionString, UserID,  AlbumID); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Saves an album.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="AlbumID">The album Id.</param>
+        /// <param name="UserID">The user Id.</param>
+        /// <param name="Title">An album title.</param>
+        /// <param name="CoverImageID">The album cover image id.</param>
+        /// <returns>Returns a <see cref="T:System.Int32"/> with a saved album Id.</returns>
+        public static int album_save(int? mid, object AlbumID, object UserID, object Title, object CoverImageID)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": return MsSql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                case "Npgsql": return Postgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                case "MySql.Data.MySqlClient": return MySqlDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                // case "oracle":  return orPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
+                // case "other":  return othPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Deletes an attachment by its id.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="attachmentID">The attachment id.</param>
+        public static void attachment_delete(int? mid, object attachmentID)
+        {
+            string dataEngine;
+            string namePattern = string.Empty;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":  MsSql.Db.attachment_delete(connectionString, attachmentID); break;
+                case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+        
+        /// <summary>
+        /// Download an attachment with an Id.
+        /// </summary>
+        /// <param name="mid">The module ID.</param>
+        /// <param name="attachmentID">The attachmentId</param>
+        public static void attachment_download(int? mid, object attachmentID)
+        {
+            string dataEngine;
+            string namePattern = string.Empty;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":  MsSql.Db.attachment_delete(connectionString, attachmentID); break;
+                case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
+                case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
+                case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
+                // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
-      public static DataTable album_images_by_user(int? mid, [NotNull] object userID)
-      {
-          string dataEngine;
-          string connectionString;
-          string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": return MsSql.Db.album_images_by_user(connectionString, userID);
-              case "Npgsql": return Postgre.Db.album_images_by_user(connectionString, userID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_images_by_user(connectionString, userID);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_images_by_user(connectionString, userID);
-              // case "oracle":  return orPostgre.Db.album_images_by_user(connectionString, userID); 
-              // case "db2":  return db2Postgre.Db.album_images_by_user(connectionString, userID); 
-              // case "other":  return othPostgre.Db.album_images_by_user(connectionString, userID); 
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
-
-      public static DataTable album_image_list(int? mid, object AlbumID, object ImageID)
-      {
-          string dataEngine;
-          string connectionString;
-          string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": return MsSql.Db.album_image_list(connectionString, AlbumID, ImageID); 
-              case "Npgsql": return Postgre.Db.album_image_list(connectionString, AlbumID, ImageID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_image_list(connectionString, AlbumID, ImageID); 
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_image_list(connectionString, AlbumID, ImageID); 
-              // case "oracle":  return orPostgre.Db.album_image_list(connectionString, AlbumID, ImageID); 
-              // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-              // case "other":  return othPostgre.Db.album_image_list(connectionString, AlbumID, ImageID); 
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-                  break;
-
-          }
-      }
-
-      public static void album_image_save(int? mid, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
-      {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient":  MsSql.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              case "Npgsql": Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              // case "oracle":  orPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              // case "db2": db2Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              // case "other": othPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
-
-      public static DataTable album_list(int? mid, object UserID, object AlbumID)
-      {
-          string dataEngine;
-          string connectionString;
-          string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": return MsSql.Db.album_list(connectionString, UserID,  AlbumID);
-              case "Npgsql": return Postgre.Db.album_list(connectionString, UserID,  AlbumID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_list(connectionString, UserID,  AlbumID);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_list(connectionString, UserID,  AlbumID);
-              // case "oracle":  return orPostgre.Db.album_list(connectionString, UserID,  AlbumID);
-              // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
-              // case "other":  return othPostgre.Db.album_list(connectionString, UserID,  AlbumID); 
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
-
-      public static int album_save(int? mid, object AlbumID, object UserID, object Title, object CoverImageID)
-      {
-          string dataEngine;
-          string connectionString;
-          string namePattern = string.Empty;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": return MsSql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              case "Npgsql": return Postgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              // case "oracle":  return orPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
-              // case "other":  return othPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
-
-      public static void attachment_delete(int? mid, object attachmentID)
-      {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient":  MsSql.Db.attachment_delete(connectionString, attachmentID); break;
-              case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
-      public static void attachment_download(int? mid, object attachmentID)
-      {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient":  MsSql.Db.attachment_delete(connectionString, attachmentID); break;
-              case "Npgsql": Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-              case "MySql.Data.MySqlClient": MySqlDb.Db.attachment_delete(connectionString, attachmentID); break;
-              case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-              // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
       public static DataTable attachment_list(int? mid, object messageID, object attachmentID, object boardId, object pageIndex, object pageSize)
       {
           string dataEngine;
@@ -2675,7 +2729,7 @@ namespace YAF.Classes.Data
              // return filtered forums...
              return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
          }
-         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, int startForumId, bool includeNoAccess)
+         public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, List<int> startForumId, bool includeNoAccess)
          {
              string dataEngine;
              string connectionString;
@@ -2737,7 +2791,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         public static DataTable GetSearchResult(int? mid, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
+         public static DataTable GetSearchResult(int? mid, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName, bool includeChildren)
          {
              string dataEngine;
              string connectionString;
@@ -2746,13 +2800,13 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 case "System.Data.SqlClient": return MsSql.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 case "Npgsql": return Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 case "MySql.Data.MySqlClient": return MySqlDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 // case "oracle":  return orPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 // case "db2":  return db2Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName);
-                 // case "other":  return othPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName); 
+                 case "System.Data.SqlClient": return MsSql.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName,includeChildren);
+                 case "Npgsql": return Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName,includeChildren);
+                 // case "oracle":  return orPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                 // case "db2":  return db2Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                 // case "other":  return othPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
@@ -6992,6 +7046,48 @@ namespace YAF.Classes.Data
                  // case "oracle":  return orPostgre.Db.user_viewallthanks(connectionString, UserID, pageUserId);
                  // case "db2":  return db2Postgre.Db.user_viewallthanks(connectionString, UserID, pageUserId);
                  // case "other":  return othPostgre.Db.user_viewallthanks(connectionString, UserID, pageUserId); 
+                 default:
+                     throw new ArgumentOutOfRangeException(dataEngine);
+             }
+
+         }
+         static public DataTable user_viewthanksfrom(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+         {
+             string dataEngine;
+             string connectionString;
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+             switch (dataEngine)
+             {
+                 case "System.Data.SqlClient": return MsSql.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "Npgsql": return Postgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "oracle":  return orPostgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "db2":  return db2Postgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "other":  return othPostgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 default:
+                     throw new ArgumentOutOfRangeException(dataEngine);
+             }
+
+         }
+         static public DataTable user_viewthanksto(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+         {
+             string dataEngine;
+             string connectionString;
+             string namePattern = string.Empty;
+             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+             switch (dataEngine)
+             {
+                 case "System.Data.SqlClient": return MsSql.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "Npgsql": return Postgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "oracle":  return orPostgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "db2":  return db2Postgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                 // case "other":  return othPostgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
              }

@@ -366,13 +366,6 @@ namespace YAF.Core.Tasks
     private static readonly string[] BlockingTaskNames = Constants.ForumRebuild.BlockingTaskNames;
     
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ForumSaveTask"/> class.
-    /// </summary>
-    public ForumSaveTask()
-    {
-        
-    }
       /// <summary>
       /// The start.
       /// </summary>
@@ -408,7 +401,7 @@ namespace YAF.Core.Tasks
       {
         return 0;
       }
-      long newForumId = (int)forumId;
+      //  long newForumId = (int)forumId;
       if (!YafContext.Current.Get<ITaskModuleManager>().AreTasksRunning(BlockingTaskNames))
       {
           YafContext.Current.Get<ITaskModuleManager>().StartTask(

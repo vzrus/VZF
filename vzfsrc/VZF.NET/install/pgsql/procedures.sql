@@ -1717,7 +1717,7 @@ a.posted AS "LastPost",
 a.userid AS "LastUserID",
 e.name AS "LastUser",
 e.displayname,
-(CASE WHEN (i_usestylednicks) THEN e.userstyle ELSE '' END) AS "LastUserStyle"
+(CASE WHEN (i_usestylednicks) THEN COALESCE(e.userstyle,'') ELSE '' END) AS "LastUserStyle"
 INTO _rec."LastPostInfoID",
      _rec."LastPost",
 	 _rec."LastUserID",
@@ -3787,7 +3787,7 @@ FOR _rec IN
  				INNER JOIN databaseSchema.objectQualifier_group b 
  				ON b.groupid=a.groupid				
  			 WHERE 
- 			x.moderatoraccess > 0 AND	x.admingroup = 0 
+ 			x.moderatoraccess > 0 AND x.admingroup = 0 
  			GROUP BY
  				a.userid,x.forumid		
  		) acc ON usr.userid = acc.userid
@@ -13484,10 +13484,78 @@ FOR _rec in
 		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
 		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
 		join databaseSchema.objectQualifier_user b on c.userid = b.userid                
-     --   join databaseSchema.objectQualifier_vaccess_combo t on c.messageid = t.messageid
-        where    
-		     --  x."ReadAccess" is true  AND
-			--    x."UserID" = i_pageuserid	AND	
+        join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
+        where 
+		     ac.readaccess and 
+			 a.topicmovedid IS NULL and	
+			 			( t.thanksfromuserid = i_userid 
+			OR t.thankstouserid = i_userid )	and		    
+			-- is approved	
+                (c.flags & 2) = 2                
+				-- not deleted
+                AND COALESCE(a.flags,0) & 8 <> 8
+                AND COALESCE(c.flags,0) & 8 <> 8
+				ORDER BY c.posted DESC
+		loop
+		RETURN NEXT _rec;
+		end loop;   
+    END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
+  --GO
+
+  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewallthanksfrom(
+                            i_userid integer,
+							i_pageuserid integer,
+							i_pageindex integer,
+						    i_pagesize integer)
+				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewallthanks_return_type 
+AS
+$BODY$DECLARE 
+             ici_totalrows int :=0; 
+			 ici_FirstSelectRowID int :=0; 
+			 ici_firstselectrownumber int :=0; 
+             _rec databaseSchema.objectQualifier_user_viewallthanks_return_type%ROWTYPE;
+BEGIN
+ i_pageindex := i_pageindex + 1;
+		 
+		select count(1) into ici_totalrows 
+		        from
+		databaseSchema.objectQualifier_thanks t
+		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
+		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_user b on c.userid = b.userid                
+        join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
+        where 
+		     ac.readaccess and
+			 a.topicmovedid IS NULL and	
+			 			 t.thanksfromuserid = i_userid 
+				and		    
+			-- is approved	
+                (c.flags & 2) = 2                
+				-- not deleted
+                AND COALESCE(a.flags,0) & 8 <> 8
+                AND COALESCE(c.flags,0) & 8 <> 8 ;
+			
+        ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize; 
+FOR _rec in
+    SELECT  t.thanksfromuserid,    
+                t.thankstouserid,
+                c.messageid,
+                a.forumid,
+                a.topicid,
+                a.topic,
+                b.userid,               
+                c.posted,
+                c.message,
+                c.flags
+        from
+		databaseSchema.objectQualifier_thanks t
+		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
+		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
+        where 
+		     ac.readaccess and
 			-- is apploved	
                 (c.flags & 2) = 2
                 AND a.topicmovedid IS NULL
@@ -13495,15 +13563,83 @@ FOR _rec in
                 AND COALESCE(a.flags,0) & 8 <> 8
                 AND COALESCE(c.flags,0) & 8 <> 8
                 and
-			( t.thanksfromuserid = i_userid 
-			OR t.thankstouserid = i_userid )
+			 t.thanksfromuserid = i_userid		and		    
+			-- is approved	
+                (c.flags & 2) = 2                
+				-- not deleted
+                AND COALESCE(a.flags,0) & 8 <> 8
+                AND COALESCE(c.flags,0) & 8 <> 8 	
+		ORDER BY c.posted DESC OFFSET ici_firstselectrownumber LIMIT i_pagesize
+		loop	
+        RETURN NEXT _rec;       
+		end loop;   
+    END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
+  --GO
 
-		
-		ORDER BY c.posted DESC
-		loop
-		IF (SELECT "ReadAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_pageuserid, _rec."ForumID") LIMIT 1) > 0 THEN
-RETURN NEXT _rec;
- END IF;
+  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewallthanksto(
+                            i_userid integer,
+							i_pageuserid integer,
+							i_pageindex integer,
+						    i_pagesize integer)
+				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewallthanks_return_type 
+AS
+$BODY$DECLARE 
+             ici_totalrows int :=0; 
+			 ici_FirstSelectRowID int :=0; 
+			 ici_firstselectrownumber int :=0; 
+             _rec databaseSchema.objectQualifier_user_viewallthanks_return_type%ROWTYPE;
+BEGIN
+ i_pageindex := i_pageindex + 1;
+		 
+		select count(1) into ici_totalrows 
+		        from
+		databaseSchema.objectQualifier_thanks t
+		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
+		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_user b on c.userid = b.userid                
+        join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
+        where 
+		     ac.readaccess > 0 and
+			 a.topicmovedid IS NULL and	
+			 t.thankstouserid = i_userid 	and		    
+			-- is approved	
+                (c.flags & 2) = 2                
+				-- not deleted
+                AND COALESCE(a.flags,0) & 8 <> 8
+                AND COALESCE(c.flags,0) & 8 <> 8 ;
+			
+        ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize; 
+FOR _rec in
+    SELECT  t.thanksfromuserid,    
+                t.thankstouserid,
+                c.messageid,
+                a.forumid,
+                a.topicid,
+                a.topic,
+                b.userid,               
+                c.posted,
+                c.message,
+                c.flags
+        from
+		databaseSchema.objectQualifier_thanks t
+		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
+		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
+        where 
+		     ac.readaccess > 0 and
+			-- is apploved	
+                (c.flags & 2) = 2
+                AND a.topicmovedid IS NULL
+				-- not deleted
+                AND COALESCE(a.flags,0) & 8 <> 8
+                AND COALESCE(c.flags,0) & 8 <> 8
+                and
+			t.thankstouserid = i_userid 		
+		ORDER BY c.posted DESC OFFSET ici_firstselectrownumber LIMIT i_pagesize
+		loop	
+        RETURN NEXT _rec;       
 		end loop;   
     END;
 $BODY$

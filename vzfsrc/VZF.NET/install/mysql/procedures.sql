@@ -684,6 +684,10 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_repliedtopic;
 
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_viewallthanks;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_viewthanksfrom;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_viewthanksto;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_lazydata;
 --GO
 
@@ -11761,7 +11765,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewallthanks(I_UserID int
 		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
                 left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
                 join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
-				join {databaseName}.{objectQualifier}activeaccess x on x.ForumID = a.ForumID
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
         where   x.ReadAccess > 0
                 AND x.UserID = I_PageUserID
 				-- Message IsApproved
@@ -11778,9 +11782,117 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewallthanks(I_UserID int
     END;
 --GO
 
+CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewthanksfrom(
+I_UserID int, 
+I_PageUserID int,  
+i_PageIndex int,
+i_PageSize int)
+    READS SQL DATA
+    BEGIN
+	     declare ici_TotalRows int ;
+   declare ici_FirstSelectRowNumber int ;
+   declare ici_FirstSelectRowID int;	
+   set i_PageIndex = i_PageIndex + 1; 
+
+   		select  count(1) into  ici_TotalRows FROM   {databaseName}.{objectQualifier}thanks t 
+		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
+                left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
+                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+        where   x.ReadAccess > 0
+                AND x.UserID = I_PageUserID
+				-- Message IsApproved
+                AND (c.Flags & 16) = 16
+                AND a.TopicMovedID IS NULL
+				-- Topic IsDeleted
+                AND (a.Flags & 8) <> 8
+				-- Message IsDeleted
+                AND (c.Flags & 8) <> 8
+                AND
+				 t.ThanksFromUserID = I_UserID ;
+	
+         select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
+       
+   set @uvfpr = CONCAT('select
+		b.*,
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+      FROM   {databaseName}.{objectQualifier}thanks t 
+		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
+                left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
+                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+        where   x.ReadAccess > 0
+                AND x.UserID = ',I_PageUserID,'
+				-- Message IsApproved
+                AND (c.Flags & 16) = 16
+                AND a.TopicMovedID IS NULL
+				-- Topic IsDeleted
+                AND (a.Flags & 8) <> 8
+				-- Message IsDeleted
+                AND (c.Flags & 8) <> 8
+                AND
+				 t.ThanksFromUserID = ',I_UserID,') ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+    PREPARE stmt_uvfpr FROM @uvfpr;
+    EXECUTE stmt_uvfpr;   
+    END;
+--GO
+CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewthanksto(
+I_UserID int, 
+I_PageUserID int,  
+i_PageIndex int,
+i_PageSize int)
+    READS SQL DATA
+    BEGIN
+	     declare ici_TotalRows int ;
+   declare ici_FirstSelectRowNumber int ;
+   declare ici_FirstSelectRowID int;	
+   set i_PageIndex = i_PageIndex + 1; 
+
+   		select  count(1) into  ici_TotalRows FROM   {databaseName}.{objectQualifier}thanks t 
+		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
+                left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
+                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+        where   x.ReadAccess > 0
+                AND x.UserID = I_PageUserID
+				-- Message IsApproved
+                AND (c.Flags & 16) = 16
+                AND a.TopicMovedID IS NULL
+				-- Topic IsDeleted
+                AND (a.Flags & 8) <> 8
+				-- Message IsDeleted
+                AND (c.Flags & 8) <> 8
+                AND
+				t.thankstouserID = I_UserID ;
+	
+         select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
+       
+   set @uvfpr = CONCAT('select
+		b.*,
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+      FROM   {databaseName}.{objectQualifier}thanks t 
+		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
+                left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
+                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+        where   x.ReadAccess > 0
+                AND x.UserID = ',I_PageUserID,'
+				-- Message IsApproved
+                AND (c.Flags & 16) = 16
+                AND a.TopicMovedID IS NULL
+				-- Topic IsDeleted
+                AND (a.Flags & 8) <> 8
+				-- Message IsDeleted
+                AND (c.Flags & 8) <> 8
+                AND
+				t.thankstouserID = ',I_UserID,' ) ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+    PREPARE stmt_uvfpr FROM @uvfpr;
+    EXECUTE stmt_uvfpr;   
+    END;
+--GO
+
+
 /* End of procedures for "Thanks" Mod */
-
-
 
 /* Stored procedures for Buddy feature */
 CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_addrequest

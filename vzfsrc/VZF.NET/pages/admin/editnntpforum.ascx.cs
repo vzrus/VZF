@@ -255,7 +255,7 @@ namespace YAF.Pages.Admin
                 YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
                    JavaScriptBlocks.DynatreeSelectSingleNodeLazyJS("tree",
                    PageContext.PageUserID, PageContext.PageBoardID, "echoActive", activeNode, args, "{0}resource.ashx?tjl".FormatWith(
-                   YafForumInfo.ForumClientFileRoot)));
+                   YafForumInfo.ForumClientFileRoot),"&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetBasePath()))));
                 YafContext.Current.PageElements.RegisterJsBlock("btnshowtree",
                   JavaScriptBlocks.ButtonShowForumInNNTPTree("tree","btnshowtree",activeNode));
             }

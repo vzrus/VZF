@@ -17,9 +17,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-using VZF.Types.Data;
-
 namespace YAF.Classes.Data.MsSql
 {
     #region Using
@@ -961,15 +958,19 @@ namespace YAF.Classes.Data.MsSql
         /// The forum list all.
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString,int boardId, int userId, int startForumId)
+        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString,int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
             var forumIds = new List<int>();
             var tempForumIds = new List<int>();
-
-            forumIds.Add(startForumId);
-            tempForumIds.Add(startForumId);
+            int ftoadd = 0;
+            if (startForumId.Any())
+            {
+                ftoadd = startForumId.First(f => f > -1);
+            }
+            forumIds.Add(ftoadd);
+            tempForumIds.Add(ftoadd);
 
             while (true)
             {
@@ -1032,12 +1033,13 @@ namespace YAF.Classes.Data.MsSql
             [NotNull] string toSearchFromWho,
             SearchWhatFlags searchFromWhoMethod,
             SearchWhatFlags searchWhatMethod,
-          int forumIDToStartAt,
+            List<int> categoryId,
+          List<int> forumIDToStartAt,
           int userID,
           int boardId,
           int maxResults,
           bool useFullText,
-          bool searchDisplayName)
+          bool searchDisplayName,bool includeChildren)
         {
             if (toSearchWhat == "*")
             {
@@ -1046,7 +1048,7 @@ namespace YAF.Classes.Data.MsSql
 
             IEnumerable<int> forumIds = new List<int>();
 
-            if (forumIDToStartAt != 0)
+            if (forumIDToStartAt.Any())
             {
                 forumIds = ForumListAll(connectionString,boardId, userID, forumIDToStartAt).Select(f => f.ForumID ?? 0).Distinct();
             }
@@ -10303,6 +10305,55 @@ namespace YAF.Classes.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("UserID", UserID);
                 cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        ///   are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page User ID.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksfrom(string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("user_viewthanksfrom"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("UserID", UserID);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("PageSize", pageSize);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        ///   are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page User ID.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksto(string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("user_viewthanksto"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("UserID", UserID);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("PageSize", pageSize);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }

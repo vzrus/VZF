@@ -48,7 +48,7 @@ namespace YAF.Classes.Data.FirebirdDb
 	/// <summary>
 	/// All the Database functions for YAF
 	/// </summary>
-	public static partial class Db
+	public static class Db
 	{
 		//added vzrus
 		#region ConnectionStringOptions
@@ -756,7 +756,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		/// <param name="fid"></param>
 		/// <param name="UserID">ID of user</param>
 		/// <returns>Results</returns>
-        public static DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
+        public static DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText, bool searchDisplayName, bool includeChildren)
 		{
 
             /*     if (toSearchWhat == "*")
@@ -786,7 +786,7 @@ namespace YAF.Classes.Data.FirebirdDb
 
             IEnumerable<int> forumIds = new List<int>();
 
-            if (forumIDToStartAt != 0)
+            if (forumIDToStartAt.Any())
             {
                 forumIds = ForumListAll(connectionString, boardId, userID, forumIDToStartAt).Select(f => f.ForumID ?? 0).Distinct();
             }
@@ -807,7 +807,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			string limitString = "";
 			string orderString = "";
 
-			if (forumIDToStartAt != 0)
+            if (forumIDToStartAt.Any())
 			{
                 DataTable dt = forum_listall_sorted(connectionString, boardId, userID, null, false, forumIDToStartAt);
 				foreach (DataRow dr in dt.Rows)
@@ -996,7 +996,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 
 			// Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
-			if (forumIDToStartAt > 0)
+			if (forumIDToStartAt.Any())
 			{
 				searchSql += string.Format(@"AND a.FORUMID IN ({0})", forumIDs);
 			}
@@ -2528,45 +2528,48 @@ namespace YAF.Classes.Data.FirebirdDb
 				return FbDbAccess.GetData(cmd,connectionString);
 			}
 		}
+        
         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
-    {
-        return forum_listall(connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
-    }
-         [NotNull]
-        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
-         {
-             return bbcode_list(connectionString, boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
-         }
-         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, int startForumId)
-    {
-        var allForums = ForumListAll(connectionString, boardId, userId);
-
-      var forumIds = new List<int>();
-      var tempForumIds = new List<int>();
-
-      forumIds.Add(startForumId);
-      tempForumIds.Add(startForumId);
-
-      while (true)
-      {
-        var temp = allForums.Where(f => tempForumIds.Contains(f.ParentID ?? 0));
-
-        if (!temp.Any())
         {
-          break;
+            return forum_listall(connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
         }
-
-        // replace temp forum ids with these...
-        tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
-
-        // add them...
-        forumIds.AddRange(tempForumIds);
-      }
-
-      // return filtered forums...
-      return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
-    }
-
+        
+        [NotNull]
+        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
+        {
+            return bbcode_list(connectionString, boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
+        }
+        
+        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, List<int> startForumId)
+        {
+            var allForums = ForumListAll(connectionString, boardId, userId);
+            var forumIds = new List<int>();
+            var tempForumIds = new List<int>();
+            int addF = 0; 
+            if (startForumId.Any())
+            {
+               addF = startForumId.First(f => f >-1);
+            }
+            forumIds.Add(addF);
+            tempForumIds.Add(addF);
+            
+            while (true)
+            {
+                var temp = allForums.Where(f => tempForumIds.Contains(f.ParentID ?? 0));
+                if (!temp.Any())
+                {
+                    break;
+                }
+                
+                // replace temp forum ids with these...
+                tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
+                // add them...
+                forumIds.AddRange(tempForumIds);
+            }
+            
+            // return filtered forums...
+            return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
+        }
 
 		/// <summary>
 		/// Lists forums very simply (for URL rewriting)
@@ -2665,10 +2668,7 @@ namespace YAF.Classes.Data.FirebirdDb
             [NotNull] object findLastRead)
 		{
 
-			DataTable dt1 = null;
-			DataTable dt2 = null;
-
-			if (categoryID == null) { categoryID = DBNull.Value; }
+		if (categoryID == null) { categoryID = DBNull.Value; }
 			if (parentID == null) { parentID = DBNull.Value; }
 		   /* using (FbCommand cmd0 = FbDbAccess.GetCommand("EXECUTE BLOCK as BEGIN IF (NOT EXISTS( SELECT 1 FROM  RDB$RELATIONS a WHERE a.RDB$RELATION_NAME='objQual_TMP_FLR')) THEN EXECUTE STATEMENT 'CREATE GLOBAL TEMPORARY TABLE objQual_TMP_FLR(CATEGORYID INTEGER, CATEGORY VARCHAR(128),FORUMID INTEGER, FORUM VARCHAR(128), DESCRIPTION VARCHAR(128),TOPICS INTEGER, POSTS INTEGER, SUBFORUMS INTEGER, FLAGS INTEGER, VIEWING INTEGER,REMOTEURL VARCHAR(255), READACCESS INTEGER, LASTTOPICID INTEGER, LASTPOSTED TIMESTAMP) ON COMMIT DELETE ROWS';END",true))
 			{
@@ -3009,19 +3009,19 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
  
 
-         public static DataTable forum_listall_sorted(string connectionString, object boardID, object userID, int[] forumidExclusions, bool emptyFirstRow, int startAt)
+         public static DataTable forum_listall_sorted(string connectionString, object boardID, object userID, int[] forumidExclusions, bool emptyFirstRow, List<int> startAt)
 		{
             using (DataTable dataTable = forum_listall(connectionString, boardID, userID, startAt,false))
 			{
 				int baseForumId = 0;
 				int baseCategoryId = 0;
 
-				if (startAt != 0)
+				if (startAt.Any())
 				{
 					// find the base ids...
 					foreach (DataRow dataRow in dataTable.Rows)
 					{
-                        if (Convert.ToInt32(dataRow["ForumID"]) == startAt && dataRow["ParentID"] != DBNull.Value &&
+                        if (Convert.ToInt32(dataRow["ForumID"]) == startAt.First(f => f > -1) && dataRow["ParentID"] != DBNull.Value &&
                 dataRow["CategoryID"] != DBNull.Value)
 						{
 							baseForumId = Convert.ToInt32(dataRow["ParentID"]);
@@ -7739,6 +7739,49 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
     /// <summary>
+    /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+    /// are thanked by other users.
+    /// </summary>
+    /// <param name="UserID">
+    /// The user id.
+    /// </param>
+    /// <returns>
+    /// </returns>
+    public static DataTable user_viewthanksto(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+    {
+        using (FbCommand cmd = FbDbAccess.GetCommand("user_viewthanksto"))
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("I_USERID", FbDbType.Integer).Value = UserID;
+            cmd.Parameters.Add("I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
+            cmd.Parameters.Add("I_PAGEINDEX", FbDbType.Integer).Value = pageIndex;
+            cmd.Parameters.Add("I_PAGESIZE", FbDbType.Integer).Value = pageSize;
+            return FbDbAccess.GetData(cmd, connectionString);
+        }
+    }
+    /// <summary>
+    /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+    /// are thanked by other users.
+    /// </summary>
+    /// <param name="UserID">
+    /// The user id.
+    /// </param>
+    /// <returns>
+    /// </returns>
+    public static DataTable user_viewthanksfrom(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+    {
+        using (FbCommand cmd = FbDbAccess.GetCommand("user_viewthanksfrom"))
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("I_USERID", FbDbType.Integer).Value = UserID;
+            cmd.Parameters.Add("I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
+            cmd.Parameters.Add("I_PAGEINDEX", FbDbType.Integer).Value = pageIndex;
+            cmd.Parameters.Add("I_PAGESIZE", FbDbType.Integer).Value = pageSize;
+            return FbDbAccess.GetData(cmd, connectionString);
+        }
+    }
+
+    /// <summary>
     /// Update the single Sign on Status
     /// </summary>
     /// <param name="userID">
@@ -8520,7 +8563,7 @@ namespace YAF.Classes.Data.FirebirdDb
 		}
 
 		// MS SQL Support fulltext....
-		private static bool _fullTextSupported = false;
+		private static bool _fullTextSupported;
 
         public static bool FullTextSupported
 		{

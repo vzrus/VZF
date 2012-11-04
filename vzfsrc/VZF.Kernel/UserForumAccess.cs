@@ -16,7 +16,8 @@
  */
 namespace VZF.Kernel
 {
-    using System;
+    #region Using
+
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -25,12 +26,14 @@ namespace VZF.Kernel
     using YAF.Core;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using YAF.Utils; 
+
+    #endregion
 
     public class UserForumAccess
     {
-        private static string yesImage;
-        private static string noImage;
+        private static string _yesImage;
+        private static string _noImage;
 
         public static List<UserAccessMasksResult> GetUserAccessListBase(int userId)
         {
@@ -97,17 +100,14 @@ namespace VZF.Kernel
                     }
                 }
             }
-            else
-            {
-            }
             return values;
         }
 
         // 
         public static string AddAccessImagesAndTips(int userId, int forumId)
         {
-            yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
-            noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
+            _yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
+            _noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
             var values = GetUserAccessListBase(userId);
 
             bool iReadAccess = false;
@@ -237,57 +237,57 @@ namespace VZF.Kernel
                     "img{0}re".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iReadAccess ? "+" : "-"),
                     iReadAccessLegend.TrimEnd(','),
-                    iReadAccess ? yesImage : noImage));
+                    iReadAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                     "img{0}po".FormatWith(forum.ForumId),
                    "{0}".FormatWith(iPostAccess ? "+" : "-"),
                    iPostAccessLegend.TrimEnd(','),
-                   iPostAccess ? yesImage : noImage));
+                   iPostAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}rp".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iReplyAccess ? "+" : "-"),
                     iReplyAccessLegend.TrimEnd(','),
-                    iReplyAccess ? yesImage : noImage));
+                    iReplyAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}pr".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iPriorityAccess ? "+" : "-"),
                     iPriorityAccessLegend.TrimEnd(','),
-                 iPriorityAccess ? yesImage : noImage));
+                 iPriorityAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}pl".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iPollAccess ? "+" : "-"),
                     iPollAccessLegend.TrimEnd(','),
-                    iPollAccess ? yesImage : noImage));
+                    iPollAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}vo".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iVoteAccess ? "+" : "-"),
                     iVoteAccessLegend.TrimEnd(','),
-                    iVoteAccess ? yesImage : noImage));
+                    iVoteAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}mo".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iModeratorAccess ? "+" : "-"),
                     iModeratorAccessLegend.TrimEnd(','),
-                    iModeratorAccess ? yesImage : noImage));
+                    iModeratorAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}ed".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iEditAccess ? "+" : "-"),
                     iEditAccessLegend.TrimEnd(','),
-                    iEditAccess ? yesImage : noImage));
+                    iEditAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}de".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iDeleteAccess ? "+" : "-"),
                     iDeleteAccessLegend.TrimEnd(','),
-                    iDeleteAccess ? yesImage : noImage));
+                    iDeleteAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}up".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iUploadAccess ? "+" : "-"),
                     iUploadAccessLegend.TrimEnd(','),
-                    iUploadAccess ? yesImage : noImage));
+                    iUploadAccess ? _yesImage : _noImage));
                 sb.Append(@"<img id='{0}' alt='{1}'  title='{2}' src='{3}' />".FormatWith(
                      "img{0}dl".FormatWith(forum.ForumId),
                     "{0}".FormatWith(iDownloadAccess ? "+" : "-"),
                     iDownloadAccessLegend.TrimEnd(','),
-                    iDownloadAccess ? yesImage : noImage));
+                    iDownloadAccess ? _yesImage : _noImage));
                 
                 values.Remove(forum);
                 if (forumId == forum.ForumId) break;

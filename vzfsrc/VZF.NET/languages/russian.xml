@@ -378,35 +378,35 @@
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Доступ</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
-    <Resource tag="DELETE_ACCESS_HELP">Allows Users to Delete their own Posts</Resource>
+    <Resource tag="DELETE_ACCESS_HELP">Пользователи могут удалять собственные сообщения.</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Download Access</Resource>
-    <Resource tag="DOWNLOAD_ACCESS_HELP">Allows Users to Download Attachments in Posts.</Resource>
+    <Resource tag="DOWNLOAD_ACCESS_HELP">Пользователи могут скачивать/просматривать вложения к сообщениям.</Resource>
     <Resource tag="EDIT_ACCESS">Edit Access</Resource>
-    <Resource tag="EDIT_ACCESS_HELP">Allows Users to Edit their own Posts.</Resource>
+    <Resource tag="EDIT_ACCESS_HELP">Пользователи могут редактировать собственные сообщения.</Resource>
     <Resource tag="MASK_NAME">Название:</Resource>
     <Resource tag="MASK_NAME_HELP">Название маски доступа</Resource>
     <Resource tag="MASK_ORDER">Сортировка:</Resource>
     <Resource tag="MASK_ORDER_HELP">Порядковый номер для данной маски.</Resource>
     <Resource tag="MODERATOR_ACCESS">Morderator Access</Resource>
-    <Resource tag="MODERATOR_ACCESS_HELP">Allows Users to Edit/Delete all Posts and Topics in a Forum.</Resource>
+    <Resource tag="MODERATOR_ACCESS_HELP">Пользователи могут редактировать или удалять все сообщения и темы фоурма.</Resource>
     <Resource tag="MSG_MASK_NAME">Вы должны ввести название для этой маски доступа.</Resource>
     <Resource tag="MSG_NUMBER_SORT">Вы должны ввести значение от 0 до 32767 для порядкового номера сортировки.</Resource>
     <Resource tag="MSG_POSITIVE_SORT">Порядковый номер должен быть между 0 и 32767.</Resource>
     <Resource tag="POLL_ACCESS">Poll Access</Resource>
-    <Resource tag="POLL_ACCESS_HELP">Allows Users to Create Polls in Topics.</Resource>
+    <Resource tag="POLL_ACCESS_HELP">Пользователи могут создавать опросы в темах.</Resource>
     <Resource tag="POST_ACCESS">Post Access</Resource>
-    <Resource tag="POST_ACCESS_HELP">Allows Users to Post New Topics in a Forum.</Resource>
+    <Resource tag="POST_ACCESS_HELP">Пользователи могут создавать новые темы на форумах.</Resource>
     <Resource tag="PRIORITY_ACCESS">Priority Access</Resource>
-    <Resource tag="PRIORITY_ACCESS_HELP">Allows Users to Change the Priority of Topic (Normal, Sticky, Anouncement).</Resource>
+    <Resource tag="PRIORITY_ACCESS_HELP">Пользователи могут изменять приоритет темы (нормальная, закреплёнаня, объявление).</Resource>
     <Resource tag="READ_ACCESS">Read Access</Resource>
-    <Resource tag="READ_ACCESS_HELP">Allows Users to Read Topics and Messages in a Forum.</Resource>
+    <Resource tag="READ_ACCESS_HELP">Пользователи могут просматривать темы и сообщения в форуме.</Resource>
     <Resource tag="REPLY_ACCESS">Reply Access</Resource>
-    <Resource tag="REPLY_ACCESS_HELP">Allows Users to Reply to existing Topics in a Forum.</Resource>
+    <Resource tag="REPLY_ACCESS_HELP">Пользователи могут оставлять сообщения в существующих темах на фоурме.</Resource>
     <Resource tag="TITLE">Добавить/изменить маску доступа</Resource>
     <Resource tag="UPLOAD_ACCESS">Upload Access</Resource>
-    <Resource tag="UPLOAD_ACCESS_HELP">Allows Users to Upload Attachments in Posts.</Resource>
+    <Resource tag="UPLOAD_ACCESS_HELP">Пользователи могут добавлять вложения  к сообщениям.</Resource>
     <Resource tag="VOTE_ACCESS">Vote Access</Resource>
-    <Resource tag="VOTE_ACCESS_HELP">Allows Users to Vote in Polls.</Resource>
+    <Resource tag="VOTE_ACCESS_HELP">Пользователи могут голосовать в опросах.</Resource>
   </page>
   <page name="ADMIN_EDITBOARD">
     <Resource tag="ADMIN_USER">Создать нового администратора:</Resource>
@@ -975,8 +975,8 @@
     <Resource tag="ENABLE_CAPTCHA_FORPOST_HELP">Требовать от пользователей ввести CAPTCHA когда они оставляют новое сообщение или отвечают на форуме(включая быстрый ответ).</Resource>
     <Resource tag="ENABLE_DISPLAY_NAME">Включить отображаемое имя:</Resource>
     <Resource tag="ENABLE_DISPLAY_NAME_HELP">YAF будет использовать при отображении альтернативные ники.</Resource>
-    <Resource tag="ENABLE_HOVERCARDS">Enable User Info Hover Cards:</Resource>
-    <Resource tag="ENABLE_HOVERCARDS_HELP">If enabled it shows an Hover Card (Which shows some quick info about the user) when you hover an user name. This will also show an Hover Card on the Twitter &amp; Facebook Profile Button.</Resource>
+    <Resource tag="ENABLE_HOVERCARDS">Всплывающая информационная карточка пользователя :</Resource>
+    <Resource tag="ENABLE_HOVERCARDS_HELP">Показывает краткую информацию о пользователе. Информация отображается также на кнопках профиля Twitter &amp; Facebook.</Resource>
     <Resource tag="ENABLE_IRKOO">Использовать службу репутации Irkoo:</Resource>
     <Resource tag="ENABLE_IRKOO_HELP">Irkoo - это бесплатная служба, добавляющая функции репутации к вашему форуму. Посетите &lt;strong&gt;http://www.Irkoo.com&lt;/strong&gt; чтобы получить ID сайта и секретный ключ.</Resource>
     <Resource tag="ENABLE_LOCATIONPATH_ERRORS">Включить журналирование ошибок списка нахождения активных пользователей:</Resource>
@@ -1031,14 +1031,14 @@
     <Resource tag="HEADER_LOG">Настройки журнала</Resource>
     <Resource tag="HEADER_LOGIN">Настройки входа/регистрации</Resource>
     <Resource tag="HEADER_LOGSCOPE">Журналируемые события</Resource>
-    <Resource tag="HEADER_MESSAGE_NOTIFICATION">Message Notification Settings</Resource>
+    <Resource tag="HEADER_MESSAGE_NOTIFICATION">Настройки всплывающих уведомлений</Resource>
     <Resource tag="HEADER_PERMISSION">Настройки разрешений</Resource>
     <Resource tag="HEADER_PMS">Личные сообщения</Resource>
     <Resource tag="HEADER_POLL">Опции опроса</Resource>
     <Resource tag="HEADER_REPUTATION">Настройки репутации</Resource>
     <Resource tag="HEADER_SEARCH">Настройки поиска</Resource>
     <Resource tag="HEADER_SETUP">Настройки хоста</Resource>
-    <Resource tag="HEADER_SHOUT">Shoutbox Settings</Resource>
+    <Resource tag="HEADER_SHOUT">Настройки чата</Resource>
     <Resource tag="HEADER_SPAM">Настройки анти-спама</Resource>
     <Resource tag="HEADER_SYNDICATION">Настройки синдикации</Resource>
     <Resource tag="HEADER_TEMPLATES">Настройки шаблонов</Resource>
@@ -1128,11 +1128,11 @@
     <Resource tag="MEMBERLIST_PAGE_SIZE_HELP">Количество ников на странице списка участников. </Resource>
     <Resource tag="MESSAGE_CHANGE_HISTORY">Время хранения сообщений в архиве</Resource>
     <Resource tag="MESSAGE_CHANGE_HISTORY_HELP">Число дней, пока модифицированные варианты сообщений хранятся в архиве.</Resource>
-    <Resource tag="MESSAGE_SYSTEM">Notification System for System Messages:</Resource>
-    <Resource tag="MESSAGE_SYSTEM_HELP">You can choose Between Modal Dialog or a Top Notification Bar for System Messages.</Resource>
+    <Resource tag="MESSAGE_SYSTEM">Уведомления о системных сообщениях:</Resource>
+    <Resource tag="MESSAGE_SYSTEM_HELP">Вы можете выбрать всплывающее окно  или информационную полоску вверху экрана.</Resource>
     <Resource tag="MOD_CACHE_TIMEOUT">Таймаут кэша модераторов конференции:</Resource>
     <Resource tag="MOD_CACHE_TIMEOUT_HELP">В минутах</Resource>
-    <Resource tag="MODAL_DIALOG">Modal Dialog</Resource>
+    <Resource tag="MODAL_DIALOG">Всплывающее окно</Resource>
     <Resource tag="MODAL_LOGIN">Использовать модальное всплывающее окно для входа:</Resource>
     <Resource tag="MODAL_LOGIN_HELP">Если отключено, то для входа будет использоватьс яотдельная страница.</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE">Размер страницы Мои Темы:</Resource>
@@ -1141,11 +1141,11 @@
     <Resource tag="NAME_LENGTH_HELP">Максимально разрешённая длина имени пользователя и отображаемого имени пользователя.</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS">Использовать тег "NoFollow" в ссылках:</Resource>
     <Resource tag="NOFOLLOW_LINKTAGS_HELP">Все ссылки будут иметь тег nofollow и большинство ботов не будут уходить по ним.</Resource>
-    <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
-    <Resource tag="NOTIFICATION_DURATION">Notification Bar Display Duration:</Resource>
-    <Resource tag="NOTIFICATION_DURATION_HELP">Duration (in Seconds) how long the Bar is displayed.</Resource>
-    <Resource tag="NOTIFICATION_MOBILE">Use Native Message Dialogs on Mobile:</Resource>
-    <Resource tag="NOTIFICATION_MOBILE_HELP">Option to Show Native Notifcation Dialogs on Mobile Devices.</Resource>
+    <Resource tag="NOTIFICATION_BAR">Полоса уведомления</Resource>
+    <Resource tag="NOTIFICATION_DURATION">Продолжительность отображения полосы:</Resource>
+    <Resource tag="NOTIFICATION_DURATION_HELP">Время отображения полосы в секундах.</Resource>
+    <Resource tag="NOTIFICATION_MOBILE">Использовать собственные диалоги для мобильных устройств:</Resource>
+    <Resource tag="NOTIFICATION_MOBILE_HELP">Использовать собственные диалоги для мобильных устройств.</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT">Таймаут кэша пользователя онлайн:</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT_HELP">Вы можете уставливать это значение в зависимости от активности на сайте(в миллисекундах)</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE">Размер файла изображения в опросах:</Resource>
@@ -1160,8 +1160,8 @@
     <Resource tag="POPULAR_VIEWS_HELP">Число просмотров перед тем как тема становится популярной.</Resource>
     <Resource tag="POST_AD">Реклама во 2ом сообщении:</Resource>
     <Resource tag="POST_AD_HELP">Поместите код, который вы желаете отображать во 2ом сообщении каждой темы. Оставьте пустым, если вы не желаете отображать что-либо.</Resource>
-    <Resource tag="POSTED_IMAGE_RESIZE">Resize User Posted Images:</Resource>
-    <Resource tag="POSTED_IMAGE_RESIZE_HELP">Resize user posted images in messages, if there are bigger then the max values bellow.</Resource>
+    <Resource tag="POSTED_IMAGE_RESIZE">Изменить размер размещённых изображений пользователя:</Resource>
+    <Resource tag="POSTED_IMAGE_RESIZE_HELP">Размер не будет превышать максимального значения ниже.</Resource>
     <Resource tag="POSTEDIT_TIMEOUT">Таймаут редактирования поста:</Resource>
     <Resource tag="POSTEDIT_TIMEOUT_HELP">Число секунд, пока пост может быть отредактирован без показа его другим пользователям.</Resource>
     <Resource tag="POSTS_FEEDS_ACCESS">Доступ к лентам сообщений темы:</Resource>
@@ -1232,8 +1232,8 @@
     <Resource tag="SERVER_VERSION_HELP">Какая версия сервера SQL исполняется.</Resource>
     <Resource tag="SERVERTIME_CORRECT">Коррекция временной зоны сервера:</Resource>
     <Resource tag="SERVERTIME_CORRECT_HELP">Введите целое число (минуты) между -720 и 720, только если это время UTC неверно: </Resource>
-    <Resource tag="SHOUTBOX_COUNT">Shoutbox Message Count:</Resource>
-    <Resource tag="SHOUTBOX_COUNT_HELP">The Number of Messages that will be shown in the shoutbox.</Resource>
+    <Resource tag="SHOUTBOX_COUNT">Число сообщений в чате:</Resource>
+    <Resource tag="SHOUTBOX_COUNT_HELP">Число сообщений, которые будут отображаться в окне чата.</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION">Показывать активные обсуждения:</Resource>
     <Resource tag="SHOW_ACTIVE_DISCUSSION_HELP">Включить или отключить отображение активных обсуждений.</Resource>
     <Resource tag="SHOW_ATOM_LINKS">Отображать ссылки на ленты Atom:</Resource>
@@ -3599,7 +3599,7 @@ Spoiler Content
 &lt;p&gt;To remove a Friend from Your List go to your 'My Friends' page. On the Tab 'Friend List' Click on the Button 'Remove Friend' of the User you want to remove&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Your Requests&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The Third Tab of the 'My Friends' Page shows your the Pending Request you have made.&lt;/p&gt;</Resource>
-    <Resource tag="BUDDIESTITLE">Friends</Resource>
+    <Resource tag="BUDDIESTITLE">Друзья</Resource>
     <Resource tag="DISPLAYCONTENT">&lt;p&gt;You have a choice over how you view topics. When you're in a thread, look at the top bar. On the right hand side you'll see 'View'. Click on this and it lets you change how posts are ordered.&lt;/p&gt;
 &lt;p&gt;You have two choices:&lt;/p&gt;
 &lt;ul&gt;

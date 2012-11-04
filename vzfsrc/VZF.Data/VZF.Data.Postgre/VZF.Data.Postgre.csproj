@@ -37,10 +37,6 @@
     <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=2.3.2.632, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\YetAnotherForum.NET\Bin\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Npgsql, Version=2.0.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,22 +52,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="pgsql\AccessClassess.cs" />
@@ -86,15 +66,24 @@
     <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VZF.Data.Mysql\VZF.Data.Mysql.csproj">
-      <Project>{41C7A2FC-480D-4F44-9D04-FD318BE5B306}</Project>
-      <Name>VZF.Data.Mysql</Name>
+    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
+      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
+      <Name>VZF.Classes.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
+      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
+      <Name>VZF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
+      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
+      <Name>VZF.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Utils\VZF.Data.Utils.csproj">
-      <Project>{3E9BE2C0-4AD7-4E58-A58A-24107CD5A7E9}</Project>
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
       <Name>VZF.Data.Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

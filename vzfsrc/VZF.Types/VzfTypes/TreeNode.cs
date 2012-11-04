@@ -1,27 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace VZF.Types
 {
-    public class TreeNode
+    /// <summary>
+    /// Dynatree tree node interface.
+    /// </summary>
+    public interface ITreeItem
+    {
+    }
+    /// <summary>
+    /// Dynatree TreeNode class
+    /// </summary>
+    public class TreeNode : ITreeItem
     {
         /// <summary>
-        /// Title of the Node
+        /// Gets the Title.
         /// </summary>
-        public string title { get; set; }
+        public string title;
+
         /// <summary>
-        /// Parent node of leaf node.
+        /// Gets the Tooltip.
         /// </summary>
-        public bool isFolder { get; set; }
+        public string tooltip;
+
         /// <summary>
-        /// Lazy loading enabled or not.
+        /// Gets the key.
         /// </summary>
-        public bool isLazy { get; set; }
+        public string key;
+
         /// <summary>
-        /// Hidden id of the Node
+        /// Gets the Data.
         /// </summary>
-        public string key { get; set; }
+        public string addClass;
+
+        /// <summary>
+        /// Gets the rel attr.
+        /// </summary>
+        // public string rel;
+
+        /// <summary>
+        /// Gets the State.
+        /// </summary>
+        public bool isFolder;
+
+        /// <summary>
+        /// Gets the State.
+        /// </summary>
+        public bool isLazy;
     }
 }

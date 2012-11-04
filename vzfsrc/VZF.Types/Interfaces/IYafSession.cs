@@ -81,9 +81,9 @@ namespace YAF.Types.Interfaces
         string NntpTreeActiveNode { get; set; }
 
         /// <summary>
-        ///   Gets or sets active node for a search forum tree.
+        ///   Gets or sets selected nodes for a search forum tree.
         /// </summary>
-        Hashtable SearchTreeSelectedNodes { get; set; }
+        string[] SearchTreeSelectedNodes { get; set; }
 
         /// <summary>
         ///   Gets or sets ForumRead.

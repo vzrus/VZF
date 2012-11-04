@@ -134,7 +134,7 @@ namespace YAF.Providers.Membership
 				//Execute
                 providerUserKey = FbDbAccess.GetData(cmd,connectionString ).Rows[0][0];
 				//Retrieve Output Parameters
-                int i = 1;
+               
 				//providerUserKey = paramUserKey.Value;
 
 			}

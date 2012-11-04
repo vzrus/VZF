@@ -38,12 +38,12 @@ namespace YAF.Classes
     /// <summary>
     /// The _builder factory.
     /// </summary>
-    private static ITypeFactoryInstance<IUrlBuilder> _builderFactory = null;
+    private static ITypeFactoryInstance<IUrlBuilder> _builderFactory;
 
     /// <summary>
     /// The _user display name factory.
     /// </summary>
-    private static ITypeFactoryInstance<IUserDisplayName> _userDisplayNameFactory = null;
+    private static ITypeFactoryInstance<IUserDisplayName> _userDisplayNameFactory;
 
     #endregion
 

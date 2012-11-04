@@ -26,7 +26,7 @@ namespace YAF.Modules
   using YAF.Classes;
   using YAF.Core;
   using YAF.Types.Attributes;
-  using YAF.Types.Interfaces; using YAF.Types.Constants;
+  using YAF.Types.Interfaces; 
   using YAF.Types;
   using YAF.Types.Constants;
   using YAF.Utils;

@@ -48,12 +48,12 @@ namespace YAF.Classes
     /// <summary>
     /// The _locked forum.
     /// </summary>
-    private int _lockedForum = 0;
+    private int _lockedForum;
 
     /// <summary>
     /// The _popup.
     /// </summary>
-    private bool _popup = false;
+    private bool _popup;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="YafControlSettings"/> class.

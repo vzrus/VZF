@@ -397,6 +397,7 @@ namespace YAF.Core.Services
             }
         }
 
+
         /// <summary>
         ///   Gets or sets TopicRead.
         /// </summary>
@@ -440,15 +441,15 @@ namespace YAF.Core.Services
         }
 
         /// <summary>
-        ///   Gets or sets active node for a search forum tree.
+        ///   Gets or sets selected nodes for a search forum tree.
         /// </summary>
-        public Hashtable SearchTreeSelectedNodes
+        public string[] SearchTreeSelectedNodes
         {
             get
             {
                 if (this.SessionState["searchtreeselectednodes"] != null)
                 {
-                    return (Hashtable)this.SessionState["searchtreeselectednodes"];
+                    return (string[])this.SessionState["searchtreeselectednodes"];
                 }
 
                 return null;

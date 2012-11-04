@@ -19,7 +19,6 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-[Bb]in
 [Dd]ebug*/
 *.lib
 *.sbr
@@ -30,12 +29,10 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
-VZF.Providers.Mssql/
-VZF.Data.Mssql/
 [Tt]est[Rr]esult*
 vzfsrc/VZF.NET/uploads/
+vzfsrc/VZF.NET/install/mssql
 vzfsrc/vzf.net.sln
-vzfsrc/VZF.NET/app_ms.config
-vzfsrc/VZF.NET/web_ms.config
 vzfsrc/VZF.ImmigrationEnforcement/
-vzfsrc/vzf.full.net.ncrunchsolution
+*.ncrunchsolution
+*.ncrunchproject

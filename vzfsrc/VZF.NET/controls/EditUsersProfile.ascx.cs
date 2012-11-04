@@ -788,10 +788,6 @@ namespace YAF.Controls
 
         #endregion 
        
-        private string GetCulture()
-        {
-            return GetCulture(false);
-        }
 
         /// <summary>
         /// Gets the culture.

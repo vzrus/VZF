@@ -20,10 +20,7 @@
 
 using System.Configuration;
 using System.Diagnostics;
-using Autofac;
 using NpgsqlTypes;
-using VZF.Data.MySqlDb;
-using VZF.Data.Postgre;
 using YAF.Types.Handlers;
 using SettingsPropertyColumn = VZF.Data.Postgre.SettingsPropertyColumn;
 
@@ -684,23 +681,25 @@ namespace YAF.Classes.Data.Postgre
 
         static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions)
         {
-            return forum_listall_sorted(connectionString,boardId, userId, null, false, 0);
+            var d = new List<int>();
+            d.Add(0);
+            return forum_listall_sorted(connectionString,boardId, userId, null, false, d);
         }
 
         //Here
-        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt)
+        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, List<int> startAt)
         {
             using (DataTable dataTable = forum_listall(connectionString, boardId, userId, startAt,false))
             {
                 int baseForumId = 0;
                 int baseCategoryId = 0;
 
-                if (startAt != 0)
+                if (startAt.Any())
                 {
                     // find the base ids..
-                    foreach (DataRow dataRow in dataTable.Rows.Cast<DataRow>().Where(dataRow => Convert.ToInt32(dataRow["ForumID"]) == startAt))
+                    foreach (DataRow dataRow in dataTable.Rows.Cast<DataRow>().Where(dataRow => Convert.ToInt32(dataRow["ForumID"]) == startAt.First(f => f > -1)))
                     {
-                        baseForumId = Convert.ToInt32(dataRow["ParentID"]);
+                        baseForumId = dataRow["ParentID"] != DBNull.Value ? Convert.ToInt32(dataRow["ParentID"]) : 0;
                         baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
                         break;
                     }
@@ -804,7 +803,7 @@ namespace YAF.Classes.Data.Postgre
         /// <param name="fid"></param>
         /// <param name="UserID">ID of user</param>
         /// <returns>Results</returns>
-        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName)
+        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName, bool includeChildren)
         {
             // New access
             /*  if (toSearchWhat == "*")
@@ -832,40 +831,91 @@ namespace YAF.Classes.Data.Postgre
             string forumIDs = "";
             string limitString = "";
             string orderString = "";
+            string categoriesIds = string.Empty;
 
-            if (forumIDToStartAt != 0)
+            StringBuilder searchSql = new StringBuilder();
+            
+            if (categoryId.Any())
             {
-                DataTable dt = forum_listall_sorted(connectionString,boardId, userId, null, false, forumIDToStartAt);
-                foreach (DataRow dr in dt.Rows)
-                    forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]).ToString() + ",";
-                forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+                if (Config.LargeForumTree)
+                {
+                    DataTable dt = Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+                    foreach (DataRow c in dt.Rows)
+                    {
+                        foreach (int c1 in categoryId)
+                        {
+                            if (c["CategoryID"].ToType<int>() == c1)
+                            {
+                                categoriesIds = categoriesIds + "," + c1.ToString();
+                            }
+                        }
+                    }
+                    categoriesIds = categoriesIds.Trim(',');
+                }
             }
 
+            if (forumIDToStartAt.Any())
+            {
+                if (!Config.LargeForumTree)
+                {
+                    DataTable dt = forum_listall_sorted(connectionString, boardId, userId, null, false,
+                                                                forumIDToStartAt);
+                    foreach (DataRow dr in dt.Rows)
+                        forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]).ToString() + ",";
+                    forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+                }
+                else
+                {
+                    foreach (int frms in forumIDToStartAt)
+                    {
+                        var d1 = Db.forum_ns_getchildren_activeuser(connectionString, boardId, 0,
+                                    frms, userId,false, false, "-");
+                        foreach (DataRow r in d1.Rows)
+                        {
+                            forumIDs += "," + r["ForumID"];
+                        }
+                        // Parent forum only.
+                        if (!includeChildren)
+                        {
+                            break;
+                        }
+                    }
+                    forumIDs = forumIDs.Trim(',');
+                }
+            }
+            
             // fix quotes for SQL insertion...
             toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
             toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
-
-            string searchSql = (maxResults == 0) ? "SELECT" : ("SELECT DISTINCT ");
+            searchSql.Append(maxResults == 0 ? "SELECT" : ("SELECT DISTINCT "));
             if (maxResults > 0)
-            { limitString += String.Format(" LIMIT {0} ", maxResults.ToString()); }
+            { 
+                limitString += String.Format(" LIMIT {0} ", maxResults.ToString()); 
+            }
 
-            searchSql += " a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags ";
-            searchSql += "FROM " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") +
-                "." + Config.DatabaseObjectQualifier + "topic a LEFT JOIN " +
-                (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
-                "message c ON a.topicid = c.topicid LEFT JOIN " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier +
-                "user b ON c.userid = b.userid join " + (PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public") + "." + Config.DatabaseObjectQualifier
-                + "vaccess x ON x.forumid=a.forumid ";
-            searchSql += String.Format(@"WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE ", userId);
+            searchSql.Append(" a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags FROM ");
+            searchSql.Append(PostgreDBAccess.GetObjectName("topic"));
+            searchSql.Append(" a JOIN ");
+            searchSql.Append(PostgreDBAccess.GetObjectName("forum"));
+            searchSql.Append(" f ON f.forumid = a.forumid LEFT JOIN ");
+            searchSql.Append(PostgreDBAccess.GetObjectName("message"));
+            searchSql.Append(" c ON a.topicid = c.topicid LEFT JOIN ");
+            searchSql.Append(PostgreDBAccess.GetObjectName("user"));
+            searchSql.Append(" b ON c.userid = b.userid join ");
+            searchSql.Append(PostgreDBAccess.GetObjectName("vaccess"));
+            searchSql.Append(" x ON x.forumid=a.forumid ");
+            searchSql.Append("WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE "
+                    .FormatWith(userId));
+
+
             orderString += "ORDER BY a.forumid ";
-
 
             string[] words;
             bool bFirst;
 
             if (!String.IsNullOrEmpty(toSearchFromWho))
             {
-                searchSql += "AND (";
+                searchSql.Append("AND (");
                 bFirst = true;
 
                 // generate user search sql...
@@ -875,27 +925,30 @@ namespace YAF.Classes.Data.Postgre
                         words = toSearchFromWho.Split(' ');
                         foreach (string word in words)
                         {
-                            if (!bFirst) searchSql += " AND "; else bFirst = false;
+                            if (!bFirst)
+                            {
+                                searchSql.Append(" AND ");
+                            } 
+                            else
+                            {
+                                bFirst = false;
+                            }
                             // searchSql += string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
 
                             if (!int.TryParse(word, out userId))
                             {
                                 if (searchDisplayName)
                                 {
-                                    searchSql +=
-                                  string.Format(" ((c.userdisplayname IS NULL AND b.displayname  ~* '.*{0}.*') OR (c.userdisplayname ~* '.*{0}.*'))", word);
+                                    searchSql.Append(string.Format(" ((c.userdisplayname IS NULL AND b.displayname  ~* '.*{0}.*') OR (c.userdisplayname ~* '.*{0}.*'))", word));
                                 }
                                 else
                                 {
-                                    searchSql += string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
+                                    searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
                                 }
-
-
                             }
                             else
                             {
-                                searchSql +=
-                              string.Format(" (c.userid IN ({0}))", userId);
+                                searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
                             }
                         }
                         break;
@@ -903,8 +956,15 @@ namespace YAF.Classes.Data.Postgre
                         words = toSearchFromWho.Split(' ');
                         foreach (string word in words)
                         {
-                            if (!bFirst) searchSql += " OR "; else bFirst = false;
-                            searchSql += string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
+                            if (!bFirst)
+                            {
+                                searchSql.Append(" OR ");
+                            } 
+                            else
+                            {
+                                bFirst = false;
+                            }
+                            searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
                         }
                         break;
                     case SearchWhatFlags.ExactMatch:
@@ -914,33 +974,31 @@ namespace YAF.Classes.Data.Postgre
                         {
                             if (searchDisplayName)
                             {
-                                searchSql += string.Format(
-                                                          " ((c.userdisplayname IS NULL AND b.displayname = '{0}') OR (c.userdisplayname = '{0}'))", toSearchFromWho);
+                                searchSql.Append(string.Format(
+                                                          " ((c.userdisplayname IS NULL AND b.displayname = '{0}') OR (c.userdisplayname = '{0}'))", toSearchFromWho));
                             }
                             else
                             {
-                                searchSql += string.Format(
-                           " ((c.username IS NULL AND b.name = '{0}') OR (c.username = '{0}'))", toSearchFromWho);
+                                searchSql.Append(
+                                    string.Format(" ((c.username IS NULL AND b.name = '{0}') OR (c.username = '{0}'))", toSearchFromWho));
                             }
 
                         }
                         else
                         {
-
-
-                            searchSql +=
-                              string.Format(" (c.userid IN ({0})) ", userId);
+                            searchSql.Append(
+                                string.Format(" (c.userid IN ({0})) ", userId));
 
                         }
                         break;
                 }
-                searchSql += ") ";
+                searchSql.Append(") ");
             }
 
 
             if (!String.IsNullOrEmpty(toSearchWhat))
             {
-                searchSql += "AND (";
+                searchSql.Append("AND (");
                 bFirst = true;
 
                 // generate message and topic search sql...
@@ -956,17 +1014,24 @@ namespace YAF.Classes.Data.Postgre
                             foreach (string word in words)
                             {
                                 if (!bFirst) ftInner += " AND "; else bFirst = false;
-                                ftInner += String.Format(@"""{0}""", word);
+                                ftInner += string.Format(@"""{0}""", word);
                             }
                             // make final string...
-                            searchSql += string.Format("( CONTAINS (c.message, ' {0} ') OR CONTAINS (a.topic, ' {0} ' ) )", ftInner);
+                            searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ') OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
                         }
                         else
                         {
                             foreach (string word in words)
                             {
-                                if (!bFirst) searchSql += " AND "; else bFirst = false;
-                                searchSql += String.Format("(c.message ~* '.*{0}.*' OR a.topic ~* '.*{0}.*' )", word);
+                                if (!bFirst)
+                                {
+                                    searchSql.Append(" AND ");
+                                } 
+                                else
+                                {
+                                    bFirst = false;
+                                }
+                                searchSql.Append(string.Format("(c.message ~* '.*{0}.*' OR a.topic ~* '.*{0}.*' )", word));
                             }
                         }
                         break;
@@ -985,62 +1050,70 @@ namespace YAF.Classes.Data.Postgre
 
                                 if (int.TryParse(word, out userId))
                                 {
-                                    searchSql +=
-                                      string.Format(" (c.userid IN ({0}))", userId);
+                                    searchSql.Append(
+                                      string.Format(" (c.userid IN ({0}))", userId));
                                 }
                                 else
                                 {
-                                    searchSql +=
-                                      string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
+                                    searchSql.Append(
+                                      string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
                                 }
                             }
                             // make final string...
-                            searchSql += string.Format("( CONTAINS (c.message, ' {0} ' ) OR CONTAINS (a.topic, ' {0} ' ) )", ftInner);
+                            searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ' ) OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
                         }
                         else
                         {
                             foreach (string word in words)
                             {
-                                if (!bFirst) searchSql += " OR "; else bFirst = false;
-                                searchSql += String.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*' ", word);
+                                if (!bFirst) searchSql.Append(" OR "); else bFirst = false;
+                                searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*' ", word));
                             }
                         }
                         break;
                     case SearchWhatFlags.ExactMatch:
                         if (useFullText)
                         {
-                            searchSql += string.Format("( CONTAINS (c.message, ' \"{0}\" ' ) OR CONTAINS (a.topic, ' \"{0}\" '  )", toSearchWhat);
+                            searchSql.Append(string.Format("( CONTAINS (c.message, ' \"{0}\" ' ) OR CONTAINS (a.topic, ' \"{0}\" '  )", toSearchWhat));
                         }
                         else
                         {
-                            searchSql += string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*'  ", toSearchWhat);
+                            searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*'  ", toSearchWhat));
                         }
                         break;
                 }
-                searchSql += ") ";
+                searchSql.Append(") ");
             }
 
-            // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
-            if (forumIDToStartAt > 0)
+             // vzrus
+            if (categoriesIds.IsSet())
             {
-                searchSql += string.Format("AND a.forumid IN ({0})", forumIDs);
+                searchSql.Append(string.Format("AND f.categoryid IN ({0})", categoriesIds));
             }
-
+          
+            // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
+           
+            if (forumIDs.IsSet())
+            {
+                searchSql.Append(string.Format("AND a.forumid IN ({0})", forumIDs));
+            }
+           
+          
             if (orderString != "") { orderString += ", "; }
             if (!orderString.Contains("ORDER BY"))
             {
-                searchSql += " ORDER BY ";
+                searchSql.Append(" ORDER BY ");
             }
 
-            searchSql += orderString + "c.posted DESC ";
+            searchSql.Append(orderString + "c.posted DESC ");
 
             if (!orderString.Contains("LIMIT"))
             {
-                searchSql += limitString;
+                searchSql.Append(limitString);
             }
 
 
-            using (var cmd = PostgreDBAccess.GetCommand(searchSql, true))
+            using (var cmd = PostgreDBAccess.GetCommand(searchSql.ToString(), true))
             {
                 return PostgreDBAccess.GetData(cmd, connectionString);
             }
@@ -2433,15 +2506,20 @@ namespace YAF.Classes.Data.Postgre
         {
             return forum_listall( connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
         }
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, int startForumId)
+        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
             var forumIds = new List<int>();
             var tempForumIds = new List<int>();
 
-            forumIds.Add(startForumId);
-            tempForumIds.Add(startForumId);
+            int ff = 0;
+            if (startForumId.Any())
+            {
+                ff = startForumId.First(s => s > -1);
+            }
+            forumIds.Add(ff);
+            tempForumIds.Add(ff);
 
             IEnumerable<TypedForumListAll> typedForumListAlls = allForums as List<TypedForumListAll> ?? allForums.ToList();
             while (true)
@@ -7829,6 +7907,50 @@ namespace YAF.Classes.Data.Postgre
                 return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
+
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksfrom(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+        {
+            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksfrom"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+                return PostgreDBAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksto(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+        {
+            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksto"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+                return PostgreDBAccess.GetData(cmd, connectionString);
+            }
+        }
 
         /// <summary>
         /// Update the single Sign on Status

@@ -737,19 +737,19 @@ namespace YAF.Classes.Data.MySqlDb
         /// <returns>DataTable of all accessible forums</returns>
 
         //Here
-        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt)
+        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, List<int> startAt)
         {
             using (var dataTable = forum_listall(connectionString, boardId, userId, startAt,false))
             {
                 int baseForumId = 0;
                 int baseCategoryId = 0;
 
-                if (startAt != 0)
+                if (startAt.Any())
                 {
                     // find the base ids...
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
-                        if (Convert.ToInt32(dataRow["ForumID"]) == startAt)
+                        if (Convert.ToInt32(dataRow["ForumID"]) == startAt.First(f => f >-1))
                         {
                             baseForumId = Convert.ToInt32(dataRow["ParentID"]);
                             baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
@@ -956,8 +956,8 @@ namespace YAF.Classes.Data.MySqlDb
 		/// <param name="fid"></param>
 		/// <param name="UserID">ID of user</param>
         /// <returns>Results</returns>
-        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, int forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText, 
-		 bool searchDisplayName)
+        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userID, int boardId, int maxResults, bool useFullText,
+         bool searchDisplayName, bool includeChildren)
 		{
             bool bFirst = true;
             string forumIds = string.Empty;
@@ -973,7 +973,7 @@ namespace YAF.Classes.Data.MySqlDb
             string orderString = "";
 
             //Search not in all forums
-            if ( forumIDToStartAt != 0 )
+            if ( forumIDToStartAt.Any())
 			{
                 var dt = Db.forum_listall_sorted(connectionString, boardId, userID, null, false, forumIDToStartAt);
 
@@ -1161,7 +1161,7 @@ namespace YAF.Classes.Data.MySqlDb
 			}
 
 			// Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
-			if ( forumIDToStartAt > 0 )
+			if ( forumIDToStartAt.Any())
 			{
 				searchSql += string.Format( "AND a.ForumID IN ( SELECT {0})", forumIDs );
 			} 
@@ -2667,15 +2667,19 @@ namespace YAF.Classes.Data.MySqlDb
 			}
 		}
 
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, int startForumId)
+        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
             var forumIds = new List<int>();
             var tempForumIds = new List<int>();
-
-            forumIds.Add(startForumId);
-            tempForumIds.Add(startForumId);
+            int ff = 0;
+            if (startForumId.Any())
+            {
+                ff = startForumId.First(s => s > -1);
+            }
+            forumIds.Add(ff);
+            tempForumIds.Add(ff);
 
             while (true)
             {
@@ -8487,6 +8491,51 @@ namespace YAF.Classes.Data.MySqlDb
                 return MySqlDbAccess.GetData(cmd,connectionString);
             }
         }
+
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksfrom(string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
+        {
+            using (MySqlCommand cmd = MySqlDbAccess.GetCommand("user_viewthanksfrom"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("I_UserID", MySqlDbType.Int32).Value = userID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
+                cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
+                cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// are thanked by other users.
+        /// </summary>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable user_viewthanksto(string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
+        {
+            using (MySqlCommand cmd = MySqlDbAccess.GetCommand("user_viewthanksto"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("I_UserID", MySqlDbType.Int32).Value = userID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
+                cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
+                cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
         /// <summary>
         /// Update the single Sign on Status
         /// </summary>

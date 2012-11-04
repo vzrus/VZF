@@ -23,7 +23,7 @@ namespace VZF.Types.Data
     /// <summary>
     /// Returnes board_stats_Result row representation.
     /// </summary>
-    public partial class board_poststats_Result
+    public class board_poststats_Result
     {
         public board_poststats_Result(DataRow dr)
         {

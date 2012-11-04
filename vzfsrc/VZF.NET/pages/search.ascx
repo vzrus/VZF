@@ -1,9 +1,8 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.search" CodeBehind="search.ascx.cs" %>
-<%@ Import Namespace="YAF.Core" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<%@ Register TagPrefix="YAF" TagName="DialogBox" Src="../controls/DialogBox.ascx" %>
 <%@ Register Namespace="nStuff.UpdateControls" Assembly="nStuff.UpdateControls" TagPrefix="nStuff" %>
 <YAF:PageLinks ID="PageLinks" runat="server" />
 <script type="text/javascript">
@@ -16,18 +15,29 @@
     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
 </script>
 <nStuff:UpdateHistory ID="UpdateHistory" runat="server" OnNavigate="OnUpdateHistoryNavigate" />
-<table cellpadding="0" cellspacing="1" class="content searchContent" width="100%">
+<table cellpadding="0" cellspacing="1" class="content searchContent" style="width: 100%" >
     <tr>
-        <td class="header1" colspan="2">
+        <td class="header1" colspan="3">
             <YAF:LocalizedLabel runat="server" LocalizedTag="title" />
         </td>
     </tr>
+</table>
+<table>
     <tr>
-        <td align="center" class="postheader" colspan="2">
-            <asp:DropDownList ID="listForum" runat="server" />
+        <td colspan="1">
+             <div id="forumTree" visible="false" runat="server">
+                <div class="container">
+                    <div id="tree"></div>
+                </div> 
+            </div>
+        </td>
+        <td align="center" class="postheader" colspan="1">
+            <asp:DropDownList ID="listForum" Visible="False" runat="server" />
             <asp:DropDownList ID="listResInPage" runat="server" />
         </td>
     </tr>
+</table>
+<table cellpadding="0" cellspacing="1" class="content searchContent" style="width: 100%" >
     <tr>
         <td align="right" class="postheader" width="35%">
             <YAF:LocalizedLabel runat="server" LocalizedTag="postedby" />
@@ -47,7 +57,7 @@
         </td>
     </tr>
     <tr>
-        <td align="center" class="postfooter" colspan="2">
+        <td align="center" class="postfooter" colspan="3">
             <asp:Button ID="btnSearch" runat="server" CssClass="pbutton" OnClick="btnSearch_Click"
                 OnClientClick="ShowLoadingDialog(); return true;" Visible="false" />
             <asp:Button ID="btnSearchExt1" runat="server" CssClass="pbutton" Visible="false"
@@ -91,7 +101,7 @@
                         <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><strong>
                             <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                         </strong>
-                        <YAF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
+                        <YAF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                             Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                     </td>
                     <td width="80%" class="postheader">
@@ -104,7 +114,7 @@
                 <tr class="post">
                     <td colspan="2">
                         <YAF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
-                            ShowSignature="false" HighlightWords="<%# this.HighlightSearchWords %>" DataRow="<%# Container.DataItem %>">
+                            ShowSignature="false" HighlightWords="<%# this.HighlightSearchWords %>" DataRow='<%# (DataRow)Container.DataItem %>'>
                         </YAF:MessagePostData>
                     </td>
                 </tr>
@@ -127,7 +137,7 @@
                         <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><strong>
                             <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                         </strong>
-                        <YAF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
+                        <YAF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                             Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                     </td>
                     <td width="80%" class="postheader">
@@ -140,7 +150,7 @@
                 <tr class="post_alt">
                     <td colspan="2">
                         <YAF:MessagePostData ID="MessagePostAlt" runat="server" ShowAttachments="false" ShowSignature="false"
-                            HighlightWords="<%# this.HighlightSearchWords %>" DataRow="<%# Container.DataItem %>">
+                            HighlightWords="<%# this.HighlightSearchWords %>" DataRow="<%# (DataRow)Container.DataItem %>">
                         </YAF:MessagePostData>
                     </td>
                 </tr>

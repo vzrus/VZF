@@ -31,7 +31,6 @@ namespace YAF.Classes.Data
   
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
     using YAF.Utils.Helpers;
 
     using MySql.Data.MySqlClient;

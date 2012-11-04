@@ -14,6 +14,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+using System.Web;
+using YAF.Types.Constants;
+
 namespace YAF.controls
 {
     using System;
@@ -42,7 +46,7 @@ namespace YAF.controls
                 YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
                                                                 JavaScriptBlocks.DynatreeGetNodesJumpLazyJS("tree",
                                                                 PageContext.PageUserID, PageContext.PageBoardID, string.Empty, "{0}resource.ashx?tjl".FormatWith(
-                                                                                                                YafForumInfo.ForumClientFileRoot)));
+                                                                                                            YafForumInfo.ForumClientFileRoot), string.Empty, "&forumUrl={0}".FormatWith(HttpUtility.UrlEncode(YafBuildLink.GetBasePath()))));
                 // The script hides/shows tree divider.
                 YafContext.Current.PageElements.RegisterJsBlockStartup(
                     "yafmodaldialogJs", JavaScriptBlocks.ToggleDivider(this.jumpList.ClientID));

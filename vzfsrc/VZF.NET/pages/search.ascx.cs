@@ -162,6 +162,28 @@ namespace YAF.Pages
         /// </param>
         protected override void OnPreRender([NotNull] EventArgs e)
         {
+            if (Config.LargeForumTree)
+            {
+                forumTree.Visible = true;
+                PageContext.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
+                PageContext.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
+                // this.TreeTable.Visible = true;
+                PageContext.PageElements.RegisterJsBlock("dynatreescr",
+                    JavaScriptBlocks.DynatreeGetNodesSearchLazyCheckBoxesJS("tree",
+                    PageContext.PageUserID,PageContext.PageBoardID, "&v=4", "{0}resource.ashx?tjl".FormatWith(
+                    YafForumInfo.ForumClientFileRoot),
+                    "&root=0".FormatWith(PageContext.PageBoardID),"&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
+            }
+            else
+            {
+  
+                /* YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
+                                                                JavaScriptBlocks.DynatreeGetNodesJumpAllJS("tree",
+                                                                                                          PageContext.PageUserID, 
+                                                                                                           "{0}resource.ashx?fj={1}".FormatWith(
+                                                                                                               YafForumInfo.ForumClientFileRoot, PageContext.PageUserID))); */
+            }
+
             // Setup Syntax Highlight JS
             YafContext.Current.PageElements.RegisterJsResourceInclude(
                 "syntaxhighlighter", "js/jquery.syntaxhighligher.js");
@@ -388,6 +410,10 @@ namespace YAF.Pages
             if (this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ExternalSearchPermissions))
             {
                 // vzrus: If an exteranl search only - it should be disabled. YAF doesn't have a forum id as a token in post links. 
+                if (!Config.LargeForumTree)
+                {
+                    this.listForum.Visible = true;
+                }
                 if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().SearchPermissions))
                 {
                     this.listForum.Enabled = false;
@@ -413,7 +439,7 @@ namespace YAF.Pages
                             this.Get<YafBoardSettings>().SearchEngine2Parameters.Split('^')[0]);
                 }
             }
-
+            
             if (this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().SearchPermissions))
             {
                 this.btnSearch.Visible = true;
@@ -462,12 +488,16 @@ namespace YAF.Pages
             this.LoadingModal.Icon = YafForumInfo.GetURLToResource("images/loader.gif");
 
             this.Page.Form.DefaultButton = this.btnSearch.UniqueID;
-
-            this.listForum.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
-            this.listForum.DataValueField = "ForumID";
-            this.listForum.DataTextField = "Title";
-            this.listForum.DataBind();
-            this.listForum.Items.Insert(0, new ListItem(this.GetText("allforums"), "0"));
+            if (!Config.LargeForumTree)
+            {
+                this.listForum.DataSource = CommonDb.forum_listall_sorted(PageContext.PageModuleID,
+                                                                          this.PageContext.PageBoardID,
+                                                                          this.PageContext.PageUserID);
+                this.listForum.DataValueField = "ForumID";
+                this.listForum.DataTextField = "Title";
+                this.listForum.DataBind();
+                this.listForum.Items.Insert(0, new ListItem(this.GetText("allforums"), "0"));
+            }
 
             bool doSearch = false;
 
@@ -479,16 +509,18 @@ namespace YAF.Pages
             }
 
             string forumString = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("forum");
-
-            if (searchString.IsSet() && this.listForum.Enabled)
+            if (!Config.LargeForumTree)
             {
-                try
+                if (searchString.IsSet() && this.listForum.Enabled)
                 {
-                    this.listForum.SelectedValue = forumString;
-                }
-                catch (Exception)
-                {
-                    this.listForum.SelectedValue = "0";
+                    try
+                    {
+                        this.listForum.SelectedValue = forumString;
+                    }
+                    catch (Exception)
+                    {
+                        this.listForum.SelectedValue = "0";
+                    }
                 }
             }
 
@@ -640,25 +672,57 @@ namespace YAF.Pages
                 {
                     var sw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchWhat.SelectedValue);
                     var sfw = (SearchWhatFlags)Enum.Parse(typeof(SearchWhatFlags), this.listSearchFromWho.SelectedValue);
-                    int forumId = int.Parse(this.listForum.SelectedValue);
+                    var forumId = new List<int>();
+                    var categoryId = new List<int>();
+                    if (!Config.LargeForumTree)
+                    {
+                        if (this.listForum.SelectedValue != "0")
+                        {
+                            forumId.Add(int.Parse(this.listForum.SelectedValue));
+                        }
+                    }
+                    else
+                    {
+                        string[] ss = this.Get<IYafSession>().SearchTreeSelectedNodes;
+                        if (ss != null)
+                        {
+                            foreach (string s in ss)
+                            {
+                                string[] dd = s.Split('_');
+                                if (dd.Count() == 2)
+                                {
+                                    categoryId.Add(dd[1].ToType<int>());
+                                }
+                                if (dd.Count() >= 3)
+                                {
+                                    forumId.Add(dd[2].ToType<int>());
+                                }
 
+                            }
+                        }
+
+                    }
+
+                    bool includeChildren = true;
+                    this.Get<IYafSession>().SearchTreeSelectedNodes = null;
                     var searchResults = CommonDb.GetSearchResult(PageContext.PageModuleID, this.SearchWhatCleaned,
                         this.SearchWhoCleaned,
                         sfw,
                         sw,
+                        categoryId,
                         forumId,
                         this.PageContext.PageUserID,
                         this.PageContext.PageBoardID,
                         this.Get<YafBoardSettings>().ReturnSearchMax,
                         this.Get<YafBoardSettings>().UseFullTextSearch,
-                        this.Get<YafBoardSettings>().EnableDisplayName);
+                        this.Get<YafBoardSettings>().EnableDisplayName, includeChildren);
 
                     if (newSearch)
                     {
                         // setup highlighting
                         this.SetupHighlightWords(sw);
                     }
-
+                    
                     this.Get<IYafSession>().SearchData = searchResults;
 
                     this.Pager.CurrentPageIndex = 0;

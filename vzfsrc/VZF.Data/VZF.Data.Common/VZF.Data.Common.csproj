@@ -39,10 +39,6 @@
     <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=2.3.2.632, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\YetAnotherForum.NET\Bin\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\FirebirdSql.Data.FirebirdClient.dll</HintPath>
@@ -66,42 +62,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Core, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Data.Firebird, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Firebird.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Data.Mssql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Data.Mssql.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Data.Mysql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\YetAnotherForum.NET\Bin\VZF.Data.Mysql.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDataTableResultFilter.cs" />
     <Compile Include="common\ConnectionStringsIndex.cs" />
     <Compile Include="common\CurrentModule.cs" />
-    <Compile Include="common\DataModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="common\DBConnectionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -117,12 +82,36 @@
     <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
+      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
+      <Name>VZF.Classes.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Tools\VZF.Tools.csproj">
-      <Project>{EA5104B6-7370-4E64-B05C-858EB56D6DA7}</Project>
+      <Project>{ea5104b6-7370-4e64-b05c-858eb56d6da7}</Project>
       <Name>VZF.Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
+      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
+      <Name>VZF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
+      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
+      <Name>VZF.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.Firebird\VZF.Data.Firebird.csproj">
+      <Project>{8ba564f6-edcc-4a07-9cdc-125abca8160e}</Project>
+      <Name>VZF.Data.Firebird</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.Mssql\VZF.Data.Mssql.csproj">
+      <Project>{f42d380a-c4f3-45b5-985c-1d8185823fdd}</Project>
+      <Name>VZF.Data.Mssql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.Mysql\VZF.Data.Mysql.csproj">
+      <Project>{41c7a2fc-480d-4f44-9d04-fd318be5b306}</Project>
+      <Name>VZF.Data.Mysql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Postgre\VZF.Data.Postgre.csproj">
-      <Project>{26FC1FB1-9DCB-4ED9-9F74-EF453646E97E}</Project>
+      <Project>{26fc1fb1-9dcb-4ed9-9f74-ef453646e97e}</Project>
       <Name>VZF.Data.Postgre</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Utils\VZF.Data.Utils.csproj">
