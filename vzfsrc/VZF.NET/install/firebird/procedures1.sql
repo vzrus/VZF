@@ -1046,6 +1046,8 @@ ici_IsCrawler = :I_ISCRAWLER;
 		IF (EXISTS(SELECT 1 FROM objQual_ACTIVE 
 		WHERE SESSIONID=:I_SESSIONID 
 		AND BOARDID=:I_BOARDID)) THEN
+		IF (CHAR_LENGTH(:I_FORUMPAGE) > 0) THEN
+		BEGIN
 		IF (:ici_IsCrawler <> 1) THEN
 		BEGIN
 		 UPDATE objQual_ACTIVE SET
@@ -1081,6 +1083,11 @@ ici_IsCrawler = :I_ISCRAWLER;
 		         ici_ActiveUpdate = 1;
 				END	
 			END	
+			END
+			ELSE			
+			 UPDATE objQual_ACTIVE SET				
+				LASTACTIVE = :I_UTCTIMESTAMP
+			WHERE SESSIONID= :I_SESSIONID;				
 		ELSE
 		BEGIN
 			INSERT INTO objQual_ACTIVE(

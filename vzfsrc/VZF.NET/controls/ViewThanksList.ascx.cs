@@ -61,7 +61,10 @@ namespace YAF.Controls
     public partial class ViewThanksList : BaseUserControl
     {
         /* Data Fields */
-
+        /// <summary>
+        ///   Gets or sets a value indicating whether Auto Databind.
+        /// </summary>
+        public bool AutoDatabind { get; set; }
         /* Properties */
         #region Constants and Fields
 
@@ -105,35 +108,20 @@ namespace YAF.Controls
         /// </summary>
         public void BindData()
         {
-           
-            // filter by category
-            object categoryIdObject = null;
-
-            // is category set?
-            if (this.PageContext.Settings.CategoryID != 0)
-            {
-                categoryIdObject = this.PageContext.Settings.CategoryID;
-            }
-
             // we'll hold topics in this table
             DataTable topicList = null;
 
             // set the page size here
-           // int basePageSize = this.Get<YafBoardSettings>().MyTopicsListPageSize;
-            int basePageSize = 15;
-            this.PagerTop.PageSize = basePageSize;
-
-            // page index in db which is returned back  is +1 based!
-            int nCurrentPageIndex = this.PagerTop.CurrentPageIndex;
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().MyTopicsListPageSize;
 
             // now depending on mode fill the table
             switch (this.CurrentMode)
             {
                 case ThanksListMode.FromUser:
-                    topicList = CommonDb.user_viewthanksfrom(PageContext.PageModuleID, userID, this.PageContext.PageUserID, nCurrentPageIndex, basePageSize);
+                    topicList = CommonDb.user_viewthanksfrom(PageContext.PageModuleID, userID, this.PageContext.PageUserID, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
                     break;
                 case ThanksListMode.ToUser:
-                    topicList = CommonDb.user_viewthanksto(PageContext.PageModuleID, userID, this.PageContext.PageUserID, nCurrentPageIndex, basePageSize);
+                    topicList = CommonDb.user_viewthanksto(PageContext.PageModuleID, userID, this.PageContext.PageUserID, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
                     break;
             }
 
@@ -191,7 +179,10 @@ namespace YAF.Controls
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             userID = (int)Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("u"));
-            this.BindData();
+            if (this.AutoDatabind)
+            {
+                this.BindData();
+            }
         }
 
         /// <summary>
@@ -220,12 +211,6 @@ namespace YAF.Controls
         /// </param>
         protected void ThanksRes_ItemCreated([NotNull] object sender, [NotNull] RepeaterItemEventArgs e)
         {
-            // In what mode should this control work?
-            // 1: Just display the buddy list
-            // 2: display the buddy list and ("Remove Buddy") buttons.
-            // 3: display pending buddy list posted to current user and add ("approve","approve all", "deny",
-            // "deny all","approve and add", "approve and add all") buttons.
-            // 4: show the pending requests posted from the current user.
             switch (this.CurrentMode)
             {
                case ThanksListMode.FromUser:
@@ -245,29 +230,6 @@ namespace YAF.Controls
 
                     break;
             } 
-        }
-
-        /// <summary>
-        /// Removes rows with duplicate MessageIDs.
-        /// </summary>
-        /// <param name="thanksData">
-        /// The thanks data.
-        /// </param>
-        private void DistinctMessageID([NotNull] IEnumerable<DataRow> thanksData)
-        {
-            int previousId = 0;
-            int tempId;
-
-            foreach (var dr in thanksData.OrderBy(x => x.Field<int>("MessageID")))
-            {
-                tempId = dr.Field<int>("MessageID");
-                if (dr.Field<int>("MessageID") == previousId)
-                {
-                    dr.Delete();
-                }
-
-                previousId = tempId;
-            }
         }
 
         #endregion

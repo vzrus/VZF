@@ -4807,8 +4807,8 @@ BEGIN
 	                    i_usrsigbbcodes,
 	                    i_usrsightmltags,
 	                    i_usralbums,
-	                    i_usralbumimages);
-             SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_group','groupid')) INTO ici_groupid;            
+	                    i_usralbumimages)
+                        RETURNING groupid INTO ici_groupid;            
             
             INSERT INTO databaseSchema.objectQualifier_forumaccess
                        (groupid,

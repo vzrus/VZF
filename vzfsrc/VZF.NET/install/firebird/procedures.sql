@@ -11818,7 +11818,8 @@ RETURNS
 "UserID" INTEGER,
 "Posted" TIMESTAMP,
 "Message" BLOB SUB_TYPE 1,
-"Flags" INTEGER
+"Flags" INTEGER,
+"TotalRows" INTEGER
 )
 AS 
 DECLARE VARIABLE ici_ID INTEGER DEFAULT NULL;
@@ -11828,10 +11829,7 @@ DECLARE ICI_TOROW  INTEGER DEFAULT 0;
 BEGIN
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 
-select count(1)  
-		FROM   objQual_BANNEDIP
-        WHERE  BOARDID = :I_BOARDID
-		into :ICI_TOTALROWS 
+select count(1)  			 
 		from    objQual_MESSAGE c
 				left join objQual_TOPIC a on a.TOPICID = c.TOPICID
 				left join objQual_USER b on c.USERID = b.USERID
@@ -11843,7 +11841,8 @@ select count(1)
 				AND a.TOPICMOVEDID IS NULL
 				AND a.ISDELETED = 0
 				AND c.ISDELETED = 0
-				and t.THANKSTOUSERID = :I_USERID;
+				and t.THANKSTOUSERID = :I_USERID
+		into :ICI_TOTALROWS;
 			
         ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
 		ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
@@ -11856,7 +11855,8 @@ select count(1)
 				b.USERID,             
 				c.POSTED,
 				c.MESSAGE,
-				c.FLAGS
+				c.FLAGS,
+				(SELECT :ICI_TOTALROWS FROM RDB$DATABASE) 
 		from    objQual_MESSAGE c
 				left join objQual_TOPIC a on a.TOPICID = c.TOPICID
 				left join objQual_USER b on c.USERID = b.USERID
@@ -11880,7 +11880,8 @@ select count(1)
 		:"UserID",       
 		:"Posted",
 		:"Message",
-		:"Flags"
+		:"Flags",
+        :"TotalRows"
 		DO SUSPEND;	 
 	END;
 --GO
@@ -11899,7 +11900,8 @@ RETURNS
 "UserID" INTEGER,
 "Posted" TIMESTAMP,
 "Message" BLOB SUB_TYPE 1,
-"Flags" INTEGER
+"Flags" INTEGER,
+"TotalRows" INTEGER
 )
 AS 
 DECLARE VARIABLE ici_ID INTEGER DEFAULT NULL;
@@ -11910,9 +11912,6 @@ BEGIN
 I_PAGEINDEX = :I_PAGEINDEX + 1;	 
 
 select count(1)  
-		FROM   objQual_BANNEDIP
-        WHERE  BOARDID = :I_BOARDID
-		into :ICI_TOTALROWS 
 		from    objQual_MESSAGE c
 				left join objQual_TOPIC a on a.TOPICID = c.TOPICID
 				left join objQual_USER b on c.USERID = b.USERID
@@ -11924,7 +11923,8 @@ select count(1)
 				AND a.TOPICMOVEDID IS NULL
 				AND a.ISDELETED = 0
 				AND c.ISDELETED = 0
-				AND t.THANKSFROMUSERID = :I_USERID;
+				AND t.THANKSFROMUSERID = :I_USERID
+				into :ICI_TOTALROWS ;
 			
         ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
 		ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
@@ -11937,7 +11937,8 @@ select count(1)
 				b.USERID,             
 				c.POSTED,
 				c.MESSAGE,
-				c.FLAGS
+				c.FLAGS,
+				(SELECT :ICI_TOTALROWS FROM RDB$DATABASE) 
 		from    objQual_MESSAGE c
 				left join objQual_TOPIC a on a.TOPICID = c.TOPICID
 				left join objQual_USER b on c.USERID = b.USERID
@@ -11961,7 +11962,8 @@ select count(1)
 		:"UserID",       
 		:"Posted",
 		:"Message",
-		:"Flags"
+		:"Flags",
+        :"TotalRows"
 		DO SUSPEND;	 
 	END;
 --GO

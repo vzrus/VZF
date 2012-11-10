@@ -663,7 +663,7 @@ END;
 				 "ForumName" varchar(128),
 				 "TopicMovedID" integer,
 				 "ForumFlags" integer,
-				 "FirstMessage" varchar(128),
+				 "FirstMessage" varchar(1024),
 				 "StarterStyle" varchar(255),
 				 "LastUserStyle" varchar(255),
 				 "LastForumAccess" timestamp,
@@ -767,7 +767,7 @@ FOR SELECT
 		d.NAME AS "ForumName",
 		c.TOPICMOVEDID,
 		d.FLAGS AS "ForumFlags", 
-		(SELECT CAST(MESSAGE AS VARCHAR(128)) 
+		(SELECT FIRST 1 SUBSTRING(mes2.MESSAGE FROM 1 FOR 1024) 
 		FROM objQual_MESSAGE mes2 
 		where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
 		AND mes2."POSITION" = 0) AS "FirstMessage",
@@ -898,7 +898,7 @@ RETURNS (
 "ForumName" varchar(128),
 "TopicMovedID" integer,
 "ForumFlags" integer,
-"FirstMessage" varchar(128),
+"FirstMessage" varchar(1024),
 "StarterStyle" varchar(255),
 "LastUserStyle" varchar(255),
 "LastForumAccess" timestamp,
@@ -1002,7 +1002,7 @@ FOR SELECT
 		d.NAME AS "ForumName",
 		c.TOPICMOVEDID,
 		d.FLAGS AS "ForumFlags", 
-		(SELECT CAST(MESSAGE AS VARCHAR(128)) 
+		(SELECT FIRST 1 SUBSTRING(mes2.MESSAGE FROM 1 FOR 1024) 
 		FROM objQual_MESSAGE mes2 
 		where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
 		AND mes2."POSITION" = 0) AS "FirstMessage",
@@ -1366,7 +1366,7 @@ RETURNS (
 		"PollID" INTEGER,
 		"ForumName" VARCHAR(255),	
 		"ForumFlags" INTEGER,
-		"FirstMessage" VARCHAR(1000) ,
+		"FirstMessage" VARCHAR(1024) ,
 	    "StarterStyle" VARCHAR(255),
 		"LastUserStyle" VARCHAR(255),
 	    "LastForumAccess" TIMESTAMP,
@@ -1467,7 +1467,7 @@ FOR SELECT
 		c.POLLID,
 		d.NAME,	
 		d.FLAGS,
-		(SELECT FIRST 1 CAST(MESSAGE as varchar(1000)) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0),
+		(SELECT FIRST 1 SUBSTRING(mes2.MESSAGE FROM 1 FOR 1024) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0),
 	    (case(:I_STYLEDNICKS)
 			when 1 then  b.USERSTYLE
 			else ''	 end),
@@ -1596,7 +1596,7 @@ RETURNS (
 "ForumName" varchar(128),
 "TopicMovedID" integer,
 "ForumFlags" integer,
-"FirstMessage" varchar(4000),
+"FirstMessage" varchar(1024),
 "StarterStyle" varchar(255),
 "LastUserStyle" varchar(255),
 "LastForumAccess" varchar(255),
@@ -1693,7 +1693,7 @@ FOR SELECT
 		d.NAME AS ForumName,
 		c.TOPICMOVEDID,
 		d.FLAGS AS ForumFlags,
-		(SELECT FIRST 1 CAST(mes2.MESSAGE as varchar(1000)) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0) AS FirstMessage,
+		(SELECT FIRST 1 SUBSTRING(mes2.MESSAGE FROM 1 FOR 1024) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0) AS FirstMessage,
 		(case(:I_STYLEDNICKS)
 			when 1 then  b.USERSTYLE 
 			else ''	 end) AS StarterStyle,

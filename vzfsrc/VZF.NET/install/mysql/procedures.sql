@@ -11730,10 +11730,10 @@ BEGIN
 			SET ici_Pos = LOCATE(',', i_MessageIDs, 1);
 		END WHILE;
 		  -- to be sure that last value is inserted
-					IF (CHAR_LENGTH(ici_MessageID) > 0) THEN
+					/* IF (CHAR_LENGTH(ici_MessageID) > 0) THEN
 					 INSERT INTO {objectQualifier}tmp_ParsedMessageIDs (MessageID) 
 					 VALUES (CAST(ici_MessageID AS SIGNED));  
-	                END IF;
+	                END IF; */
 	END	IF;
 
 	SELECT b.ThanksFromUserID AS FromUserID, 
@@ -11820,13 +11820,23 @@ i_PageSize int)
          select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
        
    set @uvfpr = CONCAT('select
-		b.*,
+		t.ThanksFromUserID,
+                t.ThanksToUserID,
+                c.MessageID,
+                a.ForumID,
+                a.TopicID,
+                a.Topic,
+                b.UserID,
+                c.MessageID,
+                c.Posted,
+                c.Message,
+                c.Flags,       
 		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
       FROM   {databaseName}.{objectQualifier}thanks t 
 		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
                 left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
                 join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
-				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = ',I_PageUserID,')
         where   x.ReadAccess > 0
                 AND x.UserID = ',I_PageUserID,'
 				-- Message IsApproved
@@ -11837,7 +11847,7 @@ i_PageSize int)
 				-- Message IsDeleted
                 AND (c.Flags & 8) <> 8
                 AND
-				 t.ThanksFromUserID = ',I_UserID,') ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+				 t.ThanksFromUserID = ',I_UserID,' ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
     PREPARE stmt_uvfpr FROM @uvfpr;
     EXECUTE stmt_uvfpr;   
     END;
@@ -11874,13 +11884,23 @@ i_PageSize int)
          select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
        
    set @uvfpr = CONCAT('select
-		b.*,
+		t.ThanksFromUserID,
+                t.ThanksToUserID,
+                c.MessageID,
+                a.ForumID,
+                a.TopicID,
+                a.Topic,
+                b.UserID,
+                c.MessageID,
+                c.Posted,
+                c.Message,
+                c.Flags,       
 		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
       FROM   {databaseName}.{objectQualifier}thanks t 
 		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
                 left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
                 join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
-				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
+				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = ',I_PageUserID,')
         where   x.ReadAccess > 0
                 AND x.UserID = ',I_PageUserID,'
 				-- Message IsApproved
@@ -11891,7 +11911,7 @@ i_PageSize int)
 				-- Message IsDeleted
                 AND (c.Flags & 8) <> 8
                 AND
-				t.thankstouserID = ',I_UserID,' ) ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+				t.thankstouserID = ',I_UserID,' ORDER BY c.Posted DESC   LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
     PREPARE stmt_uvfpr FROM @uvfpr;
     EXECUTE stmt_uvfpr;   
     END;

@@ -4957,6 +4957,7 @@
     <None Include="BuildScripts\YAF.Package.targets">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="rss.xsl" />
     <Content Include="themes\BlackGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlackGrey\frog3.gif" />
     <Content Include="themes\BlackGrey\minus-circle.png" />
@@ -5033,12 +5034,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="web_pg.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="app.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />

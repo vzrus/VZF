@@ -124,21 +124,23 @@ namespace YAF.Core.Services
         /// </param>
         public void AddThanksInfo(IEnumerable<DataRow> dataRows)
         {
-            var messageIds = dataRows.Select(x => x.Field<int>("MessageID"));
+            var postRows = dataRows as List<DataRow> ?? dataRows.ToList();
+            var messageIds = postRows.Select(x => x.Field<int>("MessageID"));
 
             // Initialize the "IsthankedByUser" column.
-            dataRows.ForEach(x => x["IsThankedByUser"] = false);
+            postRows.ForEach(x => x["IsThankedByUser"] = false);
 
             // Initialize the "Thank Info" column.
-            dataRows.ForEach(x => x["ThanksInfo"] = string.Empty);
+            postRows.ForEach(x => x["ThanksInfo"] = string.Empty);
 
             // Iterate through all the thanks relating to this topic and make appropriate
             // changes in columns.
             var allThanks = CommonDb.MessageGetAllThanks(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
 
+            var typedAllThankses = allThanks as List<TypedAllThanks> ?? allThanks.ToList();
             foreach (var f in
-                allThanks.Where(t => t.FromUserID != null && t.FromUserID == YafContext.Current.PageUserID).SelectMany(
-                    thanks => dataRows.Where(x => x.Field<int>("MessageID") == thanks.MessageID)))
+                typedAllThankses.Where(t => t.FromUserID != null && t.FromUserID == YafContext.Current.PageUserID).SelectMany(
+                    thanks => postRows.Where(x => x.Field<int>("MessageID") == thanks.MessageID)))
             {
                 f["IsThankedByUser"] = "true";
                 f.AcceptChanges();
@@ -146,18 +148,19 @@ namespace YAF.Core.Services
 
             var thanksFieldNames = new[] { "ThanksFromUserNumber", "ThanksToUserNumber", "ThanksToUserPostsNumber" };
 
-            foreach (DataRow postRow in dataRows)
+            foreach (DataRow postRow in postRows)
             {
                 var messageId = postRow.Field<int>("MessageID");
 
                 postRow["MessageThanksNumber"] =
-                    allThanks.Where(t => t.FromUserID != null && t.MessageID == messageId).Count();
+                    typedAllThankses.Count(t => t.FromUserID != null && t.MessageID == messageId);
 
-                var thanksFiltered = allThanks.Where(t => t.MessageID == messageId);
+                var thanksFiltered = typedAllThankses.Where(t => t.MessageID == messageId);
 
-                if (thanksFiltered.Any())
+                var allThankses = thanksFiltered as List<TypedAllThanks> ?? thanksFiltered.ToList();
+                if (allThankses.Any())
                 {
-                    var thanksItem = thanksFiltered.First();
+                    var thanksItem = allThankses.First();
 
                     postRow["ThanksFromUserNumber"] = thanksItem.ThanksFromUserNumber ?? 0;
                     postRow["ThanksToUserNumber"] = thanksItem.ThanksToUserNumber ?? 0;
@@ -171,7 +174,7 @@ namespace YAF.Core.Services
 
                 // load all all thanks info into a special column...
                 postRow["ThanksInfo"] =
-                    thanksFiltered.Where(t => t.FromUserID != null).Select(
+                    allThankses.Where(t => t.FromUserID != null).Select(
                         x => "{0}|{1}".FormatWith(x.FromUserID.Value, x.ThanksDate)).ToDelimitedString(",");
 
                 postRow.AcceptChanges();

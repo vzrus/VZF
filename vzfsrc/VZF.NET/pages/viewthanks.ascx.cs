@@ -16,11 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * The code was primarily written by Kamyar Payhan, modified by Jaben Cargman. 
+ * The current paging logic was completely written by vzrus(Vladimir Zakharov).
  */
 
 namespace YAF.Pages
 {
-  // YAF.Pages
   #region Using
 
   using System;
@@ -84,33 +86,6 @@ namespace YAF.Pages
 
     #endregion
 
-    /* Public Methods */
-    #region Public Methods
-
-    /// <summary>
-    /// Initializes the ThanksList controls.
-    /// </summary>
-    /// <param name="thanksList">
-    /// The control which is being initialized.
-    /// </param>
-    /// <param name="currentMode">
-    /// the CurrentMode property of the control.
-    /// </param>
-    /// <param name="userID">
-    /// the UserID of the control.
-    /// </param>
-    /// <param name="thanksInfo">
-    /// The Dataview for the control's data.
-    /// </param>
-    public void InitializeThanksList([NotNull] ViewThanksList thanksList, ThanksListMode currentMode, int userID, [NotNull] DataTable thanksInfo)
-    {
-      thanksList.CurrentMode = currentMode;
-      thanksList.UserID = userID;
-      thanksList.ThanksInfo = thanksInfo;
-    }
-
-    #endregion
-
     /* Methods */
     #region Methods
 
@@ -150,24 +125,20 @@ namespace YAF.Pages
     /// </param>
     protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
     {
-        var userID = (int)Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("u"));
-        if (this.IsPostBack)
-        {
-            this.RefreshTab();
+        var userId = (int)Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("u"));
 
-            return;
-        }
-    
-      if (!this.IsPostBack)
-      {
+        if (this.IsPostBack) return;
+
         this.PageLinks.Clear();
         this.PageLinks.AddLink(this.PageContext.BoardSettings.Name, YafBuildLink.GetLink(ForumPages.forum));
         this.PageLinks.AddLink(
-          this.PageContext.BoardSettings.EnableDisplayName  
-            ? UserMembershipHelper.GetDisplayNameFromID(userID) : UserMembershipHelper.GetUserNameFromID(userID), 
-          YafBuildLink.GetLink(ForumPages.profile, "u={0}", userID));
+            this.PageContext.BoardSettings.EnableDisplayName  
+                ? UserMembershipHelper.GetDisplayNameFromID(userId) : UserMembershipHelper.GetUserNameFromID(userId), 
+            YafBuildLink.GetLink(ForumPages.profile, "u={0}", userId));
         this.PageLinks.AddLink(this.GetText("TITLE"), string.Empty);
-      }
+        this.CurrentTab = ThanksListMode.FromUser;
+        this.ThanksFromList.AutoDatabind = true;
+        this.ThanksFromList.DataBind();
     }
 
     #endregion
@@ -191,8 +162,8 @@ namespace YAF.Pages
                 this.CurrentTab = ThanksListMode.FromUser;
                 break;
         }
-
-        this.RefreshTab();
+      
+       this.RefreshTab();
     }
 
     /// <summary>
@@ -206,6 +177,7 @@ namespace YAF.Pages
 
                 if (!this.thanksfromloaded)
                 {
+                    this.ThanksFromList.AutoDatabind = false;
                     this.ThanksFromList.BindData();
                     this.thanksfromloaded = true;
                 }
@@ -215,6 +187,7 @@ namespace YAF.Pages
 
                 if (!this.thankstoloaded)
                 {
+                    this.ThanksToList.AutoDatabind = false;
                     this.ThanksToList.BindData();
                     this.thankstoloaded = true;
                 }
