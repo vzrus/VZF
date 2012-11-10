@@ -4,7 +4,6 @@
 <YAF:PageLinks ID="PageLinks" runat="server" />
 <div class="DivTopSeparator">
 </div>
-
         <br style="clear: both" />
        <asp:Panel id="ThanksTabs" runat="server">
                <ul>
@@ -18,7 +17,8 @@
                   <YAF:ViewThanksList runat="server" ID="ThanksToList" CurrentMode="ToUser" />
                 </div>
              </asp:Panel>
-        <asp:HiddenField runat="server" ID="hidLastTab" Value="0" />
+        <asp:HiddenField runat="server" ID="hidLastTab" Value="0" /><asp:HiddenField runat="server" ID="hidLastTabId" Value="0" />
+ <asp:Button id="ChangeTab" OnClick="ChangeTabClick" runat="server" style="display:none" />
 <div id="Div1">
     <YAF:SmartScroller ID="SmartScroller2" runat="server" />
 </div>

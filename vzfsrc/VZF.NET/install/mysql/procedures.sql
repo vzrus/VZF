@@ -5968,6 +5968,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
 		IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Active 
 		WHERE (SessionID=i_SessionID OR ( Browser = i_Browser AND (Flags & 8) = 8 )) 
 		AND BoardID=i_BoardID) THEN
+		if (char_length(i_location) > 0) then
 		if i_IsCrawler <> 1 THEN
 		 UPDATE {databaseName}.{objectQualifier}Active SET
 				UserID = ici_UserID,
@@ -5995,6 +5996,11 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
 			-- trace crawler: the cache is reset every time crawler moves to next page ? Disabled as cache reset will overload server 
 			-- set @ActiveUpdate = 1		 ;	
 			END IF;	
+			else
+			UPDATE {databaseName}.{objectQualifier}Active SET
+			   LastActive = i_CurrentTime
+			WHERE SessionID = i_SessionID and BoardID=i_BoardID;	
+			end if;
 		ELSE
 			-- we set ici_ActiveFlags ready flags 	
 			INSERT INTO {databaseName}.{objectQualifier}Active(SessionID,BoardID,UserID,IP,Login,LastActive,Location,ForumID,TopicID,Browser,Platform,Flags)
@@ -11797,7 +11803,7 @@ i_PageSize int)
    		select  count(1) into  ici_TotalRows FROM   {databaseName}.{objectQualifier}thanks t 
 		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
                 left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
-                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
+                join {databaseName}.{objectQualifier}user b on c.userID = b.UserID    
 				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
         where   x.ReadAccess > 0
                 AND x.UserID = I_PageUserID

@@ -119,25 +119,32 @@ namespace YAF.Core
 
                 int tries = 0;
                 DataRow pageRow;
-
+                string forumPage = this.Get<HttpRequestBase>().QueryString.ToString();
+                string location = this.Get<HttpRequestBase>().FilePath;
+                if (location.Contains("resource.ashx"))
+                {
+                    forumPage = string.Empty;
+                    location = string.Empty;
+                }
                 do
                 {
-                    pageRow = CommonDb.pageload(YafContext.Current.PageModuleID, this.Get<HttpSessionStateBase>().SessionID,
-                        YafContext.Current.PageBoardID,
-                        userKey,
-                        this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
-                        this.Get<HttpRequestBase>().FilePath,
-                        this.Get<HttpRequestBase>().QueryString.ToString(),
-                        @event.Data.Browser,
-                        @event.Data.Platform,
-                        @event.Data.CategoryID,
-                        @event.Data.ForumID,
-                        @event.Data.TopicID,
-                        @event.Data.MessageID,
+                    pageRow = CommonDb.pageload(mid: YafContext.Current.PageModuleID, 
+                        sessionId: this.Get<HttpSessionStateBase>().SessionID, 
+                        boardId: YafContext.Current.PageBoardID, 
+                        userKey: userKey, 
+                        ip: this.Get<HttpRequestBase>().GetUserRealIPAddress(),
+                        location: location,
+                        forumPage: forumPage, 
+                        browser: @event.Data.Browser, 
+                        platform: @event.Data.Platform, 
+                        categoryId: @event.Data.CategoryID, 
+                        forumId: @event.Data.ForumID, 
+                        topicId: @event.Data.TopicID, 
+                        messageId: @event.Data.MessageID,
                         // don't track if this is a search engine
-                        @event.Data.IsSearchEngine,
-                        @event.Data.IsMobileDevice,
-                        @event.Data.DontTrack);
+                        isCrawler: @event.Data.IsSearchEngine, 
+                        isMobileDevice: @event.Data.IsMobileDevice, 
+                        donttrack: @event.Data.DontTrack);
 
                     // if the user doesn't exist...
                     if (userKey != null && pageRow == null)

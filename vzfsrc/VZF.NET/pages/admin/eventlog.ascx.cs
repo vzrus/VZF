@@ -325,7 +325,7 @@ namespace YAF.Pages.Admin
             this.PagerTop.PageSize = baseSize;
 
             var sinceDate = DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays);
-            var toDate = DateTime.UtcNow;
+            var toDate = DateTime.UtcNow.AddMinutes((double)PageContext.CurrentUserData.TimeZone);
 
             var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
 

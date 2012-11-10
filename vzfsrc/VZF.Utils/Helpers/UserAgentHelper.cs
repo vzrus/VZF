@@ -40,7 +40,7 @@ namespace YAF.Utils.Helpers
     /// The spider contains.
     /// </summary>
     private static readonly string[] spiderContains = { 
-                                                        "abachoBOT", "abcdatos_botlink", "ah-ha.com crawler", "antibot", 
+                                                        "Googlebot","abachoBOT", "abcdatos_botlink", "ah-ha.com crawler", "Alexa", "antibot", 
                                                         "appie", "AltaVista-Intranet", "Acoon Robot", "Atomz", 
                                                         "Arachnoidea", "AESOP_com_SpiderMan", "AxmoRobot", 
                                                         "ArchitextSpider", "AlkalineBOT", "Aranha", "asterias",
@@ -263,7 +263,7 @@ namespace YAF.Utils.Helpers
           browser = san;
         }
 
-        isSearchEngine = isCrawler || san.IsSet();
+        isSearchEngine = san.IsSet() || isCrawler;
         isIgnoredForDisplay = IsIgnoredForDisplay(userAgent) | isSearchEngine;
       }
     }

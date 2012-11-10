@@ -33,7 +33,7 @@ CREATE TABLE databaseSchema.objectQualifier_active
 			 ip                        varchar(39) NOT NULL CHECK (ip <> ''),
 			 login                     timestampTZ  NOT NULL,
 			 lastactive                timestampTZ  NOT NULL,
-			 location                  varchar(255) NOT NULL,
+			 location                  varchar(1024) NOT NULL,
 			 forumid                   integer,
 			 topicid                   integer,
 			 browser                   varchar(128),

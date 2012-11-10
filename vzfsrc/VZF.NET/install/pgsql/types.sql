@@ -126,11 +126,11 @@ CREATE TYPE databaseSchema.objectQualifier_active_list_return_type AS
 "UserCount" integer,
 "Login" timestampTZ,
 "LastActive" timestampTZ,
-"Location" varchar(255),
+"Location" varchar(1024),
 "Active"  integer,
 "Browser" varchar(128),
 "Platform" varchar(128),
-"ForumPage"  varchar(255),
+"ForumPage"  varchar(1024),
 "ActiveSpan" integer
 );
 --GO
@@ -152,15 +152,15 @@ CREATE TYPE databaseSchema.objectQualifier_active_list_user_return_type AS
 "IsGuest" boolean,
 "IsCrawler" boolean,
 "IsHidden" boolean,
-"Style" varchar(255), 
+"Style" varchar(1024), 
 "UserCount" integer,
 "Login" timestampTZ,
 "LastActive" timestampTZ,
-"Location" varchar(255),
+"Location" varchar(1024),
 "Active"  integer,
 "Browser" varchar(128),
 "Platform" varchar(128),
-"ForumPage"  varchar(255),
+"ForumPage"  varchar(1024),
 "ActiveSpan" integer
 );
 --GO
@@ -754,12 +754,6 @@ CREATE TYPE databaseSchema.objectQualifier_group_member_return_type AS
 );
 --GO
 
-CREATE TYPE databaseSchema.objectQualifier_group_save_return_type AS
-(
-"GroupID" integer
-);
---GO
-
 SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_mail_list_return_type');
 --GO
 CREATE TYPE databaseSchema.objectQualifier_mail_list_return_type AS (
@@ -1235,7 +1229,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_active_return_type AS
 "TopicMovedID" integer,
 "Posted" timestamp,
 "LinkTopicID" integer,
-"Subject" varchar(128),
+"Subject" varchar(255),
 "Status" varchar(255),
 "Styles" varchar(255),
 "Description" varchar(255),
@@ -1258,7 +1252,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_active_return_type AS
 "PollID" integer,
 "ForumName" varchar(128),
 "ForumFlags" integer,
-"FirstMessage" varchar(12000),
+"FirstMessage" text,
 "StarterStyle"  varchar(255),
 "LastUserStyle"  varchar(255),
 "LastForumAccess"  timestampTZ,
@@ -1277,7 +1271,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unread_return_type AS
 "TopicMovedID" integer,
 "Posted" timestamp,
 "LinkTopicID" integer,
-"Subject" varchar(128),
+"Subject" varchar(255),
 "Status" varchar(255),
 "Styles" varchar(255),
 "Description" varchar(255),
@@ -1300,7 +1294,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unread_return_type AS
 "PollID" integer,
 "ForumName" varchar(128),
 "ForumFlags" integer,
-"FirstMessage" varchar(12000),
+"FirstMessage" text,
 "StarterStyle"  varchar(255),
 "LastUserStyle"  varchar(255),
 "LastForumAccess"  timestampTZ,
@@ -1462,7 +1456,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
     "Priority" smallint,
     "PollID" integer,
     "ForumFlags" integer,
-    "FirstMessage"   varchar(4000),	
+    "FirstMessage"   text,	
     "StarterStyle"  varchar(255), 
     "LastUserStyle"  varchar(255),
     "LastForumAccess"  timestampTZ,
@@ -1480,7 +1474,7 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
 	"TopicMovedID" integer,
     "Posted" timestampTZ,
     "LinkTopicID" integer,	
-    "Subject" varchar(100),
+    "Subject" varchar(255),
 	"Description" varchar(255),
 	"Status"  varchar(255),
 	"Styles"  varchar(255),
@@ -1503,7 +1497,7 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
     "PollID" integer,
     "ForumName" varchar(255),	
 	"ForumFlags" integer,
-	"FirstMessage"  varchar(4000),
+	"FirstMessage"  text,
 	"StarterStyle" varchar(255),
 	"LastUserStyle" varchar(255),
 	"LastForumAccess"  timestampTZ,
@@ -1521,7 +1515,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 	"TopicMovedID" integer,
     "Posted" timestampTZ,
     "LinkTopicID" integer,	
-    "Subject" varchar(100),
+    "Subject" varchar(255),
 	"Description" varchar(255),
 	"Status"  varchar(255),
 	"Styles"  varchar(255),
@@ -1544,7 +1538,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
     "PollID" integer,
     "ForumName" varchar(255),	
 	"ForumFlags" integer,
-	"FirstMessage"  varchar(4000),
+	"FirstMessage"  text,
 	"StarterStyle" varchar(255),
 	"LastUserStyle" varchar(255),
 	"LastForumAccess"  timestampTZ,
@@ -1555,12 +1549,6 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 --GO
 
 select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_list_helper_return_type');
---GO
-CREATE TYPE databaseSchema.objectQualifier_topic_list_helper_return_type AS (
-    rowno integer,   
-    topicid integer,   
-    rowscount integer
-);
 --GO
 
 select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_listmessages_return_type');
@@ -2549,6 +2537,25 @@ SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifie
   "Posted"		     timestampTZ,  	
   "Message"          text, 
   "Flags"            integer
+);
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_user_viewthankstofrom_return_type');
+ --GO
+
+CREATE TYPE databaseSchema.objectQualifier_user_viewthankstofrom_return_type AS
+(
+  "ThanksFromUserID" integer,
+  "ThanksToUserID"	 integer,
+  "MessageID"		 integer,
+  "ForumID"		     integer,
+  "TopicID"		     integer,
+  "Topic"		     varchar(128),
+  "UserID"		     integer, 
+  "Posted"		     timestampTZ,  	
+  "Message"          text, 
+  "Flags"            integer,
+  "TotalRows"        integer
 );
 --GO
 

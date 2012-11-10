@@ -869,23 +869,27 @@ namespace YAF
             {
                 userKey = user.ProviderUserKey;
             }
-
-            DataRow pageRow = CommonDb.pageload(YafContext.Current.PageModuleID, HttpContext.Current.Session.SessionID,
-                boardID,
-                userKey,
-                this.Get<HttpRequestBase>().GetUserRealIPAddress(),
-                HttpContext.Current.Request.FilePath,
-                HttpContext.Current.Request.QueryString.ToString(),
-                browser,
-                platform,
-                null,
-                null,
-                null,
-                messageID,
+            string forumPage = this.Get<HttpRequestBase>().QueryString.ToString();
+            string location = this.Get<HttpRequestBase>().FilePath;
+            if (location.Contains("resource.ashx"))
+            {
+                forumPage = string.Empty;
+                location = string.Empty;
+            }
+            DataRow pageRow = CommonDb.pageload(mid: YafContext.Current.PageModuleID, 
+                sessionId: HttpContext.Current.Session.SessionID, 
+                boardId: boardID, userKey: userKey, 
+                ip: this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
+                location: location,
+                forumPage: forumPage, 
+                browser: browser, 
+                platform: platform, 
+                categoryId: null, 
+                forumId: null, 
+                topicId: null,
+                messageId: messageID,
                 // don't track if this is a search engine
-                isSearchEngine,
-                isMobileDevice,
-                dontTrack);
+                                                isCrawler: isSearchEngine, isMobileDevice: isMobileDevice, donttrack: dontTrack);
 
             return pageRow["DownloadAccess"].ToType<bool>() || pageRow["ModeratorAccess"].ToType<bool>();
         }

@@ -1044,6 +1044,13 @@ namespace YAF.Pages
                 this.IsThreaded ? 1 : 0,
                 this.Get<YafBoardSettings>().EnableThanksMod,
                 messagePosition);
+            if (postListDataTable == null || postListDataTable.Rows.Count <=0)
+            {
+                string ex = "this.PageContext.PageUserID={0},messagePosition={1},this.PageContext.PageTopicID={2}".FormatWith(this.PageContext.PageUserID, messagePosition);
+
+                CommonDb.eventlog_create(PageContext.PageModuleID, (int?)YafContext.Current.PageUserID, this, ex, EventLogTypes.Error);
+                YafBuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+            }
 
             if (this.Get<YafBoardSettings>().EnableThanksMod)
             {

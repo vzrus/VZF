@@ -190,6 +190,21 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            if (this.Request.QueryString.GetFirstOrDefault("f") == null)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            if (this.PageContext.IsGuest && !this.PageContext.ForumReadAccess)
+            {
+                // attempt to get permission by redirecting to login...
+                this.Get<IPermissions>().HandleRequest(ViewPermissions.RegisteredUsers);
+            }
+            else if (!this.PageContext.ForumReadAccess)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
             this.Get<IYafSession>().UnreadTopics = 0;
             this.AtomFeed.AdditionalParameters =
                 "f={0}".FormatWith(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f"));
@@ -237,21 +252,6 @@ namespace YAF.Pages
                     YafBuildLink.GetLinkNotEscaped(ForumPages.postmessage, "f={0}", this.PageContext.PageForumID);
 
                 this.HandleWatchForum();
-            }
-
-            if (this.Request.QueryString.GetFirstOrDefault("f") == null)
-            {
-                YafBuildLink.AccessDenied();
-            }
-
-            if (this.PageContext.IsGuest && !this.PageContext.ForumReadAccess)
-            {
-                // attempt to get permission by redirecting to login...
-                this.Get<IPermissions>().HandleRequest(ViewPermissions.RegisteredUsers);
-            }
-            else if (!this.PageContext.ForumReadAccess)
-            {
-                YafBuildLink.AccessDenied();
             }
 
             using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
@@ -381,8 +381,6 @@ namespace YAF.Pages
                     }
             }*/
 
-            int nCurrentPageIndex = this.Pager.CurrentPageIndex;
-
             DataTable dtTopics;
 
             if (this._showTopicListSelected == 0)
@@ -391,7 +389,7 @@ namespace YAF.Pages
                     userId,
                     DateTimeHelper.SqlDbMinTime(),
                     DateTime.UtcNow,
-                    nCurrentPageIndex,
+                    this.Pager.CurrentPageIndex,
                     baseSize,
                     this.Get<YafBoardSettings>().UseStyledNicks,
                     true,
@@ -411,7 +409,7 @@ namespace YAF.Pages
                     userId,
                     date,
                     DateTime.UtcNow,
-                    nCurrentPageIndex,
+                    this.Pager.CurrentPageIndex,
                     baseSize,
                     this.Get<YafBoardSettings>().UseStyledNicks,
                     true,

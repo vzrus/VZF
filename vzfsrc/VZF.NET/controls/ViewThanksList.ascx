@@ -7,7 +7,7 @@
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
-            <YAF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
+             <YAF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>
@@ -18,9 +18,9 @@
     <ItemTemplate>
         <tr class="header2">
             <td colspan="2">
-                 <b>
+                 <strong>
                       <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="topic" />
-                        </b><a title='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' href="<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}", Container.DataItemToField<int>("TopicID")) %>">
+                        </strong><a title='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' href="<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}", Container.DataItemToField<int>("TopicID")) %>">
                             <%# this.HtmlEncode(Container.DataItemToField<string>("Topic")) %>
                         </a>
                         <a id="AncPost"  href="<%# YafBuildLink.GetLink(ForumPages.posts,"m={0}#post{0}", Container.DataItemToField<int>("MessageID")) %>" runat="server">&nbsp;
@@ -30,7 +30,7 @@
         </tr>
         <tr class="postheader">
             <td width="140px" id="ThanksNumberCell" valign="top" runat="server">
-                <%# String.Format(this.GetText("THANKSNUMBER"),  Container.DataItemToField<int?>("MessageThanksNumber")) %>
+               &nbsp;
             </td>
             <td width="140px" id="NameCell" valign="top" runat="server">
                 <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><b>
@@ -40,16 +40,16 @@
                     Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
             </td>
             <td width="80%" class="postheader">
-                <b>
+                <strong>
                     <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" />
-                </b>
+                </strong>
                 <YAF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></YAF:DisplayDateTime>
             </td>
         </tr>
         <tr class="<%# this.IsOdd() ? "post_alt" : "post" %>">
             <td colspan="2">
                 <YAF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
-                    ShowSignature="false" DataRow="<%# Container.DataItem %>">
+                    ShowSignature="false" DataRow='<%# Container.DataItem %>'>
                 </YAF:MessagePostData>
             </td>
         </tr>
@@ -80,7 +80,7 @@
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <YAF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
+ <YAF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>

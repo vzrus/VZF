@@ -450,6 +450,15 @@ namespace YAF
 
             try
             {
+                /* var ctrl = this.LoadControl(src);
+                var uc = ctrl as ForumPage;
+                if (uc == null)
+                {
+                    var pcc = ctrl as PartialCachingControl;
+                    if (pcc != null) uc = pcc.CachedControl as ForumPage;
+                }
+                this._currentForumPage = uc; */
+
                 this._currentForumPage = (ForumPage)this.LoadControl(src);
 
                 this._header =

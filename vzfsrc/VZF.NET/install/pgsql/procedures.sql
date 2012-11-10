@@ -4752,9 +4752,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
 						   i_usrsightmltags varchar(255),
 						   i_usralbums integer,
 						   i_usralbumimages integer)
-                  RETURNS databaseSchema.objectQualifier_group_save_return_type AS
-$BODY$DECLARE
-             _rec databaseSchema.objectQualifier_group_save_return_type;
+                  RETURNS int AS
+$BODY$DECLARE             
              ici_groupid integer:=i_groupid;
              iciFlags integer:=0;
 BEGIN         
@@ -4782,7 +4781,7 @@ BEGIN
 	               usralbums = i_usralbums,
 	               usralbumimages = i_usralbumimages
             WHERE  groupid = i_groupid;
-            SELECT i_groupid INTO _rec;        
+           -- SELECT i_groupid INTO ici_groupid;        
         ELSE        
             INSERT INTO databaseSchema.objectQualifier_group
                        (name,
@@ -4822,10 +4821,11 @@ BEGIN
                    JOIN databaseSchema.objectQualifier_category b
                      ON b.categoryid = a.categoryid
             WHERE  b.boardid = i_boardid;
-            SELECT ici_groupid INTO _rec; 
+        --    SELECT ici_groupid INTO _rec; 
          END IF;
-		 PERFORM databaseSchema.objectQualifier_user_savestyle(ici_groupid, null);
-         RETURN _rec;		
+	  PERFORM databaseSchema.objectQualifier_user_savestyle(
+                           ici_groupid, null);
+						   return ici_groupid;
     END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100;  
@@ -8111,7 +8111,8 @@ BEGIN
 	        i_usralbums,
 	        i_usralbumimages) RETURNING rankid INTO _rankid;
  	END IF;
-	PERFORM databaseSchema.objectQualifier_user_savestyle(null, _rankid);
+	  PERFORM databaseSchema.objectQualifier_user_savestyle(
+                           null, i_rankid);
 END;
 
 $BODY$
@@ -9717,52 +9718,6 @@ EXIT;
 END IF;
 END LOOP; 		
 END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
-  COST 100
-  ROWS 1000; 
---GO
-
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_list_helper(
-                           i_forumid integer,
-						   i_announcement integer, 
-						   i_date timestampTZ)
-                  RETURNS SETOF databaseSchema.objectQualifier_topic_list_helper_return_type AS
-$BODY$DECLARE
-             rowno integer:=1;
-             _rec databaseSchema.objectQualifier_topic_list_helper_return_type%ROWTYPE;
-BEGIN
- FOR _rec IN
- 	SELECT
- 		c.topicid,
- 		rowno,
- 		COUNT (1) AS rowscount
- 	FROM
- 		databaseSchema.objectQualifier_topic c 
-          JOIN databaseSchema.objectQualifier_user b ON b.userid=c.userid 
-          JOIN databaseSchema.objectQualifier_forum d on d.forumid=c.forumid
- 	WHERE
- 		c.forumid = i_forumid
- 	AND
- 		(i_date IS NULL OR c.posted >=i_date OR c.lastposted >=i_date 
- 		OR c.priority>0) 
- 	AND
- 		((i_announcement=1 AND c.priority=2) 
- 		OR (i_announcement=0 and c.priority<>2) OR (i_announcement<0)) 
- 	AND	
- 		(c.topicmovedid IS NOT NULL OR c.numposts > 0) 
- 	AND
- 		SIGN(c.flags & 8) = 0
- 	ORDER BY
- 		c.priority DESC,
- 		c.lastposted DESC
- LOOP
-RETURN NEXT _rec;
-rowno:=rowno+1;
-END LOOP;
-		
-END;	
-
 $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
   COST 100
@@ -12905,7 +12860,21 @@ BEGIN
 	THEN
 	 -- user with the same session can be a user from other board or a guest who just logged in or user who just logged out. 
 		IF EXISTS(SELECT 1 FROM databaseSchema.objectQualifier_active 
-		WHERE (sessionid=i_sessionid  AND boardid=ici_boardid)) THEN
+		WHERE (sessionid=i_sessionid  AND boardid=ici_boardid OR ( browser = i_browser AND (flags & 8) = 8 ))  LIMIT 1) THEN
+		  IF (CHAR_LENGTH(i_location) > 0) THEN
+		  IF ici_crawler THEN
+		  UPDATE databaseSchema.objectQualifier_active SET
+				userid = ici_userid,
+				ip = i_ip,
+				lastactive = i_currenttime,
+				location = i_location,				
+				forumid = i_forumid,
+				topicid = i_topicid,
+				browser = i_browser,
+				platform = i_platform,
+				forumpage = i_forumpage
+			WHERE Browser = i_browser AND IP = i_ip and boardID=i_boardid;
+		  ELSE
 		  UPDATE databaseSchema.objectQualifier_active SET
 				userid = ici_userid,
 				ip = i_ip,
@@ -12917,6 +12886,12 @@ BEGIN
 				platform = i_platform,
 				forumpage = i_forumpage
 			WHERE sessionid = i_sessionid AND boardid=i_boardid;
+			END IF;
+			ELSE
+			UPDATE databaseSchema.objectQualifier_active SET				
+				lastactive = i_currenttime				
+			WHERE sessionid = i_sessionid AND boardid=i_boardid;
+			END IF;
 			IF ici_isguest IS FALSE AND ici_crawler IS FALSE THEN		
 		          ici_activeupdate := true;
 			END IF;			
@@ -13504,18 +13479,18 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
   --GO
 
-  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewallthanksfrom(
+  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewthanksfrom(
                             i_userid integer,
 							i_pageuserid integer,
 							i_pageindex integer,
 						    i_pagesize integer)
-				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewallthanks_return_type 
+				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewthankstofrom_return_type 
 AS
 $BODY$DECLARE 
              ici_totalrows int :=0; 
 			 ici_FirstSelectRowID int :=0; 
 			 ici_firstselectrownumber int :=0; 
-             _rec databaseSchema.objectQualifier_user_viewallthanks_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_user_viewthankstofrom_return_type%ROWTYPE;
 BEGIN
  i_pageindex := i_pageindex + 1;
 		 
@@ -13524,7 +13499,7 @@ BEGIN
 		databaseSchema.objectQualifier_thanks t
 		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
 		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
-		join databaseSchema.objectQualifier_user b on c.userid = b.userid                
+		join databaseSchema.objectQualifier_user b on b.userid = c.userid                
         join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
         where 
 		     ac.readaccess and
@@ -13548,11 +13523,13 @@ FOR _rec in
                 b.userid,               
                 c.posted,
                 c.message,
-                c.flags
+                c.flags,
+				ici_totalrows
         from
 		databaseSchema.objectQualifier_thanks t
 		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
 		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_user b on c.userid = b.userid 
 		join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
         where 
 		     ac.readaccess and
@@ -13578,18 +13555,18 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
   --GO
 
-  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewallthanksto(
+  CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_viewthanksto(
                             i_userid integer,
 							i_pageuserid integer,
 							i_pageindex integer,
 						    i_pagesize integer)
-				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewallthanks_return_type 
+				  RETURNS SETOF  databaseSchema.objectQualifier_user_viewthankstofrom_return_type 
 AS
 $BODY$DECLARE 
              ici_totalrows int :=0; 
 			 ici_FirstSelectRowID int :=0; 
 			 ici_firstselectrownumber int :=0; 
-             _rec databaseSchema.objectQualifier_user_viewallthanks_return_type%ROWTYPE;
+             _rec databaseSchema.objectQualifier_user_viewthankstofrom_return_type%ROWTYPE;
 BEGIN
  i_pageindex := i_pageindex + 1;
 		 
@@ -13601,7 +13578,7 @@ BEGIN
 		join databaseSchema.objectQualifier_user b on c.userid = b.userid                
         join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
         where 
-		     ac.readaccess > 0 and
+		     ac.readaccess and
 			 a.topicmovedid IS NULL and	
 			 t.thankstouserid = i_userid 	and		    
 			-- is approved	
@@ -13621,14 +13598,16 @@ FOR _rec in
                 b.userid,               
                 c.posted,
                 c.message,
-                c.flags
+                c.flags,
+				ici_totalrows
         from
 		databaseSchema.objectQualifier_thanks t
 		join databaseSchema.objectQualifier_message c on c.messageid = t.messageid
 		join databaseSchema.objectQualifier_topic a on a.topicid = c.topicid
+		join databaseSchema.objectQualifier_user b on c.userid = b.userid 
 		join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
         where 
-		     ac.readaccess > 0 and
+		     ac.readaccess and
 			-- is apploved	
                 (c.flags & 2) = 2
                 AND a.topicmovedid IS NULL

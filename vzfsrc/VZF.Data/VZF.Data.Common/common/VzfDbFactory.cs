@@ -4134,7 +4134,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataRow pageload(int? mid, object sessionID, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryID, object forumID, object topicID, object messageID, object isCrawler, object isMobileDevice, object donttrack)
+         static public DataRow pageload(int? mid, object sessionId, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryId, object forumId, object topicId, object messageId, object isCrawler, object isMobileDevice, object donttrack)
          {
              string dataEngine;
              string connectionString;
@@ -4143,13 +4143,13 @@ namespace YAF.Classes.Data
              
              switch (dataEngine)
              {
-                 case "System.Data.SqlClient": return MsSql.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 case "Npgsql": return Postgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 case "MySql.Data.MySqlClient": return MySqlDb.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 // case "oracle":  return orPostgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 // case "db2":  return db2Postgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack);
-                 // case "other":  return othPostgre.Db.pageload(connectionString, sessionID, boardId, userKey, ip, location, forumPage, browser, platform,categoryID, forumID, topicID, messageID, isCrawler, isMobileDevice, donttrack); 
+                 case "System.Data.SqlClient": return MsSql.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 case "Npgsql": return Postgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 case "MySql.Data.MySqlClient": return MySqlDb.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 // case "oracle":  return orPostgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 // case "db2":  return db2Postgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                 // case "other":  return othPostgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack); 
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
