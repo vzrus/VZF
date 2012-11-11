@@ -7888,29 +7888,10 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-		/// <summary>
-		/// Returns the posts which is thanked by the user + the posts which are posted by the user and 
-		/// are thanked by other users.
-		/// </summary>
-		/// <param name="UserID">
-		/// The user id.
-		/// </param>
-		/// <returns>
-		/// </returns>
-        public static DataTable user_viewallthanks(string connectionString, object UserID, object pageUserId)
-		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewallthanks"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
-				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-			}
-		}
+
 
         /// <summary>
-        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
-        /// are thanked by other users.
+        /// Returns the posts which is thanked by the user.
         /// </summary>
         /// <param name="UserID">
         /// The user id.
@@ -7931,7 +7912,7 @@ namespace YAF.Classes.Data.Postgre
         }
 
         /// <summary>
-        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// Returns the posts which are posted by the user and 
         /// are thanked by other users.
         /// </summary>
         /// <param name="UserID">

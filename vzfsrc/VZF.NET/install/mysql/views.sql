@@ -83,20 +83,20 @@ ON e.GroupID=b.GroupID;
 --GO
 CREATE VIEW {databaseName}.{objectQualifier}vaccessfull3 AS
    SELECT a1.UserID AS UserID,
-                   0 AS  ForumID,
-                   0 AS ReadAccess,
-                   0 AS PostAccess,
-                   0 AS ReplyAccess,
-                   0 AS PriorityAccess,
-                   0 AS PollAccess,
-                   0 AS VoteAccess,
-                   0 AS ModeratorAccess,
-                   0 AS EditAccess,
-                   0 AS DeleteAccess,
-                   0 AS UploadAccess,
-                   0 AS DownloadAccess,
-                   0 AS AdminGroup 
-            FROM  {databaseName}.{objectQualifier}User a1;
+				   0 AS  ForumID,
+				   0 AS ReadAccess,
+				   0 AS PostAccess,
+				   0 AS ReplyAccess,
+				   0 AS PriorityAccess,
+				   0 AS PollAccess,
+				   0 AS VoteAccess,
+				   0 AS ModeratorAccess,
+				   0 AS EditAccess,
+				   0 AS DeleteAccess,
+				   0 AS UploadAccess,
+				   0 AS DownloadAccess,
+				   0 AS AdminGroup 
+			FROM  {databaseName}.{objectQualifier}User a1;
 --GO
 
 /* eof Views */ 
@@ -242,9 +242,9 @@ AS
 select 
 			UserID,
 			ForumID,
-                      MAX(ReadAccess) AS ReadAccess, MAX(PostAccess) AS PostAccess, MAX(ReplyAccess) AS ReplyAccess, MAX(PriorityAccess) AS PriorityAccess, 
-                      MAX(PollAccess) AS PollAccess, MAX(VoteAccess) AS VoteAccess, MAX(ModeratorAccess) AS ModeratorAccess, MAX(EditAccess) AS EditAccess, 
-                      MAX(DeleteAccess) AS DeleteAccess, MAX(UploadAccess) AS UploadAccess, MAX(DownloadAccess) AS DownloadAccess, MAX(AdminGroup) as AdminGroup
+					  MAX(ReadAccess) AS ReadAccess, MAX(PostAccess) AS PostAccess, MAX(ReplyAccess) AS ReplyAccess, MAX(PriorityAccess) AS PriorityAccess, 
+					  MAX(PollAccess) AS PollAccess, MAX(VoteAccess) AS VoteAccess, MAX(ModeratorAccess) AS ModeratorAccess, MAX(EditAccess) AS EditAccess, 
+					  MAX(DeleteAccess) AS DeleteAccess, MAX(UploadAccess) AS UploadAccess, MAX(DownloadAccess) AS DownloadAccess, MAX(AdminGroup) as AdminGroup
 		FROM (
 		select
 			UserID,
@@ -367,7 +367,7 @@ IFNULL(SIGN(a.Flags & 8)>0,false) AS IsDeleted,
 IFNULL(SIGN(a.Flags & 16)>0,false) AS IsApproved,
 a.BlogPostID
  FROM
- 	{databaseName}.{objectQualifier}Message a;
+	{databaseName}.{objectQualifier}Message a;
 --GO
 
  CREATE VIEW {databaseName}.{objectQualifier}TopicSelectView
@@ -392,7 +392,7 @@ IFNULL(a.Flags,0) AS Flags,
 IFNULL(SIGN(a.Flags & 8)>0,false) AS IsDeleted,
 IFNULL(SIGN(a.Flags & 1024)>0,false)  AS IsQuestion
  FROM
- 	{databaseName}.{objectQualifier}Topic a;
+	{databaseName}.{objectQualifier}Topic a;
 --GO
 
 
@@ -430,7 +430,7 @@ a.AutoWatchTopics,
 ((a.Flags & 2) = 2) AS IsApproved,
 ((a.Flags & 16) = 16) AS IsActiveExcluded
  FROM
- 	{databaseName}.{objectQualifier}User a;
+	{databaseName}.{objectQualifier}User a;
 --GO
 
 

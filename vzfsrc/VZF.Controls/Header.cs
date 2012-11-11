@@ -247,7 +247,7 @@ namespace YAF.Controls
                 {
                     buildHeader.AppendFormat(
                         " <a href=\"{0}\">{1}</a>".FormatWith(
-                            (returnUrl == string.Empty)
+                            (returnUrl.IsNotSet())
                                 ? (!this.Get<YafBoardSettings>().UseSSLToLogIn
                                        ? YafBuildLink.GetLink(ForumPages.login)
                                        : YafBuildLink.GetLink(ForumPages.login, true).Replace("http:", "https:"))

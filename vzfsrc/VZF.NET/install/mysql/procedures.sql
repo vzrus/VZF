@@ -11753,41 +11753,6 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewallthanks(I_UserID int, I_PageUserID int)
-    READS SQL DATA
-    BEGIN    
-        select  t.ThanksFromUserID,
-                t.ThanksToUserID,
-                c.MessageID,
-                a.ForumID,
-                a.TopicID,
-                a.Topic,
-                b.UserID,
-                c.MessageID,
-                c.Posted,
-                c.Message,
-                c.Flags                
-        from   {databaseName}.{objectQualifier}thanks t 
-		        left join {databaseName}.{objectQualifier}message c on c.MessageID = t.MessageID
-                left join {databaseName}.{objectQualifier}topic a on a.TopicID = c.TopicID
-                join {databaseName}.{objectQualifier}user b on c.UserID = b.UserID    
-				join {databaseName}.{objectQualifier}activeaccess x on (x.ForumID = a.ForumID and x.UserID = I_PageUserID)
-        where   x.ReadAccess > 0
-                AND x.UserID = I_PageUserID
-				-- Message IsApproved
-                AND (c.Flags & 16) = 16
-                AND a.TopicMovedID IS NULL
-				-- Topic IsDeleted
-                AND (a.Flags & 8) <> 8
-				-- Message IsDeleted
-                AND (c.Flags & 8) <> 8
-                AND
-					( t.ThanksFromUserID = I_UserID 
-					OR t.thankstouserID = I_UserID )
-		ORDER BY c.Posted DESC;
-    END;
---GO
-
 CREATE PROCEDURE {databaseName}.{objectQualifier}user_viewthanksfrom(
 I_UserID int, 
 I_PageUserID int,  

@@ -29,7 +29,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_drop_type
 ) returns int4 
 as '
 declare
-    _schemename alias for $1;
+	_schemename alias for $1;
 	_typename alias for $2;
 	_rowcount int4;
 
@@ -63,11 +63,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_check_or_create_keys
 ) returns int4 
 as '
 declare
-    _conschema alias for $1;
-    _contable alias for $2;
-    _altertable alias for $3;
-    _conname alias for $4; 
-    _concolumn alias for $5;       
+	_conschema alias for $1;
+	_contable alias for $2;
+	_altertable alias for $3;
+	_conname alias for $4; 
+	_concolumn alias for $5;       
 	_contype alias for $6;
 	
 	_rowcount int4;
@@ -79,16 +79,16 @@ _rowcount := 0;
 IF _contype = ''p'' THEN
 IF NOT EXISTS (SELECT * FROM pg_constraint where contype=_contype and conname =_conname ) THEN
 EXECUTE ''ALTER TABLE ONLY  '' || _conschema || ''.'' || _altertable ||
-     '' ADD CONSTRAINT  '' || _conname || '' PRIMARY KEY  ( '' || _concolumn || '');'';
+	 '' ADD CONSTRAINT  '' || _conname || '' PRIMARY KEY  ( '' || _concolumn || '');'';
 END IF;
 END IF;
 
 IF _contype = ''f'' THEN
 IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype=_contype and conname =_conname) THEN
 EXECUTE ''ALTER TABLE ONLY  '' || _conschema || ''.'' || _altertable ||
-     '' ADD CONSTRAINT '' || _conname || 
-    '' FOREIGN KEY ( '' || _concolumn || '') '' ||  
-    '' REFERENCES '' || _conschema || ''.'' || _contable || '' ( '' || _concolumn || '');'';
+	 '' ADD CONSTRAINT '' || _conname || 
+	'' FOREIGN KEY ( '' || _concolumn || '') '' ||  
+	'' REFERENCES '' || _conschema || ''.'' || _contable || '' ( '' || _concolumn || '');'';
 END IF;
 END IF;
 GET DIAGNOSTICS _rowcount = ROW_COUNT;
@@ -117,9 +117,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_replace_inde
 ) returns int4 
 as '
 declare
-    _schemaname alias for $1;
-    _tablename alias for $2;
-    _indexname alias for $3;
+	_schemaname alias for $1;
+	_tablename alias for $2;
+	_indexname alias for $3;
 	_indexuniue alias for $4;
 	_indexcolumn alias for $5;
 	_rowcount int4;

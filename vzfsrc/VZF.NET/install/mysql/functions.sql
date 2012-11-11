@@ -95,10 +95,10 @@ READS SQL DATA
 BEGIN
  -- DECLARE out_IsAdmin INT DEFAULT 0;
 RETURN (SELECT MAX(b.Flags & 1)
-            FROM {databaseName}.{objectQualifier}UserGroup a             
-           JOIN {databaseName}.{objectQualifier}Group b
-             ON b.GroupID = a.GroupID
-             WHERE a.UserID=i_UserID  LIMIT 1);
+			FROM {databaseName}.{objectQualifier}UserGroup a             
+		   JOIN {databaseName}.{objectQualifier}Group b
+			 ON b.GroupID = a.GroupID
+			 WHERE a.UserID=i_UserID  LIMIT 1);
  
  -- RETURN out_IsAdmin;
 END;
@@ -116,11 +116,11 @@ BEGIN
 -- DECLARE ici_IsAdmin INT DEFAULT 0;
 -- DECLARE out_IsForumModerator INT DEFAULT 0;
 RETURN (IFNULL((SELECT         
-      MAX(b.Flags & 8)     
-      FROM  {databaseName}.{objectQualifier}UserGroup a             
-           JOIN {databaseName}.{objectQualifier}Group b
-             ON b.GroupID = a.GroupID
-             WHERE a.UserID=i_UserID),0));
+	  MAX(b.Flags & 8)     
+	  FROM  {databaseName}.{objectQualifier}UserGroup a             
+		   JOIN {databaseName}.{objectQualifier}Group b
+			 ON b.GroupID = a.GroupID
+			 WHERE a.UserID=i_UserID),0));
  
 -- out_IsForumModerator;
 END;
@@ -552,88 +552,88 @@ END;
  CREATE FUNCTION {databaseName}.{objectQualifier}forum_lasttopic 
  
  (	
- 	i_ForumID INT,
- 	i_UserID INT,
- 	i_LastTopicID INT,
- 	i_LastPosted DATETIME 
+	i_ForumID INT,
+	i_UserID INT,
+	i_LastTopicID INT,
+	i_LastPosted DATETIME 
  ) 
 RETURNS INT
 READS SQL DATA
  BEGIN
- 	/*local variables for temporary values*/
- 	DECLARE ici_SubforumID INT;   
- 	DECLARE ici_TopicID INT;
- 	DECLARE ici_Posted DATETIME;
-        DECLARE cltt CURSOR FOR
- 			SELECT 
- 				a.ForumID,
- 				a.LastTopicID,
- 				a.LastPosted
- 			FROM
- 				{databaseName}.{objectQualifier}Forum a
- 			WHERE
- 				a.ParentID=i_ForumID  AND
- 				(
- 					(i_UserID IS NULL AND (a.Flags & 2)=0) OR 
- 					(((a.Flags & 2)=0 
- 					OR {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
- 				);
-      
+	/*local variables for temporary values*/
+	DECLARE ici_SubforumID INT;   
+	DECLARE ici_TopicID INT;
+	DECLARE ici_Posted DATETIME;
+		DECLARE cltt CURSOR FOR
+			SELECT 
+				a.ForumID,
+				a.LastTopicID,
+				a.LastPosted
+			FROM
+				{databaseName}.{objectQualifier}Forum a
+			WHERE
+				a.ParentID=i_ForumID  AND
+				(
+					(i_UserID IS NULL AND (a.Flags & 2)=0) OR 
+					(((a.Flags & 2)=0 
+					OR {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+				);
+	  
  
- 	/*try to retrieve last direct topic posed in forums if not supplied as argument*/ 
- 	if (i_LastTopicID is null or i_LastPosted is null) THEN
- 		SELECT 
- 			a.LastTopicID,
- 			a.LastPosted
-                INTO  i_LastTopicID,i_LastPosted
- 		FROM
- 			{databaseName}.{objectQualifier}Forum a
- 		WHERE
- 			a.ForumID=i_ForumID and
- 			(
- 				(i_UserID is null and (a.Flags & 2)=0) or 
- 				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
- 			);
- 	END IF;
+	/*try to retrieve last direct topic posed in forums if not supplied as argument*/ 
+	if (i_LastTopicID is null or i_LastPosted is null) THEN
+		SELECT 
+			a.LastTopicID,
+			a.LastPosted
+				INTO  i_LastTopicID,i_LastPosted
+		FROM
+			{databaseName}.{objectQualifier}Forum a
+		WHERE
+			a.ForumID=i_ForumID and
+			(
+				(i_UserID is null and (a.Flags & 2)=0) or 
+				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+			);
+	END IF;
  
- 	/*look for newer topic/message in subforums*/
- 	IF EXISTS(select 1 from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID) THEN 		
- 		
- 	
+	/*look for newer topic/message in subforums*/
+	IF EXISTS(select 1 from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID) THEN 		
+		
+	
 	 open cltt;
- 				-- cycle through subforums
- 		
-       BEGIN	
-        DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
-       LOOP        
-        FETCH cltt INTO ici_SubforumID, ici_TopicID, ici_Posted;       
+				-- cycle through subforums
+		
+	   BEGIN	
+		DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
+	   LOOP        
+		FETCH cltt INTO ici_SubforumID, ici_TopicID, ici_Posted;       
 
-        -- get last topic/message info for subforum
- 			SELECT 
- 			{databaseName}.{objectQualifier}forum_lastposted(ici_SubforumID,i_UserID,ici_TopicID,ici_Posted) 				
-                        INTO ici_TopicID; 
-                        			
-            SELECT LastPosted INTO ici_Posted FROM {databaseName}.{objectQualifier}Topic WHERE TopicID=ici_TopicID;
-            
-             		-- if subforum has newer topic/message, make it last for parent forum
- 			IF i_LastPosted is not null AND ici_Posted is not null THEN
- 			IF (ici_TopicID is not null and ici_Posted is not null and UNIX_TIMESTAMP(i_LastPosted) < UNIX_TIMESTAMP(ici_Posted)) THEN
- 				SET i_LastTopicID = ici_TopicID;
- 				SET i_LastPosted = ici_Posted;
- 		    END IF; 
- 		    ELSEIF (i_LastPosted is null AND ici_Posted is not null) THEN 
- 		       SET i_LastTopicID = ici_TopicID;
- 			   SET i_LastPosted = ici_Posted;		    
- 		    END IF;       
-       	
-      END LOOP;
-      END;
- 		CLOSE cltt;
- 		
- 			
+		-- get last topic/message info for subforum
+			SELECT 
+			{databaseName}.{objectQualifier}forum_lastposted(ici_SubforumID,i_UserID,ici_TopicID,ici_Posted) 				
+						INTO ici_TopicID; 
+									
+			SELECT LastPosted INTO ici_Posted FROM {databaseName}.{objectQualifier}Topic WHERE TopicID=ici_TopicID;
+			
+					-- if subforum has newer topic/message, make it last for parent forum
+			IF i_LastPosted is not null AND ici_Posted is not null THEN
+			IF (ici_TopicID is not null and ici_Posted is not null and UNIX_TIMESTAMP(i_LastPosted) < UNIX_TIMESTAMP(ici_Posted)) THEN
+				SET i_LastTopicID = ici_TopicID;
+				SET i_LastPosted = ici_Posted;
+			END IF; 
+			ELSEIF (i_LastPosted is null AND ici_Posted is not null) THEN 
+			   SET i_LastTopicID = ici_TopicID;
+			   SET i_LastPosted = ici_Posted;		    
+			END IF;       
+		
+	  END LOOP;
+	  END;
+		CLOSE cltt;
+		
+			
  END IF;
- 	/*return id of topic with last message in this forum or its subforums*/
- 	RETURN i_LastTopicID;
+	/*return id of topic with last message in this forum or its subforums*/
+	RETURN i_LastTopicID;
  END;
 --GO 
 
@@ -647,18 +647,18 @@ CREATE FUNCTION {databaseName}.{objectQualifier}forum_subforums(i_ForumID int, i
 RETURNS INT
  READS SQL DATA
  BEGIN
- 	DECLARE l_NumSubforums INT;
+	DECLARE l_NumSubforums INT;
  
- 	SELECT 
- 		CAST(COUNT(1) AS UNSIGNED)
-        INTO l_NumSubforums	
- 	FROM 
- 		{databaseName}.{objectQualifier}Forum a
- 	WHERE 
- 		((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0) AND
- 		(a.ParentID=i_ForumID);
+	SELECT 
+		CAST(COUNT(1) AS UNSIGNED)
+		INTO l_NumSubforums	
+	FROM 
+		{databaseName}.{objectQualifier}Forum a
+	WHERE 
+		((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0) AND
+		(a.ParentID=i_ForumID);
  
- 	RETURN l_NumSubforums;
+	RETURN l_NumSubforums;
  END;
 --GO 
 
@@ -666,17 +666,17 @@ RETURNS INT
 
  CREATE FUNCTION {databaseName}.{objectQualifier}medal_getribbonsetting
  (
- 	i_RibbonURL VARCHAR(250),
- 	i_Flags INT,
- 	i_OnlyRibbon TINYINT(1)
+	i_RibbonURL VARCHAR(250),
+	i_Flags INT,
+	i_OnlyRibbon TINYINT(1)
  )
    RETURNS TINYINT(1)
    NO SQL
  BEGIN
  
- 	IF ((i_RibbonURL IS NULL) OR ((i_Flags & 2) = 0)) THEN SET i_OnlyRibbon = 0;END IF;
+	IF ((i_RibbonURL IS NULL) OR ((i_Flags & 2) = 0)) THEN SET i_OnlyRibbon = 0;END IF;
  
- 	RETURN i_OnlyRibbon;
+	RETURN i_OnlyRibbon;
  
  END;
 --GO 
@@ -686,83 +686,83 @@ RETURNS INT
 CREATE FUNCTION {databaseName}.{objectQualifier}forum_lastposted 
  
  (	
- 	i_ForumID INT,
- 	i_UserID INT,
- 	i_LastTopicID INT,
- 	i_LastPosted DATETIME
+	i_ForumID INT,
+	i_UserID INT,
+	i_LastTopicID INT,
+	i_LastPosted DATETIME
  )
  RETURNS INT
 READS SQL DATA
  BEGIN
- 	/*local variables for temporary values*/
- 	DECLARE ici_SubforumID INT;  
-    DECLARE ici_TopicID INT;
- 	DECLARE ici_Posted DATETIME;
-        DECLARE ctt CURSOR FOR
- 			SELECT 
- 				a.ForumID,
- 				a.LastTopicID,
- 				a.LastPosted
- 			FROM
- 				{databaseName}.{objectQualifier}Forum a
- 			WHERE
- 				a.ParentID=i_ForumID and
- 				(
- 					(i_UserID is null and (a.Flags & 2)=0) or 
- 					(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
- 				);
-       
+	/*local variables for temporary values*/
+	DECLARE ici_SubforumID INT;  
+	DECLARE ici_TopicID INT;
+	DECLARE ici_Posted DATETIME;
+		DECLARE ctt CURSOR FOR
+			SELECT 
+				a.ForumID,
+				a.LastTopicID,
+				a.LastPosted
+			FROM
+				{databaseName}.{objectQualifier}Forum a
+			WHERE
+				a.ParentID=i_ForumID and
+				(
+					(i_UserID is null and (a.Flags & 2)=0) or 
+					(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+				);
+	   
 
  
- 	/*try to retrieve last direct topic posed in forums if not supplied as argument */
- 	IF (i_LastTopicID IS NULL OR i_LastPosted IS NULL) THEN
- 		SELECT
- 			a.LastTopicID,
- 			a.LastPosted
-                INTO i_LastTopicID,i_LastPosted  
- 		FROM
- 			{databaseName}.{objectQualifier}Forum a
- 		WHERE
- 			a.ForumID=i_ForumID and
- 			(
- 				(i_UserID is null and (a.Flags & 2)=0) or 
- 				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
- 			);
- 	END IF;
+	/*try to retrieve last direct topic posed in forums if not supplied as argument */
+	IF (i_LastTopicID IS NULL OR i_LastPosted IS NULL) THEN
+		SELECT
+			a.LastTopicID,
+			a.LastPosted
+				INTO i_LastTopicID,i_LastPosted  
+		FROM
+			{databaseName}.{objectQualifier}Forum a
+		WHERE
+			a.ForumID=i_ForumID and
+			(
+				(i_UserID is null and (a.Flags & 2)=0) or 
+				(((a.Flags & 2)=0 or {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(a.ForumID, i_UserID)<>0))
+			);
+	END IF;
  
- 	/*look for newer topic/message in subforums*/
- 	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
+	/*look for newer topic/message in subforums*/
+	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
  
- 	THEN		
- 		OPEN ctt;
- 	BEGIN	
-        DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
-    LOOP            
-    /*cycle through subforums*/
-    FETCH ctt INTO ici_SubforumID, ici_TopicID, ici_Posted;
+	THEN		
+		OPEN ctt;
+	BEGIN	
+		DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
+	LOOP            
+	/*cycle through subforums*/
+	FETCH ctt INTO ici_SubforumID, ici_TopicID, ici_Posted;
 
    /* get last topic/message info for subforum */
- 		
- 	--	SELECT {databaseName}.{objectQualifier}forum_lasttopic(ici_SubforumID, i_UserID, ici_TopicID, ici_Posted)
- 	--	INTO ici_TopicID;
- 		
- 		SELECT LastPosted INTO ici_Posted
- 		FROM {databaseName}.{objectQualifier}Forum  		
- 		WHERE ForumID = ici_SubforumID LIMIT 1;
- 	
- 			/* if subforum has newer topic/message, make it last for parent forum */
- 			IF ici_TopicID is not null and ici_Posted is not null and i_LastPosted is not null THEN
- 			IF UNIX_TIMESTAMP(i_LastPosted) < UNIX_TIMESTAMP(ici_Posted) THEN
- 				SET i_LastTopicID = ici_TopicID;
- 				SET i_LastPosted = ici_Posted; 		
- 			END IF;
- 			END IF; 
- 	END LOOP;		
-    END;
+		
+	--	SELECT {databaseName}.{objectQualifier}forum_lasttopic(ici_SubforumID, i_UserID, ici_TopicID, ici_Posted)
+	--	INTO ici_TopicID;
+		
+		SELECT LastPosted INTO ici_Posted
+		FROM {databaseName}.{objectQualifier}Forum  		
+		WHERE ForumID = ici_SubforumID LIMIT 1;
+	
+			/* if subforum has newer topic/message, make it last for parent forum */
+			IF ici_TopicID is not null and ici_Posted is not null and i_LastPosted is not null THEN
+			IF UNIX_TIMESTAMP(i_LastPosted) < UNIX_TIMESTAMP(ici_Posted) THEN
+				SET i_LastTopicID = ici_TopicID;
+				SET i_LastPosted = ici_Posted; 		
+			END IF;
+			END IF; 
+	END LOOP;		
+	END;
 
- 		CLOSE ctt; 		
- 	END IF; 	
- 	RETURN i_LastTopicID;
+		CLOSE ctt; 		
+	END IF; 	
+	RETURN i_LastTopicID;
 END;
 --GO 
 
@@ -771,7 +771,7 @@ END;
  
   CREATE FUNCTION {databaseName}.{objectQualifier}get_userstyle
  (
- 	i_UserID INT
+	i_UserID INT
  )
    RETURNS VARCHAR(255)
    READS SQL DATA
@@ -779,17 +779,17 @@ END;
  
  declare ici_style varchar(255);
 	SET ici_style = ( SELECT c.Style FROM {databaseName}.{objectQualifier}User a 
-                        JOIN {databaseName}.{objectQualifier}UserGroup b
-                          ON a.UserID = b.UserID
-                            JOIN {databaseName}.{objectQualifier}Group c                         
-                              ON b.GroupID = c.GroupID 
-                              WHERE a.UserID = i_UserID AND LENGTH(c.Style) > 2 ORDER BY c.SortOrder ASC LIMIT 1);
-       if ( ici_style is null or LENGTH(ici_style) < 3 ) THEN                  
-                              set ici_style = (SELECT c.Style FROM {databaseName}.{objectQualifier}Rank c 
-                                JOIN {databaseName}.{objectQualifier}User d
-                                  ON c.RankID = d.RankID AND LENGTH(c.Style) > 2 WHERE d.UserID = i_UserID LIMIT 1);
-                 END IF;
-      RETURN ici_style;
+						JOIN {databaseName}.{objectQualifier}UserGroup b
+						  ON a.UserID = b.UserID
+							JOIN {databaseName}.{objectQualifier}Group c                         
+							  ON b.GroupID = c.GroupID 
+							  WHERE a.UserID = i_UserID AND LENGTH(c.Style) > 2 ORDER BY c.SortOrder ASC LIMIT 1);
+	   if ( ici_style is null or LENGTH(ici_style) < 3 ) THEN                  
+							  set ici_style = (SELECT c.Style FROM {databaseName}.{objectQualifier}Rank c 
+								JOIN {databaseName}.{objectQualifier}User d
+								  ON c.RankID = d.RankID AND LENGTH(c.Style) > 2 WHERE d.UserID = i_UserID LIMIT 1);
+				 END IF;
+	  RETURN ici_style;
  
  END;
 --GO
@@ -797,8 +797,8 @@ END;
 
   CREATE FUNCTION {databaseName}.{objectQualifier}message_getthanksinfo
  (
- 	i_MessageID INT,
-    i_ShowThanksDate TINYINT(1)
+	i_MessageID INT,
+	i_ShowThanksDate TINYINT(1)
  )
    RETURNS VARCHAR(4000)
    READS SQL DATA
@@ -809,22 +809,22 @@ END;
  DECLARE ici_Output VARCHAR(4000) DEFAULT '';
    DECLARE cth CURSOR FOR
    SELECT
- 			CONVERT(i.ThanksFromUserID,char(11)), 
+			CONVERT(i.ThanksFromUserID,char(11)), 
 	CASE i_ShowThanksDate WHEN 1 THEN (CONCAT(',' , (CONVERT(i.ThanksDate,char(40)))))  ELSE '' end
 			FROM	{databaseName}.{objectQualifier}Thanks i
 			WHERE	i.MessageID = i_MessageID  ORDER BY i.ThanksDate;
 	
 	OPEN cth;		
-      BEGIN	
-        DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
-    LOOP            
-    /*cycle through subforums*/
-    FETCH cth INTO ici_From, ici_Date;    
- 		SET ici_Output = CONCAT(ici_Output,ici_From, ici_Date,','); 	
- 	END LOOP;
- 	END;
- 		CLOSE cth; 
- 		RETURN ici_Output; 
+	  BEGIN	
+		DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
+	LOOP            
+	/*cycle through subforums*/
+	FETCH cth INTO ici_From, ici_Date;    
+		SET ici_Output = CONCAT(ici_Output,ici_From, ici_Date,','); 	
+	END LOOP;
+	END;
+		CLOSE cth; 
+		RETURN ici_Output; 
  END;
 --GO
 
@@ -833,47 +833,47 @@ END;
 
   CREATE FUNCTION {databaseName}.{objectQualifier}forum_save_parentschecker
  (
- 	i_ForumID INT,
-    i_ParentID INT
+	i_ForumID INT,
+	i_ParentID INT
  )
    RETURNS INT
    READS SQL DATA
  BEGIN
   -- Checks if the forum is already referenced as a parent 
-    declare i_dependency int default 0;
-    declare i_haschildren int default 0;
-    declare i_frmtmp int;
-    declare i_prntmp int;
-    DECLARE ctt CURSOR FOR
- 			select ForumID,ParentID from {databaseName}.{objectQualifier}Forum
-        where ParentID = i_ForumID;
- 				
-    select ForumID into i_dependency from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID AND ForumID = i_ParentID;
-    if i_dependency > 0
-    then
-    return i_ParentID;
-    end if;
- 	/*look for newer topic/message in subforums*/
- 	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
-  	THEN		
- 		OPEN ctt;
- 	BEGIN	
-        DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
-    LOOP            
-    /*cycle through subforums*/
-    FETCH ctt INTO i_frmtmp, i_prntmp;
- 		if i_frmtmp > 0 AND i_frmtmp IS NOT NULL then             
-            set i_haschildren = {databaseName}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
-            if  i_prntmp = i_ParentID then
-            set i_dependency = i_ParentID;               
-            ELSEIF i_haschildren > 0  then
-            set i_dependency= i_haschildren;
-            end if;      
-        end if; 
- 	END LOOP;
- 	END;
- 		CLOSE ctt; 		
- 	END IF; 
+	declare i_dependency int default 0;
+	declare i_haschildren int default 0;
+	declare i_frmtmp int;
+	declare i_prntmp int;
+	DECLARE ctt CURSOR FOR
+			select ForumID,ParentID from {databaseName}.{objectQualifier}Forum
+		where ParentID = i_ForumID;
+				
+	select ForumID into i_dependency from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID AND ForumID = i_ParentID;
+	if i_dependency > 0
+	then
+	return i_ParentID;
+	end if;
+	/*look for newer topic/message in subforums*/
+	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
+	THEN		
+		OPEN ctt;
+	BEGIN	
+		DECLARE EXIT HANDLER FOR NOT FOUND BEGIN END;         
+	LOOP            
+	/*cycle through subforums*/
+	FETCH ctt INTO i_frmtmp, i_prntmp;
+		if i_frmtmp > 0 AND i_frmtmp IS NOT NULL then             
+			set i_haschildren = {databaseName}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
+			if  i_prntmp = i_ParentID then
+			set i_dependency = i_ParentID;               
+			ELSEIF i_haschildren > 0  then
+			set i_dependency= i_haschildren;
+			end if;      
+		end if; 
+	END LOOP;
+	END;
+		CLOSE ctt; 		
+	END IF; 
 	RETURN i_dependency; 
  END;
 --GO
@@ -881,7 +881,7 @@ END;
 
   CREATE FUNCTION {databaseName}.{objectQualifier}biginttobool
  (
- 	toconv BIGINT
+	toconv BIGINT
  )
    RETURNS TINYINT(1)
    NO SQL
@@ -891,9 +891,9 @@ END;
   --GO
 
 
-    CREATE FUNCTION {databaseName}.{objectQualifier}biginttoint
+	CREATE FUNCTION {databaseName}.{objectQualifier}biginttoint
  (
- 	toconv BIGINT
+	toconv BIGINT
  )
    RETURNS INT
    NO SQL
@@ -903,29 +903,29 @@ END;
   --GO
 
 CREATE FUNCTION {databaseName}.{objectQualifier}registry_value (
-    i_Name VARCHAR(64)
-    ,i_BoardID INT
-    )
+	i_Name VARCHAR(64)
+	,i_BoardID INT
+	)
 RETURNS LONGTEXT
 READS SQL DATA
 BEGIN
-    DECLARE ici_returnValue LONGTEXT;
+	DECLARE ici_returnValue LONGTEXT;
 
-    IF i_BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}registry WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID) THEN
+	IF i_BoardID IS NOT NULL AND EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}registry WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID) THEN
   
-        SET ici_returnValue = (
-            SELECT `Value`
-            FROM {databaseName}.{objectQualifier}Registry
-            WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID);
+		SET ici_returnValue = (
+			SELECT `Value`
+			FROM {databaseName}.{objectQualifier}Registry
+			WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID = i_BoardID);
   
-    ELSE  
-        SET ici_returnValue = (
-            SELECT `Value`
-            FROM {databaseName}.{objectQualifier}Registry
-            WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID IS NULL);
-    END IF;
+	ELSE  
+		SET ici_returnValue = (
+			SELECT `Value`
+			FROM {databaseName}.{objectQualifier}Registry
+			WHERE LOWER(`Name`) = LOWER(i_Name) AND BoardID IS NULL);
+	END IF;
 
-    RETURN ici_returnValue;
+	RETURN ici_returnValue;
 END;
 --GO
 

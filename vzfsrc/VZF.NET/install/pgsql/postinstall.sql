@@ -6,14 +6,14 @@
 -- We use the script file to ensure that all temporary install things are wiped out. ---
 DROP FUNCTION databaseSchema.objectQualifier_drop_type
 (
-    varchar(100), --: schemaname
+	varchar(100), --: schemaname
 	varchar(100) --: typename
 );
 --GO
 
 DROP FUNCTION databaseSchema.objectQualifier_check_or_create_keys
 (
-    varchar(100), 
+	varchar(100), 
 	varchar(100),
 	varchar(100),
 	varchar(100),
@@ -24,7 +24,7 @@ DROP FUNCTION databaseSchema.objectQualifier_check_or_create_keys
 
 DROP FUNCTION databaseSchema.objectQualifier_create_or_replace_index
 (
-    varchar(100), 
+	varchar(100), 
 	varchar(100),
 	varchar(100),
 	varchar(100),

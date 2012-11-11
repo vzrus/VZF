@@ -145,20 +145,20 @@ END
 --GO
 
 CREATE PROCEDURE objQual_create_or_check_ns_tables()
-                  AS
+				  AS
 BEGIN
 IF (EXISTS(SELECT 1 
-               FROM RDB$RELATIONS a 
+			   FROM RDB$RELATIONS a 
 			   WHERE a.RDB$RELATION_NAME='objQual_FORUM_NS' 
 			   ROWS 1)) THEN
-    EXECUTE STATEMENT '
+	EXECUTE STATEMENT '
 DROP TABLE IF EXISTS objQual_FORUM_NS;';
 
 IF (NOT EXISTS(SELECT 1 
-               FROM RDB$RELATIONS a 
+			   FROM RDB$RELATIONS a 
 			   WHERE a.RDB$RELATION_NAME='objQual_FORUM_NS' 
 			   ROWS 1)) THEN
-    EXECUTE STATEMENT 'CREATE TABLE objQual_FORUM_NS
+	EXECUTE STATEMENT 'CREATE TABLE objQual_FORUM_NS
 (
   NID serial NOT NULL,
   BOARDID integer NOT NULL,
@@ -180,15 +180,15 @@ FROM RDB$INDICES a WHERE a.RDB$INDEX_NAME ='PK_objQual_FORUM_NS' ROWS 1)) THEN
 EXECUTE STATEMENT 'ALTER TABLE objQual_FORUM_NS ADD CONSTRAINT PK_objQual_FORUM_NS PRIMARY KEY (NID)';
 
  IF (NOT EXISTS (
-    SELECT 1 FROM RDB$INDICES I
-    WHERE (I.RDB$INDEX_NAME = 'IX_objQual_FORUM_NS_LK_RK_L_T') AND (I.RDB$RELATION_NAME = 'objQual_FORUM')
+	SELECT 1 FROM RDB$INDICES I
+	WHERE (I.RDB$INDEX_NAME = 'IX_objQual_FORUM_NS_LK_RK_L_T') AND (I.RDB$RELATION_NAME = 'objQual_FORUM')
    )) THEN
   EXECUTE STATEMENT 'CREATE INDEX IX_objQual_FORUM_NS_LK_RK_L_T ON objQual_FORUM_NS(LEFT_KEY, RIGHT_KEY, LEVEL, TREE);';
 
 
  IF (NOT EXISTS (
-    SELECT 1 FROM RDB$INDICES I
-    WHERE (I.RDB$INDEX_NAME = 'IX_objQual_FORUM_NS_PARENTID') AND (I.RDB$RELATION_NAME = 'objQual_FORUM')
+	SELECT 1 FROM RDB$INDICES I
+	WHERE (I.RDB$INDEX_NAME = 'IX_objQual_FORUM_NS_PARENTID') AND (I.RDB$RELATION_NAME = 'objQual_FORUM')
    )) THEN
   EXECUTE STATEMENT 'CREATE INDEX IX_objQual_FORUM_NS_PARENTID ON objQual_FORUM_NS(PARENTID);';
 END;
@@ -206,53 +206,53 @@ BRIDGE FUNCTIONS
 
 
 CREATE PROCEDURE objQual_forum_ns_dropbridge_triggers()
-                  AS
+				  AS
 BEGIN
 -- ALTER TRIGGER objQual_tr_forum_ns_forum_update INACTIVE;
 if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_update')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_update')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_forum_update ON objQual_forum;'; 
 if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_insert')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_insert')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_forum_insert ON objQual_forum;'; 
 if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_delete')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_forum_delete')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_forum_delete ON objQual_forum;'; 
   
   if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_insert')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_insert')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_category_insert ON objQual_category;';   
   if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_update')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_update')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_category_update ON objQual_category;'; 
-    if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_delete')) THEN
+	if (exists select first 1 1 from rdb$triggers 
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_category_delete')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_category_delete ON objQual_category;'; 
 
-    if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_board_insert')) THEN
+	if (exists select first 1 1 from rdb$triggers 
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_board_insert')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_board_insert ON objQual_board;'; 
    if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_board_delete')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_tr_forum_ns_board_delete')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_tr_forum_ns_board_delete ON objQual_board;'; 
 
 END;
 --GO 
 
 CREATE PROCEDURE objQual_forum_ns_drop_triggers()
-                  AS
+				  AS
 BEGIN
  if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_after_delete_2_tr')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_after_delete_2_tr')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_forum_ns_after_delete_2_tr ON objQual_forum_ns;'; 
 if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_before_insert_tr')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_before_insert_tr')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_forum_ns_before_insert_tr ON objQual_forum_ns;'; 
   if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_after_delete_tr')) THEN
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_after_delete_tr')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_forum_ns_after_delete_tr ON objQual_forum_ns;';
-    if (exists select first 1 1 from rdb$triggers 
-    where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_before_update_tr')) THEN
+	if (exists select first 1 1 from rdb$triggers 
+	where (rdb$system_flag = 0 or rdb$system_flag is null and rdb$trigger_name='objQual_forum_ns_before_update_tr')) THEN
   EXECUTE STATEMENT 'DROP TRIGGER objQual_forum_ns_before_update_tr ON objQual_forum_ns;';
 END;
 --GO 
@@ -270,12 +270,12 @@ DECLARE ici_id INTEGER;
 DECLARE ret INTEGER DEFAULT 0;
 BEGIN
 
-    SELECT forumid        
-        FROM objQual_forum_ns
-        WHERE tree = :tree_id FOR UPDATE WITH LOCK
+	SELECT forumid        
+		FROM objQual_forum_ns
+		WHERE tree = :tree_id FOR UPDATE WITH LOCK
 		INTO :ici_id;
-    ret = 1;
-    RETURN ret;
+	ret = 1;
+	RETURN ret;
 END;
 --GO
 
@@ -287,30 +287,30 @@ begin
 PERFORM objQual_lock_ns_tree(OLD.tree);
 -- Убираем разрыв в ключах и сдвигаем дочерние узлы:
    UPDATE objQual_forum_ns
-        SET left_key = CASE WHEN left_key < OLD.left_key
-                            THEN left_key
-                            ELSE CASE WHEN right_key < OLD.right_key
-                                      THEN left_key - 1 
-                                      ELSE left_key - 2
-                                 END
-                       END,
-            "level" = CASE WHEN right_key < OLD.right_key
-                           THEN "level" - 1 
-                           ELSE "level"
-                      END,
-            parentid = CASE WHEN right_key < OLD.right_key AND "level" = OLD.level + 1
-                           THEN OLD.parentid
-                           ELSE parentid
-                        END,
-            right_key = CASE WHEN right_key < OLD.right_key
-                             THEN right_key - 1 
-                             ELSE right_key - 2
-                        END,
-            _trigger_lock_update = TRUE
-        WHERE (right_key > OLD.right_key OR
-            (left_key > OLD.left_key AND right_key < OLD.right_key)) AND
-            tree = OLD.tree;
-    RETURN OLD;
+		SET left_key = CASE WHEN left_key < OLD.left_key
+							THEN left_key
+							ELSE CASE WHEN right_key < OLD.right_key
+									  THEN left_key - 1 
+									  ELSE left_key - 2
+								 END
+					   END,
+			"level" = CASE WHEN right_key < OLD.right_key
+						   THEN "level" - 1 
+						   ELSE "level"
+					  END,
+			parentid = CASE WHEN right_key < OLD.right_key AND "level" = OLD.level + 1
+						   THEN OLD.parentid
+						   ELSE parentid
+						END,
+			right_key = CASE WHEN right_key < OLD.right_key
+							 THEN right_key - 1 
+							 ELSE right_key - 2
+						END,
+			_trigger_lock_update = TRUE
+		WHERE (right_key > OLD.right_key OR
+			(left_key > OLD.left_key AND right_key < OLD.right_key)) AND
+			tree = OLD.tree;
+	RETURN OLD;
 end
 --GO
 
@@ -322,37 +322,37 @@ CREATE OR REPLACE FUNCTION objQual_forum_ns_after_delete_func()
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _skew_tree INTEGER;
+	_skew_tree INTEGER;
 BEGIN
-    PERFORM objQual_lock_ns_tree(OLD.tree);
+	PERFORM objQual_lock_ns_tree(OLD.tree);
 -- Проверяем, стоит ли выполнять триггер:
-    IF OLD._trigger_for_delete = TRUE THEN RETURN OLD; END IF;
+	IF OLD._trigger_for_delete = TRUE THEN RETURN OLD; END IF;
 -- Помечаем на удаление дочерние узлы:
-    UPDATE objQual_forum_ns
-        SET _trigger_for_delete = TRUE,
-            _trigger_lock_update = TRUE
-        WHERE
-            tree = OLD.tree AND
-            left_key > OLD.left_key AND
-            right_key < OLD.right_key;
+	UPDATE objQual_forum_ns
+		SET _trigger_for_delete = TRUE,
+			_trigger_lock_update = TRUE
+		WHERE
+			tree = OLD.tree AND
+			left_key > OLD.left_key AND
+			right_key < OLD.right_key;
 -- Удаляем помеченные узлы:
-    DELETE FROM objQual_forum_ns
-        WHERE
-            tree = OLD.tree AND
-            left_key > OLD.left_key AND
-            right_key < OLD.right_key;
+	DELETE FROM objQual_forum_ns
+		WHERE
+			tree = OLD.tree AND
+			left_key > OLD.left_key AND
+			right_key < OLD.right_key;
 -- Убираем разрыв в ключах:
-    _skew_tree := OLD.right_key - OLD.left_key + 1;
-    UPDATE objQual_forum_ns
-        SET left_key = CASE WHEN left_key > OLD.left_key
-                            THEN left_key - _skew_tree
-                            ELSE left_key
-                       END,
-            right_key = right_key - _skew_tree,
-            _trigger_lock_update = TRUE
-        WHERE right_key > OLD.right_key AND
-            tree = OLD.tree;
-    RETURN OLD;
+	_skew_tree := OLD.right_key - OLD.left_key + 1;
+	UPDATE objQual_forum_ns
+		SET left_key = CASE WHEN left_key > OLD.left_key
+							THEN left_key - _skew_tree
+							ELSE left_key
+					   END,
+			right_key = right_key - _skew_tree,
+			_trigger_lock_update = TRUE
+		WHERE right_key > OLD.right_key AND
+			tree = OLD.tree;
+	RETURN OLD;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -371,73 +371,73 @@ CREATE OR REPLACE FUNCTION objQual_forum_ns_before_insert_func()
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _left_key       INTEGER;
-    _level          INTEGER;
-    _tmp_left_key   INTEGER;
-    _tmp_right_key  INTEGER;
-    _tmp_level      INTEGER;
-    _tmp_id         INTEGER;
-    _tmp_parent_id  INTEGER;
+	_left_key       INTEGER;
+	_level          INTEGER;
+	_tmp_left_key   INTEGER;
+	_tmp_right_key  INTEGER;
+	_tmp_level      INTEGER;
+	_tmp_id         INTEGER;
+	_tmp_parent_id  INTEGER;
 BEGIN
-    PERFORM objQual_lock_ns_tree(NEW.tree);
+	PERFORM objQual_lock_ns_tree(NEW.tree);
 -- Нельзя эти поля ручками ставить:
-    NEW._trigger_for_delete := FALSE;
-    NEW._trigger_lock_update := FALSE;
-    _left_key := 0;
-    _level := 0;
+	NEW._trigger_for_delete := FALSE;
+	NEW._trigger_lock_update := FALSE;
+	_left_key := 0;
+	_level := 0;
 -- Если мы указали родителя:
-    IF NEW.parentid IS NOT NULL AND NEW.parentid > 0 THEN
-        SELECT right_key, "level" + 1
-            INTO _left_key, _level
-            FROM objQual_forum_ns
-            WHERE nid = NEW.parentid AND
-                  tree = NEW.tree;
-    END IF;
+	IF NEW.parentid IS NOT NULL AND NEW.parentid > 0 THEN
+		SELECT right_key, "level" + 1
+			INTO _left_key, _level
+			FROM objQual_forum_ns
+			WHERE nid = NEW.parentid AND
+				  tree = NEW.tree;
+	END IF;
 -- Если мы указали левый ключ:
-    IF NEW.left_key IS NOT NULL AND
-       NEW.left_key > 0 AND 
-       (_left_key IS NULL OR _left_key = 0) THEN
-        SELECT nid, left_key, right_key, "level", parentid 
-            INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
-            FROM objQual_forum_ns
-            WHERE tree = NEW.tree AND (left_key = NEW.left_key OR right_key = NEW.left_key);
-        IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_left_key THEN
-            NEW.parentid := _tmp_parent_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level;
-        ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
-            NEW.parentid := _tmp_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level + 1;
-        END IF;
-    END IF;
+	IF NEW.left_key IS NOT NULL AND
+	   NEW.left_key > 0 AND 
+	   (_left_key IS NULL OR _left_key = 0) THEN
+		SELECT nid, left_key, right_key, "level", parentid 
+			INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
+			FROM objQual_forum_ns
+			WHERE tree = NEW.tree AND (left_key = NEW.left_key OR right_key = NEW.left_key);
+		IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_left_key THEN
+			NEW.parentid := _tmp_parent_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level;
+		ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
+			NEW.parentid := _tmp_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level + 1;
+		END IF;
+	END IF;
 -- Если родитель или левый ключ не указан, или мы ничего не нашли:
-    IF _left_key IS NULL OR _left_key = 0 THEN
-        SELECT MAX(right_key) + 1
-            INTO _left_key
-            FROM objQual_forum_ns
-            WHERE tree = NEW.tree;
-        IF _left_key IS NULL OR _left_key = 0 THEN
-            _left_key := 1;
-        END IF;
-        _level := 0;
-        NEW.parentid := 0; 
-    END IF;
+	IF _left_key IS NULL OR _left_key = 0 THEN
+		SELECT MAX(right_key) + 1
+			INTO _left_key
+			FROM objQual_forum_ns
+			WHERE tree = NEW.tree;
+		IF _left_key IS NULL OR _left_key = 0 THEN
+			_left_key := 1;
+		END IF;
+		_level := 0;
+		NEW.parentid := 0; 
+	END IF;
 -- Устанавливаем полученные ключи для узла:
-    NEW.left_key := _left_key;
-    NEW.right_key := _left_key + 1;
-    NEW."level" := _level;
+	NEW.left_key := _left_key;
+	NEW.right_key := _left_key + 1;
+	NEW."level" := _level;
 -- Формируем развыв в дереве на месте вставки:
-    UPDATE objQual_forum_ns
-        SET left_key = left_key + 
-            CASE WHEN left_key >= _left_key 
-              THEN 2 
-              ELSE 0 
-            END,
-            right_key = right_key + 2,
-            _trigger_lock_update = TRUE
-        WHERE tree = NEW.tree AND right_key >= _left_key;
-    RETURN NEW;
+	UPDATE objQual_forum_ns
+		SET left_key = left_key + 
+			CASE WHEN left_key >= _left_key 
+			  THEN 2 
+			  ELSE 0 
+			END,
+			right_key = right_key + 2,
+			_trigger_lock_update = TRUE
+		WHERE tree = NEW.tree AND right_key >= _left_key;
+	RETURN NEW;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -448,167 +448,167 @@ CREATE OR REPLACE FUNCTION objQual_forum_ns_before_update_func()
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _left_key       INTEGER;
-    _level          INTEGER;
-    _skew_tree      INTEGER;
-    _skew_level     INTEGER;
-    _skew_edit      INTEGER;
-    _tmp_left_key   INTEGER;
-    _tmp_right_key  INTEGER;
-    _tmp_level      INTEGER;
-    _tmp_id         INTEGER;
-    _tmp_parent_id  INTEGER;
+	_left_key       INTEGER;
+	_level          INTEGER;
+	_skew_tree      INTEGER;
+	_skew_level     INTEGER;
+	_skew_edit      INTEGER;
+	_tmp_left_key   INTEGER;
+	_tmp_right_key  INTEGER;
+	_tmp_level      INTEGER;
+	_tmp_id         INTEGER;
+	_tmp_parent_id  INTEGER;
 BEGIN
-    PERFORM objQual_lock_ns_tree(OLD.tree);
+	PERFORM objQual_lock_ns_tree(OLD.tree);
 -- А стоит ли нам вообще что либо делать:
-    IF NEW._trigger_lock_update = TRUE THEN
-        NEW._trigger_lock_update := FALSE;
-        IF NEW._trigger_for_delete = TRUE THEN
-            NEW = OLD;
-            NEW._trigger_for_delete = TRUE;
-            RETURN NEW;
-        END IF;
-        RETURN NEW;
-    END IF;
+	IF NEW._trigger_lock_update = TRUE THEN
+		NEW._trigger_lock_update := FALSE;
+		IF NEW._trigger_for_delete = TRUE THEN
+			NEW = OLD;
+			NEW._trigger_for_delete = TRUE;
+			RETURN NEW;
+		END IF;
+		RETURN NEW;
+	END IF;
 -- Сбрасываем значения полей, которые пользователь менять не может:
-    NEW._trigger_for_delete := FALSE;
-    NEW.tree := OLD.tree;
-    NEW.right_key := OLD.right_key;
-    NEW."level" := OLD."level";
-    IF NEW.parentid IS NULL THEN NEW.parentid := 0; END IF;
+	NEW._trigger_for_delete := FALSE;
+	NEW.tree := OLD.tree;
+	NEW.right_key := OLD.right_key;
+	NEW."level" := OLD."level";
+	IF NEW.parentid IS NULL THEN NEW.parentid := 0; END IF;
 -- Проверяем, а есть ли изменения связанные со структурой дерева
-    IF NEW.parentid = OLD.parentid AND NEW.left_key = OLD.left_key
-    THEN
-        RETURN NEW;
-    END IF;
+	IF NEW.parentid = OLD.parentid AND NEW.left_key = OLD.left_key
+	THEN
+		RETURN NEW;
+	END IF;
 -- Дерево таки перестраиваем, что ж, приступим:
-    _left_key := 0;
-    _level := 0;
-    _skew_tree := OLD.right_key - OLD.left_key + 1;
+	_left_key := 0;
+	_level := 0;
+	_skew_tree := OLD.right_key - OLD.left_key + 1;
 -- Определяем куда мы его переносим:
 -- Если сменен parentid:
-    IF NEW.parentid <> OLD.parentid THEN
+	IF NEW.parentid <> OLD.parentid THEN
 -- Если в подчинение другому злу:
-        IF NEW.parentid > 0 THEN
-            SELECT right_key, level + 1
-                INTO _left_key, _level
-                FROM objQual_forum_ns
-                WHERE nid = NEW.parentid AND tree = NEW.tree;
+		IF NEW.parentid > 0 THEN
+			SELECT right_key, level + 1
+				INTO _left_key, _level
+				FROM objQual_forum_ns
+				WHERE nid = NEW.parentid AND tree = NEW.tree;
 -- Иначе в корень дерева переносим:
-        ELSE
-            SELECT MAX(right_key) + 1 
-                INTO _left_key
-                FROM objQual_forum_ns
-                WHERE tree = NEW.tree;
-            _level := 0;
-        END IF;
+		ELSE
+			SELECT MAX(right_key) + 1 
+				INTO _left_key
+				FROM objQual_forum_ns
+				WHERE tree = NEW.tree;
+			_level := 0;
+		END IF;
 -- Если вдруг родитель в диапазоне перемещаемого узла, проверка:
-        IF _left_key IS NOT NULL AND 
-           _left_key > 0 AND
-           _left_key > OLD.left_key AND
-           _left_key <= OLD.right_key 
-        THEN
-           NEW.parentid := OLD.parentid;
-           NEW.left_key := OLD.left_key;
-           RETURN NEW;
-        END IF;
-    END IF;
+		IF _left_key IS NOT NULL AND 
+		   _left_key > 0 AND
+		   _left_key > OLD.left_key AND
+		   _left_key <= OLD.right_key 
+		THEN
+		   NEW.parentid := OLD.parentid;
+		   NEW.left_key := OLD.left_key;
+		   RETURN NEW;
+		END IF;
+	END IF;
 -- Если же указан left_key, а parentid - нет
-    IF _left_key IS NULL OR _left_key = 0 THEN
-        SELECT nid, left_key, right_key, "level", parentid 
-            INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
-            FROM objQual_forum_ns
-            WHERE tree = NEW.tree AND (right_key = NEW.left_key OR right_key = NEW.left_key - 1)
-            LIMIT 1;
-        IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key - 1 = _tmp_right_key THEN
-            NEW.parentid := _tmp_parent_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level;
-        ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
-            NEW.parentid := _tmp_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level + 1;
-        ELSIF NEW.left_key = 1 THEN
-            NEW.parentid := 0;
-            _left_key := NEW.left_key;
-            _level := 0;
-        ELSE
-           NEW.parentid := OLD.parentid;
-           NEW.left_key := OLD.left_key;
-           RETURN NEW;
-        END IF;
-    END IF;
+	IF _left_key IS NULL OR _left_key = 0 THEN
+		SELECT nid, left_key, right_key, "level", parentid 
+			INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
+			FROM objQual_forum_ns
+			WHERE tree = NEW.tree AND (right_key = NEW.left_key OR right_key = NEW.left_key - 1)
+			LIMIT 1;
+		IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key - 1 = _tmp_right_key THEN
+			NEW.parentid := _tmp_parent_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level;
+		ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
+			NEW.parentid := _tmp_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level + 1;
+		ELSIF NEW.left_key = 1 THEN
+			NEW.parentid := 0;
+			_left_key := NEW.left_key;
+			_level := 0;
+		ELSE
+		   NEW.parentid := OLD.parentid;
+		   NEW.left_key := OLD.left_key;
+		   RETURN NEW;
+		END IF;
+	END IF;
 -- Теперь мы знаем куда мы перемещаем дерево
-        _skew_level := _level - OLD."level";
-    IF _left_key > OLD.left_key THEN
+		_skew_level := _level - OLD."level";
+	IF _left_key > OLD.left_key THEN
 -- Перемещение вверх по дереву
-        _skew_edit := _left_key - OLD.left_key - _skew_tree;
-        UPDATE objQual_forum_ns
-            SET left_key =  CASE WHEN right_key <= OLD.right_key
-                                 THEN left_key + _skew_edit
-                                 ELSE CASE WHEN left_key > OLD.right_key
-                                           THEN left_key - _skew_tree
-                                           ELSE left_key
-                                      END
-                            END,
-                "level" =   CASE WHEN right_key <= OLD.right_key 
-                                 THEN "level" + _skew_level
-                                 ELSE "level"
-                            END,
-                right_key = CASE WHEN right_key <= OLD.right_key 
-                                 THEN right_key + _skew_edit
-                                 ELSE CASE WHEN right_key < _left_key
-                                           THEN right_key - _skew_tree
-                                           ELSE right_key
-                                      END
-                            END,
-                _trigger_lock_update = TRUE
-            WHERE tree = OLD.tree AND
-                  right_key > OLD.left_key AND
-                  left_key < _left_key AND
-                  nid <> OLD.nid;
-        _left_key := _left_key - _skew_tree;
-    ELSE
+		_skew_edit := _left_key - OLD.left_key - _skew_tree;
+		UPDATE objQual_forum_ns
+			SET left_key =  CASE WHEN right_key <= OLD.right_key
+								 THEN left_key + _skew_edit
+								 ELSE CASE WHEN left_key > OLD.right_key
+										   THEN left_key - _skew_tree
+										   ELSE left_key
+									  END
+							END,
+				"level" =   CASE WHEN right_key <= OLD.right_key 
+								 THEN "level" + _skew_level
+								 ELSE "level"
+							END,
+				right_key = CASE WHEN right_key <= OLD.right_key 
+								 THEN right_key + _skew_edit
+								 ELSE CASE WHEN right_key < _left_key
+										   THEN right_key - _skew_tree
+										   ELSE right_key
+									  END
+							END,
+				_trigger_lock_update = TRUE
+			WHERE tree = OLD.tree AND
+				  right_key > OLD.left_key AND
+				  left_key < _left_key AND
+				  nid <> OLD.nid;
+		_left_key := _left_key - _skew_tree;
+	ELSE
 -- Перемещение вниз по дереву:
-        _skew_edit := _left_key - OLD.left_key;
-        UPDATE objQual_forum_ns
-            SET
-                right_key = CASE WHEN left_key >= OLD.left_key
-                                 THEN right_key + _skew_edit
-                                 ELSE CASE WHEN right_key < OLD.left_key
-                                           THEN right_key + _skew_tree
-                                           ELSE right_key
-                                      END
-                            END,
-                "level" =   CASE WHEN left_key >= OLD.left_key
-                                 THEN "level" + _skew_level
-                                 ELSE "level"
-                            END,
-                left_key =  CASE WHEN left_key >= OLD.left_key
-                                 THEN left_key + _skew_edit
-                                 ELSE CASE WHEN left_key >= _left_key
-                                           THEN left_key + _skew_tree
-                                           ELSE left_key
-                                      END
-                            END,
-                 _trigger_lock_update = TRUE
-            WHERE tree = OLD.tree AND
-                  right_key >= _left_key AND
-                  left_key < OLD.right_key AND
-                  nid <> OLD.nid;
-    END IF;
+		_skew_edit := _left_key - OLD.left_key;
+		UPDATE objQual_forum_ns
+			SET
+				right_key = CASE WHEN left_key >= OLD.left_key
+								 THEN right_key + _skew_edit
+								 ELSE CASE WHEN right_key < OLD.left_key
+										   THEN right_key + _skew_tree
+										   ELSE right_key
+									  END
+							END,
+				"level" =   CASE WHEN left_key >= OLD.left_key
+								 THEN "level" + _skew_level
+								 ELSE "level"
+							END,
+				left_key =  CASE WHEN left_key >= OLD.left_key
+								 THEN left_key + _skew_edit
+								 ELSE CASE WHEN left_key >= _left_key
+										   THEN left_key + _skew_tree
+										   ELSE left_key
+									  END
+							END,
+				 _trigger_lock_update = TRUE
+			WHERE tree = OLD.tree AND
+				  right_key >= _left_key AND
+				  left_key < OLD.right_key AND
+				  nid <> OLD.nid;
+	END IF;
 -- Дерево перестроили, остался только наш текущий узел
-    NEW.left_key := _left_key;
-    NEW."level" := _level;
-    NEW.right_key := _left_key + _skew_tree - 1;
-    RETURN NEW;
+	NEW.left_key := _left_key;
+	NEW."level" := _level;
+	NEW.right_key := _left_key + _skew_tree - 1;
+	RETURN NEW;
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
 --GO 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_create_triggers()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 CREATE TRIGGER objQual_forum_ns_after_delete_2_tr
@@ -632,7 +632,7 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO 
+	--GO 
 
 
 
@@ -659,9 +659,9 @@ _testOut varchar;
 _leftNodePrevious integer;
 BEGIN
 
-     -- we have a forum in category and getting a category nid as a parent nid.
- 	                    IF 	(i_parentid IS NULL OR i_parentid <= 0) THEN		
-					    SELECT nid INTO _nidParent FROM objQual_forum_ns WHERE categoryid = i_categoryid and forumid = 0;
+	 -- we have a forum in category and getting a category nid as a parent nid.
+						IF 	(i_parentid IS NULL OR i_parentid <= 0) THEN		
+						SELECT nid INTO _nidParent FROM objQual_forum_ns WHERE categoryid = i_categoryid and forumid = 0;
 						ELSE				
 						 SELECT parentid INTO _nidParent FROM objQual_forum_ns WHERE forumid = i_forumid;
 						END IF;	
@@ -671,13 +671,13 @@ BEGIN
  -- range a node among it's siblings by sort order 
 
 
-                       
+					   
 
 -- _nidParent this is nid of a parent node if i_parentid is  null it's a category
 CREATE  TEMPORARY TABLE objQual_tmp_ns_sort
-    (nid integer, left_key integer, right_key integer, level integer, parentid integer, forumid integer, sortorder integer) 
-    WITHOUT OIDS 
-    ON COMMIT  DROP;
+	(nid integer, left_key integer, right_key integer, level integer, parentid integer, forumid integer, sortorder integer) 
+	WITHOUT OIDS 
+	ON COMMIT  DROP;
 -- current forum sort order to compare in loop
 SELECT sortorder
 INTO _thisforum_sortorder
@@ -725,7 +725,7 @@ $BODY$
 --GO
 
 CREATE OR REPLACE FUNCTION objQual_fillin_or_check_ns_tables()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$DECLARE _rec_b RECORD;
  _rec_c RECORD;
   _rec_f RECORD; 
@@ -736,33 +736,33 @@ BEGIN
 -- if ((select count(nid) from objQual_forum_ns) = 0) THEN
 -- fill in boards as root (level = 0) nodes
 FOR _rec_b IN 
-           SELECT boardid
+		   SELECT boardid
 		   from  objQual_board 
 		   ORDER by boardid
-       LOOP
-       INSERT INTO objQual_forum_ns(boardid,categoryid,forumid) values (_rec_b.boardid,0,0);
-       -- fill in categories as level = 1 nodes
-         FOR _rec_c IN 
-                SELECT c.categoryid,c.boardid, c.sortorder
+	   LOOP
+	   INSERT INTO objQual_forum_ns(boardid,categoryid,forumid) values (_rec_b.boardid,0,0);
+	   -- fill in categories as level = 1 nodes
+		 FOR _rec_c IN 
+				SELECT c.categoryid,c.boardid, c.sortorder
 				from  objQual_category c  
 				JOIN objQual_board b 
 				on b.boardid = c.boardid 
 				WHERE c.boardid = _rec_b.boardid 
 				ORDER by c.boardid,c.sortorder				
-         LOOP
-               INSERT INTO objQual_forum_ns(boardid, categoryid,forumid, sortorder) values (_rec_b.boardid,_rec_c.categoryid,0,_rec_c.sortorder );
+		 LOOP
+			   INSERT INTO objQual_forum_ns(boardid, categoryid,forumid, sortorder) values (_rec_b.boardid,_rec_c.categoryid,0,_rec_c.sortorder );
 
-                    UPDATE objQual_forum_ns SET parentid  = _rec_b.boardid where categoryid = _rec_c.categoryid;
-             
+					UPDATE objQual_forum_ns SET parentid  = _rec_b.boardid where categoryid = _rec_c.categoryid;
+			 
 				 -- loop through forums
-                       FOR _rec_f IN 
-				          SELECT f.forumid, f.parentid,coalesce(f.parentid, 0) parent0 ,f.categoryid, f.sortorder 
-				            from  objQual_forum f 
-				            JOIN objQual_category c on f.categoryid = c.categoryid
-				             JOIN objQual_board b on b.boardid = c.boardid
-				             WHERE f.categoryid = _rec_c.categoryid
-				              ORDER by c.boardid, f.categoryid, parent0,f.sortorder, f.forumid							
-                      LOOP				  
+					   FOR _rec_f IN 
+						  SELECT f.forumid, f.parentid,coalesce(f.parentid, 0) parent0 ,f.categoryid, f.sortorder 
+							from  objQual_forum f 
+							JOIN objQual_category c on f.categoryid = c.categoryid
+							 JOIN objQual_board b on b.boardid = c.boardid
+							 WHERE f.categoryid = _rec_c.categoryid
+							  ORDER by c.boardid, f.categoryid, parent0,f.sortorder, f.forumid							
+					  LOOP				  
 											
 					IF (_rec_f.parentid IS NULL) THEN
 					SELECT nid into _ndfpTmp FROM objQual_forum_ns WHERE categoryid =_rec_f.categoryid and forumid = 0;
@@ -771,13 +771,13 @@ FOR _rec_b IN
 					END IF;
 					SELECT _rec_f.forumid  into  _frmTmp;
 						   -- it's right in the category
-                           INSERT INTO objQual_forum_ns(parentid,boardid, categoryid,forumid, sortorder, tree, path_cache) 
-					       values (_ndfpTmp,_rec_c.boardid,_rec_f.categoryid,COALESCE(_frmTmp,0),_rec_f.sortorder, 0, ''); 
+						   INSERT INTO objQual_forum_ns(parentid,boardid, categoryid,forumid, sortorder, tree, path_cache) 
+						   values (_ndfpTmp,_rec_c.boardid,_rec_f.categoryid,COALESCE(_frmTmp,0),_rec_f.sortorder, 0, ''); 
 		-- end of forum loop 					
-        END LOOP;	
+		END LOOP;	
 	-- end of category loop
    END LOOP;
-    -- end of board loop
+	-- end of board loop
 END LOOP;
 -- END IF;
 END;
@@ -795,7 +795,7 @@ SELECT FUNCTIONS
 
 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_getchildren(i_boardid integer,  i_categoryid integer, i_forumid integer,  i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF objQual_forum_ns_getsubtree_rt AS
+				   RETURNS SETOF objQual_forum_ns_getsubtree_rt AS
 $BODY$DECLARE
 _rec objQual_forum_ns_getsubtree_rt%ROWTYPE;
 _nid integer;
@@ -834,7 +834,7 @@ COMMENT ON FUNCTION objQual_forum_ns_getchildren (integer,integer,integer, boole
 --GO
 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_getchildren_activeuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF objQual_forum_ns_getchildren_rt AS
+				   RETURNS SETOF objQual_forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec objQual_forum_ns_getchildren_rt%ROWTYPE;
 _nid integer; 
@@ -882,7 +882,7 @@ COMMENT ON FUNCTION objQual_forum_ns_getchildren_activeuser(integer,integer,inte
 --GO
 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_getchildren_anyuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF objQual_forum_ns_getchildren_rt AS
+				   RETURNS SETOF objQual_forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec objQual_forum_ns_getchildren_rt%ROWTYPE;
 _nid integer;
@@ -925,7 +925,7 @@ COMMENT ON FUNCTION objQual_forum_ns_getchildren_anyuser(integer,integer,integer
 --GO
    
 CREATE OR REPLACE FUNCTION objQual_forum_ns_getpath(i_forumid integer, i_parentincluded boolean)
-                  RETURNS SETOF objQual_forum_ns_getsubtree_rt AS 
+				  RETURNS SETOF objQual_forum_ns_getsubtree_rt AS 
 $BODY$DECLARE
 _rec objQual_forum_ns_getsubtree_rt%ROWTYPE;
 _nid integer;
@@ -951,7 +951,7 @@ $BODY$
 
 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_listpath(
-                           i_forumid integer)
+						   i_forumid integer)
 				  RETURNS SETOF objQual_forum_listpath_return_type AS
 $BODY$DECLARE
 _rec objQual_forum_listpath_return_type%ROWTYPE;
@@ -963,16 +963,16 @@ FROM objQual_forum_ns where forumid = i_forumid;
 
 FOR _rec IN
 SELECT f.forumid,
-       f.name,
+	   f.name,
 	   -- we don't return board and category nodes here
-       (ns.level - 2)  
+	   (ns.level - 2)  
 	   FROM objQual_forum_ns ns 
 	   JOIN objQual_forum f on f.forumid = ns.forumid
 	   WHERE ns.left_key <= _left_key AND ns.right_key >= _right_key ORDER BY ns.left_key
 LOOP
 RETURN NEXT _rec;
 END LOOP;
-                         
+						 
 END; $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
   COST 100 ROWS 1000;
@@ -983,7 +983,7 @@ END; $BODY$
 -- Initialize all this
 
 CREATE OR REPLACE FUNCTION objQual_forum_ns_recreate()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 PERFORM objQual_forum_ns_drop_triggers();
@@ -995,7 +995,7 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO 
+	--GO 
 SELECT objQual_forum_ns_recreate();
 -- GO
 

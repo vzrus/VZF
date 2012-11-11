@@ -837,7 +837,7 @@ namespace YAF.Controls
       }
 
       // Font name.
-      if (controlStyle.Font.Name != string.Empty)
+      if (controlStyle.Font.Name.IsSet())
       {
         fontNames = controlStyle.Font.Name;
         cell.Style.Add("font-family", fontNames);
@@ -1136,7 +1136,7 @@ namespace YAF.Controls
       bool titleIsLink = this.AllowTitleExpandCollapse;
 
       // Are images being used for the action hyperlink?
-      bool useImages = (this.CollapseImageUrl != string.Empty) && (this.ExpandImageUrl != string.Empty) &&
+      bool useImages = (this.CollapseImageUrl.IsSet()) && (this.ExpandImageUrl.IsSet()) &&
                        (this.HideActionExpandCollapse == false);
 
       // Sets the hidden input value to the correct collapsed state.

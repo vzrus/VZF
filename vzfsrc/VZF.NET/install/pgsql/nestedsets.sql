@@ -4,13 +4,13 @@ CREATE NS TABLE AND INDEXES FUNCTIONS
 *********************************************************************************************************************************
 ******************************************************************************************************************************** */
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_check_ns_tables()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 DROP TABLE IF EXISTS databaseSchema.objectQualifier_forum_ns CASCADE;
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
-			     AND tablename='objectQualifier_forum_ns' limit 1) THEN
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_forum_ns' limit 1) THEN
 CREATE TABLE databaseSchema.objectQualifier_forum_ns
 (
   nid serial NOT NULL,
@@ -49,8 +49,8 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;
-    -- GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_create_or_check_tables() TO public;
-    --GO
+	-- GRANT EXECUTE ON FUNCTION databaseSchema.objectQualifier_create_or_check_tables() TO public;
+	--GO
   
 --    DROP FUNCTION databaseSchema.objectQualifier_create_or_check_ns_tables();
 -- GO
@@ -65,7 +65,7 @@ BRIDGE FUNCTIONS
 
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_dropbridge_triggers()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 
@@ -84,10 +84,10 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO
+	--GO
 
 	CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_drop_triggers()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 DROP TRIGGER IF EXISTS databaseSchema_objectQualifier_forum_ns_after_delete_2_tr ON databaseSchema.objectQualifier_forum_ns;
@@ -99,7 +99,7 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO 
+	--GO 
 
 
 
@@ -112,13 +112,13 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_lock_ns_tree(integer)
   RETURNS boolean AS
 $BODY$
 DECLARE tree_id ALIAS FOR $1;
-    _id INTEGER;
+	_id INTEGER;
 BEGIN
-    SELECT nid
-        INTO _id
-        FROM databaseSchema.objectQualifier_forum_ns
-        WHERE tree = tree_id FOR UPDATE;
-    RETURN TRUE;
+	SELECT nid
+		INTO _id
+		FROM databaseSchema.objectQualifier_forum_ns
+		WHERE tree = tree_id FOR UPDATE;
+	RETURN TRUE;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -132,33 +132,33 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_after_delete_
 $BODY$
 DECLARE
 BEGIN
-    PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
+	PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
 -- Убираем разрыв в ключах и сдвигаем дочерние узлы:
    UPDATE databaseSchema.objectQualifier_forum_ns
-        SET left_key = CASE WHEN left_key < OLD.left_key
-                            THEN left_key
-                            ELSE CASE WHEN right_key < OLD.right_key
-                                      THEN left_key - 1 
-                                      ELSE left_key - 2
-                                 END
-                       END,
-            "level" = CASE WHEN right_key < OLD.right_key
-                           THEN "level" - 1 
-                           ELSE "level"
-                      END,
-            parentid = CASE WHEN right_key < OLD.right_key AND "level" = OLD.level + 1
-                           THEN OLD.parentid
-                           ELSE parentid
-                        END,
-            right_key = CASE WHEN right_key < OLD.right_key
-                             THEN right_key - 1 
-                             ELSE right_key - 2
-                        END,
-            _trigger_lock_update = TRUE
-        WHERE (right_key > OLD.right_key OR
-            (left_key > OLD.left_key AND right_key < OLD.right_key)) AND
-            tree = OLD.tree;
-    RETURN OLD;
+		SET left_key = CASE WHEN left_key < OLD.left_key
+							THEN left_key
+							ELSE CASE WHEN right_key < OLD.right_key
+									  THEN left_key - 1 
+									  ELSE left_key - 2
+								 END
+					   END,
+			"level" = CASE WHEN right_key < OLD.right_key
+						   THEN "level" - 1 
+						   ELSE "level"
+					  END,
+			parentid = CASE WHEN right_key < OLD.right_key AND "level" = OLD.level + 1
+						   THEN OLD.parentid
+						   ELSE parentid
+						END,
+			right_key = CASE WHEN right_key < OLD.right_key
+							 THEN right_key - 1 
+							 ELSE right_key - 2
+						END,
+			_trigger_lock_update = TRUE
+		WHERE (right_key > OLD.right_key OR
+			(left_key > OLD.left_key AND right_key < OLD.right_key)) AND
+			tree = OLD.tree;
+	RETURN OLD;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -173,37 +173,37 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_after_delete_
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _skew_tree INTEGER;
+	_skew_tree INTEGER;
 BEGIN
-    PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
+	PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
 -- Проверяем, стоит ли выполнять триггер:
-    IF OLD._trigger_for_delete = TRUE THEN RETURN OLD; END IF;
+	IF OLD._trigger_for_delete = TRUE THEN RETURN OLD; END IF;
 -- Помечаем на удаление дочерние узлы:
-    UPDATE databaseSchema.objectQualifier_forum_ns
-        SET _trigger_for_delete = TRUE,
-            _trigger_lock_update = TRUE
-        WHERE
-            tree = OLD.tree AND
-            left_key > OLD.left_key AND
-            right_key < OLD.right_key;
+	UPDATE databaseSchema.objectQualifier_forum_ns
+		SET _trigger_for_delete = TRUE,
+			_trigger_lock_update = TRUE
+		WHERE
+			tree = OLD.tree AND
+			left_key > OLD.left_key AND
+			right_key < OLD.right_key;
 -- Удаляем помеченные узлы:
-    DELETE FROM databaseSchema.objectQualifier_forum_ns
-        WHERE
-            tree = OLD.tree AND
-            left_key > OLD.left_key AND
-            right_key < OLD.right_key;
+	DELETE FROM databaseSchema.objectQualifier_forum_ns
+		WHERE
+			tree = OLD.tree AND
+			left_key > OLD.left_key AND
+			right_key < OLD.right_key;
 -- Убираем разрыв в ключах:
-    _skew_tree := OLD.right_key - OLD.left_key + 1;
-    UPDATE databaseSchema.objectQualifier_forum_ns
-        SET left_key = CASE WHEN left_key > OLD.left_key
-                            THEN left_key - _skew_tree
-                            ELSE left_key
-                       END,
-            right_key = right_key - _skew_tree,
-            _trigger_lock_update = TRUE
-        WHERE right_key > OLD.right_key AND
-            tree = OLD.tree;
-    RETURN OLD;
+	_skew_tree := OLD.right_key - OLD.left_key + 1;
+	UPDATE databaseSchema.objectQualifier_forum_ns
+		SET left_key = CASE WHEN left_key > OLD.left_key
+							THEN left_key - _skew_tree
+							ELSE left_key
+					   END,
+			right_key = right_key - _skew_tree,
+			_trigger_lock_update = TRUE
+		WHERE right_key > OLD.right_key AND
+			tree = OLD.tree;
+	RETURN OLD;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -222,73 +222,73 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_before_insert
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _left_key       INTEGER;
-    _level          INTEGER;
-    _tmp_left_key   INTEGER;
-    _tmp_right_key  INTEGER;
-    _tmp_level      INTEGER;
-    _tmp_id         INTEGER;
-    _tmp_parent_id  INTEGER;
+	_left_key       INTEGER;
+	_level          INTEGER;
+	_tmp_left_key   INTEGER;
+	_tmp_right_key  INTEGER;
+	_tmp_level      INTEGER;
+	_tmp_id         INTEGER;
+	_tmp_parent_id  INTEGER;
 BEGIN
-    PERFORM databaseSchema.objectQualifier_lock_ns_tree(NEW.tree);
+	PERFORM databaseSchema.objectQualifier_lock_ns_tree(NEW.tree);
 -- Нельзя эти поля ручками ставить:
-    NEW._trigger_for_delete := FALSE;
-    NEW._trigger_lock_update := FALSE;
-    _left_key := 0;
-    _level := 0;
+	NEW._trigger_for_delete := FALSE;
+	NEW._trigger_lock_update := FALSE;
+	_left_key := 0;
+	_level := 0;
 -- Если мы указали родителя:
-    IF NEW.parentid IS NOT NULL AND NEW.parentid > 0 THEN
-        SELECT right_key, "level" + 1
-            INTO _left_key, _level
-            FROM databaseSchema.objectQualifier_forum_ns
-            WHERE nid = NEW.parentid AND
-                  tree = NEW.tree;
-    END IF;
+	IF NEW.parentid IS NOT NULL AND NEW.parentid > 0 THEN
+		SELECT right_key, "level" + 1
+			INTO _left_key, _level
+			FROM databaseSchema.objectQualifier_forum_ns
+			WHERE nid = NEW.parentid AND
+				  tree = NEW.tree;
+	END IF;
 -- Если мы указали левый ключ:
-    IF NEW.left_key IS NOT NULL AND
-       NEW.left_key > 0 AND 
-       (_left_key IS NULL OR _left_key = 0) THEN
-        SELECT nid, left_key, right_key, "level", parentid 
-            INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
-            FROM databaseSchema.objectQualifier_forum_ns
-            WHERE tree = NEW.tree AND (left_key = NEW.left_key OR right_key = NEW.left_key);
-        IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_left_key THEN
-            NEW.parentid := _tmp_parent_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level;
-        ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
-            NEW.parentid := _tmp_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level + 1;
-        END IF;
-    END IF;
+	IF NEW.left_key IS NOT NULL AND
+	   NEW.left_key > 0 AND 
+	   (_left_key IS NULL OR _left_key = 0) THEN
+		SELECT nid, left_key, right_key, "level", parentid 
+			INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
+			FROM databaseSchema.objectQualifier_forum_ns
+			WHERE tree = NEW.tree AND (left_key = NEW.left_key OR right_key = NEW.left_key);
+		IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_left_key THEN
+			NEW.parentid := _tmp_parent_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level;
+		ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
+			NEW.parentid := _tmp_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level + 1;
+		END IF;
+	END IF;
 -- Если родитель или левый ключ не указан, или мы ничего не нашли:
-    IF _left_key IS NULL OR _left_key = 0 THEN
-        SELECT MAX(right_key) + 1
-            INTO _left_key
-            FROM databaseSchema.objectQualifier_forum_ns
-            WHERE tree = NEW.tree;
-        IF _left_key IS NULL OR _left_key = 0 THEN
-            _left_key := 1;
-        END IF;
-        _level := 0;
-        NEW.parentid := 0; 
-    END IF;
+	IF _left_key IS NULL OR _left_key = 0 THEN
+		SELECT MAX(right_key) + 1
+			INTO _left_key
+			FROM databaseSchema.objectQualifier_forum_ns
+			WHERE tree = NEW.tree;
+		IF _left_key IS NULL OR _left_key = 0 THEN
+			_left_key := 1;
+		END IF;
+		_level := 0;
+		NEW.parentid := 0; 
+	END IF;
 -- Устанавливаем полученные ключи для узла:
-    NEW.left_key := _left_key;
-    NEW.right_key := _left_key + 1;
-    NEW."level" := _level;
+	NEW.left_key := _left_key;
+	NEW.right_key := _left_key + 1;
+	NEW."level" := _level;
 -- Формируем развыв в дереве на месте вставки:
-    UPDATE databaseSchema.objectQualifier_forum_ns
-        SET left_key = left_key + 
-            CASE WHEN left_key >= _left_key 
-              THEN 2 
-              ELSE 0 
-            END,
-            right_key = right_key + 2,
-            _trigger_lock_update = TRUE
-        WHERE tree = NEW.tree AND right_key >= _left_key;
-    RETURN NEW;
+	UPDATE databaseSchema.objectQualifier_forum_ns
+		SET left_key = left_key + 
+			CASE WHEN left_key >= _left_key 
+			  THEN 2 
+			  ELSE 0 
+			END,
+			right_key = right_key + 2,
+			_trigger_lock_update = TRUE
+		WHERE tree = NEW.tree AND right_key >= _left_key;
+	RETURN NEW;
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
@@ -299,167 +299,167 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_before_update
   RETURNS trigger AS
 $BODY$
 DECLARE
-    _left_key       INTEGER;
-    _level          INTEGER;
-    _skew_tree      INTEGER;
-    _skew_level     INTEGER;
-    _skew_edit      INTEGER;
-    _tmp_left_key   INTEGER;
-    _tmp_right_key  INTEGER;
-    _tmp_level      INTEGER;
-    _tmp_id         INTEGER;
-    _tmp_parent_id  INTEGER;
+	_left_key       INTEGER;
+	_level          INTEGER;
+	_skew_tree      INTEGER;
+	_skew_level     INTEGER;
+	_skew_edit      INTEGER;
+	_tmp_left_key   INTEGER;
+	_tmp_right_key  INTEGER;
+	_tmp_level      INTEGER;
+	_tmp_id         INTEGER;
+	_tmp_parent_id  INTEGER;
 BEGIN
-    PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
+	PERFORM databaseSchema.objectQualifier_lock_ns_tree(OLD.tree);
 -- А стоит ли нам вообще что либо делать:
-    IF NEW._trigger_lock_update = TRUE THEN
-        NEW._trigger_lock_update := FALSE;
-        IF NEW._trigger_for_delete = TRUE THEN
-            NEW = OLD;
-            NEW._trigger_for_delete = TRUE;
-            RETURN NEW;
-        END IF;
-        RETURN NEW;
-    END IF;
+	IF NEW._trigger_lock_update = TRUE THEN
+		NEW._trigger_lock_update := FALSE;
+		IF NEW._trigger_for_delete = TRUE THEN
+			NEW = OLD;
+			NEW._trigger_for_delete = TRUE;
+			RETURN NEW;
+		END IF;
+		RETURN NEW;
+	END IF;
 -- Сбрасываем значения полей, которые пользователь менять не может:
-    NEW._trigger_for_delete := FALSE;
-    NEW.tree := OLD.tree;
-    NEW.right_key := OLD.right_key;
-    NEW."level" := OLD."level";
-    IF NEW.parentid IS NULL THEN NEW.parentid := 0; END IF;
+	NEW._trigger_for_delete := FALSE;
+	NEW.tree := OLD.tree;
+	NEW.right_key := OLD.right_key;
+	NEW."level" := OLD."level";
+	IF NEW.parentid IS NULL THEN NEW.parentid := 0; END IF;
 -- Проверяем, а есть ли изменения связанные со структурой дерева
-    IF NEW.parentid = OLD.parentid AND NEW.left_key = OLD.left_key
-    THEN
-        RETURN NEW;
-    END IF;
+	IF NEW.parentid = OLD.parentid AND NEW.left_key = OLD.left_key
+	THEN
+		RETURN NEW;
+	END IF;
 -- Дерево таки перестраиваем, что ж, приступим:
-    _left_key := 0;
-    _level := 0;
-    _skew_tree := OLD.right_key - OLD.left_key + 1;
+	_left_key := 0;
+	_level := 0;
+	_skew_tree := OLD.right_key - OLD.left_key + 1;
 -- Определяем куда мы его переносим:
 -- Если сменен parentid:
-    IF NEW.parentid <> OLD.parentid THEN
+	IF NEW.parentid <> OLD.parentid THEN
 -- Если в подчинение другому злу:
-        IF NEW.parentid > 0 THEN
-            SELECT right_key, level + 1
-                INTO _left_key, _level
-                FROM databaseSchema.objectQualifier_forum_ns
-                WHERE nid = NEW.parentid AND tree = NEW.tree;
+		IF NEW.parentid > 0 THEN
+			SELECT right_key, level + 1
+				INTO _left_key, _level
+				FROM databaseSchema.objectQualifier_forum_ns
+				WHERE nid = NEW.parentid AND tree = NEW.tree;
 -- Иначе в корень дерева переносим:
-        ELSE
-            SELECT MAX(right_key) + 1 
-                INTO _left_key
-                FROM databaseSchema.objectQualifier_forum_ns
-                WHERE tree = NEW.tree;
-            _level := 0;
-        END IF;
+		ELSE
+			SELECT MAX(right_key) + 1 
+				INTO _left_key
+				FROM databaseSchema.objectQualifier_forum_ns
+				WHERE tree = NEW.tree;
+			_level := 0;
+		END IF;
 -- Если вдруг родитель в диапазоне перемещаемого узла, проверка:
-        IF _left_key IS NOT NULL AND 
-           _left_key > 0 AND
-           _left_key > OLD.left_key AND
-           _left_key <= OLD.right_key 
-        THEN
-           NEW.parentid := OLD.parentid;
-           NEW.left_key := OLD.left_key;
-           RETURN NEW;
-        END IF;
-    END IF;
+		IF _left_key IS NOT NULL AND 
+		   _left_key > 0 AND
+		   _left_key > OLD.left_key AND
+		   _left_key <= OLD.right_key 
+		THEN
+		   NEW.parentid := OLD.parentid;
+		   NEW.left_key := OLD.left_key;
+		   RETURN NEW;
+		END IF;
+	END IF;
 -- Если же указан left_key, а parentid - нет
-    IF _left_key IS NULL OR _left_key = 0 THEN
-        SELECT nid, left_key, right_key, "level", parentid 
-            INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
-            FROM databaseSchema.objectQualifier_forum_ns
-            WHERE tree = NEW.tree AND (right_key = NEW.left_key OR right_key = NEW.left_key - 1)
-            LIMIT 1;
-        IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key - 1 = _tmp_right_key THEN
-            NEW.parentid := _tmp_parent_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level;
-        ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
-            NEW.parentid := _tmp_id;
-            _left_key := NEW.left_key;
-            _level := _tmp_level + 1;
-        ELSIF NEW.left_key = 1 THEN
-            NEW.parentid := 0;
-            _left_key := NEW.left_key;
-            _level := 0;
-        ELSE
-           NEW.parentid := OLD.parentid;
-           NEW.left_key := OLD.left_key;
-           RETURN NEW;
-        END IF;
-    END IF;
+	IF _left_key IS NULL OR _left_key = 0 THEN
+		SELECT nid, left_key, right_key, "level", parentid 
+			INTO _tmp_id, _tmp_left_key, _tmp_right_key, _tmp_level, _tmp_parent_id
+			FROM databaseSchema.objectQualifier_forum_ns
+			WHERE tree = NEW.tree AND (right_key = NEW.left_key OR right_key = NEW.left_key - 1)
+			LIMIT 1;
+		IF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key - 1 = _tmp_right_key THEN
+			NEW.parentid := _tmp_parent_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level;
+		ELSIF _tmp_left_key IS NOT NULL AND _tmp_left_key > 0 AND NEW.left_key = _tmp_right_key THEN
+			NEW.parentid := _tmp_id;
+			_left_key := NEW.left_key;
+			_level := _tmp_level + 1;
+		ELSIF NEW.left_key = 1 THEN
+			NEW.parentid := 0;
+			_left_key := NEW.left_key;
+			_level := 0;
+		ELSE
+		   NEW.parentid := OLD.parentid;
+		   NEW.left_key := OLD.left_key;
+		   RETURN NEW;
+		END IF;
+	END IF;
 -- Теперь мы знаем куда мы перемещаем дерево
-        _skew_level := _level - OLD."level";
-    IF _left_key > OLD.left_key THEN
+		_skew_level := _level - OLD."level";
+	IF _left_key > OLD.left_key THEN
 -- Перемещение вверх по дереву
-        _skew_edit := _left_key - OLD.left_key - _skew_tree;
-        UPDATE databaseSchema.objectQualifier_forum_ns
-            SET left_key =  CASE WHEN right_key <= OLD.right_key
-                                 THEN left_key + _skew_edit
-                                 ELSE CASE WHEN left_key > OLD.right_key
-                                           THEN left_key - _skew_tree
-                                           ELSE left_key
-                                      END
-                            END,
-                "level" =   CASE WHEN right_key <= OLD.right_key 
-                                 THEN "level" + _skew_level
-                                 ELSE "level"
-                            END,
-                right_key = CASE WHEN right_key <= OLD.right_key 
-                                 THEN right_key + _skew_edit
-                                 ELSE CASE WHEN right_key < _left_key
-                                           THEN right_key - _skew_tree
-                                           ELSE right_key
-                                      END
-                            END,
-                _trigger_lock_update = TRUE
-            WHERE tree = OLD.tree AND
-                  right_key > OLD.left_key AND
-                  left_key < _left_key AND
-                  nid <> OLD.nid;
-        _left_key := _left_key - _skew_tree;
-    ELSE
+		_skew_edit := _left_key - OLD.left_key - _skew_tree;
+		UPDATE databaseSchema.objectQualifier_forum_ns
+			SET left_key =  CASE WHEN right_key <= OLD.right_key
+								 THEN left_key + _skew_edit
+								 ELSE CASE WHEN left_key > OLD.right_key
+										   THEN left_key - _skew_tree
+										   ELSE left_key
+									  END
+							END,
+				"level" =   CASE WHEN right_key <= OLD.right_key 
+								 THEN "level" + _skew_level
+								 ELSE "level"
+							END,
+				right_key = CASE WHEN right_key <= OLD.right_key 
+								 THEN right_key + _skew_edit
+								 ELSE CASE WHEN right_key < _left_key
+										   THEN right_key - _skew_tree
+										   ELSE right_key
+									  END
+							END,
+				_trigger_lock_update = TRUE
+			WHERE tree = OLD.tree AND
+				  right_key > OLD.left_key AND
+				  left_key < _left_key AND
+				  nid <> OLD.nid;
+		_left_key := _left_key - _skew_tree;
+	ELSE
 -- Перемещение вниз по дереву:
-        _skew_edit := _left_key - OLD.left_key;
-        UPDATE databaseSchema.objectQualifier_forum_ns
-            SET
-                right_key = CASE WHEN left_key >= OLD.left_key
-                                 THEN right_key + _skew_edit
-                                 ELSE CASE WHEN right_key < OLD.left_key
-                                           THEN right_key + _skew_tree
-                                           ELSE right_key
-                                      END
-                            END,
-                "level" =   CASE WHEN left_key >= OLD.left_key
-                                 THEN "level" + _skew_level
-                                 ELSE "level"
-                            END,
-                left_key =  CASE WHEN left_key >= OLD.left_key
-                                 THEN left_key + _skew_edit
-                                 ELSE CASE WHEN left_key >= _left_key
-                                           THEN left_key + _skew_tree
-                                           ELSE left_key
-                                      END
-                            END,
-                 _trigger_lock_update = TRUE
-            WHERE tree = OLD.tree AND
-                  right_key >= _left_key AND
-                  left_key < OLD.right_key AND
-                  nid <> OLD.nid;
-    END IF;
+		_skew_edit := _left_key - OLD.left_key;
+		UPDATE databaseSchema.objectQualifier_forum_ns
+			SET
+				right_key = CASE WHEN left_key >= OLD.left_key
+								 THEN right_key + _skew_edit
+								 ELSE CASE WHEN right_key < OLD.left_key
+										   THEN right_key + _skew_tree
+										   ELSE right_key
+									  END
+							END,
+				"level" =   CASE WHEN left_key >= OLD.left_key
+								 THEN "level" + _skew_level
+								 ELSE "level"
+							END,
+				left_key =  CASE WHEN left_key >= OLD.left_key
+								 THEN left_key + _skew_edit
+								 ELSE CASE WHEN left_key >= _left_key
+										   THEN left_key + _skew_tree
+										   ELSE left_key
+									  END
+							END,
+				 _trigger_lock_update = TRUE
+			WHERE tree = OLD.tree AND
+				  right_key >= _left_key AND
+				  left_key < OLD.right_key AND
+				  nid <> OLD.nid;
+	END IF;
 -- Дерево перестроили, остался только наш текущий узел
-    NEW.left_key := _left_key;
-    NEW."level" := _level;
-    NEW.right_key := _left_key + _skew_tree - 1;
-    RETURN NEW;
+	NEW.left_key := _left_key;
+	NEW."level" := _level;
+	NEW.right_key := _left_key + _skew_tree - 1;
+	RETURN NEW;
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE
   COST 100;
 --GO 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_create_triggers()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 CREATE TRIGGER databaseSchema_objectQualifier_forum_ns_after_delete_2_tr
@@ -483,7 +483,7 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO 
+	--GO 
 
 
 
@@ -510,9 +510,9 @@ _testOut varchar;
 _leftNodePrevious integer;
 BEGIN
 
-     -- we have a forum in category and getting a category nid as a parent nid.
- 	                    IF 	(i_parentid IS NULL OR i_parentid <= 0) THEN		
-					    SELECT nid INTO _nidParent FROM databaseSchema.objectQualifier_forum_ns WHERE categoryid = i_categoryid and forumid = 0;
+	 -- we have a forum in category and getting a category nid as a parent nid.
+						IF 	(i_parentid IS NULL OR i_parentid <= 0) THEN		
+						SELECT nid INTO _nidParent FROM databaseSchema.objectQualifier_forum_ns WHERE categoryid = i_categoryid and forumid = 0;
 						ELSE				
 						 SELECT parentid INTO _nidParent FROM databaseSchema.objectQualifier_forum_ns WHERE forumid = i_forumid;
 						END IF;	
@@ -522,13 +522,13 @@ BEGIN
  -- range a node among it's siblings by sort order 
 
 
-                       
+					   
 
 -- _nidParent this is nid of a parent node if i_parentid is  null it's a category
 CREATE  TEMPORARY TABLE databaseSchema_objectQualifier_tmp_ns_sort
-    (nid integer, left_key integer, right_key integer, level integer, parentid integer, forumid integer, sortorder integer) 
-    WITHOUT OIDS 
-    ON COMMIT  DROP;
+	(nid integer, left_key integer, right_key integer, level integer, parentid integer, forumid integer, sortorder integer) 
+	WITHOUT OIDS 
+	ON COMMIT  DROP;
 -- current forum sort order to compare in loop
 SELECT sortorder
 INTO _thisforum_sortorder
@@ -576,7 +576,7 @@ $BODY$
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_fillin_or_check_ns_tables()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$DECLARE _rec_b RECORD;
  _rec_c RECORD;
   _rec_f RECORD; 
@@ -589,37 +589,37 @@ BEGIN
 -- if ((select count(nid) from databaseSchema.objectQualifier_forum_ns) = 0) THEN
 -- fill in boards as root (level = 0) nodes
 FOR _rec_b IN 
-           SELECT boardid
+		   SELECT boardid
 		   from  databaseSchema.objectQualifier_board 
 		   ORDER by boardid
-       LOOP
-       INSERT INTO databaseSchema.objectQualifier_forum_ns(boardid,categoryid,forumid) values (_rec_b.boardid,0,0)
+	   LOOP
+	   INSERT INTO databaseSchema.objectQualifier_forum_ns(boardid,categoryid,forumid) values (_rec_b.boardid,0,0)
 	   RETURNING nid INTO _brdTmp;
-       -- fill in categories as level = 1 nodes
-         FOR _rec_c IN 
-                SELECT c.categoryid,c.boardid, c.sortorder
+	   -- fill in categories as level = 1 nodes
+		 FOR _rec_c IN 
+				SELECT c.categoryid,c.boardid, c.sortorder
 				from  databaseSchema.objectQualifier_category c  
 				JOIN databaseSchema.objectQualifier_board b 
 				on b.boardid = c.boardid 
 				WHERE c.boardid = _rec_b.boardid 
 				ORDER by c.boardid,c.sortorder				
-         LOOP
-               INSERT INTO databaseSchema.objectQualifier_forum_ns(boardid, categoryid,forumid, sortorder) 
+		 LOOP
+			   INSERT INTO databaseSchema.objectQualifier_forum_ns(boardid, categoryid,forumid, sortorder) 
 			   values (_rec_b.boardid,_rec_c.categoryid,0,_rec_c.sortorder )
 			   RETURNING nid INTO _catTmp;
 			   
 
-                    UPDATE databaseSchema.objectQualifier_forum_ns SET parentid  = _brdTmp where categoryid = _rec_c.categoryid;
-             
+					UPDATE databaseSchema.objectQualifier_forum_ns SET parentid  = _brdTmp where categoryid = _rec_c.categoryid;
+			 
 				 -- loop through forums
-                       FOR _rec_f IN 
-				          SELECT f.forumid, f.parentid,coalesce(f.parentid, 0) parent0 ,f.categoryid, f.sortorder 
-				            from  databaseSchema.objectQualifier_forum f 
-				            JOIN databaseSchema.objectQualifier_category c on f.categoryid = c.categoryid
-				             JOIN databaseSchema.objectQualifier_board b on b.boardid = c.boardid
-				             WHERE f.categoryid = _rec_c.categoryid
-				              ORDER by c.boardid, f.categoryid, parent0,f.sortorder, f.forumid							
-                      LOOP				  
+					   FOR _rec_f IN 
+						  SELECT f.forumid, f.parentid,coalesce(f.parentid, 0) parent0 ,f.categoryid, f.sortorder 
+							from  databaseSchema.objectQualifier_forum f 
+							JOIN databaseSchema.objectQualifier_category c on f.categoryid = c.categoryid
+							 JOIN databaseSchema.objectQualifier_board b on b.boardid = c.boardid
+							 WHERE f.categoryid = _rec_c.categoryid
+							  ORDER by c.boardid, f.categoryid, parent0,f.sortorder, f.forumid							
+					  LOOP				  
 											
 					IF (_rec_f.parentid IS NULL) THEN
 					SELECT _catTmp into _ndfpTmp;					
@@ -629,13 +629,13 @@ FOR _rec_b IN
 					END IF;
 					SELECT _rec_f.forumid  into  _frmTmp;
 						   -- it's right in the category
-                           INSERT INTO databaseSchema.objectQualifier_forum_ns(parentid,boardid, categoryid,forumid, sortorder, tree, path_cache) 
-					       values (_ndfpTmp,_rec_c.boardid,_rec_f.categoryid,COALESCE(_frmTmp,0),_rec_f.sortorder, 0, ''); 
+						   INSERT INTO databaseSchema.objectQualifier_forum_ns(parentid,boardid, categoryid,forumid, sortorder, tree, path_cache) 
+						   values (_ndfpTmp,_rec_c.boardid,_rec_f.categoryid,COALESCE(_frmTmp,0),_rec_f.sortorder, 0, ''); 
 		-- end of forum loop 					
-        END LOOP;	
+		END LOOP;	
 	-- end of category loop
    END LOOP;
-    -- end of board loop
+	-- end of board loop
 END LOOP;
 -- END IF;
 END;

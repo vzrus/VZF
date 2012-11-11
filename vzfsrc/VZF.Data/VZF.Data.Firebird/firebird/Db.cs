@@ -7719,25 +7719,7 @@ namespace YAF.Classes.Data.FirebirdDb
 			}
 		}
 
-		/// <summary>
-		/// Returns the posts which is thanked by the user + the posts which are posted by the user and 
-		/// are thanked by other users.
-		/// </summary>
-		/// <param name="UserID">
-		/// The user id.
-		/// </param>
-		/// <returns>
-		/// </returns>
-    public static DataTable user_viewallthanks(string connectionString, object UserID, object pageUserId)
-		{
-			using (FbCommand cmd = FbDbAccess.GetCommand("user_viewallthanks"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("I_USERID", FbDbType.Integer).Value = UserID;
-                cmd.Parameters.Add("I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
-				return FbDbAccess.GetData(cmd,connectionString);
-			}
-		}
+
     /// <summary>
     /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
     /// are thanked by other users.

@@ -33,8 +33,8 @@ namespace Intelligencia.UrlRewriter
 	/// &lt;/html&gt;
 	/// </code>
 	/// </remarks>
-    [ComVisible(false)]
-    [ToolboxData("<{0}:Form runat=server></{0}:RewrittenForm>")]
+	[ComVisible(false)]
+	[ToolboxData("<{0}:Form runat=server></{0}:RewrittenForm>")]
 	public class Form : HtmlForm
 	{
 		/// <summary>
@@ -90,7 +90,7 @@ namespace Intelligencia.UrlRewriter
 
 		private string GetAction()
 		{
-            return RewriterHttpModule.RawUrl;
+			return RewriterHttpModule.RawUrl;
 		}
 	}
 }

@@ -4,15 +4,15 @@
 -- Copyright vzrus(c) 2009-2012
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_check_prov_tables()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
-			     AND tablename='objectQualifier_prov_application') THEN
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_prov_application') THEN
 CREATE TABLE databaseSchema.objectQualifier_prov_application
-             (
+			 (
 			 applicationid             uuid NOT NULL,
 			 applicationname           varchar(256),
 			 applicationnamelwd        varchar(256),
@@ -23,10 +23,10 @@ END IF;
 
 
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
+			   where schemaname='databaseSchema' 
 			   AND tablename='objectQualifier_prov_membership') THEN
 CREATE TABLE databaseSchema.objectQualifier_prov_membership
-             (
+			 (
 			 userid                    uuid NOT NULL,
 			 applicationid             uuid NOT NULL,
 			 username                  varchar(256) NOT NULL,
@@ -56,10 +56,10 @@ END IF;
 
 
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
-			     AND tablename='objectQualifier_prov_profile') THEN
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_prov_profile') THEN
 CREATE TABLE databaseSchema.objectQualifier_prov_profile
-             (
+			 (
 			 userid                    uuid NOT NULL,
 			 valueindex                text,
 			 stringdata                text,
@@ -74,10 +74,10 @@ CREATE TABLE databaseSchema.objectQualifier_prov_profile
 END IF;
 
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
-			     AND tablename='objectQualifier_prov_role') THEN
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_prov_role') THEN
 CREATE TABLE databaseSchema.objectQualifier_prov_role
-             (
+			 (
 			 roleid                    uuid NOT NULL,
 			 applicationid             uuid NOT NULL,
 			 rolename                  varchar(256) NOT NULL,
@@ -87,10 +87,10 @@ CREATE TABLE databaseSchema.objectQualifier_prov_role
 END IF;
 
 IF NOT EXISTS (select 1 from pg_tables 
-               where schemaname='databaseSchema' 
-			     AND tablename='objectQualifier_prov_rolemembership') THEN
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_prov_rolemembership') THEN
 CREATE TABLE databaseSchema.objectQualifier_prov_rolemembership
-             (
+			 (
 			 roleid                    uuid NOT NULL,
 			 userid                    uuid NOT NULL
 			 )
@@ -110,10 +110,10 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;
 --GO
-    SELECT databaseSchema.objectQualifier_create_or_check_prov_tables();
+	SELECT databaseSchema.objectQualifier_create_or_check_prov_tables();
 --GO
-    DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_tables();
-    --GO
+	DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_tables();
+	--GO
 
 
 

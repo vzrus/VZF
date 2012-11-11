@@ -216,6 +216,7 @@ public class SecurityFailureInvalidWebServiceTokenException : Exception
 /// <summary>
 /// The non unique display name exception.
 /// </summary>
+[Serializable]
 public class NonUniqueDisplayNameException : Exception
 {
   #region Constructors and Destructors

@@ -10286,32 +10286,10 @@ namespace YAF.Classes.Data.MsSql
             }
         }
 
+        
+        // Written by vzrus(2012)
         /// <summary>
-        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
-        ///   are thanked by other users.
-        /// </summary>
-        /// <param name="UserID">
-        /// The user id.
-        /// </param>
-        /// <param name="pageUserID">
-        /// The page User ID.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable user_viewallthanks(string connectionString, [NotNull] object UserID, [NotNull] object pageUserID)
-        {
-            using (var cmd = MsSqlDbAccess.GetCommand("user_viewallthanks"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("UserID", UserID);
-                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
-                return MsSqlDbAccess.GetData(cmd, connectionString);
-            }
-        }
-
-        /// <summary>
-        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
-        ///   are thanked by other users.
+        /// Returns the posts which is thanked by the user.
         /// </summary>
         /// <param name="UserID">
         /// The user id.
@@ -10333,8 +10311,10 @@ namespace YAF.Classes.Data.MsSql
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
+
+        // Written by vzrus(2012)
         /// <summary>
-        /// Returns the posts which is thanked by the user + the posts which are posted by the user and 
+        /// Returns the posts which are posted by the user and 
         ///   are thanked by other users.
         /// </summary>
         /// <param name="UserID">

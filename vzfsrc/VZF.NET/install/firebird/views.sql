@@ -147,47 +147,47 @@ GROUP BY a.USERID, x_1.FORUMID;
 --GO
 
  CREATE VIEW objQual_PMESSAGEVIEW(PMESSAGEID, 
-        USERPMESSAGEID,
+		USERPMESSAGEID,
 		REPLYTO, 
-        FROMUSERID, 
-        FROMUSER, 
- 	    TOUSERID, 
-        TOUSER, 
-        CREATED,
-        SUBJECT, 
- 	    BODY, 
-        FLAGS, 
-        ISREAD, 
-        ISINOUTBOX, 
-        ISARCHIVED,
-        ISDELETED,
+		FROMUSERID, 
+		FROMUSER, 
+		TOUSERID, 
+		TOUSER, 
+		CREATED,
+		SUBJECT, 
+		BODY, 
+		FLAGS, 
+		ISREAD, 
+		ISINOUTBOX, 
+		ISARCHIVED,
+		ISDELETED,
 		ISREPLY)
  AS
  SELECT
-	    a.PMESSAGEID,
+		a.PMESSAGEID,
 		a.REPLYTO, 
-        b.USERPMESSAGEID, 
-        a.FROMUSERID, 
-        d.NAME AS FROMUSER, 
- 	    b.USERID AS TOUSERID, 
-        c.NAME AS TOUSER, 
-        a.CREATED, 
-        a.SUBJECT, 
- 	    a.BODY, 
-        a.FLAGS, 
-        b.ISREAD, 
-        b.ISINOUTBOX, 
-        b.ISARCHIVED,
-        b.ISDELETED,
+		b.USERPMESSAGEID, 
+		a.FROMUSERID, 
+		d.NAME AS FROMUSER, 
+		b.USERID AS TOUSERID, 
+		c.NAME AS TOUSER, 
+		a.CREATED, 
+		a.SUBJECT, 
+		a.BODY, 
+		a.FLAGS, 
+		b.ISREAD, 
+		b.ISINOUTBOX, 
+		b.ISARCHIVED,
+		b.ISDELETED,
 		b.ISREPLY
  FROM
- 	objQual_PMESSAGE a
+	objQual_PMESSAGE a
  INNER JOIN
- 	objQual_USERPMESSAGE b ON a.PMESSAGEID = b.PMESSAGEID
+	objQual_USERPMESSAGE b ON a.PMESSAGEID = b.PMESSAGEID
  INNER JOIN
- 	objQual_USER c ON b.USERID = c.USERID
+	objQual_USER c ON b.USERID = c.USERID
  INNER JOIN
- 	objQual_USER d ON a.FROMUSERID = d.USERID;
+	objQual_USER d ON a.FROMUSERID = d.USERID;
 --GO
 
 

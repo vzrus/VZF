@@ -7,7 +7,7 @@ SELECT FUNCTIONS
 
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren(i_boardid integer,  i_categoryid integer, i_forumid integer,  i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getsubtree_rt AS
+				   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getsubtree_rt AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_ns_getsubtree_rt%ROWTYPE;
 _nid integer;
@@ -46,7 +46,7 @@ COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren (integer
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren_activeuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getchildren_rt AS
+				   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_ns_getchildren_rt%ROWTYPE;
 _nid integer; 
@@ -95,7 +95,7 @@ COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren_activeus
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren_anyuser(i_boardid integer,  i_categoryid integer, i_forumid integer , i_userid integer, i_notincluded boolean, i_immediateonly boolean)
-                   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getchildren_rt AS
+				   RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getchildren_rt AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_ns_getchildren_rt%ROWTYPE;
 _nid integer;
@@ -141,7 +141,7 @@ COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_ns_getchildren_anyuser(
 
    
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_getpath(i_forumid integer, i_parentincluded boolean)
-                  RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getsubtree_rt AS 
+				  RETURNS SETOF databaseSchema.objectQualifier_forum_ns_getsubtree_rt AS 
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_ns_getsubtree_rt%ROWTYPE;
 _nid integer;
@@ -167,7 +167,7 @@ $BODY$
 
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_listpath(
-                           i_forumid integer)
+						   i_forumid integer)
 				  RETURNS SETOF databaseSchema.objectQualifier_forum_listpath_return_type AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_listpath_return_type%ROWTYPE;
@@ -179,16 +179,16 @@ FROM databaseSchema.objectQualifier_forum_ns where forumid = i_forumid;
 
 FOR _rec IN
 SELECT f.forumid,
-       f.name,
+	   f.name,
 	   -- we don't return board and category nodes here
-       (ns.level - 2)  
+	   (ns.level - 2)  
 	   FROM databaseSchema.objectQualifier_forum_ns ns 
 	   JOIN databaseSchema.objectQualifier_forum f on f.forumid = ns.forumid
 	   WHERE ns.left_key <= _left_key AND ns.right_key >= _right_key ORDER BY ns.left_key
 LOOP
 RETURN NEXT _rec;
 END LOOP;
-                         
+						 
 END; $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
   COST 100 ROWS 1000;
@@ -199,7 +199,7 @@ END; $BODY$
 -- Initialize all this
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_recreate()
-                  RETURNS void AS
+				  RETURNS void AS
 $BODY$
 BEGIN
 PERFORM databaseSchema.objectQualifier_forum_ns_drop_triggers();
@@ -211,6 +211,6 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;  
-    --GO 
+	--GO 
 SELECT databaseSchema.objectQualifier_forum_ns_recreate();
 -- GO

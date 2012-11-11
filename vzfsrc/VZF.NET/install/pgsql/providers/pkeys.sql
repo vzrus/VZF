@@ -10,21 +10,21 @@
 -- GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_create_or_check_prov_pkeys
-                           ()
+						   ()
 						   RETURNS void AS
 $BODY$
 BEGIN
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
-               where contype='p' 
-			     and conname ='pk_databaseSchema_objectQualifier_prov_application_applicationid' LIMIT 1) THEN
+			   where contype='p' 
+				 and conname ='pk_databaseSchema_objectQualifier_prov_application_applicationid' LIMIT 1) THEN
    ALTER TABLE ONLY databaseSchema.objectQualifier_prov_application
    ADD CONSTRAINT pk_databaseSchema_objectQualifier_prov_application_applicationid 
    PRIMARY KEY (applicationid);
 END IF;  
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
-               where contype='p' 
+			   where contype='p' 
 			   and conname ='pk_databaseSchema_objectQualifier_roleid_prov_role' LIMIT 1) THEN
    ALTER TABLE ONLY databaseSchema.objectQualifier_prov_role
    ADD CONSTRAINT pk_databaseSchema_objectQualifier_roleid_prov_role 
@@ -32,26 +32,26 @@ IF NOT EXISTS (SELECT 1 FROM pg_constraint
 END IF; 
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
-               where contype='p' and conname ='pk_databaseSchema_objectQualifier_userid_prov_membership' LIMIT 1) THEN
+			   where contype='p' and conname ='pk_databaseSchema_objectQualifier_userid_prov_membership' LIMIT 1) THEN
    ALTER TABLE ONLY databaseSchema.objectQualifier_prov_membership
    ADD CONSTRAINT pk_databaseSchema_objectQualifier_userid_prov_membership PRIMARY KEY (userid);
 END IF;
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 
-               where contype='p' 
-			     and conname ='pk_databaseSchema_objectQualifier_userid_prov_profile' LIMIT 1) THEN
+			   where contype='p' 
+				 and conname ='pk_databaseSchema_objectQualifier_userid_prov_profile' LIMIT 1) THEN
    ALTER TABLE ONLY databaseSchema.objectQualifier_prov_profile
    ADD CONSTRAINT pk_databaseSchema_objectQualifier_userid_prov_profile PRIMARY KEY (userid);
 END IF;
 
 
-    
-    END;
+	
+	END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT
   COST 100;   
-    --GO
-    SELECT databaseSchema.objectQualifier_create_or_check_prov_pkeys();
-    --GO
-    DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_pkeys();
+	--GO
+	SELECT databaseSchema.objectQualifier_create_or_check_prov_pkeys();
+	--GO
+	DROP FUNCTION databaseSchema.objectQualifier_create_or_check_prov_pkeys();
 --GO

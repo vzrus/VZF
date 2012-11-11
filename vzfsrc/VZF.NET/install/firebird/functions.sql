@@ -42,13 +42,13 @@ begin
   WHILE (ROW_COUNT > 0)
   DO
   BEGIN
-    FETCH C INTO :I_tmp;    
-    IF(ROW_COUNT = 0)THEN
-      LEAVE;
-      EXECUTE PROCEDURE objQual_forum_posts :I_tmp 
-      RETURNING_VALUES :I_tmpInter; 
-     -- I_NumPosts=I_NumPosts+objQual_forum_posts(:I_tmp);  
-     I_NumPosts=I_NumPosts+I_tmpInter;
+	FETCH C INTO :I_tmp;    
+	IF(ROW_COUNT = 0)THEN
+	  LEAVE;
+	  EXECUTE PROCEDURE objQual_forum_posts :I_tmp 
+	  RETURNING_VALUES :I_tmpInter; 
+	 -- I_NumPosts=I_NumPosts+objQual_forum_posts(:I_tmp);  
+	 I_NumPosts=I_NumPosts+I_tmpInter;
   END
   CLOSE C;
   END
@@ -73,13 +73,13 @@ begin
 		WHILE (ROW_COUNT > 0)
   DO
   BEGIN
-    FETCH ct INTO :I_tmp;    
-    IF(ROW_COUNT = 0) THEN
-      LEAVE;
-      EXECUTE PROCEDURE objQual_FORUM_TOPICS :I_tmp 
-      RETURNING_VALUES :I_tmpInter; 
-      -- I_NumTopics=I_NumTopics+objQual_FORUM_TOPICS(:I_tmp);
-     I_NumTopics=I_NumTopics+I_tmpInter;  
+	FETCH ct INTO :I_tmp;    
+	IF(ROW_COUNT = 0) THEN
+	  LEAVE;
+	  EXECUTE PROCEDURE objQual_FORUM_TOPICS :I_tmp 
+	  RETURNING_VALUES :I_tmpInter; 
+	  -- I_NumTopics=I_NumTopics+objQual_FORUM_TOPICS(:I_tmp);
+	 I_NumTopics=I_NumTopics+I_tmpInter;  
   END		
 	close ct;		
 	end	
@@ -152,7 +152,7 @@ BEGIN
 				INTO :L_SUBFORUMID, :I_TOPICID, :I_POSTED
 		DO
 		BEGIN   
-     -- get last topic/message info for subforum		
+	 -- get last topic/message info for subforum		
 			EXECUTE PROCEDURE objQual_FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_POSTED
 				RETURNING_VALUES
 				:I_TOPICID,
@@ -235,31 +235,31 @@ BEGIN
 					(x.USERID=:I_USERID and (BIN_AND(a.FLAGS, 2)=0 or x.READACCESS<>0))
 				)		
 	INTO :L_SUBFORUMID, :I_TOPICID, :I_POSTED	
-    DO
+	DO
   BEGIN
   -- cycle through subforums
-      -- get last topic/message info for subforum		
+	  -- get last topic/message info for subforum		
 		EXECUTE PROCEDURE objQual_FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_Posted
-        RETURNING_VALUES :I_TOPICID,:I_Posted;
+		RETURNING_VALUES :I_TOPICID,:I_Posted;
 
 			-- if subforum has newer topic/message, make it last for parent forum
 			if (:I_TOPICID is not null and :I_POSTED is not null and :I_LASTPOSTED < :I_POSTED)
 			THEN begin
 				I_LASTTOPICID = :I_TOPICID;
 				I_LASTPOSTED = :I_POSTED;
-			     end
+				 end
 			  -- workaround to avoid logical expressions with NULL possible differences through SQL server versions. 
 			if (:I_TOPICID is not null and :I_POSTED is not null and :I_LASTPOSTED is null) 
 			then begin
 				I_LASTTOPICID = :I_TOPICID;
 				I_LASTPOSTED = :I_POSTED;
-			     end	   
+				 end	   
   
   END	
 END	
 	-- return id of topic with last message in this forum or its subforums
   SELECT :I_LASTTOPICID FROM RDB$DATABASE
-    INTO 
+	INTO 
 	  :"LastTopicID";
 SUSPEND;	
 END;
@@ -331,21 +331,21 @@ BEGIN
 
 
 	 SELECT FIRST 1 c.STYLE FROM objQual_USER a 
-                        JOIN objQual_USERGROUP b
-                          ON a.USERID = b.USERID
-                            JOIN objQual_GROUP c                         
-                              ON b.GroupID = c.GroupID 
-                              WHERE a.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.SORTORDER ASC
-                              INTO :ICI_STYLE;
-       if ( ICI_STYLE is null OR CHAR_LENGTH(ICI_STYLE) < 4 ) THEN               
-                              SELECT FIRST 1 c.STYLE FROM objQual_RANK c 
-                                JOIN objQual_USER d
-                                  ON c.RANKID = d.RANKID 
-                                  WHERE d.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.RANKID DESC
-                                  INTO :ICI_STYLE;                
-      
-      SELECT :ICI_STYLE FROM RDB$DATABASE INTO :O_STYLE;
-      SUSPEND;
+						JOIN objQual_USERGROUP b
+						  ON a.USERID = b.USERID
+							JOIN objQual_GROUP c                         
+							  ON b.GroupID = c.GroupID 
+							  WHERE a.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.SORTORDER ASC
+							  INTO :ICI_STYLE;
+	   if ( ICI_STYLE is null OR CHAR_LENGTH(ICI_STYLE) < 4 ) THEN               
+							  SELECT FIRST 1 c.STYLE FROM objQual_RANK c 
+								JOIN objQual_USER d
+								  ON c.RANKID = d.RANKID 
+								  WHERE d.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.RANKID DESC
+								  INTO :ICI_STYLE;                
+	  
+	  SELECT :ICI_STYLE FROM RDB$DATABASE INTO :O_STYLE;
+	  SUSPEND;
 END;
 --GO
 
@@ -362,7 +362,7 @@ DECLARE VARIABLE TMP_VALUE3 VARCHAR(4000);
 BEGIN
 	SELECT	
 	(SELECT COALESCE((:OUT_VALUE || ','), '') FROM RDB$DATABASE),	      
-    (CAST(i.THANKSFROMUSERID AS varchar(4000))), 
+	(CAST(i.THANKSFROMUSERID AS varchar(4000))), 
 	(CASE :I_SHOWTHANKSDATE  WHEN 1 THEN (',' || CAST(i.THANKSDATE AS VARCHAR(4000)))  ELSE '' END)
 			FROM	objQual_THANKS i
 			WHERE	i.MESSAGEID = :I_MESSAGEID  ORDER BY i.THANKSDATE
@@ -388,72 +388,72 @@ DECLARE VARIABLE ICI_PRNTMP INTEGER;
 begin
 O_DEPENDENCY = 0;
 -- Checks if the forum is already referenced as a parent    
-    select FORUMID from objQual_FORUM where PARENTID = :I_FORUMID AND FORUMID = :I_PARENTID
-    into :O_DEPENDENCY;
-    if (:O_DEPENDENCY > 0) then 
-    BEGIN
-      SELECT :I_PARENTID FROM RDB$DATABASE into :O_DEPENDENCY;
-      SUSPEND;
-      END
-      ELSE
-      BEGIN   
+	select FORUMID from objQual_FORUM where PARENTID = :I_FORUMID AND FORUMID = :I_PARENTID
+	into :O_DEPENDENCY;
+	if (:O_DEPENDENCY > 0) then 
+	BEGIN
+	  SELECT :I_PARENTID FROM RDB$DATABASE into :O_DEPENDENCY;
+	  SUSPEND;
+	  END
+	  ELSE
+	  BEGIN   
 
-    if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID)) THEN
-        begin        
-        for
-        select FORUMID,PARENTID from objQual_FORUM
-        where PARENTID = :I_FORUMID        
-        INTO :ICI_FRMTMP, :ICI_PRNTMP
-         DO
-         BEGIN     
-        if (:ICI_FRMTMP > 0 AND :ICI_FRMTMP IS NOT NULL) THEN
-         begin 
-                EXECUTE PROCEDURE objQual_FORUM_SAVE_PARENTSCHECKER :ICI_FRMTMP, :I_PARENTID
-                RETURNING_VALUES :ICI_HASCHILDREN;  
-           
-           if  (:ICI_PRNTMP = :I_PARENTID) THEN
-            begin
-            O_DEPENDENCY= :I_PARENTID;
-            end    
-            else if (:ICI_HASCHILDREN > 0) THEN
-            begin
-            O_DEPENDENCY = :ICI_HASCHILDREN;            
-            end  
-            select :O_DEPENDENCY from RDB$DATABASE INTO :O_DEPENDENCY;  
-        end 
-      end             
-    end
-     SUSPEND;
-    END   
+	if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID)) THEN
+		begin        
+		for
+		select FORUMID,PARENTID from objQual_FORUM
+		where PARENTID = :I_FORUMID        
+		INTO :ICI_FRMTMP, :ICI_PRNTMP
+		 DO
+		 BEGIN     
+		if (:ICI_FRMTMP > 0 AND :ICI_FRMTMP IS NOT NULL) THEN
+		 begin 
+				EXECUTE PROCEDURE objQual_FORUM_SAVE_PARENTSCHECKER :ICI_FRMTMP, :I_PARENTID
+				RETURNING_VALUES :ICI_HASCHILDREN;  
+		   
+		   if  (:ICI_PRNTMP = :I_PARENTID) THEN
+			begin
+			O_DEPENDENCY= :I_PARENTID;
+			end    
+			else if (:ICI_HASCHILDREN > 0) THEN
+			begin
+			O_DEPENDENCY = :ICI_HASCHILDREN;            
+			end  
+			select :O_DEPENDENCY from RDB$DATABASE INTO :O_DEPENDENCY;  
+		end 
+	  end             
+	end
+	 SUSPEND;
+	END   
 end;
 --GO
 
 
 CREATE  OR ALTER PROCEDURE objQual_REGISTRY_VALUE (
-    I_NAME VARCHAR(64)
-    ,I_BOARDID INTEGER
-    )
+	I_NAME VARCHAR(64)
+	,I_BOARDID INTEGER
+	)
 RETURNS (ICI_RETURNVALUE BLOB)
 AS
 -- DECLARE ICI_RETURNVALUE BLOB SUB_TYPE 1 SEGMENT SIZE 80 CHARACTER SET UTF8 COLLATE UNICODE;
 BEGIN
-    
+	
 
-    IF (:I_BOARDID IS NOT NULL AND EXISTS(SELECT 1 FROM objQual_REGISTRY WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID)) THEN
-    BEGIN
-       
-            SELECT "VALUE"
-            FROM objQual_REGISTRY
-            WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID
+	IF (:I_BOARDID IS NOT NULL AND EXISTS(SELECT 1 FROM objQual_REGISTRY WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID)) THEN
+	BEGIN
+	   
+			SELECT "VALUE"
+			FROM objQual_REGISTRY
+			WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID
 			INTO :ICI_RETURNVALUE;
-    END
-    ELSE
-    BEGIN       
-            SELECT "VALUE"
-            FROM objQual_REGISTRY
-            WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID IS NULL INTO :ICI_RETURNVALUE;
-    END
+	END
+	ELSE
+	BEGIN       
+			SELECT "VALUE"
+			FROM objQual_REGISTRY
+			WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID IS NULL INTO :ICI_RETURNVALUE;
+	END
 
-     SUSPEND;
+	 SUSPEND;
 END;
 --GO

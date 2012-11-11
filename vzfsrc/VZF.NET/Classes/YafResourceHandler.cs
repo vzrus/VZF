@@ -1184,7 +1184,6 @@ namespace YAF
                             {
                                 data = new byte[input.Length];
                                 input.Read(data, 0, data.Length);
-                                input.Close();
                             }
                         }
                         else
