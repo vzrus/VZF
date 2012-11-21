@@ -46,10 +46,12 @@
 
             const string linkParams = "t={0}";
         %>
+        <%=this.GetTags() %>
         <a href="<%=YafBuildLink.GetLink(ForumPages.posts, linkParams, this.TopicRow["LinkTopicID"])%>"
             class="post_link" title="<%=this.Get<IFormatMessage>().GetCleanedTopicMessage(this.TopicRow["FirstMessage"], this.TopicRow["LinkTopicID"]).MessageTruncated%>">
-            <%=this.FormatTopicName() %> 
+           <%=this.FormatTopicName() %>  
         </a>
+        
        <%  if (this.TopicRow["Description"].ToString().IsSet())
             {
         %>               

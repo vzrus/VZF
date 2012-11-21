@@ -43,92 +43,92 @@ CREATE procedure objQual_DBINFO_TABLE_COLUMNS_INFO
 	AS
 	BEGIN
 	for   select
-    rf.rdb$field_name AS FieldName,
+	rf.rdb$field_name AS FieldName,
 	f.rdb$field_type, 
 	t.rdb$type_name, 
 	f.rdb$field_sub_type,
-    f.rdb$character_length, 
+	f.rdb$character_length, 
 	f.rdb$field_scale,
-    f.rdb$field_length,
-    st.rdb$type_name as rdb$sub_type_name,
-    case f.rdb$field_type
-        when 7 then 'smallint'
-        when 8 then 'integer'
-        when 16 then 'int64'
-        when 9 then 'quad'
-        when 10 then 'float'
-        when 11 then 'd_float'
-        when 17 then 'boolean'
-        when 27 then 'double'
-        when 12 then 'date'
-        when 13 then 'time'
-        when 35 then 'timestamp'
-        when 261 then 'blob'
-        when 37 then 'varchar'
-        when 14 then 'char'
-        when 40 then 'cstring'
-        when 45 then 'blob_id'
-    end as "ActualType",
-    case f.rdb$field_type
-            when 7 then
-        case f.rdb$field_sub_type
-            when 1 then 'numeric'
-            when 2 then 'decimal'
-        end
-        when 8 then
-        case f.rdb$field_sub_type
-            when 1 then 'numeric'
-            when 2 then 'decimal'
-        end
-        when 16 then
-        case f.rdb$field_sub_type
-            when 1 then 'numeric'
-            when 2 then 'decimal'
-            else 'bigint'
-        end
-        when 14 then
-        case f.rdb$field_sub_type
-            when 0 then 'unspecified'
-            when 1 then 'binary'
-            when 3 then 'acl'
-            else
-            case
-                when f.rdb$field_sub_type is null then 'unspecified'           end
-        end
-        when 37 then
-        case f.rdb$field_sub_type
-            when 0 then 'unspecified'
-            when 1 then 'text'
-            when 3 then 'acl'
-            else
-            case
-               when f.rdb$field_sub_type is null then 'unspecified'         end
-        end
-        when 261 then
-        case f.rdb$field_sub_type
-            when 0 then 'unspecified'
-            when 1 then 'text'
-            when 2 then 'blr'
-            when 3 then 'acl'
-            when 4 then 'reserved'
-            when 5 then 'encoded-meta-data'
-            when 6 then 'irregular-finished-multi-db-tx'
-            when 7 then 'transactional_description'
-            when 8 then 'external_file_description'
-        end
-    end as "ActualSubType"
+	f.rdb$field_length,
+	st.rdb$type_name as rdb$sub_type_name,
+	case f.rdb$field_type
+		when 7 then 'smallint'
+		when 8 then 'integer'
+		when 16 then 'int64'
+		when 9 then 'quad'
+		when 10 then 'float'
+		when 11 then 'd_float'
+		when 17 then 'boolean'
+		when 27 then 'double'
+		when 12 then 'date'
+		when 13 then 'time'
+		when 35 then 'timestamp'
+		when 261 then 'blob'
+		when 37 then 'varchar'
+		when 14 then 'char'
+		when 40 then 'cstring'
+		when 45 then 'blob_id'
+	end as "ActualType",
+	case f.rdb$field_type
+			when 7 then
+		case f.rdb$field_sub_type
+			when 1 then 'numeric'
+			when 2 then 'decimal'
+		end
+		when 8 then
+		case f.rdb$field_sub_type
+			when 1 then 'numeric'
+			when 2 then 'decimal'
+		end
+		when 16 then
+		case f.rdb$field_sub_type
+			when 1 then 'numeric'
+			when 2 then 'decimal'
+			else 'bigint'
+		end
+		when 14 then
+		case f.rdb$field_sub_type
+			when 0 then 'unspecified'
+			when 1 then 'binary'
+			when 3 then 'acl'
+			else
+			case
+				when f.rdb$field_sub_type is null then 'unspecified'           end
+		end
+		when 37 then
+		case f.rdb$field_sub_type
+			when 0 then 'unspecified'
+			when 1 then 'text'
+			when 3 then 'acl'
+			else
+			case
+			   when f.rdb$field_sub_type is null then 'unspecified'         end
+		end
+		when 261 then
+		case f.rdb$field_sub_type
+			when 0 then 'unspecified'
+			when 1 then 'text'
+			when 2 then 'blr'
+			when 3 then 'acl'
+			when 4 then 'reserved'
+			when 5 then 'encoded-meta-data'
+			when 6 then 'irregular-finished-multi-db-tx'
+			when 7 then 'transactional_description'
+			when 8 then 'external_file_description'
+		end
+	end as "ActualSubType"
 from rdb$relation_fields rf
  join rdb$relations r on rf.rdb$relation_name = r.rdb$relation_name 
 join rdb$fields f on f.rdb$field_name = rf.rdb$field_source
 left join rdb$types t
-    on t.rdb$type = f.rdb$field_type
-    and t.rdb$field_name = 'RDB$FIELD_TYPE'
+	on t.rdb$type = f.rdb$field_type
+	and t.rdb$field_name = 'RDB$FIELD_TYPE'
 left join rdb$types st
-    on st.rdb$type = f.rdb$field_sub_type
-    and st.rdb$field_name = 'RDB$FIELD_SUB_TYPE'
+	on st.rdb$type = f.rdb$field_sub_type
+	and st.rdb$field_name = 'RDB$FIELD_SUB_TYPE'
  WHERE (:I_TABLENAME IS NOT NULL AND rf.rdb$relation_name=:I_TABLENAME)   
 order by
-    f.rdb$field_type, t.rdb$type_name, f.rdb$field_sub_type
+	f.rdb$field_type, t.rdb$type_name, f.rdb$field_sub_type
 	INTO
 	:"FieldName",
 	:"FieldType",
@@ -145,45 +145,45 @@ end;
 --GO
 
  CREATE PROCEDURE objQual_ANNOUNCEMENTS_LIST(
-    I_FORUMID INTEGER, 
+	I_FORUMID INTEGER, 
 	I_USERID INTEGER,
-  	I_SINCEDATE TIMESTAMP,
+	I_SINCEDATE TIMESTAMP,
 	I_TODATE TIMESTAMP,
- 	I_PAGEINDEX INTEGER,
- 	I_PAGESIZE INTEGER,
- 	I_STYLEDNICKS BOOL, 
+	I_PAGEINDEX INTEGER,
+	I_PAGESIZE INTEGER,
+	I_STYLEDNICKS BOOL, 
 	I_SHOWMOVED BOOL,
 	I_FINDLASTUNREAD BOOL)
  RETURNS
  (  "ForumID" INTEGER,
-    "TopicID" INTEGER,
-    "Posted" TIMESTAMP,
-    "LinkTopicID" INTEGER,
-    "TopicMovedID" INTEGER,
+	"TopicID" INTEGER,
+	"Posted" TIMESTAMP,
+	"LinkTopicID" INTEGER,
+	"TopicMovedID" INTEGER,
 	"FavoriteCount" INTEGER,
-    "Subject" VARCHAR(128),
+	"Subject" VARCHAR(128),
 	"Status" VARCHAR(255),
 	"Styles" VARCHAR(255),
 	"Description" VARCHAR(255),
-    "UserID" INTEGER,    
-    "Starter" VARCHAR(128),
+	"UserID" INTEGER,    
+	"Starter" VARCHAR(128),
 	"StarterDisplay" VARCHAR(128),
-    "Replies" INTEGER,
-    "NumPostsDeleted" INTEGER,  
-    "Views" INTEGER,
-    "LastPosted" TIMESTAMP,   
-    "LastUserID" INTEGER,
-    "LastUserName" VARCHAR(128),
+	"Replies" INTEGER,
+	"NumPostsDeleted" INTEGER,  
+	"Views" INTEGER,
+	"LastPosted" TIMESTAMP,   
+	"LastUserID" INTEGER,
+	"LastUserName" VARCHAR(128),
 	"LastUserDisplayName" VARCHAR(128),
-    "LastMessageID" INTEGER,
-    "LastTopicID" INTEGER,
-    "TopicFlags" INTEGER,
-    "Priority" INTEGER,
-    "PollID" INTEGER,
-    "ForumFlags" INTEGER,
-    "FirstMessage"   blob sub_type 1,
-    "StarterStyle" VARCHAR(255),
-    "LastUserStyle" VARCHAR(255),
+	"LastMessageID" INTEGER,
+	"LastTopicID" INTEGER,
+	"TopicFlags" INTEGER,
+	"Priority" INTEGER,
+	"PollID" INTEGER,
+	"ForumFlags" INTEGER,
+	"FirstMessage"   blob sub_type 1,
+	"StarterStyle" VARCHAR(255),
+	"LastUserStyle" VARCHAR(255),
 	"LastForumAccess" TIMESTAMP,
 	"LastTopicAccess" timestamp,
 	"TotalRows" INTEGER,
@@ -206,11 +206,11 @@ end;
 BEGIN		
 	-- find total returned count
 		SELECT 		
- 		COUNT(1) 
- 	FROM
- 		objQual_TOPIC c1 
- 	WHERE
- 		c1.FORUMID = :I_FORUMID	
+		COUNT(1) 
+	FROM
+		objQual_TOPIC c1 
+	WHERE
+		c1.FORUMID = :I_FORUMID	
 		AND	(c1."PRIORITY" = 2) 
 		AND	c1.ISDELETED = 0
 		AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
@@ -221,14 +221,14 @@ BEGIN
 		 INTO :ici_post_totalrowsnumber;
 
 	 -- I_PAGEINDEX = :I_PAGEINDEX+1;
-     -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
+	 -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:i_pagesize) + 1;
 	
-            		
+					
  /*  FOR SELECT FIRST 1
 		t.LASTPOSTED
 	FROM
- 		objQual_TOPIC t 
+		objQual_TOPIC t 
 	where
 			t.FORUMID = :I_FORUMID	
 		AND	(t."PRIORITY" = 2) 
@@ -239,7 +239,7 @@ BEGIN
 		or
 		(:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))
 		ORDER BY
- 		t."PRIORITY" DESC,t.LASTPOSTED DESC
+		t."PRIORITY" DESC,t.LASTPOSTED DESC
 		into :ici_firstselectposted
 		DO
 			begin
@@ -249,67 +249,67 @@ BEGIN
 	INTO :ici_firstselectposted; */
 
 FOR  
- 	SELECT 		
- 		c.FORUMID,
- 		c.TOPICID,
- 		c.POSTED,
- 		COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
- 		c.TOPICMOVEDID,
+	SELECT 		
+		c.FORUMID,
+		c.TOPICID,
+		c.POSTED,
+		COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
+		c.TOPICMOVEDID,
 		(SELECT COUNT(1) FROM objQual_FAVORITETOPIC 
 		WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)),
- 		COALESCE(c.TOPIC,NULL) AS "Subject",
+		COALESCE(c.TOPIC,NULL) AS "Subject",
 		c.STATUS,
 		c.STYLES,
 		c.DESCRIPTION,
- 		c.USERID,
- 		COALESCE(c.USERNAME,b.NAME) AS "Starter",
+		c.USERID,
+		COALESCE(c.USERNAME,b.NAME) AS "Starter",
 		COALESCE(c.USERDISPLAYNAME,b.DISPLAYNAME) AS "StarterDisplay",
- 		(c.NUMPOSTS - 1) AS "Replies",
- 		(SELECT COUNT(1) FROM objQual_MESSAGE mes 
-                 WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
-                 AND mes.ISAPPROVED <> 0 
-                 AND ((:I_USERID IS NOT NULL AND mes.USERID = :I_USERID) 
-                 OR (:I_USERID IS NULL)) ) AS "NumPostsDeleted",
- 		c.VIEWS AS "Views",
- 		c.LASTPOSTED AS LASTPOSTED,
- 		c.LASTUSERID AS LASTUSERID,
- 		COALESCE(c.LASTUSERNAME,
- 		(select x.NAME from objQual_USER x 
- 		where x.USERID=c.LASTUSERID)) AS "LastUserName",
+		(c.NUMPOSTS - 1) AS "Replies",
+		(SELECT COUNT(1) FROM objQual_MESSAGE mes 
+				 WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
+				 AND mes.ISAPPROVED <> 0 
+				 AND ((:I_USERID IS NOT NULL AND mes.USERID = :I_USERID) 
+				 OR (:I_USERID IS NULL)) ) AS "NumPostsDeleted",
+		c.VIEWS AS "Views",
+		c.LASTPOSTED AS LASTPOSTED,
+		c.LASTUSERID AS LASTUSERID,
+		COALESCE(c.LASTUSERNAME,
+		(select x.NAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserName",
 		COALESCE(c.LASTUSERDISPLAYNAME,
- 		(select x.DISPLAYNAME from objQual_USER x 
- 		where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
- 		c.LASTMESSAGEID AS LASTMESSAGEID,
- 		c.TOPICID AS LASTTOPICID,
- 		c.FLAGS AS "TopicFlags",
- 		c."PRIORITY",
- 		c.POLLID,
- 		d.FLAGS AS "ForumFlags",
- 		(SELECT FIRST 1 MESSAGE 
-                 FROM objQual_MESSAGE mes2 
-                 WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
-                 AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",				
-      (case(:I_STYLEDNICKS)
-	        when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.USERID) 
-	        else (SELECT '' FROM RDB$DATABASE)	 end),
-	    (case(:I_STYLEDNICKS)
-	        when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID)  
-	        else (SELECT '' FROM RDB$DATABASE)	 end),
+		(select x.DISPLAYNAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
+		c.LASTMESSAGEID AS LASTMESSAGEID,
+		c.TOPICID AS LASTTOPICID,
+		c.FLAGS AS "TopicFlags",
+		c."PRIORITY",
+		c.POLLID,
+		d.FLAGS AS "ForumFlags",
+		(SELECT FIRST 1 MESSAGE 
+				 FROM objQual_MESSAGE mes2 
+				 WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
+				 AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",				
+	  (case(:I_STYLEDNICKS)
+			when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.USERID) 
+			else (SELECT '' FROM RDB$DATABASE)	 end),
+		(case(:I_STYLEDNICKS)
+			when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID)  
+			else (SELECT '' FROM RDB$DATABASE)	 end),
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
 			 
-	    (SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :I_PAGEINDEX  FROM RDB$DATABASE) AS  "PageIndex" 
- 	FROM
- 		objQual_TOPIC c 
- 		JOIN objQual_USER b ON b.USERID=c.USERID
- 		JOIN objQual_FORUM d ON d.FORUMID=c.FORUMID  		
+		(SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
+		(SELECT :I_PAGEINDEX  FROM RDB$DATABASE) AS  "PageIndex" 
+	FROM
+		objQual_TOPIC c 
+		JOIN objQual_USER b ON b.USERID=c.USERID
+		JOIN objQual_FORUM d ON d.FORUMID=c.FORUMID  		
 	WHERE c.FORUMID = :I_FORUMID
 		AND	(c."PRIORITY" = 2) 
 		AND	c.ISDELETED = 0
@@ -319,37 +319,37 @@ FOR
 		or
 		(:I_SHOWMOVED <> 1 AND  c.TOPICMOVEDID IS NULL))
 	ORDER BY
- 		c."PRIORITY" DESC,c.LASTPOSTED DESC
- 	INTO 
-    :"ForumID",
-    :"TopicID",
-    :"Posted",
-    :"LinkTopicID",
-    :"TopicMovedID",
+		c."PRIORITY" DESC,c.LASTPOSTED DESC
+	INTO 
+	:"ForumID",
+	:"TopicID",
+	:"Posted",
+	:"LinkTopicID",
+	:"TopicMovedID",
 	:"FavoriteCount",
-    :"Subject",
+	:"Subject",
 	:"Status",
 	:"Styles",
 	:"Description",
-    :"UserID",    
-    :"Starter",
+	:"UserID",    
+	:"Starter",
 	:"StarterDisplay",
-    :"Replies",
-    :"NumPostsDeleted",  
-    :"Views",
-    :"LastPosted",   
-    :"LastUserID",
-    :"LastUserName",
+	:"Replies",
+	:"NumPostsDeleted",  
+	:"Views",
+	:"LastPosted",   
+	:"LastUserID",
+	:"LastUserName",
 	:"LastUserDisplayName",
-    :"LastMessageID",
-    :"LastTopicID",
-    :"TopicFlags",
-    :"Priority",
-    :"PollID",
-    :"ForumFlags",
-    :"FirstMessage",
-    :"StarterStyle",
-    :"LastUserStyle",
+	:"LastMessageID",
+	:"LastTopicID",
+	:"TopicFlags",
+	:"Priority",
+	:"PollID",
+	:"ForumFlags",
+	:"FirstMessage",
+	:"StarterStyle",
+	:"LastUserStyle",
 	:"LastForumAccess",
 	:"LastTopicAccess",
 	:"TotalRows",
@@ -357,63 +357,65 @@ FOR
 DO	BEGIN
 		
 ici_retcount = :ici_retcount +1; 
-       if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
-        begin
-         SUSPEND;
-          ici_counter = :ici_counter + 1; 
-        end 
+	   if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
+		begin
+		 SUSPEND;
+		  ici_counter = :ici_counter + 1; 
+		end 
 if (:ici_counter >= :I_PAGESIZE) then
 LEAVE;			 
 						
-    END
+	END
 
 END;
 --GO 
 
  CREATE PROCEDURE objQual_TOPIC_LIST (
-    I_FORUMID integer,
-    I_USERID integer,
-    I_SINCEDATE timestamp,
-    I_TODATE timestamp,
-    I_PAGEINDEX integer,
-    I_PAGESIZE integer,
-    I_STYLEDNICKS BOOL,
-    I_SHOWMOVED BOOL,
-    I_FINDLASTUNREAD BOOL )
+	I_FORUMID integer,
+	I_USERID integer,
+	I_SINCEDATE timestamp,
+	I_TODATE timestamp,
+	I_PAGEINDEX integer,
+	I_PAGESIZE integer,
+	I_STYLEDNICKS BOOL,
+	I_SHOWMOVED BOOL,
+	I_FINDLASTUNREAD BOOL )
 RETURNS (
-    "ForumID" integer,
-    "TopicID" integer,
-    "Posted" timestamp,
-    "LinkTopicID" integer,
-    "TopicMovedID" integer,
-    "FavoriteCount" integer,
-    "Subject" varchar(128),
-    "Status" varchar(255),
-    "Styles" varchar(255),
-    "Description" varchar(255),
-    "UserID" integer,
-    "Starter" varchar(128),
+	"ForumID" integer,
+	"TopicID" integer,
+	"Posted" timestamp,
+	"LinkTopicID" integer,
+	"TopicMovedID" integer,
+	"FavoriteCount" integer,
+	"Subject" varchar(128),
+	"Status" varchar(255),
+	"Styles" varchar(255),
+	"Description" varchar(255),
+	"UserID" integer,
+	"Starter" varchar(128),
 	"StarterDisplay" varchar(128),
-    "Replies" integer,
-    "NumPostsDeleted" integer,
-    "Views" integer,
-    "LastPosted" timestamp,
-    "LastUserID" integer,
-    "LastUserName" varchar(128),
+	"Replies" integer,
+	"NumPostsDeleted" integer,
+	"Views" integer,
+	"LastPosted" timestamp,
+	"LastUserID" integer,
+	"LastUserName" varchar(128),
 	"LastUserDisplayName" varchar(128),
-    "LastMessageID" integer,
-    "LastTopicID" integer,
-    "TopicFlags" integer,
-    "Priority" integer,
-    "PollID" integer,
-    "ForumFlags" integer,
-    "FirstMessage" blob sub_type 1,
-    "StarterStyle" varchar(255),
-    "LastUserStyle" varchar(255),
-    "LastForumAccess" timestamp,
-    "LastTopicAccess" timestamp,
-    "TotalRows" integer,
-    "PageIndex" integer )
+	"LastMessageID" integer,
+	"LastTopicID" integer,
+	"LinkDate" timestamp,
+	"TopicFlags" integer,
+	"Priority" integer,
+	"PollID" integer,
+	"ForumFlags" integer,
+	"FirstMessage" blob sub_type 1,
+	"StarterStyle" varchar(255),
+	"LastUserStyle" varchar(255),
+	"LastForumAccess" timestamp,
+	"LastTopicAccess" timestamp,
+	"TopicTags" varchar(4000),
+	"TotalRows" integer,
+	"PageIndex" integer )
 AS
 DECLARE VARIABLE ici_RowTotalCount INTEGER DEFAULT 0; 
  DECLARE VARIABLE cnt INTEGER DEFAULT 1; 
@@ -432,11 +434,11 @@ BEGIN
 
 	-- find priority returned count
 SELECT 		
- 		COUNT(1) 
- 	FROM
- 		YAF_TOPIC c1 
- 	WHERE
- 		c1.FORUMID = :I_FORUMID	
+		COUNT(1) 
+	FROM
+		YAF_TOPIC c1 
+	WHERE
+		c1.FORUMID = :I_FORUMID	
 		AND (c1."PRIORITY"=1) 
 		AND	c1.ISDELETED = 0
 		AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
@@ -445,16 +447,16 @@ SELECT
 		or
 		(:I_SHOWMOVED <> 1 AND  c1.TOPICMOVEDID IS NULL))
 		  INTO :ici_post_priorityrowsnumber;
-	    ici_post_priorityrowsnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 
-      
+		ici_post_priorityrowsnumber_pages = CEILING(CAST(:ici_post_priorityrowsnumber AS decimal)/:I_PAGESIZE); 		 
+	  
 		
 	-- find total returned count
 		SELECT 		
- 		COUNT(1) 
- 	FROM
- 		objQual_TOPIC c1 
- 	WHERE
- 		c1.FORUMID = :I_FORUMID	
+		COUNT(1) 
+	FROM
+		objQual_TOPIC c1 
+	WHERE
+		c1.FORUMID = :I_FORUMID	
 		AND	((c1."PRIORITY">0 AND c1."PRIORITY"<>2) OR (c1."PRIORITY" <=0 AND c1.LASTPOSTED >= :I_SINCEDATE )) 
 		AND	c1.ISDELETED = 0
 		AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
@@ -465,7 +467,7 @@ SELECT
 		 INTO :ici_post_totalrowsnumber;
 
 	  I_PAGEINDEX = :I_PAGEINDEX+1;
-     -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
+	 -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:i_pagesize) + 1;
 	
 	 if (:ici_post_priorityrowsnumber_pages <= :I_PAGEINDEX) then
@@ -482,11 +484,11 @@ SELECT
 	 + :Ici_post_priorityrowsnumber - 1; 
 	 end 
 	 end    
-            		
+					
    SELECT FIRST 1
 		t.LASTPOSTED			
 	FROM
- 		objQual_TOPIC t 
+		objQual_TOPIC t 
 	where
 			t.FORUMID = :I_FORUMID	
 		AND	(((:ici_shiftsticky = 1) and (t."PRIORITY">0 AND t."PRIORITY"<>2)) OR (t."PRIORITY" <=0 AND t.LASTPOSTED >= :I_SINCEDATE )) 
@@ -497,7 +499,7 @@ SELECT
 		or
 		(:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))
 		ORDER BY
- 		t."PRIORITY" DESC,t.LASTPOSTED DESC
+		t."PRIORITY" DESC,t.LASTPOSTED DESC
 		into :ici_firstselectposted;
 			
 	SELECT :ici_firstselectposted from RDB$DATABASE
@@ -505,66 +507,68 @@ SELECT
 	
 
 FOR  
- 	SELECT 		
- 		c.FORUMID,
- 		c.TOPICID,
- 		c.POSTED,
- 		COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
- 		c.TOPICMOVEDID,
+	SELECT 		
+		c.FORUMID,
+		c.TOPICID,
+		c.POSTED,
+		COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
+		c.TOPICMOVEDID,
 		(SELECT COUNT(1) FROM objQual_FAVORITETOPIC 
 		WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)),
- 		COALESCE(c.TOPIC,NULL) AS "Subject",
+		COALESCE(c.TOPIC,NULL) AS "Subject",
 		c.STATUS,
 		c.STYLES,
 		c.DESCRIPTION,
- 		c.USERID,
- 		COALESCE(c.USERNAME,b.NAME) AS "Starter",
-        COALESCE(c.USERDISPLAYNAME,b.DISPLAYNAME) AS "StarterDisplay",
- 		(c.NUMPOSTS - 1) AS "Replies",
- 		(SELECT COUNT(1) FROM objQual_MESSAGE mes 
-                 WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
-                 AND mes.ISAPPROVED <> 0 
-                 AND ((:I_USERID IS NOT NULL AND mes.USERID = :I_USERID) 
-                 OR (:I_USERID IS NULL)) ) AS "NumPostsDeleted",
- 		c.VIEWS AS "Views",
- 		c.LASTPOSTED AS LASTPOSTED,
- 		c.LASTUSERID AS LASTUSERID,
- 		COALESCE(c.LASTUSERNAME,
- 		(select NAME from objQual_USER x 
- 		where x.USERID=c.LASTUSERID)) AS "LastUserName",
+		c.USERID,
+		COALESCE(c.USERNAME,b.NAME) AS "Starter",
+		COALESCE(c.USERDISPLAYNAME,b.DISPLAYNAME) AS "StarterDisplay",
+		(c.NUMPOSTS - 1) AS "Replies",
+		(SELECT COUNT(1) FROM objQual_MESSAGE mes 
+				 WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
+				 AND mes.ISAPPROVED <> 0 
+				 AND ((:I_USERID IS NOT NULL AND mes.USERID = :I_USERID) 
+				 OR (:I_USERID IS NULL)) ) AS "NumPostsDeleted",
+		c.VIEWS AS "Views",
+		c.LASTPOSTED AS LASTPOSTED,
+		c.LASTUSERID AS LASTUSERID,
+		COALESCE(c.LASTUSERNAME,
+		(select NAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserName",
 		COALESCE(c.LASTUSERDISPLAYNAME,
- 		(select DISPLAYNAME from objQual_USER x 
- 		where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
- 		c.LASTMESSAGEID AS LASTMESSAGEID,
- 		c.TOPICID AS LASTTOPICID,
- 		c.FLAGS AS "TopicFlags",
- 		c."PRIORITY",
- 		c.POLLID,
- 		d.FLAGS AS "ForumFlags",
- 		(SELECT FIRST 1 MESSAGE 
-                 FROM objQual_MESSAGE mes2 
-                 WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
-                 AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",
-        (case(:I_STYLEDNICKS)
-	        when 1 then b.USERSTYLE  
-	        else (SELECT '' FROM RDB$DATABASE)	 end),
-	    (case(:I_STYLEDNICKS)
-	        when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
-	        else (SELECT '' FROM RDB$DATABASE)	 end),
+		(select DISPLAYNAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
+		c.LASTMESSAGEID AS LASTMESSAGEID,
+		c.TOPICID AS LASTTOPICID,
+		c.LinkDate,
+		c.FLAGS AS "TopicFlags",
+		c."PRIORITY",
+		c.POLLID,
+		d.FLAGS AS "ForumFlags",
+		(SELECT FIRST 1 MESSAGE 
+				 FROM objQual_MESSAGE mes2 
+				 WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
+				 AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",
+		(case(:I_STYLEDNICKS)
+			when 1 then b.USERSTYLE  
+			else (SELECT '' FROM RDB$DATABASE)	 end),
+		(case(:I_STYLEDNICKS)
+			when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
+			else (SELECT '' FROM RDB$DATABASE)	 end),
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
-	    (SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
- 	FROM
- 		objQual_TOPIC c 
- 		JOIN YAF_USER b ON b.USERID=c.USERID
- 		JOIN YAF_FORUM d ON d.FORUMID=c.FORUMID  		
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
+		(SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID)),
+		(SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
+	FROM
+		objQual_TOPIC c 
+		JOIN YAF_USER b ON b.USERID=c.USERID
+		JOIN YAF_FORUM d ON d.FORUMID=c.FORUMID  		
 	WHERE c.FORUMID = :I_FORUMID
 		AND	(( c."PRIORITY">0 AND c."PRIORITY"<>2) OR (c."PRIORITY" <=0 AND c.LASTPOSTED <= :ici_firstselectposted )) 
 		AND	c.ISDELETED = 0
@@ -574,47 +578,49 @@ FOR
 		or
 		(:I_SHOWMOVED <> 1 AND  c.TOPICMOVEDID IS NULL))
 	ORDER BY
- 		c."PRIORITY" DESC,c.LASTPOSTED DESC
- 	INTO 
-    :"ForumID",
-    :"TopicID",
-    :"Posted",
-    :"LinkTopicID",
-    :"TopicMovedID",
+		c."PRIORITY" DESC,c.LASTPOSTED DESC
+	INTO 
+	:"ForumID",
+	:"TopicID",
+	:"Posted",
+	:"LinkTopicID",
+	:"TopicMovedID",
 	:"FavoriteCount",
-    :"Subject",
+	:"Subject",
 	:"Status",
 	:"Styles",
 	:"Description",
-    :"UserID",    
-    :"Starter",
+	:"UserID",    
+	:"Starter",
 	:"StarterDisplay",
-    :"Replies",
-    :"NumPostsDeleted",  
-    :"Views",
-    :"LastPosted",   
-    :"LastUserID",
-    :"LastUserName",
+	:"Replies",
+	:"NumPostsDeleted",  
+	:"Views",
+	:"LastPosted",   
+	:"LastUserID",
+	:"LastUserName",
 	:"LastUserDisplayName",
-    :"LastMessageID",
-    :"LastTopicID",
-    :"TopicFlags",
-    :"Priority",
-    :"PollID",
-    :"ForumFlags",
-    :"FirstMessage",
-    :"StarterStyle",
-    :"LastUserStyle",
+	:"LastMessageID",
+	:"LastTopicID",
+	:"LinkDate",
+	:"TopicFlags",
+	:"Priority",
+	:"PollID",
+	:"ForumFlags",
+	:"FirstMessage",
+	:"StarterStyle",
+	:"LastUserStyle",
 	:"LastForumAccess",
 	:"LastTopicAccess",
+	:"TopicTags",
 	:"TotalRows",
 	:"PageIndex" 
 DO	
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum + :Ici_post_priorityrowsnumber and :ici_firstselectrownum + :I_PAGESIZE + :Ici_post_priorityrowsnumber) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then
@@ -625,7 +631,7 @@ END;
 --GO
 
  CREATE PROCEDURE objQual_TOPIC_ACTIVE(
-                 I_BOARDID integer,
+				 I_BOARDID integer,
 				 I_CATEGORYID integer,
 				 I_PAGEUSERID integer,
 				 I_SINCEDATE timestamp,
@@ -635,7 +641,7 @@ END;
 				 I_STYLEDNICKS BOOL,
 				 I_FINDLASTUNREAD BOOL)
 		RETURNS (
-		         "ForumID" integer,
+				 "ForumID" integer,
 				 "TopicID" integer,
 				 "Posted" timestamp,
 				 "LinkTopicID" integer,
@@ -668,6 +674,7 @@ END;
 				 "LastUserStyle" varchar(255),
 				 "LastForumAccess" timestamp,
 				 "LastTopicAccess" timestamp,
+				 "TopicTags" varchar(4000),
 				 "TotalRows" integer,
 				 "PageIndex" integer)
 		AS
@@ -682,7 +689,7 @@ BEGIN
 
 
 SELECT 		
- 		COUNT(1) 
+		COUNT(1) 
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -695,12 +702,12 @@ SELECT
 		x.READACCESS <> 0 AND 
 		cat.BOARDID = :I_BOARDID AND
 		(:I_CATEGORYID IS NULL OR cat.CATEGORYID=:I_CATEGORYID) AND
-	    c.ISDELETED = 0	
+		c.ISDELETED = 0	
 		INTO :ici_topics_totalrowsnumber;
 
 	  I_PAGEINDEX = :I_PAGEINDEX+1;   
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;	
-            		
+					
    SELECT FIRST 1
 		c.LASTPOSTED			
 	FROM
@@ -717,7 +724,7 @@ SELECT
 		(:I_CATEGORYID IS NULL OR cat.CATEGORYID=:I_CATEGORYID) AND
 		c.ISDELETED = 0
 	ORDER BY
-	    c.LASTPOSTED DESC,
+		c.LASTPOSTED DESC,
 		cat.SORTORDER,
 		d.SORTORDER,
 		d.NAME DESC,
@@ -778,15 +785,16 @@ FOR SELECT
 		when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
 		else (SELECT '' FROM RDB$DATABASE)	 end,
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+		(SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TOPICID)),
 		(SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -802,13 +810,13 @@ FOR SELECT
 	c.ISDELETED = 0
 	ORDER BY
 	c.LASTPOSTED DESC,
-    cat.SORTORDER,
+	cat.SORTORDER,
 	d.SORTORDER,
 	d.NAME DESC,
 	c."PRIORITY" DESC
 	
- 	INTO 
-    :"ForumID",
+	INTO 
+	:"ForumID",
 	:"TopicID",
 	:"Posted",
 	:"LinkTopicID",
@@ -841,15 +849,16 @@ FOR SELECT
 	:"LastUserStyle",
 	:"LastForumAccess",
 	:"LastTopicAccess",
+	:"TopicTags",
 	:"TotalRows",
 	:"PageIndex" 
 DO	
-    
+	
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then
@@ -860,15 +869,15 @@ END;
 --GO
 
   CREATE PROCEDURE objQual_TOPIC_UNREAD (
-    I_BOARDID integer,
+	I_BOARDID integer,
 	I_CATEGORYID integer,
-    I_PAGEUSERID integer,
-    I_SINCEDATE timestamp,
-    I_TODATE timestamp,
-    I_PAGEINDEX integer,
-    I_PAGESIZE integer,
-    I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL )
+	I_PAGEUSERID integer,
+	I_SINCEDATE timestamp,
+	I_TODATE timestamp,
+	I_PAGEINDEX integer,
+	I_PAGESIZE integer,
+	I_STYLEDNICKS BOOL,
+	I_FINDLASTUNREAD BOOL )
 RETURNS (
   "ForumID" integer,
 "TopicID" integer,
@@ -917,7 +926,7 @@ BEGIN
 
 
 SELECT 		
- 		COUNT(1) 
+		COUNT(1) 
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -935,7 +944,7 @@ SELECT
 
 	  I_PAGEINDEX = :I_PAGEINDEX+1;   
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;	
-            		
+					
    SELECT FIRST 1
 		c.LASTPOSTED			
 	FROM
@@ -952,8 +961,8 @@ SELECT
 	(:I_CATEGORYID IS NULL OR cat.CATEGORYID=:I_CATEGORYID) AND
 	c.ISDELETED = 0
 	ORDER BY	
-    c.LASTPOSTED DESC,
-    cat.SORTORDER,
+	c.LASTPOSTED DESC,
+	cat.SORTORDER,
 	d.SORTORDER,
 	d.NAME DESC,
 	c."PRIORITY" DESC
@@ -1013,15 +1022,15 @@ FOR SELECT
 		when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
 		else (SELECT '' FROM RDB$DATABASE)	 end,
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
 		(SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -1037,13 +1046,13 @@ FOR SELECT
 	c.ISDELETED = 0
 	ORDER BY
 	c.LASTPOSTED DESC,
-    cat.SORTORDER,
+	cat.SORTORDER,
 	d.SORTORDER,
 	d.NAME DESC,
 	c."PRIORITY" DESC
 	
- 	INTO 
-    :"ForumID",
+	INTO 
+	:"ForumID",
 	:"TopicID",
 	:"Posted",
 	:"LinkTopicID",
@@ -1079,12 +1088,12 @@ FOR SELECT
 	:"TotalRows",
 	:"PageIndex" 
 DO	
-    
+	
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then
@@ -1095,17 +1104,17 @@ END;
 --GO
 
  CREATE PROCEDURE objQual_TOPIC_UNANSWERED (
-    I_BOARDID integer,
+	I_BOARDID integer,
 	I_CATEGORYID integer,
-    I_PAGEUSERID integer,
-    I_SINCEDATE timestamp,
-    I_TODATE timestamp,
-    I_PAGEINDEX integer,
-    I_PAGESIZE integer,
-    I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL  )
+	I_PAGEUSERID integer,
+	I_SINCEDATE timestamp,
+	I_TODATE timestamp,
+	I_PAGEINDEX integer,
+	I_PAGESIZE integer,
+	I_STYLEDNICKS BOOL,
+	I_FINDLASTUNREAD BOOL  )
 RETURNS (
-        "ForumID" INTEGER,
+		"ForumID" INTEGER,
 		"TopicID" INTEGER,
 		"TopicMovedID" INTEGER,
 		"Posted" TIMESTAMP,
@@ -1136,9 +1145,9 @@ RETURNS (
 		"ForumName"  VARCHAR(255),			
 		"ForumFlags" INTEGER,
 		"FirstMessage" VARCHAR(1000),
-	    "StarterStyle" VARCHAR(255),
+		"StarterStyle" VARCHAR(255),
 		"LastUserStyle" VARCHAR(255),
-	    "LastForumAccess" TIMESTAMP,
+		"LastForumAccess" TIMESTAMP,
 		"LastTopicAccess" TIMESTAMP,
 "TotalRows" integer ,
 "PageIndex" integer)
@@ -1154,7 +1163,7 @@ BEGIN
 
 
 SELECT 		
- 		COUNT(1) 
+		COUNT(1) 
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -1176,7 +1185,7 @@ SELECT
 	  I_PAGEINDEX = :I_PAGEINDEX+1;   
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;
 	
-            		
+					
    SELECT FIRST 1
 		c.LASTPOSTED			
 	FROM
@@ -1195,8 +1204,8 @@ SELECT
 		c.TOPICMOVEDID is null and
 		c.NUMPOSTS = 1
 	ORDER BY	
-    c.LASTPOSTED DESC,
-    cat.SORTORDER,
+	c.LASTPOSTED DESC,
+	cat.SORTORDER,
 	d.SORTORDER,
 	d.NAME DESC,
 	c."PRIORITY" DESC
@@ -1237,22 +1246,22 @@ FOR SELECT
 		d.NAME,			
 		d.FLAGS,
 		(SELECT FIRST 1 CAST(mes2.MESSAGE as varchar(1000)) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0),
-	    (case(:I_STYLEDNICKS)
+		(case(:I_STYLEDNICKS)
 			when 1 then  b.USERSTYLE 
 			else ''	 end) as StarterStyle ,
 		(case(:I_STYLEDNICKS)
 			when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID)
 			else ''	 end) as LastUserStyle,
 	   (case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID = c.TOPICID AND y.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID = c.TOPICID AND y.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
 		(SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
 	from
 		objQual_TOPIC c
 		join objQual_USER b on b.USERID=c.USERID
@@ -1271,13 +1280,13 @@ FOR SELECT
 		c.NUMPOSTS = 1
 	ORDER BY
 	c.LASTPOSTED DESC,
-    cat.SORTORDER,
+	cat.SORTORDER,
 	d.SORTORDER,
 	d.NAME DESC,
 	c."PRIORITY" DESC
 	
- 	INTO 
-    :"ForumID",
+	INTO 
+	:"ForumID",
 	:"TopicID",
 	:"TopicMovedID",
 	:"Posted",
@@ -1316,8 +1325,8 @@ DO
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then
@@ -1328,15 +1337,15 @@ END;
 --GO
 
 CREATE PROCEDURE objQual_TOPICS_BYUSER (
-    I_BOARDID integer,
+	I_BOARDID integer,
 	I_CATEGORYID integer,
-    I_PAGEUSERID integer,
-    I_SINCEDATE timestamp,
-    I_TODATE timestamp,
-    I_PAGEINDEX integer,
-    I_PAGESIZE integer,
-    I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL )
+	I_PAGEUSERID integer,
+	I_SINCEDATE timestamp,
+	I_TODATE timestamp,
+	I_PAGEINDEX integer,
+	I_PAGESIZE integer,
+	I_STYLEDNICKS BOOL,
+	I_FINDLASTUNREAD BOOL )
 RETURNS (
   "ForumID" INTEGER,
 		"TopicID" INTEGER,
@@ -1367,9 +1376,9 @@ RETURNS (
 		"ForumName" VARCHAR(255),	
 		"ForumFlags" INTEGER,
 		"FirstMessage" VARCHAR(1024) ,
-	    "StarterStyle" VARCHAR(255),
+		"StarterStyle" VARCHAR(255),
 		"LastUserStyle" VARCHAR(255),
-	    "LastForumAccess" TIMESTAMP,
+		"LastForumAccess" TIMESTAMP,
 		"LastTopicAccess" TIMESTAMP,	   
 "TotalRows" integer ,
 "PageIndex" integer)
@@ -1385,7 +1394,7 @@ BEGIN
 
 
 SELECT 		
- 		COUNT(1) 
+		COUNT(1) 
 	FROM
 		objQual_TOPIC c
 		JOIN objQual_USER b ON b.USERID=c.USERID
@@ -1407,7 +1416,7 @@ SELECT
 	  I_PAGEINDEX = :I_PAGEINDEX+1;   
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;
 	
-            		
+					
    SELECT FIRST 1
 		c.LASTPOSTED			
 	from
@@ -1426,7 +1435,7 @@ SELECT
 		and	c.TOPICMOVEDID is null
 		and c.TOPICID = (SELECT FIRST 1 mess.TOPICID FROM objQual_MESSAGE mess WHERE mess.USERID=:I_PAGEUSERID AND mess.TOPICID=c.TOPICID)
 	order by
-	    c.LASTPOSTED DESC,		
+		c.LASTPOSTED DESC,		
 		cat.SORTORDER ASC,
 		d.SORTORDER ASC,
 		d.NAME ASC,
@@ -1468,22 +1477,22 @@ FOR SELECT
 		d.NAME,	
 		d.FLAGS,
 		(SELECT FIRST 1 SUBSTRING(mes2.MESSAGE FROM 1 FOR 1024) FROM objQual_MESSAGE mes2 where mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) AND mes2."POSITION" = 0),
-	    (case(:I_STYLEDNICKS)
+		(case(:I_STYLEDNICKS)
 			when 1 then  b.USERSTYLE
 			else ''	 end),
 		(case(:I_STYLEDNICKS)
 			when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID)
 			else ''	 end),
-	    (case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1  LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 end),
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
-        (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
+			 when 1 then
+			   (SELECT FIRST 1  LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 end),
+		(case(:I_FINDLASTUNREAD)
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
+		(SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
 	from
 		objQual_TOPIC c
 		join objQual_USER b on b.USERID=c.USERID
@@ -1500,13 +1509,13 @@ FOR SELECT
 		and	c.TOPICMOVEDID is null
 		and c.TOPICID = (SELECT FIRST 1 mess.TOPICID FROM objQual_MESSAGE mess WHERE mess.USERID=:I_PAGEUSERID AND mess.TOPICID=c.TOPICID)
 	order by
-	    c.LASTPOSTED DESC,		
+		c.LASTPOSTED DESC,		
 		cat.SORTORDER ASC,
 		d.SORTORDER ASC,
 		d.NAME ASC,
 		PRIORITY DESC	
- 	INTO 
-   	:"ForumID",
+	INTO 
+	:"ForumID",
 		:"TopicID",
 		:"TopicMovedID",
 		:"Posted",
@@ -1535,19 +1544,19 @@ FOR SELECT
 		:"ForumName",	
 		:"ForumFlags",
 		:"FirstMessage",
-	    :"StarterStyle" ,
+		:"StarterStyle" ,
 		:"LastUserStyle",
-	    :"LastForumAccess",
+		:"LastForumAccess",
 		:"LastTopicAccess",
-	    :"TotalRows",
-	    :"PageIndex" 
+		:"TotalRows",
+		:"PageIndex" 
 DO	
-    
+	
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum  and :ici_firstselectrownum + :I_PAGESIZE ) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then
@@ -1558,15 +1567,15 @@ END;
 --GO
 
 CREATE PROCEDURE objQual_TOPIC_FAVORITE_DETAILS (
-      I_BOARDID integer,
+	  I_BOARDID integer,
 	I_CATEGORYID integer,
-    I_PAGEUSERID integer,
-    I_SINCEDATE timestamp,
-    I_TODATE timestamp,
-    I_PAGEINDEX integer,
-    I_PAGESIZE integer,
-    I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL )
+	I_PAGEUSERID integer,
+	I_SINCEDATE timestamp,
+	I_TODATE timestamp,
+	I_PAGEINDEX integer,
+	I_PAGESIZE integer,
+	I_STYLEDNICKS BOOL,
+	I_FINDLASTUNREAD BOOL )
 RETURNS (
   "ForumID" integer,
 "TopicID" integer,
@@ -1615,7 +1624,7 @@ BEGIN
 
 
 SELECT 		
- 		COUNT(1) 
+		COUNT(1) 
 		from
 		objQual_TOPIC c
 		join objQual_USER b on b.USERID=c.USERID
@@ -1636,7 +1645,7 @@ SELECT
 	  I_PAGEINDEX = :I_PAGEINDEX+1;   
 	  ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;
 	
-            		
+					
    SELECT FIRST 1
 		c.LASTPOSTED			
 	from
@@ -1654,7 +1663,7 @@ SELECT
 		(:I_CATEGORYID is null or e.CATEGORYID=:I_CATEGORYID) and
 		c.ISDELETED = 0
 	order by
-	    c.LASTPOSTED desc,
+		c.LASTPOSTED desc,
 		d.NAME asc,
 		c.PRIORITY desc
 		into :ici_firstselectposted;
@@ -1700,16 +1709,16 @@ FOR SELECT
 		(case(:I_STYLEDNICKS)
 			when 1 then (SELECT usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID)
 			else ''	 end) AS LastUserStyle,
-	    (case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1  LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 end),
 		(case(:I_FINDLASTUNREAD)
-		     when 1 then
-		       (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
-		     else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
-        (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
-	    (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
+			 when 1 then
+			   (SELECT FIRST 1  LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=d.FORUMID AND x.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE) 	 end),
+		(case(:I_FINDLASTUNREAD)
+			 when 1 then
+			   (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
+			 else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
+		(SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
 	from
 		objQual_TOPIC c
 		join objQual_USER b on b.USERID=c.USERID
@@ -1725,11 +1734,11 @@ FOR SELECT
 		(:I_CATEGORYID is null or e.CATEGORYID=:I_CATEGORYID) and
 		c.ISDELETED = 0
 	order by
-	    c.LASTPOSTED desc,
+		c.LASTPOSTED desc,
 		d.NAME asc,
 		c.PRIORITY desc
- 	INTO 
-   	:"ForumID",
+	INTO 
+	:"ForumID",
 		:"TopicID",
 		:"Posted",
 		:"LinkTopicID",
@@ -1762,15 +1771,15 @@ FOR SELECT
 		:"LastUserStyle",
 		:"LastForumAccess",
 		:"LastTopicAccess",
-	    :"TotalRows",
-	    :"PageIndex" 
+		:"TotalRows",
+		:"PageIndex" 
 DO	
-    
+	
   BEGIN
    ici_retcount = :ici_retcount +1;
    if (:ici_retcount between  :ici_firstselectrownum  and :ici_firstselectrownum + :I_PAGESIZE) then
-    begin
-    SUSPEND;
+	begin
+	SUSPEND;
 	ici_counter = :ici_counter + 1; 
 	end 
 if (:ici_counter >= :I_PAGESIZE) then

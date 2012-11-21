@@ -563,6 +563,8 @@ namespace YAF.Install
       }
       else
       {*/
+            
+           // this.Response.Redirect(YafBuildLink.GetLinkNotEscaped(ForumPages.info, true));
             this.Response.Redirect("~/");
             //}
         }

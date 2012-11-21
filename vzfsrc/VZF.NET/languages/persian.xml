@@ -869,6 +869,8 @@
     <Resource tag="ALBUMS_PER_PAGE">تعداد آلبوم در صفحه :</Resource>
     <Resource tag="ALBUMS_PER_PAGE_HELP">تعداد آلبوم ها برای نمایش در هر صفحه.</Resource>
     <Resource tag="ALL_USERS">تمام کاربران</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE">مجوز تغییر نظر سنجی ها پس از اولین رای:</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE_HELP">با فعال کردن انی گزینه صاحب نظر سنجی پس از اولین رای می تواندی سوال یا گزینه های را عوض کند.</Resource>
     <Resource tag="ALLOW_DISPLAY_COUNTRY">Allow Display Country:</Resource>
@@ -920,6 +922,8 @@
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">If checked, users select a Topic Status Option.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">مجوز وجود عناوین با نام های مشابه:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">نام های تکراری عناوین مجاز است برای :</Resource>
+    <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
+    <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
     <Resource tag="ALLOW_USER_HIDE">مجوز مخفی کردن به کاربر:</Resource>
     <Resource tag="ALLOW_USER_HIDE_HELP">با انتخاب این گزینه به کاربر اجازه می دهید به صورت مخفی فعالیت کند.</Resource>
     <Resource tag="ALLOW_USERS_POLLIMAGES">مجوز نظر سنجی تصویری:</Resource>
@@ -1049,6 +1053,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="HEADER_SPAM">Spam Settings</Resource>
     <Resource tag="HEADER_SYNDICATION">تنظیمات خوراک اجتماعی</Resource>
     <Resource tag="HEADER_TEMPLATES">تنظیمات شما</Resource>
+    <Resource tag="HEADER_TOPICTAGS">Topic Tags</Resource>
     <Resource tag="HOST_ADVERTS">توجهات</Resource>
     <Resource tag="HOST_AVATARS">آواتارها</Resource>
     <Resource tag="HOST_CACHE">حافظه موقت</Resource>
@@ -4126,6 +4131,17 @@ Spoiler Content
     <Resource tag="TOPIC">موضوع:</Resource>
     <Resource tag="UNAPPROVED">ارسالهای بررسی نشده</Resource>
   </page>
+  <page name="MOSTACTIVEUSERS">
+    <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
+    <Resource tag="NUM_ALLPOSTS">All posts</Resource>
+    <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
+    <Resource tag="PERC_PERPERIOD">All posts share</Resource>
+    <Resource tag="TITLE">Most Active Users</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">ایجاد عنوان از روی پیغام</Resource>
     <Resource tag="EMPTY_TOPIC">نام عنوان خالی است</Resource>
@@ -4273,7 +4289,9 @@ Spoiler Content
     <Resource tag="PERSISTENCY">ماندگار:</Resource>
     <Resource tag="PERSISTENCY_INFO">عناوین ماندگار مورد پاک سازی قرار نمی گیرند.</Resource>
     <Resource tag="POSTED">ارسال شده:</Resource>
+    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">خطایی در هنگام ارسال به بلاگ  رخ داد.شاید دسترسی وجود نداشته باشد</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
     <Resource tag="PREVIEW">پیش نمایش</Resource>
     <Resource tag="PREVIEW_TITLE">Get a Preview of the Message</Resource>
     <Resource tag="PREVIEWTITLE">پیش نمایش:</Resource>
@@ -4288,6 +4306,9 @@ Spoiler Content
     <Resource tag="STICKY">مهم</Resource>
     <Resource tag="SUBJECT">موضوع:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">موضوغی با این عنوان هم اکنون موجود است یا عنوان به قدر کافی یکتائی ندارد.</Resource>
+    <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
+    <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Topic description length cannot be more than 255 characters.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Topic description single word length cannot be be more than {0} characters. Suggestion: use abbreviations to shorten.</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Topic name length cannot be more than 255 characters.</Resource>

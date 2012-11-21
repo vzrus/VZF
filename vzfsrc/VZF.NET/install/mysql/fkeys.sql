@@ -207,7 +207,10 @@ CALL {databaseName}.{objectQualifier}add_or_check_fkeys('AdminPageUserAccess','U
 --GO
 CALL {databaseName}.{objectQualifier}add_or_check_fkeys('EventLogGroupAccess','GroupID','Group','GroupID','FK_{databaseName}_{objectQualifier}EventLogGroupAccess_{objectQualifier}Group','CASCADE','NO ACTION');
 --GO
-
+CALL {databaseName}.{objectQualifier}add_or_check_fkeys('TopicTags','TagID','Tags','TagID','FK_{databaseName}_{objectQualifier}TopicTags_{objectQualifier}Tags','CASCADE','NO ACTION');
+--GO
+CALL {databaseName}.{objectQualifier}add_or_check_fkeys('TopicTags','TopicID','Topic','TopicID','FK_{databaseName}_{objectQualifier}TopicTags_{objectQualifier}Topics','CASCADE','NO ACTION');
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}add_or_check_fkeys;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}delete_foreign_keys_by_table;
 /*ALTER TABLE {databaseName}.{objectQualifier}Message 

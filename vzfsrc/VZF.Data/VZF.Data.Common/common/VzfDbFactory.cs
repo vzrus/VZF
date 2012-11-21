@@ -849,7 +849,7 @@ namespace YAF.Classes.Data
 		/// <param name="mid">The module ID.</param>
 		/// <param name="messageID">The message ID.</param>
 		/// <param name="fileName">The file name.</param>
-		/// <param name="bytes">The nume of bytes.</param>
+		/// <param name="bytes">The number of bytes.</param>
 		/// <param name="contentType">The type of content.</param>
 		/// <param name="stream">The bytes stream for the attachment.</param>
 		public static void attachment_save(int? mid, object messageID, object fileName, object bytes, object contentType, Stream stream)
@@ -872,48 +872,62 @@ namespace YAF.Classes.Data
 					throw new ArgumentOutOfRangeException(dataEngine);
 			}
 		}
-
-	  public static void bannedip_delete(int? mid, object ID)
-	  {
-		  string dataEngine;
-		  string namePattern = string.Empty;
-		  string connectionString;
-		  CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-		  
-		  switch (dataEngine)
-		  {
-			  case "System.Data.SqlClient":  MsSql.Db.bannedip_delete(connectionString, ID); break;
-			  case "Npgsql": Postgre.Db.bannedip_delete(connectionString, ID); break;
-			  case "MySql.Data.MySqlClient": MySqlDb.Db.bannedip_delete(connectionString, ID); break;
-			  case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bannedip_delete(connectionString, ID); break;
-			  // case "oracle":  orPostgre.Db.bannedip_delete(connectionString, ID); break;
-			  // case "db2": db2Postgre.Db.bannedip_delete(connectionString, ID); break;
-			  // case "other": othPostgre.Db.bannedip_delete(connectionString, ID); break;
-			  default:
-				  throw new ArgumentOutOfRangeException(dataEngine);
-		  }
-	  }
-
-	  public static DataTable bannedip_list(int? mid, object boardId, object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
-	  {
-		  string dataEngine;
-		  string connectionString;
-		  string namePattern = string.Empty;
-		  CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-		  
-		  switch (dataEngine)
-		  {
-			  case "System.Data.SqlClient": return MsSql.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  case "Npgsql": return Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  case "MySql.Data.MySqlClient": return MySqlDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  // case "oracle":  return orPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  // case "db2":  return db2Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-			  // case "other":  return othPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
-			  default:
-				  throw new ArgumentOutOfRangeException(dataEngine);
-		  }
-	  }
+		
+		/// <summary>
+		/// Deletes a banned ip with an ID.
+		/// </summary>
+		/// <param name="mid">The module ID.</param>
+		/// <param name="ID">The banned IP ID</param>
+		public static void bannedip_delete(int? mid, object ID)
+		{
+			string dataEngine;
+			string namePattern = string.Empty;
+			string connectionString;
+			CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+			
+			switch (dataEngine)
+			{
+				case "System.Data.SqlClient":  MsSql.Db.bannedip_delete(connectionString, ID); break;
+				case "Npgsql": Postgre.Db.bannedip_delete(connectionString, ID); break;
+				case "MySql.Data.MySqlClient": MySqlDb.Db.bannedip_delete(connectionString, ID); break;
+				case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.bannedip_delete(connectionString, ID); break;
+				// case "oracle":  orPostgre.Db.bannedip_delete(connectionString, ID); break;
+				// case "db2": db2Postgre.Db.bannedip_delete(connectionString, ID); break;
+				// case "other": othPostgre.Db.bannedip_delete(connectionString, ID); break;
+				default:
+					throw new ArgumentOutOfRangeException(dataEngine);
+			}
+		}
+		
+		/// <summary>
+		/// The list of banned Ips.
+		/// </summary>
+		/// <param name="mid">The module ID.</param>
+		/// <param name="boardId">The board ID.</param>
+		/// <param name="ID">The banned IP ID.</param>
+		/// <param name="pageIndex">The 0-based page index.</param>
+		/// <param name="pageSize">The page size.</param>
+		/// <returns>Returns a <see cref="T:System.Data.DataTable"/> with a banned ip list.</returns>
+		public static DataTable bannedip_list(int? mid, object boardId, object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+		{
+			string dataEngine;
+			string connectionString;
+			string namePattern = string.Empty;
+			CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+			
+			switch (dataEngine)
+			{
+				case "System.Data.SqlClient": return MsSql.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				case "Npgsql": return Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				case "MySql.Data.MySqlClient": return MySqlDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				// case "oracle":  return orPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				// case "db2":  return db2Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+				// case "other":  return othPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
+				default:
+					throw new ArgumentOutOfRangeException(dataEngine);
+			}
+		}
 	  public static void bannedip_save(int? mid, object ID, object boardId, object Mask, string reason, int userID)
 	  {
 		  string dataEngine;
@@ -3676,7 +3690,7 @@ namespace YAF.Classes.Data
 
 		 }
 
-		 public static void message_update(int? mid, object messageID, object priority, object message, object description, object status, object styles, object subject, object flags, object reasonOfEdit, object isModeratorChanged, object overrideApproval, object origMessage, object editedBy)
+		 public static void message_update(int? mid, object messageID, object priority, object message, object description, object status, object styles, object subject, object flags, object reasonOfEdit, object isModeratorChanged, object overrideApproval, object origMessage, object editedBy, string tags)
 		 {
 			 string dataEngine;
 			 string connectionString;
@@ -3685,13 +3699,13 @@ namespace YAF.Classes.Data
 			 
 			 switch (dataEngine)
 			 {
-				 case "System.Data.SqlClient": MsSql.Db.message_update(connectionString, messageID, priority, message, description,status,styles, subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
-				 case "Npgsql": Postgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
-				 case "MySql.Data.MySqlClient": MySqlDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
-				 case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy); break;
-				 // case "oracle":   orPostgre.Db.message_update(connectionString, messageID, priority, message, description, status,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy);break;
-				 // case "db2":   db2Postgre.Db.message_update(connectionString, messageID, priority, message, description, status,styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
-				 // case "other":   othPostgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy); break;
+				 case "System.Data.SqlClient": MsSql.Db.message_update(connectionString, messageID, priority, message, description,status,styles, subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
+				 case "Npgsql": Postgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy, tags); break;
+				 case "MySql.Data.MySqlClient": MySqlDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy, tags); break;
+				 case "FirebirdSql.Data.FirebirdClient": FirebirdDb.Db.message_update(connectionString, messageID, priority, message, description, status, styles, subject, flags, reasonOfEdit, isModeratorChanged, overrideApproval, origMessage, editedBy, tags); break;
+				 // case "oracle":   orPostgre.Db.message_update(connectionString, messageID, priority, message, description, status,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags);break;
+				 // case "db2":   db2Postgre.Db.message_update(connectionString, messageID, priority, message, description, status,styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
+				 // case "other":   othPostgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
 				 default:
 					 throw new ArgumentOutOfRangeException(dataEngine);
 			 }
@@ -5747,7 +5761,7 @@ namespace YAF.Classes.Data
 			 }
 
 		 }
-		 static public long topic_save(int? mid, object forumID, object subject, object status, object styles, object description, object message, object userId, object priority, object userName, object ip, object posted, object blogPostID, object flags, ref long messageID)
+		 static public long topic_save(int? mid, object forumID, object subject, object status, object styles, object description, object message, object userId, object priority, object userName, object ip, object posted, object blogPostID, object flags, ref long messageID, string tags)
 		 {
 			 string dataEngine;
 			 string connectionString;
@@ -5756,13 +5770,13 @@ namespace YAF.Classes.Data
 			 
 			 switch (dataEngine)
 			 {
-				 case "System.Data.SqlClient": return MsSql.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
-				 case "Npgsql": return Postgre.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
-				 case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
-				 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_save(connectionString, forumID, subject, status,styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID);
-				 // case "oracle":  return orPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID);
-				 // case "db2":  return db2Postgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID);
-				 // case "other":  return othPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID); 
+				 case "System.Data.SqlClient": return MsSql.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID, tags);
+				 case "Npgsql": return Postgre.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID, tags);
+				 case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_save(connectionString, forumID, subject, status, styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID, tags);
+				 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_save(connectionString, forumID, subject, status,styles, description, message, userId, priority, userName, ip, posted, blogPostID, flags, ref messageID, tags);
+				 // case "oracle":  return orPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
+				 // case "db2":  return db2Postgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
+				 // case "other":  return othPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags); 
 				 default:
 					 throw new ArgumentOutOfRangeException(dataEngine);
 			 }

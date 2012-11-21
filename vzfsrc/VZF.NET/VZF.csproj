@@ -605,6 +605,13 @@
     <Compile Include="pages\avatar.ascx.designer.cs">
       <DependentUpon>avatar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\mostactiveusers.ascx.cs">
+      <DependentUpon>mostactiveusers.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\mostactiveusers.ascx.designer.cs">
+      <DependentUpon>mostactiveusers.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\cp_changepassword.ascx.designer.cs">
       <DependentUpon>cp_changepassword.ascx</DependentUpon>
     </Compile>
@@ -812,10 +819,6 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Content Include="advanced.aspx" />
-    <Content Include="App_Data\Database4.mdf" />
-    <Content Include="App_Data\Database4_log.ldf">
-      <DependentUpon>Database4.mdf</DependentUpon>
-    </Content>
     <Content Include="auth.aspx" />
     <Content Include="Bin\Autofac.Configuration.dll" />
     <Content Include="Bin\Autofac.dll" />
@@ -3500,6 +3503,7 @@
     <Content Include="pages\admin\topicstatus_edit.ascx" />
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
+    <Content Include="pages\mostactiveusers.ascx" />
     <Content Include="ReadMe.htm" />
     <Content Include="resources\css\jquery.hovercard.css" />
     <Content Include="resources\css\jquery.msDropDown.css" />
@@ -4949,69 +4953,77 @@
     <Content Include="app_my.config" />
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
-    <Content Include="Bin\VZF.dll.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BuildScripts\YAF.Package.targets">
       <SubType>Designer</SubType>
     </None>
     <Content Include="rss.xsl" />
     <Content Include="themes\BlackGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlackGrey\frog3.gif" />
     <Content Include="themes\BlackGrey\minus-circle.png" />
+    <Content Include="themes\BlackGrey\odnoklassniki.png" />
     <Content Include="themes\BlackGrey\pin--plus.png" />
     <Content Include="themes\BlackGrey\plus-circle.png" />
+    <Content Include="themes\BlackGrey\tag-label.png" />
     <Content Include="themes\BlueGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlueGrey\frog3.gif" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
     <Content Include="themes\BlueGrey\pin--plus.png" />
     <Content Include="themes\BlueGrey\plus-circle.png" />
+    <Content Include="themes\BlueGrey\tag-label.png" />
     <Content Include="themes\cleanSlate\balloon-twitter-retweet.png" />
     <Content Include="themes\cleanSlate\frog3.gif" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
     <Content Include="themes\cleanSlate\pin--plus.png" />
     <Content Include="themes\cleanSlate\plus-circle.png" />
+    <Content Include="themes\cleanSlate\tag-label.png" />
     <Content Include="themes\Fancy\images\frog3.gif" />
     <Content Include="themes\Fancy\images\balloon-twitter-retweet.png" />
     <Content Include="themes\Fancy\images\minus-circle.png" />
     <Content Include="themes\Fancy\images\pin--plus.png" />
     <Content Include="themes\Fancy\images\plus-circle.png" />
+    <Content Include="themes\Fancy\images\tag-label.png" />
     <Content Include="themes\GreenGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreenGrey\frog3.gif" />
     <Content Include="themes\GreenGrey\minus-circle.png" />
     <Content Include="themes\GreenGrey\pin--plus.png" />
     <Content Include="themes\GreenGrey\plus-circle.png" />
+    <Content Include="themes\GreenGrey\tag-label.png" />
     <Content Include="themes\GreyGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreyGrey\frog3.gif" />
     <Content Include="themes\GreyGrey\minus-circle.png" />
     <Content Include="themes\GreyGrey\pin--plus.png" />
     <Content Include="themes\GreyGrey\plus-circle.png" />
+    <Content Include="themes\GreyGrey\tag-label.png" />
     <Content Include="themes\OrangeGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\OrangeGrey\frog3.gif" />
     <Content Include="themes\OrangeGrey\minus-circle.png" />
     <Content Include="themes\OrangeGrey\pin--plus.png" />
     <Content Include="themes\OrangeGrey\plus-circle.png" />
+    <Content Include="themes\OrangeGrey\tag-label.png" />
     <Content Include="themes\RedGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\RedGrey\frog3.gif" />
     <Content Include="themes\RedGrey\minus-circle.png" />
     <Content Include="themes\RedGrey\pin--plus.png" />
     <Content Include="themes\RedGrey\plus-circle.png" />
+    <Content Include="themes\RedGrey\tag-label.png" />
     <Content Include="themes\soclean\balloon-twitter-retweet.png" />
     <Content Include="themes\soclean\frog3.gif" />
     <Content Include="themes\soclean\minus-circle.png" />
     <Content Include="themes\soclean\pin--plus.png" />
     <Content Include="themes\soclean\plus-circle.png" />
+    <Content Include="themes\soclean\tag-label.png" />
     <Content Include="themes\Yafmobile\balloon-twitter-retweet.png" />
     <Content Include="themes\Yafmobile\frog3.gif" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
     <Content Include="themes\Yafmobile\pin--plus.png" />
     <Content Include="themes\Yafmobile\plus-circle.png" />
+    <Content Include="themes\Yafmobile\tag-label.png" />
     <Content Include="themes\yafpro\balloon-twitter-retweet.png" />
     <Content Include="themes\yafpro\frog3.gif" />
     <Content Include="themes\yafpro\minus-circle.png" />
     <Content Include="themes\yafpro\pin--plus.png" />
     <Content Include="themes\yafpro\plus-circle.png" />
+    <Content Include="themes\yafpro\tag-label.png" />
     <Content Include="themes\yafvision\balloon-twitter-retweet.png" />
     <Content Include="themes\yafvision\frog3.gif" />
     <Content Include="themes\yafvision\minus-circle.png" />
@@ -5023,6 +5035,7 @@
     <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="themes\yafvision\tag-label.png" />
     <Content Include="web_fb.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5043,12 +5056,10 @@
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
-    <Content Include="app.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="BuildScripts\VZF.Package.targets" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -6726,6 +6737,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
     <Folder Include="uploads\" />
   </ItemGroup>
@@ -6761,7 +6773,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>25541</DevelopmentServerPort>
+          <DevelopmentServerPort>12476</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
@@ -6777,11 +6789,10 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Extension>zip</Extension>
-    <PackageName>YAF</PackageName>
+    <PackageName>VZF</PackageName>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\BuildScripts</MSBuildCommunityTasksPath>
   </PropertyGroup>
-  <Import Project="BuildScripts\YAF.Package.Targets" />
+  <Import Project="BuildScripts\VZF.Package.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="PackageModule">
   </Target>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

@@ -31,10 +31,11 @@
             }
             
         %>
-
+        <%=this.GetTags() %>
         <a href="<%=YafBuildLink.GetLink(ForumPages.posts, "m={0}&find=unread", this.TopicRow["LastMessageID"])%>"
             class="post_link" title="<%=this.Get<IFormatMessage>().GetCleanedTopicMessage(this.TopicRow["FirstMessage"], this.TopicRow["LinkTopicID"]).MessageTruncated%>">
-            <% if (this.TopicRow["Status"].ToString().IsSet() && this.Get<YafBoardSettings>().EnableTopicStatus)
+            
+             <% if (this.TopicRow["Status"].ToString().IsSet() && this.Get<YafBoardSettings>().EnableTopicStatus)
                {%>
                    <%=string.Format("[{0}] {1}", this.GetText("TOPIC_STATUS", this.TopicRow["Status"].ToString()), this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this.TopicRow["Subject"])))%>
                <%}
@@ -42,7 +43,7 @@
                 {%>
                    <%=this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this.TopicRow["Subject"]))%>
                <%}
-            %></a>
+            %></a> 
         <%
             var favoriteCount = this.Get<IFavoriteTopic>().FavoriteTopicCount((int)this.TopicRow["LinkTopicID"]);
             

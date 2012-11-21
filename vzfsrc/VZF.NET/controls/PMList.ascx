@@ -19,28 +19,28 @@
 			<ItemTemplate>
 				<asp:CheckBox runat="server" ID="ItemCheck" /></ItemTemplate>
 			<FooterTemplate>
-                <asp:UpdatePanel ID="upPanExport" runat="server">
-                <ContentTemplate>
-                  <YAF:ThemeButton runat="server" ID="MarkAsRead" CssClass="yafcssbigbutton leftItem"
+				<asp:UpdatePanel ID="upPanExport" runat="server">
+				<ContentTemplate>
+				  <YAF:ThemeButton runat="server" ID="MarkAsRead" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="MARK_ALL_ASREAD" OnClick="MarkAsRead_Click" Visible="<%#this.View != PMView.Outbox %>" />
 				  <YAF:ThemeButton runat="server" ID="ArchiveSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="ARCHIVESELECTED" OnClick="ArchiveSelected_Click" Visible="<%#this.View == PMView.Inbox %>" />
-                     <YAF:ThemeButton runat="server" ID="ExportSelected" CssClass="yafcssbigbutton leftItem"
+					 <YAF:ThemeButton runat="server" ID="ExportSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="EXPORTSELECTED" OnClick="ExportSelected_Click" OnLoad="ExportAll_Load" />
 				  <YAF:ThemeButton runat="server" ID="DeleteSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="DELETESELECTED" OnLoad="DeleteSelected_Load" OnClick="DeleteSelected_Click" />
 				  <YAF:ThemeButton runat="server" ID="ArchiveAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="ARCHIVEALL" OnLoad="ArchiveAll_Load" OnClick="ArchiveAll_Click" Visible="<%#this.View == PMView.Inbox %>" />
-                  <YAF:ThemeButton runat="server" ID="ExportAll" CssClass="yafcssbigbutton leftItem"
+				  <YAF:ThemeButton runat="server" ID="ExportAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="EXPORTALL" OnClick="ExportAll_Click" OnLoad="ExportAll_Load" />
 				  <YAF:ThemeButton runat="server" ID="DeleteAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="DELETEALL" OnLoad="DeleteAll_Load" OnClick="DeleteAll_Click" />
-                </ContentTemplate> 
-                <Triggers>
-                   <asp:PostBackTrigger ControlID="ExportSelected" />
-                   <asp:PostBackTrigger ControlID="ExportAll" />
-                </Triggers>
-              </asp:UpdatePanel>
+				</ContentTemplate> 
+				<Triggers>
+				   <asp:PostBackTrigger ControlID="ExportSelected" />
+				   <asp:PostBackTrigger ControlID="ExportAll" />
+				</Triggers>
+			  </asp:UpdatePanel>
 			</FooterTemplate>
 			<HeaderStyle Width="20px" />
 			<ItemStyle Width="20px" HorizontalAlign="Center" />
@@ -52,7 +52,7 @@
 			<ItemTemplate>
 				<img src="<%# GetImage(Container.DataItem) %>" alt="" />
 			</ItemTemplate>
-            <HeaderStyle Width="40px" />
+			<HeaderStyle Width="40px" />
 			<ItemStyle Width="40px" HorizontalAlign="Center" />
 		</asp:TemplateField>
 		<asp:TemplateField>
@@ -60,11 +60,11 @@
 				<asp:Image runat="server" ID="SortFrom" AlternateText="Sort From" />
 				<asp:LinkButton runat="server" ID="FromLink" OnClick="FromLink_Click" Text='<%#GetMessageUserHeader() %>' />
 			</HeaderTemplate>
-            <HeaderStyle Width="7%" />
+			<HeaderStyle Width="7%" />
 			<ItemTemplate>
 				<YAF:UserLink ID="UserLink1" runat="server" UserID='<%# (( this.View == PMView.Outbox ) ? this.Eval("ToUserID") : this.Eval("FromUserID" )).ToType<int>() %>' />
 			</ItemTemplate>
-            <ItemStyle Width="7%" HorizontalAlign="Center" />
+			<ItemStyle Width="7%" HorizontalAlign="Center" />
 		</asp:TemplateField>
 		<asp:TemplateField>
 			<HeaderTemplate>
@@ -77,38 +77,38 @@
 					<%# this.HtmlEncode(Eval("Subject")) %>
 				</a>
 			</ItemTemplate>
-            <ItemStyle HorizontalAlign="Left" />
+			<ItemStyle HorizontalAlign="Left" />
 		</asp:TemplateField>
 		<asp:TemplateField>
 			<HeaderTemplate>
 				<asp:Image runat="server" ID="SortDate" AlternateText="Sort Date" />
 				<asp:LinkButton runat="server" ID="DateLink" OnClick="DateLink_Click" Text='<%#GetLocalizedText("DATE", null) %>' />
 			</HeaderTemplate>
-            <HeaderStyle HorizontalAlign="Left" />
+			<HeaderStyle HorizontalAlign="Left" />
 			<ItemTemplate>
-                <YAF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></YAF:DisplayDateTime>
+				<YAF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></YAF:DisplayDateTime>
 			</ItemTemplate>
-            <ItemStyle HorizontalAlign="Left" />
+			<ItemStyle HorizontalAlign="Left" />
 		</asp:TemplateField>
 	</Columns>
 </asp:GridView>
  <table class="content" cellspacing="1" cellpadding="0" width="99%">
-            <tr class="postheader">
-                <td class="post">
-                  <asp:Label ID="PMInfoLink" runat="server" ></asp:Label>
-                </td>
-            </tr>
-            <tr class="postheader">
-                <td class="post">
-                <hr />
-                  <asp:Label id="lblExportType" runat="server"></asp:Label>
-                  <asp:RadioButtonList runat="server" id="ExportType" RepeatDirection="Horizontal">
-                    <asp:ListItem Text="XML" Selected="True" Value="xml"></asp:ListItem>
-                    <asp:ListItem Text="CSV" Value="csv"></asp:ListItem>
-                    <asp:ListItem Text="Text" Value="txt"></asp:ListItem>
-                  </asp:RadioButtonList>
-                </td>
-            </tr>
+			<tr class="postheader">
+				<td class="post">
+				  <asp:Label ID="PMInfoLink" runat="server" ></asp:Label>
+				</td>
+			</tr>
+			<tr class="postheader">
+				<td class="post">
+				<hr />
+				  <asp:Label id="lblExportType" runat="server"></asp:Label>
+				  <asp:RadioButtonList runat="server" id="ExportType" RepeatDirection="Horizontal">
+					<asp:ListItem Text="XML" Selected="True" Value="xml"></asp:ListItem>
+					<asp:ListItem Text="CSV" Value="csv"></asp:ListItem>
+					<asp:ListItem Text="Text" Value="txt"></asp:ListItem>
+				  </asp:RadioButtonList>
+				</td>
+			</tr>
   </table>
   
 <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />

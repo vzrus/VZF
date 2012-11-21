@@ -532,7 +532,12 @@ namespace YAF.Controls
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             this.AltLastPost = this.GetText("DEFAULT", "GO_LAST_POST");
+            
+
         }
+
+
+
 
         /// <summary>
         /// Postses the specified _o.

@@ -793,10 +793,20 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicStatus
 --GO
 
 CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}Tags
-	   (	 
+	   (
+	   `TagID` INT NOT NULL AUTO_INCREMENT,
 	   `Tag` VARCHAR(1024)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-	   `TopicID` int NOT NULL
-	   PRIMARY KEY (`PK_Tags_Tag`)
+	   `TagCount` INT NOT NULL DEFAULT 0,
+	    PRIMARY KEY (`TagID`)
+	   )
+	   ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
+--GO
+
+CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}TopicTags
+	   (	 
+	   `TagID` int NOT NULL,
+	   `TopicID` int NOT NULL,
+	   PRIMARY KEY (`TagID`,`TopicID`)
 	   )
 	   ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO

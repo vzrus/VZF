@@ -864,6 +864,8 @@
     <Resource tag="ALBUMS_PER_PAGE">Alben pro Seite:</Resource>
     <Resource tag="ALBUMS_PER_PAGE_HELP">Anzahl an Alben die pro Seite gezeigt werden.</Resource>
     <Resource tag="ALL_USERS">Alle Benutzer</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE">Umfrage Änderungen nach erster Stimme erlauben</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE_HELP">Wenn aktiviert kann der Ersteller der Umfrage nachdem die erste Stimme abgegeben wurde noch die Frage oder die Optionen ändern.</Resource>
     <Resource tag="ALLOW_DISPLAY_COUNTRY">Landanzeige Erlauben:</Resource>
@@ -914,6 +916,8 @@
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">Wenn aktiviert können Benutzer einen Topic Status auswählen.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Themen mit gleichem Namen zulassen:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Gleiche Themen Namen sind erlaubt für:</Resource>
+    <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
+    <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
     <Resource tag="ALLOW_USER_HIDE">Benutzer erlauben sich zu verstecken:</Resource>
     <Resource tag="ALLOW_USER_HIDE_HELP">Wenn aktiviert, der Benutzer, der diese Option aktiviert hat, wird nicht sichtbar in der Liste der aktive Benutzer stehen.</Resource>
     <Resource tag="ALLOW_USERS_POLLIMAGES">Benutzer erlauben Umfrage Bilder zu verwenden:</Resource>
@@ -1042,6 +1046,7 @@
     <Resource tag="HEADER_SPAM">Spam Einstellungen</Resource>
     <Resource tag="HEADER_SYNDICATION">Syndication-Feed Einstellungen</Resource>
     <Resource tag="HEADER_TEMPLATES">Vorlageneinstellungen</Resource>
+    <Resource tag="HEADER_TOPICTAGS">Topic Tags</Resource>
     <Resource tag="HOST_ADVERTS">Werbung</Resource>
     <Resource tag="HOST_AVATARS">Avatare</Resource>
     <Resource tag="HOST_CACHE">Speicher</Resource>
@@ -4061,6 +4066,17 @@ Spoiler Content
     <Resource tag="TOPIC">Thema:</Resource>
     <Resource tag="UNAPPROVED">Nicht bestätigte Beiträge</Resource>
   </page>
+  <page name="MOSTACTIVEUSERS">
+    <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
+    <Resource tag="NUM_ALLPOSTS">All posts</Resource>
+    <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
+    <Resource tag="PERC_PERPERIOD">All posts share</Resource>
+    <Resource tag="TITLE">Most Active Users</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Neues Thema aus Beitrag erstellen</Resource>
     <Resource tag="EMPTY_TOPIC">Der Name des Themas ist leer</Resource>
@@ -4210,7 +4226,9 @@ Spoiler Content
     <Resource tag="PERSISTENCY">Feste Nachricht:</Resource>
     <Resource tag="PERSISTENCY_INFO">Feste Nachrichten werden nicht automatisch gelöscht/bereinigt</Resource>
     <Resource tag="POSTED">Geschrieben:</Resource>
+    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">Ein Fehler trat beim Senden an Deinen Blog auf.</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
     <Resource tag="PREVIEW">Vorschau</Resource>
     <Resource tag="PREVIEW_TITLE">Beitragsvorschau</Resource>
     <Resource tag="PREVIEWTITLE">Vorschau:</Resource>
@@ -4225,6 +4243,9 @@ Spoiler Content
     <Resource tag="STICKY">Wichtig</Resource>
     <Resource tag="SUBJECT">Betreff:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">Ein Beitrag mit diesem Namen existiert bereits oder ist nicht eindeutig genug um ihn verwenden zu können.</Resource>
+    <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
+    <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Themen Beschreibung darf nicht mehr als {0} Zeichen lang sein.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Themen Beschreibung Wortlänge eines Wortes kann nicht länger als {0} Zeichen sein. Vorschlag: Verwenden Sie Abkürzungen.</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Themen Titel darf nicht mehr als {0} Zeichen lang sein.</Resource>

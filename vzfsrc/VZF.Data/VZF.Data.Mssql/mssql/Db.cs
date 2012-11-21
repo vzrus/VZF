@@ -5725,7 +5725,7 @@ namespace YAF.Classes.Data.MsSql
         /// <param name="editedBy">
         /// UserId of who edited the message.
         /// </param>
-        public static void message_update(string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy)
+        public static void message_update(string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy, string tags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_update"))
             {
@@ -5743,7 +5743,9 @@ namespace YAF.Classes.Data.MsSql
                 cmd.Parameters.AddWithValue("IsModeratorChanged", isModeratorChanged);
                 cmd.Parameters.AddWithValue("OverrideApproval", overrideApproval);
                 cmd.Parameters.AddWithValue("OriginalMessage", originalMessage);
+                cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("CurrentUtcTimestamp", DateTime.UtcNow);
+                
                 
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -8478,7 +8480,8 @@ namespace YAF.Classes.Data.MsSql
             [NotNull] object posted,
             [NotNull] object blogPostID,
             [NotNull] object flags,
-            ref long messageID)
+            ref long messageID,
+            string tags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_save"))
             {
@@ -8498,6 +8501,7 @@ namespace YAF.Classes.Data.MsSql
                 cmd.Parameters.AddWithValue("Posted", posted);
                 cmd.Parameters.AddWithValue("BlogPostID", blogPostID);
                 cmd.Parameters.AddWithValue("Flags", flags);
+                cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 
                 DataTable dt = MsSqlDbAccess.GetData(cmd, connectionString);

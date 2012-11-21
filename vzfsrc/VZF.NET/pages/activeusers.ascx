@@ -34,7 +34,7 @@
 		<td class="header2">
 			<YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="platform" />
 		</td>
-        <td id="Iptd_header1" class="header2" runat="server" visible='<%# this.PageContext.IsAdmin %>'>
+		<td id="Iptd_header1" class="header2" runat="server" visible='<%# this.PageContext.IsAdmin %>'>
 			<strong>IP</strong>
 		</td>
 	</tr>
@@ -43,12 +43,12 @@
 			<tr>
 				<td class="post">		
 					<YAF:UserLink ID="NameLink"  runat="server" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName
-                              ? Eval("UserDisplayName")
-                              : Eval("UserName") %>' CrawlerName='<%# Convert.ToInt32(Eval("IsCrawler")) > 0 ? Eval("Browser").ToString() : String.Empty %>' UserID='<%# Convert.ToInt32(Eval("UserID")) %>' 				
+							  ? Eval("UserDisplayName")
+							  : Eval("UserName") %>' CrawlerName='<%# Convert.ToInt32(Eval("IsCrawler")) > 0 ? Eval("Browser").ToString() : String.Empty %>' UserID='<%# Convert.ToInt32(Eval("UserID")) %>' 				
 					 Style='<%# Eval("Style").ToString() %>' />
-				    <asp:PlaceHolder ID="HiddenPlaceHolder" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsHidden"))%>' >
-				    (<YAF:LocalizedLabel ID="Hidden" LocalizedTag="HIDDEN" runat="server" />)
-				    </asp:PlaceHolder>				    
+					<asp:PlaceHolder ID="HiddenPlaceHolder" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsHidden"))%>' >
+					(<YAF:LocalizedLabel ID="Hidden" LocalizedTag="HIDDEN" runat="server" />)
+					</asp:PlaceHolder>				    
 				</td>
 				<td class="post">				
 					<YAF:ActiveLocation ID="ActiveLocation2" UserID='<%# Convert.ToInt32((Eval("UserID") == DBNull.Value)? 0 : Eval("UserID")) %>' UserName='<%# Eval("UserName") %>' HasForumAccess='<%# Convert.ToBoolean(Eval("HasForumAccess")) %>' ForumPage='<%# Eval("ForumPage") %>' ForumID='<%# Convert.ToInt32((Eval("ForumID") == DBNull.Value)? 0 : Eval("ForumID")) %>' ForumName='<%# Eval("ForumName") %>' TopicID='<%# Convert.ToInt32((Eval("TopicID") == DBNull.Value)? 0 : Eval("TopicID")) %>' TopicName='<%# Eval("TopicName") %>' LastLinkOnly="false"  runat="server"></YAF:ActiveLocation>     
@@ -68,20 +68,20 @@
 				<td class="post">
 					<%# Eval("Platform") %>
 				</td>
-                <td id="Iptd1" class="post" runat="server" visible='<%# this.PageContext.IsAdmin %>'>
+				<td id="Iptd1" class="post" runat="server" visible='<%# this.PageContext.IsAdmin %>'>
 					 <a id="Iplink1" href='<%# string.Format(this.PageContext.BoardSettings.IPInfoPageURL,IPHelper.GetIp4Address(Eval("IP").ToString())) %>'
-                            title='<%# this.GetText("COMMON","TT_IPDETAILS") %>' target="_blank" runat="server">
-                            <%# IPHelper.GetIp4Address(Eval("IP").ToString())%></a>
+							title='<%# this.GetText("COMMON","TT_IPDETAILS") %>' target="_blank" runat="server">
+							<%# IPHelper.GetIp4Address(Eval("IP").ToString())%></a>
 				</td>
 			</tr>	
 		</ItemTemplate>
 		<FooterTemplate>
 			<tr class="footer1">
-		    <td colspan='<%# this.PageContext.IsAdmin ? 8 : 7 %>' align="center">            
-            <YAF:ThemeButton ID="btnReturn" runat="server" CssClass="yafcssbigbutton rightItem"
-                TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="OK" OnClick="btnReturn_Click" />                
-            </td>
-           </tr>
+			<td colspan='<%# this.PageContext.IsAdmin ? 8 : 7 %>' align="center">            
+			<YAF:ThemeButton ID="btnReturn" runat="server" CssClass="yafcssbigbutton rightItem"
+				TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="OK" OnClick="btnReturn_Click" />                
+			</td>
+		   </tr>
 		</FooterTemplate>
 	</asp:Repeater>
 </table>

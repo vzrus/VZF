@@ -1,5 +1,6 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Controls.ForumList"
 	EnableViewState="false" Codebehind="ForumList.ascx.cs" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Register TagPrefix="YAF" TagName="ForumLastPost" Src="ForumLastPost.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="ForumModeratorList" Src="ForumModeratorList.ascx" %>
@@ -21,7 +22,7 @@
 				<div class="subforumheading">
 					<%# Page.HtmlEncode(DataBinder.Eval(Container.DataItem, "[\"Description\"]")) %>
 				</div>
-                <span id="ModListMob_Span" class="description" Visible="false" runat="server"><YAF:ForumModeratorList ID="ForumModeratorListMob" Visible="false" runat="server"  /></span>
+				<span id="ModListMob_Span" class="description" Visible="false" runat="server"><YAF:ForumModeratorList ID="ForumModeratorListMob" Visible="false" runat="server"  /></span>
 				<YAF:ForumSubForumList ID="SubForumList" runat="server" DataSource='<%# GetSubforums( (System.Data.DataRow)Container.DataItem ) %>'
 					Visible='<%# HasSubforums((System.Data.DataRow)Container.DataItem) %>' />
 			</td>
@@ -35,9 +36,9 @@
 				<%# Posts(Container.DataItem) %>
 			</td>
 			<td class="lastPostCol" style="white-space: nowrap">
-				<YAF:ForumLastPost DataRow="<%# Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
+				<YAF:ForumLastPost DataRow="<%# (DataRow)Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
 					ID="lastPost" runat="server" />
-			</td>
+			
 		</tr>
 	</ItemTemplate>
 	<AlternatingItemTemplate>
@@ -58,7 +59,7 @@
 				</div> 
 				<YAF:ForumSubForumList ID="ForumSubForumListAlt" runat="server" DataSource='<%# GetSubforums( (System.Data.DataRow)Container.DataItem ) %>'
 					Visible='<%# HasSubforums((System.Data.DataRow)Container.DataItem) %>' />
-                <span id="ModListMob_Span" Visible="false" class="description"  runat="server"><YAF:ForumModeratorList ID="ForumModeratorListMob" runat="server" Visible="false" /></span>
+				<span id="ModListMob_Span" Visible="false" class="description"  runat="server"><YAF:ForumModeratorList ID="ForumModeratorListMob" runat="server" Visible="false" /></span>
 			</td>
 			<td class="moderatorListCol" id="ModeratorListTD" Visible="false" runat="server">
 				<YAF:ForumModeratorList ID="ModeratorList" Visible="false" runat="server" DataSource='<%# ((System.Data.DataRow)Container.DataItem).GetChildRows("FK_Moderator_Forum") %>' />
@@ -70,7 +71,7 @@
 				<%# Posts(Container.DataItem) %>
 			</td>
 			<td class="lastPostCol" nowrap="nowrap">
-				<YAF:ForumLastPost DataRow="<%# Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
+				<YAF:ForumLastPost DataRow="<%# (DataRow)Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
 					ID="lastPost" runat="server" />
 			</td>
 		</tr>

@@ -1,6 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
-<%@ Register TagPrefix="YAF" Assembly="YAF.Controls" Namespace="YAF" %>
+<%@ Register TagPrefix="YAF" Assembly="YAF.Controls" Namespace="VZF" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,6 +30,7 @@
                     &nbsp;
                 </td>
                 <td width="200" valign="top">
+                    
                     <YAF:MostActiveUsers ID="MostActiveList" runat="server" DisplayNumber="10" />
                 </td>
             </tr>

@@ -256,9 +256,14 @@ ALTER TABLE ONLY databaseSchema.objectQualifier_useralbumimage
 	ADD CONSTRAINT pk_databaseSchema_objectQualifier_useralbumimage_imageid PRIMARY KEY (imageid);
 END IF;
 
-IF NOT EXISTS (SELECT 1 FROM pg_constraint where contype='p' and conname ='pk_databaseSchema_objectQualifier_tags_tag' LIMIT 1) THEN
+IF NOT EXISTS (SELECT 1 FROM pg_constraint where contype='p' and conname ='pk_databaseSchema_objectQualifier_tags_tagid' LIMIT 1) THEN
 ALTER TABLE ONLY databaseSchema.objectQualifier_tags
-	ADD CONSTRAINT pk_databaseSchema_objectQualifier_tags_tag PRIMARY KEY (tag);
+	ADD CONSTRAINT pk_databaseSchema_objectQualifier_tags_tagid PRIMARY KEY (tagid);
+END IF;
+
+IF NOT EXISTS (SELECT 1 FROM pg_constraint where contype='p' and conname ='pk_databaseSchema_objectQualifier_topictags_tagidtopicid' LIMIT 1) THEN
+ALTER TABLE ONLY databaseSchema.objectQualifier_topictags
+	ADD CONSTRAINT pk_databaseSchema_objectQualifier_topictags_tagidtopicid PRIMARY KEY (tagid, topicid);
 END IF;
 
 IF NOT EXISTS (SELECT 1 FROM pg_constraint 

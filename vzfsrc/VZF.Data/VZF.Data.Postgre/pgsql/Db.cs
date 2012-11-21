@@ -26,31 +26,31 @@ using SettingsPropertyColumn = VZF.Data.Postgre.SettingsPropertyColumn;
 
 namespace YAF.Classes.Data.Postgre
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Web.Hosting;
-    using System.Web.Security;
+	using System;
+	using System.Collections.Generic;
+	using System.Data;
+	using System.IO;
+	using System.Linq;
+	using System.Text;
+	using System.Web.Hosting;
+	using System.Web.Security;
 
-    using YAF.Types;
-    using YAF.Types.Constants;
-    using YAF.Types.Interfaces;
-    using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+	using YAF.Types;
+	using YAF.Types.Constants;
+	using YAF.Types.Interfaces;
+	using YAF.Types.Objects;
+	using YAF.Utils;
+	using YAF.Utils.Helpers;
 
 	using Npgsql;
    
 
 
-    /// <summary>
+	/// <summary>
 	/// All the Database functions for YAF
 	/// </summary>
 	public static partial class Db
-    {
+	{
 
 		//added vzrus
 		#region ConnectionStringOptions
@@ -125,7 +125,7 @@ namespace YAF.Classes.Data.Postgre
 				return "Encoding";
 			}
 		}
-        [Obsolete("UTF-8 is always used.")]
+		[Obsolete("UTF-8 is always used.")]
 		public static string Parameter3_Value
 		{
 			get
@@ -535,215 +535,215 @@ namespace YAF.Classes.Data.Postgre
 		}
 		#endregion
 
-        /// <summary>
-        /// Gets the database size
-        /// </summary>
-        /// <returns>integer value for database size</returns>
-        public static int GetDBSize(string connectionString)
-        {
-            using (
-                NpgsqlCommand cmd =
-                    new NpgsqlCommand(String.Format("select pg_database_size('{0}')/1024/1024;", PostgreDBAccess.DBName)))
-            {
-                cmd.CommandType = CommandType.Text;
-                return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
-            }
-        }
+		/// <summary>
+		/// Gets the database size
+		/// </summary>
+		/// <returns>integer value for database size</returns>
+		public static int GetDBSize(string connectionString)
+		{
+			using (
+				NpgsqlCommand cmd =
+					new NpgsqlCommand(String.Format("select pg_database_size('{0}')/1024/1024;", PostgreDBAccess.DBName)))
+			{
+				cmd.CommandType = CommandType.Text;
+				return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
+			}
+		}
 
-        public static bool GetIsForumInstalled(string connectionString)
-        {
-            try
-            {
-                using (DataTable dt = board_list(connectionString, DBNull.Value))
-                {
-                    return dt.Rows.Count > 0;
-                }
-            }
-            catch
-            {
-            }
-            return false;
-        }
+		public static bool GetIsForumInstalled(string connectionString)
+		{
+			try
+			{
+				using (DataTable dt = board_list(connectionString, DBNull.Value))
+				{
+					return dt.Rows.Count > 0;
+				}
+			}
+			catch
+			{
+			}
+			return false;
+		}
 
-        public static int GetDBVersion(string connectionString)
-        {
-            try
-            {
-                using (DataTable dt = Db.registry_list(connectionString,"version"))
-                {
-                    if (dt.Rows.Count > 0)
-                    {
-                        // get the version..
-                        return Convert.ToInt32(dt.Rows[0]["Value"]);
-                    }
-                }
-            }
-            catch
-            {
-                // not installed..
-            }
+		public static int GetDBVersion(string connectionString)
+		{
+			try
+			{
+				using (DataTable dt = Db.registry_list(connectionString,"version"))
+				{
+					if (dt.Rows.Count > 0)
+					{
+						// get the version..
+						return Convert.ToInt32(dt.Rows[0]["Value"]);
+					}
+				}
+			}
+			catch
+			{
+				// not installed..
+			}
 
-            return -1;
-        }
+			return -1;
+		}
 
-        public static bool FullTextSupported = false;
+		public static bool FullTextSupported = false;
 
 		public static string FullTextScript = "postgre/fulltext.sql";
 
 		
 		#region Forum
 
-        static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren_anyuser"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren_anyuser"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
+				cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
 
-                DataTable dt = PostgreDBAccess.GetData(cmd,connectionString);
-                DataTable sorted = dt.Clone();
-                bool forumRow = false;
-                foreach (DataRow row in dt.Rows)
-                {
-                    DataRow newRow = sorted.NewRow();
-                    newRow.ItemArray = row.ItemArray;
-                    newRow = row;
+				DataTable dt = PostgreDBAccess.GetData(cmd,connectionString);
+				DataTable sorted = dt.Clone();
+				bool forumRow = false;
+				foreach (DataRow row in dt.Rows)
+				{
+					DataRow newRow = sorted.NewRow();
+					newRow.ItemArray = row.ItemArray;
+					newRow = row;
 
-                    int currentIndent = (int)row["Level"];
-                    string sIndent = "";
+					int currentIndent = (int)row["Level"];
+					string sIndent = "";
 
-                    for (int j = 0; j < currentIndent; j++)
-                        sIndent += "--";
-                    if (currentIndent == 1 && !forumRow)
-                    {
-                        newRow["ForumID"] = currentIndent;
-                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["CategoryName"]);
-                        forumRow = true;
-                    }
-                    else
-                    {
-                        newRow["ForumID"] = currentIndent;
-                        newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Title"]);
-                        forumRow = false;
-                    }
-
-
-                    // import the row into the destination
+					for (int j = 0; j < currentIndent; j++)
+						sIndent += "--";
+					if (currentIndent == 1 && !forumRow)
+					{
+						newRow["ForumID"] = currentIndent;
+						newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["CategoryName"]);
+						forumRow = true;
+					}
+					else
+					{
+						newRow["ForumID"] = currentIndent;
+						newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Title"]);
+						forumRow = false;
+					}
 
 
+					// import the row into the destination
 
 
-                    sorted.Rows.Add(newRow);
-                }
-                return sorted;
-            }
-        }
-
-        static public DataTable forum_ns_getchildren(string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
-
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
-
-        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren_activeuser"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userid;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
-
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
 
 
-        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions)
-        {
-            var d = new List<int>();
-            d.Add(0);
-            return forum_listall_sorted(connectionString,boardId, userId, null, false, d);
-        }
+					sorted.Rows.Add(newRow);
+				}
+				return sorted;
+			}
+		}
 
-        //Here
-        static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, List<int> startAt)
-        {
-            using (DataTable dataTable = forum_listall(connectionString, boardId, userId, startAt,false))
-            {
-                int baseForumId = 0;
-                int baseCategoryId = 0;
+		static public DataTable forum_ns_getchildren(string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                if (startAt.Any())
-                {
-                    // find the base ids..
-                    foreach (DataRow dataRow in dataTable.Rows.Cast<DataRow>().Where(dataRow => Convert.ToInt32(dataRow["ForumID"]) == startAt.First(f => f > -1)))
-                    {
-                        baseForumId = dataRow["ParentID"] != DBNull.Value ? Convert.ToInt32(dataRow["ParentID"]) : 0;
-                        baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
-                        break;
-                    }
-                }
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
+				cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
 
-                return forum_sort_list(dataTable, baseForumId, baseCategoryId, 0, forumidExclusions, emptyFirstRow);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
-        public static void activeaccess_reset(string connectionString)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("activeaccess_reset"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
-        static public DataRow pageload(string connectionString, 
-            object sessionID, 
-             object boardId,
-              object userKey, 
-               object ip, 
-                object location, 
-                 object forumPage, 
-                  object browser,
-                   object platform, 
-                    object categoryID,
-                     object forumID, 
-                      object topicID, 
-                       object messageID,
-                        object isCrawler,
-                         object isMobileDevice,
-                          object donttrack)
+		static public DataTable forum_ns_getchildren_activeuser(string connectionString, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_getchildren_activeuser"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userid;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notincluded", NpgsqlDbType.Boolean)).Value = notincluded;
+				cmd.Parameters.Add(new NpgsqlParameter("i_immediateonly", NpgsqlDbType.Boolean)).Value = immediateonly;
+
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+
+
+		static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions)
+		{
+			var d = new List<int>();
+			d.Add(0);
+			return forum_listall_sorted(connectionString,boardId, userId, null, false, d);
+		}
+
+		//Here
+		static public DataTable forum_listall_sorted(string connectionString, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, List<int> startAt)
+		{
+			using (DataTable dataTable = forum_listall(connectionString, boardId, userId, startAt,false))
+			{
+				int baseForumId = 0;
+				int baseCategoryId = 0;
+
+				if (startAt.Any())
+				{
+					// find the base ids..
+					foreach (DataRow dataRow in dataTable.Rows.Cast<DataRow>().Where(dataRow => Convert.ToInt32(dataRow["ForumID"]) == startAt.First(f => f > -1)))
+					{
+						baseForumId = dataRow["ParentID"] != DBNull.Value ? Convert.ToInt32(dataRow["ParentID"]) : 0;
+						baseCategoryId = Convert.ToInt32(dataRow["CategoryID"]);
+						break;
+					}
+				}
+
+				return forum_sort_list(dataTable, baseForumId, baseCategoryId, 0, forumidExclusions, emptyFirstRow);
+			}
+		}
+
+		public static void activeaccess_reset(string connectionString)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("activeaccess_reset"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
+		static public DataRow pageload(string connectionString, 
+			object sessionID, 
+			 object boardId,
+			  object userKey, 
+			   object ip, 
+				object location, 
+				 object forumPage, 
+				  object browser,
+				   object platform, 
+					object categoryID,
+					 object forumID, 
+					  object topicID, 
+					   object messageID,
+						object isCrawler,
+						 object isMobileDevice,
+						  object donttrack)
 		{
 			int nTries = 0;
 			while ( true )
 			{
 
-                
-                    
+				
+					
 				try
 				{
 
-                   // var dd = PostgreDBAccess.GetConnectionParams();
+				   // var dd = PostgreDBAccess.GetConnectionParams();
 					DataTable dt1 = null;
 					using ( var cmd = PostgreDBAccess.GetCommand( "pageload" ) )
 					{
@@ -751,7 +751,7 @@ namespace YAF.Classes.Data.Postgre
 
 						cmd.Parameters.Add(new NpgsqlParameter("i_sessionid", NpgsqlDbType.Varchar)).Value = sessionID;
 						cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                        cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Varchar)).Value = userKey ?? DBNull.Value; 
+						cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Varchar)).Value = userKey ?? DBNull.Value; 
 						cmd.Parameters.Add(new NpgsqlParameter("i_ip", NpgsqlDbType.Varchar)).Value = ip;
 						cmd.Parameters.Add(new NpgsqlParameter("i_location", NpgsqlDbType.Varchar)).Value = location;
 						cmd.Parameters.Add(new NpgsqlParameter("i_forumpage", NpgsqlDbType.Varchar)).Value = forumPage;
@@ -761,10 +761,10 @@ namespace YAF.Classes.Data.Postgre
 						cmd.Parameters.Add(new NpgsqlParameter("ii_forumid", NpgsqlDbType.Integer)).Value = forumID;
 						cmd.Parameters.Add(new NpgsqlParameter("ii_topicid", NpgsqlDbType.Integer)).Value = topicID;
 						cmd.Parameters.Add(new NpgsqlParameter("ii_messageid", NpgsqlDbType.Integer)).Value = messageID;
-                        cmd.Parameters.Add(new NpgsqlParameter("i_iscrawler", NpgsqlDbType.Boolean)).Value = isCrawler;
-                        cmd.Parameters.Add(new NpgsqlParameter("i_ismobiledevice", NpgsqlDbType.Boolean)).Value = isMobileDevice;
-                        cmd.Parameters.Add(new NpgsqlParameter("i_donttrack", NpgsqlDbType.Boolean)).Value = donttrack;
-                        cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+						cmd.Parameters.Add(new NpgsqlParameter("i_iscrawler", NpgsqlDbType.Boolean)).Value = isCrawler;
+						cmd.Parameters.Add(new NpgsqlParameter("i_ismobiledevice", NpgsqlDbType.Boolean)).Value = isMobileDevice;
+						cmd.Parameters.Add(new NpgsqlParameter("i_donttrack", NpgsqlDbType.Boolean)).Value = donttrack;
+						cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
  
 						dt1 = PostgreDBAccess.GetData(cmd,false,connectionString);
 						return dt1.Rows[0];
@@ -794,366 +794,366 @@ namespace YAF.Classes.Data.Postgre
 				++nTries;
 			}
 		}
-        /// <summary>
-        /// Returns Search results
-        /// </summary>
-        /// <param name="ToSearch"></param>
-        /// <param name="sf">Field to search</param>
-        /// <param name="sw">Search what</param>
-        /// <param name="fid"></param>
-        /// <param name="UserID">ID of user</param>
-        /// <returns>Results</returns>
-        static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName, bool includeChildren)
-        {
-            // New access
-            /*  if (toSearchWhat == "*")
-              {
-                  toSearchWhat = string.Empty;
-              }
+		/// <summary>
+		/// Returns Search results
+		/// </summary>
+		/// <param name="ToSearch"></param>
+		/// <param name="sf">Field to search</param>
+		/// <param name="sw">Search what</param>
+		/// <param name="fid"></param>
+		/// <param name="UserID">ID of user</param>
+		/// <returns>Results</returns>
+		static public DataTable GetSearchResult(string connectionString, string toSearchWhat, string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, SearchWhatFlags searchWhatMethod, List<int> categoryId, List<int> forumIDToStartAt, int userId, int boardId, int maxResults, bool useFullText, bool searchDisplayName, bool includeChildren)
+		{
+			// New access
+			/*  if (toSearchWhat == "*")
+			  {
+				  toSearchWhat = string.Empty;
+			  }
 
-              IEnumerable<int> forumIds = new List<int>();
+			  IEnumerable<int> forumIds = new List<int>();
 
-              if (forumIDToStartAt != 0)
-              {
-                  forumIds = ForumListAll(boardId, userID, forumIDToStartAt).Select(f => f.ForumID ?? 0).Distinct();
-              }
+			  if (forumIDToStartAt != 0)
+			  {
+				  forumIds = ForumListAll(boardId, userID, forumIDToStartAt).Select(f => f.ForumID ?? 0).Distinct();
+			  }
 
-              string searchSql = new SearchBuilder().BuildSearchSql(toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, userID, searchDisplayName, boardId, maxResults, useFullText, forumIds);
+			  string searchSql = new SearchBuilder().BuildSearchSql(toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, userID, searchDisplayName, boardId, maxResults, useFullText, forumIds);
 
-              using (SqlCommand cmd = PostgreDBAccess.GetCommand(searchSql, true))
-              {
-                  return PostgreDBAccess.Current.GetData(cmd);
-              } */
-
-
-            if (toSearchWhat == "*")
-                toSearchWhat = "";
-            string forumIDs = "";
-            string limitString = "";
-            string orderString = "";
-            string categoriesIds = string.Empty;
-
-            StringBuilder searchSql = new StringBuilder();
-            
-            if (categoryId.Any())
-            {
-                if (Config.LargeForumTree)
-                {
-                    DataTable dt = Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                    foreach (DataRow c in dt.Rows)
-                    {
-                        foreach (int c1 in categoryId)
-                        {
-                            if (c["CategoryID"].ToType<int>() == c1)
-                            {
-                                categoriesIds = categoriesIds + "," + c1.ToString();
-                            }
-                        }
-                    }
-                    categoriesIds = categoriesIds.Trim(',');
-                }
-            }
-
-            if (forumIDToStartAt.Any())
-            {
-                if (!Config.LargeForumTree)
-                {
-                    DataTable dt = forum_listall_sorted(connectionString, boardId, userId, null, false,
-                                                                forumIDToStartAt);
-                    foreach (DataRow dr in dt.Rows)
-                        forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]).ToString() + ",";
-                    forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
-                }
-                else
-                {
-                    foreach (int frms in forumIDToStartAt)
-                    {
-                        var d1 = Db.forum_ns_getchildren_activeuser(connectionString, boardId, 0,
-                                    frms, userId,false, false, "-");
-                        foreach (DataRow r in d1.Rows)
-                        {
-                            forumIDs += "," + r["ForumID"];
-                        }
-                        // Parent forum only.
-                        if (!includeChildren)
-                        {
-                            break;
-                        }
-                    }
-                    forumIDs = forumIDs.Trim(',');
-                }
-            }
-            
-            // fix quotes for SQL insertion...
-            toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
-            toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
-            searchSql.Append(maxResults == 0 ? "SELECT" : ("SELECT DISTINCT "));
-            if (maxResults > 0)
-            { 
-                limitString += String.Format(" LIMIT {0} ", maxResults.ToString()); 
-            }
-
-            searchSql.Append(" a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags FROM ");
-            searchSql.Append(PostgreDBAccess.GetObjectName("topic"));
-            searchSql.Append(" a JOIN ");
-            searchSql.Append(PostgreDBAccess.GetObjectName("forum"));
-            searchSql.Append(" f ON f.forumid = a.forumid LEFT JOIN ");
-            searchSql.Append(PostgreDBAccess.GetObjectName("message"));
-            searchSql.Append(" c ON a.topicid = c.topicid LEFT JOIN ");
-            searchSql.Append(PostgreDBAccess.GetObjectName("user"));
-            searchSql.Append(" b ON c.userid = b.userid join ");
-            searchSql.Append(PostgreDBAccess.GetObjectName("vaccess"));
-            searchSql.Append(" x ON x.forumid=a.forumid ");
-            searchSql.Append("WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE "
-                    .FormatWith(userId));
+			  using (SqlCommand cmd = PostgreDBAccess.GetCommand(searchSql, true))
+			  {
+				  return PostgreDBAccess.Current.GetData(cmd);
+			  } */
 
 
-            orderString += "ORDER BY a.forumid ";
+			if (toSearchWhat == "*")
+				toSearchWhat = "";
+			string forumIDs = "";
+			string limitString = "";
+			string orderString = "";
+			string categoriesIds = string.Empty;
 
-            string[] words;
-            bool bFirst;
+			StringBuilder searchSql = new StringBuilder();
+			
+			if (categoryId.Any())
+			{
+				if (Config.LargeForumTree)
+				{
+					DataTable dt = Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+					foreach (DataRow c in dt.Rows)
+					{
+						foreach (int c1 in categoryId)
+						{
+							if (c["CategoryID"].ToType<int>() == c1)
+							{
+								categoriesIds = categoriesIds + "," + c1.ToString();
+							}
+						}
+					}
+					categoriesIds = categoriesIds.Trim(',');
+				}
+			}
 
-            if (!String.IsNullOrEmpty(toSearchFromWho))
-            {
-                searchSql.Append("AND (");
-                bFirst = true;
+			if (forumIDToStartAt.Any())
+			{
+				if (!Config.LargeForumTree)
+				{
+					DataTable dt = forum_listall_sorted(connectionString, boardId, userId, null, false,
+																forumIDToStartAt);
+					foreach (DataRow dr in dt.Rows)
+						forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]).ToString() + ",";
+					forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+				}
+				else
+				{
+					foreach (int frms in forumIDToStartAt)
+					{
+						var d1 = Db.forum_ns_getchildren_activeuser(connectionString, boardId, 0,
+									frms, userId,false, false, "-");
+						foreach (DataRow r in d1.Rows)
+						{
+							forumIDs += "," + r["ForumID"];
+						}
+						// Parent forum only.
+						if (!includeChildren)
+						{
+							break;
+						}
+					}
+					forumIDs = forumIDs.Trim(',');
+				}
+			}
+			
+			// fix quotes for SQL insertion...
+			toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
+			toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
+			searchSql.Append(maxResults == 0 ? "SELECT" : ("SELECT DISTINCT "));
+			if (maxResults > 0)
+			{ 
+				limitString += String.Format(" LIMIT {0} ", maxResults.ToString()); 
+			}
 
-                // generate user search sql...
-                switch (searchFromWhoMethod)
-                {
-                    case SearchWhatFlags.AllWords:
-                        words = toSearchFromWho.Split(' ');
-                        foreach (string word in words)
-                        {
-                            if (!bFirst)
-                            {
-                                searchSql.Append(" AND ");
-                            } 
-                            else
-                            {
-                                bFirst = false;
-                            }
-                            // searchSql += string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
-
-                            if (!int.TryParse(word, out userId))
-                            {
-                                if (searchDisplayName)
-                                {
-                                    searchSql.Append(string.Format(" ((c.userdisplayname IS NULL AND b.displayname  ~* '.*{0}.*') OR (c.userdisplayname ~* '.*{0}.*'))", word));
-                                }
-                                else
-                                {
-                                    searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
-                                }
-                            }
-                            else
-                            {
-                                searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
-                            }
-                        }
-                        break;
-                    case SearchWhatFlags.AnyWords:
-                        words = toSearchFromWho.Split(' ');
-                        foreach (string word in words)
-                        {
-                            if (!bFirst)
-                            {
-                                searchSql.Append(" OR ");
-                            } 
-                            else
-                            {
-                                bFirst = false;
-                            }
-                            searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
-                        }
-                        break;
-                    case SearchWhatFlags.ExactMatch:
-                        // searchSql += string.Format(" ((c.username IS NULL AND b.name = '{0}' ) OR (c.username = '{0}' ))", toSearchFromWho);
-
-                        if (!int.TryParse(toSearchFromWho, out userId))
-                        {
-                            if (searchDisplayName)
-                            {
-                                searchSql.Append(string.Format(
-                                                          " ((c.userdisplayname IS NULL AND b.displayname = '{0}') OR (c.userdisplayname = '{0}'))", toSearchFromWho));
-                            }
-                            else
-                            {
-                                searchSql.Append(
-                                    string.Format(" ((c.username IS NULL AND b.name = '{0}') OR (c.username = '{0}'))", toSearchFromWho));
-                            }
-
-                        }
-                        else
-                        {
-                            searchSql.Append(
-                                string.Format(" (c.userid IN ({0})) ", userId));
-
-                        }
-                        break;
-                }
-                searchSql.Append(") ");
-            }
+			searchSql.Append(" a.forumid, a.topicid, a.topic, b.userid, COALESCE(c.username, b.name) as Name, c.messageid as \"MessageID\", c.posted, c.message as \"Message\", c.flags FROM ");
+			searchSql.Append(PostgreDBAccess.GetObjectName("topic"));
+			searchSql.Append(" a JOIN ");
+			searchSql.Append(PostgreDBAccess.GetObjectName("forum"));
+			searchSql.Append(" f ON f.forumid = a.forumid LEFT JOIN ");
+			searchSql.Append(PostgreDBAccess.GetObjectName("message"));
+			searchSql.Append(" c ON a.topicid = c.topicid LEFT JOIN ");
+			searchSql.Append(PostgreDBAccess.GetObjectName("user"));
+			searchSql.Append(" b ON c.userid = b.userid join ");
+			searchSql.Append(PostgreDBAccess.GetObjectName("vaccess"));
+			searchSql.Append(" x ON x.forumid=a.forumid ");
+			searchSql.Append("WHERE x.readaccess<>0 AND x.userid={0} AND c.isapproved IS TRUE AND a.topicmovedid IS NULL AND a.isdeleted IS FALSE AND c.isdeleted IS FALSE "
+					.FormatWith(userId));
 
 
-            if (!String.IsNullOrEmpty(toSearchWhat))
-            {
-                searchSql.Append("AND (");
-                bFirst = true;
+			orderString += "ORDER BY a.forumid ";
 
-                // generate message and topic search sql...
-                switch (searchWhatMethod)
-                {
-                    case SearchWhatFlags.AllWords:
-                        words = toSearchWhat.Split(' ');
-                        if (useFullText)
-                        {
-                            string ftInner = "";
+			string[] words;
+			bool bFirst;
 
-                            // make the inner FULLTEXT search
-                            foreach (string word in words)
-                            {
-                                if (!bFirst) ftInner += " AND "; else bFirst = false;
-                                ftInner += string.Format(@"""{0}""", word);
-                            }
-                            // make final string...
-                            searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ') OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
-                        }
-                        else
-                        {
-                            foreach (string word in words)
-                            {
-                                if (!bFirst)
-                                {
-                                    searchSql.Append(" AND ");
-                                } 
-                                else
-                                {
-                                    bFirst = false;
-                                }
-                                searchSql.Append(string.Format("(c.message ~* '.*{0}.*' OR a.topic ~* '.*{0}.*' )", word));
-                            }
-                        }
-                        break;
-                    case SearchWhatFlags.AnyWords:
-                        words = toSearchWhat.Split(' ');
+			if (!String.IsNullOrEmpty(toSearchFromWho))
+			{
+				searchSql.Append("AND (");
+				bFirst = true;
 
-                        if (useFullText)
-                        {
-                            string ftInner = "";
+				// generate user search sql...
+				switch (searchFromWhoMethod)
+				{
+					case SearchWhatFlags.AllWords:
+						words = toSearchFromWho.Split(' ');
+						foreach (string word in words)
+						{
+							if (!bFirst)
+							{
+								searchSql.Append(" AND ");
+							} 
+							else
+							{
+								bFirst = false;
+							}
+							// searchSql += string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word);
 
-                            // make the inner FULLTEXT search
-                            foreach (string word in words)
-                            {
-                                if (!bFirst) ftInner += " OR "; else bFirst = false;
-                                ftInner += String.Format(@"""{0}""", word);
+							if (!int.TryParse(word, out userId))
+							{
+								if (searchDisplayName)
+								{
+									searchSql.Append(string.Format(" ((c.userdisplayname IS NULL AND b.displayname  ~* '.*{0}.*') OR (c.userdisplayname ~* '.*{0}.*'))", word));
+								}
+								else
+								{
+									searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
+								}
+							}
+							else
+							{
+								searchSql.Append(string.Format(" (c.userid IN ({0}))", userId));
+							}
+						}
+						break;
+					case SearchWhatFlags.AnyWords:
+						words = toSearchFromWho.Split(' ');
+						foreach (string word in words)
+						{
+							if (!bFirst)
+							{
+								searchSql.Append(" OR ");
+							} 
+							else
+							{
+								bFirst = false;
+							}
+							searchSql.Append(string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
+						}
+						break;
+					case SearchWhatFlags.ExactMatch:
+						// searchSql += string.Format(" ((c.username IS NULL AND b.name = '{0}' ) OR (c.username = '{0}' ))", toSearchFromWho);
 
-                                if (int.TryParse(word, out userId))
-                                {
-                                    searchSql.Append(
-                                      string.Format(" (c.userid IN ({0}))", userId));
-                                }
-                                else
-                                {
-                                    searchSql.Append(
-                                      string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
-                                }
-                            }
-                            // make final string...
-                            searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ' ) OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
-                        }
-                        else
-                        {
-                            foreach (string word in words)
-                            {
-                                if (!bFirst) searchSql.Append(" OR "); else bFirst = false;
-                                searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*' ", word));
-                            }
-                        }
-                        break;
-                    case SearchWhatFlags.ExactMatch:
-                        if (useFullText)
-                        {
-                            searchSql.Append(string.Format("( CONTAINS (c.message, ' \"{0}\" ' ) OR CONTAINS (a.topic, ' \"{0}\" '  )", toSearchWhat));
-                        }
-                        else
-                        {
-                            searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*'  ", toSearchWhat));
-                        }
-                        break;
-                }
-                searchSql.Append(") ");
-            }
+						if (!int.TryParse(toSearchFromWho, out userId))
+						{
+							if (searchDisplayName)
+							{
+								searchSql.Append(string.Format(
+														  " ((c.userdisplayname IS NULL AND b.displayname = '{0}') OR (c.userdisplayname = '{0}'))", toSearchFromWho));
+							}
+							else
+							{
+								searchSql.Append(
+									string.Format(" ((c.username IS NULL AND b.name = '{0}') OR (c.username = '{0}'))", toSearchFromWho));
+							}
 
-             // vzrus
-            if (categoriesIds.IsSet())
-            {
-                searchSql.Append(string.Format("AND f.categoryid IN ({0})", categoriesIds));
-            }
-          
-            // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
-           
-            if (forumIDs.IsSet())
-            {
-                searchSql.Append(string.Format("AND a.forumid IN ({0})", forumIDs));
-            }
-           
-          
-            if (orderString != "") { orderString += ", "; }
-            if (!orderString.Contains("ORDER BY"))
-            {
-                searchSql.Append(" ORDER BY ");
-            }
+						}
+						else
+						{
+							searchSql.Append(
+								string.Format(" (c.userid IN ({0})) ", userId));
 
-            searchSql.Append(orderString + "c.posted DESC ");
-
-            if (!orderString.Contains("LIMIT"))
-            {
-                searchSql.Append(limitString);
-            }
+						}
+						break;
+				}
+				searchSql.Append(") ");
+			}
 
 
-            using (var cmd = PostgreDBAccess.GetCommand(searchSql.ToString(), true))
-            {
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+			if (!String.IsNullOrEmpty(toSearchWhat))
+			{
+				searchSql.Append("AND (");
+				bFirst = true;
+
+				// generate message and topic search sql...
+				switch (searchWhatMethod)
+				{
+					case SearchWhatFlags.AllWords:
+						words = toSearchWhat.Split(' ');
+						if (useFullText)
+						{
+							string ftInner = "";
+
+							// make the inner FULLTEXT search
+							foreach (string word in words)
+							{
+								if (!bFirst) ftInner += " AND "; else bFirst = false;
+								ftInner += string.Format(@"""{0}""", word);
+							}
+							// make final string...
+							searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ') OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
+						}
+						else
+						{
+							foreach (string word in words)
+							{
+								if (!bFirst)
+								{
+									searchSql.Append(" AND ");
+								} 
+								else
+								{
+									bFirst = false;
+								}
+								searchSql.Append(string.Format("(c.message ~* '.*{0}.*' OR a.topic ~* '.*{0}.*' )", word));
+							}
+						}
+						break;
+					case SearchWhatFlags.AnyWords:
+						words = toSearchWhat.Split(' ');
+
+						if (useFullText)
+						{
+							string ftInner = "";
+
+							// make the inner FULLTEXT search
+							foreach (string word in words)
+							{
+								if (!bFirst) ftInner += " OR "; else bFirst = false;
+								ftInner += String.Format(@"""{0}""", word);
+
+								if (int.TryParse(word, out userId))
+								{
+									searchSql.Append(
+									  string.Format(" (c.userid IN ({0}))", userId));
+								}
+								else
+								{
+									searchSql.Append(
+									  string.Format(" ((c.username IS NULL AND b.name ~* '.*{0}.*') OR (c.username ~* '.*{0}.*'))", word));
+								}
+							}
+							// make final string...
+							searchSql.Append(string.Format("( CONTAINS (c.message, ' {0} ' ) OR CONTAINS (a.topic, ' {0} ' ) )", ftInner));
+						}
+						else
+						{
+							foreach (string word in words)
+							{
+								if (!bFirst) searchSql.Append(" OR "); else bFirst = false;
+								searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*' ", word));
+							}
+						}
+						break;
+					case SearchWhatFlags.ExactMatch:
+						if (useFullText)
+						{
+							searchSql.Append(string.Format("( CONTAINS (c.message, ' \"{0}\" ' ) OR CONTAINS (a.topic, ' \"{0}\" '  )", toSearchWhat));
+						}
+						else
+						{
+							searchSql.Append(string.Format("c.message ~* '.*{0}.*'  OR a.topic ~* '.*{0}.*'  ", toSearchWhat));
+						}
+						break;
+				}
+				searchSql.Append(") ");
+			}
+
+			 // vzrus
+			if (categoriesIds.IsSet())
+			{
+				searchSql.Append(string.Format("AND f.categoryid IN ({0})", categoriesIds));
+			}
+		  
+			// Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
+		   
+			if (forumIDs.IsSet())
+			{
+				searchSql.Append(string.Format("AND a.forumid IN ({0})", forumIDs));
+			}
+		   
+		  
+			if (orderString != "") { orderString += ", "; }
+			if (!orderString.Contains("ORDER BY"))
+			{
+				searchSql.Append(" ORDER BY ");
+			}
+
+			searchSql.Append(orderString + "c.posted DESC ");
+
+			if (!orderString.Contains("LIMIT"))
+			{
+				searchSql.Append(limitString);
+			}
+
+
+			using (var cmd = PostgreDBAccess.GetCommand(searchSql.ToString(), true))
+			{
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
 		#endregion
 
 		#region DataSets
 
-        static public void forum_list_sort_basic( DataTable listsource, DataTable list, int parentid, int currentLvl)
-        {
-            for (int i = 0; i < listsource.Rows.Count; i++)
-            {
-                DataRow row = listsource.Rows[i];
-                if ((row["ParentID"]) == DBNull.Value)
-                    row["ParentID"] = 0;
+		static public void forum_list_sort_basic( DataTable listsource, DataTable list, int parentid, int currentLvl)
+		{
+			for (int i = 0; i < listsource.Rows.Count; i++)
+			{
+				DataRow row = listsource.Rows[i];
+				if ((row["ParentID"]) == DBNull.Value)
+					row["ParentID"] = 0;
 
-                if ((int)row["ParentID"] == parentid)
-                {
-                    string sIndent = "";
-                    int iIndent = Convert.ToInt32(currentLvl);
-                    for (int j = 0; j < iIndent; j++) sIndent += "--";
-                    row["Name"] = string.Format(" -{0} {1}", sIndent, row["Name"]);
-                    list.Rows.Add(row.ItemArray);
-                    forum_list_sort_basic(listsource, list, (int)row["ForumID"], currentLvl + 1);
-                }
-            }
-        }
+				if ((int)row["ParentID"] == parentid)
+				{
+					string sIndent = "";
+					int iIndent = Convert.ToInt32(currentLvl);
+					for (int j = 0; j < iIndent; j++) sIndent += "--";
+					row["Name"] = string.Format(" -{0} {1}", sIndent, row["Name"]);
+					list.Rows.Add(row.ItemArray);
+					forum_list_sort_basic(listsource, list, (int)row["ForumID"], currentLvl + 1);
+				}
+			}
+		}
 		/// <summary>
 		/// Gets a list of categories????
 		/// </summary>
 		/// <param name="boardId">BoardID</param>
 		/// <returns>DataSet with categories</returns>
-        static public DataSet ds_forumadmin(string connectionString, object boardId)
+		static public DataSet ds_forumadmin(string connectionString, object boardId)
 		{
-            using (var connMan = new PostgreDbConnectionManager(connectionString))
+			using (var connMan = new PostgreDbConnectionManager(connectionString))
 			{
 				using ( var ds = new DataSet() )
 				{
-                    using (var trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDBAccess.IsolationLevel))
+					using (var trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDBAccess.IsolationLevel))
 					{
 						using (var da = new NpgsqlDataAdapter(PostgreDBAccess.GetObjectName("category_list"), connMan.DBConnection))
 						{
@@ -1170,7 +1170,7 @@ namespace YAF.Classes.Data.Postgre
 							dtForumListSorted.TableName = PostgreDBAccess.GetObjectName( "Forum" );
 							ds.Tables.Add( dtForumListSorted );
 							dtForumListSorted.Dispose();
-                            Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
+							Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove( PostgreDBAccess.GetObjectName( "ForumUnsorted" ) );
 							ds.Relations.Add( "FK_Forum_Category", ds.Tables [PostgreDBAccess.GetObjectName( "Category" )].Columns ["CategoryID"], ds.Tables [PostgreDBAccess.GetObjectName( "Forum" )].Columns ["CategoryID"] );
 							trans.Commit();
@@ -1191,7 +1191,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">ID of Board</param>
 		/// <param name="accessMaskID">ID of access mask</param>
 		/// <returns></returns>
-         static public DataTable accessmask_list(string connectionString, object boardId, object accessMaskID, object excludeFlags)
+		 static public DataTable accessmask_list(string connectionString, object boardId, object accessMaskID, object excludeFlags)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "accessmask_list" ) )
 			{
@@ -1205,13 +1205,13 @@ namespace YAF.Classes.Data.Postgre
 				
 			}
 		}
-        
+		
 		/// <summary>
 		/// Deletes an access mask
 		/// </summary>
 		/// <param name="accessMaskID">ID of access mask</param>
 		/// <returns></returns>
-         static public bool accessmask_delete(string connectionString, object accessMaskID)
+		 static public bool accessmask_delete(string connectionString, object accessMaskID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "accessmask_delete" ) )
 			{
@@ -1239,7 +1239,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="deleteAccess">Delete Access?</param>
 		/// <param name="uploadAccess">Upload Access?</param>
 		/// <param name="downloadAccess">Download Access?</param>
-         static public void accessmask_save(string connectionString, object accessMaskID, object boardId, object name, object readAccess, object postAccess, object replyAccess, object priorityAccess, object pollAccess, object voteAccess, object moderatorAccess, object editAccess, object deleteAccess, object uploadAccess, object downloadAccess, object sortOrder)
+		 static public void accessmask_save(string connectionString, object accessMaskID, object boardId, object name, object readAccess, object postAccess, object replyAccess, object priorityAccess, object pollAccess, object voteAccess, object moderatorAccess, object editAccess, object deleteAccess, object uploadAccess, object downloadAccess, object sortOrder)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "accessmask_save" ) )
 			{
@@ -1273,7 +1273,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">BoardID</param>
 		/// <param name="Guests"></param>
 		/// <returns>Returns a DataTable of active users</returns>    
-         static public DataTable active_list(string connectionString, object boardId, object guests, object showCrawlers, int interval, object styledNicks)
+		 static public DataTable active_list(string connectionString, object boardId, object guests, object showCrawlers, int interval, object styledNicks)
 		{
 		   // if (Guests == null) { Guests = "false"; }
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "active_list" ) )
@@ -1282,12 +1282,12 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlDbType.Boolean)).Value = guests;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlDbType.Boolean)).Value = showCrawlers;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlDbType.Boolean)).Value = showCrawlers;
 				cmd.Parameters.Add(new NpgsqlParameter("i_interval", NpgsqlDbType.Integer)).Value = interval;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
@@ -1311,7 +1311,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// Returns a DataTable of active users
 		/// </returns>
-         public static DataTable active_list_user(string connectionString, object boardID, object userID, object Guests, object showCrawlers, int activeTime, object styledNicks)
+		 public static DataTable active_list_user(string connectionString, object boardID, object userID, object Guests, object showCrawlers, int activeTime, object styledNicks)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("active_list_user"))
 			{
@@ -1320,10 +1320,10 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlDbType.Boolean)).Value = Guests;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlDbType.Boolean)).Value = showCrawlers;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlDbType.Boolean)).Value = showCrawlers;
 				cmd.Parameters.Add(new NpgsqlParameter("i_activetime", NpgsqlDbType.Integer)).Value = activeTime;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
    
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
@@ -1334,7 +1334,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="forumID">forumID</param>
 		/// <returns>DataTable of all ative users in a forum</returns>
-        static public DataTable active_listforum(string connectionString, object forumID, object styledNicks)
+		static public DataTable active_listforum(string connectionString, object forumID, object styledNicks)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "active_listforum" ) )
 			{
@@ -1343,7 +1343,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1351,7 +1351,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="topicID">ID of topic </param>
 		/// <returns>DataTable of all users that are in a topic</returns>
-        static public DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
+		static public DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "active_listtopic" ) )
 			{
@@ -1360,7 +1360,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			
 			}
 		}
@@ -1370,7 +1370,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="boardId">boardId</param>
 		/// <returns>DataRow of activity stata</returns>
-        static public DataRow active_stats(string connectionString, object boardId)
+		static public DataRow active_stats(string connectionString, object boardId)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "active_stats" ) )
 			{
@@ -1378,7 +1378,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
 					return dt.Rows [0];
 				}
@@ -1394,7 +1394,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="attachmentID">attachementID</param>
 		/// <param name="boardId">boardId</param>
 		/// <returns>DataTable with attachement list</returns>
-        public static DataTable attachment_list(string connectionString, [NotNull] object messageID, [NotNull] object attachmentID, [NotNull] object boardID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+		public static DataTable attachment_list(string connectionString, [NotNull] object messageID, [NotNull] object attachmentID, [NotNull] object boardID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
 		{
 			using ( var cmd = PostgreDBAccess.GetCommand( "attachment_list" ) )
 			{
@@ -1403,10 +1403,10 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_attachmentid", NpgsqlDbType.Integer)).Value = attachmentID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = pageSize;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1417,7 +1417,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="bytes">number of bytes</param>
 		/// <param name="contentType">type of attchment</param>
 		/// <param name="stream">stream of bytes</param>
-        static public void attachment_save(string connectionString, object messageID, object fileName, object bytes, object contentType, System.IO.Stream stream)
+		static public void attachment_save(string connectionString, object messageID, object fileName, object bytes, object contentType, System.IO.Stream stream)
 		{
 			using ( var cmd = PostgreDBAccess.GetCommand( "attachment_save" ) )
 			{
@@ -1444,9 +1444,9 @@ namespace YAF.Classes.Data.Postgre
 		/// Delete attachment
 		/// </summary>
 		/// <param name="attachmentID">ID of attachment to delete</param>
-        static public void attachment_delete(string connectionString, object attachmentID)
+		static public void attachment_delete(string connectionString, object attachmentID)
 		{
-            bool UseFileTable = GetBooleanRegistryValue( connectionString,"UseFileTable");
+			bool UseFileTable = GetBooleanRegistryValue( connectionString,"UseFileTable");
 
 			//If the files are actually saved in the Hard Drive
 			if ( !UseFileTable )
@@ -1458,10 +1458,10 @@ namespace YAF.Classes.Data.Postgre
 					cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = DBNull.Value;
 					cmd.Parameters.Add(new NpgsqlParameter("i_attachmentid", NpgsqlDbType.Integer)).Value = attachmentID;
 					cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = DBNull.Value;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = 0;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = 1000;
+					cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = 0;
+					cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = 1000;
 
-                    DataTable tbAttachments = PostgreDBAccess.GetData(cmd,connectionString);
+					DataTable tbAttachments = PostgreDBAccess.GetData(cmd,connectionString);
 					string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
 				
 
@@ -1498,7 +1498,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Attachement dowload
 		/// </summary>
 		/// <param name="attachmentID">ID of attachemnt to download</param>
-        static public void attachment_download(string connectionString, object attachmentID)
+		static public void attachment_download(string connectionString, object attachmentID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "attachment_download" ) )
 			{
@@ -1518,7 +1518,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">ID of board</param>
 		/// <param name="ID">ID</param>
 		/// <returns>DataTable of banned IPs</returns>
-        public static DataTable bannedip_list(string connectionString, [NotNull] object boardID, [CanBeNull] object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+		public static DataTable bannedip_list(string connectionString, [NotNull] object boardID, [CanBeNull] object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "bannedip_list" ) )
 			{
@@ -1527,10 +1527,10 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_id", NpgsqlDbType.Integer)).Value = ID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1539,7 +1539,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="ID">ID</param>
 		/// <param name="boardId">BoardID</param>
 		/// <param name="Mask">Mask</param>
-        static public void bannedip_save(string connectionString, object ID, object boardId, object Mask, string reason, int userID)
+		static public void bannedip_save(string connectionString, object ID, object boardId, object Mask, string reason, int userID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "bannedip_save" ) )
 			{
@@ -1552,7 +1552,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_mask", NpgsqlDbType.Varchar)).Value = Mask;
 				cmd.Parameters.Add(new NpgsqlParameter("i_reason", NpgsqlDbType.Varchar)).Value = reason;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -1561,7 +1561,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Deletes Banned IP
 		/// </summary>
 		/// <param name="ID">ID of banned ip to delete</param>
-        static public void bannedip_delete(string connectionString, object ID)
+		static public void bannedip_delete(string connectionString, object ID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "bannedip_delete" ) )
 			{
@@ -1580,7 +1580,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="boardId">board id</param>
 		/// <returns>DataTable</returns>
-        static public DataTable board_list(string connectionString, object boardId)
+		static public DataTable board_list(string connectionString, object boardId)
 		{
 			String _systemInfo = String.Concat(" OS: ", Platform.VersionString,
 				   " - Runtime: ", Platform.RuntimeName, " ", Platform.RuntimeString,
@@ -1594,7 +1594,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_sysinfo", NpgsqlDbType.Varchar)).Value = _systemInfo;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
@@ -1604,7 +1604,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">BoardID</param>
 		/// <param name="useStyledNicks">useStyledNicks</param>
 		/// <returns>DataRow of Poststats</returns>
-        static public DataRow board_poststats(string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
+		static public DataRow board_poststats(string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_poststats" ) )
 			{
@@ -1612,66 +1612,66 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId; 
 				cmd.Parameters.Add(new NpgsqlParameter("i_usestylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
-                cmd.Parameters.Add(new NpgsqlParameter("i_getdefaults", NpgsqlDbType.Boolean)).Value = false;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
+				cmd.Parameters.Add(new NpgsqlParameter("i_getdefaults", NpgsqlDbType.Boolean)).Value = false;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
-                    if (dt.Rows.Count > 0)
-                    {
-                        return dt.Rows[0];
-                    }
+					if (dt.Rows.Count > 0)
+					{
+						return dt.Rows[0];
+					}
 				}
 			}
 
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("board_poststats"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("board_poststats"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_usestylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
-                cmd.Parameters.Add(new NpgsqlParameter("i_getdefaults", NpgsqlDbType.Boolean)).Value = true;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_usestylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
+				cmd.Parameters.Add(new NpgsqlParameter("i_getdefaults", NpgsqlDbType.Boolean)).Value = true;
 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
-                {
-                    if (dt.Rows.Count > 0)
-                    {
-                        return dt.Rows[0];
-                    }
-                }
-            }
-		    return null;
+				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				{
+					if (dt.Rows.Count > 0)
+					{
+						return dt.Rows[0];
+					}
+				}
+			}
+			return null;
 		}
 
-        /// <summary>
-        /// Gets users statistics
-        /// </summary>
-        /// <param name="boardID">
-        /// BoardID
-        /// </param>
-        /// <returns>
-        /// DataRow of Poststats
-        /// </returns>
-        public static DataRow board_userstats(string connectionString, int? boardId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("board_userstats"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId; 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
-                {
-                    return dt.Rows[0];
-                }
-            }
-        }
+		/// <summary>
+		/// Gets users statistics
+		/// </summary>
+		/// <param name="boardID">
+		/// BoardID
+		/// </param>
+		/// <returns>
+		/// DataRow of Poststats
+		/// </returns>
+		public static DataRow board_userstats(string connectionString, int? boardId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("board_userstats"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId; 
+				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				{
+					return dt.Rows[0];
+				}
+			}
+		}
 
 		/// <summary>
 		/// Recalculates topic and post numbers and updates last post for specified board
 		/// </summary>
 		/// <param name="boardId">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
-        static public void board_resync(string connectionString, object boardId)
+		static public void board_resync(string connectionString, object boardId)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("board_resync"))
 			{
@@ -1686,7 +1686,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <returns>DataRow</returns>
 
-        static public DataRow board_stats(string connectionString, object boardId)
+		static public DataRow board_stats(string connectionString, object boardId)
 		{
 			using ( var cmd = PostgreDBAccess.GetCommand( "board_stats" ) )
 			{
@@ -1694,7 +1694,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
+				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
 					return dt.Rows [0];
 				}
@@ -1706,7 +1706,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">BoardID</param>
 		/// <param name="name">Name of Board</param>
 		/// <param name="allowThreaded">Boolen value, allowThreaded</param>
-        static public int board_save(string connectionString, object boardId, object languageFile, object culture, object name, object allowThreaded)
+		static public int board_save(string connectionString, object boardId, object languageFile, object culture, object name, object allowThreaded)
 		{
 			using ( var cmd = PostgreDBAccess.GetCommand( "board_save" ) )
 			{
@@ -1731,7 +1731,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardName">Name of new board</param>
 		/// <param name="boardMembershipName">Membership Provider Application Name for new board</param>
 		/// <param name="boardRolesName">Roles Provider Application Name for new board</param>
-        public static int board_create(string connectionString, [NotNull] object adminUsername, [NotNull] object adminUserEmail, [NotNull] object adminUserKey, [NotNull] object boardName, [NotNull] object culture, [NotNull] object languageFile, [NotNull] object boardMembershipName, [NotNull] object boardRolesName, [NotNull] object rolePrefix, [NotNull] object isHostUser)
+		public static int board_create(string connectionString, [NotNull] object adminUsername, [NotNull] object adminUserEmail, [NotNull] object adminUserKey, [NotNull] object boardName, [NotNull] object culture, [NotNull] object languageFile, [NotNull] object boardMembershipName, [NotNull] object boardRolesName, [NotNull] object rolePrefix, [NotNull] object isHostUser)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "board_create" ) )
 			{
@@ -1745,21 +1745,21 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = adminUsername;
 				cmd.Parameters.Add(new NpgsqlParameter("i_useremail", NpgsqlDbType.Varchar)).Value = adminUserEmail;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = adminUserKey;
-                cmd.Parameters.Add(new NpgsqlParameter("i_ishostadmin", NpgsqlDbType.Boolean)).Value = isHostUser;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_roleprefix", NpgsqlDbType.Varchar)).Value = rolePrefix;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                
-                int res =  Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString)); 
-                forum_ns_recreate(connectionString);
-			    return res;
+				cmd.Parameters.Add(new NpgsqlParameter("i_ishostadmin", NpgsqlDbType.Boolean)).Value = isHostUser;
+				cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+				cmd.Parameters.Add(new NpgsqlParameter("i_roleprefix", NpgsqlDbType.Varchar)).Value = rolePrefix;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				
+				int res =  Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString)); 
+				forum_ns_recreate(connectionString);
+				return res;
 			}
 		}
 		/// <summary>
 		/// Deletes a board
 		/// </summary>
 		/// <param name="boardId">ID of board to delete</param>
-        static public void board_delete(string connectionString, object boardId)
+		static public void board_delete(string connectionString, object boardId)
 		{
 			using ( var cmd = PostgreDBAccess.GetCommand( "board_delete" ) )
 			{
@@ -1778,15 +1778,15 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="CategoryID">ID of category to delete</param>
 		/// <returns>Bool value indicationg if category was deleted</returns>
-        static public bool category_delete(string connectionString, object CategoryID)
+		static public bool category_delete(string connectionString, object CategoryID)
 		{
-		    using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "category_delete" ) )
+			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "category_delete" ) )
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = CategoryID;
-                bool res = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString) != 0;
-                forum_ns_recreate(connectionString);
+				bool res = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString) != 0;
+				forum_ns_recreate(connectionString);
 				return res;
 			}
 		}
@@ -1796,7 +1796,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">boardId</param>
 		/// <param name="categoryID">categotyID</param>
 		/// <returns>DataTable with a list of forums in a category</returns>
-        static public DataTable category_list(string connectionString, object boardId, object categoryID)
+		static public DataTable category_list(string connectionString, object boardId, object categoryID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "category_list" ) )
 			{
@@ -1805,7 +1805,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1815,7 +1815,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="userId"></param>
 		/// <param name="categoryID"></param>
 		/// <returns></returns>
-        static public DataTable category_listread(string connectionString, object boardId, object userId, object categoryID)
+		static public DataTable category_listread(string connectionString, object boardId, object userId, object categoryID)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "category_listread" ) )
 			{
@@ -1825,7 +1825,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1834,7 +1834,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable category_simplelist(string connectionString, int startID, int limit)
+		static public DataTable category_simplelist(string connectionString, int startID, int limit)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "category_simplelist" ) )
 			{
@@ -1843,7 +1843,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_startid", NpgsqlDbType.Integer)).Value = startID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_limit", NpgsqlDbType.Integer)).Value = limit;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1853,7 +1853,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="CategoryID">CategoryID so save changes to</param>
 		/// <param name="Name">Name of the category</param>
 		/// <param name="SortOrder">Sort Order</param>
-        static public void category_save(string connectionString, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
+		static public void category_save(string connectionString, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
 		{
 
 			int sortOrderChecked = 0;
@@ -1870,7 +1870,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_categoryimage", NpgsqlDbType.Varchar)).Value = categoryImage;
  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-                forum_ns_recreate(connectionString);
+				forum_ns_recreate(connectionString);
 			}
 		}
 		#endregion
@@ -1882,7 +1882,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="UserID">ID of user to verify</param>
 		/// <param name="Hash">Hash of user</param>
 		/// <param name="Email">email of user</param>
-        static public void checkemail_save(string connectionString, object userId, object hash, object email)
+		static public void checkemail_save(string connectionString, object userId, object hash, object email)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "checkemail_save" ) )
 			{
@@ -1891,7 +1891,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_iserid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_hash", NpgsqlDbType.Varchar)).Value = hash;
 				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -1901,7 +1901,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="hash">New hash</param>
 		/// <returns>DataTable with user information</returns>
-        static public DataTable checkemail_update(string connectionString, object hash)
+		static public DataTable checkemail_update(string connectionString, object hash)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "checkemail_update" ) )
 			{
@@ -1909,7 +1909,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_hash", NpgsqlDbType.Varchar)).Value = hash;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		/// <summary>
@@ -1917,7 +1917,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="email">Associated email</param>
 		/// <returns>DataTable with check email information</returns>
-        static public DataTable checkemail_list(string connectionString, object email)
+		static public DataTable checkemail_list(string connectionString, object email)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "checkemail_list" ) )
 			{
@@ -1925,7 +1925,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
@@ -1936,7 +1936,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Saves a vote in the database
 		/// </summary>
 		/// <param name="choiceID">Choice of the vote</param>
-        static public void choice_vote(string connectionString, object choiceID, object userId, object remoteIP)
+		static public void choice_vote(string connectionString, object choiceID, object userId, object remoteIP)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "choice_vote" ) )
 			{
@@ -1952,11 +1952,11 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 	   
 		#region yaf_EventLog
-        static public void eventlog_create(string connectionString, object userId, object source, object description)
-        {
-            eventlog_create(connectionString, userId, (object)source.GetType().ToString(), description, (object)0);
-        }
-        static public void eventlog_create(string connectionString, object userId, object source, object description, object type)
+		static public void eventlog_create(string connectionString, object userId, object source, object description)
+		{
+			eventlog_create(connectionString, userId, (object)source.GetType().ToString(), description, (object)0);
+		}
+		static public void eventlog_create(string connectionString, object userId, object source, object description, object type)
 		{
 			try
 			{
@@ -1971,7 +1971,7 @@ namespace YAF.Classes.Data.Postgre
 					cmd.Parameters.Add(new NpgsqlParameter("i_source", NpgsqlDbType.Varchar)).Value = source.ToString();
 					cmd.Parameters.Add(new NpgsqlParameter("i_description", NpgsqlDbType.Text)).Value = description.ToString();
 					cmd.Parameters.Add(new NpgsqlParameter("i_type", NpgsqlDbType.Integer)).Value = type;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+					cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 					
 					PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 				}
@@ -1983,25 +1983,25 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 
-        static public void eventlog_delete(int boardId, object pageuserId)
-        {
-            eventlog_delete(null, boardId, pageuserId);
-        }
-        /// <summary>
-        /// Deletes event log entry of given ID.
-        /// </summary>
-        /// <param name="eventLogID">ID of event log entry.</param>
-        static public void eventlog_delete(string connectionString, object eventLogID, object pageuserId)
-        {
-            eventlog_delete(connectionString,eventLogID, null, pageuserId);
-        }
+		static public void eventlog_delete(int boardId, object pageuserId)
+		{
+			eventlog_delete(null, boardId, pageuserId);
+		}
+		/// <summary>
+		/// Deletes event log entry of given ID.
+		/// </summary>
+		/// <param name="eventLogID">ID of event log entry.</param>
+		static public void eventlog_delete(string connectionString, object eventLogID, object pageuserId)
+		{
+			eventlog_delete(connectionString,eventLogID, null, pageuserId);
+		}
 
 		/// <summary>
 		/// Calls underlying stroed procedure for deletion of event log entry(ies).
 		/// </summary>
 		/// <param name="eventLogID">When not null, only given event log entry is deleted.</param>
 		/// <param name="boardId">Specifies board. It is ignored if eventLogID parameter is not null.</param>
-        static public void eventlog_delete(string connectionString, object eventLogID, object boardId, object pageUserId)
+		static public void eventlog_delete(string connectionString, object eventLogID, object boardId, object pageUserId)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "eventlog_delete" ) )
 			{
@@ -2009,44 +2009,44 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_eventlogid", NpgsqlDbType.Integer)).Value = eventLogID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Deletes events of a type.
-        /// </summary>
-        /// <param name="boardId">
-        /// The board Id.
-        /// </param>
-        /// <param name="pageUserId">
-        /// The page User Id.
-        /// </param>
-        public static void eventlog_deletebyuser(string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("eventlog_deletebyuser"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Deletes events of a type.
+		/// </summary>
+		/// <param name="boardId">
+		/// The board Id.
+		/// </param>
+		/// <param name="pageUserId">
+		/// The page User Id.
+		/// </param>
+		public static void eventlog_deletebyuser(string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("eventlog_deletebyuser"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// The eventlog_list.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <returns>
-        /// A list of events for the pageUserID access level. 
-        /// </returns>
-        public static DataTable eventlog_list(string connectionString, [NotNull] object boardID, [NotNull] object pageUserID, [NotNull] object maxRows, [NotNull] object maxDays, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object eventIDs)
+		/// <summary>
+		/// The eventlog_list.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <returns>
+		/// A list of events for the pageUserID access level. 
+		/// </returns>
+		public static DataTable eventlog_list(string connectionString, [NotNull] object boardID, [NotNull] object pageUserID, [NotNull] object maxRows, [NotNull] object maxDays, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object eventIDs)
 
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "eventlog_list" ) )
@@ -2054,110 +2054,110 @@ namespace YAF.Classes.Data.Postgre
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_maxrows", NpgsqlDbType.Integer)).Value = maxRows;
-                cmd.Parameters.Add(new NpgsqlParameter("i_maxdays", NpgsqlDbType.Integer)).Value = maxDays;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventids", NpgsqlDbType.Varchar)).Value = eventIDs;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_maxrows", NpgsqlDbType.Integer)).Value = maxRows;
+				cmd.Parameters.Add(new NpgsqlParameter("i_maxdays", NpgsqlDbType.Integer)).Value = maxDays;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventids", NpgsqlDbType.Varchar)).Value = eventIDs;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Saves access entry for a log type for a user.
-        /// </summary>
-        /// <param name="groupID">
-        /// The group Id.
-        /// </param>
-        /// <param name="eventTypeId">
-        /// The event Type Id.
-        /// </param>
-        /// <param name="eventTypeName">
-        /// The event Type Name.
-        /// </param>
-        public static void eventloggroupaccess_save(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_save"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Saves access entry for a log type for a user.
+		/// </summary>
+		/// <param name="groupID">
+		/// The group Id.
+		/// </param>
+		/// <param name="eventTypeId">
+		/// The event Type Id.
+		/// </param>
+		/// <param name="eventTypeName">
+		/// The event Type Name.
+		/// </param>
+		public static void eventloggroupaccess_save(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_save"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventtypename", NpgsqlDbType.Varchar)).Value = eventTypeName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_deleteaccess", NpgsqlDbType.Boolean)).Value = deleteAccess;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventtypename", NpgsqlDbType.Varchar)).Value = eventTypeName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_deleteaccess", NpgsqlDbType.Boolean)).Value = deleteAccess;
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Deletes event log access entries from table.
-        /// </summary>
-        /// <param name="groupID">
-        /// The group Id.
-        /// </param>
-        /// <param name="eventTypeId">
-        /// The event Type Id.
-        /// </param>
-        /// <param name="eventTypeName">
-        /// The event Type Name.
-        /// </param>
-        public static void eventloggroupaccess_delete(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_delete"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventtypename", NpgsqlDbType.Varchar)).Value = eventTypeName;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Deletes event log access entries from table.
+		/// </summary>
+		/// <param name="groupID">
+		/// The group Id.
+		/// </param>
+		/// <param name="eventTypeId">
+		/// The event Type Id.
+		/// </param>
+		/// <param name="eventTypeName">
+		/// The event Type Name.
+		/// </param>
+		public static void eventloggroupaccess_delete(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_delete"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventtypename", NpgsqlDbType.Varchar)).Value = eventTypeName;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Returns a list of access entries for a group.
-        /// </summary>
-        /// <param name="groupID">
-        /// The group Id.
-        /// </param>
-        /// <param name="eventTypeId">
-        /// The event Type Id.
-        /// </param>
-        /// <returns>Returns a list of access entries for a group.</returns>
-        public static DataTable eventloggroupaccess_list(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Returns a list of access entries for a group.
+		/// </summary>
+		/// <param name="groupID">
+		/// The group Id.
+		/// </param>
+		/// <param name="eventTypeId">
+		/// The event Type Id.
+		/// </param>
+		/// <returns>Returns a list of access entries for a group.</returns>
+		public static DataTable eventloggroupaccess_list(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("eventloggroupaccess_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_eventtypeid", NpgsqlDbType.Integer)).Value = eventTypeId;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Lists group for the board Id handy to display on the calling admin page. 
-        /// </summary>
-        /// <param name="boardId">
-        /// The board Id.
-        /// </param>
-        /// <returns>Lists group for the board Id handy to display on the calling admin page.
-        /// </returns>
-        public static DataTable group_eventlogaccesslist(string connectionString, [CanBeNull] object boardId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("group_eventlogaccesslist"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Lists group for the board Id handy to display on the calling admin page. 
+		/// </summary>
+		/// <param name="boardId">
+		/// The board Id.
+		/// </param>
+		/// <returns>Lists group for the board Id handy to display on the calling admin page.
+		/// </returns>
+		public static DataTable group_eventlogaccesslist(string connectionString, [CanBeNull] object boardId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("group_eventlogaccesslist"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 
 		#endregion yaf_EventLog
@@ -2166,7 +2166,7 @@ namespace YAF.Classes.Data.Postgre
 	   
 		#region yaf_Extensions
 
-        static public void extension_delete(string connectionString, object extensionId)
+		static public void extension_delete(string connectionString, object extensionId)
 		{
 			try
 			{
@@ -2186,7 +2186,7 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 		// Get Extension record by extensionId
-        static public DataTable extension_edit(string connectionString, object extensionId)
+		static public DataTable extension_edit(string connectionString, object extensionId)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "extension_edit" ) )
 			{
@@ -2194,20 +2194,20 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_extensionid", NpgsqlDbType.Integer)).Value = extensionId;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 
 		}
 
-        // Returns an extension list for a given Board
-        static public DataTable extension_list(string connectionString, object boardId)
-        {
-            return extension_list(connectionString,boardId, null);
+		// Returns an extension list for a given Board
+		static public DataTable extension_list(string connectionString, object boardId)
+		{
+			return extension_list(connectionString,boardId, null);
 
-        }
+		}
 
 		// Used to validate a file before uploading
-        static public DataTable extension_list(string connectionString, object boardId, object extension)
+		static public DataTable extension_list(string connectionString, object boardId, object extension)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "extension_list" ) )
 			{
@@ -2216,13 +2216,13 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_extension", NpgsqlDbType.Varchar)).Value = extension;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 
 		}
 
 		// Saves / creates extension
-        static public void extension_save(string connectionString, object extensionId, object boardId, object extension)
+		static public void extension_save(string connectionString, object extensionId, object boardId, object extension)
 		{
 			try
 			{
@@ -2246,35 +2246,35 @@ namespace YAF.Classes.Data.Postgre
 		
 		#region yaf_PollVote
 
-        /// <summary>
-        /// Checks for a vote in the database 
-        /// </summary>
-        /// <param name="pollGroupId">
-        /// The pollGroupid.
-        /// </param>
-        /// <param name="userId">
-        /// The userid.
-        /// </param>
-        /// <param name="remoteIp">
-        /// The remoteip.
-        /// </param>
-        public static DataTable pollgroup_votecheck(string connectionString, object pollGroupId, object userId, object remoteIp)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_votecheck"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
-                cmd.Parameters.AddWithValue("i_userid", userId);
-                cmd.Parameters.AddWithValue("i_remoteip", remoteIp);
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Checks for a vote in the database 
+		/// </summary>
+		/// <param name="pollGroupId">
+		/// The pollGroupid.
+		/// </param>
+		/// <param name="userId">
+		/// The userid.
+		/// </param>
+		/// <param name="remoteIp">
+		/// The remoteip.
+		/// </param>
+		public static DataTable pollgroup_votecheck(string connectionString, object pollGroupId, object userId, object remoteIp)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_votecheck"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
+				cmd.Parameters.AddWithValue("i_userid", userId);
+				cmd.Parameters.AddWithValue("i_remoteip", remoteIp);
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		/// <summary>
 		/// Checks for a vote in the database
 		/// </summary>
 		/// <param name="choiceID">Choice of the vote</param>
-        static public DataTable pollvote_check(string connectionString, object pollid, object userid, object remoteip)
+		static public DataTable pollvote_check(string connectionString, object pollid, object userid, object remoteip)
 		{
 			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "pollvote_check" ) )
 			{
@@ -2284,67 +2284,67 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userid;
 				cmd.Parameters.Add(new NpgsqlParameter("i_remoteip", NpgsqlDbType.Varchar)).Value = remoteip;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		#endregion        
 	   
 		#region yaf_Forum
 
-        /// <summary>
-        /// Get the list of recently logged in users.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board ID.
-        /// </param>
-        /// <param name="timeSinceLastLogin">
-        /// The time since last login in minutes.
-        /// </param>
-        /// <param name="styledNicks">
-        /// The styled Nicks.
-        /// </param>
-        /// <returns>
-        /// The list of users in Datatable format.
-        /// </returns>
-        public static DataTable recent_users(string connectionString, object boardID, int timeSinceLastLogin, object styledNicks)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("recent_users"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Get the list of recently logged in users.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board ID.
+		/// </param>
+		/// <param name="timeSinceLastLogin">
+		/// The time since last login in minutes.
+		/// </param>
+		/// <param name="styledNicks">
+		/// The styled Nicks.
+		/// </param>
+		/// <returns>
+		/// The list of users in Datatable format.
+		/// </returns>
+		public static DataTable recent_users(string connectionString, object boardID, int timeSinceLastLogin, object styledNicks)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("recent_users"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_timesincelastlogin", NpgsqlDbType.Integer)).Value = timeSinceLastLogin;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_timesincelastlogin", NpgsqlDbType.Integer)).Value = timeSinceLastLogin;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// List of categories accessible for an active user
-        /// </summary>
-        /// <param name="boardId">The board id.</param>
-        /// <param name="userId">The user Id.</param>
-        /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
-        static public DataTable forum_categoryaccess_activeuser(string connectionString, object boardId, object userId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("forum_categoryaccess_activeuser"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// List of categories accessible for an active user
+		/// </summary>
+		/// <param name="boardId">The board id.</param>
+		/// <param name="userId">The user Id.</param>
+		/// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
+		static public DataTable forum_categoryaccess_activeuser(string connectionString, object boardId, object userId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("forum_categoryaccess_activeuser"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
 		//ABOT NEW 16.04.04
 		/// <summary>
 		/// Deletes attachments out of a entire forum
 		/// </summary>
 		/// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
-        static private void forum_deleteAttachments(string connectionString, object forumID)
+		static private void forum_deleteAttachments(string connectionString, object forumID)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_listtopics"))
 			{
@@ -2356,7 +2356,7 @@ namespace YAF.Classes.Data.Postgre
 				{
 					foreach (DataRow row in dt.Rows.Cast<DataRow>().Where(row => row != null && row["TopicID"] != DBNull.Value))
 					{
-					    topic_delete(connectionString, row["TopicID"], true );
+						topic_delete(connectionString, row["TopicID"], true );
 					}
 				}
 			}
@@ -2368,7 +2368,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="ForumID">forum to delete</param>
 		/// <returns>bool to indicate that forum has been deleted</returns>
-        static public bool forum_delete(string connectionString, object forumID)
+		static public bool forum_delete(string connectionString, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listSubForums"))
 			{
@@ -2376,57 +2376,57 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 
-			    if (!(PostgreDBAccess.ExecuteScalar(cmd,connectionString) is DBNull))
-			        return false;
-			    else
-			    {
-			        forum_deleteAttachments(connectionString, forumID);
-			        using (NpgsqlCommand cmd_new = PostgreDBAccess.GetCommand("forum_delete"))
-			        {
-			            cmd_new.CommandType = CommandType.StoredProcedure;
-			            cmd_new.CommandTimeout = 99999;
-			            cmd_new.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+				if (!(PostgreDBAccess.ExecuteScalar(cmd,connectionString) is DBNull))
+					return false;
+				else
+				{
+					forum_deleteAttachments(connectionString, forumID);
+					using (NpgsqlCommand cmd_new = PostgreDBAccess.GetCommand("forum_delete"))
+					{
+						cmd_new.CommandType = CommandType.StoredProcedure;
+						cmd_new.CommandTimeout = 99999;
+						cmd_new.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 
-			            PostgreDBAccess.ExecuteNonQuery(cmd_new,connectionString);
-			        }
-                    forum_ns_recreate(connectionString);
-			        return true;
-			    }
+						PostgreDBAccess.ExecuteNonQuery(cmd_new,connectionString);
+					}
+					forum_ns_recreate(connectionString);
+					return true;
+				}
 			}
 		}
 
-        public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("forum_listSubForums"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumOldID;
+		public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("forum_listSubForums"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumOldID;
 
-                if (!(PostgreDBAccess.ExecuteScalar(cmd,connectionString) is DBNull))
-                {
-                    return false;
-                }
+				if (!(PostgreDBAccess.ExecuteScalar(cmd,connectionString) is DBNull))
+				{
+					return false;
+				}
 
-                using (var cmd_new = PostgreDBAccess.GetCommand("forum_move"))
-                {
-                    cmd_new.CommandType = CommandType.StoredProcedure;
-                    cmd_new.CommandTimeout = 99999;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_forumoldid", NpgsqlDbType.Integer)).Value = forumOldID;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_forumnewid", NpgsqlDbType.Integer)).Value = forumNewID;
-                   
-                    PostgreDBAccess.ExecuteNonQuery(cmd_new,connectionString);
-                }
+				using (var cmd_new = PostgreDBAccess.GetCommand("forum_move"))
+				{
+					cmd_new.CommandType = CommandType.StoredProcedure;
+					cmd_new.CommandTimeout = 99999;
+					cmd.Parameters.Add(new NpgsqlParameter("i_forumoldid", NpgsqlDbType.Integer)).Value = forumOldID;
+					cmd.Parameters.Add(new NpgsqlParameter("i_forumnewid", NpgsqlDbType.Integer)).Value = forumNewID;
+				   
+					PostgreDBAccess.ExecuteNonQuery(cmd_new,connectionString);
+				}
 
-                return true;
-            }
-        }
+				return true;
+			}
+		}
 		/// <summary>
 		/// Lists all moderated forums for a user
 		/// </summary>
 		/// <param name="boardId">board if of moderators</param>
 		/// <param name="userId">user id</param>
 		/// <returns>DataTable of moderated forums</returns>
-        static public DataTable forum_listallMyModerated(string connectionString, object boardId, object userId)
+		static public DataTable forum_listallMyModerated(string connectionString, object boardId, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listallmymoderated"))
 			{
@@ -2445,7 +2445,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">boardId</param>
 		/// <param name="ForumID">forumID</param>
 		/// <returns>DataTable with list of topics from a forum</returns>
-        static public DataTable forum_list(string connectionString, object boardId, object forumID)
+		static public DataTable forum_list(string connectionString, object boardId, object forumID)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_list"))
 			{
@@ -2459,24 +2459,24 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Gets a max id of forums.
-        /// </summary>
-        /// <param name="boardID">
-        /// boardID
-        /// </param>
-        /// <returns>
-        /// Max forum id for a board
-        /// </returns>
-        public static int forum_maxid(string connectionString, [NotNull] object boardID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("forum_maxid"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
-                return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
-            }
-        }
+		/// <summary>
+		/// Gets a max id of forums.
+		/// </summary>
+		/// <param name="boardID">
+		/// boardID
+		/// </param>
+		/// <returns>
+		/// Max forum id for a board
+		/// </returns>
+		public static int forum_maxid(string connectionString, [NotNull] object boardID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("forum_maxid"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
+				return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
+			}
+		}
 
 		/// <summary>
 		/// Lists all forums accessible to a user
@@ -2485,7 +2485,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="userId">ID of user</param>
 		/// <param name="startAt">startAt ID</param>
 		/// <returns>DataTable of all accessible forums</returns>
-        static public DataTable forum_listall(string connectionString, object boardId, object userId, object startAt, bool returnAll)
+		static public DataTable forum_listall(string connectionString, object boardId, object userId, object startAt, bool returnAll)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_listall"))
 			{
@@ -2495,54 +2495,54 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_root", NpgsqlDbType.Integer)).Value = startAt;
-                cmd.Parameters.Add(new NpgsqlParameter("i_returnall", NpgsqlDbType.Boolean)).Value = returnAll;
+				cmd.Parameters.Add(new NpgsqlParameter("i_returnall", NpgsqlDbType.Boolean)).Value = returnAll;
 				var  dd  = PostgreDBAccess.GetData(cmd,connectionString);
-			    return dd;
+				return dd;
 			}
 		}
 
 
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
-        {
-            return forum_listall( connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
-        }
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, List<int> startForumId)
-        {
-            var allForums = ForumListAll(connectionString, boardId, userId);
+		public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
+		{
+			return forum_listall( connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
+		}
+		public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId, List<int> startForumId)
+		{
+			var allForums = ForumListAll(connectionString, boardId, userId);
 
-            var forumIds = new List<int>();
-            var tempForumIds = new List<int>();
+			var forumIds = new List<int>();
+			var tempForumIds = new List<int>();
 
-            int ff = 0;
-            if (startForumId.Any())
-            {
-                ff = startForumId.First(s => s > -1);
-            }
-            forumIds.Add(ff);
-            tempForumIds.Add(ff);
+			int ff = 0;
+			if (startForumId.Any())
+			{
+				ff = startForumId.First(s => s > -1);
+			}
+			forumIds.Add(ff);
+			tempForumIds.Add(ff);
 
-            IEnumerable<TypedForumListAll> typedForumListAlls = allForums as List<TypedForumListAll> ?? allForums.ToList();
-            while (true)
-            {
-                var ids = tempForumIds;
-                var temp = typedForumListAlls.Where(f => ids.Contains(f.ParentID ?? 0));
+			IEnumerable<TypedForumListAll> typedForumListAlls = allForums as List<TypedForumListAll> ?? allForums.ToList();
+			while (true)
+			{
+				var ids = tempForumIds;
+				var temp = typedForumListAlls.Where(f => ids.Contains(f.ParentID ?? 0));
 
-                var forumListAlls = temp as List<TypedForumListAll> ?? temp.ToList();
-                if (!forumListAlls.Any())
-                {
-                    break;
-                }
+				var forumListAlls = temp as List<TypedForumListAll> ?? temp.ToList();
+				if (!forumListAlls.Any())
+				{
+					break;
+				}
 
-                // replace temp forum ids with these..
-                tempForumIds = forumListAlls.Select(f => f.ForumID ?? 0).Distinct().ToList();
+				// replace temp forum ids with these..
+				tempForumIds = forumListAlls.Select(f => f.ForumID ?? 0).Distinct().ToList();
 
-                // add them..
-                forumIds.AddRange(tempForumIds);
-            }
+				// add them..
+				forumIds.AddRange(tempForumIds);
+			}
 
-            // return filtered forums..
-            return typedForumListAlls.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
-        }
+			// return filtered forums..
+			return typedForumListAlls.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
+		}
 
 
 		/// <summary>
@@ -2551,7 +2551,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable forum_simplelist(string connectionString, int startID, int limit)
+		static public DataTable forum_simplelist(string connectionString, int startID, int limit)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_simplelist"))
 			{
@@ -2566,82 +2566,82 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public void forum_sort_list_recursive(DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent)
-        {
-            foreach (DataRow row in listSource.Rows)
-            {
-                // see if this is a root-forum
-                if (row["ParentID"] == DBNull.Value)
-                    row["ParentID"] = 0;
+		static public void forum_sort_list_recursive(DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent)
+		{
+			foreach (DataRow row in listSource.Rows)
+			{
+				// see if this is a root-forum
+				if (row["ParentID"] == DBNull.Value)
+					row["ParentID"] = 0;
 
-                if ((int) row["ParentID"] != parentID) continue;
+				if ((int) row["ParentID"] != parentID) continue;
 
-                DataRow newRow;
-                if ((int)row["CategoryID"] != categoryID)
-                {
-                    categoryID = (int)row["CategoryID"];
+				DataRow newRow;
+				if ((int)row["CategoryID"] != categoryID)
+				{
+					categoryID = (int)row["CategoryID"];
 
-                    newRow = listDestination.NewRow();
-                    newRow["ForumID"] = -categoryID;		// Ederon : 9/4/2007
-                    newRow["Title"] = string.Format("{0}", row["Category"].ToString());
-                    listDestination.Rows.Add(newRow);
-                }
+					newRow = listDestination.NewRow();
+					newRow["ForumID"] = -categoryID;		// Ederon : 9/4/2007
+					newRow["Title"] = string.Format("{0}", row["Category"].ToString());
+					listDestination.Rows.Add(newRow);
+				}
 
-                string sIndent = "";
+				string sIndent = "";
 
-                for (int j = 0; j < currentIndent; j++)
-                    sIndent += "--";
+				for (int j = 0; j < currentIndent; j++)
+					sIndent += "--";
 
-                // import the row into the destination
-                newRow = listDestination.NewRow();
+				// import the row into the destination
+				newRow = listDestination.NewRow();
 
-                newRow["ForumID"] = row["ForumID"];
-                newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+				newRow["ForumID"] = row["ForumID"];
+				newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
 
-                listDestination.Rows.Add(newRow);
+				listDestination.Rows.Add(newRow);
 
-                // recurse through the list..
-                forum_sort_list_recursive(listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1);
-            }
-        }
+				// recurse through the list..
+				forum_sort_list_recursive(listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1);
+			}
+		}
 
-        static public DataTable forum_sort_list(DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow)
-        {
-            var listDestination = new DataTable {TableName = "forum_sort_list"};
-            listDestination.Columns.Add("ForumID", typeof(String));
-            listDestination.Columns.Add("Title", typeof(String));
+		static public DataTable forum_sort_list(DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow)
+		{
+			var listDestination = new DataTable {TableName = "forum_sort_list"};
+			listDestination.Columns.Add("ForumID", typeof(String));
+			listDestination.Columns.Add("Title", typeof(String));
 
-            if (emptyFirstRow)
-            {
-                DataRow blankRow = listDestination.NewRow();
-                blankRow["ForumID"] = string.Empty;
-                blankRow["Title"] = string.Empty;
-                listDestination.Rows.Add(blankRow);
-            }
-            // filter the forum list -- not sure if this code actually works
-            DataView dv = listSource.DefaultView;
+			if (emptyFirstRow)
+			{
+				DataRow blankRow = listDestination.NewRow();
+				blankRow["ForumID"] = string.Empty;
+				blankRow["Title"] = string.Empty;
+				listDestination.Rows.Add(blankRow);
+			}
+			// filter the forum list -- not sure if this code actually works
+			DataView dv = listSource.DefaultView;
 
-            if (forumidExclusions != null && forumidExclusions.Length > 0)
-            {
-                string strExclusions = "";
-                bool bFirst = true;
+			if (forumidExclusions != null && forumidExclusions.Length > 0)
+			{
+				string strExclusions = "";
+				bool bFirst = true;
 
-                foreach (int forumId in forumidExclusions)
-                {
-                    if (bFirst) bFirst = false;
-                    else strExclusions += ",";
+				foreach (int forumId in forumidExclusions)
+				{
+					if (bFirst) bFirst = false;
+					else strExclusions += ",";
 
-                    strExclusions += forumId.ToString();
-                }
+					strExclusions += forumId.ToString();
+				}
 
-                dv.RowFilter = string.Format("ForumID NOT IN ({0})", strExclusions);
-                dv.ApplyDefaultSort = true;
-            }
+				dv.RowFilter = string.Format("ForumID NOT IN ({0})", strExclusions);
+				dv.ApplyDefaultSort = true;
+			}
 
-            forum_sort_list_recursive(dv.ToTable(), listDestination, parentID, categoryID, startingIndent);
+			forum_sort_list_recursive(dv.ToTable(), listDestination, parentID, categoryID, startingIndent);
 
-            return listDestination;
-        }
+			return listDestination;
+		}
 
 		/// <summary>
 		/// Lists all forums within a given subcategory
@@ -2650,7 +2650,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="CategoryID">CategoryID</param>
 		/// <param name="EmptyFirstRow">EmptyFirstRow</param>
 		/// <returns>DataTable with list</returns>
-        static public DataTable forum_listall_fromCat(string connectionString, object boardId, object categoryID, bool emptyFirstRow)
+		static public DataTable forum_listall_fromCat(string connectionString, object boardId, object categoryID, bool emptyFirstRow)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listall_fromCat"))
 			{
@@ -2664,7 +2664,7 @@ namespace YAF.Classes.Data.Postgre
 
 				using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString))
 				{
-                    return Db.forum_sort_list(dt, 0, intCategoryId, 0, null, emptyFirstRow);
+					return Db.forum_sort_list(dt, 0, intCategoryId, 0, null, emptyFirstRow);
 				}
 			}
 		}
@@ -2673,32 +2673,32 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="forumID"></param>
 		/// <returns></returns>
-        static public DataTable forum_listpath(string connectionString, object forumID)
-        {
-            if (!Config.LargeForumTree)
-            {
+		static public DataTable forum_listpath(string connectionString, object forumID)
+		{
+			if (!Config.LargeForumTree)
+			{
 
-                using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listpath"))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+				using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_listpath"))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+					cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 
-                    return PostgreDBAccess.GetData(cmd,connectionString);
-                }
-            }
-            else
-            {
-                using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_listpath"))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+					return PostgreDBAccess.GetData(cmd,connectionString);
+				}
+			}
+			else
+			{
+				using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_listpath"))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+					cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 
-                    return PostgreDBAccess.GetData(cmd,connectionString);
-                }
-            }
-        }
+					return PostgreDBAccess.GetData(cmd,connectionString);
+				}
+			}
+		}
 		/// <summary>
 		/// Lists read topics
 		/// </summary>
@@ -2707,8 +2707,8 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="CategoryID">CategoryID</param>
 		/// <param name="parentID">ParentID</param>
 		/// <returns>DataTable with list</returns>
-        static public DataTable forum_listread(string connectionString, object boardID,
-            object userID, object categoryID, object parentID, object useStyledNicks, [CanBeNull]bool findLastRead)
+		static public DataTable forum_listread(string connectionString, object boardID,
+			object userID, object categoryID, object parentID, object useStyledNicks, [CanBeNull]bool findLastRead)
 		{                      
 		
 		  //  DataTable dt1 = null;
@@ -2716,42 +2716,42 @@ namespace YAF.Classes.Data.Postgre
 
 			if (categoryID == null) { categoryID = DBNull.Value; }
 			if (parentID == null) { parentID = DBNull.Value; }
-            if (!Config.LargeForumTree)
-            {
-                using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("forum_listread"))
-                {
-                    cmd1.CommandType = CommandType.StoredProcedure;
+			if (!Config.LargeForumTree)
+			{
+				using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("forum_listread"))
+				{
+					cmd1.CommandType = CommandType.StoredProcedure;
 
-                    cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                    cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
-                    cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
-                    cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+					cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+					cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
+					cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
+					cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
+					cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+					cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
 
-                    // dt1 = 
-                    return PostgreDBAccess.GetData(cmd1,false,connectionString);
-                    // return dt1;
-                }
-            }
-            else
-            {
-                using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("forum_ns_listread"))
-                {
-                    cmd1.CommandType = CommandType.StoredProcedure;
+					// dt1 = 
+					return PostgreDBAccess.GetData(cmd1,false,connectionString);
+					// return dt1;
+				}
+			}
+			else
+			{
+				using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("forum_ns_listread"))
+				{
+					cmd1.CommandType = CommandType.StoredProcedure;
 
-                    cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                    cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
-                    cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
-                    cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+					cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+					cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
+					cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
+					cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
+					cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+					cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
 
-                    // dt1 = 
-                    return PostgreDBAccess.GetData(cmd1,false,connectionString);
-                    // return dt1;
-                }
-            }
+					// dt1 = 
+					return PostgreDBAccess.GetData(cmd1,false,connectionString);
+					// return dt1;
+				}
+			}
 
 /*
 			//Add extra columns to data table
@@ -2802,13 +2802,13 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">BoardID</param>
 		/// <param name="userId">UserID</param>
 		/// <returns>DataSet with categories</returns>
-        static public DataSet forum_moderatelist(string connectionString, object userId, object boardId)
+		static public DataSet forum_moderatelist(string connectionString, object userId, object boardId)
 		{
-            using (var connMan = new PostgreDbConnectionManager(connectionString))
+			using (var connMan = new PostgreDbConnectionManager(connectionString))
 			{
 				using (var ds = new DataSet())
 				{
-                    using (var da = new NpgsqlDataAdapter(PostgreDBAccess.GetObjectName("category_list"), connMan.OpenDBConnection(connectionString)))
+					using (var da = new NpgsqlDataAdapter(PostgreDBAccess.GetObjectName("category_list"), connMan.OpenDBConnection(connectionString)))
 					{
 						using (var trans = da.SelectCommand.Connection.BeginTransaction(PostgreDBAccess.IsolationLevel))
 						{
@@ -2830,7 +2830,7 @@ namespace YAF.Classes.Data.Postgre
 							dtForumListSorted.TableName = PostgreDBAccess.GetObjectName("Forum");
 							ds.Tables.Add(dtForumListSorted);
 							dtForumListSorted.Dispose();
-                            Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
+							Db.forum_list_sort_basic( ds.Tables[PostgreDBAccess.GetObjectName("ForumUnsorted")], ds.Tables[PostgreDBAccess.GetObjectName("Forum")], 0, 0);
 							ds.Tables.Remove(PostgreDBAccess.GetObjectName("ForumUnsorted"));
 							// vzrus: Remove here all forums with no reports. Would be better to do it in query..
 							// Array to write categories numbers
@@ -2875,41 +2875,41 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public DataTable forum_moderators(string connectionString, bool useStyledNicks)
+		static public DataTable forum_moderators(string connectionString, bool useStyledNicks)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_moderators"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// The moderators_team_list
-        /// </summary>
-        /// <param name="useStyledNicks">
-        /// The use Styled Nicks.
-        /// </param>
-        /// <returns>
-        ///  Returns Data Table with all Mods
-        /// </returns>
-        public static DataTable moderators_team_list(string connectionString, bool useStyledNicks)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("moderators_team_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// The moderators_team_list
+		/// </summary>
+		/// <param name="useStyledNicks">
+		/// The use Styled Nicks.
+		/// </param>
+		/// <returns>
+		///  Returns Data Table with all Mods
+		/// </returns>
+		public static DataTable moderators_team_list(string connectionString, bool useStyledNicks)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("moderators_team_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		/// <summary>
 		/// Updates topic and post count and last topic for specified forum
 		/// </summary>
 		/// <param name="boardId">BoardID</param>
 		/// <param name="forumID">If null, all forums in board are updated</param>
-        static public void forum_resync(string connectionString, object boardId, object forumID)
+		static public void forum_resync(string connectionString, object boardId, object forumID)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("forum_resync"))
 			{
@@ -2923,7 +2923,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public long forum_save(string connectionString, object forumID, 
+		static public long forum_save(string connectionString, object forumID, 
 			object categoryID, object parentID, object name, 
 			object description, object sortOrder, object locked, 
 			object hidden, object isTest, object moderated, 
@@ -2969,8 +2969,8 @@ namespace YAF.Classes.Data.Postgre
 				{ return 0; }
 				else
 				{
-				    forum_ns_recreate(connectionString);
-				    return long.Parse(resultop);
+					forum_ns_recreate(connectionString);
+					return long.Parse(resultop);
 				}
 			}
 		}
@@ -2982,7 +2982,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="forumID"></param>
 		/// <param name="parentID"></param>
 		/// <returns>Integer value for a found dependency</returns>
-        public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
+		public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("SELECT " + PostgreDBAccess.GetObjectName("forum_save_parentschecker") + "(@ForumID,@ParentID)", true))
 			{
@@ -2994,23 +2994,23 @@ namespace YAF.Classes.Data.Postgre
 
 		}
 
-        /// <summary>
-        /// Recreate tree.
-        /// </summary>
-        static public void forum_ns_recreate(string connectionString)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_recreate"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Recreate tree.
+		/// </summary>
+		static public void forum_ns_recreate(string connectionString)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forum_ns_recreate"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 			   
 
 		#endregion
 	   
 		#region yaf_ForumAccess
-        static public DataTable forumaccess_list(string connectionString, object forumID)
+		static public DataTable forumaccess_list(string connectionString, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forumaccess_list"))
 			{
@@ -3021,7 +3021,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void forumaccess_save(string connectionString, object forumID, object groupID, object accessMaskID)
+		static public void forumaccess_save(string connectionString, object forumID, object groupID, object accessMaskID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forumaccess_save"))
 			{
@@ -3034,7 +3034,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable forumaccess_group(string connectionString, object groupID)
+		static public DataTable forumaccess_group(string connectionString, object groupID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("forumaccess_group"))
 			{
@@ -3048,7 +3048,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 	   
 		#region yaf_Group
-        static public DataTable group_list(string connectionString, object boardId, object groupID)
+		static public DataTable group_list(string connectionString, object boardId, object groupID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_list"))
 			{
@@ -3060,7 +3060,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void group_delete(string connectionString, object groupID)
+		static public void group_delete(string connectionString, object groupID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_delete"))
 			{
@@ -3071,7 +3071,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable group_member(string connectionString, object boardId, object userId)
+		static public DataTable group_member(string connectionString, object boardId, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_member"))
 			{
@@ -3085,7 +3085,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public long group_save(string connectionString, object groupID, object boardId, object name, 
+		static public long group_save(string connectionString, object groupID, object boardId, object name, 
 			object isAdmin, object isGuest, object isStart, object isModerator,
 			object accessMaskID, object pmLimit, object style, object sortOrder,
 			object description,
@@ -3125,7 +3125,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 	   
 		#region yaf_Mail
-        static public void mail_delete(string connectionString, object mailID)
+		static public void mail_delete(string connectionString, object mailID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("mail_delete"))
 			{
@@ -3137,34 +3137,34 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-    /// <summary>
-    /// The mail_list.
-    /// </summary>
-    /// <param name="processId">
-    /// The process id.
-    /// </param>
-    /// <returns>
-    /// </returns>
-        public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
-    {
-        DateTime dtm = DateTime.UtcNow;
-        using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("mail_listupdate"))
-        {
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new NpgsqlParameter("i_processid", NpgsqlDbType.Integer)).Value = processId;
-            cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = dtm;
-            PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-        }
-        using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("mail_list"))
-        {
-            cmd1.CommandType = CommandType.StoredProcedure;
-            cmd1.Parameters.Add(new NpgsqlParameter("i_processid", NpgsqlDbType.Integer)).Value = processId;
-            cmd1.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = dtm;
-            return PostgreDBAccess.GetData(cmd1,connectionString).SelectTypedList(x => new TypedMailList(x));
-        }
-    }
+	/// <summary>
+	/// The mail_list.
+	/// </summary>
+	/// <param name="processId">
+	/// The process id.
+	/// </param>
+	/// <returns>
+	/// </returns>
+		public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
+	{
+		DateTime dtm = DateTime.UtcNow;
+		using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("mail_listupdate"))
+		{
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.Add(new NpgsqlParameter("i_processid", NpgsqlDbType.Integer)).Value = processId;
+			cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = dtm;
+			PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+		}
+		using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand("mail_list"))
+		{
+			cmd1.CommandType = CommandType.StoredProcedure;
+			cmd1.Parameters.Add(new NpgsqlParameter("i_processid", NpgsqlDbType.Integer)).Value = processId;
+			cmd1.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = dtm;
+			return PostgreDBAccess.GetData(cmd1,connectionString).SelectTypedList(x => new TypedMailList(x));
+		}
+	}
 
-        static public void mail_createwatch(string connectionString, object topicID, object from, object fromName, object subject, object body, object bodyHtml, object userId)
+		static public void mail_createwatch(string connectionString, object topicID, object from, object fromName, object subject, object body, object bodyHtml, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("mail_createwatch"))
 			{
@@ -3180,12 +3180,12 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_body", NpgsqlDbType.Text)).Value = body;
 				cmd.Parameters.Add(new NpgsqlParameter("i_bodyhtml", NpgsqlDbType.Text)).Value = bodyHtml;
 				cmd.Parameters.Add(new NpgsqlParameter("i_iserid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 							 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-    static public void mail_create(string connectionString, object from, object fromName, object to, object toName, object subject, object body, object bodyHtml)
+	static public void mail_create(string connectionString, object from, object fromName, object to, object toName, object subject, object body, object bodyHtml)
 		{
    
 
@@ -3204,7 +3204,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_subject", NpgsqlDbType.Varchar)).Value = subject;
 				cmd.Parameters.Add(new NpgsqlParameter("i_body", NpgsqlDbType.Text)).Value = body;
 				cmd.Parameters.Add(new NpgsqlParameter("i_bodyhtml", NpgsqlDbType.Text)).Value = bodyHtml;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 							  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -3213,58 +3213,58 @@ namespace YAF.Classes.Data.Postgre
 		
 		#region yaf_Message
 
-    static public DataTable post_list(string connectionString, 
-            object topicId, 
-            object currentUserID,
-            object authorUserID, 
-            object updateViewCount, 
-            bool showDeleted, 
-            bool styledNicks,
-            bool showReputation,
-            DateTime sincePostedDate,
-            DateTime toPostedDate,
-            DateTime sinceEditedDate,
-            DateTime toEditedDate,
-            int pageIndex,
-            int pageSize,
-            int sortPosted,
-            int sortEdited,
-            int sortPosition,
-            bool showThanks,
-            int messagePosition)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("post_list"))
-            {
-                if (updateViewCount == null) { updateViewCount = 1; }
-                //if (showDeleted != false || showDeleted != true) { showDeleted = true; }
+	static public DataTable post_list(string connectionString, 
+			object topicId, 
+			object currentUserID,
+			object authorUserID, 
+			object updateViewCount, 
+			bool showDeleted, 
+			bool styledNicks,
+			bool showReputation,
+			DateTime sincePostedDate,
+			DateTime toPostedDate,
+			DateTime sinceEditedDate,
+			DateTime toEditedDate,
+			int pageIndex,
+			int pageSize,
+			int sortPosted,
+			int sortEdited,
+			int sortPosition,
+			bool showThanks,
+			int messagePosition)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("post_list"))
+			{
+				if (updateViewCount == null) { updateViewCount = 1; }
+				//if (showDeleted != false || showDeleted != true) { showDeleted = true; }
 
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = currentUserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_authoruserid", NpgsqlDbType.Integer)).Value = authorUserID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = currentUserID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_authoruserid", NpgsqlDbType.Integer)).Value = authorUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_updateviewcount", NpgsqlDbType.Smallint)).Value = updateViewCount;
 				cmd.Parameters.Add(new NpgsqlParameter("i_showdeleted", NpgsqlDbType.Boolean)).Value = showDeleted;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = styledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showreputation", NpgsqlDbType.Boolean)).Value = showReputation;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sinceposteddate", NpgsqlDbType.TimestampTZ)).Value = sincePostedDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_toposteddate", NpgsqlDbType.TimestampTZ)).Value = toPostedDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sinceediteddate", NpgsqlDbType.TimestampTZ)).Value = sinceEditedDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_toediteddate", NpgsqlDbType.TimestampTZ)).Value = toEditedDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortposted", NpgsqlDbType.Integer)).Value = sortPosted;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortedited", NpgsqlDbType.Integer)).Value = sortEdited;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortposition", NpgsqlDbType.Integer)).Value = sortPosition;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showthanks", NpgsqlDbType.Boolean)).Value = showThanks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageposition", NpgsqlDbType.Integer)).Value = messagePosition;
-                cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-               
+				cmd.Parameters.Add(new NpgsqlParameter("i_showreputation", NpgsqlDbType.Boolean)).Value = showReputation;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sinceposteddate", NpgsqlDbType.TimestampTZ)).Value = sincePostedDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_toposteddate", NpgsqlDbType.TimestampTZ)).Value = toPostedDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sinceediteddate", NpgsqlDbType.TimestampTZ)).Value = sinceEditedDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_toediteddate", NpgsqlDbType.TimestampTZ)).Value = toEditedDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortposted", NpgsqlDbType.Integer)).Value = sortPosted;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortedited", NpgsqlDbType.Integer)).Value = sortEdited;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortposition", NpgsqlDbType.Integer)).Value = sortPosition;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showthanks", NpgsqlDbType.Boolean)).Value = showThanks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageposition", NpgsqlDbType.Integer)).Value = messagePosition;
+				cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+			   
 				return PostgreDBAccess.GetData(cmd,connectionString);
 				
 			}
 		}
-    static public DataTable post_list_reverse10(string connectionString, object topicID)
+	static public DataTable post_list_reverse10(string connectionString, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("post_list_reverse10"))
 			{
@@ -3294,7 +3294,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </param>
 		/// <returns>
 		/// </returns>
-        public static DataTable post_alluser(string connectionString, object boardid, object userid, object pageUserID, object topCount)
+		public static DataTable post_alluser(string connectionString, object boardid, object userid, object pageUserID, object topCount)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("post_alluser"))
 			{
@@ -3311,11 +3311,11 @@ namespace YAF.Classes.Data.Postgre
 	   
 
 		// gets list of replies to message
-        static public DataTable message_getRepliesList(string connectionString, object messageID)
+		static public DataTable message_getRepliesList(string connectionString, object messageID)
 		{
 			DataTable list = new DataTable();
 
-            list.Columns.Add("MessageID", typeof(int));
+			list.Columns.Add("MessageID", typeof(int));
 			list.Columns.Add("Posted", typeof(DateTime));
 			list.Columns.Add("Subject", typeof(string));
 			list.Columns.Add("Message", typeof(string));
@@ -3335,7 +3335,7 @@ namespace YAF.Classes.Data.Postgre
 				{
 					DataRow newRow = list.NewRow();
 					DataRow row = dtr.Rows[i];
-                    newRow["MessageID"] = row["MessageID"];
+					newRow["MessageID"] = row["MessageID"];
 					newRow["Posted"] = row["Posted"];
 					newRow["Subject"] = row["Subject"];
 					newRow["Message"] = row["Message"];
@@ -3344,14 +3344,14 @@ namespace YAF.Classes.Data.Postgre
 					newRow["UserName"] = row["UserName"];
 					newRow["Signature"] = row["Signature"];
 					list.Rows.Add(newRow);
-                    message_getRepliesList_populate(connectionString, dtr, list, (int)row["MessageId"]);
+					message_getRepliesList_populate(connectionString, dtr, list, (int)row["MessageId"]);
 				}
 				return list;
 			}
 		}
 
 		// gets list of nested replies to message
-        static private void message_getRepliesList_populate(string connectionString, DataTable listsource, DataTable list, int messageID)
+		static private void message_getRepliesList_populate(string connectionString, DataTable listsource, DataTable list, int messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_reply_list"))
 			{
@@ -3364,9 +3364,9 @@ namespace YAF.Classes.Data.Postgre
 
 				for (int i = 0; i < dtr.Rows.Count; i++)
 				{
-                    DataRow row = dtr.Rows[i];
-                    DataRow newRow = list.NewRow();
-                    newRow["MessageID"] = row["MessageID"];
+					DataRow row = dtr.Rows[i];
+					DataRow newRow = list.NewRow();
+					newRow["MessageID"] = row["MessageID"];
 					newRow["Posted"] = row["Posted"];
 					newRow["Subject"] = row["Subject"];
 					newRow["Message"] = row["Message"];
@@ -3375,14 +3375,14 @@ namespace YAF.Classes.Data.Postgre
 					newRow["UserName"] = row["UserName"];
 					newRow["Signature"] = row["Signature"];
 					list.Rows.Add(newRow);
-                    message_getRepliesList_populate(connectionString, dtr, list, (int)row["MessageId"]);
+					message_getRepliesList_populate(connectionString, dtr, list, (int)row["MessageId"]);
 				}
 			}
 
 		}
 
 		//creates new topic, using some parameters from message itself
-        static public long topic_create_by_message(string connectionString, object messageID, object forumId, object newTopicSubj)
+		static public long topic_create_by_message(string connectionString, object messageID, object forumId, object newTopicSubj)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_create_by_message"))
 			{
@@ -3391,15 +3391,15 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_subject", NpgsqlDbType.Varchar)).Value = newTopicSubj;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
 				//return long.Parse(dt.Rows[0]["TopicID"].ToString());
 			}
 		}
 
-        [Obsolete("Use MessageList(int messageId) instead")]
-        static public DataTable message_list(string connectionString, object messageID)
+		[Obsolete("Use MessageList(int messageId) instead")]
+		static public DataTable message_list(string connectionString, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_list"))
 			{
@@ -3411,37 +3411,37 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// The message_list.
-        /// </summary>
-        /// <param name="messageID">
-        /// The message id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
-
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(t => new TypedMessageList(t));
-            }
-        }
-
-        static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
-        {
-            message_delete(connectionString,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
-        }
-        static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool eraseMessage)
+		/// <summary>
+		/// The message_list.
+		/// </summary>
+		/// <param name="messageID">
+		/// The message id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
 		{
-            message_deleteRecursively(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false, eraseMessage);
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
+
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(t => new TypedMessageList(t));
+			}
+		}
+
+		static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
+		{
+			message_delete(connectionString,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
+		}
+		static public void message_delete(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool eraseMessage)
+		{
+			message_deleteRecursively(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false, eraseMessage);
 		}
 
 		// <summary> Retrieve all reported messages with the correct forumID argument. </summary>
-        static public DataTable message_listreported(string connectionString, object forumID)
+		static public DataTable message_listreported(string connectionString, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_listreported"))
 			{
@@ -3453,29 +3453,29 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Here we get reporters list for a reported message
-        /// </summary>       
-        /// <param name="MessageID">Should not be NULL</param>
-        /// <returns>Returns reporters DataTable for a reported message.</returns>
-        static public DataTable message_listreporters(string connectionString,int messageID)
-        {
+		/// <summary>
+		/// Here we get reporters list for a reported message
+		/// </summary>       
+		/// <param name="MessageID">Should not be NULL</param>
+		/// <returns>Returns reporters DataTable for a reported message.</returns>
+		static public DataTable message_listreporters(string connectionString,int messageID)
+		{
 
-            return message_listreporters(connectionString,messageID, null);
+			return message_listreporters(connectionString,messageID, null);
 
-        }
-        static public DataTable message_listreporters(string connectionString, int messageID, object userID)
+		}
+		static public DataTable message_listreporters(string connectionString, int messageID, object userID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_listreporters"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 		// <summary> Save reported message back to the database. </summary>
-        static public void message_report(string connectionString, object messageID, object userId, object reportedDateTime, object reportText)
+		static public void message_report(string connectionString, object messageID, object userId, object reportedDateTime, object reportText)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_report"))
 			{
@@ -3485,14 +3485,14 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_reporterid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_reporteddate", NpgsqlDbType.Timestamp)).Value = reportedDateTime;
 				cmd.Parameters.Add(new NpgsqlParameter("i_reporttext", NpgsqlDbType.Varchar)).Value = reportText;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
 		// <summary> Copy current Message text over reported Message text. </summary>
-        static public void message_reportcopyover(string connectionString, object messageID)
+		static public void message_reportcopyover(string connectionString, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_reportcopyover"))
 			{
@@ -3505,7 +3505,7 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 		// <summary> Copy current Message text over reported Message text. </summary>
-        static public void message_reportresolve(string connectionString, object messageFlag, object messageID, object userId)
+		static public void message_reportresolve(string connectionString, object messageFlag, object messageID, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_reportresolve"))
 			{
@@ -3514,7 +3514,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageflag", NpgsqlDbType.Integer)).Value = messageFlag;
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 			   
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -3522,13 +3522,13 @@ namespace YAF.Classes.Data.Postgre
 
 		//BAI ADDED 30.01.2004
 		// <summary> Delete message and all subsequent releated messages to that ID </summary>
-        static private void message_deleteRecursively(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool isLinked)
+		static private void message_deleteRecursively(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool isLinked)
 		{
 			message_deleteRecursively(connectionString,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, isLinked, false);
 		}
-        static private void message_deleteRecursively(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool isLinked, bool eraseMessages)
+		static private void message_deleteRecursively(string connectionString, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked, bool isLinked, bool eraseMessages)
 		{
-            bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
+			bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
 
 			if (DeleteLinked)
@@ -3557,8 +3557,8 @@ namespace YAF.Classes.Data.Postgre
 					cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 					cmd.Parameters.Add(new NpgsqlParameter("i_attachmentid", NpgsqlDbType.Integer)).Value = null;
 					cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = null;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = 0;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = 1000000;
+					cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = 0;
+					cmd.Parameters.Add(new NpgsqlParameter("i_pageisize", NpgsqlDbType.Integer)).Value = 1000000;
 					DataTable tbAttachments = PostgreDBAccess.GetData(cmd,connectionString);
 					string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
 
@@ -3615,7 +3615,7 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 		// <summary> Set flag on message to approved and store in DB </summary>
-        static public void message_approve(string connectionString, object messageID)
+		static public void message_approve(string connectionString, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_approve"))
 			{
@@ -3632,7 +3632,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable message_simplelist(string connectionString, int StartID, int Limit)
+		static public DataTable message_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_simplelist"))
 			{
@@ -3649,21 +3649,22 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 
-        static public void message_update(string connectionString,
-             
-            object messageID, 
-            object priority, 
-            object message, 
-            object description, 
-            object status, 
-            object styles, 
-            object subject, 
-            object flags, 
-            object reasonOfEdit, 
-            object isModeratorChanged, 
-            object overrideApproval, 
-            object origMessage, 
-            object editedBy)
+		static public void message_update(string connectionString,
+			 
+			object messageID, 
+			object priority, 
+			object message, 
+			object description, 
+			object status, 
+			object styles, 
+			object subject, 
+			object flags, 
+			object reasonOfEdit, 
+			object isModeratorChanged, 
+			object overrideApproval, 
+			object origMessage,
+			object editedBy, 
+			string tags)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_update"))
 			{
@@ -3674,9 +3675,9 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_priority", NpgsqlDbType.Integer)).Value = priority;
 				cmd.Parameters.Add(new NpgsqlParameter("i_subject", NpgsqlDbType.Varchar)).Value = subject;
-                cmd.Parameters.Add(new NpgsqlParameter("i_description", NpgsqlDbType.Varchar)).Value = description;
-                cmd.Parameters.Add(new NpgsqlParameter("i_status", NpgsqlDbType.Varchar)).Value = status;
-                cmd.Parameters.Add(new NpgsqlParameter("i_styles", NpgsqlDbType.Varchar)).Value = styles;
+				cmd.Parameters.Add(new NpgsqlParameter("i_description", NpgsqlDbType.Varchar)).Value = description;
+				cmd.Parameters.Add(new NpgsqlParameter("i_status", NpgsqlDbType.Varchar)).Value = status;
+				cmd.Parameters.Add(new NpgsqlParameter("i_styles", NpgsqlDbType.Varchar)).Value = styles;
 				cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
 				cmd.Parameters.Add(new NpgsqlParameter("i_message", NpgsqlDbType.Text)).Value = message; 
 				cmd.Parameters.Add(new NpgsqlParameter("i_reason", NpgsqlDbType.Varchar)).Value = reasonOfEdit;
@@ -3684,31 +3685,32 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_ismoderatorchanged", NpgsqlDbType.Boolean)).Value = isModeratorChanged;
 				cmd.Parameters.Add(new NpgsqlParameter("i_overrideapproval", NpgsqlDbType.Boolean)).Value = overrideApproval;
 				cmd.Parameters.Add(new NpgsqlParameter("i_originalmessage", NpgsqlDbType.Text)).Value = origMessage;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+				cmd.Parameters.Add(new NpgsqlParameter("i_tags", NpgsqlDbType.Text)).Value = tags;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
 		// <summary> Save message to Db. </summary>
-        static public bool message_save(string connectionString,
-            [NotNull] object topicId, 
-            [NotNull] object userId, 
-            [NotNull] object message, 
-            [NotNull] object userName, 
-            [NotNull] object ip, 
-            [NotNull] object posted, 
-            [NotNull] object replyTo, 
-            [NotNull] object flags,
-            ref long messageId)
+		static public bool message_save(string connectionString,
+			[NotNull] object topicId, 
+			[NotNull] object userId, 
+			[NotNull] object message, 
+			[NotNull] object userName, 
+			[NotNull] object ip, 
+			[NotNull] object posted, 
+			[NotNull] object replyTo, 
+			[NotNull] object flags,
+			ref long messageId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_save"))
 			{
 				if (userName == null) { userName = DBNull.Value; }
 				if (posted == null) { posted = DBNull.Value; }
 
-			    
+				
 				NpgsqlParameter paramMessageID = new NpgsqlParameter("i_messageid", messageId);
 				paramMessageID.Direction = ParameterDirection.Output;
 
@@ -3722,17 +3724,17 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_posted", NpgsqlDbType.Timestamp)).Value = posted;
 				cmd.Parameters.Add(new NpgsqlParameter("i_replyto", NpgsqlDbType.Integer)).Value = replyTo;
 				cmd.Parameters.Add(new NpgsqlParameter("i_blogpostid", NpgsqlDbType.Varchar)).Value = DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_externalmessageid", NpgsqlDbType.Varchar)).Value = DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_referencemessageid", NpgsqlDbType.Varchar)).Value = DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;			   
+				cmd.Parameters.Add(new NpgsqlParameter("i_externalmessageid", NpgsqlDbType.Varchar)).Value = DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_referencemessageid", NpgsqlDbType.Varchar)).Value = DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;			   
 				cmd.Parameters.Add(paramMessageID);
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 				messageId = Convert.ToInt64(paramMessageID.Value);
 				return true;
 			}
 		}
-        static public DataTable message_unapproved(string connectionString, object forumID)
+		static public DataTable message_unapproved(string connectionString, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_unapproved"))
 			{
@@ -3743,24 +3745,24 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable message_findunread(string connectionString, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
+		static public DataTable message_findunread(string connectionString, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_findunread"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_lastread", NpgsqlDbType.Timestamp)).Value = lastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showdeleted", NpgsqlDbType.Boolean)).Value = showDeleted;
-                cmd.Parameters.Add(new NpgsqlParameter("i_authoruserid", NpgsqlDbType.Integer)).Value = authorUserID;
-                DataTable dt = PostgreDBAccess.GetData(cmd,connectionString);
+				cmd.Parameters.Add(new NpgsqlParameter("i_showdeleted", NpgsqlDbType.Boolean)).Value = showDeleted;
+				cmd.Parameters.Add(new NpgsqlParameter("i_authoruserid", NpgsqlDbType.Integer)).Value = authorUserID;
+				DataTable dt = PostgreDBAccess.GetData(cmd,connectionString);
 				return dt;
 			}
 		}
 
 		// message movind function
-        static public void message_move(string connectionString, object messageID, object moveToTopic, bool moveAll)
+		static public void message_move(string connectionString, object messageID, object moveToTopic, bool moveAll)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_move"))
 			{
@@ -3784,7 +3786,7 @@ namespace YAF.Classes.Data.Postgre
 					DataTable tbReplies = PostgreDBAccess.GetData(cmd,connectionString);
 					foreach (DataRow row in tbReplies.Rows)
 					{
-                        message_moveRecursively(connectionString,row["MessageID"], moveToTopic);
+						message_moveRecursively(connectionString,row["MessageID"], moveToTopic);
 					}
 
 				}
@@ -3792,9 +3794,9 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 		//moves answers of moved post
-        static private void message_moveRecursively(string connectionString, object messageID, object moveToTopic)
+		static private void message_moveRecursively(string connectionString, object messageID, object moveToTopic)
 		{
-            bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
+			bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
 			//Delete replies
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_getReplies"))
@@ -3806,7 +3808,7 @@ namespace YAF.Classes.Data.Postgre
 				DataTable tbReplies = PostgreDBAccess.GetData(cmd,connectionString);
 				foreach (DataRow row in tbReplies.Rows)
 				{
-                    message_moveRecursively(connectionString, row["messageID"], moveToTopic);
+					message_moveRecursively(connectionString, row["messageID"], moveToTopic);
 				}
 				using (NpgsqlCommand innercmd = PostgreDBAccess.GetCommand("message_move"))
 				{
@@ -3827,7 +3829,7 @@ namespace YAF.Classes.Data.Postgre
 		// <summary> Checks if the message with the provided messageID is thanked 
 		//           by the user with the provided UserID. if so, returns true,
 		//           otherwise returns false. </summary>
-        static public bool message_isThankedByUser(string connectionString, object userID, object messageID)
+		static public bool message_isThankedByUser(string connectionString, object userID, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_isthankedbyuser"))
 			{
@@ -3839,52 +3841,52 @@ namespace YAF.Classes.Data.Postgre
 				return Convert.ToBoolean( PostgreDBAccess.ExecuteScalar(cmd,connectionString) );
 			}
 		}
-        /// <summary>
-        /// Is User Thanked the current Message
-        /// </summary>
-        /// <param name="messageId">
-        /// The message Id.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <returns>
-        /// If the User Thanked the the Current Message
-        /// </returns>
-        public static bool user_ThankedMessage(string connectionString, object messageId, object userId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_thankedmessage"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-          
-                cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+		/// <summary>
+		/// Is User Thanked the current Message
+		/// </summary>
+		/// <param name="messageId">
+		/// The message Id.
+		/// </param>
+		/// <param name="userId">
+		/// The user id.
+		/// </param>
+		/// <returns>
+		/// If the User Thanked the the Current Message
+		/// </returns>
+		public static bool user_ThankedMessage(string connectionString, object messageId, object userId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_thankedmessage"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+		  
+				cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
-                int thankCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+				int thankCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return thankCount > 0;
-            }
-        }
+				return thankCount > 0;
+			}
+		}
 
-        public static int user_ThankFromCount(string connectionString, [NotNull] object userId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_thankfromcount"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		public static int user_ThankFromCount(string connectionString, [NotNull] object userId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_thankfromcount"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 
-                cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+				cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
-                var thankCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+				var thankCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return thankCount;
-            }
-        }
+				return thankCount;
+			}
+		}
 		// <summary> Return the number of times the message with the provided messageID
 		//           has been thanked. </summary>
-        static public int message_ThanksNumber(string connectionString, object messageID)
+		static public int message_ThanksNumber(string connectionString, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_thanksnumber"))
 			{
@@ -3897,7 +3899,7 @@ namespace YAF.Classes.Data.Postgre
 
 		// <summary> Returns the UserIDs and UserNames who have thanked the message
 		//           with the provided messageID. </summary>
-        static public DataTable message_GetThanks(string connectionString, object messageID)
+		static public DataTable message_GetThanks(string connectionString, object messageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_getthanks"))
 			{
@@ -3908,7 +3910,7 @@ namespace YAF.Classes.Data.Postgre
 		}
 		// <summary> Retuns All the Thanks for the Message IDs which are in the 
 		//           delimited string variable MessageIDs </summary>
-        static public DataTable message_GetAllThanks(string connectionString, object messageIDs)
+		static public DataTable message_GetAllThanks(string connectionString, object messageIDs)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_getallthanks"))
 			{
@@ -3927,7 +3929,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </param>
 		/// <returns>
 		/// </returns>
-        public static DataTable message_GetTextByIds(string connectionString, string messageIDs)
+		public static DataTable message_GetTextByIds(string connectionString, string messageIDs)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_gettextbyids"))
 			{
@@ -3937,27 +3939,27 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Retuns All the Thanks for the Message IDs which are in the 
-        /// delimited string variable MessageIDs
-        /// </summary>
-        /// <param name="messageIdsSeparatedWithColon">
-        /// The message i ds.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static IEnumerable<TypedAllThanks> MessageGetAllThanks(string connectionString, string messageIdsSeparatedWithColon)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_getallthanks"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageids", NpgsqlDbType.Text)).Value = messageIdsSeparatedWithColon;
+		/// <summary>
+		/// Retuns All the Thanks for the Message IDs which are in the 
+		/// delimited string variable MessageIDs
+		/// </summary>
+		/// <param name="messageIdsSeparatedWithColon">
+		/// The message i ds.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static IEnumerable<TypedAllThanks> MessageGetAllThanks(string connectionString, string messageIdsSeparatedWithColon)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_getallthanks"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageids", NpgsqlDbType.Text)).Value = messageIdsSeparatedWithColon;
 
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(t => new TypedAllThanks(t));
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(t => new TypedAllThanks(t));
+			}
+		}
 
-        static public string message_AddThanks(string connectionString, object fromUserID, object messageID, bool useDisplayName)
+		static public string message_AddThanks(string connectionString, object fromUserID, object messageID, bool useDisplayName)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_addthanks"))
 			{
@@ -3966,15 +3968,15 @@ namespace YAF.Classes.Data.Postgre
 			 // paramOutput.Direction = ParameterDirection.Output;                  
 				cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid", NpgsqlDbType.Integer)).Value = fromUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_usedisplayname", NpgsqlDbType.Boolean)).Value = useDisplayName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_usedisplayname", NpgsqlDbType.Boolean)).Value = useDisplayName;
 		  
 				return PostgreDBAccess.ExecuteScalar(cmd,connectionString).ToString();
 			  //return paramOutput.Value.ToString();                
 			}
 		}
 
-        static public string message_RemoveThanks(string connectionString, object fromUserID, object messageID, bool useDisplayName)
+		static public string message_RemoveThanks(string connectionString, object fromUserID, object messageID, bool useDisplayName)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_removethanks"))
 			{
@@ -3982,7 +3984,7 @@ namespace YAF.Classes.Data.Postgre
 			   
 				cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid", NpgsqlDbType.Integer)).Value = fromUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_usedisplayname", NpgsqlDbType.Boolean)).Value = useDisplayName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_usedisplayname", NpgsqlDbType.Boolean)).Value = useDisplayName;
 			   
 				PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 				return PostgreDBAccess.ExecuteScalar(cmd,connectionString).ToString();
@@ -4004,7 +4006,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// List of all message changes. 
 		/// </returns>
-        public static DataTable messagehistory_list(string connectionString, int messageID, int daysToClean)
+		public static DataTable messagehistory_list(string connectionString, int messageID, int daysToClean)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("messagehistory_list"))
 			{
@@ -4012,7 +4014,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_daystoclean", NpgsqlDbType.Integer)).Value = daysToClean;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 			   
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
@@ -4024,14 +4026,14 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="MessageID">The Message Id.</param>
 		/// <param name="UserID">The UserId.</param>
 		/// <returns></returns>
-        public static DataTable message_secdata(string connectionString, int MessageID, object pageUserId)
+		public static DataTable message_secdata(string connectionString, int MessageID, object pageUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("message_secdata"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = MessageID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;               
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;               
 
 				return PostgreDBAccess.GetData(cmd,connectionString);
 
@@ -4042,26 +4044,26 @@ namespace YAF.Classes.Data.Postgre
 	  
 		#region yaf_Medal
 
-        /// <summary>
-        /// Lists given medal.
-        /// </summary>
-        /// <param name="medalID">ID of medal to list.</param>
-        static public DataTable medal_list(string connectionString, object medalID)
-        {
-                return medal_list(connectionString,null, medalID, null);
-        }
-        static public DataTable medal_list(string connectionString, object boardId, object category)
-        {
-            return medal_list(connectionString,boardId, category, null);
-        }
+		/// <summary>
+		/// Lists given medal.
+		/// </summary>
+		/// <param name="medalID">ID of medal to list.</param>
+		static public DataTable medal_list(string connectionString, object medalID)
+		{
+				return medal_list(connectionString,null, medalID, null);
+		}
+		static public DataTable medal_list(string connectionString, object boardId, object category)
+		{
+			return medal_list(connectionString,boardId, category, null);
+		}
 
-        /// <summary>
+		/// <summary>
 		/// Lists medals.
 		/// </summary>
 		/// <param name="boardId">ID of board of which medals to list. Can be null if medalID parameter is specified.</param>
 		/// <param name="medalID">ID of medal to list. When specified, boardId and category parameters are ignored.</param>
 		/// <param name="category">Cateogry of medals to list. Must be complemented with not-null boardId parameter.</param>
-        static public DataTable medal_list(string connectionString, object boardId, object medalID, object category)
+		static public DataTable medal_list(string connectionString, object boardId, object medalID, object category)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("medal_list"))
 			{
@@ -4086,7 +4088,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="medalID">Medal of which owners to get.</param>
 		/// <returns>List of users with their user id and usernames, who own this medal.</returns>
-        static public DataTable medal_listusers(string connectionString, object medalID)
+		static public DataTable medal_listusers(string connectionString, object medalID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("medal_listusers"))
 			{
@@ -4101,31 +4103,31 @@ namespace YAF.Classes.Data.Postgre
 
 
 
-        /// <summary>
-        /// Deletes given medals.
-        /// </summary>
-        /// <param name="boardId">ID of board of which medals to delete. Required.</param>
-        /// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
-        static public void medal_delete(string connectionString, object boardId, object category)
-        {
-            medal_delete(connectionString,boardId, null, category);
-        }
+		/// <summary>
+		/// Deletes given medals.
+		/// </summary>
+		/// <param name="boardId">ID of board of which medals to delete. Required.</param>
+		/// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
+		static public void medal_delete(string connectionString, object boardId, object category)
+		{
+			medal_delete(connectionString,boardId, null, category);
+		}
 
-        /// <summary>
-        /// Deletes given medal.
-        /// </summary>
-        /// <param name="medalID">ID of medal to delete.</param>
-        static public void medal_delete(string connectionString, object medalID)
-        {
-            medal_delete(connectionString,null, medalID, null);
-        }
+		/// <summary>
+		/// Deletes given medal.
+		/// </summary>
+		/// <param name="medalID">ID of medal to delete.</param>
+		static public void medal_delete(string connectionString, object medalID)
+		{
+			medal_delete(connectionString,null, medalID, null);
+		}
 		/// <summary>
 		/// Deletes medals.
 		/// </summary>
 		/// <param name="boardId">ID of board of which medals to delete. Can be null if medalID parameter is specified.</param>
 		/// <param name="medalID">ID of medal to delete. When specified, boardId and category parameters are ignored.</param>
 		/// <param name="category">Cateogry of medals to delete. Must be complemented with not-null boardId parameter.</param>
-        static public void medal_delete(string connectionString, object boardId, object medalID, object category)
+		static public void medal_delete(string connectionString, object boardId, object medalID, object category)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("medal_delete"))
 			{
@@ -4164,7 +4166,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="sortOrder">Default order of medal as it will be displayed in user box.</paramHeight
 		/// <param name="flags">Medal's flags.</param>
 		/// <returns>True if medal was successfully created or updated. False otherwise.</returns>
-        static public bool medal_save(string connectionString, 
+		static public bool medal_save(string connectionString, 
 			object boardId, object medalID, object name, object description, object message, object category,
 			object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth,
 			object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
@@ -4224,7 +4226,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="boardId">ID of board.</param>
 		/// <param name="medalID">ID of medal to re-sort.</param>
 		/// <param name="move">Change of sort.</param>
-        static public void medal_resort(string connectionString, object boardId, object medalID, int move)
+		static public void medal_resort(string connectionString, object boardId, object medalID, int move)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("medal_resort"))
 			{
@@ -4244,7 +4246,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="groupID">ID of group owning medal.</param>
 		/// <param name="medalID">ID of medal.</param>
-        static public void group_medal_delete(string connectionString, object groupID, object medalID)
+		static public void group_medal_delete(string connectionString, object groupID, object medalID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_medal_delete"))
 			{
@@ -4263,7 +4265,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="groupID">ID of group of which to list medals.</param>
 		/// <param name="medalID">ID of medal to list.</param>
-        static public DataTable group_medal_list(string connectionString, object groupID, object medalID)
+		static public DataTable group_medal_list(string connectionString, object groupID, object medalID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_medal_list"))
 			{
@@ -4289,7 +4291,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="hide">Hide medal in user box.</param>
 		/// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
 		/// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
-        static public void group_medal_save(string connectionString,
+		static public void group_medal_save(string connectionString,
 			object groupID, object medalID, object message,
 			object hide, object onlyRibbon, object sortOrder)
 		{
@@ -4324,7 +4326,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="userId">ID of user owning medal.</param>
 		/// <param name="medalID">ID of medal.</param>
-        static public void user_medal_delete(string connectionString, object userId, object medalID)
+		static public void user_medal_delete(string connectionString, object userId, object medalID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_medal_delete"))
 			{
@@ -4343,7 +4345,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="userId">ID of user who was given medal.</param>
 		/// <param name="medalID">ID of medal to list.</param>
-        static public DataTable user_medal_list(string connectionString, object userId, object medalID)
+		static public DataTable user_medal_list(string connectionString, object userId, object medalID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_medal_list"))
 			{
@@ -4354,7 +4356,7 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_medalid", NpgsqlDbType.Integer)).Value = medalID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
@@ -4371,7 +4373,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
 		/// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
 		/// <param name="dateAwarded">Date when medal was awarded to a user. Is ignored when existing user-medal allocation is edited.</param>
-        static public void user_medal_save(string connectionString,
+		static public void user_medal_save(string connectionString,
 			object userId, object medalID, object message,
 			object hide, object onlyRibbon, object sortOrder, object dateAwarded)
 		{
@@ -4390,7 +4392,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_onlyribbon", NpgsqlDbType.Boolean)).Value = onlyRibbon;
 				cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlDbType.Smallint)).Value = sortOrder;
 				cmd.Parameters.Add(new NpgsqlParameter("i_dateawarded", NpgsqlDbType.Timestamp)).Value = dateAwarded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -4402,7 +4404,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="userId">ID of user.</param>
 		/// <returns>List of medals, ribbon bar only first.</returns>
-        static public DataTable user_listmedals(string connectionString, object userId)
+		static public DataTable user_listmedals(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_listmedals"))
 			{
@@ -4417,24 +4419,24 @@ namespace YAF.Classes.Data.Postgre
 		#endregion        
 		
 		#region yaf_NntpForum
-        public static IEnumerable<TypedNntpForum> NntpForumList(string connectionString, int boardId, int? minutes, int? nntpForumID, bool? active)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("nntpforum_list"))
-            {
+		public static IEnumerable<TypedNntpForum> NntpForumList(string connectionString, int boardId, int? minutes, int? nntpForumID, bool? active)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("nntpforum_list"))
+			{
 
-                cmd.CommandType = CommandType.StoredProcedure;
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_minutes", NpgsqlDbType.Integer)).Value = minutes;
-                cmd.Parameters.Add(new NpgsqlParameter("i_nntpforumid", NpgsqlDbType.Integer)).Value = nntpForumID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_active", NpgsqlDbType.Boolean)).Value = active;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_minutes", NpgsqlDbType.Integer)).Value = minutes;
+				cmd.Parameters.Add(new NpgsqlParameter("i_nntpforumid", NpgsqlDbType.Integer)).Value = nntpForumID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_active", NpgsqlDbType.Boolean)).Value = active;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedNntpForum(r));
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedNntpForum(r));
+			}
+		}
 
-        static public DataTable nntpforum_list(string connectionString, object boardId, object minutes, object nntpForumID, object active)
+		static public DataTable nntpforum_list(string connectionString, object boardId, object minutes, object nntpForumID, object active)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpforum_list"))
 			{
@@ -4448,12 +4450,12 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_minutes", NpgsqlDbType.Integer)).Value = minutes;
 				cmd.Parameters.Add(new NpgsqlParameter("i_nntpforumid", NpgsqlDbType.Integer)).Value = nntpForumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_active", NpgsqlDbType.Boolean)).Value = active;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 			   
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void nntpforum_update(string connectionString, object nntpForumID, object lastMessageNo, object userId)
+		static public void nntpforum_update(string connectionString, object nntpForumID, object lastMessageNo, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpforum_update"))
 			{
@@ -4462,12 +4464,12 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_nntpforumid", NpgsqlDbType.Integer)).Value = nntpForumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_lastmessageno", NpgsqlDbType.Integer)).Value = lastMessageNo;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 			  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpforum_save(string connectionString, object nntpForumID, object nntpServerID, object groupName, object forumID, object active, object cutoffdate)
+		static public void nntpforum_save(string connectionString, object nntpForumID, object nntpServerID, object groupName, object forumID, object active, object cutoffdate)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpforum_save"))
 			{
@@ -4480,13 +4482,13 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_groupname", NpgsqlDbType.Varchar)).Value = groupName;
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_active", NpgsqlDbType.Boolean)).Value = active;
-                cmd.Parameters.Add(new NpgsqlParameter("i_datecutoff", NpgsqlDbType.TimestampTZ)).Value = cutoffdate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_datecutoff", NpgsqlDbType.TimestampTZ)).Value = cutoffdate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpforum_delete(string connectionString, object nntpForumID)
+		static public void nntpforum_delete(string connectionString, object nntpForumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpforum_delete"))
 			{
@@ -4500,7 +4502,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 		
 		#region yaf_NntpServer
-        static public DataTable nntpserver_list(string connectionString, object boardId, object nntpServerID)
+		static public DataTable nntpserver_list(string connectionString, object boardId, object nntpServerID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpserver_list"))
 			{
@@ -4515,7 +4517,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void nntpserver_save(string connectionString, object nntpServerID, object boardId, object name, object address, object port, object userName, object userPass)
+		static public void nntpserver_save(string connectionString, object nntpServerID, object boardId, object name, object address, object port, object userName, object userPass)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpserver_save"))
 			{
@@ -4536,7 +4538,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void nntpserver_delete(string connectionString, object nntpServerID)
+		static public void nntpserver_delete(string connectionString, object nntpServerID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntpserver_delete"))
 			{
@@ -4550,7 +4552,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion        
 		
 		#region yaf_NntpTopic
-        static public DataTable nntptopic_list(string connectionString, object thread)
+		static public DataTable nntptopic_list(string connectionString, object thread)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntptopic_list"))
 			{
@@ -4561,16 +4563,16 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void nntptopic_savemessage(string connectionString,
-            object nntpForumID, 
-            object topic, 
-            object body, 
-            object userId, 
-            object userName, 
-            object ip, 
-            object posted, 
-            object externalMessageId, 
-            object referenceMessageId)
+		static public void nntptopic_savemessage(string connectionString,
+			object nntpForumID, 
+			object topic, 
+			object body, 
+			object userId, 
+			object userName, 
+			object ip, 
+			object posted, 
+			object externalMessageId, 
+			object referenceMessageId)
 		{
 			// string newbody = body.ToString().Replace(@"&lt;br&gt;", "> ").Replace(@"&amp;lt;", "<").Replace(@"&lt;hr&gt;", "> ").Replace(@"&amp;quot;", @"""").Replace(@"&lt;", @"<").Replace(@"br&gt;", @"> ").Replace(@"&amp;gt;", @"> ").Replace(@"&gt;", "> ").Replace("&quot;", @"""").Replace("[-snip-]","(SNIP)").Replace(@"@","[dog]").Replace("_.","");
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("nntptopic_savemessage")) 
@@ -4584,9 +4586,9 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
 				cmd.Parameters.Add(new NpgsqlParameter("i_ip", NpgsqlDbType.Varchar)).Value = ip;
 				cmd.Parameters.Add(new NpgsqlParameter("i_posted", NpgsqlDbType.Timestamp)).Value = posted;
-                cmd.Parameters.Add(new NpgsqlParameter("i_externalmessageid", NpgsqlDbType.Varchar)).Value = externalMessageId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_referencemessageid", NpgsqlDbType.Varchar)).Value = referenceMessageId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_externalmessageid", NpgsqlDbType.Varchar)).Value = externalMessageId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_referencemessageid", NpgsqlDbType.Varchar)).Value = referenceMessageId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 								
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -4594,10 +4596,10 @@ namespace YAF.Classes.Data.Postgre
 		#endregion        
 		
 		#region yaf_PMessage
-        static public DataTable pmessage_list(string connectionString, object userPMessageID)
-        {
-            return pmessage_list(connectionString,null, null, userPMessageID);
-        }
+		static public DataTable pmessage_list(string connectionString, object userPMessageID)
+		{
+			return pmessage_list(connectionString,null, null, userPMessageID);
+		}
 		/// <summary>
 		/// Returns a list of private messages based on the arguments specified.
 		/// If pMessageID != null, returns the PM of id pMessageId.
@@ -4608,7 +4610,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="fromUserID"></param>
 		/// <param name="pMessageID">The id of the private message</param>
 		/// <returns></returns>
-        static public DataTable pmessage_list(string connectionString, object toUserID, object fromUserID, object userPMessageID)
+		static public DataTable pmessage_list(string connectionString, object toUserID, object fromUserID, object userPMessageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_list"))
 			{
@@ -4627,22 +4629,22 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Deletes the private message from the database as per the given parameter.  If fromOutbox is true,
-        /// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
-        /// </summary>
-        /// <param name="userPMessageID"></param>
-        static public void pmessage_delete(string connectionString, object userPMessageID)
-        {
-            pmessage_delete(connectionString,userPMessageID, false);
-        }
+		/// <summary>
+		/// Deletes the private message from the database as per the given parameter.  If fromOutbox is true,
+		/// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
+		/// </summary>
+		/// <param name="userPMessageID"></param>
+		static public void pmessage_delete(string connectionString, object userPMessageID)
+		{
+			pmessage_delete(connectionString,userPMessageID, false);
+		}
 		/// <summary>
 		/// Deletes the private message from the database as per the given parameter.  If <paramref name="fromOutbox"/> is true,
 		/// the message is only removed from the user's outbox.  Otherwise, it is completely delete from the database.
 		/// </summary>
 		/// <param name="pMessageID"></param>
 		/// <param name="fromOutbox">If true, removes the message from the outbox.  Otherwise deletes the message completely.</param>
-        static public void pmessage_delete(string connectionString, object userPMessageID, bool fromOutbox)
+		static public void pmessage_delete(string connectionString, object userPMessageID, bool fromOutbox)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_delete"))
 			{
@@ -4661,7 +4663,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Archives the private message of the given id.  Archiving moves the message from the user's inbox to his message archive.
 		/// </summary>
 		/// <param name="pMessageID">The ID of the private message</param>
-        public static void pmessage_archive(string connectionString, object userPMessageID)
+		public static void pmessage_archive(string connectionString, object userPMessageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_archive"))
 			{
@@ -4675,7 +4677,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public void pmessage_save(string connectionString, object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
+		static public void pmessage_save(string connectionString, object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_save"))
 			{
@@ -4686,13 +4688,13 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_subject", NpgsqlDbType.Varchar)).Value = subject;
 				cmd.Parameters.Add(new NpgsqlParameter("i_body", NpgsqlDbType.Text)).Value = body;
 				cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = Flags;
-                cmd.Parameters.Add(new NpgsqlParameter("i_replyto", NpgsqlDbType.Integer)).Value = replyTo;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_replyto", NpgsqlDbType.Integer)).Value = replyTo;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 						
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void pmessage_markread(string connectionString, object userPMessageID)
+		static public void pmessage_markread(string connectionString, object userPMessageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_markread"))
 			{
@@ -4713,7 +4715,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void pmessage_prune(string connectionString, object daysRead, object daysUnread)
+		static public void pmessage_prune(string connectionString, object daysRead, object daysUnread)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pmessage_prune"))
 			{
@@ -4729,47 +4731,47 @@ namespace YAF.Classes.Data.Postgre
 		
 		#region yaf_Poll
 
-        /// <summary>
-        /// The pollgroup_stats.
-        /// </summary>
-        /// <param name="pollGroupId">
-        /// The poll group id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_stats"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// The pollgroup_stats.
+		/// </summary>
+		/// <param name="pollGroupId">
+		/// The poll group id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_stats"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// The pollgroup_attach.
-        /// </summary>
-        /// <param name="pollGroupId">
-        /// The poll group id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static int pollgroup_attach(string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_attach"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
-                cmd.Parameters.AddWithValue("i_topicid", topicId);
-                cmd.Parameters.AddWithValue("i_forumid", forumId);
-                cmd.Parameters.AddWithValue("i_categoryid", categoryId);
-                cmd.Parameters.AddWithValue("i_boardid", boardId);
-                return (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// The pollgroup_attach.
+		/// </summary>
+		/// <param name="pollGroupId">
+		/// The poll group id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static int pollgroup_attach(string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_attach"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.AddWithValue("i_pollgroupid", pollGroupId);
+				cmd.Parameters.AddWithValue("i_topicid", topicId);
+				cmd.Parameters.AddWithValue("i_forumid", forumId);
+				cmd.Parameters.AddWithValue("i_categoryid", categoryId);
+				cmd.Parameters.AddWithValue("i_boardid", boardId);
+				return (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+			}
+		}
 
-        static public DataTable poll_stats(string connectionString, int? pollId)
+		static public DataTable poll_stats(string connectionString, int? pollId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("poll_stats"))
 			{
@@ -4786,83 +4788,83 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="pollList">List to hold all polls data</param>
 		/// <returns>Last saved poll id.</returns>
-        public static int? poll_save(string connectionString, List<PollSaveList> pollList)
+		public static int? poll_save(string connectionString, List<PollSaveList> pollList)
 		{
 			int? currPoll;
-            int? pollGroup = null;
+			int? pollGroup = null;
 			foreach (PollSaveList question in pollList)
 			{
-                StringBuilder pgStr = new StringBuilder();
-                // Check if the group already exists
-                    if (question.TopicId > 0)
-                    {
-                        pgStr.Append("select pollid  from ");
-                        pgStr.Append(PostgreDBAccess.GetObjectName("topic"));
-                        pgStr.Append(" WHERE topicid = :i_topicid; ");
-                    }
-                    else if (question.ForumId > 0)
-                    {
-                        pgStr.Append("select  pollgroupid  from ");
-                        pgStr.Append(PostgreDBAccess.GetObjectName("forum"));
-                        pgStr.Append(" WHERE forumid =:i_forumid");
-                    }
-                    else if (question.CategoryId > 0)
-                    {
-                        pgStr.Append("select pollgroupid  from ");
-                        pgStr.Append(PostgreDBAccess.GetObjectName("category"));
-                        pgStr.Append(" WHERE categoryid = :i_categoryid");
-                    }
+				StringBuilder pgStr = new StringBuilder();
+				// Check if the group already exists
+					if (question.TopicId > 0)
+					{
+						pgStr.Append("select pollid  from ");
+						pgStr.Append(PostgreDBAccess.GetObjectName("topic"));
+						pgStr.Append(" WHERE topicid = :i_topicid; ");
+					}
+					else if (question.ForumId > 0)
+					{
+						pgStr.Append("select  pollgroupid  from ");
+						pgStr.Append(PostgreDBAccess.GetObjectName("forum"));
+						pgStr.Append(" WHERE forumid =:i_forumid");
+					}
+					else if (question.CategoryId > 0)
+					{
+						pgStr.Append("select pollgroupid  from ");
+						pgStr.Append(PostgreDBAccess.GetObjectName("category"));
+						pgStr.Append(" WHERE categoryid = :i_categoryid");
+					}
 
-                using (NpgsqlCommand cmdPg = PostgreDBAccess.GetCommand(pgStr.ToString(), true))
+				using (NpgsqlCommand cmdPg = PostgreDBAccess.GetCommand(pgStr.ToString(), true))
 				{    
-                     // Add parameters
-                    if (question.TopicId > 0)
-                    {
-                        cmdPg.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = question.TopicId;
-                    }
-                    else if (question.ForumId > 0)
-                    {
-                        cmdPg.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = question.ForumId;
-                    }
-                    else if(question.CategoryId > 0)
-                    {
-                        cmdPg.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = question.CategoryId;
-                    }
+					 // Add parameters
+					if (question.TopicId > 0)
+					{
+						cmdPg.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = question.TopicId;
+					}
+					else if (question.ForumId > 0)
+					{
+						cmdPg.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = question.ForumId;
+					}
+					else if(question.CategoryId > 0)
+					{
+						cmdPg.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = question.CategoryId;
+					}
 
-                    object pgexist = PostgreDBAccess.ExecuteScalar(cmdPg,true,connectionString);
-                    if (pgexist != DBNull.Value)
-                    {
-                        pollGroup = Convert.ToInt32(pgexist);
-                    }
+					object pgexist = PostgreDBAccess.ExecuteScalar(cmdPg,true,connectionString);
+					if (pgexist != DBNull.Value)
+					{
+						pollGroup = Convert.ToInt32(pgexist);
+					}
 
 				}
-                // buck stops here
-                    // the group doesn't exists, create a new one
-                if (pollGroup == null)
-			    {
-			        pgStr = new StringBuilder();
-                    pgStr.Append("INSERT INTO ");
-                    pgStr.Append(PostgreDBAccess.GetObjectName("pollgroupcluster"));
-                    pgStr.Append("(userid,flags ) VALUES(:i_userid, :i_flags) RETURNING pollgroupid; ");
-                    using (NpgsqlCommand cmdPgIns = PostgreDBAccess.GetCommand(pgStr.ToString(), true))
-                    {
-                        // set poll group flags
-                        int pollGroupFlags = 0;
-                        if (question.IsBound)
-                        {
-                            pollGroupFlags = pollGroupFlags | 2;
-                        }
+				// buck stops here
+					// the group doesn't exists, create a new one
+				if (pollGroup == null)
+				{
+					pgStr = new StringBuilder();
+					pgStr.Append("INSERT INTO ");
+					pgStr.Append(PostgreDBAccess.GetObjectName("pollgroupcluster"));
+					pgStr.Append("(userid,flags ) VALUES(:i_userid, :i_flags) RETURNING pollgroupid; ");
+					using (NpgsqlCommand cmdPgIns = PostgreDBAccess.GetCommand(pgStr.ToString(), true))
+					{
+						// set poll group flags
+						int pollGroupFlags = 0;
+						if (question.IsBound)
+						{
+							pollGroupFlags = pollGroupFlags | 2;
+						}
 
-                        // Add parameters
-                        cmdPgIns.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = question.UserId;
-                        cmdPgIns.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = pollGroupFlags;
-                        pollGroup = (int?)PostgreDBAccess.ExecuteScalar(cmdPgIns,true,connectionString);
-                    }
-                }
+						// Add parameters
+						cmdPgIns.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = question.UserId;
+						cmdPgIns.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = pollGroupFlags;
+						pollGroup = (int?)PostgreDBAccess.ExecuteScalar(cmdPgIns,true,connectionString);
+					}
+				}
 
-            
-                
-                
+			
+				
+				
 				using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("poll_save"))
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
@@ -4876,67 +4878,67 @@ namespace YAF.Classes.Data.Postgre
 					{
 						cmd.Parameters.Add(new NpgsqlParameter("i_closes", NpgsqlDbType.TimestampTZ)).Value = DBNull.Value;
 					}
-					     int pollFlags = question.IsClosedBound
-                               ? 0 | 4
-                                : 0;
-                         pollFlags = question.AllowMultipleChoices
-                                ? pollFlags | 8
-                                : pollFlags;
-                         pollFlags = question.ShowVoters
-                                  ? pollFlags | 16
-                                  : pollFlags;
-                         pollFlags = question.AllowSkipVote
-                                             ? pollFlags | 32
-                                             : pollFlags;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = question.UserId;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value = question.QuestionObjectPath;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value = question.QuestionMimeType;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = pollFlags;
-                   
+						 int pollFlags = question.IsClosedBound
+							   ? 0 | 4
+								: 0;
+						 pollFlags = question.AllowMultipleChoices
+								? pollFlags | 8
+								: pollFlags;
+						 pollFlags = question.ShowVoters
+								  ? pollFlags | 16
+								  : pollFlags;
+						 pollFlags = question.AllowSkipVote
+											 ? pollFlags | 32
+											 : pollFlags;
+					cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = question.UserId;
+					cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
+					cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value = question.QuestionObjectPath;
+					cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value = question.QuestionMimeType;
+					cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = pollFlags;
+				   
 
-                    currPoll = (int?)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+					currPoll = (int?)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 				}
 
 				
 				// The cycle through question reply choices  
-                int chl = question.Choice.GetUpperBound(1)+1;
-                for (uint choiceCount = 0; choiceCount < chl; choiceCount++)
-                {
-                    if (question.Choice[0, choiceCount].Trim().Length > 0)
-                    {
-                        StringBuilder sbChoice = new StringBuilder();
-                        sbChoice.Append("INSERT INTO ");
-                        sbChoice.Append(PostgreDBAccess.GetObjectName("choice"));
-                        sbChoice.AppendFormat(
-                            "(pollid,choice,votes,objectpath,mimetype) VALUES (:pollid{0}, :choice{0}, :votes{0}, :objectpath{0}, :mimetype{0}); ",
-                            choiceCount);
-                        using (NpgsqlCommand cmdChoice = PostgreDBAccess.GetCommand(sbChoice.ToString(), true))
-                            {
-                                cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("pollid{0}", choiceCount),
-                                                                  NpgsqlDbType.Integer)).Value = currPoll;
-                                cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("choice{0}", choiceCount),
-                                                                        NpgsqlDbType.Varchar)).Value =
-                                    question.Choice[0, choiceCount];
-                                cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("votes{0}", choiceCount),
-                                                                        NpgsqlDbType.Integer)).Value = 0;
-                                cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("objectpath{0}", choiceCount),
-                                                                        NpgsqlDbType.Varchar)).Value =
-                                    question.Choice[1, choiceCount].IsNotSet()
-                                        ? String.Empty
-                                        : question.Choice[1, choiceCount];
-                                cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("mimetype{0}", choiceCount),
-                                                                        NpgsqlDbType.Varchar)).Value =
-                                    question.Choice[2, choiceCount].IsNotSet()
-                                        ? String.Empty
-                                        : question.Choice[2, choiceCount];
-                                PostgreDBAccess.ExecuteNonQuery(cmdChoice,true,connectionString);
-                            }
+				int chl = question.Choice.GetUpperBound(1)+1;
+				for (uint choiceCount = 0; choiceCount < chl; choiceCount++)
+				{
+					if (question.Choice[0, choiceCount].Trim().Length > 0)
+					{
+						StringBuilder sbChoice = new StringBuilder();
+						sbChoice.Append("INSERT INTO ");
+						sbChoice.Append(PostgreDBAccess.GetObjectName("choice"));
+						sbChoice.AppendFormat(
+							"(pollid,choice,votes,objectpath,mimetype) VALUES (:pollid{0}, :choice{0}, :votes{0}, :objectpath{0}, :mimetype{0}); ",
+							choiceCount);
+						using (NpgsqlCommand cmdChoice = PostgreDBAccess.GetCommand(sbChoice.ToString(), true))
+							{
+								cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("pollid{0}", choiceCount),
+																  NpgsqlDbType.Integer)).Value = currPoll;
+								cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("choice{0}", choiceCount),
+																		NpgsqlDbType.Varchar)).Value =
+									question.Choice[0, choiceCount];
+								cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("votes{0}", choiceCount),
+																		NpgsqlDbType.Integer)).Value = 0;
+								cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("objectpath{0}", choiceCount),
+																		NpgsqlDbType.Varchar)).Value =
+									question.Choice[1, choiceCount].IsNotSet()
+										? String.Empty
+										: question.Choice[1, choiceCount];
+								cmdChoice.Parameters.Add(new NpgsqlParameter(String.Format("mimetype{0}", choiceCount),
+																		NpgsqlDbType.Varchar)).Value =
+									question.Choice[2, choiceCount].IsNotSet()
+										? String.Empty
+										: question.Choice[2, choiceCount];
+								PostgreDBAccess.ExecuteNonQuery(cmdChoice,true,connectionString);
+							}
 
-                        }
+						}
 
-                }
-			    //   NpgsqlCommand cmd = new NpgsqlCommand();
+				}
+				//   NpgsqlCommand cmd = new NpgsqlCommand();
 				//  cmd.CommandText = paramSb.ToString() + ")" + sb.ToString();
 				//   NpgsqlConnection con = PostgreDBAccess.Current.GetConnectionManager().DBConnection;
 				// con.Open();
@@ -4950,80 +4952,80 @@ namespace YAF.Classes.Data.Postgre
 				{
 
 
-				    // Add parameters
-				     cmd1.Parameters.Add(new NpgsqlParameter("question", NpgsqlDbType.Varchar));
+					// Add parameters
+					 cmd1.Parameters.Add(new NpgsqlParameter("question", NpgsqlDbType.Varchar));
 
 					if (question.Closes > DateTime.MinValue)
 					{
 						cmd1.Parameters.Add(new NpgsqlParameter("closes", NpgsqlDbType.TimestampTZ));
 					} 
-				    for (uint choiceCount1 = 0; choiceCount1 < question.Choice.GetLength(0); choiceCount1++)
-				    {
-				        if (question.Choice[0, choiceCount1].Trim().Length > 0)
-				        {
-				            cmd1.Parameters.Add(new NpgsqlParameter(String.Format("choice{0}", choiceCount1),
-				                                                    NpgsqlDbType.Varchar)).Value =
-				                question.Choice[0, choiceCount1];
-				            cmd1.Parameters.Add(new NpgsqlParameter(String.Format("votes{0}", choiceCount1),
-				                                                    NpgsqlDbType.Integer)).Value = 0;
-				            cmd1.Parameters.Add(new NpgsqlParameter(String.Format("objectpath{0}", choiceCount1),
-				                                                    NpgsqlDbType.Varchar)).Value =
-				                question.Choice[1, choiceCount1].IsNotSet() ? String.Empty : question.Choice[1, choiceCount1];
-				            cmd1.Parameters.Add(new NpgsqlParameter(String.Format("mimetype{0}", choiceCount1),
-				                                                    NpgsqlDbType.Varchar)).Value =
-				                question.Choice[2, choiceCount1].IsNotSet() ? String.Empty : question.Choice[2, choiceCount1];
-				        }
-				    }
-                     int? result = (int?)PostgreDBAccess.ExecuteNonQueryInt(cmd1, true);
+					for (uint choiceCount1 = 0; choiceCount1 < question.Choice.GetLength(0); choiceCount1++)
+					{
+						if (question.Choice[0, choiceCount1].Trim().Length > 0)
+						{
+							cmd1.Parameters.Add(new NpgsqlParameter(String.Format("choice{0}", choiceCount1),
+																	NpgsqlDbType.Varchar)).Value =
+								question.Choice[0, choiceCount1];
+							cmd1.Parameters.Add(new NpgsqlParameter(String.Format("votes{0}", choiceCount1),
+																	NpgsqlDbType.Integer)).Value = 0;
+							cmd1.Parameters.Add(new NpgsqlParameter(String.Format("objectpath{0}", choiceCount1),
+																	NpgsqlDbType.Varchar)).Value =
+								question.Choice[1, choiceCount1].IsNotSet() ? String.Empty : question.Choice[1, choiceCount1];
+							cmd1.Parameters.Add(new NpgsqlParameter(String.Format("mimetype{0}", choiceCount1),
+																	NpgsqlDbType.Varchar)).Value =
+								question.Choice[2, choiceCount1].IsNotSet() ? String.Empty : question.Choice[2, choiceCount1];
+						}
+					}
+					 int? result = (int?)PostgreDBAccess.ExecuteNonQueryInt(cmd1, true);
 				}
-            */
+			*/
 
-                // Add pollgroup id to an object
-                StringBuilder Usb = new StringBuilder();
-                //cmd2.Parameters.Add(new NpgsqlParameter(":i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
-                if (question.TopicId > 0)
-                {
-                    Usb.Append("UPDATE ");
-                    Usb.Append(PostgreDBAccess.GetObjectName("topic"));
-                    Usb.Append(" SET pollid = :i_pollid WHERE topicid= :i_topicid; ");
-                }
-                else if (question.ForumId > 0)
-                {
-                    Usb.Append("UPDATE ");
-                    Usb.Append(PostgreDBAccess.GetObjectName("forum"));
-                    Usb.Append(" SET pollgroupid = :i_pollgroupid where forumid = :i_forumid; ");
-                   
-                }
-                else if (question.CategoryId > 0)
-                {
-                    Usb.Append("UPDATE ");
-                    Usb.Append(PostgreDBAccess.GetObjectName("category"));
-                    Usb.Append(" SET pollgroupid = :i_pollgroupid where categoryid = :i_categoryid; ");
-                }
+				// Add pollgroup id to an object
+				StringBuilder Usb = new StringBuilder();
+				//cmd2.Parameters.Add(new NpgsqlParameter(":i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
+				if (question.TopicId > 0)
+				{
+					Usb.Append("UPDATE ");
+					Usb.Append(PostgreDBAccess.GetObjectName("topic"));
+					Usb.Append(" SET pollid = :i_pollid WHERE topicid= :i_topicid; ");
+				}
+				else if (question.ForumId > 0)
+				{
+					Usb.Append("UPDATE ");
+					Usb.Append(PostgreDBAccess.GetObjectName("forum"));
+					Usb.Append(" SET pollgroupid = :i_pollgroupid where forumid = :i_forumid; ");
+				   
+				}
+				else if (question.CategoryId > 0)
+				{
+					Usb.Append("UPDATE ");
+					Usb.Append(PostgreDBAccess.GetObjectName("category"));
+					Usb.Append(" SET pollgroupid = :i_pollgroupid where categoryid = :i_categoryid; ");
+				}
 
-               
-                using (NpgsqlCommand cmd2 = PostgreDBAccess.GetCommand(Usb.ToString(), true))
-                {
-                    cmd2.Parameters.Add(new NpgsqlParameter("i_pollid", NpgsqlDbType.Integer)).Value =
-                            pollGroup;
-                    //cmd2.Parameters.Add(new NpgsqlParameter(":i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
-                    if (question.TopicId > 0)
-                    {
-                        cmd2.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value =
-                                                  question.TopicId;
-                    }
-                    else if (question.ForumId > 0)
-                    {
-                        cmd2.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value =
-                           question.ForumId;
-                    }
-                    else if (question.CategoryId > 0)
-                    {
-                       cmd2.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value
-                     = question.CategoryId;
-                    }
-                    PostgreDBAccess.ExecuteNonQuery(cmd2,connectionString);
-                }
+			   
+				using (NpgsqlCommand cmd2 = PostgreDBAccess.GetCommand(Usb.ToString(), true))
+				{
+					cmd2.Parameters.Add(new NpgsqlParameter("i_pollid", NpgsqlDbType.Integer)).Value =
+							pollGroup;
+					//cmd2.Parameters.Add(new NpgsqlParameter(":i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroup;
+					if (question.TopicId > 0)
+					{
+						cmd2.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value =
+												  question.TopicId;
+					}
+					else if (question.ForumId > 0)
+					{
+						cmd2.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value =
+						   question.ForumId;
+					}
+					else if (question.CategoryId > 0)
+					{
+					   cmd2.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value
+					 = question.CategoryId;
+					}
+					PostgreDBAccess.ExecuteNonQuery(cmd2,connectionString);
+				}
 
 				   
 					/* if (ret.Value != DBNull.Value)
@@ -5034,14 +5036,14 @@ namespace YAF.Classes.Data.Postgre
 					//  }
 					//   trans.Commit();
 					//   con.Close();
-                
+				
 			}
 
-            return pollGroup;
+			return pollGroup;
 		}
 
 
-        static public void poll_update(string connectionString, object pollID, object question, object closes, object isBounded, bool isClosedBounded, bool allowMultipleChoices, bool showVoters, bool allowSkipVote, object questionPath, object questionMime)
+		static public void poll_update(string connectionString, object pollID, object question, object closes, object isBounded, bool isClosedBounded, bool allowMultipleChoices, bool showVoters, bool allowSkipVote, object questionPath, object questionMime)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("poll_update"))
 			{
@@ -5052,98 +5054,98 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_pollid", NpgsqlDbType.Integer)).Value = pollID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_question", NpgsqlDbType.Varchar)).Value = question;
 				cmd.Parameters.Add(new NpgsqlParameter("i_closes", NpgsqlDbType.Timestamp)).Value = closes;
-                cmd.Parameters.Add(new NpgsqlParameter("i_questionobjectpath", NpgsqlDbType.Varchar)).Value = questionPath;
-                cmd.Parameters.Add(new NpgsqlParameter("i_questionmimetype", NpgsqlDbType.Varchar)).Value = questionMime;
-                cmd.Parameters.Add(new NpgsqlParameter("i_isbounded", NpgsqlDbType.Boolean)).Value = isBounded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_isclosedbounded", NpgsqlDbType.Boolean)).Value = isClosedBounded;
-                cmd.Parameters.Add(new NpgsqlParameter("i_allowmultiplechoices", NpgsqlDbType.Boolean)).Value = allowMultipleChoices;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showvoters", NpgsqlDbType.Boolean)).Value = showVoters;
-                cmd.Parameters.Add(new NpgsqlParameter("i_allowskipvote", NpgsqlDbType.Boolean)).Value = allowSkipVote;
-      				
+				cmd.Parameters.Add(new NpgsqlParameter("i_questionobjectpath", NpgsqlDbType.Varchar)).Value = questionPath;
+				cmd.Parameters.Add(new NpgsqlParameter("i_questionmimetype", NpgsqlDbType.Varchar)).Value = questionMime;
+				cmd.Parameters.Add(new NpgsqlParameter("i_isbounded", NpgsqlDbType.Boolean)).Value = isBounded;
+				cmd.Parameters.Add(new NpgsqlParameter("i_isclosedbounded", NpgsqlDbType.Boolean)).Value = isClosedBounded;
+				cmd.Parameters.Add(new NpgsqlParameter("i_allowmultiplechoices", NpgsqlDbType.Boolean)).Value = allowMultipleChoices;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showvoters", NpgsqlDbType.Boolean)).Value = showVoters;
+				cmd.Parameters.Add(new NpgsqlParameter("i_allowskipvote", NpgsqlDbType.Boolean)).Value = allowSkipVote;
+					
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        static public void poll_remove(string connectionString, object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
+		static public void poll_remove(string connectionString, object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("poll_remove"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroupID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_pollid", NpgsqlDbType.Integer)).Value = pollID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_removecompletely", NpgsqlDbType.Boolean)).Value = removeCompletely;
-                cmd.Parameters.Add(new NpgsqlParameter("i_removeeverywhere", NpgsqlDbType.Boolean)).Value = removeEverywhere;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_removecompletely", NpgsqlDbType.Boolean)).Value = removeCompletely;
+				cmd.Parameters.Add(new NpgsqlParameter("i_removeeverywhere", NpgsqlDbType.Boolean)).Value = removeEverywhere;
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Gets a typed poll group list.
-        /// </summary>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="forumId">
-        /// The forum id.
-        /// </param>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static IEnumerable<TypedPollGroup> PollGroupList(string connectionString, int userID, int? forumId, int boardId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Gets a typed poll group list.
+		/// </summary>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="forumId">
+		/// The forum id.
+		/// </param>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static IEnumerable<TypedPollGroup> PollGroupList(string connectionString, int userID, int? forumId, int boardId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedPollGroup(r));
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedPollGroup(r));
+			}
+		}
 
-        /// <summary>
-        /// The poll_remove.
-        /// </summary>
-        /// <param name="pollGroupID">
-        /// The poll group id. The parameter should always be present. 
-        /// </param>
-        /// <param name="topicId">
-        /// The poll id. If null all polls in a group a deleted. 
-        /// </param>
-        /// <param name="boardId">
-        /// The BoardID id. 
-        /// </param>
-        /// <param name="removeCompletely">
-        /// The RemoveCompletely. If true and pollID is null , all polls in a group are deleted completely, 
-        /// else only one poll is deleted completely. 
-        /// </param>
-        /// <param name="forumId"></param>
-        /// <param name="removeEverywhere"></param>
-        public static void pollgroup_remove(string connectionString, object pollGroupID, object topicId, object forumId, object categoryId, object boardId, bool removeCompletely, bool removeEverywhere)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_remove"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroupID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_removecompletely", NpgsqlDbType.Boolean)).Value = removeCompletely;
-                cmd.Parameters.Add(new NpgsqlParameter("i_removeeverywhere", NpgsqlDbType.Boolean)).Value = removeEverywhere;
+		/// <summary>
+		/// The poll_remove.
+		/// </summary>
+		/// <param name="pollGroupID">
+		/// The poll group id. The parameter should always be present. 
+		/// </param>
+		/// <param name="topicId">
+		/// The poll id. If null all polls in a group a deleted. 
+		/// </param>
+		/// <param name="boardId">
+		/// The BoardID id. 
+		/// </param>
+		/// <param name="removeCompletely">
+		/// The RemoveCompletely. If true and pollID is null , all polls in a group are deleted completely, 
+		/// else only one poll is deleted completely. 
+		/// </param>
+		/// <param name="forumId"></param>
+		/// <param name="removeEverywhere"></param>
+		public static void pollgroup_remove(string connectionString, object pollGroupID, object topicId, object forumId, object categoryId, object boardId, bool removeCompletely, bool removeEverywhere)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("pollgroup_remove"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pollgroupid", NpgsqlDbType.Integer)).Value = pollGroupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_removecompletely", NpgsqlDbType.Boolean)).Value = removeCompletely;
+				cmd.Parameters.Add(new NpgsqlParameter("i_removeeverywhere", NpgsqlDbType.Boolean)).Value = removeEverywhere;
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
 
-        static public void choice_delete(string connectionString, object choiceID)
+		static public void choice_delete(string connectionString, object choiceID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("choice_delete"))
 			{
@@ -5154,7 +5156,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void choice_update(string connectionString, object choiceID, object choice, object path, object mime)
+		static public void choice_update(string connectionString, object choiceID, object choice, object path, object mime)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("choice_update"))
 			{
@@ -5162,13 +5164,13 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_choiceid", NpgsqlDbType.Integer)).Value = choiceID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_choice", NpgsqlDbType.Varchar)).Value = choice;
-                cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value =  path;
-                cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value =  mime;
+				cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value =  path;
+				cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value =  mime;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void choice_add(string connectionString, object pollID, object choice, object path, object mime)
+		static public void choice_add(string connectionString, object pollID, object choice, object path, object mime)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("choice_add"))
 			{
@@ -5187,17 +5189,17 @@ namespace YAF.Classes.Data.Postgre
 					cmd.Parameters[1].Value = "No input value supplied";
 				}
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value = path;
-                cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value = mime;
+				cmd.Parameters.Add(new NpgsqlParameter("i_objectpath", NpgsqlDbType.Varchar)).Value = path;
+				cmd.Parameters.Add(new NpgsqlParameter("i_mimetype", NpgsqlDbType.Varchar)).Value = mime;
 				
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString); 
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString); 
 			 }            
 		}
 
 		#endregion
 		
 		#region yaf_Rank
-        static public DataTable rank_list(string connectionString, object boardId, object rankID)
+		static public DataTable rank_list(string connectionString, object boardId, object rankID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("rank_list"))
 			{
@@ -5212,7 +5214,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public void rank_save(string connectionString, object rankID, object boardId, object name, 
+		static public void rank_save(string connectionString, object rankID, object boardId, object name, 
 			object isStart, object isLadder, object minPosts, object rankImage,
 			object pmLimit, object style, object sortOrder,
 			object description,
@@ -5248,7 +5250,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void rank_delete(string connectionString, object rankID)
+		static public void rank_delete(string connectionString, object rankID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("rank_delete"))
 			{
@@ -5262,7 +5264,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 		
 		#region yaf_Smiley
-        static public DataTable smiley_list(string connectionString, object boardId, object smileyID)
+		static public DataTable smiley_list(string connectionString, object boardId, object smileyID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_list"))
 			{
@@ -5277,30 +5279,30 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// The smiley_list.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <param name="smileyID">
-        /// The smiley id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardId, int? smileyID)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_smileyid", NpgsqlDbType.Integer)).Value = smileyID;
+		/// <summary>
+		/// The smiley_list.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <param name="smileyID">
+		/// The smiley id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardId, int? smileyID)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_smileyid", NpgsqlDbType.Integer)).Value = smileyID;
 
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedSmileyList(r));
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(r => new TypedSmileyList(r));
+			}
+		}
 
-        static public DataTable smiley_listunique(string connectionString, object boardId)
+		static public DataTable smiley_listunique(string connectionString, object boardId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_listunique"))
 			{
@@ -5311,7 +5313,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void smiley_delete(string connectionString, object smileyID)
+		static public void smiley_delete(string connectionString, object smileyID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_delete"))
 			{
@@ -5323,7 +5325,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void smiley_save(string connectionString, object smileyID, object boardId, object code, object icon, object emoticon, object sortOrder, object replace)
+		static public void smiley_save(string connectionString, object smileyID, object boardId, object code, object icon, object emoticon, object sortOrder, object replace)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_save"))
 			{
@@ -5344,7 +5346,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void smiley_resort(string connectionString, object boardId, object smileyID, int move)
+		static public void smiley_resort(string connectionString, object boardId, object smileyID, int move)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("smiley_resort"))
 			{
@@ -5360,24 +5362,24 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 		
 		#region yaf_BBCode
-        /// <summary>
-        /// The bbcode_list.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <param name="bbcodeID">
-        /// The bbcode id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        [NotNull]
-        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
-        {
-            return bbcode_list(connectionString,boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
-        }
+		/// <summary>
+		/// The bbcode_list.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <param name="bbcodeID">
+		/// The bbcode id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		[NotNull]
+		public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
+		{
+			return bbcode_list(connectionString,boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
+		}
 
-        static public DataTable bbcode_list(string connectionString, object boardId, object bbcodeID)
+		static public DataTable bbcode_list(string connectionString, object boardId, object bbcodeID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("bbcode_list"))
 			{
@@ -5390,7 +5392,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void bbcode_delete(string connectionString, object bbcodeID)
+		static public void bbcode_delete(string connectionString, object bbcodeID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("bbcode_delete"))
 			{
@@ -5402,7 +5404,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void bbcode_save(string connectionString, object bbcodeID, object boardId, object name, object description, object onclickjs, object displayjs, object editjs, object displaycss, object searchregex, object replaceregex, object variables, object usemodule, object moduleclass, object execorder)
+		static public void bbcode_save(string connectionString, object bbcodeID, object boardId, object name, object description, object onclickjs, object displayjs, object editjs, object displaycss, object searchregex, object replaceregex, object variables, object usemodule, object moduleclass, object execorder)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("bbcode_save"))
 			{
@@ -5447,7 +5449,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
 		/// <returns>DataTable filled will registry entries</returns>
-        static public DataTable registry_list(string connectionString, object name, object boardId)
+		static public DataTable registry_list(string connectionString, object name, object boardId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("registry_list"))
 			{
@@ -5460,47 +5462,47 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
+				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Retrieves entries in the board settings registry
-        /// </summary>
-        /// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
-        /// <returns>DataTable filled will registry entries</returns>
-        static public DataTable registry_list(string connectionString,
-            [NotNull]object name)
-        {
-            return registry_list(connectionString, name, null);
-        }
-        /// <summary>
-        /// Retrieves all the entries in the board settings registry
-        /// </summary>
-        /// <returns>DataTable filled will all registry entries</returns>
-        static public DataTable registry_list(string connectionString)
-        {
-            return registry_list( connectionString, null, null);
-        }
+		/// <summary>
+		/// Retrieves entries in the board settings registry
+		/// </summary>
+		/// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
+		/// <returns>DataTable filled will registry entries</returns>
+		static public DataTable registry_list(string connectionString,
+			[NotNull]object name)
+		{
+			return registry_list(connectionString, name, null);
+		}
+		/// <summary>
+		/// Retrieves all the entries in the board settings registry
+		/// </summary>
+		/// <returns>DataTable filled will all registry entries</returns>
+		static public DataTable registry_list(string connectionString)
+		{
+			return registry_list( connectionString, null, null);
+		}
 
-        /// <summary>
-        /// Saves a single registry entry pair to the database.
-        /// </summary>
-        /// <param name="Name">Unique name associated with this entry</param>
-        /// <param name="Value">Value associated with this entry which can be null</param>
-        static public void registry_save(string connectionString, object name, object value)
-        {
+		/// <summary>
+		/// Saves a single registry entry pair to the database.
+		/// </summary>
+		/// <param name="Name">Unique name associated with this entry</param>
+		/// <param name="Value">Value associated with this entry which can be null</param>
+		static public void registry_save(string connectionString, object name, object value)
+		{
 
-            registry_save(connectionString,name, value, DBNull.Value);
+			registry_save(connectionString,name, value, DBNull.Value);
 
-        }
+		}
 		/// <summary>
 		/// Saves a single registry entry pair to the database.
 		/// </summary>
 		/// <param name="Name">Unique name associated with this entry</param>
 		/// <param name="Value">Value associated with this entry which can be null</param>
 		/// <param name="BoardID">The BoardID for this entry</param>
-        static public void registry_save(string connectionString, object name, object value, object boardId)
+		static public void registry_save(string connectionString, object name, object value, object boardId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("registry_save"))
 			{
@@ -5536,35 +5538,35 @@ namespace YAF.Classes.Data.Postgre
 		#region yaf_Topic
 
 		//TODO: Overloaded method for 1.9.3 FINAL comatability should be deleted beginning with v.2373
-        static public int topic_prune(string connectionString, object forumID, object days)
+		static public int topic_prune(string connectionString, object forumID, object days)
 		{
 			int boardId = 0;
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand(String.Format("SELECT c.boardid FROM {0} f INNER JOIN {1} c ON f.categoryid=c.categoryd  WHERE forumid = @i_forumID;", PostgreDBAccess.GetObjectName("Forum"), PostgreDBAccess.GetObjectName("Category")), true))
 			{
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
-                cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+				cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 				boardId = Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
 			}
-            
+			
 			return topic_prune(connectionString,boardId, forumID, days, true);
 
 		}
 
-        public static void topic_updatetopic(string connectionString, int topicId, string topic)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_updatetopic"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		public static void topic_updatetopic(string connectionString, int topicId, string topic)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_updatetopic"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topic", NpgsqlDbType.Varchar)).Value = topic;
-                
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topic", NpgsqlDbType.Varchar)).Value = topic;
+				
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        static public int topic_prune(string connectionString, object boardId, object forumID, object days, object permDelete)
+		static public int topic_prune(string connectionString, object boardId, object forumID, object days, object permDelete)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_prune"))
 			{
@@ -5579,59 +5581,59 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public DataTable topic_list(string connectionString,
-            
-            object forumID,
-            [NotNull] object userId,
-            [NotNull] object sinceDate,
-            [NotNull] object toDate,
-            [NotNull] object pageIndex,
-            [NotNull] object pageSize,
-            [NotNull] object useStyledNicks,
-            [NotNull] object showMoved,
-            [CanBeNull]bool findLastRead)
-        {       
+		static public DataTable topic_list(string connectionString,
+			
+			object forumID,
+			[NotNull] object userId,
+			[NotNull] object sinceDate,
+			[NotNull] object toDate,
+			[NotNull] object pageIndex,
+			[NotNull] object pageSize,
+			[NotNull] object useStyledNicks,
+			[NotNull] object showMoved,
+			[CanBeNull]bool findLastRead)
+		{       
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_list"))
 			{
 				if (userId == null) { userId = DBNull.Value; }
-                if (sinceDate == null) { sinceDate = DBNull.Value; }
+				if (sinceDate == null) { sinceDate = DBNull.Value; }
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID; ;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.Timestamp)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.Timestamp)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.Timestamp)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.Timestamp)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showmoved", NpgsqlDbType.Boolean)).Value = showMoved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showmoved", NpgsqlDbType.Boolean)).Value = showMoved;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        public static DataTable announcements_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("announcements_list"))
-            {
-                if (userId == null) { userId = DBNull.Value; }
-                if (sinceDate == null) { sinceDate = DBNull.Value; }
+		public static DataTable announcements_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("announcements_list"))
+			{
+				if (userId == null) { userId = DBNull.Value; }
+				if (sinceDate == null) { sinceDate = DBNull.Value; }
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID; ;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.Timestamp)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.Timestamp)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_showmoved", NpgsqlDbType.Boolean)).Value = showMoved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID; ;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.Timestamp)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.Timestamp)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_showmoved", NpgsqlDbType.Boolean)).Value = showMoved;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		/// <summary>
 		/// Lists topics very simply (for URL rewriting)
@@ -5639,7 +5641,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable topic_simplelist(string connectionString, int StartID, int Limit)
+		static public DataTable topic_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_simplelist"))
 			{
@@ -5655,7 +5657,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void topic_move(string connectionString, object topicID, object forumID, object showMoved, object linkDays)
+		static public void topic_move(string connectionString, object topicID, object forumID, object showMoved, object linkDays)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_move"))
 			{
@@ -5664,13 +5666,13 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_showmoved", NpgsqlDbType.Boolean)).Value = showMoved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_linkdays", NpgsqlDbType.Integer)).Value = linkDays;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_linkdays", NpgsqlDbType.Integer)).Value = linkDays;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        static public DataTable topic_announcements(string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId)
+		static public DataTable topic_announcements(string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_announcements"))
 			{
@@ -5678,13 +5680,13 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numOfPostsToRetrieve;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 			  
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        static public DataTable topic_latest(string connectionString, object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts, bool findLastRead)
+		static public DataTable topic_latest(string connectionString, object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts, bool findLastRead)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_latest"))
 			{
@@ -5692,71 +5694,71 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numOfPostsToRetrieve;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// The rss_topic_latest.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <param name="numOfPostsToRetrieve">
-        /// The num of posts to retrieve.
-        /// </param>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// If true returns string for userID style.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable rss_topic_latest(string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("rss_topic_latest"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// The rss_topic_latest.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <param name="numOfPostsToRetrieve">
+		/// The num of posts to retrieve.
+		/// </param>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// If true returns string for userID style.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable rss_topic_latest(string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("rss_topic_latest"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numOfPostsToRetrieve;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
-             
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numOfPostsToRetrieve;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_shownocountposts", NpgsqlDbType.Boolean)).Value = showNoCountPosts;
+			 
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        public static DataTable topic_active(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("topic_active"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		public static DataTable topic_active(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topic_active"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        static private void topic_deleteAttachments(string connectionString, object topicID)
+		static private void topic_deleteAttachments(string connectionString, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_listmessages"))
 			{
@@ -5768,21 +5770,21 @@ namespace YAF.Classes.Data.Postgre
 				{
 					foreach (DataRow row in dt.Rows)
 					{
-                        message_deleteRecursively(connectionString, row["MessageID"], true, "", 0, true, false);
+						message_deleteRecursively(connectionString, row["MessageID"], true, "", 0, true, false);
 					}
 				}
 			}
 		}
 
 
-        static public void topic_delete(string connectionString, object topicID)
-        {
-            topic_delete( connectionString, topicID, false);
-        }
-
-        static public void topic_delete(string connectionString, object topicID, object eraseTopic)
+		static public void topic_delete(string connectionString, object topicID)
 		{
-            topic_deleteAttachments(connectionString, topicID);
+			topic_delete( connectionString, topicID, false);
+		}
+
+		static public void topic_delete(string connectionString, object topicID, object eraseTopic)
+		{
+			topic_deleteAttachments(connectionString, topicID);
 		  
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_delete"))
 			{
@@ -5798,7 +5800,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable topic_findprev(string connectionString, object topicID)
+		static public DataTable topic_findprev(string connectionString, object topicID)
 		{
 			DataTable dt;
 			DataRow dr;
@@ -5818,7 +5820,7 @@ namespace YAF.Classes.Data.Postgre
 					return dt;               
 			}
 		}
-        static public DataTable topic_findnext(string connectionString, object topicID)
+		static public DataTable topic_findnext(string connectionString, object topicID)
 		{
 			DataTable dt;
 			DataRow dr;
@@ -5839,7 +5841,7 @@ namespace YAF.Classes.Data.Postgre
 				return dt;     
 			}
 		}
-        static public void topic_lock(string connectionString, object topicID, object locked)
+		static public void topic_lock(string connectionString, object topicID, object locked)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_lock"))
 			{
@@ -5852,32 +5854,33 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public long topic_save(string connectionString,
-            
-            object forumID, 
-            object subject, 
-            object status,
-            object styles, 
-            object description, 
-            object message, 
-            object userId, 
-            object priority,
-            object userName, 
-            object ip, 
-            object posted, 
-            object blogPostID, 
-            object flags, 
-            ref long messageID)
+		static public long topic_save(string connectionString,
+			
+			object forumID, 
+			object subject, 
+			object status,
+			object styles, 
+			object description, 
+			object message, 
+			object userId, 
+			object priority,
+			object userName, 
+			object ip, 
+			object posted, 
+			object blogPostID, 
+			object flags,
+			ref long messageID,
+			string tags)
 		{
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_save"))
+			using (var cmd = PostgreDBAccess.GetCommand("topic_save"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_subject", NpgsqlDbType.Varchar)).Value = subject;
-                cmd.Parameters.Add(new NpgsqlParameter("i_status", NpgsqlDbType.Varchar)).Value = status;
-                cmd.Parameters.Add(new NpgsqlParameter("i_styles", NpgsqlDbType.Varchar)).Value = styles;
-                cmd.Parameters.Add(new NpgsqlParameter("i_description", NpgsqlDbType.Varchar)).Value = description;
+				cmd.Parameters.Add(new NpgsqlParameter("i_status", NpgsqlDbType.Varchar)).Value = status;
+				cmd.Parameters.Add(new NpgsqlParameter("i_styles", NpgsqlDbType.Varchar)).Value = styles;
+				cmd.Parameters.Add(new NpgsqlParameter("i_description", NpgsqlDbType.Varchar)).Value = description;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_message", NpgsqlDbType.Text)).Value = message;
 				cmd.Parameters.Add(new NpgsqlParameter("i_priority", NpgsqlDbType.Smallint)).Value = priority;
@@ -5886,14 +5889,15 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_posted", NpgsqlDbType.Timestamp)).Value = posted;
 				cmd.Parameters.Add(new NpgsqlParameter("i_blogpostid", NpgsqlDbType.Varchar)).Value = blogPostID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_tags", NpgsqlDbType.Text)).Value = tags;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 			   
 				DataTable dt = PostgreDBAccess.GetData(cmd,connectionString);
 				messageID = long.Parse(dt.Rows[0]["MessageID"].ToString());
 				return long.Parse(dt.Rows[0]["TopicID"].ToString());
 			}
 		}
-        static public DataRow topic_info(string connectionString, object topicID)
+		static public DataRow topic_info(string connectionString, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_info"))
 			{
@@ -5916,36 +5920,36 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        public static int topic_findduplicate(string connectionString, object topicName)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_findduplicate"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicname", NpgsqlDbType.Varchar)).Value = topicName;
-                return (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+		public static int topic_findduplicate(string connectionString, object topicName)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_findduplicate"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicname", NpgsqlDbType.Varchar)).Value = topicName;
+				return (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-            }
-        }
-        public static DataTable topic_favorite_details(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("topic_favorite_details"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+			}
+		}
+		public static DataTable topic_favorite_details(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topic_favorite_details"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		/// <summary>
 		/// The topic_favorite_list.
@@ -5955,7 +5959,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </param>
 		/// <returns>
 		/// </returns>
-        public static DataTable topic_favorite_list(string connectionString, object userID)
+		public static DataTable topic_favorite_list(string connectionString, object userID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_favorite_list"))
 			{
@@ -5974,7 +5978,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="topicID">
 		/// The topic id.
 		/// </param>
-        public static void topic_favorite_remove(string connectionString, object userID, object topicID)
+		public static void topic_favorite_remove(string connectionString, object userID, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_favorite_remove"))
 			{
@@ -5994,7 +5998,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="topicID">
 		/// The topic id.
 		/// </param>
-        public static void topic_favorite_add(string connectionString, object userID, object topicID)
+		public static void topic_favorite_add(string connectionString, object userID, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_favorite_add"))
 			{
@@ -6006,214 +6010,214 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Get the favorite count for a topic..
-        /// </summary>
-        /// <param name="topicId">
-        /// The topic Id.
-        /// </param>
-        public static int TopicFavoriteCount(string connectionString, int topicId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_favorite_count"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid",  NpgsqlDbType.Integer)).Value = topicId;
+		/// <summary>
+		/// Get the favorite count for a topic..
+		/// </summary>
+		/// <param name="topicId">
+		/// The topic Id.
+		/// </param>
+		public static int TopicFavoriteCount(string connectionString, int topicId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("topic_favorite_count"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid",  NpgsqlDbType.Integer)).Value = topicId;
 
-                return PostgreDBAccess.GetData(cmd,connectionString).GetFirstRowColumnAsValue("FavoriteCount", 0);
-            }
-        }
-        /// <summary>
-        /// The topic_unanswered
-        /// </summary>
-        /// <param name="connectionString">
-        /// The connection string.
-        ///  </param>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="pageUserId">
-        /// The page user id.
-        /// </param>
-        /// <param name="sinceDate">
-        /// The since.
-        /// </param>
-        /// <param name="categoryId">
-        /// The category id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Set to true to get color nicks for last user and topic starter.
-        /// </param>
-        /// <param name="findLastRead">
-        /// Indicates if the Table should Countain the last Access Date
-        /// </param>
-        /// <returns>
-        /// Returns the List with the Active Topics
-        /// </returns>
-        public static DataTable topic_unanswered(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("topic_unanswered"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+				return PostgreDBAccess.GetData(cmd,connectionString).GetFirstRowColumnAsValue("FavoriteCount", 0);
+			}
+		}
+		/// <summary>
+		/// The topic_unanswered
+		/// </summary>
+		/// <param name="connectionString">
+		/// The connection string.
+		///  </param>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <param name="pageUserId">
+		/// The page user id.
+		/// </param>
+		/// <param name="sinceDate">
+		/// The since.
+		/// </param>
+		/// <param name="categoryId">
+		/// The category id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// Set to true to get color nicks for last user and topic starter.
+		/// </param>
+		/// <param name="findLastRead">
+		/// Indicates if the Table should Countain the last Access Date
+		/// </param>
+		/// <returns>
+		/// Returns the List with the Active Topics
+		/// </returns>
+		public static DataTable topic_unanswered(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topic_unanswered"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        public static DataTable topic_unread(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("topic_unread"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		public static DataTable topic_unread(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topic_unread"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Gets all topics where the pageUserid has posted
-        /// </summary>
-        /// <param name="connectionString">
-        /// The connection string.
-        ///  </param>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="categoryId">
-        /// The category id.
-        /// </param> 
-        /// <param name="pageUserId">
-        /// The page user id.
-        /// </param>
-        /// <param name="sinceDate">
-        /// The since.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Set to true to get color nicks for last user and topic starter.
-        /// </param>
-        /// <param name="findLastRead">
-        /// Indicates if the Table should Countain the last Access Date
-        /// </param>
-        /// <returns>
-        /// Returns the List with the User Topics
-        /// </returns>
-        public static DataTable Topics_ByUser(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("topics_byuser"))
-            {
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-        /// <summary>
-        /// Delete a topic status.
-        /// </summary>
-        /// <param name="topicStatusID">The topic status ID.</param>
-        public static void TopicStatus_Delete(string connectionString, [NotNull] object topicStatusID)
-        {
-            try
-            {
-                using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Delete"))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
-                    PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-                }
-            }
-            catch
-            {
-                // Ignore any errors in this method
-            }
-        }
+		/// <summary>
+		/// Gets all topics where the pageUserid has posted
+		/// </summary>
+		/// <param name="connectionString">
+		/// The connection string.
+		///  </param>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <param name="categoryId">
+		/// The category id.
+		/// </param> 
+		/// <param name="pageUserId">
+		/// The page user id.
+		/// </param>
+		/// <param name="sinceDate">
+		/// The since.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// Set to true to get color nicks for last user and topic starter.
+		/// </param>
+		/// <param name="findLastRead">
+		/// Indicates if the Table should Countain the last Access Date
+		/// </param>
+		/// <returns>
+		/// Returns the List with the User Topics
+		/// </returns>
+		public static DataTable Topics_ByUser(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topics_byuser"))
+			{
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_todate", NpgsqlDbType.TimestampTZ)).Value = toDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_findlastread", NpgsqlDbType.Boolean)).Value = findLastRead;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+		/// <summary>
+		/// Delete a topic status.
+		/// </summary>
+		/// <param name="topicStatusID">The topic status ID.</param>
+		public static void TopicStatus_Delete(string connectionString, [NotNull] object topicStatusID)
+		{
+			try
+			{
+				using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Delete"))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
+					PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+				}
+			}
+			catch
+			{
+				// Ignore any errors in this method
+			}
+		}
 
-        /// <summary>
-        /// Get a Topic Status by topicStatusID
-        /// </summary>
-        /// <param name="topicStatusID">The topic status ID.</param>
-        /// <returns></returns>
-        public static DataTable TopicStatus_Edit(string connectionString, [NotNull] object topicStatusID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Edit"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Get a Topic Status by topicStatusID
+		/// </summary>
+		/// <param name="topicStatusID">The topic status ID.</param>
+		/// <returns></returns>
+		public static DataTable TopicStatus_Edit(string connectionString, [NotNull] object topicStatusID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Edit"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// List all Topics of the Current Board
-        /// </summary>
-        /// <param name="boardID">The board ID.</param>
-        /// <returns></returns>
-        public static DataTable TopicStatus_List(string connectionString, [NotNull] object boardID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_List"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_BoardID", NpgsqlDbType.Integer).Value = boardID;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// List all Topics of the Current Board
+		/// </summary>
+		/// <param name="boardID">The board ID.</param>
+		/// <returns></returns>
+		public static DataTable TopicStatus_List(string connectionString, [NotNull] object boardID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_List"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add("i_BoardID", NpgsqlDbType.Integer).Value = boardID;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Saves a topic status
-        /// </summary>
-        /// <param name="topicStatusID">The topic status ID.</param>
-        /// <param name="boardID">The board ID.</param>
-        /// <param name="topicStatusName">Name of the topic status.</param>
-        /// <param name="defaultDescription">The default description.</param>
-        public static void TopicStatus_Save(string connectionString, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
-        {
-            try
-            {
-                using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Save"))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Saves a topic status
+		/// </summary>
+		/// <param name="topicStatusID">The topic status ID.</param>
+		/// <param name="boardID">The board ID.</param>
+		/// <param name="topicStatusName">Name of the topic status.</param>
+		/// <param name="defaultDescription">The default description.</param>
+		public static void TopicStatus_Save(string connectionString, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
+		{
+			try
+			{
+				using (var cmd = PostgreDBAccess.GetCommand("TopicStatus_Save"))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
-                    cmd.Parameters.Add("i_BoardID", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_TopicStatusName", NpgsqlDbType.Varchar).Value = topicStatusName;
-                    cmd.Parameters.Add("i_DefaultDescription", NpgsqlDbType.Varchar).Value = defaultDescription;
+					cmd.Parameters.Add("i_TopicStatusID", NpgsqlDbType.Integer).Value = topicStatusID;
+					cmd.Parameters.Add("i_BoardID", NpgsqlDbType.Integer).Value = boardID;
+					cmd.Parameters.Add("i_TopicStatusName", NpgsqlDbType.Varchar).Value = topicStatusName;
+					cmd.Parameters.Add("i_DefaultDescription", NpgsqlDbType.Varchar).Value = defaultDescription;
 
-                    PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-                }
-            }
-            catch
-            {
-                // Ignore any errors in this method
-            }
-        }
+					PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+				}
+			}
+			catch
+			{
+				// Ignore any errors in this method
+			}
+		}
 		#endregion
 	  
 		#region yaf_ReplaceWords
@@ -6222,7 +6226,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Gets a list of replace words
 		/// </summary>
 		/// <returns>DataTable with replace words</returns>
-        static public DataTable replace_words_list(string connectionString, object boardId, object id)
+		static public DataTable replace_words_list(string connectionString, object boardId, object id)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("replace_words_list"))
 			{
@@ -6242,7 +6246,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="id">ID of bad/good word</param>
 		/// <param name="badword">bad word</param>
 		/// <param name="goodword">good word</param>
-        static public void replace_words_save(string connectionString, object boardId, object id, object badword, object goodword)
+		static public void replace_words_save(string connectionString, object boardId, object id, object badword, object goodword)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("replace_words_save"))
 			{
@@ -6261,7 +6265,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Deletes a bad/good word
 		/// </summary>
 		/// <param name="ID">ID of bad/good word to delete</param>
-        static public void replace_words_delete(string connectionString, object id)
+		static public void replace_words_delete(string connectionString, object id)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("replace_words_delete"))
 			{
@@ -6276,7 +6280,7 @@ namespace YAF.Classes.Data.Postgre
 	   
 		#region yaf_IgnoreUser
 
-        static public void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
+		static public void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_addignoreduser"))
 			{
@@ -6289,7 +6293,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
+		static public void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_removeignoreduser"))
 			{
@@ -6302,7 +6306,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
+		static public bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_isuserignored"))
 			{
@@ -6316,7 +6320,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public DataTable user_ignoredlist(string connectionString, object userId)
+		static public DataTable user_ignoredlist(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_ignoredlist"))
 			{
@@ -6337,7 +6341,7 @@ namespace YAF.Classes.Data.Postgre
 	/// <param name="userID">The UserID. It is always should have a positive > 0 value.</param>
 	/// <param name="styledNicks">If styles should be returned.</param>
 	/// <returns>A DataRow, it should never return a null value.</returns>
-        public static DataRow user_lazydata(string connectionString, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
+		public static DataRow user_lazydata(string connectionString, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
 	{
 		using (var cmd = PostgreDBAccess.GetCommand("user_lazydata"))
 		{
@@ -6354,10 +6358,10 @@ namespace YAF.Classes.Data.Postgre
 	}
 
 
-        public static DataTable user_list(string connectionString, object boardID, object userID, object approved)
-    {
-        return user_list(connectionString,boardID, userID, approved, null, null, false);
-    }			
+		public static DataTable user_list(string connectionString, object boardID, object userID, object approved)
+	{
+		return user_list(connectionString,boardID, userID, approved, null, null, false);
+	}			
 		
 		/// <summary>
 		/// The user_list.
@@ -6382,643 +6386,643 @@ namespace YAF.Classes.Data.Postgre
 		/// </param> 
 		/// <returns>
 		/// </returns>
-        static public DataTable user_list(string connectionString, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
+		static public DataTable user_list(string connectionString, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
 		{
 			using (var cmd = PostgreDBAccess.GetCommand("user_list"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value =  boardId ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks ?? DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId ?? DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved ?? DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID ?? DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID ?? DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks ?? DBNull.Value;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				  
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Get the user list as a typed list.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="approved">
-        /// The approved.
-        /// </param>
-        /// <param name="groupID">
-        /// The group id.
-        /// </param>
-        /// <param name="rankID">
-        /// The rank id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// The use styled nicks.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        [NotNull]
-        public static IEnumerable<TypedUserList> UserList(string connectionString, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_list"))
-            {
-               // if (userId == null) { userId = DBNull.Value; }
-               // if (approved == null) { approved = DBNull.Value; }
-               // if (groupID == null) { groupID = DBNull.Value; }
-              // if (rankID == null) { rankID = DBNull.Value; }
-              //  if (useStyledNicks == null) { useStyledNicks = DBNull.Value; }
-
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-
-                return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(x => new TypedUserList(x));
-            }
-        }
-       
-          /// <summary>
-        /// The user_ list with todays birthdays.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Return style info.
-        /// </param>
-        /// <returns>
-        /// The user_ list with todays birthdays.
-        /// </returns>
-        public static DataTable User_ListTodaysBirthdays(string connectionString, [NotNull] int boardID, [CanBeNull] object useStyledNicks)
-        {
-            // Profile columns cannot yet exist when we first are gettinng data.
-            try
-            {
-                var sqlBuilder = new StringBuilder("SELECT up.Birthday, up.UserID, u.TimeZone, u.name as UserName,u.DisplayName AS UserDisplayName, (case(:i_stylednicks) when TRUE then  u.userstyle ");
-                sqlBuilder.Append(" else '' end) AS Style ");
-                sqlBuilder.Append(" FROM ");
-                sqlBuilder.Append(PostgreDBAccess.GetObjectName("userprofile"));
-                sqlBuilder.Append(" up JOIN ");
-                sqlBuilder.Append(PostgreDBAccess.GetObjectName("user"));
-                sqlBuilder.Append(" u ON u.userid = up.userid ");
-                sqlBuilder.Append(" where u.boardid = :i_boardid AND (up.birthday + (:i_currentyear - extract(year  from up.birthday))*interval '1 year' between (:i_currentutc - interval '24 hours') and (:i_currentutc + interval '24 hours'));");
-                using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
-                {
-                    cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_currentyear", NpgsqlDbType.Integer).Value = DateTime.UtcNow.Year;
-                    cmd.Parameters.Add("i_currentutc", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-                    return PostgreDBAccess.GetData(cmd,connectionString);
-                }
-            }
-            catch (Exception e)
-            {
-                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// The user_ list with todays birthdays.
-        /// </summary>
-        /// <param name="userIdsList">
-        /// The Int array of userIds.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Return or not style info.
-        /// </param>
-        /// <returns>
-        /// The user_ list profiles.
-        /// </returns>
-        public static DataTable User_ListProfilesByIdsList(string connectionString, [NotNull] int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
-        {
-            string stIds = userIdsList.Aggregate(string.Empty, (current, userId) => current + (',' + userId)).Trim(',');
-            // Profile columns cannot yet exist when we first are gettinng data.
-            try
-            {
-                var sqlBuilder = new StringBuilder(" ");
-                sqlBuilder.Append("SELECT up.*, u.Name as UserName,u.DisplayName as UserDisplayName,(case(:i_stylednicks) when 1 then  u.UserStyle ");
-                sqlBuilder.Append(" else '' end) AS Style");
-                sqlBuilder.Append(" FROM ");
-                sqlBuilder.Append(PostgreDBAccess.GetObjectName("UserProfile"));
-                sqlBuilder.Append(" up JOIN ");
-                sqlBuilder.Append(PostgreDBAccess.GetObjectName("User"));
-                sqlBuilder.Append(" u ON u.UserID = up.UserID ");             
-                sqlBuilder.AppendFormat(" where u.boardid = :i_boardid AND UserID IN ({0})  ", stIds);
-                using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
-                {
-                    cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    return PostgreDBAccess.GetData(cmd,connectionString);
-                }
-            }
-            catch (Exception e)
-            {
-                Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
-            }
-
-            return null;
-        }
-
-        #region ProfileMirror
-
-        /// <summary>
-        /// The set property values.
-        /// </summary>
-        /// <param name="context">
-        /// The context.
-        /// </param>
-        /// <param name="collection">
-        /// The collection.
-        /// </param>
-        public static void SetPropertyValues(string connectionString, int boardId, string appname, int userId, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
-        {
-            if (userId == 0 || collection.Count < 1)
-            {
-                return;
-            }
-            bool itemsToSave = true;
-            if (dirtyOnly)
-            {
-                itemsToSave = collection.Cast<SettingsPropertyValue>().Any(pp => pp.IsDirty);
-            }
-
-            // First make sure we have at least one item to save
-
-            if (!itemsToSave)
-            {
-                return;
-            }
-
-            // load the data for the configuration
-            List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(connectionString,collection);
-
-            if (spc != null && spc.Count > 0)
-            {
-                // start saving..
-                Db.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
-            }
-        }
-        /// <summary>
-        /// The set profile properties.
-        /// </summary>
-        /// <param name="appName">
-        /// The app name.
-        /// </param>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="values">
-        /// The values.
-        /// </param>
-        /// <param name="settingsColumnsList">
-        /// The settings columns list.
-        /// </param>
-        public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
-        {
-            string userName = string.Empty;
-            var dtu = Db.UserList(connectionString,boardId, userID, true, null, null, true);
-            foreach (var typedUserList in dtu)
-            {
-                userName = typedUserList.Name;
-                break;
-
-            }
-            if (userName.IsNotSet())
-            {
-                return;
-            }
-            using (var conn = new PostgreDbConnectionManager(connectionString).OpenDBConnection(connectionString))
-            {
-                var cmd = new NpgsqlCommand();
-
-                cmd.Connection = conn;
-
-                string table = PostgreDBAccess.GetObjectName("UserProfile");
-                StringBuilder sqlCommand = new StringBuilder("SELECT 1 FROM ").Append(table);
-                sqlCommand.Append(" WHERE UserID = :UserID AND ApplicationName = :ApplicationName");
-                cmd.Parameters.Add("UserID",NpgsqlDbType.Integer).Value= userID;
-                cmd.Parameters.Add("ApplicationName", NpgsqlDbType.Varchar).Value = appName;
-                cmd.CommandText = sqlCommand.ToString();
-                cmd.CommandType = CommandType.Text;
-
-                object o = cmd.ExecuteScalar();
-                int dd;
-
-                // Build up strings used in the query
-                var columnStr = new StringBuilder();
-                var valueStr = new StringBuilder();
-                var setStr = new StringBuilder();
-                int count = 0;
-
-                foreach (SettingsPropertyColumn column in settingsColumnsList)
-                {
-                    // only write if it's dirty
-                    if (!dirtyOnly || values[column.Settings.Name].IsDirty)
-                    {
-                        columnStr.Append(", ");
-                        valueStr.Append(", ");
-                        columnStr.Append(column.Settings.Name);
-                        string valueParam = ":Value" + count;
-                        valueStr.Append(valueParam);
-                        cmd.Parameters.Add(valueParam, column.DataType).Value = values[column.Settings.Name].PropertyValue;
-                        if ((column.DataType != NpgsqlDbType.Timestamp) || column.Settings.Name != "LastUpdatedDate" || column.Settings.Name != "LastActivity")
-                        {
-                            if (count > 0)
-                            {
-                                setStr.Append(",");
-                            }
-
-                            setStr.Append(column.Settings.Name);
-                            setStr.Append("=");
-                            setStr.Append(valueParam);
-                        }
-                        else
-                        {
-                            
-                        }
-
-                        count++;
-                    }
-                }
-
-                columnStr.Append(",LastUpdatedDate ");
-                valueStr.Append(",:LastUpdatedDate");
-                setStr.Append(",LastUpdatedDate=:LastUpdatedDate");
-                cmd.Parameters.Add("LastUpdatedDate",NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-
-                // MembershipUser mu = System.Web.Security.Membership.GetUser(userID);
-
-                columnStr.Append(",LastActivity ");
-                valueStr.Append(",:LastActivity");
-                setStr.Append(",LastActivity=:LastActivity");
-                cmd.Parameters.Add("LastActivity", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow; 
-
-                columnStr.Append(",ApplicationName ");
-                valueStr.Append(",:ApplicationName");
-                setStr.Append(",ApplicationName=:ApplicationName");
-               
-                columnStr.Append(",IsAnonymous ");
-                valueStr.Append(",:IsAnonymous");
-                setStr.Append(",IsAnonymous=:IsAnonymous");
-                cmd.Parameters.AddWithValue("IsAnonymous", 0);
-                cmd.Parameters.Add("IsAnonymous", NpgsqlDbType.Boolean).Value = false; 
-
-                columnStr.Append(",UserName ");
-                valueStr.Append(",:UserName");
-                setStr.Append(",UserName=:UserName");
-                cmd.Parameters.Add("UserName",NpgsqlDbType.Varchar).Value = userName;
-                // the user  exists. 
-                sqlCommand.Clear();
-                if (o != null && int.TryParse(o.ToString(), out dd))
-                {
-                    sqlCommand.Append("UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString());
-                    sqlCommand.Append(" WHERE UserID = ").Append(userID.ToString()).Append("");
-                }
-                else
-                {
-                    sqlCommand.Append("INSERT INTO ").Append(table).Append(" (UserID").Append(columnStr.ToString());
-                    sqlCommand.Append(") VALUES (").Append(userID.ToString()).Append("").Append(valueStr.ToString()).Append(
-                      ")");
-                }
-               
-
-                cmd.CommandText = sqlCommand.ToString();
-                cmd.CommandType = CommandType.Text;
-
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        /// <summary>
-        /// The get profile structure.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        public static DataTable GetProfileStructure(string connectionString)
-        {
-            string sql = @"SELECT * FROM {0} LIMIT 1".FormatWith(PostgreDBAccess.GetObjectName("UserProfile"));
-
-            using (var cmd = PostgreDBAccess.GetCommand(sql, true))
-            {
-                cmd.CommandType = CommandType.Text;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-
-        /// <summary>
-        /// The add profile column.
-        /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="columnType">
-        /// The column type.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        public static void AddProfileColumn(string connectionString, [NotNull] string name, NpgsqlDbType columnType, int size)
-        {
-            // get column type..
-            string type = columnType.ToString();
-
-            if (size > 0)
-            {
-                type += "(" + size + ")";
-            }
-
-            string sql = "ALTER TABLE {0} ADD {1} {2}".FormatWith(
-              PostgreDBAccess.GetObjectName("userprofile"), name, type);
-
-            using (var cmd = PostgreDBAccess.GetCommand(sql, true))
-            {
-                cmd.CommandType = CommandType.Text;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
-        /// <summary>
-        /// The get db type and size from string.
-        /// </summary>
-        /// <param name="providerData">
-        /// The provider data.
-        /// </param>
-        /// <param name="dbType">
-        /// The db type.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <returns>
-        /// The get db type and size from string.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// </exception>
-        public static bool GetDbTypeAndSizeFromString(string providerData, out NpgsqlDbType dbType, out int size)
-        {
-            size = -1;
-            dbType = NpgsqlDbType.Varchar;
-
-            if (String.IsNullOrEmpty(providerData))
-            {
-                return false;
-            }
-
-            // split the data
-            string[] chunk = providerData.Split(new char[] { ';' });
-
-            // first item is the column name..
-            string columnName = chunk[0];
-            // vzrus addon convert values from mssql types..
-            if (chunk[1].IndexOf("varchar", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            { chunk[1] = "Varchar"; }
-            if (chunk[1].IndexOf("int", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            { chunk[1] = "Integer"; }
-            if (chunk[1].IndexOf("DateTime", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            { chunk[1] = "TimestampTZ"; }
-
-            
-            // get the datatype and ignore case..
-            dbType = (NpgsqlDbType)Enum.Parse(typeof(NpgsqlDbType), chunk[1], true);
-
-            if (chunk.Length > 2)
-            {
-                // handle size..
-                if (!Int32.TryParse(chunk[2], out size))
-                {
-                    throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
-                }
-            }
-
-            return true;
-        }
-
-        static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(string connectionString, SettingsPropertyValueCollection collection)
-        {
-            var settingsColumnsList = new List<SettingsPropertyColumn>();
-            // clear it out just in case something is still in there..
-
-
-            // validiate all the properties and populate the internal settings collection
-            foreach (SettingsPropertyValue value in collection)
-            {
-                var tempProperty = value.Property.Attributes["CustomProviderData"];
-
-                if (tempProperty == null)
-                {
-                    continue;
-                }
-
-                NpgsqlDbType dbType;
-                int size;
-
-                // parse custom provider data..
-                GetDbTypeAndSizeFromString(tempProperty.ToString(), out dbType, out size);
-
-
-                // default the size to 256 if no size is specified
-                if (dbType == NpgsqlDbType.Varchar && size == -1)
-                {
-                    size = 256;
-                }
-
-                settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
-            }
-
-            // sync profile table structure with the db..
-            DataTable structure = Db.GetProfileStructure(connectionString);
-
-            // verify all the columns are there..
-            foreach (SettingsPropertyColumn column in settingsColumnsList)
-            {
-                // see if this column exists
-                if (!structure.Columns.Contains(column.Settings.Name))
-                {
-                    // if not, create it..
-                    Db.AddProfileColumn(connectionString, column.Settings.Name, column.DataType, column.Size);
-                }
-            }
-            return settingsColumnsList;
-        }
-
-        #endregion
-
-        public static DataTable admin_list(string connectionString, int? boardId, object useStyledNicks)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("admin_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-
-        /// <summary>
-        /// The admin_pageaccesslist.
-        /// </summary>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// The use styled nicks.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable admin_pageaccesslist(string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("admin_pageaccesslist"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-
-        public static void adminpageaccess_save(string connectionString, [NotNull] object userId, [NotNull] object pageName)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_save"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
-            
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
-
-        public static void adminpageaccess_delete(string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_delete"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
-
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
-
-        public static DataTable adminpageaccess_list(string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
-
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-
-        /// <summary>
-        /// The user_list20members.
-        /// </summary>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <param name="approved">
-        /// The approved.
-        /// </param>
-        /// <param name="groupId">
-        /// The group id.
-        /// </param>
-        /// <param name="rankId">
-        /// The rank id.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Return style info.
-        /// </param>
-        /// <param name="lastUserId">
-        /// The last user Id.
-        /// </param>
-        /// <param name="literals">
-        /// The literals.
-        /// </param>
-        /// <param name="exclude">
-        /// The exclude.
-        /// </param>
-        /// <param name="beginsWith">
-        /// The begins with.
-        /// </param>
-        /// <param name="pageIndex">
-        /// The page index.
-        /// </param>
-        /// <param name="pageSize">
-        /// The page size.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable user_listmembers(string connectionString,
-            object boardId,
-            object userId,
-            object approved,
-            object groupId,
-            object rankId,
-            object useStyledNicks,
-            object lastUserId,
-            object literals,
-            object exclude,
-            object beginsWith,
-            object pageIndex,
-            object pageSize,
-            object sortName,
-            object sortRank,
-            object sortJoined,
-            object sortPosts,
-            object sortLastVisit,
-            object numPosts,
-            object numPostCompare)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_listmembers"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
-                cmd.Parameters.Add(new NpgsqlParameter("i_literals", NpgsqlDbType.Varchar)).Value = literals.ToString() != "\0" && literals.ToString().IsSet() ? literals : string.Empty;
-                cmd.Parameters.Add(new NpgsqlParameter("i_exclude", NpgsqlDbType.Boolean)).Value = exclude;
-                cmd.Parameters.Add(new NpgsqlParameter("i_beginswith", NpgsqlDbType.Boolean)).Value =  beginsWith;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortname", NpgsqlDbType.Integer)).Value = sortName.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortrank", NpgsqlDbType.Integer)).Value = sortRank.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortjoined", NpgsqlDbType.Integer)).Value = sortJoined.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortposts", NpgsqlDbType.Integer)).Value = sortPosts.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortlastvisit", NpgsqlDbType.Integer)).Value = sortLastVisit.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numPosts.ToType<int>();
-                cmd.Parameters.Add(new NpgsqlParameter("i_numpostcopmate", NpgsqlDbType.Integer)).Value = numPostCompare.ToType<int>();
-
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Get the user list as a typed list.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="approved">
+		/// The approved.
+		/// </param>
+		/// <param name="groupID">
+		/// The group id.
+		/// </param>
+		/// <param name="rankID">
+		/// The rank id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// The use styled nicks.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		[NotNull]
+		public static IEnumerable<TypedUserList> UserList(string connectionString, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_list"))
+			{
+			   // if (userId == null) { userId = DBNull.Value; }
+			   // if (approved == null) { approved = DBNull.Value; }
+			   // if (groupID == null) { groupID = DBNull.Value; }
+			  // if (rankID == null) { rankID = DBNull.Value; }
+			  //  if (useStyledNicks == null) { useStyledNicks = DBNull.Value; }
+
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+
+				return PostgreDBAccess.GetData(cmd,connectionString).AsEnumerable().Select(x => new TypedUserList(x));
+			}
+		}
+	   
+		  /// <summary>
+		/// The user_ list with todays birthdays.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// Return style info.
+		/// </param>
+		/// <returns>
+		/// The user_ list with todays birthdays.
+		/// </returns>
+		public static DataTable User_ListTodaysBirthdays(string connectionString, [NotNull] int boardID, [CanBeNull] object useStyledNicks)
+		{
+			// Profile columns cannot yet exist when we first are gettinng data.
+			try
+			{
+				var sqlBuilder = new StringBuilder("SELECT up.Birthday, up.UserID, u.TimeZone, u.name as UserName,u.DisplayName AS UserDisplayName, (case(:i_stylednicks) when TRUE then  u.userstyle ");
+				sqlBuilder.Append(" else '' end) AS Style ");
+				sqlBuilder.Append(" FROM ");
+				sqlBuilder.Append(PostgreDBAccess.GetObjectName("userprofile"));
+				sqlBuilder.Append(" up JOIN ");
+				sqlBuilder.Append(PostgreDBAccess.GetObjectName("user"));
+				sqlBuilder.Append(" u ON u.userid = up.userid ");
+				sqlBuilder.Append(" where u.boardid = :i_boardid AND (up.birthday + (:i_currentyear - extract(year  from up.birthday))*interval '1 year' between (:i_currentutc - interval '24 hours') and (:i_currentutc + interval '24 hours'));");
+				using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
+				{
+					cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+					cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+					cmd.Parameters.Add("i_currentyear", NpgsqlDbType.Integer).Value = DateTime.UtcNow.Year;
+					cmd.Parameters.Add("i_currentutc", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+					return PostgreDBAccess.GetData(cmd,connectionString);
+				}
+			}
+			catch (Exception e)
+			{
+				Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// The user_ list with todays birthdays.
+		/// </summary>
+		/// <param name="userIdsList">
+		/// The Int array of userIds.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// Return or not style info.
+		/// </param>
+		/// <returns>
+		/// The user_ list profiles.
+		/// </returns>
+		public static DataTable User_ListProfilesByIdsList(string connectionString, [NotNull] int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
+		{
+			string stIds = userIdsList.Aggregate(string.Empty, (current, userId) => current + (',' + userId)).Trim(',');
+			// Profile columns cannot yet exist when we first are gettinng data.
+			try
+			{
+				var sqlBuilder = new StringBuilder(" ");
+				sqlBuilder.Append("SELECT up.*, u.Name as UserName,u.DisplayName as UserDisplayName,(case(:i_stylednicks) when 1 then  u.UserStyle ");
+				sqlBuilder.Append(" else '' end) AS Style");
+				sqlBuilder.Append(" FROM ");
+				sqlBuilder.Append(PostgreDBAccess.GetObjectName("UserProfile"));
+				sqlBuilder.Append(" up JOIN ");
+				sqlBuilder.Append(PostgreDBAccess.GetObjectName("User"));
+				sqlBuilder.Append(" u ON u.UserID = up.UserID ");             
+				sqlBuilder.AppendFormat(" where u.boardid = :i_boardid AND UserID IN ({0})  ", stIds);
+				using (var cmd = PostgreDBAccess.GetCommand(sqlBuilder.ToString(), true))
+				{
+					cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+					cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+					return PostgreDBAccess.GetData(cmd,connectionString);
+				}
+			}
+			catch (Exception e)
+			{
+				Db.eventlog_create(null, e.Source, e.Message, EventLogTypes.Error);
+			}
+
+			return null;
+		}
+
+		#region ProfileMirror
+
+		/// <summary>
+		/// The set property values.
+		/// </summary>
+		/// <param name="context">
+		/// The context.
+		/// </param>
+		/// <param name="collection">
+		/// The collection.
+		/// </param>
+		public static void SetPropertyValues(string connectionString, int boardId, string appname, int userId, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
+		{
+			if (userId == 0 || collection.Count < 1)
+			{
+				return;
+			}
+			bool itemsToSave = true;
+			if (dirtyOnly)
+			{
+				itemsToSave = collection.Cast<SettingsPropertyValue>().Any(pp => pp.IsDirty);
+			}
+
+			// First make sure we have at least one item to save
+
+			if (!itemsToSave)
+			{
+				return;
+			}
+
+			// load the data for the configuration
+			List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(connectionString,collection);
+
+			if (spc != null && spc.Count > 0)
+			{
+				// start saving..
+				Db.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
+			}
+		}
+		/// <summary>
+		/// The set profile properties.
+		/// </summary>
+		/// <param name="appName">
+		/// The app name.
+		/// </param>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="values">
+		/// The values.
+		/// </param>
+		/// <param name="settingsColumnsList">
+		/// The settings columns list.
+		/// </param>
+		public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
+		{
+			string userName = string.Empty;
+			var dtu = Db.UserList(connectionString,boardId, userID, true, null, null, true);
+			foreach (var typedUserList in dtu)
+			{
+				userName = typedUserList.Name;
+				break;
+
+			}
+			if (userName.IsNotSet())
+			{
+				return;
+			}
+			using (var conn = new PostgreDbConnectionManager(connectionString).OpenDBConnection(connectionString))
+			{
+				var cmd = new NpgsqlCommand();
+
+				cmd.Connection = conn;
+
+				string table = PostgreDBAccess.GetObjectName("UserProfile");
+				StringBuilder sqlCommand = new StringBuilder("SELECT 1 FROM ").Append(table);
+				sqlCommand.Append(" WHERE UserID = :UserID AND ApplicationName = :ApplicationName");
+				cmd.Parameters.Add("UserID",NpgsqlDbType.Integer).Value= userID;
+				cmd.Parameters.Add("ApplicationName", NpgsqlDbType.Varchar).Value = appName;
+				cmd.CommandText = sqlCommand.ToString();
+				cmd.CommandType = CommandType.Text;
+
+				object o = cmd.ExecuteScalar();
+				int dd;
+
+				// Build up strings used in the query
+				var columnStr = new StringBuilder();
+				var valueStr = new StringBuilder();
+				var setStr = new StringBuilder();
+				int count = 0;
+
+				foreach (SettingsPropertyColumn column in settingsColumnsList)
+				{
+					// only write if it's dirty
+					if (!dirtyOnly || values[column.Settings.Name].IsDirty)
+					{
+						columnStr.Append(", ");
+						valueStr.Append(", ");
+						columnStr.Append(column.Settings.Name);
+						string valueParam = ":Value" + count;
+						valueStr.Append(valueParam);
+						cmd.Parameters.Add(valueParam, column.DataType).Value = values[column.Settings.Name].PropertyValue;
+						if ((column.DataType != NpgsqlDbType.Timestamp) || column.Settings.Name != "LastUpdatedDate" || column.Settings.Name != "LastActivity")
+						{
+							if (count > 0)
+							{
+								setStr.Append(",");
+							}
+
+							setStr.Append(column.Settings.Name);
+							setStr.Append("=");
+							setStr.Append(valueParam);
+						}
+						else
+						{
+							
+						}
+
+						count++;
+					}
+				}
+
+				columnStr.Append(",LastUpdatedDate ");
+				valueStr.Append(",:LastUpdatedDate");
+				setStr.Append(",LastUpdatedDate=:LastUpdatedDate");
+				cmd.Parameters.Add("LastUpdatedDate",NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+
+				// MembershipUser mu = System.Web.Security.Membership.GetUser(userID);
+
+				columnStr.Append(",LastActivity ");
+				valueStr.Append(",:LastActivity");
+				setStr.Append(",LastActivity=:LastActivity");
+				cmd.Parameters.Add("LastActivity", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow; 
+
+				columnStr.Append(",ApplicationName ");
+				valueStr.Append(",:ApplicationName");
+				setStr.Append(",ApplicationName=:ApplicationName");
+			   
+				columnStr.Append(",IsAnonymous ");
+				valueStr.Append(",:IsAnonymous");
+				setStr.Append(",IsAnonymous=:IsAnonymous");
+				cmd.Parameters.AddWithValue("IsAnonymous", 0);
+				cmd.Parameters.Add("IsAnonymous", NpgsqlDbType.Boolean).Value = false; 
+
+				columnStr.Append(",UserName ");
+				valueStr.Append(",:UserName");
+				setStr.Append(",UserName=:UserName");
+				cmd.Parameters.Add("UserName",NpgsqlDbType.Varchar).Value = userName;
+				// the user  exists. 
+				sqlCommand.Clear();
+				if (o != null && int.TryParse(o.ToString(), out dd))
+				{
+					sqlCommand.Append("UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString());
+					sqlCommand.Append(" WHERE UserID = ").Append(userID.ToString()).Append("");
+				}
+				else
+				{
+					sqlCommand.Append("INSERT INTO ").Append(table).Append(" (UserID").Append(columnStr.ToString());
+					sqlCommand.Append(") VALUES (").Append(userID.ToString()).Append("").Append(valueStr.ToString()).Append(
+					  ")");
+				}
+			   
+
+				cmd.CommandText = sqlCommand.ToString();
+				cmd.CommandType = CommandType.Text;
+
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		/// <summary>
+		/// The get profile structure.
+		/// </summary>
+		/// <returns>
+		/// </returns>
+		public static DataTable GetProfileStructure(string connectionString)
+		{
+			string sql = @"SELECT * FROM {0} LIMIT 1".FormatWith(PostgreDBAccess.GetObjectName("UserProfile"));
+
+			using (var cmd = PostgreDBAccess.GetCommand(sql, true))
+			{
+				cmd.CommandType = CommandType.Text;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+
+		/// <summary>
+		/// The add profile column.
+		/// </summary>
+		/// <param name="name">
+		/// The name.
+		/// </param>
+		/// <param name="columnType">
+		/// The column type.
+		/// </param>
+		/// <param name="size">
+		/// The size.
+		/// </param>
+		public static void AddProfileColumn(string connectionString, [NotNull] string name, NpgsqlDbType columnType, int size)
+		{
+			// get column type..
+			string type = columnType.ToString();
+
+			if (size > 0)
+			{
+				type += "(" + size + ")";
+			}
+
+			string sql = "ALTER TABLE {0} ADD {1} {2}".FormatWith(
+			  PostgreDBAccess.GetObjectName("userprofile"), name, type);
+
+			using (var cmd = PostgreDBAccess.GetCommand(sql, true))
+			{
+				cmd.CommandType = CommandType.Text;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
+		/// <summary>
+		/// The get db type and size from string.
+		/// </summary>
+		/// <param name="providerData">
+		/// The provider data.
+		/// </param>
+		/// <param name="dbType">
+		/// The db type.
+		/// </param>
+		/// <param name="size">
+		/// The size.
+		/// </param>
+		/// <returns>
+		/// The get db type and size from string.
+		/// </returns>
+		/// <exception cref="ArgumentException">
+		/// </exception>
+		public static bool GetDbTypeAndSizeFromString(string providerData, out NpgsqlDbType dbType, out int size)
+		{
+			size = -1;
+			dbType = NpgsqlDbType.Varchar;
+
+			if (String.IsNullOrEmpty(providerData))
+			{
+				return false;
+			}
+
+			// split the data
+			string[] chunk = providerData.Split(new char[] { ';' });
+
+			// first item is the column name..
+			string columnName = chunk[0];
+			// vzrus addon convert values from mssql types..
+			if (chunk[1].IndexOf("varchar", System.StringComparison.OrdinalIgnoreCase) >= 0)
+			{ chunk[1] = "Varchar"; }
+			if (chunk[1].IndexOf("int", System.StringComparison.OrdinalIgnoreCase) >= 0)
+			{ chunk[1] = "Integer"; }
+			if (chunk[1].IndexOf("DateTime", System.StringComparison.OrdinalIgnoreCase) >= 0)
+			{ chunk[1] = "TimestampTZ"; }
+
+			
+			// get the datatype and ignore case..
+			dbType = (NpgsqlDbType)Enum.Parse(typeof(NpgsqlDbType), chunk[1], true);
+
+			if (chunk.Length > 2)
+			{
+				// handle size..
+				if (!Int32.TryParse(chunk[2], out size))
+				{
+					throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
+				}
+			}
+
+			return true;
+		}
+
+		static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(string connectionString, SettingsPropertyValueCollection collection)
+		{
+			var settingsColumnsList = new List<SettingsPropertyColumn>();
+			// clear it out just in case something is still in there..
+
+
+			// validiate all the properties and populate the internal settings collection
+			foreach (SettingsPropertyValue value in collection)
+			{
+				var tempProperty = value.Property.Attributes["CustomProviderData"];
+
+				if (tempProperty == null)
+				{
+					continue;
+				}
+
+				NpgsqlDbType dbType;
+				int size;
+
+				// parse custom provider data..
+				GetDbTypeAndSizeFromString(tempProperty.ToString(), out dbType, out size);
+
+
+				// default the size to 256 if no size is specified
+				if (dbType == NpgsqlDbType.Varchar && size == -1)
+				{
+					size = 256;
+				}
+
+				settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
+			}
+
+			// sync profile table structure with the db..
+			DataTable structure = Db.GetProfileStructure(connectionString);
+
+			// verify all the columns are there..
+			foreach (SettingsPropertyColumn column in settingsColumnsList)
+			{
+				// see if this column exists
+				if (!structure.Columns.Contains(column.Settings.Name))
+				{
+					// if not, create it..
+					Db.AddProfileColumn(connectionString, column.Settings.Name, column.DataType, column.Size);
+				}
+			}
+			return settingsColumnsList;
+		}
+
+		#endregion
+
+		public static DataTable admin_list(string connectionString, int? boardId, object useStyledNicks)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("admin_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+
+		/// <summary>
+		/// The admin_pageaccesslist.
+		/// </summary>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// The use styled nicks.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable admin_pageaccesslist(string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("admin_pageaccesslist"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+
+		public static void adminpageaccess_save(string connectionString, [NotNull] object userId, [NotNull] object pageName)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_save"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
+			
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
+
+		public static void adminpageaccess_delete(string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_delete"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
+
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
+
+		public static DataTable adminpageaccess_list(string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("adminpageaccess_list"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagename", NpgsqlDbType.Varchar)).Value = pageName;
+
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+
+		/// <summary>
+		/// The user_list20members.
+		/// </summary>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <param name="userId">
+		/// The user id.
+		/// </param>
+		/// <param name="approved">
+		/// The approved.
+		/// </param>
+		/// <param name="groupId">
+		/// The group id.
+		/// </param>
+		/// <param name="rankId">
+		/// The rank id.
+		/// </param>
+		/// <param name="useStyledNicks">
+		/// Return style info.
+		/// </param>
+		/// <param name="lastUserId">
+		/// The last user Id.
+		/// </param>
+		/// <param name="literals">
+		/// The literals.
+		/// </param>
+		/// <param name="exclude">
+		/// The exclude.
+		/// </param>
+		/// <param name="beginsWith">
+		/// The begins with.
+		/// </param>
+		/// <param name="pageIndex">
+		/// The page index.
+		/// </param>
+		/// <param name="pageSize">
+		/// The page size.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable user_listmembers(string connectionString,
+			object boardId,
+			object userId,
+			object approved,
+			object groupId,
+			object rankId,
+			object useStyledNicks,
+			object lastUserId,
+			object literals,
+			object exclude,
+			object beginsWith,
+			object pageIndex,
+			object pageSize,
+			object sortName,
+			object sortRank,
+			object sortJoined,
+			object sortPosts,
+			object sortLastVisit,
+			object numPosts,
+			object numPostCompare)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_listmembers"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
+				cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
+				cmd.Parameters.Add(new NpgsqlParameter("i_literals", NpgsqlDbType.Varchar)).Value = literals.ToString() != "\0" && literals.ToString().IsSet() ? literals : string.Empty;
+				cmd.Parameters.Add(new NpgsqlParameter("i_exclude", NpgsqlDbType.Boolean)).Value = exclude;
+				cmd.Parameters.Add(new NpgsqlParameter("i_beginswith", NpgsqlDbType.Boolean)).Value =  beginsWith;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortname", NpgsqlDbType.Integer)).Value = sortName.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortrank", NpgsqlDbType.Integer)).Value = sortRank.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortjoined", NpgsqlDbType.Integer)).Value = sortJoined.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortposts", NpgsqlDbType.Integer)).Value = sortPosts.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_sortlastvisit", NpgsqlDbType.Integer)).Value = sortLastVisit.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_numposts", NpgsqlDbType.Integer)).Value = numPosts.ToType<int>();
+				cmd.Parameters.Add(new NpgsqlParameter("i_numpostcopmate", NpgsqlDbType.Integer)).Value = numPostCompare.ToType<int>();
+
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		/// <summary>
 		/// For URL Rewriting
@@ -7026,7 +7030,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="StartID"></param>
 		/// <param name="Limit"></param>
 		/// <returns></returns>
-        static public DataTable user_simplelist(string connectionString, int StartID, int Limit)
+		static public DataTable user_simplelist(string connectionString, int StartID, int Limit)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_simplelist"))
 			{
@@ -7042,7 +7046,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void user_delete(string connectionString, object userId)
+		static public void user_delete(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_delete"))
 			{
@@ -7053,7 +7057,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_setrole(string connectionString, int boardId, object providerUserKey, object role)
+		static public void user_setrole(string connectionString, int boardId, object providerUserKey, object role)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_setrole"))
 			{
@@ -7067,7 +7071,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 		// TODO: is not used anywhere? 
-        static public void user_setinfo(string connectionString, int boardId, System.Web.Security.MembershipUser user)
+		static public void user_setinfo(string connectionString, int boardId, System.Web.Security.MembershipUser user)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("update {databaseOwner}.{objectQualifier}User set Name=i_UserName,Email=i_Email where BoardID=i_BoardID and ProviderUserKey=i_ProviderUserKey", true))
 			{
@@ -7081,25 +7085,25 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        /// <summary>
-        /// The user_setnotdirty.
-        /// </summary>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="userId">
-        /// The userId key.
-        /// </param>
-        public static void user_setnotdirty(string connectionString, int boardId, int userId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_setnotdirty"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
-        static public void user_migrate(string connectionString, object userId, object providerUserKey, object updateProvider)
+		/// <summary>
+		/// The user_setnotdirty.
+		/// </summary>
+		/// <param name="boardId">
+		/// The board id.
+		/// </param>
+		/// <param name="userId">
+		/// The userId key.
+		/// </param>
+		public static void user_setnotdirty(string connectionString, int boardId, int userId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_setnotdirty"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
+		static public void user_migrate(string connectionString, object userId, object providerUserKey, object updateProvider)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_migrate"))
 			{
@@ -7116,7 +7120,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_deleteold(string connectionString, object boardId, object days)
+		static public void user_deleteold(string connectionString, object boardId, object days)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_deleteold"))
 			{
@@ -7124,12 +7128,12 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_days", NpgsqlDbType.Integer)).Value = days;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 							   
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_approve(string connectionString, object userId)
+		static public void user_approve(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_approve"))
 			{
@@ -7140,7 +7144,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_approveall(string connectionString, object boardId)
+		static public void user_approveall(string connectionString, object boardId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_approveall"))
 			{
@@ -7151,7 +7155,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_suspend(string connectionString, object userId, object suspend)
+		static public void user_suspend(string connectionString, object userId, object suspend)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_suspend"))
 			{
@@ -7172,7 +7176,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="userID">The userID</param>
 		/// <param name="boardID">The boardID</param>
 		/// <returns>Data Table</returns>
-        public static DataTable user_getsignaturedata(string connectionString, object userID, object boardID)
+		public static DataTable user_getsignaturedata(string connectionString, object userID, object boardID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getsignaturedata"))
 			{
@@ -7188,7 +7192,7 @@ namespace YAF.Classes.Data.Postgre
 		/// </summary>
 		/// <param name="userID">The userID</param>
 		/// <param name="boardID">The boardID</param>  
-        public static DataTable user_getalbumsdata(string connectionString, object userID, object boardID)
+		public static DataTable user_getalbumsdata(string connectionString, object userID, object boardID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getalbumsdata"))
 			{
@@ -7199,7 +7203,7 @@ namespace YAF.Classes.Data.Postgre
 				return dt;
 			}
 		}
-        static public bool user_changepassword(string connectionString, object userId, object oldPassword, object newPassword)
+		static public bool user_changepassword(string connectionString, object userId, object oldPassword, object newPassword)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_changepassword"))
 			{
@@ -7213,7 +7217,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public DataTable user_pmcount(string connectionString, object userId)
+		static public DataTable user_pmcount(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_pmcount"))
 			{
@@ -7224,53 +7228,53 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        /// <summary>
-        /// Checks if the User has replied tho the specifc topic.
-        /// </summary>
-        /// <param name="messageId">
-        /// The message id.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <returns>
-        /// Returns if true or not
-        /// </returns>
-        public static bool user_RepliedTopic(string connectionString, [NotNull] object messageId, [NotNull] object userId)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_repliedtopic"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Checks if the User has replied tho the specifc topic.
+		/// </summary>
+		/// <param name="messageId">
+		/// The message id.
+		/// </param>
+		/// <param name="userId">
+		/// The user id.
+		/// </param>
+		/// <returns>
+		/// Returns if true or not
+		/// </returns>
+		public static bool user_RepliedTopic(string connectionString, [NotNull] object messageId, [NotNull] object userId)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_repliedtopic"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 
-                cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+				cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
-                var messageCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+				var messageCount = (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return messageCount > 0;
-            }
-        }
-        static public void user_save(string connectionString,
-            object userId, 
-            object boardId, 
-            object userName,
-            object displayName, 
-            object email,
-            object timeZone,
-            object languageFile,
-            object culture,
-            object themeFile,
-            object useSingleSignOn,
-            object textEditor,
-            object overrideDefaultThemes,
-            object approved,
-            object pmNotification,
-            object autoWatchTopics,
-            object dSTUser,
-            object isHidden,
-            object notificationType)
+				return messageCount > 0;
+			}
+		}
+		static public void user_save(string connectionString,
+			object userId, 
+			object boardId, 
+			object userName,
+			object displayName, 
+			object email,
+			object timeZone,
+			object languageFile,
+			object culture,
+			object themeFile,
+			object useSingleSignOn,
+			object textEditor,
+			object overrideDefaultThemes,
+			object approved,
+			object pmNotification,
+			object autoWatchTopics,
+			object dSTUser,
+			object isHidden,
+			object notificationType)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_save"))
 			{
@@ -7294,57 +7298,57 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
 				cmd.Parameters.Add(new NpgsqlParameter("i_timezone", NpgsqlDbType.Integer)).Value = timeZone;
 				cmd.Parameters.Add(new NpgsqlParameter("i_languagefile", NpgsqlDbType.Varchar)).Value = languageFile;
-                cmd.Parameters.Add(new NpgsqlParameter("i_culture", NpgsqlDbType.Varchar)).Value = culture;
+				cmd.Parameters.Add(new NpgsqlParameter("i_culture", NpgsqlDbType.Varchar)).Value = culture;
 				cmd.Parameters.Add(new NpgsqlParameter("i_themefile", NpgsqlDbType.Varchar)).Value = themeFile;
-                cmd.Parameters.Add(new NpgsqlParameter("i_usesinglesignon",  NpgsqlDbType.Boolean)).Value = useSingleSignOn; 
-                cmd.Parameters.Add(new NpgsqlParameter("i_texteditor", NpgsqlDbType.Varchar)).Value = textEditor;
+				cmd.Parameters.Add(new NpgsqlParameter("i_usesinglesignon",  NpgsqlDbType.Boolean)).Value = useSingleSignOn; 
+				cmd.Parameters.Add(new NpgsqlParameter("i_texteditor", NpgsqlDbType.Varchar)).Value = textEditor;
 				cmd.Parameters.Add(new NpgsqlParameter("i_overridedefaulttheme", NpgsqlDbType.Boolean)).Value = overrideDefaultThemes;
 				cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
 				cmd.Parameters.Add(new NpgsqlParameter("i_pmnotification", NpgsqlDbType.Boolean)).Value = pmNotification;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
 				cmd.Parameters.Add(new NpgsqlParameter("i_provideruserkey", NpgsqlDbType.Varchar)).Value = DBNull.Value;
 				cmd.Parameters.Add(new NpgsqlParameter("i_autowatchtopics", NpgsqlDbType.Boolean)).Value = autoWatchTopics;
 				cmd.Parameters.Add(new NpgsqlParameter("i_dstuser", NpgsqlDbType.Boolean)).Value = dSTUser;
 				cmd.Parameters.Add(new NpgsqlParameter("i_hideuser", NpgsqlDbType.Boolean)).Value = isHidden;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			   
 			}
 		}
 
-        /// <summary>
-        /// Saves the notification type for a user
-        /// </summary>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="notificationType">
-        /// The notification type.
-        /// </param>
-        public static void user_savenotification(string connectionString,
-              object userId,
-              object pmNotification,
-              object autoWatchTopics,
-              object notificationType,
-              object dailyDigest)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_savenotification"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// Saves the notification type for a user
+		/// </summary>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="notificationType">
+		/// The notification type.
+		/// </param>
+		public static void user_savenotification(string connectionString,
+			  object userId,
+			  object pmNotification,
+			  object autoWatchTopics,
+			  object notificationType,
+			  object dailyDigest)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_savenotification"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pmnotification", NpgsqlDbType.Boolean)).Value = pmNotification;
-                cmd.Parameters.Add(new NpgsqlParameter("i_autowatchtopics", NpgsqlDbType.Boolean)).Value = autoWatchTopics;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
-                cmd.Parameters.Add(new NpgsqlParameter("i_dailydigest", NpgsqlDbType.Boolean)).Value = dailyDigest;
-              
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pmnotification", NpgsqlDbType.Boolean)).Value = pmNotification;
+				cmd.Parameters.Add(new NpgsqlParameter("i_autowatchtopics", NpgsqlDbType.Boolean)).Value = autoWatchTopics;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
+				cmd.Parameters.Add(new NpgsqlParameter("i_dailydigest", NpgsqlDbType.Boolean)).Value = dailyDigest;
+			  
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
 		static public void user_adminsave
-            (string connectionString, object boardId, object userId, object name, object displayName, object email, object flags, object rankID)
+			(string connectionString, object boardId, object userId, object name, object displayName, object email, object flags, object rankID)
 		{
 
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_adminsave"))
@@ -7354,7 +7358,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_name", NpgsqlDbType.Varchar)).Value = name;
-                cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName;
 				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
 				cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
 				cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID;
@@ -7362,7 +7366,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable user_emails(string connectionString, object boardId, object groupID)
+		static public DataTable user_emails(string connectionString, object boardId, object groupID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_emails"))
 			{
@@ -7377,7 +7381,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable user_accessmasks(string connectionString, object boardId, object userId)
+		static public DataTable user_accessmasks(string connectionString, object boardId, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_accessmasks"))
 			{
@@ -7390,31 +7394,31 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public DataTable user_accessmasksbyforum(string connectionString, object boardId, object userId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_accessmasksbyforum"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		static public DataTable user_accessmasksbyforum(string connectionString, object boardId, object userId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_accessmasksbyforum"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
-        static public DataTable user_accessmasksbygroup(string connectionString, object boardId, object userId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_accessmasksbygroup"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		static public DataTable user_accessmasksbygroup(string connectionString, object boardId, object userId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_accessmasksbygroup"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
 		//adds some convenience while editing group's access rights (indent forums)
 		static private DataTable userforumaccess_sort_list(DataTable listSource, int parentID, int categoryID, int startingIndent)
@@ -7479,7 +7483,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public object user_recoverpassword(string connectionString, object boardId, object userName, object email)
+		static public object user_recoverpassword(string connectionString, object boardId, object userName, object email)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_recoverpassword"))
 			{
@@ -7492,7 +7496,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 			}
 		}
-        static public void user_savepassword(string connectionString, object userId, object password)
+		static public void user_savepassword(string connectionString, object userId, object password)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_savepassword"))
 			{
@@ -7504,7 +7508,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public object user_login(string connectionString, object boardId, object name, object password)
+		static public object user_login(string connectionString, object boardId, object name, object password)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_login"))
 			{
@@ -7517,7 +7521,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 			}
 		}
-        static public DataTable user_avatarimage(string connectionString, object userId)
+		static public DataTable user_avatarimage(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_avatarimage"))
 			{
@@ -7529,7 +7533,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public int user_get(string connectionString, int boardId, object providerUserKey)
+		static public int user_get(string connectionString, int boardId, object providerUserKey)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_get"))
 			{
@@ -7541,48 +7545,48 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// The UserFind.
-        /// </summary>
-        /// <param name="boardID">
-        ///   The board id.
-        /// </param>
-        /// <param name="filter">
-        ///   The filter.
-        /// </param>
-        /// <param name="userName">
-        ///   The user name.
-        /// </param>
-        /// <param name="email">
-        ///   The email.
-        /// </param>
-        /// <param name="displayName"></param>
-        /// <param name="notificationType"></param>
-        /// <param name="dailyDigest"></param>
-        /// <returns>
-        /// </returns>
-        public static DataTable UserFind(string connectionString, int boardId, bool filter, string userName, string email, string displayName, object notificationType, object dailyDigest)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_find"))
-            {
-               // if (userName == null) { userName = DBNull.Value; }
-               // if (email == null) { email = DBNull.Value; }
+		/// <summary>
+		/// The UserFind.
+		/// </summary>
+		/// <param name="boardID">
+		///   The board id.
+		/// </param>
+		/// <param name="filter">
+		///   The filter.
+		/// </param>
+		/// <param name="userName">
+		///   The user name.
+		/// </param>
+		/// <param name="email">
+		///   The email.
+		/// </param>
+		/// <param name="displayName"></param>
+		/// <param name="notificationType"></param>
+		/// <param name="dailyDigest"></param>
+		/// <returns>
+		/// </returns>
+		public static DataTable UserFind(string connectionString, int boardId, bool filter, string userName, string email, string displayName, object notificationType, object dailyDigest)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_find"))
+			{
+			   // if (userName == null) { userName = DBNull.Value; }
+			   // if (email == null) { email = DBNull.Value; }
 
 
-                cmd.CommandType = CommandType.StoredProcedure;
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_filter", NpgsqlDbType.Boolean)).Value = filter;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
-                cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
-                cmd.Parameters.Add(new NpgsqlParameter("i_dailydigest", NpgsqlDbType.Boolean)).Value = dailyDigest;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_filter", NpgsqlDbType.Boolean)).Value = filter;
+				cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
+				cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName;
+				cmd.Parameters.Add(new NpgsqlParameter("i_notificationtype", NpgsqlDbType.Integer)).Value = notificationType;
+				cmd.Parameters.Add(new NpgsqlParameter("i_dailydigest", NpgsqlDbType.Boolean)).Value = dailyDigest;
 
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
-        static public string user_getsignature(string connectionString, object userId)
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
+		static public string user_getsignature(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getsignature"))
 			{
@@ -7593,7 +7597,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.ExecuteScalar(cmd,connectionString).ToString();
 			}
 		}
-        static public void user_savesignature(string connectionString, object userId, object signature)
+		static public void user_savesignature(string connectionString, object userId, object signature)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_savesignature"))
 			{
@@ -7605,7 +7609,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_saveavatar(string connectionString, object userId, object avatar, System.IO.Stream stream, object avatarImageType)
+		static public void user_saveavatar(string connectionString, object userId, object avatar, System.IO.Stream stream, object avatarImageType)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_saveavatar"))
 			{
@@ -7634,7 +7638,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void user_deleteavatar(string connectionString, object userId)
+		static public void user_deleteavatar(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_deleteavatar"))
 			{
@@ -7646,15 +7650,15 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public bool user_register(string connectionString, object boardId, object userName, object password, object hash, object email, object location, object homePage, object timeZone, bool approved)
+		static public bool user_register(string connectionString, object boardId, object userName, object password, object hash, object email, object location, object homePage, object timeZone, bool approved)
 		{
-            using (var connMan = new PostgreDbConnectionManager(connectionString))
+			using (var connMan = new PostgreDbConnectionManager(connectionString))
 			{
-                using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDBAccess.IsolationLevel))
+				using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDBAccess.IsolationLevel))
 				{
 					try
 					{
-                        using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_save", connMan.OpenDBConnection(connectionString)))
+						using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_save", connMan.OpenDBConnection(connectionString)))
 						{
 							cmd.Transaction = trans;
 							cmd.CommandType = CommandType.StoredProcedure;
@@ -7670,9 +7674,9 @@ namespace YAF.Classes.Data.Postgre
 							cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved;
 							cmd.Parameters.Add(new NpgsqlParameter("i_pmnotification", NpgsqlDbType.Boolean)).Value = false;
 							cmd.Parameters.Add(new NpgsqlParameter("i_provideruserkey", NpgsqlDbType.Varchar)).Value = DBNull.Value;
-                            cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+							cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                            cmd.ExecuteNonQuery();
+							cmd.ExecuteNonQuery();
 						}
 
 						trans.Commit();
@@ -7688,7 +7692,7 @@ namespace YAF.Classes.Data.Postgre
 
 			return true;
 		}
-        static public int user_aspnet(string connectionString, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
+		static public int user_aspnet(string connectionString, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
 		{
 			try
 			{
@@ -7698,44 +7702,44 @@ namespace YAF.Classes.Data.Postgre
 
 					cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 					cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName ; // ?? userName;                    
+					cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName ; // ?? userName;                    
 					cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
 					cmd.Parameters.Add(new NpgsqlParameter("i_provideruserkey", NpgsqlDbType.Varchar)).Value = providerUserKey;
 					cmd.Parameters.Add(new NpgsqlParameter("i_isapproved", NpgsqlDbType.Boolean)).Value = isApproved;
-                    cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+					cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 														 
 					return (int)PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 				}
 			}
 			catch (Exception x)
 			{
-                Db.eventlog_create( null, "user_aspnet in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
+				Db.eventlog_create( null, "user_aspnet in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
 				return 0;
 			}
 		}
 
-        /// <summary>
-        /// The user_guest.
-        /// </summary>
-        /// <param name="boardID">
-        /// The board id.
-        /// </param>
-        /// <returns>
-        /// The user_guest.
-        /// </returns>
-        public static int? user_guest(string connectionString, object boardId)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_guest"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+		/// <summary>
+		/// The user_guest.
+		/// </summary>
+		/// <param name="boardID">
+		/// The board id.
+		/// </param>
+		/// <returns>
+		/// The user_guest.
+		/// </returns>
+		public static int? user_guest(string connectionString, object boardId)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_guest"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 
-                return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
-            }
-        }
+				return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
+			}
+		}
 
-        static public DataTable user_activity_rank(string connectionString, object boardId, object startDate, object displayNumber)
+		static public DataTable user_activity_rank(string connectionString, object boardId, object startDate, object displayNumber)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_activity_rank"))
 			{
@@ -7749,7 +7753,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public int user_nntp(string connectionString, object boardId, object userName, object email, int? timeZone)
+		static public int user_nntp(string connectionString, object boardId, object userName, object email, int? timeZone)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_nntp"))
 			{
@@ -7759,7 +7763,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
 				cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
 				cmd.Parameters.Add(new NpgsqlParameter("i_timezone", NpgsqlDbType.Integer)).Value = timeZone;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 			  object o=PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 			  //  if ( o != DBNull.Value)
@@ -7773,21 +7777,21 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 		/// <summary>
-        /// Add Reputation Points to the specified user id.
-        /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <param name="fromUserID">From user ID.</param>
-        /// <param name="points">The points.</param>
-        public static void user_addpoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
-        {
-      using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_addpoints"))
+		/// Add Reputation Points to the specified user id.
+		/// </summary>
+		/// <param name="userID">The user ID.</param>
+		/// <param name="fromUserID">From user ID.</param>
+		/// <param name="points">The points.</param>
+		public static void user_addpoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+		{
+	  using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_addpoints"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add("i_fromuserid", NpgsqlDbType.Integer).Value = fromUserID;
-                cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_points", NpgsqlDbType.Integer)).Value = points;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add("i_fromuserid", NpgsqlDbType.Integer).Value = fromUserID;
+				cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_points", NpgsqlDbType.Integer)).Value = points;
 
 						  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
@@ -7795,29 +7799,29 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 
-        /// <summary>
-        /// Remove Repuatation Points from the specified user id.
-        /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <param name="fromUserID">From user ID.</param>
-        /// <param name="points">The points.</param>
-        public static void user_removepoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
-        {
+		/// <summary>
+		/// Remove Repuatation Points from the specified user id.
+		/// </summary>
+		/// <param name="userID">The user ID.</param>
+		/// <param name="fromUserID">From user ID.</param>
+		/// <param name="points">The points.</param>
+		public static void user_removepoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+		{
 
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_removepoints"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add("i_fromuserid", NpgsqlDbType.Integer).Value = fromUserID;
-                cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_points", NpgsqlDbType.Integer)).Value = points;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add("i_fromuserid", NpgsqlDbType.Integer).Value = fromUserID;
+				cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_points", NpgsqlDbType.Integer)).Value = points;
 								
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        static public void user_setpoints(string connectionString, object userId, object points)
+		static public void user_setpoints(string connectionString, object userId, object points)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_setpoints"))
 			{
@@ -7830,7 +7834,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        static public int user_getpoints(string connectionString, object userId)
+		static public int user_getpoints(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getpoints"))
 			{
@@ -7843,7 +7847,7 @@ namespace YAF.Classes.Data.Postgre
 		}
 
 
-        static public int user_getthanks_from(string connectionString, object userID, object pageUserId)
+		static public int user_getthanks_from(string connectionString, object userID, object pageUserId)
 		{
 
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getthanks_from"))
@@ -7851,14 +7855,14 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 				return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
 			}
 		}
 
 		//<summary> Returns the number of times and posts that other users have thanked the 
 		// user with the provided userID.
-        static public int[] user_getthanks_to(string connectionString, object userID, object pageUserId)
+		static public int[] user_getthanks_to(string connectionString, object userID, object pageUserId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_getthanks_to"))
 			{
@@ -7868,7 +7872,7 @@ namespace YAF.Classes.Data.Postgre
 				NpgsqlParameter paramThanksToPostsNumber = new NpgsqlParameter("i_thankstopostsnumber", NpgsqlDbType.Integer);
 				paramThanksToPostsNumber.Direction = ParameterDirection.Output;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
 				cmd.Parameters.Add(paramThanksToNumber);
 				cmd.Parameters.Add(paramThanksToPostsNumber);
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
@@ -7890,78 +7894,78 @@ namespace YAF.Classes.Data.Postgre
 
 
 
-        /// <summary>
-        /// Returns the posts which is thanked by the user.
-        /// </summary>
-        /// <param name="UserID">
-        /// The user id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable user_viewthanksfrom(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksfrom"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+		/// <summary>
+		/// Returns the posts which is thanked by the user.
+		/// </summary>
+		/// <param name="UserID">
+		/// The user id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable user_viewthanksfrom(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksfrom"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Returns the posts which are posted by the user and 
-        /// are thanked by other users.
-        /// </summary>
-        /// <param name="UserID">
-        /// The user id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static DataTable user_viewthanksto(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
-        {
-            using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksto"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                return PostgreDBAccess.GetData(cmd, connectionString);
-            }
-        }
+		/// <summary>
+		/// Returns the posts which are posted by the user and 
+		/// are thanked by other users.
+		/// </summary>
+		/// <param name="UserID">
+		/// The user id.
+		/// </param>
+		/// <returns>
+		/// </returns>
+		public static DataTable user_viewthanksto(string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+		{
+			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("user_viewthanksto"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Update the single Sign on Status
-        /// </summary>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="isFacebookUser">
-        /// The is Facebook User
-        /// </param>
-        /// <param name="isTwitterUser">
-        /// The is Twitter User.
-        /// </param>
-        public static void user_update_single_sign_on_status(string connectionString, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_update_single_sign_on_status"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                cmd.Parameters.Add("i_isfacebookuser", NpgsqlDbType.Boolean).Value = isFacebookUser;
-                cmd.Parameters.Add("i_istwitteruser", NpgsqlDbType.Boolean).Value = isTwitterUser;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Update the single Sign on Status
+		/// </summary>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="isFacebookUser">
+		/// The is Facebook User
+		/// </param>
+		/// <param name="isTwitterUser">
+		/// The is Twitter User.
+		/// </param>
+		public static void user_update_single_sign_on_status(string connectionString, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_update_single_sign_on_status"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
+				cmd.Parameters.Add("i_isfacebookuser", NpgsqlDbType.Boolean).Value = isFacebookUser;
+				cmd.Parameters.Add("i_istwitteruser", NpgsqlDbType.Boolean).Value = isTwitterUser;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
 
 		#endregion
 		
 		#region yaf_UserForum
-        static public DataTable userforum_list(string connectionString, object userId, object forumID)
+		static public DataTable userforum_list(string connectionString, object userId, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("userforum_list"))
 			{
@@ -7977,7 +7981,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void userforum_delete(string connectionString, object userId, object forumID)
+		static public void userforum_delete(string connectionString, object userId, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("userforum_delete"))
 			{
@@ -7989,7 +7993,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void userforum_save(string connectionString, object userId, object forumID, object accessMaskID)
+		static public void userforum_save(string connectionString, object userId, object forumID, object accessMaskID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("userforum_save"))
 			{
@@ -7998,7 +8002,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
@@ -8006,7 +8010,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 		
 		#region yaf_UserGroup
-        static public DataTable usergroup_list(string connectionString, object userId)
+		static public DataTable usergroup_list(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("usergroup_list"))
 			{
@@ -8017,7 +8021,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void usergroup_save(string connectionString, object userId, object groupID, object member)
+		static public void usergroup_save(string connectionString, object userId, object groupID, object member)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("usergroup_save"))
 			{
@@ -8033,7 +8037,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 	   
 		#region yaf_WatchForum
-        static public void watchforum_add(string connectionString, object userId, object forumID)
+		static public void watchforum_add(string connectionString, object userId, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchforum_add"))
 			{
@@ -8041,12 +8045,12 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 		  
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public DataTable watchforum_list(string connectionString, object userId)
+		static public DataTable watchforum_list(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchforum_list"))
 			{
@@ -8057,7 +8061,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable watchforum_check(string connectionString, object userId, object forumID)
+		static public DataTable watchforum_check(string connectionString, object userId, object forumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchforum_check"))
 			{
@@ -8069,7 +8073,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void watchforum_delete(string connectionString, object watchForumID)
+		static public void watchforum_delete(string connectionString, object watchForumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchforum_delete"))
 			{
@@ -8084,7 +8088,7 @@ namespace YAF.Classes.Data.Postgre
 		#endregion
 
 		#region yaf_WatchTopic
-        static public DataTable watchtopic_list(string connectionString, object userId)
+		static public DataTable watchtopic_list(string connectionString, object userId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchtopic_list"))
 			{
@@ -8095,7 +8099,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public DataTable watchtopic_check(string connectionString, object userId, object topicID)
+		static public DataTable watchtopic_check(string connectionString, object userId, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchtopic_check"))
 			{
@@ -8107,7 +8111,7 @@ namespace YAF.Classes.Data.Postgre
 				return PostgreDBAccess.GetData(cmd,connectionString);
 			}
 		}
-        static public void watchtopic_delete(string connectionString, object watchTopicID)
+		static public void watchtopic_delete(string connectionString, object watchTopicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchtopic_delete"))
 			{
@@ -8118,7 +8122,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        static public void watchtopic_add(string connectionString, object userId, object topicID)
+		static public void watchtopic_add(string connectionString, object userId, object topicID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("watchtopic_add"))
 			{
@@ -8126,165 +8130,165 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
 
-        /// <summary>
-        /// Add Or Update Read Tracking for the Current User and Topic
-        /// </summary>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="topicID">
-        /// The topic id.
-        /// </param>
-        public static void Readtopic_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object topicID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readtopic_addorupdate"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Add Or Update Read Tracking for the Current User and Topic
+		/// </summary>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="topicID">
+		/// The topic id.
+		/// </param>
+		public static void Readtopic_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readtopic_addorupdate"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Delete the Read Tracking
-        /// </summary>
-        /// <param name="trackingID">
-        /// The tracking id.
-        /// </param>
-       /* public static void Readtopic_delete([NotNull] object userID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readtopic_delete"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        } */
+		/// <summary>
+		/// Delete the Read Tracking
+		/// </summary>
+		/// <param name="trackingID">
+		/// The tracking id.
+		/// </param>
+	   /* public static void Readtopic_delete([NotNull] object userID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readtopic_delete"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		} */
 
-        /// <summary>
-        /// Get the Global Last Read DateTime User
-        /// </summary>
-        /// <param name="userID">
-        /// The user ID.
-        /// </param>
-        /// <param name="lastVisitDate">
-        /// The last Visit Date of the User
-        /// </param>
-        /// <returns>
-        /// Returns the Global Last Read DateTime
-        /// </returns>
-        public static DateTime? User_LastRead(string connectionString, [NotNull] object userID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("user_lastread"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-               
-                var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+		/// <summary>
+		/// Get the Global Last Read DateTime User
+		/// </summary>
+		/// <param name="userID">
+		/// The user ID.
+		/// </param>
+		/// <param name="lastVisitDate">
+		/// The last Visit Date of the User
+		/// </param>
+		/// <returns>
+		/// Returns the Global Last Read DateTime
+		/// </returns>
+		public static DateTime? User_LastRead(string connectionString, [NotNull] object userID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("user_lastread"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+			   
+				var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return tableLastRead.ToType<DateTime?>();
-            }
-        }
+				return tableLastRead.ToType<DateTime?>();
+			}
+		}
 
-        /// <summary>
-        /// Get the Last Read DateTime for the Current Topic and User
-        /// </summary>
-        /// <param name="userID">
-        /// The user ID.
-        /// </param>
-        /// <param name="topicID">
-        /// The topic ID.
-        /// </param>
-        /// <returns>
-        /// Returns the Last Read DateTime
-        /// </returns>
-        public static DateTime? Readtopic_lastread(string connectionString, [NotNull] object userID, [NotNull] object topicID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readtopic_lastread"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+		/// <summary>
+		/// Get the Last Read DateTime for the Current Topic and User
+		/// </summary>
+		/// <param name="userID">
+		/// The user ID.
+		/// </param>
+		/// <param name="topicID">
+		/// The topic ID.
+		/// </param>
+		/// <returns>
+		/// Returns the Last Read DateTime
+		/// </returns>
+		public static DateTime? Readtopic_lastread(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readtopic_lastread"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+				var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return tableLastRead.ToType<DateTime?>();
-            }
-        }
+				return tableLastRead.ToType<DateTime?>();
+			}
+		}
 
-        /// <summary>
-        /// Add Or Update Read Tracking for the forum and Topic
-        /// </summary>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="forumID">
-        /// The forum id.
-        /// </param>
-        public static void ReadForum_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object forumID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readforum_addorupdate"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Add Or Update Read Tracking for the forum and Topic
+		/// </summary>
+		/// <param name="userID">
+		/// The user id.
+		/// </param>
+		/// <param name="forumID">
+		/// The forum id.
+		/// </param>
+		public static void ReadForum_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readforum_addorupdate"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		}
 
-        /// <summary>
-        /// Delete the Read Tracking
-        /// </summary>
-        /// <param name="trackingID">
-        /// The tracking id.
-        /// </param>
-       /* public static void ReadForum_delete([NotNull] object userID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readforum_delete"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        } */
+		/// <summary>
+		/// Delete the Read Tracking
+		/// </summary>
+		/// <param name="trackingID">
+		/// The tracking id.
+		/// </param>
+	   /* public static void ReadForum_delete([NotNull] object userID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readforum_delete"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+			}
+		} */
 
-        /// <summary>
-        /// Get the Last Read DateTime for the Forum and User
-        /// </summary>
-        /// <param name="userID">
-        /// The user ID.
-        /// </param>
-        /// <param name="forumID">
-        /// The forum ID.
-        /// </param>
-        /// <returns>
-        /// Returns the Last Read DateTime
-        /// </returns>
-        public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("readforum_lastread"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+		/// <summary>
+		/// Get the Last Read DateTime for the Forum and User
+		/// </summary>
+		/// <param name="userID">
+		/// The user ID.
+		/// </param>
+		/// <param name="forumID">
+		/// The forum ID.
+		/// </param>
+		/// <returns>
+		/// Returns the Last Read DateTime
+		/// </returns>
+		public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("readforum_lastread"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
+				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
 
-                var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
+				var tableLastRead = PostgreDBAccess.ExecuteScalar(cmd,connectionString);
 
-                return tableLastRead != null && tableLastRead != DBNull.Value
-                           ? (DateTime)tableLastRead
-                           : DateTime.MinValue.AddYears(1902);
-            }
-        }
+				return tableLastRead != null && tableLastRead != DBNull.Value
+						   ? (DateTime)tableLastRead
+						   : DateTime.MinValue.AddYears(1902);
+			}
+		}
 	   
 		#endregion
 
@@ -8332,8 +8336,8 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}      
 		#endregion
-        
-        static public DataTable rsstopic_list(string connectionString, int forumID, int topicStart, int topicCount)
+		
+		static public DataTable rsstopic_list(string connectionString, int forumID, int topicStart, int topicCount)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("rsstopic_list"))
 			{
@@ -8347,126 +8351,126 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        private static string getStatsMessage;
+		private static string getStatsMessage;
 
-        static public string db_getstats_new(string connectionString)
+		static public string db_getstats_new(string connectionString)
 		{
-            try
-            {
-                using (var connMan = new PostgreDbConnectionManager(connectionString))
-                {
-                    connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(getStats_InfoMessage);
-                    using (NpgsqlCommand cmd = new NpgsqlCommand("VACUUM ANALYZE VERBOSE;", connMan.OpenDBConnection(connectionString)))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        // up the command timeout..
-                        cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
-                        // run it..
-                        cmd.ExecuteNonQuery();
-                        return getStatsMessage;
-                    }
-                }
-            }
-            finally
-            {
-                getStatsMessage = string.Empty;
-            }
+			try
+			{
+				using (var connMan = new PostgreDbConnectionManager(connectionString))
+				{
+					connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(getStats_InfoMessage);
+					using (NpgsqlCommand cmd = new NpgsqlCommand("VACUUM ANALYZE VERBOSE;", connMan.OpenDBConnection(connectionString)))
+					{
+						cmd.CommandType = CommandType.Text;
+						// up the command timeout..
+						cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+						// run it..
+						cmd.ExecuteNonQuery();
+						return getStatsMessage;
+					}
+				}
+			}
+			finally
+			{
+				getStatsMessage = string.Empty;
+			}
 		}
 
-        /// <summary>
-        /// The reindexDb_InfoMessage.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void getStats_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
-        {
-            getStatsMessage += "\r\n{0}".FormatWith(e.Message);
-        }
+		/// <summary>
+		/// The reindexDb_InfoMessage.
+		/// </summary>
+		/// <param name="sender">
+		/// The sender.
+		/// </param>
+		/// <param name="e">
+		/// The e.
+		/// </param>
+		private static void getStats_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
+		{
+			getStatsMessage += "\r\n{0}".FormatWith(e.Message);
+		}
 
-        private static string reindexDbMessage;
+		private static string reindexDbMessage;
 
-        static public string db_reindex_new(string connectionString)
-        {
-            ///VACUUM ANALYZE VERBOSE;VACUUM cannot be implemeneted within function or multiline command line string 
-            try
-            {
-                using (var connMan = new PostgreDbConnectionManager(connectionString))
-                {
-                    connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(reindexDb_InfoMessage);
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(String.Format(
-                        @"REINDEX DATABASE {0};", PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public"),
-                                                                 connMan.OpenDBConnection(connectionString)))
-                    {
-
-
-                        cmd.CommandType = CommandType.Text;
-                        // up the command timeout..
-                        cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
-
-                        // run it..                   
-                        cmd.ExecuteNonQuery();
-                        return reindexDbMessage;
-                    }
-                }
-
-            }
-            finally
-            {
-                reindexDbMessage = string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// The reindexDb_InfoMessage.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void reindexDb_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
-        {
-            reindexDbMessage += "\r\n{0}".FormatWith(e.Message);
-        }
+		static public string db_reindex_new(string connectionString)
+		{
+			///VACUUM ANALYZE VERBOSE;VACUUM cannot be implemeneted within function or multiline command line string 
+			try
+			{
+				using (var connMan = new PostgreDbConnectionManager(connectionString))
+				{
+					connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(reindexDb_InfoMessage);
+					using (NpgsqlCommand cmd = new NpgsqlCommand(String.Format(
+						@"REINDEX DATABASE {0};", PostgreDBAccess.SchemaName.IsSet() ? PostgreDBAccess.SchemaName : "public"),
+																 connMan.OpenDBConnection(connectionString)))
+					{
 
 
-        static public string db_reindex_warning()
+						cmd.CommandType = CommandType.Text;
+						// up the command timeout..
+						cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+
+						// run it..                   
+						cmd.ExecuteNonQuery();
+						return reindexDbMessage;
+					}
+				}
+
+			}
+			finally
+			{
+				reindexDbMessage = string.Empty;
+			}
+		}
+
+		/// <summary>
+		/// The reindexDb_InfoMessage.
+		/// </summary>
+		/// <param name="sender">
+		/// The sender.
+		/// </param>
+		/// <param name="e">
+		/// The e.
+		/// </param>
+		private static void reindexDb_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
+		{
+			reindexDbMessage += "\r\n{0}".FormatWith(e.Message);
+		}
+
+
+		static public string db_reindex_warning()
 		{
 			return "Operation completed. Database tables reindexing can take a lot of time.";
 		}
-        static public string db_getstats_warning()
+		static public string db_getstats_warning()
 		{
 			return "Operation completed. Vacuum operation blocks all database objects! If there is a lot of indexes, the database can be blocked for a long time. Choose a right timing!";
 		}
-        /// <summary>
-        /// The db_runsql.
-        /// </summary>
-        /// <param name="sql">
-        /// The sql.
-        /// </param>
-        /// <param name="connMan">
-        /// The conn man.
-        /// </param>
-        /// <returns>
-        /// The db_runsql.
-        /// </returns>
-      /*  public static string db_runsql(string sql, IDbConnectionManager connMan, bool useTransaction)
-        {
-            using (var command = new SqlCommand(sql, connMan.OpenDBConnection))
-            {
-                command.CommandTimeout = 9999;
-                command.Connection = connMan.OpenDBConnection;
+		/// <summary>
+		/// The db_runsql.
+		/// </summary>
+		/// <param name="sql">
+		/// The sql.
+		/// </param>
+		/// <param name="connMan">
+		/// The conn man.
+		/// </param>
+		/// <returns>
+		/// The db_runsql.
+		/// </returns>
+	  /*  public static string db_runsql(string sql, IDbConnectionManager connMan, bool useTransaction)
+		{
+			using (var command = new SqlCommand(sql, connMan.OpenDBConnection))
+			{
+				command.CommandTimeout = 9999;
+				command.Connection = connMan.OpenDBConnection;
 
-                return InnerRunSqlExecuteReader(command, useTransaction);
-            }
-        } */
+				return InnerRunSqlExecuteReader(command, useTransaction);
+			}
+		} */
 
-     /*   public static string db_runsql( string sql, bool useTransaction)
+	 /*   public static string db_runsql( string sql, bool useTransaction)
 		{
 			string txtResult = "";
 			var results = new System.Text.StringBuilder();
@@ -8552,151 +8556,151 @@ namespace YAF.Classes.Data.Postgre
 			}
 
 		} 
-       */
+	   */
 
-        private static string messageRunSql;
-        /// <summary>
-        /// The db_runsql.
-        /// </summary>
-        /// <param name="sql">
-        /// The sql.
-        /// </param>
-        /// <param name="connectionManager">
-        /// The conn man.
-        /// </param>
-        /// <param name="useTransaction">
-        /// The use Transaction.
-        /// </param>
-        /// <returns>
-        /// The db_runsql.
-        /// </returns>
-        public static string db_runsql_new(string connectionString, [NotNull] string sql, bool useTransaction)
-        {
+		private static string messageRunSql;
+		/// <summary>
+		/// The db_runsql.
+		/// </summary>
+		/// <param name="sql">
+		/// The sql.
+		/// </param>
+		/// <param name="connectionManager">
+		/// The conn man.
+		/// </param>
+		/// <param name="useTransaction">
+		/// The use Transaction.
+		/// </param>
+		/// <returns>
+		/// The db_runsql.
+		/// </returns>
+		public static string db_runsql_new(string connectionString, [NotNull] string sql, bool useTransaction)
+		{
 
-            try
-            {
-                using (var connMan = new PostgreDbConnectionManager(connectionString))
-                {
-                    connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(runSql_InfoMessage);
-                    sql = PostgreDBAccess.GetCommandTextReplaced(sql.Trim());
-                    var results = new System.Text.StringBuilder();
+			try
+			{
+				using (var connMan = new PostgreDbConnectionManager(connectionString))
+				{
+					connMan.InfoMessage += new YafDBConnInfoMessageEventHandler(runSql_InfoMessage);
+					sql = PostgreDBAccess.GetCommandTextReplaced(sql.Trim());
+					var results = new System.Text.StringBuilder();
 
-                   using (var cmd = new NpgsqlCommand(sql, connMan.OpenDBConnection(connectionString)))
-                    {
-                        cmd.CommandTimeout = 9999;
-                        NpgsqlDataReader reader = null;
-                        var trans = useTransaction ? cmd.Connection.BeginTransaction(PostgreDBAccess.IsolationLevel)
-                                                                   : null;
-                     
-                            try
-                            {
-                                cmd.Connection = connMan.DBConnection;
-                                cmd.Transaction = trans;
-                                reader = cmd.ExecuteReader();
+				   using (var cmd = new NpgsqlCommand(sql, connMan.OpenDBConnection(connectionString)))
+					{
+						cmd.CommandTimeout = 9999;
+						NpgsqlDataReader reader = null;
+						var trans = useTransaction ? cmd.Connection.BeginTransaction(PostgreDBAccess.IsolationLevel)
+																   : null;
+					 
+							try
+							{
+								cmd.Connection = connMan.DBConnection;
+								cmd.Transaction = trans;
+								reader = cmd.ExecuteReader();
 
-                                if (reader.HasRows)
-                                {
-                                    int rowIndex = 1;
+								if (reader.HasRows)
+								{
+									int rowIndex = 1;
 
-                                    results.Append("RowNumber");
-                                    int gg = 0;
-                                    int colCount = reader.GetSchemaTable().Rows.Count;
-                                    var columnNames = new string[colCount];
-                                    for(int i = 0; i < colCount ;i++)
-                                    {
-                                        DataRow drd = reader.GetSchemaTable().Rows[i];
-                                        columnNames[gg] = drd["ColumnName"].ToString();
-                                        results.Append(",");
-                                        results.Append(drd["ColumnName"]);
-                                        gg++;
+									results.Append("RowNumber");
+									int gg = 0;
+									int colCount = reader.GetSchemaTable().Rows.Count;
+									var columnNames = new string[colCount];
+									for(int i = 0; i < colCount ;i++)
+									{
+										DataRow drd = reader.GetSchemaTable().Rows[i];
+										columnNames[gg] = drd["ColumnName"].ToString();
+										results.Append(",");
+										results.Append(drd["ColumnName"]);
+										gg++;
 
-                                    }
-                                    //   var columnNames = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(r => r["ColumnName"].ToString()).ToList();
-
-
+									}
+									//   var columnNames = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(r => r["ColumnName"].ToString()).ToList();
 
 
-                                    results.AppendLine();
-
-                                    while (reader.Read())
-                                    {
-                                        results.AppendFormat(@"""{0}""", rowIndex++);
-
-                                        // dump all columns..
-                                        foreach (var col in columnNames)
-                                        {
-                                            results.AppendFormat(@",""{0}""", reader[col].ToString().Replace("\"", "\"\""));
-                                        }
-
-                                        results.AppendLine();
-                                    }
-                                }
-                                else if (reader.RecordsAffected > 0)
-                                {
-                                    results.AppendFormat("{0} Record(s) Affected", reader.RecordsAffected);
-                                    results.AppendLine();
-                                }
-                                else
-                                {
-                                    if (messageRunSql.IsSet())
-                                    {
-                                        results.AppendLine(messageRunSql);
-                                        results.AppendLine();
-                                    }
-                                    results.AppendLine("No Results Returned.");
-                                }
 
 
-                                reader.Close();
-                                trans.Commit();
-                            }
-                            catch (Exception x)
-                            {
-                                if (reader != null)
-                                {
-                                    reader.Close();
-                                }
+									results.AppendLine();
 
-                                // rollback..
-                                trans.Rollback();
-                                results.AppendLine();
-                                results.AppendFormat("SQL ERROR: {0}", x);
-                            }
+									while (reader.Read())
+									{
+										results.AppendFormat(@"""{0}""", rowIndex++);
 
-                            return results.ToString();
-                      
+										// dump all columns..
+										foreach (var col in columnNames)
+										{
+											results.AppendFormat(@",""{0}""", reader[col].ToString().Replace("\"", "\"\""));
+										}
 
-                    }
-                }
-            }
-            finally
-            {
-                messageRunSql = string.Empty;
-            }
+										results.AppendLine();
+									}
+								}
+								else if (reader.RecordsAffected > 0)
+								{
+									results.AppendFormat("{0} Record(s) Affected", reader.RecordsAffected);
+									results.AppendLine();
+								}
+								else
+								{
+									if (messageRunSql.IsSet())
+									{
+										results.AppendLine(messageRunSql);
+										results.AppendLine();
+									}
+									results.AppendLine("No Results Returned.");
+								}
+
+
+								reader.Close();
+								trans.Commit();
+							}
+							catch (Exception x)
+							{
+								if (reader != null)
+								{
+									reader.Close();
+								}
+
+								// rollback..
+								trans.Rollback();
+								results.AppendLine();
+								results.AppendFormat("SQL ERROR: {0}", x);
+							}
+
+							return results.ToString();
+					  
+
+					}
+				}
+			}
+			finally
+			{
+				messageRunSql = string.Empty;
+			}
   
-           
-        }
+		   
+		}
 
-        /// <summary>
-        /// The runSql_InfoMessage.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void runSql_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
-        {
-            messageRunSql = "\r\n" + e.Message;
-        }
+		/// <summary>
+		/// The runSql_InfoMessage.
+		/// </summary>
+		/// <param name="sender">
+		/// The sender.
+		/// </param>
+		/// <param name="e">
+		/// The e.
+		/// </param>
+		private static void runSql_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
+		{
+			messageRunSql = "\r\n" + e.Message;
+		}
 
-        public static bool forumpage_initdb(string connectionString, out string errorStr, bool debugging)
+		public static bool forumpage_initdb(string connectionString, out string errorStr, bool debugging)
 		{
 			errorStr = null;
 			try
 			{
-                using (var connMan = new PostgreDbConnectionManager(connectionString))
+				using (var connMan = new PostgreDbConnectionManager(connectionString))
 				{                    // just attempt to open the connection to test if a DB is available.           
 					var getConn = new NpgsqlConnection(connectionString);
 				}
@@ -8725,18 +8729,18 @@ namespace YAF.Classes.Data.Postgre
 			}
 
 		}
-        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
+		public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
 		{
 			string redirect = "";
-            
+			
 			try
 			{
-                var registry = Db.registry_list(connectionString, "Version");
+				var registry = Db.registry_list(connectionString, "Version");
 
 				if ((registry.Rows.Count == 0) || (Convert.ToInt32(registry.Rows[0]["Value"]) < appVersion))
 				{
 					// needs upgrading..
-                    redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1);
+					redirect = "install/default.aspx?upgrade={0}&md={1}".FormatWith(registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1);
 				}
 			}
 			catch (Npgsql.NpgsqlException)
@@ -8749,7 +8753,7 @@ namespace YAF.Classes.Data.Postgre
  
 		public static readonly string [] _scriptList = {
 														"pgsql/preinstall.sql",
-                                                        "pgsql/domains.sql",
+														"pgsql/domains.sql",
 														"pgsql/tables.sql",
 														"pgsql/sequences.sql",                                                        
 														"pgsql/pkeys.sql",
@@ -8760,7 +8764,7 @@ namespace YAF.Classes.Data.Postgre
 														"pgsql/views.sql",
 														"pgsql/types.sql",
 														"pgsql/procedures.sql",
-                                                        "pgsql/procedures1.sql",
+														"pgsql/procedures1.sql",
 														"pgsql/functions.sql",	
 														"pgsql/providers/tables.sql",
 														"pgsql/providers/pkeys.sql",
@@ -8768,20 +8772,20 @@ namespace YAF.Classes.Data.Postgre
 														"pgsql/providers/types.sql",
 														"pgsql/providers/procedures.sql",
 														"pgsql/postinstall.sql",
-                                                        "pgsql/nestedsets.sql",
-                                                        "pgsql/nestedsets_sp.sql",
-                                                        "pgsql/fulltext_ru.sql"
+														"pgsql/nestedsets.sql",
+														"pgsql/nestedsets_sp.sql",
+														"pgsql/fulltext_ru.sql"
 													   };
-        static public string[] ScriptList
-        {
-            get
-            {
-                return _scriptList;
-            }
-        }
+		static public string[] ScriptList
+		{
+			get
+			{
+				return _scriptList;
+			}
+		}
  static private bool GetBooleanRegistryValue(string connectionString, string name)
  {
-     using (DataTable dt = Db.registry_list( connectionString, name))
+	 using (DataTable dt = Db.registry_list( connectionString, name))
 	 {
 		 foreach (DataRow dr in dt.Rows)
 		 {
@@ -8803,7 +8807,7 @@ namespace YAF.Classes.Data.Postgre
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 			}
 		}
-        public static void system_initialize_executescripts(string connectionString, string script, string scriptFile, bool useTransactions)
+		public static void system_initialize_executescripts(string connectionString, string script, string scriptFile, bool useTransactions)
 		{
 			script = PostgreDBAccess.GetCommandTextReplaced(script);
 		   
@@ -8811,13 +8815,13 @@ namespace YAF.Classes.Data.Postgre
 			//Scripts separation regexp
 				var statements = System.Text.RegularExpressions.Regex.Split(script, "(?:--GO)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                using (var connMan = new PostgreDbConnectionManager(connectionString))
+				using (var connMan = new PostgreDbConnectionManager(connectionString))
 			{                          
 
 				// use transactions..
 				if (useTransactions)
 				{
-                    using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.PostgreDBAccess.IsolationLevel))
+					using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.PostgreDBAccess.IsolationLevel))
 					{
 						foreach (var sql0 in statements)
 						{
@@ -8836,15 +8840,15 @@ namespace YAF.Classes.Data.Postgre
 										cmd.Connection = connMan.DBConnection;
 										cmd.CommandType = CommandType.Text;
 										cmd.CommandText = sql.Trim();
-                                        // added so command won't timeout anymore..
-                                        cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);              
+										// added so command won't timeout anymore..
+										cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);              
 										cmd.ExecuteNonQuery();                                       
 									}
 								}
 							}
 							catch (Exception x)
 							{
-							    sql = sql0;
+								sql = sql0;
 								trans.Rollback();
 								throw new Exception(String.Format("FILE:\n{0}\n\nERROR:\n{2}\n\nSTATEMENT:\n{1}", scriptFile, sql, x.Message));
 							}
@@ -8857,33 +8861,33 @@ namespace YAF.Classes.Data.Postgre
 					// don't use transactions
 					foreach (string sql in statements.Select(sql0 => sql0.Trim()))
 					{
-					    try
-					    {
-					        if (sql.ToLower().IndexOf("setuser", System.StringComparison.Ordinal) >= 0)
-					            continue;
+						try
+						{
+							if (sql.ToLower().IndexOf("setuser", System.StringComparison.Ordinal) >= 0)
+								continue;
 
-					        if (sql.Length > 0)
-					        {
-					            using (var cmd = new NpgsqlCommand())
-					            {
-					                cmd.Connection = connMan.OpenDBConnection(connectionString);
-					                cmd.CommandType = CommandType.Text;
-					                cmd.CommandText = sql.Trim();
-					                cmd.ExecuteNonQuery();
-					            }
-					        }
-					    }
-					    catch (Exception x)
-					    {
-					        throw new Exception(String.Format("FILE:\n{0}\n\nERROR:\n{2}\n\nSTATEMENT:\n{1}", scriptFile, sql, x.Message));
-					    }
+							if (sql.Length > 0)
+							{
+								using (var cmd = new NpgsqlCommand())
+								{
+									cmd.Connection = connMan.OpenDBConnection(connectionString);
+									cmd.CommandType = CommandType.Text;
+									cmd.CommandText = sql.Trim();
+									cmd.ExecuteNonQuery();
+								}
+							}
+						}
+						catch (Exception x)
+						{
+							throw new Exception(String.Format("FILE:\n{0}\n\nERROR:\n{2}\n\nSTATEMENT:\n{1}", scriptFile, sql, x.Message));
+						}
 					}
 				}
 			}
 
 
 		}
-        public static void system_initialize_fixaccess(string connectionString, bool bGrant)
+		public static void system_initialize_fixaccess(string connectionString, bool bGrant)
 		{
 		/*   using (YAF.Classes.Data.IDbConnectionManager connMan = new IDbConnectionManager())
 			{
@@ -8966,7 +8970,7 @@ namespace YAF.Classes.Data.Postgre
 			}*/
 
 		}
-        public static void system_initialize(string connectionString, string forumName, string timeZone, string culture, string languageFile, string forumEmail, string smtpServer, string userName, string userEmail, object providerUserKey, string rolePrefix)
+		public static void system_initialize(string connectionString, string forumName, string timeZone, string culture, string languageFile, string forumEmail, string smtpServer, string userName, string userEmail, object providerUserKey, string rolePrefix)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("system_initialize"))
 			{
@@ -8982,16 +8986,16 @@ namespace YAF.Classes.Data.Postgre
 				// vzrus:The input parameter should be implemented in the system initialize and board_create procedures, else there will be an error in create watch because the user email is missing
 				cmd.Parameters.Add(new NpgsqlParameter("i_useremail", NpgsqlDbType.Varchar)).Value = userEmail;
 				cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = providerUserKey;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newboardguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_roleprefix", NpgsqlDbType.Varchar)).Value = rolePrefix;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_newboardguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+				cmd.Parameters.Add(new NpgsqlParameter("i_roleprefix", NpgsqlDbType.Varchar)).Value = rolePrefix;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				YAF.Classes.Data.PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 								
 			}
 
 		}
-        static public void system_updateversion(string connectionString, int version, string name)
+		static public void system_updateversion(string connectionString, int version, string name)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("system_updateversion"))
 			{
@@ -9008,7 +9012,7 @@ namespace YAF.Classes.Data.Postgre
 		/// Used in GroupRankStyles cache.
 		/// Usage: LegendID = 1 - Select Groups, LegendID = 2 - select Ranks by Name 
 		/// </summary>
-        public static DataTable group_rank_style(string connectionString, object boardID)
+		public static DataTable group_rank_style(string connectionString, object boardID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("group_rank_style"))
 			{
@@ -9031,13 +9035,13 @@ namespace YAF.Classes.Data.Postgre
 		/// </param>
 		/// <returns>
 		/// </returns>
-        public static DataTable shoutbox_getmessages(string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
+		public static DataTable shoutbox_getmessages(string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("shoutbox_getmessages"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_numberofmessages",NpgsqlDbType.Integer)).Value = numberOfMessages;                
 				cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks;
 				
@@ -9045,7 +9049,7 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        public static bool shoutbox_savemessage(string connectionString, int boardId, string message, string userName, int userID, object ip)
+		public static bool shoutbox_savemessage(string connectionString, int boardId, string message, string userName, int userID, object ip)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("shoutbox_savemessage"))
 			{
@@ -9053,11 +9057,11 @@ namespace YAF.Classes.Data.Postgre
 
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
 				cmd.Parameters.Add(new NpgsqlParameter("i_message", NpgsqlDbType.Text)).Value = message;
 				cmd.Parameters.Add(new NpgsqlParameter("i_date", NpgsqlDbType.Timestamp)).Value = DBNull.Value;
 				cmd.Parameters.Add(new NpgsqlParameter("i_ip", NpgsqlDbType.Varchar)).Value = ip;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 
@@ -9065,13 +9069,13 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        public static Boolean shoutbox_clearmessages(string connectionString, int boardId)
+		public static Boolean shoutbox_clearmessages(string connectionString, int boardId)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("shoutbox_clearmessages"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 				return true;
 			}
@@ -9081,12 +9085,12 @@ namespace YAF.Classes.Data.Postgre
 
 		#region Touradg Mods
 		//Shinking Operation
-        static public string db_shrink_warning(string connectionString)
+		static public string db_shrink_warning(string connectionString)
 		{
 			return "";
 		}
 
-        public static void db_shrink()
+		public static void db_shrink()
 		{
 		  /*  String ShrinkSql = "DBCC SHRINKDATABASE(N'" + DBName.DBConnection.Database + "')";
 			SqlConnection ShrinkConn = new SqlConnection(YAF.Classes.Config.ConnectionString);
@@ -9101,64 +9105,64 @@ namespace YAF.Classes.Data.Postgre
 				cmd.ExecuteNonQuery();
 			}*/
 		}
-        private static string dbShinkMessage;
-        /// <summary>
-        /// The db_shrink.
-        /// </summary>
-        /// <param name="DBName">
-        /// The db name.
-        /// </param>
-        public static string db_shrink_new(string connectionString)
-        {
-            /* try
-             {
-                 using (var conn = new PostgreDbConnectionManager(connectionString))
-                 {
-                     conn.InfoMessage += new YafDBConnInfoMessageEventHandler(dbShink_InfoMessage);
-                   
-                     string ShrinkSql = "DBCC SHRINKDATABASE(N'" + conn.DBConnection.Database + "')";
-                     var ShrinkConn = new SqlConnection(Config.ConnectionString);
-                     var ShrinkCmd = new SqlCommand(ShrinkSql, ShrinkConn);
-                     ShrinkConn.Open();
-                     ShrinkCmd.ExecuteNonQuery();
-                     ShrinkConn.Close();
-                     using (var cmd = new SqlCommand(ShrinkSql, conn.OpenDBConnection(connectionString)))
-                     {
-                         cmd.Connection = conn.DBConnection;
-                         cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
-                         cmd.ExecuteNonQuery();
-                     }
-                 }
-                 return dbShinkMessage;
-             }
-             finally
-             {
-                 dbShinkMessage = string.Empty;
-             } */
-            return string.Empty;
+		private static string dbShinkMessage;
+		/// <summary>
+		/// The db_shrink.
+		/// </summary>
+		/// <param name="DBName">
+		/// The db name.
+		/// </param>
+		public static string db_shrink_new(string connectionString)
+		{
+			/* try
+			 {
+				 using (var conn = new PostgreDbConnectionManager(connectionString))
+				 {
+					 conn.InfoMessage += new YafDBConnInfoMessageEventHandler(dbShink_InfoMessage);
+				   
+					 string ShrinkSql = "DBCC SHRINKDATABASE(N'" + conn.DBConnection.Database + "')";
+					 var ShrinkConn = new SqlConnection(Config.ConnectionString);
+					 var ShrinkCmd = new SqlCommand(ShrinkSql, ShrinkConn);
+					 ShrinkConn.Open();
+					 ShrinkCmd.ExecuteNonQuery();
+					 ShrinkConn.Close();
+					 using (var cmd = new SqlCommand(ShrinkSql, conn.OpenDBConnection(connectionString)))
+					 {
+						 cmd.Connection = conn.DBConnection;
+						 cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+						 cmd.ExecuteNonQuery();
+					 }
+				 }
+				 return dbShinkMessage;
+			 }
+			 finally
+			 {
+				 dbShinkMessage = string.Empty;
+			 } */
+			return string.Empty;
 
-        }
+		}
 
-        /// <summary>
-        /// The runSql_InfoMessage.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void dbShink_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
-        {
-            dbShinkMessage = "\r\n" + e.Message;
-        }
+		/// <summary>
+		/// The runSql_InfoMessage.
+		/// </summary>
+		/// <param name="sender">
+		/// The sender.
+		/// </param>
+		/// <param name="e">
+		/// The e.
+		/// </param>
+		private static void dbShink_InfoMessage([NotNull] object sender, [NotNull] YafDBConnInfoMessageEventArgs e)
+		{
+			dbShinkMessage = "\r\n" + e.Message;
+		}
 		//Set Recovery
 		static public string db_recovery_mode_warning()
 		{
 			return "";
 		}
 
-        public static string db_recovery_mode_new(string connectionString, string dbRecoveryMode)
+		public static string db_recovery_mode_new(string connectionString, string dbRecoveryMode)
 		{
 		   /* String RecoveryMode = "ALTER DATABASE " + DBName.DBConnection.Database + " SET RECOVERY " + dbRecoveryMode;
 			SqlConnection RecoveryModeConn = new SqlConnection(YAF.Classes.Config.ConnectionString);
@@ -9172,7 +9176,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.CommandTimeout = 9999;
 				cmd.ExecuteNonQuery();
 			}*/
-		    return string.Empty;
+			return string.Empty;
 		}
 		#endregion
 
@@ -9189,7 +9193,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// The name of the second user + Whether this request is approved or not.
 		/// </returns>
-        public static string[] buddy_addrequest(string connectionString, object FromUserID, object ToUserID)
+		public static string[] buddy_addrequest(string connectionString, object FromUserID, object ToUserID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("buddy_addrequest"))
 			{
@@ -9200,7 +9204,7 @@ namespace YAF.Classes.Data.Postgre
 				approved.Direction = ParameterDirection.Output;
 				cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid",NpgsqlDbType.Integer)).Value= FromUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_touserid",NpgsqlDbType.Integer)).Value=ToUserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				cmd.Parameters.Add(paramOutput);
 				cmd.Parameters.Add(approved);
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
@@ -9223,7 +9227,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// the name of the second user.
 		/// </returns>
-        public static string buddy_approveRequest(string connectionString, object FromUserID, object ToUserID, object Mutual)
+		public static string buddy_approveRequest(string connectionString, object FromUserID, object ToUserID, object Mutual)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("buddy_approverequest"))
 			{
@@ -9233,7 +9237,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid", NpgsqlDbType.Integer)).Value = FromUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_touserid", NpgsqlDbType.Integer)).Value = ToUserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_mutual", NpgsqlDbType.Boolean)).Value = Mutual;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 				cmd.Parameters.Add(paramOutput);
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 				return paramOutput.Value.ToString();
@@ -9252,7 +9256,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// the name of the second user.
 		/// </returns>
-        public static string buddy_denyRequest(string connectionString, object FromUserID, object ToUserID)
+		public static string buddy_denyRequest(string connectionString, object FromUserID, object ToUserID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("buddy_denyrequest"))
 			{
@@ -9279,7 +9283,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// The name of the second user.
 		/// </returns>
-        public static string buddy_remove(string connectionString, object FromUserID, object ToUserID)
+		public static string buddy_remove(string connectionString, object FromUserID, object ToUserID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("buddy_remove"))
 			{
@@ -9305,7 +9309,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// a Datatable containing the buddy list.
 		/// </returns>
-        public static DataTable buddy_list(string connectionString, object FromUserID)
+		public static DataTable buddy_list(string connectionString, object FromUserID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("buddy_list"))
 			{
@@ -9331,18 +9335,18 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="CoverImageID">
 		/// New Cover image id.
 		/// </param>
-        public static int album_save(string connectionString, object AlbumID, object UserID, object Title, object CoverImageID)
+		public static int album_save(string connectionString, object AlbumID, object UserID, object Title, object CoverImageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_save"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
-                if (AlbumID == null || AlbumID.ToString() == "0")
+				if (AlbumID == null || AlbumID.ToString() == "0")
 				{
 					AlbumID = DBNull.Value;
 				}
 
-                if (UserID == null || UserID.ToString() == "0")
+				if (UserID == null || UserID.ToString() == "0")
 				{
 					UserID = DBNull.Value;
 				}                 
@@ -9361,9 +9365,9 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = UserID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_title", NpgsqlDbType.Varchar)).Value = Title;
 				cmd.Parameters.Add(new NpgsqlParameter("i_coverimageid", NpgsqlDbType.Integer)).Value = CoverImageID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                int uu = Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
+				int uu = Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
 				return uu;
 
 			}
@@ -9382,7 +9386,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// a Datatable containing the albums.
 		/// </returns>
-        public static DataTable album_list(string connectionString, object UserID, object AlbumID)
+		public static DataTable album_list(string connectionString, object UserID, object AlbumID)
 		{
 			if (AlbumID == null || AlbumID.ToString() == "0")
 			{
@@ -9408,7 +9412,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="AlbumID">
 		/// the album id.
 		/// </param>
-        public static void album_delete(string connectionString, object AlbumID)
+		public static void album_delete(string connectionString, object AlbumID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_delete"))
 			{
@@ -9424,12 +9428,12 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="AlbumID">
 		/// the album id.
 		/// </param>
-        public static string album_gettitle(string connectionString, object AlbumID)
+		public static string album_gettitle(string connectionString, object AlbumID)
 		{
 
-            if (AlbumID == null || AlbumID.ToString() == "0" )
+			if (AlbumID == null || AlbumID.ToString() == "0" )
 			{
-                AlbumID = DBNull.Value;
+				AlbumID = DBNull.Value;
 			} 
 
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_gettitle"))
@@ -9453,7 +9457,7 @@ namespace YAF.Classes.Data.Postgre
 		/// the album id.
 		/// </param>
 		/// <returns></returns>
-        public static int[] album_getstats(string connectionString, object UserID, object AlbumID)
+		public static int[] album_getstats(string connectionString, object UserID, object AlbumID)
 		{
 			if (AlbumID == null || AlbumID.ToString() == "0")
 			{
@@ -9472,8 +9476,8 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_albumid", NpgsqlDbType.Integer)).Value = AlbumID; 
 
 				DataRow dr = PostgreDBAccess.GetData(cmd,connectionString).Rows[0];
-              
-			    return new int[]
+			  
+				return new int[]
 		  {
 			Convert.ToInt32(dr["albumnumber"]), Convert.ToInt32(dr["imagenumber"])
 		  };
@@ -9501,13 +9505,13 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="ContentType">
 		/// the content type.
 		/// </param>
-        public static void album_image_save(string connectionString, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
+		public static void album_image_save(string connectionString, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
 		{
-            if (AlbumID == null || AlbumID.ToString() == "0")
+			if (AlbumID == null || AlbumID.ToString() == "0")
 			{
 				AlbumID = DBNull.Value;
 			}
-            if (ImageID == null || ImageID.ToString() == "0")
+			if (ImageID == null || ImageID.ToString() == "0")
 			{
 				ImageID = DBNull.Value;
 			}
@@ -9524,7 +9528,7 @@ namespace YAF.Classes.Data.Postgre
 				cmd.Parameters.Add(new NpgsqlParameter("i_filename", NpgsqlDbType.Varchar)).Value = FileName;
 				cmd.Parameters.Add(new NpgsqlParameter("i_bytes", NpgsqlDbType.Integer)).Value = Bytes;
 				cmd.Parameters.Add(new NpgsqlParameter("i_contenttype", NpgsqlDbType.Varchar)).Value = ContentType;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+				cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
 				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
 				int d = 1;
@@ -9544,30 +9548,30 @@ namespace YAF.Classes.Data.Postgre
 		/// <returns>
 		/// a Datatable containing the image(s).
 		/// </returns>
-        public static DataTable album_image_list(string connectionString, object AlbumID, object ImageID)
+		public static DataTable album_image_list(string connectionString, object AlbumID, object ImageID)
 		{
-            if (AlbumID == null || AlbumID.ToString() == "0")
-            {
-                AlbumID = DBNull.Value;
-            }
-            if (ImageID == null || ImageID.ToString() == "0")
-            {
-                ImageID = DBNull.Value;
-            }
+			if (AlbumID == null || AlbumID.ToString() == "0")
+			{
+				AlbumID = DBNull.Value;
+			}
+			if (ImageID == null || ImageID.ToString() == "0")
+			{
+				ImageID = DBNull.Value;
+			}
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_image_list"))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add(new NpgsqlParameter("i_albumid", NpgsqlDbType.Integer)).Value = AlbumID;
 				cmd.Parameters.Add(new NpgsqlParameter("i_imageid", NpgsqlDbType.Integer)).Value = ImageID;
 			  DataTable dt =PostgreDBAccess.GetData(cmd,connectionString);
-                if (dt.Rows.Count > 0)
-                {
-                    if (dt.Rows[0]["ImageID"] == DBNull.Value)
-                    {
-                        dt.Rows.RemoveAt(0);
-                        dt.AcceptChanges();
-                    } 
-                }
+				if (dt.Rows.Count > 0)
+				{
+					if (dt.Rows[0]["ImageID"] == DBNull.Value)
+					{
+						dt.Rows.RemoveAt(0);
+						dt.AcceptChanges();
+					} 
+				}
 
 			  return dt;
 			}
@@ -9579,7 +9583,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="ImageID">
 		/// the image id.
 		/// </param>
-        public static void album_image_delete(string connectionString, object ImageID)
+		public static void album_image_delete(string connectionString, object ImageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_image_delete"))
 			{
@@ -9595,7 +9599,7 @@ namespace YAF.Classes.Data.Postgre
 		/// <param name="ImageID">
 		/// the image id.
 		/// </param>
-        public static void album_image_download(string connectionString, object ImageID)
+		public static void album_image_download(string connectionString, object ImageID)
 		{
 			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("album_image_download"))
 			{
@@ -9606,46 +9610,46 @@ namespace YAF.Classes.Data.Postgre
 			}
 		}
 
-        /// <summary>
-        /// Album images by users the specified user ID.
-        /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <returns>All Albbum Images of the User</returns>
-        public static DataTable album_images_by_user(string connectionString, [NotNull] object userID)
-        {
-            using (var cmd = PostgreDBAccess.GetCommand("album_images_by_user"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("I_UserID", NpgsqlDbType.Integer).Value = userID;
-                return PostgreDBAccess.GetData(cmd,connectionString);
-            }
-        }
+		/// <summary>
+		/// Album images by users the specified user ID.
+		/// </summary>
+		/// <param name="userID">The user ID.</param>
+		/// <returns>All Albbum Images of the User</returns>
+		public static DataTable album_images_by_user(string connectionString, [NotNull] object userID)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("album_images_by_user"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+				cmd.Parameters.Add("I_UserID", NpgsqlDbType.Integer).Value = userID;
+				return PostgreDBAccess.GetData(cmd,connectionString);
+			}
+		}
 
 		#endregion
 
-        public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
-    {
-        var topics = Db.topic_simplelist(connectionString, 0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
+		public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
+	{
+		var topics = Db.topic_simplelist(connectionString, 0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
 
-      foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
-      {
-        try
-        {
-          var decodedTopic = decodeTopicFunc(topic.Topic);
+	  foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
+	  {
+		try
+		{
+		  var decodedTopic = decodeTopicFunc(topic.Topic);
 
-          if (!decodedTopic.Equals(topic.Topic))
-          {
-            // unencode it and update.
-              Db.topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
-          }
+		  if (!decodedTopic.Equals(topic.Topic))
+		  {
+			// unencode it and update.
+			  Db.topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
+		  }
 
-        }
-        catch
-        {
-          // soft-fail..
-        }
-      }
-    }
+		}
+		catch
+		{
+		  // soft-fail..
+		}
+	  }
+	}
   }
 }
 

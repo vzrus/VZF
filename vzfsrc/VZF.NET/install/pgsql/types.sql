@@ -1257,6 +1257,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_active_return_type AS
 "LastUserStyle"  varchar(255),
 "LastForumAccess"  timestampTZ,
 "LastTopicAccess"  timestampTZ,
+"TopicTags" text,
 "TotalRows" integer,
 "PageIndex" integer	  	     
 );
@@ -1364,6 +1365,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_info_return_type AS (
 	"LastMessageFlags" integer,
 	"Description" varchar(255),
 	"Status" varchar(255),
+	"TopicTags" text,
 	"Styles" varchar(255),
 	"IsLocked" boolean,
 	"IsDeleted" boolean,
@@ -1452,6 +1454,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 	"LastUserDisplayName" varchar(128),
 	"LastMessageID" integer,
 	"LastTopicID" integer,
+	"LinkDate" timestampTZ, 
 	"TopicFlags" integer,
 	"Priority" smallint,
 	"PollID" integer,
@@ -1461,6 +1464,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 	"LastUserStyle"  varchar(255),
 	"LastForumAccess"  timestampTZ,
 	"LastTopicAccess"  timestampTZ,
+	"TopicTags" text,
 	"TotalRows" integer,
 	"PageIndex" integer
 );
@@ -1633,8 +1637,13 @@ SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifie
 CREATE TYPE databaseSchema.objectQualifier_user_activity_rank_return_type AS
 (
 "ID" integer,
-"Name" varchar(128),
-"NumOfPosts" integer
+"Name" varchar(255),
+"DisplayName" varchar(255),
+"Joined" timestampTZ,
+"UserStyle" varchar(255),
+"IsHidden" boolean,
+"NumOfPosts" integer,
+"NumOfAllIntervalPosts" integer
 );
 --GO
 

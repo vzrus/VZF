@@ -12,7 +12,7 @@
 			<asp:Label ID="Title" runat="server" />
 		</td>
 	</tr>
-          
+		  
 	<tr id="PreviewRow" runat="server" visible="false">
 		<td class="postformheader" valign="top">
 			<YAF:LocalizedLabel runat="server" LocalizedTag="previewtitle" />
@@ -26,10 +26,10 @@
 			<YAF:LocalizedLabel ID="TopicSubjectLabel" runat="server" LocalizedTag="subject" />
 		</td>
 		<td class="post" width="80%">
-			<asp:TextBox ID="TopicSubjectTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400"  autocomplete="off"/>
+			<asp:TextBox ID="TopicSubjectTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400" AutoCompleteType="Disabled"/>
 		</td>
 	</tr>
-    <tr id="DescriptionRow" visible="false" runat="server">
+	<tr id="DescriptionRow" visible="false" runat="server">
 		<td class="postformheader" width="20%">
 			<YAF:LocalizedLabel ID="TopicDescriptionLabel" runat="server" LocalizedTag="description" />
 		</td>
@@ -39,13 +39,23 @@
 	</tr>
 	<tr id="BlogRow" runat="server" visible="false">
 		<td class="postformheader" width="20%">
-			Post to blog?
+		    <YAF:LocalizedLabel ID="PostToBlogLbl" runat="server" LocalizedTag="POSTTOBLOG" />
 		</td>
 		<td class="post" width="80%">
 			<asp:CheckBox ID="PostToBlog" runat="server" />
-			Blog Password:
+			 <YAF:LocalizedLabel ID="PostToBlogPassLbl" runat="server" LocalizedTag="POSTTOBLOG_PASS" />
 			<asp:TextBox ID="BlogPassword" runat="server" TextMode="Password" Width="400" />
 			<asp:HiddenField ID="BlogPostID" runat="server" />
+		</td>
+	</tr>
+	<tr id="TagsRow" runat="server" visible="false">
+		<td class="postformheader" width="20%">
+		<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
+		<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
+		</td>
+		<td class="post" width="80%"> 
+			<asp:TextBox ID="Tags" runat="server" AutoCompleteType="Disabled" TextMode="SingleLine" Width="400" />
+			<asp:HiddenField ID="TagsIds" runat="server" />
 		</td>
 	</tr>
 	<tr id="FromRow" runat="server">
@@ -56,13 +66,13 @@
 			<asp:TextBox ID="From" runat="server" CssClass="edit" Width="400" />
 		</td>
 	</tr>
-    <tr id="StatusRow" visible="false" runat="server">
+	<tr id="StatusRow" visible="false" runat="server">
 		<td class="postformheader" width="20%">
 			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="Status" />
 		</td>
 		<td class="post" width="80%">
 			<asp:DropDownList ID="TopicStatus" runat="server" CssClass="edit" Width="400">
-            </asp:DropDownList>
+			</asp:DropDownList>
 		</td>
 	</tr>	
 	<tr id="PriorityRow" runat="server">
@@ -73,7 +83,7 @@
 			<asp:DropDownList ID="Priority" runat="server" CssClass="edit" Width="400" />
 		</td>
 	</tr>
-    <tr id="StyleRow" runat="server">
+	<tr id="StyleRow" runat="server">
 		<td class="postformheader" width="20%">
 			<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="STYLES" />
 		</td>
@@ -94,8 +104,8 @@
 		</td>
 	</tr>
 
-    <YAF:PostOptions id="PostOptions1" runat="server">
-    </YAF:PostOptions>
+	<YAF:PostOptions id="PostOptions1" runat="server">
+	</YAF:PostOptions>
 
 	<tr id="tr_captcha1" runat="server" visible="false">
 		<td class="postformheader" valign="top">

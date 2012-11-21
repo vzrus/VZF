@@ -1,4 +1,6 @@
-﻿namespace YAF.Controls
+﻿using System.Web;
+
+namespace YAF.Controls
 {
     #region Using
 
@@ -391,6 +393,29 @@
             }
 
             return topicSubjectStyled.IsSet() ? topicSubjectStyled : topicSubject;
+        }
+
+        // Written by vzrus(2012)
+        /// <summary>
+        /// Returns topic tags as a comma-delimited icon tooltip.
+        /// </summary>
+        /// <returns></returns>
+        protected  string GetTags()
+        {
+            if (this.Get<YafBoardSettings>().AllowTopicTags && this.TopicRow.Row.Table.Columns.Contains("TopicTags") && this.TopicRow["TopicTags"].ToString().IsSet())
+            {
+                var tagsTopicLineIcon = this.Get<ITheme>().GetItem("ICONS", "TOPIC_TAG");
+
+                if (tagsTopicLineIcon.IsSet())
+                {
+                    return
+                        "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" style=\"border: 0;width:16px;height:16px\" />&nbsp;"
+                            .FormatWith(
+                                tagsTopicLineIcon,
+                                HttpUtility.HtmlEncode(this.TopicRow["TopicTags"]), this.TopicRow["TopicTags"]);
+                }
+            }
+            return string.Empty;
         }
 
         /// <summary>

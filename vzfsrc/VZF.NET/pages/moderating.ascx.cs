@@ -81,14 +81,13 @@ namespace YAF.Pages
         protected void BindData()
         {
             this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
-            int baseSize = this.Get<YafBoardSettings>().TopicsPerPage;
-            int nCurrentPageIndex = this.PagerTop.CurrentPageIndex;
+           
             DataTable dt = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                 null,
                 DateTimeHelper.SqlDbMinTime(),
                 DateTime.UtcNow,
-                nCurrentPageIndex,
-                baseSize,
+                this.PagerTop.CurrentPageIndex,
+                this.PagerTop.PageSize,
                 false,
                 true,
                 false);

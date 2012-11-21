@@ -87,7 +87,8 @@ public class YafWebService : WebService, IHaveServiceLocator
         [NotNull] string post,
         [NotNull] string ip,
         int priority,
-        int flags)
+        int flags,
+        string tags)
     {
         // validate token...
         if (token != YafContext.Current.Get<YafBoardSettings>().WebServiceToken)
@@ -112,7 +113,8 @@ public class YafWebService : WebService, IHaveServiceLocator
             DateTime.UtcNow,
             string.Empty,
             flags,
-            ref messageId);
+            ref messageId, 
+            tags);
     }
 
     /// <summary>

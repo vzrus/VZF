@@ -86,7 +86,35 @@ namespace YAF.Controls
         #endregion
 
         #region Methods
+        /// <summary>
+        /// The get avatar url from id.
+        /// </summary>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// Returns the Avatar Url for the User
+        /// </returns>
+        protected string GetAvatarUrlFromID(int userID)
+        {
+            string avatarUrl = this.Get<IAvatars>().GetAvatarUrlForUser(userID);
 
+            if (avatarUrl.IsNotSet())
+            {
+                avatarUrl = "{0}images/noavatar.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
+            }
+
+            return avatarUrl;
+        }
+
+        protected string GetAvatarTitle([NotNull] DataRow row)
+        {
+            var avatarTitle = this.GetTextFormatted(
+                  "USER_AVATAR",
+                  this.HtmlEncode(row[this.Get<YafBoardSettings>().EnableDisplayName ? "LastUserDisplayName" : "LastUser"].
+                      ToString()));
+            return avatarTitle;
+        }
         /// <summary>
         /// Handles the PreRender event of the ForumLastPost control.
         /// </summary>
@@ -203,7 +231,13 @@ namespace YAF.Controls
 
                     this.LastUnreadImage.ThemeTag = showNewIcon ? "ICON_NEWEST_UNREAD" : "ICON_LATEST_UNREAD";
                 }
-
+                // temporarily desabled.
+                if (false && showLastLinks && this.Get<YafBoardSettings>().ShowAvatarsInTopic)
+                {
+                    this.userAvatar.Src = this.GetAvatarUrlFromID(this.DataRow["LastUserID"].ToType<int>());
+                    this.userAvatar.Alt = this.userAvatar.Attributes["title"] = GetAvatarTitle(this.DataRow);
+                    this.userAvatar.Visible = true;
+                }
                 this.LastTopicImgLink.Enabled = this.ImageLastUnreadMessageLink.Enabled = showLastLinks;
 
                 this.LastPostedHolder.Visible = true;

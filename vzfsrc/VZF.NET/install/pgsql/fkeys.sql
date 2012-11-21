@@ -446,6 +446,20 @@ ALTER TABLE databaseSchema.objectQualifier_reputationvote
       ON UPDATE NO ACTION ON DELETE CASCADE; 
 END IF;
 
+IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_topictags_objectQualifier_tagid' LIMIT 1) THEN
+ALTER TABLE databaseSchema.objectQualifier_topictags
+  ADD CONSTRAINT fk_databaseSchema_objectQualifier_topictags_objectQualifier_tagid FOREIGN KEY (tagid)
+      REFERENCES databaseSchema.objectQualifier_tags(tagid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE; 
+END IF;
+
+IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_topictags_objectQualifier_topicid' LIMIT 1) THEN
+ALTER TABLE databaseSchema.objectQualifier_topictags
+  ADD CONSTRAINT fk_databaseSchema_objectQualifier_topictags_objectQualifier_topicid FOREIGN KEY (topicid)
+      REFERENCES databaseSchema.objectQualifier_topic(topicid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE; 
+END IF;
+
  IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_adminpageuseraccess_objectQualifier_user' LIMIT 1) THEN
 ALTER TABLE databaseSchema.objectQualifier_adminpageuseraccess
   ADD CONSTRAINT fk_databaseSchema_objectQualifier_adminpageuseraccess_objectQualifier_user FOREIGN KEY (userid)

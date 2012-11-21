@@ -3808,6 +3808,38 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether AllowTopicTags.
+        /// </summary>
+        public bool AllowTopicTags
+        {
+            get
+            {
+                return this._reg.GetValue("AllowTopicTags", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowTopicTags", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether AllowAutoTopicTags.
+        /// </summary>
+        public bool AllowAutoTopicTags
+        {
+            get
+            {
+                return this._reg.GetValue("AllowAutoTopicTags", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowAutoTopicTags", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether AllowPostToBlog.
         /// </summary>
         public bool AllowPostToBlog

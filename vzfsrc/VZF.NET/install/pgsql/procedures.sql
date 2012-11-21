@@ -6469,6 +6469,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_update
 						   i_overrideapproval boolean, 
 						   i_originalmessage text,
 						   i_newguid uuid,
+						   i_tags text,
 						   i_utctimestamp timestampTZ )
 				  RETURNS void AS
 $BODY$DECLARE
@@ -6540,7 +6541,9 @@ BEGIN
 		WHERE
 			topicid = ici_TopicID;
 	END IF; 
-	
+
+	PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_TopicID, i_tags);
+
 	-- If forum is moderated, make sure last post pointers are correct
 	IF (ici_ForumFlags & 8)<>0 THEN 
 	PERFORM databaseSchema.objectQualifier_topic_updatelastpost(intNull,intNull);
@@ -8673,6 +8676,7 @@ BEGIN
 			 when true THEN
 			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid LIMIT 1), i_utctimestamp)
 			 else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
+		(SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
 		ici_topics_totalrowsnumber AS TotalRows,
 		ici_pageindex	AS 	PageIndex	  	     
 	FROM
@@ -9169,65 +9173,67 @@ $BODY$DECLARE
 	IF i_showdeleted IS TRUE THEN
 FOR _rec IN
 			SELECT
-				  topicid,
-				  forumid,
-				  userid,
-				  username,
-				  posted,
-				  topic,
-				  views,
-				  priority,
-				  pollid,
-				  topicmovedid,
-				  lastposted,
-				  lastmessageid,
-				  lastuserid,
-				  lastusername,
-				  numposts,
-				  flags,
-				  answermessageid,
-				  lastmessageflags,
-				  description,
-				  status,
-				  styles,
-				  islocked,
-				  isdeleted,
-				  ispersistent,
-				  isquestion 			 
-			FROM databaseSchema.objectQualifier_topic
+				  t.topicid,
+				  t.forumid,
+				  t.userid,
+				  t.username,
+				  t.posted,
+				  t.topic,
+				  t.views,
+				  t.priority,
+				  t.pollid,
+				  t.topicmovedid,
+				  t.lastposted,
+				  t.lastmessageid,
+				  t.lastuserid,
+				  t.lastusername,
+				  t.numposts,
+				  t.flags,
+				  t.answermessageid,
+				  t.lastmessageflags,
+				  t.description,
+				  t.status,
+				  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),		  
+				  t.styles,
+				  t.islocked,
+				  t.isdeleted,
+				  t.ispersistent,
+				  t.isquestion 			 
+			FROM databaseSchema.objectQualifier_topic t
 LOOP
 	RETURN NEXT _rec;
 END LOOP;
 		ELSE
 FOR _rec IN
-			SELECT
-				  topicid,
-				  forumid,
-				  userid,
-				  username,
-				  posted,
-				  topic,
-				  views,
-				  priority,
-				  pollid,
-				  topicmovedid,
-				  lastposted,
-				  lastmessageid,
-				  lastuserid,
-				  lastusername,
-				  numposts,
-				  flags,
-				  answermessageid,
-				  lastmessageflags,
-				  description,
-				  status,
-				  styles,
-				  islocked,
-				  isdeleted,
-				  ispersistent,
-				  isquestion 			
-			FROM databaseSchema.objectQualifier_topic 
-			WHERE (flags & 8) <> 8
+SELECT
+				  t.topicid,
+				  t.forumid,
+				  t.userid,
+				  t.username,
+				  t.posted,
+				  t.topic,
+				  t.views,
+				  t.priority,
+				  t.pollid,
+				  t.topicmovedid,
+				  t.lastposted,
+				  t.lastmessageid,
+				  t.lastuserid,
+				  t.lastusername,
+				  t.numposts,
+				  t.flags,
+				  t.answermessageid,
+				  t.lastmessageflags,
+				  t.description,
+				  t.status,
+				  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),		  
+				  t.styles,
+				  t.islocked,
+				  t.isdeleted,
+				  t.ispersistent,
+				  t.isquestion 			 
+			FROM databaseSchema.objectQualifier_topic t 
+			WHERE (t.flags & 8) <> 8
 LOOP
 	RETURN NEXT _rec;
 END LOOP;
@@ -9235,68 +9241,69 @@ END LOOP;
 	ELSE 	
 		IF i_showdeleted IS TRUE THEN
 FOR _rec IN
-			SELECT
-				  topicid,
-				  forumid,
-				  userid,
-				  username,
-				  posted,
-				  topic,
-				  views,
-				  priority,
-				  pollid,
-				  topicmovedid,
-				  lastposted,
-				  lastmessageid,
-				  lastuserid,
-				  lastusername,
-				  numposts,
-				  flags,
-				  answermessageid,
-				  lastmessageflags,
-				  description,
-				  status,
-				  styles,
-				  islocked,
-				  isdeleted,
-				  ispersistent,
-				  isquestion  
-			FROM databaseSchema.objectQualifier_topic 
-			WHERE topicid = ici_TopicID
+SELECT
+				  t.topicid,
+				  t.forumid,
+				  t.userid,
+				  t.username,
+				  t.posted,
+				  t.topic,
+				  t.views,
+				  t.priority,
+				  t.pollid,
+				  t.topicmovedid,
+				  t.lastposted,
+				  t.lastmessageid,
+				  t.lastuserid,
+				  t.lastusername,
+				  t.numposts,
+				  t.flags,
+				  t.answermessageid,
+				  t.lastmessageflags,
+				  t.description,
+				  t.status,
+				  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),		  
+				  t.styles,
+				  t.islocked,
+				  t.isdeleted,
+				  t.ispersistent,
+				  t.isquestion 			 
+			FROM databaseSchema.objectQualifier_topic t
+			WHERE t.topicid = ici_TopicID
 LOOP
 RETURN NEXT _rec;
 END LOOP;
 		ELSE
-FOR _rec IN
-			SELECT
-				  topicid,
-				  forumid,
-				  userid,
-				  username,
-				  posted,
-				  topic,
-				  views,
-				  priority,
-				  pollid,
-				  topicmovedid,
-				  lastposted,
-				  lastmessageid,
-				  lastuserid,
-				  lastusername,
-				  numposts,
-				  flags,
-				  answermessageid,
-				  lastmessageflags,
-				  description,
-				  status,
-				  styles,
-				  islocked,
-				  isdeleted,
-				  ispersistent,
-				  isquestion    
-				  FROM databaseSchema.objectQualifier_topic 
-				  WHERE topicid = ici_TopicID
-AND (flags & 8) = 0
+FOR _rec IN SELECT
+				  t.topicid,
+				  t.forumid,
+				  t.userid,
+				  t.username,
+				  t.posted,
+				  t.topic,
+				  t.views,
+				  t.priority,
+				  t.pollid,
+				  t.topicmovedid,
+				  t.lastposted,
+				  t.lastmessageid,
+				  t.lastuserid,
+				  t.lastusername,
+				  t.numposts,
+				  t.flags,
+				  t.answermessageid,
+				  t.lastmessageflags,
+				  t.description,
+				  t.status,
+				  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),		  
+				  t.styles,
+				  t.islocked,
+				  t.isdeleted,
+				  t.ispersistent,
+				  t.isquestion 			 
+			FROM databaseSchema.objectQualifier_topic t 
+				  WHERE t.topicid = ici_TopicID
+AND (t.flags & 8) = 0
 LOOP
 RETURN NEXT _rec;
 END LOOP;		
@@ -9505,7 +9512,8 @@ varchar(4000)) AS FirstMessage,
 		(case(i_findlastunread)
 			 when true THEN
 			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid), i_utctimestamp)
-			 else TIMESTAMP '-infinity'	 end) AS LastTopicAccess, 
+			 else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
+				(SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid),		  
 		ici_post_priorityrowsnumber AS TotalRows,
 		ici_pageindex	AS 	PageIndex
 		FROM
@@ -9663,6 +9671,7 @@ BEGIN
 		where x.userid=t.lastuserid)) AS LastUserDisplayName,
 		t.lastmessageid AS LastMessageID,
 		t.topicid AS LastTopicID,
+		t.linkdate,
 		t.flags AS TopicFlags,
 		t.priority,
 		t.pollid,
@@ -9685,7 +9694,8 @@ varchar(4000)) AS FirstMessage,
 		(case(i_findlastunread)
 			 when true THEN
 			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid), i_utctimestamp)
-			 else TIMESTAMP '-infinity' end) AS LastTopicAccess, 	
+			 else TIMESTAMP '-infinity' end) AS LastTopicAccess,
+		(SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid),	
 		ici_post_totalrowsnumber AS TotalRows,
 		ici_pageindex	AS 	PageIndex
 		FROM
@@ -9924,6 +9934,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_save(
 						   i_posted timestampTZ,
 						   i_blogpostid varchar,
 						   i_flags integer,
+						   i_tags text,
 						   i_utctimestamp timestampTZ)
 				 RETURNS databaseSchema.objectQualifier_topic_save_return_type AS
 $BODY$DECLARE
@@ -9949,12 +9960,13 @@ BEGIN
 	 SELECT EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_user WHERE userid = i_userid and name != i_username) INTO ici_OverrideDisplayName;
 	 -- create the topic 
 	 INSERT INTO databaseSchema.objectQualifier_topic(forumid,topic,userid,posted,views,priority,username,userdisplayname,numposts, description, status, styles, flags)
-	 VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,COALESCE(i_username,(select name from databaseSchema.objectQualifier_user WHERE userid = i_userid)),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0);
-	 SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_topic','topicid')) INTO ici_TopicID;
-   
+	 VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,COALESCE(i_username,(select name from databaseSchema.objectQualifier_user WHERE userid = i_userid)),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_TopicID;
+	   
 	 -- add message to the topic 
 	 SELECT databaseSchema.objectQualifier_message_save(ici_TopicID,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null, i_flags,i_utctimestamp) INTO ici_MessageID;
-
+	
+	 PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_TopicID, i_tags);
+	
 	 SELECT   ici_TopicID AS TopicID,  ici_MessageID AS MessageID INTO _rec;
 
  RETURN _rec;
@@ -10254,8 +10266,9 @@ $BODY$DECLARE
 			 cntr integer:=0;
 			 _rec databaseSchema.objectQualifier_user_activity_rank_return_type%ROWTYPE;
 			 ici_GuestUserID integer;
+			 ici_AllIntervalPostCount integer;
 BEGIN 
-	/*SET ROWCOUNT i_DisplayNumber*/ 	
+	
 	SELECT 
 		a.userid INTO ici_GuestUserID
 	FROM
@@ -10265,11 +10278,19 @@ BEGIN
 	WHERE
 		a.boardid = i_boardid and
 		(c.flags & 2)<>0 GROUP BY a.userid LIMIT 1 ;
+	   SELECT  Count(m.userid) INTO ici_AllIntervalPostCount FROM databaseSchema.objectQualifier_message m
+			WHERE m.posted >= i_startdate;
+
 FOR _rec IN
    SELECT
 	counter.id,
 	u.name,
-	counter."NumOfPosts"
+	u.displayname,
+	u.joined,
+	u.userstyle,
+	u.isactiveexcluded,
+	counter."NumOfPosts",
+	ici_AllIntervalPostCount as NumOfAllIntervalPosts
 	FROM
 	databaseSchema.objectQualifier_user u inner join
 	(

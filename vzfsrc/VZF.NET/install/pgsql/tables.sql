@@ -953,13 +953,26 @@ CREATE TABLE databaseSchema.objectQualifier_topicstatus
 	   WITH (OIDS=withOIDs);
 END IF;
 
+
 IF NOT EXISTS (select 1 from pg_tables 
 			   where schemaname='databaseSchema' 
 				 AND tablename='objectQualifier_tags' limit 1) THEN
 CREATE TABLE databaseSchema.objectQualifier_tags
-			 (            
+			 (
+			 tagid                     serial NOT NULL,          
 			 tag                       varchar(1024) NOT NULL,
-			 topicid                   integer NOT NULL
+			 tagcount			       integer NOT NULL DEFAULT 0
+			 ) 
+	   WITH (OIDS=withOIDs);
+END IF;
+
+IF NOT EXISTS (select 1 from pg_tables 
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_topictags' limit 1) THEN
+CREATE TABLE databaseSchema.objectQualifier_topictags
+			 (
+			 tagid                     integer NOT NULL,          
+			 topicid                   integer NOT NULL			 
 			 ) 
 	   WITH (OIDS=withOIDs);
 END IF;

@@ -1,12 +1,16 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.topics" Codebehind="topics.ascx.cs" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="YAF.Core" %>
+<%@ Import Namespace="YAF.Controls" %>
+<%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Register TagPrefix="YAF" TagName="ForumList" Src="../controls/ForumList.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="TopicLine" Src="../controls/TopicLine.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="../controls/ForumJumper.ascx" %>
+
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
-</div>
+</div>  
 <asp:PlaceHolder runat="server" ID="SubForums" Visible="false">
     <table class="content subForum"  width="100%">
         <tr class="topicTitle">

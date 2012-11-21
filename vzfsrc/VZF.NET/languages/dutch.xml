@@ -864,6 +864,8 @@
     <Resource tag="ALBUMS_PER_PAGE">Albums Per Pagina:</Resource>
     <Resource tag="ALBUMS_PER_PAGE_HELP">Het aantal albums dat per pagina zichtbaar is.</Resource>
     <Resource tag="ALL_USERS">Alle Gebruikers</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE">Sta toe dat de poll gewijzigd kan worden na de eerste stem:</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE_HELP">Als deze is aangevinkt, kan de auteur de keuzes en vraag wijzigen nadat er gestemd is.</Resource>
     <Resource tag="ALLOW_DISPLAY_COUNTRY">Laat landeninfo zien:</Resource>
@@ -914,6 +916,8 @@
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">Als deze is aangevinkt, kunnen gebruikers een Topic status optie kiezen.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Sta meerdere Topics met dezelfde naam toe:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Dubbele Topicnamen toegestaan voor:</Resource>
+    <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
+    <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
     <Resource tag="ALLOW_USER_HIDE">Gebruikers mogen zich onzichtbaar maken:</Resource>
     <Resource tag="ALLOW_USER_HIDE_HELP">Als deze is aangevinkt, kan de gebruiker zichzelf onzichtbaar maken in de actieve gebruikerslijst.</Resource>
     <Resource tag="ALLOW_USERS_POLLIMAGES">Sta Poll plaatjes toe:</Resource>
@@ -1043,6 +1047,7 @@
     <Resource tag="HEADER_SPAM">Spam Instellingen</Resource>
     <Resource tag="HEADER_SYNDICATION">Syndicatie Feed instellingen</Resource>
     <Resource tag="HEADER_TEMPLATES">Template instellingen</Resource>
+    <Resource tag="HEADER_TOPICTAGS">Topic Tags</Resource>
     <Resource tag="HOST_ADVERTS">Advertenties</Resource>
     <Resource tag="HOST_AVATARS">Avatars</Resource>
     <Resource tag="HOST_CACHE">Cache</Resource>
@@ -4075,6 +4080,17 @@ Spoiler Inhoud
     <Resource tag="TOPIC">Topic:</Resource>
     <Resource tag="UNAPPROVED">Niet-goedgekeurde berichten</Resource>
   </page>
+  <page name="MOSTACTIVEUSERS">
+    <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
+    <Resource tag="NUM_ALLPOSTS">All posts</Resource>
+    <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
+    <Resource tag="PERC_PERPERIOD">All posts share</Resource>
+    <Resource tag="TITLE">Most Active Users</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Maak topic van bericht</Resource>
     <Resource tag="EMPTY_TOPIC">Naam topic is leeg</Resource>
@@ -4223,7 +4239,9 @@ Spoiler Inhoud
     <Resource tag="PERSISTENCY">Persistent:</Resource>
     <Resource tag="PERSISTENCY_INFO">Blijvende topics worden niet geschoond</Resource>
     <Resource tag="POSTED">Gepost:</Resource>
+    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">Er is een fout opgetreden bij het posten in je blog. Misschien is de authenticatie mislukt.</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
     <Resource tag="PREVIEW">Voorbeeld</Resource>
     <Resource tag="PREVIEW_TITLE">Laat een voorbeeld zien van het bericht</Resource>
     <Resource tag="PREVIEWTITLE">Voorbeeld:</Resource>
@@ -4238,6 +4256,9 @@ Spoiler Inhoud
     <Resource tag="STICKY">Sticky</Resource>
     <Resource tag="SUBJECT">Onderwerp:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">Een topic met deze titel bestaat al, of de titel is niet uniek genoeg.</Resource>
+    <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
+    <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">De maximale lengte van een Topic-beschrijving is 255 tekens.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">De maximale lengte voor een enkel woord in de topicbeschrijving is {0} tekens. Probeer het woord af te korten.</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">De maximale lengte voor een topictitel is 255 tekens.</Resource>

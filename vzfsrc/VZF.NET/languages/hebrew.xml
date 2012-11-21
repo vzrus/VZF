@@ -893,6 +893,8 @@
     <Resource tag="ALBUMS_PER_PAGE">Albums Per Page:</Resource>
     <Resource tag="ALBUMS_PER_PAGE_HELP">Number of albums to show per page.</Resource>
     <Resource tag="ALL_USERS">All Users</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE">Allow Poll Changes After First Vote:</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE_HELP">If enabled a poll creator can change choices and question after the first vote was given.</Resource>
     <Resource tag="ALLOW_DISPLAY_COUNTRY">Allow Display Country:</Resource>
@@ -943,6 +945,8 @@
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">If checked, users select a Topic Status Option.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Allow Topics With Same Name:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Duplicate topic names are allowed to:</Resource>
+    <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
+    <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
     <Resource tag="ALLOW_USER_HIDE">Allow User To Hide Himself:</Resource>
     <Resource tag="ALLOW_USER_HIDE_HELP">If checked, the user who checked it will not be visible in the active users list.</Resource>
     <Resource tag="ALLOW_USERS_POLLIMAGES">Allow Users Poll Images:</Resource>
@@ -1071,6 +1075,7 @@
     <Resource tag="HEADER_SPAM">Spam Settings</Resource>
     <Resource tag="HEADER_SYNDICATION">Syndication Feed Settings</Resource>
     <Resource tag="HEADER_TEMPLATES">Template Settings</Resource>
+    <Resource tag="HEADER_TOPICTAGS">Topic Tags</Resource>
     <Resource tag="HOST_ADVERTS">Adverts</Resource>
     <Resource tag="HOST_AVATARS">Avatars</Resource>
     <Resource tag="HOST_CACHE">Cache</Resource>
@@ -4162,6 +4167,17 @@ Spoiler Content
     <Resource tag="TOPIC">Topic:</Resource>
     <Resource tag="UNAPPROVED">הודעות שלא אושרו</Resource>
   </page>
+  <page name="MOSTACTIVEUSERS">
+    <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
+    <Resource tag="NUM_ALLPOSTS">All posts</Resource>
+    <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
+    <Resource tag="PERC_PERPERIOD">All posts share</Resource>
+    <Resource tag="TITLE">Most Active Users</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">צור דיון מההודעה:</Resource>
     <Resource tag="EMPTY_TOPIC">שם הדיון ריק:</Resource>
@@ -4329,7 +4345,9 @@ Spoiler Content
     <Resource tag="POLL_EXPIRE_EXPLAIN">[b]ימים[/b] [ השאר ריק בשביל סקר ללא הגבלת זמן ]</Resource>
     <Resource tag="POLLQUESTION">שאלת הסקר:</Resource>
     <Resource tag="POSTED">נשלח:</Resource>
+    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">חלה שגיאה בשליחה לבלוג שלך. ייתכן שהאימות נכשל.</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
     <Resource tag="PREVIEW">תצוגה מקדימה</Resource>
     <Resource tag="PREVIEW_TITLE">Get a Preview of the Message</Resource>
     <Resource tag="PREVIEWTITLE">תצוגה מקדימה:</Resource>
@@ -4345,6 +4363,9 @@ Spoiler Content
     <Resource tag="STICKY">דביק</Resource>
     <Resource tag="SUBJECT">נושא:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">A topic with the subject already exists or the subject is not unique enough to be added.</Resource>
+    <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
+    <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Topic description length cannot be more than 255 characters.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Topic description single word length cannot be be more than {0} characters. Suggestion: use abbreviations to shorten.</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Topic name length cannot be more than 255 characters.</Resource>

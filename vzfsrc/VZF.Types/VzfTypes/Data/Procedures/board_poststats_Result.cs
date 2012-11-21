@@ -27,9 +27,9 @@ namespace VZF.Types.Data
     {
         public board_poststats_Result(DataRow dr)
         {
-            Posts = dr.Field<int>("Posts");
-            Topics = dr.Field<int>("Topics");
-            Forums = dr.Field<int>("Forums");
+            Posts = dr.Field<int?>("Posts");
+            Topics = dr.Field<int?>("Topics");
+            Forums = dr.Field<int?>("Forums");
             LastPostInfoID = dr.Field<int?>("LastPostInfoID");
             LastPost = dr.Field<DateTime?>("LastPost");
             LastUserID = dr.Field<int?>("LastUserID");

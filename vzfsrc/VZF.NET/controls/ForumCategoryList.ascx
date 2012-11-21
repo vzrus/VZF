@@ -32,7 +32,7 @@
                     <tr class="forumRowCat header2">
                         <td colspan="<%# ColumnCount() %>">
                             <YAF:CollapsibleImage ID="CollapsibleImage" runat="server" BorderWidth="0" ImageAlign="Bottom"
-                                PanelID='<%# "categoryPanel" + DataBinder.Eval(Container.DataItem, "CategoryID").ToString() %>'
+                                PanelID='<%# "categoryPanel" + DataBinder.Eval(Container.DataItem, "CategoryID") %>'
                                 AttachedControlID="forumList" ToolTip='<%# this.GetText("COMMON", "SHOWHIDE") %>' />
                             &nbsp;&nbsp; <a href='<%# YAF.Utils.YafBuildLink.GetLink(ForumPages.forum,"c={0}",DataBinder.Eval(Container.DataItem, "CategoryID")) %>'
                                 title='<%# this.GetText("COMMON", "VIEW_CATEGORY") %>'>

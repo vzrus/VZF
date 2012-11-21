@@ -864,6 +864,8 @@
     <Resource tag="ALBUMS_PER_PAGE">Albums Per Page:</Resource>
     <Resource tag="ALBUMS_PER_PAGE_HELP">Number of albums to show per page.</Resource>
     <Resource tag="ALL_USERS">All Users</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
+    <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE">Allow Poll Changes After First Vote:</Resource>
     <Resource tag="ALLOW_CHANGE_AFTERVOTE_HELP">If enabled a poll creator can change choices and question after the first vote was given.</Resource>
     <Resource tag="ALLOW_DISPLAY_COUNTRY">Allow Display Country:</Resource>
@@ -914,6 +916,8 @@
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">If checked, users select a Topic Status Option.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Allow Topics With Same Name:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Duplicate topic names are allowed to:</Resource>
+    <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
+    <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
     <Resource tag="ALLOW_USER_HIDE">Allow User To Hide Himself:</Resource>
     <Resource tag="ALLOW_USER_HIDE_HELP">If checked, the user who checked it will not be visible in the active users list.</Resource>
     <Resource tag="ALLOW_USERS_POLLIMAGES">Allow Users Poll Images:</Resource>
@@ -1043,6 +1047,7 @@
     <Resource tag="HEADER_SPAM">Spam Settings</Resource>
     <Resource tag="HEADER_SYNDICATION">Syndication Feed Settings</Resource>
     <Resource tag="HEADER_TEMPLATES">Template Settings</Resource>
+    <Resource tag="HEADER_TOPICTAGS">Topic Tags</Resource>
     <Resource tag="HOST_ADVERTS">Adverts</Resource>
     <Resource tag="HOST_AVATARS">Avatars</Resource>
     <Resource tag="HOST_CACHE">Cache</Resource>
@@ -4100,6 +4105,17 @@ Spoiler Content
     <Resource tag="TOPIC">Discussione:</Resource>
     <Resource tag="UNAPPROVED">Messaggi non approvati</Resource>
   </page>
+  <page name="MOSTACTIVEUSERS">
+    <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
+    <Resource tag="NUM_ALLPOSTS">All posts</Resource>
+    <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
+    <Resource tag="PERC_PERPERIOD">All posts share</Resource>
+    <Resource tag="TITLE">Most Active Users</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="MOVEMESSAGE">
     <Resource tag="CREATE_TOPIC">Crea nuova discussione dal messaggio</Resource>
     <Resource tag="EMPTY_TOPIC">L'oggetto della discussione è vuoto</Resource>
@@ -4248,7 +4264,9 @@ Spoiler Content
     <Resource tag="PERSISTENCY">Persistente</Resource>
     <Resource tag="PERSISTENCY_INFO">I topic persistenti non sono cancellabili per trascorsi limiti di tempo</Resource>
     <Resource tag="POSTED">Inviati:</Resource>
+    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">Si è verificato un errore nell'effettuare il post nel tuo blog. Potrebbe essere fallita l'autenticazione.</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
     <Resource tag="PREVIEW">Anteprima</Resource>
     <Resource tag="PREVIEW_TITLE">Mostra anteprima del messaggio</Resource>
     <Resource tag="PREVIEWTITLE">Anteprima:</Resource>
@@ -4263,6 +4281,9 @@ Spoiler Content
     <Resource tag="STICKY">In rilievo</Resource>
     <Resource tag="SUBJECT">Oggetto:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">Esiste già una discussione con oggetto uguale o molto simile.</Resource>
+    <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
+    <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">La descrizione della discussione non può essere più lunga di 255 caratteri.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Le singole parole usate nella descrizione della discussione non possono essere più lunghe di {0} caratteri. Suggerimento: usa delle abbreviazioni.</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">L'oggetto della discussione non può essere più lungo di 255 caratteri.</Resource>

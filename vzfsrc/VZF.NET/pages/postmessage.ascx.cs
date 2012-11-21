@@ -470,7 +470,7 @@ namespace YAF.Pages
 
             TypedMessageList currentMessage = null;
             DataRow topicInfo = CommonDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
-
+          
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
@@ -546,13 +546,18 @@ namespace YAF.Pages
             {
                 YafBuildLink.AccessDenied();
             }
-
+            if (this.Get<YafBoardSettings>().AllowTopicTags && topicInfo != null && (topicInfo["UserID"].ToType<int>() == PageContext.CurrentUserData.UserID || PageContext.IsForumModerator || PageContext.IsAdmin))
+            {
+                this.TagsRow.Visible = true;
+                this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
+            }
+           
             // Message.EnableRTE = PageContext.BoardSettings.AllowRichEdit;
             this._forumEditor.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
             this._forumEditor.BaseDir = "{0}editors".FormatWith(YafForumInfo.ForumClientFileRoot);
 
             this.Title.Text = this.GetText("NEWTOPIC");
-
+            
             if (this.Get<YafBoardSettings>().MaxPostSize == 0)
             {
                 this.LocalizedLblMaxNumberOfPost.Visible = false;
@@ -806,7 +811,8 @@ namespace YAF.Pages
                 };
 
             bool isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
-
+          
+            string tags = this.Tags.Text.Trim();
             CommonDb.message_update(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
                 this.Priority.SelectedValue,
                 this._forumEditor.Text.Trim(),
@@ -821,7 +827,8 @@ namespace YAF.Pages
                 isModeratorChanged,
                 this.PageContext.IsAdmin || this.PageContext.ForumModeratorAccess,
                 this.OriginalMessage,
-                this.PageContext.PageUserID);
+                this.PageContext.PageUserID,
+                tags);
 
             long messageId = this.EditMessageID.Value;
 
@@ -890,7 +897,8 @@ namespace YAF.Pages
                 };
 
             string blogPostID = this.HandlePostToBlog(this._forumEditor.Text, this.TopicSubjectTextBox.Text);
-
+           
+            string tags = this.Tags.Text.Trim();
             // Save to Db
             topicId = CommonDb.topic_save(PageContext.PageModuleID, this.PageContext.PageForumID,
                 this.TopicSubjectTextBox.Text.Trim(),
@@ -907,7 +915,8 @@ namespace YAF.Pages
                 DateTime.UtcNow,
                 blogPostID,
                 messageFlags.BitValue,
-                ref messageId);
+                ref messageId,
+                tags);
 
             this.UpdateWatchTopic(this.PageContext.PageUserID, (int)topicId);
 
@@ -1036,6 +1045,12 @@ namespace YAF.Pages
                         return;
                     }
                 }
+            }
+
+            if (!CheckTagLength(this.Tags.Text.Trim(),50))
+            {
+                this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOLONG",50));
+                return;
             }
 
             // vzrus: automatically strip html tags from Topic Titles and Description
@@ -1554,6 +1569,25 @@ namespace YAF.Pages
                 // subscribe to this forum
                 CommonDb.watchtopic_add(PageContext.PageModuleID, userId, topicId);
             }
+        }
+
+        /// <summary>
+        /// Tag Length checker.
+        /// </summary>
+        /// <param name="tags"></param>
+        /// <param name="tagLength"></param>
+        /// <returns></returns>
+        private bool CheckTagLength(string tags, int tagLength)
+        {
+            string[] tagsArr = tags.Split(',');
+            foreach (var s in tagsArr)
+            {
+                if (s.Length > tagLength)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         #endregion

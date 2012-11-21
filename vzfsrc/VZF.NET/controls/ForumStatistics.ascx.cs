@@ -370,6 +370,7 @@ namespace YAF.Controls
             this.CollapsibleImage.ToolTip = this.GetText("COMMON", "SHOWHIDE");
 
             this.GetTodaysBirthdays();
+            ForumStatsImage.NavigateUrl = (YafBuildLink.GetLink(ForumPages.mostactiveusers));
         }
 
         #endregion

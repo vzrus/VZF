@@ -5,7 +5,7 @@
 			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEAD_KILL_USER" LocalizedPage="ADMIN_EDITUSER" />
 		</td>
 	</tr>
-    <tr>
+	<tr>
 			<td class="header2" height="30" colspan="2">
 			</td>
 		</tr>

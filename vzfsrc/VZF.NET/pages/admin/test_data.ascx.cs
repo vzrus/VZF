@@ -1029,7 +1029,8 @@ namespace YAF.Pages.Admin
                     DateTime.UtcNow,
                     string.Empty,
                     this.GetMessageFlags(),
-                    ref messageid);
+                    ref messageid,
+                    string.Empty);
 
                 if (this.PollCreate.Checked)
                 {

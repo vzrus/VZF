@@ -113,8 +113,8 @@ namespace YAF.Controls.Statistics
             var html = new StringBuilder();
 
             html.AppendFormat(@"<div id=""{0}"" class=""yaf_activeuser"">", this.ClientID);
-            html.AppendFormat(@"<h2 class=""yaf_header"">{0}</h2>", "Most Active Users");
-            html.AppendFormat(@"<h4 class=""yaf_subheader"">Last {0} Days</h4>", this.LastNumOfDays);
+            html.AppendFormat(@"<h2 class=""yaf_header"">{0}</h2>", YafContext.Current.Get<ILocalization>().GetText("MOSTACTIVEUSERS", "TITLE"));
+            html.AppendFormat(@"<h4 class=""yaf_subheader"">{0}</h4>", YafContext.Current.Get<ILocalization>().GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK", this.LastNumOfDays));
 
             html.AppendLine("<ol>");
 

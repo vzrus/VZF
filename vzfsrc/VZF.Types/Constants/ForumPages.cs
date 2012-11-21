@@ -215,6 +215,11 @@ namespace YAF.Types.Constants
     mytopics,
 
     /// <summary>
+    /// The most active users
+    /// </summary>
+    mostactiveusers,
+
+    /// <summary>
     /// The logout.
     /// </summary>
     logout, 
