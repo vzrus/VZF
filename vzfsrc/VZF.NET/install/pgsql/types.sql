@@ -1470,6 +1470,47 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 );
 --GO
 
+select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_bytags_rt');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (   
+	"ForumID" integer,
+	"TopicID" integer,
+	"Posted" timestampTZ,
+	"LinkTopicID" integer,
+	"TopicMovedID" integer,
+	"FavoriteCount" integer,
+	"Subject" varchar(255),
+	"Description" varchar(255),
+	"Status" varchar(255),
+	"Styles" varchar(255),
+	"UserID" integer,    
+	"Starter" varchar(128),
+	"StarterDisplay" varchar(128),
+	"Replies" integer,
+	"NumPostsDeleted" integer,  
+	"Views" integer,
+	"LastPosted" timestampTZ,   
+	"LastUserID" integer,
+	"LastUserName" varchar(128),
+	"LastUserDisplayName" varchar(128),
+	"LastMessageID" integer,
+	"LastTopicID" integer,
+	"LinkDate" timestampTZ, 
+	"TopicFlags" integer,
+	"Priority" smallint,
+	"PollID" integer,
+	"ForumFlags" integer,
+	"FirstMessage"   text,	
+	"StarterStyle"  varchar(255), 
+	"LastUserStyle"  varchar(255),
+	"LastForumAccess"  timestampTZ,
+	"LastTopicAccess"  timestampTZ,
+	"Tags" text,
+	"TotalRows" integer,
+	"PageIndex" integer
+);
+--GO
+
 select databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topics_byuser_return_type');
 --GO
 CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (  
@@ -2720,6 +2761,17 @@ CREATE TYPE databaseSchema.objectQualifier_group_eventlogaccesslist_rt AS
 "UsrAlbumImages" integer,
 "BoardName"  varchar(255)
 
+);
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_topic_tags_rt');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_topic_tags_rt AS
+(
+"TagID" integer,
+"Tag" varchar(128),
+"TagCount" integer,
+"MaxTagCount" integer
 );
 --GO
 

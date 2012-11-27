@@ -32,7 +32,17 @@ namespace YAF.Types.Constants
     /// <summary>
     /// The topics.
     /// </summary>
-    topics, 
+    topics,
+
+    /// <summary>
+    /// The topics by tags.
+    /// </summary>
+    topicsbytags,
+
+    /// <summary>
+    /// The deleted topics.
+    /// </summary>
+    topicsdeleted, 
 
     /// <summary>
     /// The posts.

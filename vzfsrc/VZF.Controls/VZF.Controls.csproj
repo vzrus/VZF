@@ -80,6 +80,7 @@
     <Compile Include="ForumJump.cs" />
     <Compile Include="PopupPanel.cs" />
     <Compile Include="CountryListBox.cs" />
+    <Compile Include="SimpleTagCloud.cs" />
     <Compile Include="UserStyles.cs" />
     <Compile Include="Localized\ILocalizationSupport.cs" />
     <Compile Include="Localized\LocalizationSupportExtensions.cs" />

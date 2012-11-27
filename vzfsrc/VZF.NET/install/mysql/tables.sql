@@ -574,6 +574,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Topic
 	   `Flags` INT NOT NULL DEFAULT 0,
 	   `AnswerMessageId` INT NULL, 
 	   `LastMessageFlags`	INT NOT NULL DEFAULT 22,
+	   `LinkDate` DATETIME,
 	   PRIMARY KEY (`TopicID`)
 	   )
 	   ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -797,7 +798,7 @@ CREATE TABLE IF NOT EXISTS  {databaseName}.{objectQualifier}Tags
 	   `TagID` INT NOT NULL AUTO_INCREMENT,
 	   `Tag` VARCHAR(1024)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
 	   `TagCount` INT NOT NULL DEFAULT 0,
-	    PRIMARY KEY (`TagID`)
+		PRIMARY KEY (`TagID`)
 	   )
 	   ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -1569,8 +1570,15 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='IsReply' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}UserPMessage ADD `IsReply`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF; 
-  
+
+	 IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
+  AND COLUMN_NAME='LinkDate' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `LinkDate`  DATETIME;
+  END IF;
   END;
+
 --GO
 
 CALL {databaseName}.{objectQualifier}tables_upgrade();

@@ -28,11 +28,11 @@ Thumbs.db
 *.ldf
 obj/
 [Rr]elease*/
+Backup*/
 _ReSharper*/
 [Tt]est[Rr]esult*
 vzfsrc/VZF.NET/uploads/
 vzfsrc/VZF.NET/install/mssql
-vzfsrc/vzf.net.sln
 vzfsrc/VZF.ImmigrationEnforcement/
 *.ncrunchsolution
 *.ncrunchproject

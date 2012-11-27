@@ -200,6 +200,7 @@
     </tr>
 </table>
 <YAF:PageLinks ID="PageLinksBottom" runat="server" LinkedPageLinkID="PageLinks" />
+ <YAF:SimpleTagCloud ID="Stc1" TopicId="<%# GetTopicId() %>" runat="server"/>  
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
         <YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper></div>

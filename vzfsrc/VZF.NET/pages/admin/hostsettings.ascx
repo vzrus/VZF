@@ -563,6 +563,30 @@
 							<asp:CheckBox ID="AllowAutoTopicTags" runat="server"></asp:CheckBox>
 						</td>
 					</tr>
+					<tr>
+						<td class="postheader" style="width:50%">
+							<YAF:HelpLabel ID="TagTopicMaxCountLbl" runat="server" LocalizedTag="TAG_TOPICMAXCOUNT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+						</td>
+						<td class="post">
+							<asp:TextBox ID="TagTopicMaxCount" runat="server"></asp:TextBox>
+						</td>
+					</tr>
+					<tr>
+						<td class="postheader" style="width:50%">
+							<YAF:HelpLabel ID="TagMaxLengthLbl" runat="server" LocalizedTag="TAG_MAXLENGTH" LocalizedPage="ADMIN_HOSTSETTINGS" />
+						</td>
+						<td class="post">
+							<asp:TextBox ID="TagMaxLength" runat="server"></asp:TextBox>
+						</td>
+					</tr>
+					<tr>
+						<td class="postheader" style="width:50%">
+							<YAF:HelpLabel ID="HelpLabel222" runat="server" LocalizedTag="TAG_FORBIDDENSYMB" LocalizedPage="ADMIN_HOSTSETTINGS" />
+						</td>
+						<td class="post">
+							<asp:TextBox ID="TagForbiddenSymbols" runat="server"></asp:TextBox>
+						</td>
+					</tr>
 
 					<tr>
 						<td class="header1" colspan="2">

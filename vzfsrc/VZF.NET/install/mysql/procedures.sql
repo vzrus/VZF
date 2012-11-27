@@ -1,7 +1,7 @@
--- This scripts for MySQL for Yet Another Forum http://sourceforge.net/projects/yafdotnet/
+-- These scripts for MySQL for Yet Another Forum http://sourceforge.net/projects/yafdotnet/
 -- were created by vzrus from vz-team https://github.com/vzrus http://sourceforge.net/projects/yaf-datalayers/
 -- They are distributed under terms of GPLv2 only licence as in http://www.fsf.org/licensing/licenses/gpl.html
--- Copyright vzrus(c) 2006-2012
+-- Copyright vzrus(c) 2006-2013
 
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
@@ -21,6 +21,10 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}vaccess_s_moderatoracce
 --GO
 -- eof vaccess procedure
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_tagsave;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_tags;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_bytags;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_unanswered;
 --GO
@@ -5472,8 +5476,11 @@ BEGIN
 	DECLARE ici_Itr int;
 	DECLARE ici_trimindex int;
 	DECLARE ici_thistagid int;
+
 	UPDATE {databaseName}.{objectQualifier}Tags SET TagCount = TagCount - 1 WHERE TagID IN (SELECT TagID FROM  {databaseName}.{objectQualifier}TopicTags where TopicID = i_TopicID);
-	DELETE LOW_PRIORITY FROM {databaseName}.{objectQualifier}TopicTags where TopicID = i_TopicID;
+	DELETE FROM {databaseName}.{objectQualifier}TopicTags where TopicID = i_TopicID;
+	
+	
 		
 	SET i_MessageIDs = (CONCAT(TRIM(i_MessageIDs), ','));
 	SET ici_Pos = (LOCATE(',', i_MessageIDs, 1));
@@ -5584,10 +5591,8 @@ BEGIN
 			Styles = i_Styles
 		WHERE
 			TopicID = ici_TopicID;
-	END IF; 
-	IF (CHAR_LENGTH(i_Tags) > 0) THEN
+	END IF; 	
 	CALL {databaseName}.{objectQualifier}topic_tagsave(ici_TopicID, i_Tags);
-	END IF;
 	/*If forum is moderated, make sure last post pointers are correct*/
 	IF (ici_ForumFlags & 8)<>0 THEN 
 	CALL {databaseName}.{objectQualifier}topic_updatelastpost(null,null);
@@ -8095,11 +8100,11 @@ BEGIN
  DECLARE  ici_RowTotalCount INT DEFAULT 0; 
  DECLARE  cnt INT DEFAULT 1; 
  DECLARE  ici_shiftsticky INT DEFAULT 0;
- DECLARE  ici_post_totalrowsnumber INT; 
+ DECLARE  ici_post_totalrowsnumber INT DEFAULT 0; 
  DECLARE  ici_post_priorityrowsnumber_pages INT;
  DECLARE  ici_post_priorityrowsnumber INT;
  DECLARE  ici_post_priorityrowsnumber_shift INT;
- DECLARE  ici_firstselectrownum INT; 
+ DECLARE  ici_firstselectrownum INT DEFAULT 0; 
  DECLARE  ici_sortsincelatest INT;  
  DECLARE  ici_firstselectposted DATETIME; 
  DECLARE  ici_ceiling decimal;
@@ -8135,63 +8140,31 @@ BEGIN
 	 into ici_firstselectrownum;
 	 end  if;
 	
+	 SET @i_FirstSelectLastPosted = NULL;
 
- PREPARE tlist2 FROM 'select
-CAST(? AS SIGNED) AS TopicTotalRowsNumber,
-t.LastPosted AS FirstSelectLastPosted,
-t.Posted AS FirstSelectPosted,
-CAST(? AS SIGNED) AS PageIndex
+
+SET @talist2_str = CONCAT('select
+t.LastPosted INTO @i_FirstSelectLastPosted
 	from
 		{databaseName}.{objectQualifier}Topic t 
 	where
-		t.ForumID = ?	    
+		t.ForumID = ',i_ForumID,'	    
 		AND	(t.Priority=2)
 		AND	(t.Flags & 8) <> 8
 		AND	(t.TopicMovedID IS NOT NULL OR t.NumPosts > 0) 
 		AND
-		((? = 1)
+		((',i_ShowMoved,' = 1)
 		or
-		(? <> 1 AND  t.TopicMovedID IS NULL))		
+		(',i_ShowMoved,' <> 1 AND  t.TopicMovedID IS NULL))		
 	order by
-		t.Priority DESC, t.LastPosted DESC LIMIT 1 OFFSET ?;';  
+		t.Priority DESC, t.LastPosted DESC LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
 
-		SET @tli2_PageIndex =  i_PageSize;
-		SET @tli2_post_totalrowsnumber = ici_post_totalrowsnumber;
-		SET @tli2_ForumID = i_ForumID;	
-		SET @tli2_ShowMoved =  i_ShowMoved;
-		SET @tli2_offfirstselectrownum = ici_firstselectrownum - 1;
+		PREPARE talist2 FROM @talist2_str;
+		EXECUTE talist2;	 
+		DEALLOCATE PREPARE talist2;	
 
-		EXECUTE tlist2 USING 	
-		@tli2_post_totalrowsnumber,	
-		@tli2_PageIndex,	
-		@tli2_ForumID,
-		@tli2_ShowMoved,
-		@tli2_ShowMoved,
-		@tli2_offfirstselectrownum;		
-		 
-		DEALLOCATE PREPARE tlist2;		 		
-			
-   -- SELECT FOUND_ROWS()	
-
-END;
---GO
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}announcements_list_result
-(
- i_UserID INT,
- i_StyledNicks TINYINT(1),
- i_FindLastRead TINYINT(1),
- i_post_totalrowsnumber INT,
- i_PageIndex int,
- i_PageSize int, 
- i_ForumID INT,
- i_FirstSelectLastPosted datetime,
- i_ShowMoved TINYINT(1)
-)
-BEGIN 
-  
-	PREPARE tlist1 FROM 
-	'select
+		SET @talist1_str =
+	CONCAT('select
 			c.ForumID,
 			c.TopicID,
 			c.Posted,
@@ -8206,8 +8179,8 @@ BEGIN
 			IFNULL(c.UserName,b.Name) AS Starter,
 			IFNULL(c.UserDisplayName,b.DisplayName) AS StarterDisplay,
 			(c.NumPosts - 1) AS Replies,
-			(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message mes WHERE mes.TopicID = c.TopicID AND (mes.Flags & 8) = 8 AND (mes.Flags & 16) = 16 AND ((? IS NOT NULL AND mes.UserID = ?) OR (? IS NULL)) ) AS NumPostsDeleted,			
-			c.Views,
+			(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message mes WHERE mes.TopicID = c.TopicID AND (mes.Flags & 8) = 8 AND (mes.Flags & 16) = 16 AND ((',COALESCE(i_UserID,0),' <> 0 AND mes.UserID = ',COALESCE(i_UserID,0),') OR (',COALESCE(i_UserID,0),' = 0)) ) AS NumPostsDeleted, 			
+			c.Views, 
 			c.LastPosted,
 			c.LastUserID,
 			IFNULL(c.LastUserName,(SELECT x.Name FROM {databaseName}.{objectQualifier}User x where x.UserID=c.LastUserID)) AS LastUserName,
@@ -8218,66 +8191,43 @@ BEGIN
 			c.Priority,
 			c.PollID,
 			d.Flags AS ForumFlags,
-			(SELECT CAST(Message as char(1000)) FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(c.TopicMovedID,c.TopicID) AND mes2.Position = 0 LIMIT 1) AS FirstMessage,
-			(case(?)
+			 (SELECT CAST(Message as char(1000)) FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(c.TopicMovedID,c.TopicID) AND mes2.Position = 0 LIMIT 1) AS FirstMessage,
+			(case(',i_StyledNicks,')
 			when 1 then  b.UserStyle
 			else ''''	 end) AS StarterStyle,
-			(case(?)
+			(case(',i_StyledNicks,')
 			when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)  
 			else ''''	 end) AS LastUserStyle,
-			(case(?)
+			(case(',i_FindLastRead,')
 			 when 1 then
 			   (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
 			 else ''''	 end ) AS LastForumAccess,
-			(case(?)
+			(case(',i_FindLastRead,')
 			 when 1 then
 			   (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
 			 else ''''	 end) AS LastTopicAccess,
 			  (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 	
-			{databaseName}.{objectQualifier}biginttoint(?) AS TotalRows,
-			{databaseName}.{objectQualifier}biginttoint(?) AS PageIndex
+			{databaseName}.{objectQualifier}biginttoint(',ici_post_priorityrowsnumber,') AS TotalRows,
+			{databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex
 	from	
 		{databaseName}.{objectQualifier}Topic c
 		JOIN {databaseName}.{objectQualifier}User b 
 		ON b.UserID=c.UserID
 		join {databaseName}.{objectQualifier}Forum d on d.ForumID=c.ForumID	
-		WHERE c.ForumID = ?
-		AND	(Priority=2)
+		WHERE c.ForumID = ',i_ForumID,'
+		AND	(Priority=2) AND c.LastPosted <= ''',COALESCE(@i_FirstSelectLastPosted,UTC_TIMESTAMP()),'''
 		AND	(c.Flags & 8) <> 8
 		AND	((c.TopicMovedID IS NOT NULL) OR (c.NumPosts > 0)) 
 		AND
-		((? = 1)
+		((',i_ShowMoved,' = 1)
 		or
-		(? <> 1 AND  c.TopicMovedID IS NULL))		
+		(',i_ShowMoved,' <> 1 AND  c.TopicMovedID IS NULL))		
 	order by
-		 c.Priority DESC,	c.LastPosted DESC LIMIT ?;'; 
-		 SET @tii_UserID = i_UserID;
-		 SET @tii_StyledNicks = i_StyledNicks;
-		 SET @tii_FindLastRead = i_FindLastRead;	
-		 SET @tii_post_totalrowsnumber = i_post_totalrowsnumber;
-		 SET @tii_PageIndex = i_PageIndex;
-		 SET @tii_ForumID = i_ForumID;        
-		 SET @tii_firstselectlastposted = i_FirstSelectLastPosted;				
-		 SET @tii_ShowMoved = i_ShowMoved;	
-		 SET @tii_PageSize = i_PageSize;
-		
-		EXECUTE tlist1 USING 
-		@tii_UserID,
-		@tii_UserID,
-		@tii_UserID,
-		@tii_StyledNicks, 
-		@tii_StyledNicks,
-		@tii_FindLastRead,
-		@tii_FindLastRead,
-		@tii_post_totalrowsnumber,
-		@tii_PageIndex,
-		@tii_ForumID,		
-		@tii_ShowMoved,
-		@tii_ShowMoved,
-		@tii_PageSize;
-		 
-		DEALLOCATE PREPARE tlist1;
-END;
+		 c.Priority DESC,	c.LastPosted DESC LIMIT ',i_PageSize,';'); 
+		 PREPARE talist1 FROM  @talist1_str;	
+		EXECUTE talist1;		 
+		DEALLOCATE PREPARE talist1;
+		END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM returns a prepared result with a first select postion */
@@ -8358,70 +8308,32 @@ BEGIN
 	 select ici_firstselectrownum 
 	 + ici_post_priorityrowsnumber into ici_firstselectrownum;
 	 end  if;
-	 end  if;		
+	 end  if;	
+		
+  SET @FirstSelectLastPosted = NULL;
+  SET @Shiftsticky	= 0;
 
- PREPARE tlist2 FROM 'select
-CAST(? AS SIGNED) AS TopicTotalRowsNumber,
-CAST(? AS SIGNED) AS ShiftSticky,
-t.LastPosted AS FirstSelectLastPosted,
-t.Posted AS i_FirstSelectPosted,
-CAST(? AS SIGNED) AS PageIndex
+ SET @tlist2_str = CONCAT('select
+CAST(',ici_shiftsticky,' AS SIGNED),
+t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
 	from
 		{databaseName}.{objectQualifier}Topic t 
 	where
-		t.ForumID = ?	    
-	AND	(( (? = 1) and (t.Priority > 0 AND t.Priority <> 2)) OR (t.Priority <= 0 AND t.LastPosted >= ? )) 
+		t.ForumID = ',i_ForumID,'	    
+	AND	(( (',ici_shiftsticky,' = 1) and (t.Priority > 0 AND t.Priority <> 2)) OR (t.Priority <= 0 AND t.LastPosted >= ''',i_SinceDate,''' )) 
 		AND	(t.Flags & 8) <> 8
 		AND	(t.TopicMovedID IS NOT NULL OR t.NumPosts > 0) 
 		AND
-		((? = 1)
+		((',i_ShowMoved,' = 1)
 		or
-		(? <> 1 AND  t.TopicMovedID IS NULL))		
+		(',i_ShowMoved,' <> 1 AND  t.TopicMovedID IS NULL))		
 	order by
-		t.Priority DESC, t.LastPosted DESC LIMIT 1 OFFSET ?;';  
-
-		SET @tlic2_PageIndex =  i_PageIndex;
-		SET @tlic2_ShiftSticky =  ici_shiftsticky;
-		SET @tlic2_post_totalrowsnumber = ici_post_totalrowsnumber;
-		SET @tlic2_ForumID = i_ForumID;		
-		SET @tlic2_SinceDate = i_SinceDate;
-		SET @tlic2_ShowMoved =  i_ShowMoved;
-		SET @tlic2_offfirstselectrownum = ici_firstselectrownum - 1;
-
-		EXECUTE tlist2 USING 	
-		@tlic2_post_totalrowsnumber,
-		@tlic2_ShiftSticky,
-		@tlic2_PageIndex,	
-		@tlic2_ForumID,
-		@tlic2_ShiftSticky,
-		@tlic2_SinceDate,
-		@tlic2_ShowMoved,
-		@tlic2_ShowMoved,
-		@tlic2_offfirstselectrownum;			
-		 
-		DEALLOCATE PREPARE tlist2;		 		
-			
-   -- SELECT FOUND_ROWS()	
-
-END;
---GO
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}topic_list_result
-(
- i_UserID INT,
- i_StyledNicks TINYINT(1),
- i_FindLastRead TINYINT(1),
- i_post_totalrowsnumber INT,
- i_PageIndex int,
- i_PageSize int, 
- i_ForumID INT,
- i_shiftsticky	INT,
- i_FirstSelectLastPosted datetime,
- i_ShowMoved TINYINT(1)
-)
-BEGIN 
-  
-	PREPARE tlist1 FROM 
+		t.Priority DESC, t.LastPosted DESC LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
+		PREPARE tlist2 from @tlist2_str;
+		EXECUTE tlist2;		 
+		DEALLOCATE PREPARE tlist2;			
+			  
+	SET @tlist1_str = CONCAT( 
 	'select
 			c.ForumID,
 			c.TopicID,
@@ -8437,7 +8349,8 @@ BEGIN
 			IFNULL(c.UserName,b.Name) AS Starter,
 			IFNULL(c.UserDisplayName,b.DisplayName) AS StarterDisplay,
 			(c.NumPosts - 1) AS Replies,
-			(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message mes WHERE mes.TopicID = c.TopicID AND (mes.Flags & 8) = 8 AND (mes.Flags & 16) = 16 AND ((? IS NOT NULL AND mes.UserID = ?) OR (? IS NULL)) ) AS NumPostsDeleted,			
+			(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message mes WHERE mes.TopicID = c.TopicID AND (mes.Flags & 8) = 8 AND (mes.Flags & 16) = 16 AND ((',COALESCE(i_UserID,0),' <> 0 AND mes.UserID = ',COALESCE(i_UserID,0),') 
+						OR (',COALESCE(i_UserID,0),' = 0)) ) AS NumPostsDeleted, 			
 			 c.Views,
 			c.LastPosted,
 			c.LastUserID,
@@ -8451,70 +8364,155 @@ BEGIN
 			c.PollID,
 			d.Flags AS ForumFlags,
 			 (SELECT CAST(Message as char(1000)) FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(c.TopicMovedID,c.TopicID) AND mes2.Position = 0 LIMIT 1) AS FirstMessage,		    
-			(case(?)
+			(case(',i_StyledNicks,')
 			when 1 then  b.UserStyle 
 			else ''''	 end) AS StarterStyle,
-			(case(?)
+			(case(',i_StyledNicks,')
 			when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)   
 			else '''' end) AS LastUserStyle,			
-			(case(?)
+			(case(',i_FindLastRead,')
 			 when 1 then
 			   (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
 			 else '''' end ) AS LastForumAccess,
-			(case(?)
+			(case(',i_FindLastRead,')
 			 when 1 then
 			   (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
 			 else ''''	 end) AS LastTopicAccess,	
 			 (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
-			 {databaseName}.{objectQualifier}biginttoint(?) AS TotalRows,
-			{databaseName}.{objectQualifier}biginttoint(?) AS PageIndex 
+			 {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
+			{databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
 	from	
 		{databaseName}.{objectQualifier}Topic c
 		JOIN {databaseName}.{objectQualifier}User b 
 		ON b.UserID=c.UserID
 		join {databaseName}.{objectQualifier}Forum d on d.ForumID=c.ForumID	
-		WHERE c.ForumID = ?
-		AND	(( (? = 1) and (c.Priority>0 AND c.Priority<>2)) OR (c.Priority <=0 AND c.LastPosted <= (?) )) 
+		WHERE c.ForumID = ',i_ForumID,'
+		AND	(( (',@Shiftsticky,' = 1) and (c.Priority>0 AND c.Priority<>2)) OR (c.Priority <=0 AND c.LastPosted <= ''',COALESCE(@i_FirstSelectLastPosted,UTC_TIMESTAMP()),''' )) 
 		AND	(c.Flags & 8) <> 8
 		AND	((c.TopicMovedID IS NOT NULL) OR (c.NumPosts > 0)) 
 		AND
-		((? = 1)
+		((',i_ShowMoved,' = 1)
 		or
-		(? <> 1 AND  c.TopicMovedID IS NULL))		
+		(',i_ShowMoved,' <> 1 AND  c.TopicMovedID IS NULL))		
 	order by
-		 c.Priority DESC,	c.LastPosted DESC LIMIT ?  ;'; 
-		 SET @tii_UserID = i_UserID;
-		 SET @tii_StyledNicks = i_StyledNicks;
-		 SET @tii_FindLastRead = i_FindLastRead;	
-		 SET @tii_post_totalrowsnumber = i_post_totalrowsnumber;
-		 SET @tii_PageIndex = i_PageIndex;
-		 SET @tii_ForumID = i_ForumID;
-		 SET @tii_shiftsticky = i_shiftsticky;
-		 SET @iici_firstselectposted = i_FirstSelectLastPosted;				
-		 SET @tii_ShowMoved = i_ShowMoved;	
-		 SET @tii_PageSize = i_PageSize;
-		
-		EXECUTE tlist1 USING 
-		@tii_UserID,
-		@tii_UserID,
-		@tii_UserID,
-		@tii_StyledNicks, 
-		@tii_StyledNicks,		
-		@tii_FindLastRead,
-		@tii_FindLastRead,		
-		@tii_post_totalrowsnumber,
-		@tii_PageIndex,			
-		@tii_ForumID,
-		@tii_shiftsticky,
-		@iici_firstselectposted,
-		@tii_ShowMoved,
-		@tii_ShowMoved,
-		@tii_PageSize  ;
-		 
+		 c.Priority DESC,c.LastPosted DESC LIMIT ',i_PageSize,' ;'); 
+		 PREPARE tlist1 FROM @tlist1_str;
+		 EXECUTE tlist1;		 
 		DEALLOCATE PREPARE tlist1;
 END;
 --GO
 
+/* STORED PROCEDURE CREATED BY VZ-TEAM returns a prepared result with a first select postion */
+CREATE PROCEDURE {databaseName}.{objectQualifier}topic_bytags
+(
+	i_BoardID INT,
+	i_UserID INT,
+	i_Tags VARCHAR(1024),
+	i_SinceDate DATETIME,	
+	i_PageIndex INT,
+	i_PageSize INT
+)
+BEGIN
+ DECLARE  ici_RowTotalCount INT DEFAULT 0;  
+ DECLARE  ici_post_totalrowsnumber INT DEFAULT 0;
+ DECLARE  ici_firstselectrownum INT DEFAULT 0; 
+ DECLARE  ici_sortsincelatest INT DEFAULT 0;  
+ DECLARE  ici_firstselectposted DATETIME; 
+ 
+ SET i_PageIndex = i_PageIndex + 1;
+		
+	-- find total returned count
+			
+ select count(1) into ici_post_totalrowsnumber from {databaseName}.{objectQualifier}Topic t 
+		   JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = t.TopicID
+		   JOIN {databaseName}.{objectQualifier}Tags tg ON tg.TagID = tt.TagID
+		   JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = t.ForumID and aa.UserID = i_UserID) 
+		   where   (t.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(i_Tags AS UNSIGNED)) and t.Posted > i_SinceDate;
+	
+	  select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum;
+ 
+	
+  SET @FirstSelectPosted = NULL;
+
+ SET @ttlist2_str = CONCAT('select
+ t.Posted INTO @i_FirstSelectPosted
+	from
+		{databaseName}.{objectQualifier}Topic t 
+		   JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = t.TopicID
+		   JOIN {databaseName}.{objectQualifier}Tags tg ON tg.TagID = tt.TagID
+		   JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = t.ForumID and aa.UserID = ',COALESCE(i_UserID,0),') 
+		   where   (t.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and t.Posted > ''',i_SinceDate,'''
+	order by
+		t.Posted DESC LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
+		PREPARE ttlist2 from @ttlist2_str;
+		EXECUTE ttlist2;		 
+		DEALLOCATE PREPARE ttlist2;			
+			  
+	SET @ttlist1_str = CONCAT( 
+	'select	
+			c.ForumID,
+			c.TopicID,
+			c.Posted,
+			IFNULL(c.TopicMovedID,c.TopicID) AS LinkTopicID,
+			c.TopicMovedID,
+			(SELECT COUNT(1) as FavoriteCount FROM {databaseName}.{objectQualifier}FavoriteTopic WHERE TopicId = IFNULL(c.TopicMovedID,c.TopicID)) AS FavoriteCount,
+			c.Topic as Subject,
+			c.Description,
+			c.Status,
+			c.Styles,
+			c.UserID,
+			IFNULL(c.UserName,b.Name) AS Starter,
+			IFNULL(c.UserDisplayName,b.DisplayName) AS StarterDisplay,
+			(c.NumPosts - 1) AS Replies,
+			(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message mes WHERE mes.TopicID = c.TopicID AND (mes.Flags & 8) = 8 AND (mes.Flags & 16) = 16 AND ((',COALESCE(i_UserID,0),' <> 0 AND mes.UserID = ',COALESCE(i_UserID,0),') 
+						OR (',COALESCE(i_UserID,0),' = 0)) ) AS NumPostsDeleted, 			
+			c.Views,
+			c.LastPosted,
+			c.LastUserID,
+			IFNULL(c.LastUserName,(SELECT x.Name FROM {databaseName}.{objectQualifier}User x where x.UserID=c.LastUserID)) AS LastUserName,
+			IFNULL(c.LastUserDisplayName,(SELECT x.DisplayName FROM {databaseName}.{objectQualifier}User x where x.UserID=c.LastUserID)) AS LastUserDisplayName,
+			c.LastMessageID,
+			c.TopicID AS LastTopicID,
+			c.LinkDays,
+			c.Flags AS TopicFlags,
+			c.Priority,
+			c.PollID,
+			d.Flags AS ForumFlags,
+			(SELECT CAST(Message as char(1000)) FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(c.TopicMovedID,c.TopicID) AND mes2.Position = 0 LIMIT 1) AS FirstMessage,		    
+			(case(',0,')
+			when 1 then  b.UserStyle 
+			else ''''	 end) AS StarterStyle,
+			(case(',0,')
+			when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)   
+			else '''' end) AS LastUserStyle,			
+			(case(',0,')
+			 when 1 then
+			(SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
+			 else '''' end ) AS LastForumAccess,
+			(case(',0,')
+			 when 1 then
+			   (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
+			 else ''''	 end) AS LastTopicAccess,		
+			 m.Message,
+			 {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
+			{databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
+			 (SELECT Tag FROM {databaseName}.{objectQualifier}Tags where TagID = CAST(',i_Tags,' AS UNSIGNED) LIMIT 1) AS Tags		
+	from		
+		{databaseName}.{objectQualifier}Topic c 
+		   JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = c.TopicID
+		   JOIN {databaseName}.{objectQualifier}Tags tg ON tg.TagID = tt.TagID
+		   JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = c.ForumID and aa.UserID = ',COALESCE(i_UserID,0),') 
+		   JOIN {databaseName}.{objectQualifier}Message m ON (m.TopicID = c.TopicID and m.Position = 0)
+		   JOIN {databaseName}.{objectQualifier}User b ON b.UserID=c.UserID
+		   JOIN {databaseName}.{objectQualifier}Forum d on d.ForumID=c.ForumID
+		   where c.Posted <= ''',COALESCE(@i_FirstSelectPosted,UTC_TIMESTAMP()),''' AND  (c.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and c.Posted > ''',i_SinceDate,'''	
+	order by
+		 c.Posted DESC LIMIT ',i_PageSize,' ;'); 
+		 PREPARE ttlist1 FROM @ttlist1_str;
+		 EXECUTE ttlist1;		 
+		DEALLOCATE PREPARE ttlist1;
+END;
+--GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_listmessages(i_TopicID INT)
@@ -8698,9 +8696,8 @@ SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{obje
 
 	 /* add message to the topic*/
 	 CALL {databaseName}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Message,i_UserName,i_IP,i_Posted,NULL,NULL,i_BlogPostID, null, i_Flags,i_UTCTIMESTAMP,ici_MessageID);
-	 	IF (CHAR_LENGTH(i_Tags) > 0) THEN
-	CALL {databaseName}.{objectQualifier}topic_tagsave(ici_TopicID, i_Tags);
-	END IF;
+	 CALL {databaseName}.{objectQualifier}topic_tagsave(ici_TopicID, i_Tags);
+
 	 SELECT   ici_TopicID AS TopicID,  ici_MessageID AS MessageID;
 	 END;
 --GO
@@ -11247,14 +11244,14 @@ set @tlpreps = CONCAT('SELECT
 		u.DisplayName,
 		u.Joined,
 		u.UserStyle,
-		u.IsActiveExcluded AS IsHidden,
+		{databaseName}.{objectQualifier}biginttobool(COALESCE((u.flags & 16)=16,false)) AS IsHidden,
 		counter.NumOfPosts,'
 		,ici_AllIntervalPostCount,'  as NumOfAllIntervalPosts
 	FROM
 	{databaseName}.{objectQualifier}User u inner join
 	(
 	SELECT m.UserID as ID, Count(m.UserID) as NumOfPosts FROM {databaseName}.{objectQualifier}Message m
-	WHERE m.Posted >= ',i_StartDate,' 
+	WHERE m.Posted >= ''',i_StartDate,''' 
 	GROUP BY m.UserID
 	) AS counter ON u.UserID = counter.ID
 	WHERE
@@ -13492,6 +13489,20 @@ begin
 	WHERE c.BoardID = i_BoardID and f.ParentID IS NULL and  (access.ReadAccess > 0 or (access.ReadAccess <= 0 and (f.Flags & 2) <> 2)) ORDER BY c.SortOrder, f.CategoryID, c.Name;
 end;
 --GO
+
+create procedure {databaseName}.{objectQualifier}topic_tags(i_BoardID int, i_PageUserID int, i_TopicID int) 
+begin	
+	SELECT tg.TagID,tg.Tag,tg.TagCount,MAX(tg.TagCount) AS MaxTagCount 
+	FROM {databaseName}.{objectQualifier}Tags tg 
+	JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+	JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+	JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+	WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID
+	GROUP BY  tg.Tag,tg.TagCount,tg.TagID
+	ORDER BY Tag;
+end;
+--GO
+
 
 
 

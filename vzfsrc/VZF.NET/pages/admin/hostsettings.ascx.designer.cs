@@ -1327,6 +1327,60 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowAutoTopicTags;
         
         /// <summary>
+        /// TagTopicMaxCountLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.HelpLabel TagTopicMaxCountLbl;
+        
+        /// <summary>
+        /// TagTopicMaxCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TagTopicMaxCount;
+        
+        /// <summary>
+        /// TagMaxLengthLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.HelpLabel TagMaxLengthLbl;
+        
+        /// <summary>
+        /// TagMaxLength control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TagMaxLength;
+        
+        /// <summary>
+        /// HelpLabel222 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.HelpLabel HelpLabel222;
+        
+        /// <summary>
+        /// TagForbiddenSymbols control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TagForbiddenSymbols;
+        
+        /// <summary>
         /// LocalizedLabel23 control.
         /// </summary>
         /// <remarks>

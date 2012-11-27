@@ -9976,6 +9976,151 @@ $BODY$
   COST 100; 
 --GO
 
+-- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer)
+
+-- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer, boolean);
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_bytags(
+						   i_boardid integer,
+						   i_pageuserid integer,
+						   i_tags varchar(1024),
+						   i_sincedate timestampTZ,						   
+						   i_pageindex integer,
+						   i_pagesize integer)
+				  RETURNS SETOF databaseSchema.objectQualifier_topic_bytags_rt AS
+$BODY$DECLARE
+			 ici_shiftsticky integer :=0;
+			 ici_post_totalrowsnumber  integer;
+			 ici_firstselectrownum integer;
+			 ici_firstselectposted timestampTZ ;
+			 ici_ceiling decimal;
+			 ici_pageindex integer := i_pageindex;
+			 ici_retcount integer := 0;
+			 ici_counter integer := 0;
+			 _rec databaseSchema.objectQualifier_topic_bytags_rt%ROWTYPE;
+BEGIN    
+	   
+
+
+		-- find total returned count including priority
+		select
+		COUNT(t.topicid) into ici_post_totalrowsnumber
+	FROM databaseSchema.objectQualifier_topic t 
+	JOIN databaseSchema.objectQualifier_topictags tt ON t.topicid = tt.topicid
+	JOIN databaseSchema.objectQualifier_activeaccess aa on (aa.forumid = t.forumid and aa.userid = i_pageuserid)
+	WHERE aa.boardid = i_boardid and tt.tagid = i_tags::integer 
+	and not t.isdeleted and	t.topicmovedid IS NULL;
+
+		 ici_pageindex := ici_pageindex+1;
+
+		 ici_firstselectrownum := (ici_pageindex - 1) * i_pagesize;	
+
+	SELECT 		
+		t.posted
+	into ici_firstselectposted
+	from 	
+		databaseSchema.objectQualifier_topic t 
+	JOIN databaseSchema.objectQualifier_topictags tt ON t.topicid = tt.topicid
+	JOIN databaseSchema.objectQualifier_activeaccess aa on (aa.forumid = t.forumid and aa.userid = i_pageuserid)
+	WHERE aa.boardid = i_boardid and tt.tagid = i_tags::integer 
+	and not t.isdeleted and	t.topicmovedid IS NULL and
+	t.posted >= i_sincedate		
+	order by
+		 t.posted DESC; 
+
+ FOR _rec IN
+	SELECT 	
+		t.forumid,
+		t.topicid,
+		t.posted,
+		COALESCE(t.topicmovedid,t.topicid) AS LinkTopicID,
+		t.topicmovedid,
+		(SELECT COUNT(id) FROM databaseSchema.objectQualifier_favoritetopic WHERE topicid = COALESCE(t.topicmovedid,t.topicid)),	
+		t.topic AS Subject,		
+		t.description,
+		t.status,
+		t.styles,
+		t.userid,
+		COALESCE(t.username,b.name) AS Starter,
+		COALESCE(t.userdisplayname,b.displayname) AS StarterDisplay,
+		t.numposts - 1 AS Replies,
+		(SELECT COUNT(1) FROM
+		 databaseSchema.objectQualifier_message mes 
+				 WHERE mes.topicid = t.topicid AND ((mes.flags & 8) = 8)
+				 AND ((mes.flags & 16) = 16) 
+				 AND ((i_pageuserid IS NOT NULL AND mes.userid = i_pageuserid) 
+				 OR (i_pageuserid IS NULL)) ) AS NumPostsDeleted,
+		t.views AS Views,
+		t.lastposted AS LastPosted,
+		t.lastuserid AS LastUserID,
+		COALESCE(t.lastusername,
+		(select x.name from databaseSchema.objectQualifier_user x 
+		where x.userid=t.lastuserid)) AS LastUserName,
+		COALESCE(t.lastuserdisplayname,
+		(select x.displayname from databaseSchema.objectQualifier_user x 
+		where x.userid=t.lastuserid)) AS LastUserDisplayName,
+		t.lastmessageid AS LastMessageID,
+		t.topicid AS LastTopicID,
+		t.linkdate,
+		t.flags AS TopicFlags,
+		t.priority,
+		t.pollid,
+		d.flags AS ForumFlags,
+		CAST((SELECT message 
+				 FROM databaseSchema.objectQualifier_message mes2 
+				 WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
+				 AND mes2.position = 0 ORDER BY mes2.topicid LIMIT 1) AS 
+varchar(4000)) AS FirstMessage,
+		(case(true)
+			when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = t.userid)  
+			else ''	 end)  AS StarterStyle , 
+		(case(true)
+			when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = t.lastuserid)  
+			else ''	 end)  AS LastUserStyle,
+		(case(false)
+			 when true THEN
+			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_forumreadtracking x WHERE x.forumid=d.forumid AND x.userid = i_pageuserid), current_timestamp)
+			 else TIMESTAMP '-infinity' end) AS LastForumAccess,
+		(case(false)
+			 when true THEN
+			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_pageuserid), current_timestamp)
+			 else TIMESTAMP '-infinity' end) AS LastTopicAccess,		
+		(SELECT tag FROM databaseSchema.objectQualifier_tags where tagid = i_tags::integer limit 1),	
+		ici_post_totalrowsnumber AS TotalRows,
+		ici_pageindex	AS 	PageIndex
+		FROM
+		databaseSchema.objectQualifier_topic t 
+		JOIN databaseSchema.objectQualifier_user  b 
+		ON b.UserID=t.UserID
+		JOIN databaseSchema.objectQualifier_rank r 
+		ON r.rankid=b.rankid
+		join databaseSchema.objectQualifier_forum d on d.ForumID=t.ForumID	
+	JOIN databaseSchema.objectQualifier_topictags tt ON t.topicid = tt.topicid
+	JOIN databaseSchema.objectQualifier_activeaccess aa on (aa.forumid = t.forumid and aa.userid = i_pageuserid)
+	WHERE aa.boardid = i_boardid and tt.tagid = i_tags::integer 
+	and not t.isdeleted and	t.topicmovedid IS NULL and
+		 t.lastposted<=ici_firstselectposted	
+	order by
+		 t.posted DESC		
+			
+LOOP
+-- RETURN NEXT _rec;
+ici_retcount := ici_retcount +1; 
+IF (ici_retcount between  ici_firstselectrownum and ici_firstselectrownum+i_pagesize) THEN
+RETURN NEXT _rec;
+ici_counter := ici_counter + 1; 
+END IF;
+IF (ici_counter >= i_pagesize) THEN
+EXIT;
+END IF;
+END LOOP; 		
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
+--GO
+
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_simplelist
 						   (
 						   i_startid integer, 
@@ -15818,4 +15963,27 @@ $BODY$
 COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_categoryaccess_activeuser(integer,integer) IS 'Returns categories where a user has access.';
 --GO
 
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_tags(i_boardid integer, i_pageuserid integer, i_topicid integer)
+				   RETURNS SETOF databaseSchema.objectQualifier_topic_tags_rt AS
+$BODY$DECLARE
+_rec databaseSchema.objectQualifier_topic_tags_rt%ROWTYPE;
+BEGIN
+FOR _rec IN SELECT tg.tagid,tg.tag,tg.tagcount,MAX(tg.tagcount) AS MaxTagCount 
+	        FROM databaseSchema.objectQualifier_tags tg 
+	        JOIN  databaseSchema.objectQualifier_topictags tt ON tt.TagID = tg.TagID 
+	        JOIN  databaseSchema.objectQualifier_topic t ON t.TopicID = tt.TopicID
+	        JOIN  databaseSchema.objectQualifier_activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
+	WHERE aa.boardid=i_boardid and t.topicid=i_topicid 
+	GROUP BY  tg.tag,tg.tagcount,tg.tagid
+	ORDER BY tg.tag
+LOOP
+RETURN NEXT _rec;
+END LOOP;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  COST 100;
+--GO
+COMMENT ON FUNCTION databaseSchema.objectQualifier_topic_tags(integer,integer,integer) IS 'Returns tags list for a topic with tags count.';
+--GO
 

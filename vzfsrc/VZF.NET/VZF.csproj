@@ -605,6 +605,13 @@
     <Compile Include="pages\avatar.ascx.designer.cs">
       <DependentUpon>avatar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\topicsbytags.ascx.cs">
+      <DependentUpon>topicsbytags.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\topicsbytags.ascx.designer.cs">
+      <DependentUpon>topicsbytags.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\mostactiveusers.ascx.cs">
       <DependentUpon>mostactiveusers.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3503,6 +3510,7 @@
     <Content Include="pages\admin\topicstatus_edit.ascx" />
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
+    <Content Include="pages\topicsbytags.ascx" />
     <Content Include="pages\mostactiveusers.ascx" />
     <Content Include="ReadMe.htm" />
     <Content Include="resources\css\jquery.hovercard.css" />
@@ -5056,10 +5064,14 @@
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
+    <Content Include="BuildScripts\VZF.Package.targets" />
+    <Content Include="pages\app_my.config" />
+    <Content Include="app.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="BuildScripts\VZF.Package.targets" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -6773,7 +6785,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>12476</DevelopmentServerPort>
+          <DevelopmentServerPort>4931</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

@@ -713,6 +713,38 @@ namespace YAF.Classes
         #region int settings
 
         /// <summary>
+        /// Gets or sets a value indicating Tag Max Length.
+        /// </summary>
+        public int TagMaxLength
+        {
+            get
+            {
+                return this._reg.GetValue("TagMaxLength", 50);
+            }
+
+            set
+            {
+                this._reg.SetValue("TagMaxLength", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating Tag Topic Max Count.
+        /// </summary>
+        public int TagTopicMaxCount
+        {
+            get
+            {
+                return this._reg.GetValue("TagTopicMaxCount", 20);
+            }
+
+            set
+            {
+                this._reg.SetValue("TagTopicMaxCount", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether Show Share Topic To.
         /// </summary>
         public int ShowShareTopicTo
@@ -3388,6 +3420,22 @@ namespace YAF.Classes
         #endregion
 
         #region string settings
+
+        /// <summary>
+        /// Gets or sets comma-delimited Tag Forbidden Symbols.
+        /// </summary>
+        public string TagForbiddenSymbols
+        {
+            get
+            {
+                return this._reg.GetValue("TagForbiddenSymbols", ";,!");
+            }
+
+            set
+            {
+                this._reg.SetValue("TagForbiddenSymbols", value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets IPInfo page Url.

@@ -42,7 +42,7 @@ namespace YAF.Pages
     /// <summary>
     /// The topics list page
     /// </summary>
-    public partial class topics : ForumPage
+    public partial class topicsbytags : ForumPage
     {
         #region Constants and Fields
 
@@ -69,7 +69,7 @@ namespace YAF.Pages
         ///   Initializes a new instance of the <see cref = "topics" /> class. 
         ///   Overloads the topics page.
         /// </summary>
-        public topics()
+        public topicsbytags()
             : base("TOPICS")
         {
         }
@@ -143,26 +143,6 @@ namespace YAF.Pages
         }
 
         /// <summary>
-        /// The Forum Search
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ForumSearch_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(this.forumSearch.Text))
-            {
-                return;
-            }
-
-            YafBuildLink.Redirect(
-                ForumPages.search,
-                "search={0}&forum={1}",
-                this.forumSearch.Text.TrimWordsOverMaxLengthWordsPreserved(
-                    this.Get<YafBoardSettings>().SearchStringMaxLength),
-                this.PageContext.PageForumID);
-        }
-
-        /// <summary>
         /// The initialization script for the topics page.
         /// </summary>
         /// <param name="e">
@@ -171,13 +151,9 @@ namespace YAF.Pages
         protected override void OnInit([NotNull] EventArgs e)
         {
             this.Unload += this.Topics_Unload;
-
             this.ShowList.SelectedIndexChanged += this.ShowList_SelectedIndexChanged;
-            this.MarkRead.Click += this.MarkRead_Click;
             this.Pager.PageChange += this.Pager_PageChange;
-            this.NewTopic1.Click += this.NewTopic_Click;
-            this.NewTopic2.Click += this.NewTopic_Click;
-            this.WatchForum.Click += this.WatchForum_Click;
+           
 
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
             base.OnInit(e);
@@ -190,136 +166,44 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.Request.QueryString.GetFirstOrDefault("f") == null)
+            int tagId = 0;
+            if (this.Request.QueryString.GetFirstOrDefault("tagid") == null && !int.TryParse(this.Request.QueryString.GetFirstOrDefault("tagid"), out tagId))
             {
                 YafBuildLink.AccessDenied();
             }
-
-            if (this.PageContext.IsGuest && !this.PageContext.ForumReadAccess)
-            {
-                // attempt to get permission by redirecting to login...
-                this.Get<IPermissions>().HandleRequest(ViewPermissions.RegisteredUsers);
-            }
-            else if (!this.PageContext.ForumReadAccess)
+            int topicId = 0;
+            if (this.Request.QueryString.GetFirstOrDefault("t") != null && !int.TryParse(this.Request.QueryString.GetFirstOrDefault("t"), out topicId))
             {
                 YafBuildLink.AccessDenied();
             }
 
             this.Get<IYafSession>().UnreadTopics = 0;
-            this.AtomFeed.AdditionalParameters =
-                "f={0}".FormatWith(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f"));
-            this.RssFeed.AdditionalParameters =
-                "f={0}".FormatWith(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f"));
-            this.MarkRead.Text = this.GetText("MARKREAD");
-            this.ForumJumpHolder.Visible = this.Get<YafBoardSettings>().ShowForumJump
-                                           && this.PageContext.Settings.LockedForum == 0;
+            this.ForumJumpHolder.Visible = this.Get<YafBoardSettings>().ShowForumJump;
 
             this.LastPostImageTT = this.GetText("DEFAULT", "GO_LAST_POST");
 
-            if (this.ForumSearchHolder.Visible)
-            {
-                this.forumSearch.Attributes["onkeydown"] =
-                    "if(event.which || event.keyCode){{if ((event.which == 13) || (event.keyCode == 13)) {{document.getElementById('{0}').click();return false;}}}} else {{return true}}; "
-                        .FormatWith(this.forumSearchOK.ClientID);
-            }
-
-            if (!this.IsPostBack)
+           if (!this.IsPostBack)
             {
                 // PageLinks.Clear();
-                if (this.PageContext.Settings.LockedForum == 0)
-                {
                     this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
-                    this.PageLinks.AddLink(
-                        this.PageContext.PageCategoryName,
-                        YafBuildLink.GetLink(ForumPages.forum, "c={0}", this.PageContext.PageCategoryID));
-                }
-
-                this.PageLinks.AddForumLinks(this.PageContext.PageForumID, true);
-
+                  //  this.PageLinks.AddLink(this.GetText("TOPICSBYTAGS","TITLE"));
+                
                 this.ShowList.DataSource = StaticDataHelper.TopicTimes();
                 this.ShowList.DataTextField = "TopicText";
                 this.ShowList.DataValueField = "TopicValue";
                 this._showTopicListSelected = (this.Get<IYafSession>().ShowList == -1)
                                                   ? this.Get<YafBoardSettings>().ShowTopicsDefault
                                                   : this.Get<IYafSession>().ShowList;
-
-                this.moderate1.NavigateUrl =
-                    this.moderate2.NavigateUrl =
-                    YafBuildLink.GetLinkNotEscaped(ForumPages.moderating, "f={0}", this.PageContext.PageForumID);
-
-                this.NewTopic1.NavigateUrl =
-                    this.NewTopic2.NavigateUrl =
-                    YafBuildLink.GetLinkNotEscaped(ForumPages.postmessage, "f={0}", this.PageContext.PageForumID);
-
-                this.HandleWatchForum();
+                this.TagsListLLbl.LocalizedPage = "TOPICSBYTAGS";
+                this.TagsListLLbl.LocalizedTag = "TAGS_LIST";
             }
 
-            using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageForumID))
-            {
-                this._forum = dt.Rows[0];
-            }
 
-            if (this._forum["RemoteURL"] != DBNull.Value)
-            {
-                this.Response.Clear();
-                this.Response.Redirect((string)this._forum["RemoteURL"]);
-            }
-
-            this._forumFlags = new ForumFlags(this._forum["Flags"]);
-
-            this.PageTitle.Text = this.HtmlEncode(this._forum["Name"]);
+            this.PageTitle.Text = this.GetText("TOPICSBYTAGS", "TITLE");
 
             this.BindData(); // Always because of yaf:TopicLine
 
-            if (!this.PageContext.ForumPostAccess
-                || (this._forumFlags.IsLocked && !this.PageContext.ForumModeratorAccess))
-            {
-                this.NewTopic1.Visible = false;
-                this.NewTopic2.Visible = false;
-            }
-
-            if (this.PageContext.ForumModeratorAccess)
-            {
-                return;
-            }
-
-            this.moderate1.Visible = false;
-            this.moderate2.Visible = false;
-        }
-
-        /// <summary>
-        /// The watch forum_ click.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void WatchForum_Click([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            if (!this.PageContext.ForumReadAccess)
-            {
-                return;
-            }
-
-            if (this.PageContext.IsGuest)
-            {
-                this.PageContext.AddLoadMessage(this.GetText("WARN_LOGIN_FORUMWATCH"));
-                return;
-            }
-
-            if (this.WatchForumID.InnerText == string.Empty)
-            {
-                CommonDb.watchforum_add(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID);
-
-                this.PageContext.AddLoadMessage(this.GetText("INFO_WATCH_FORUM"));
-            }
-            else
-            {
-                var tmpID = this.WatchForumID.InnerText.ToType<int>();
-                CommonDb.watchforum_delete(PageContext.PageModuleID, tmpID);
-
-                this.PageContext.AddLoadMessage(this.GetText("INFO_UNWATCH_FORUM"));
-            }
-
-            this.HandleWatchForum();
+           
         }
 
         /// <summary>
@@ -327,17 +211,6 @@ namespace YAF.Pages
         /// </summary>
         private void BindData()
         {
-            DataSet ds = this.Get<IDBBroker>().BoardLayout(
-                this.PageContext.PageBoardID,
-                this.PageContext.PageUserID,
-                this.PageContext.PageCategoryID,
-                this.PageContext.PageForumID);
-            if (ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Rows.Count > 0)
-            {
-                this.ForumList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Rows;
-                this.SubForums.Visible = true;
-            }
-
             this.Pager.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
 
             // when userId is null it returns the count of all deleted messages
@@ -353,23 +226,6 @@ namespace YAF.Pages
                 }
             }
 
-            DataTable dt = CommonDb.announcements_list(PageContext.PageModuleID, this.PageContext.PageForumID,
-                userId,
-                null,
-                DateTime.UtcNow,
-                0,
-                10,
-                this.Get<YafBoardSettings>().UseStyledNicks,
-                true,
-                this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
-
-            if (this.Get<YafBoardSettings>().UseStyledNicks && dt != null)
-            {
-                dt = this.StyleTransformDataTable(dt);
-            }
-
-            this.Announcements.DataSource = dt;
-
             DateTime date;
             if (this._showTopicListSelected == 0)
             {
@@ -381,23 +237,21 @@ namespace YAF.Pages
 
                 date = DateTime.UtcNow.AddDays(-days[this._showTopicListSelected]);
             }
-
-            DataTable dtTopics = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
-                                                     userId,
+            
+            DataTable dtTopics = CommonDb.topic_bytags(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                                                     this.PageContext.PageUserID,
+                                                     this.Request.QueryString.GetFirstOrDefault("tagid"),
                                                      date,
-                                                     DateTime.UtcNow,
                                                      this.Pager.CurrentPageIndex,
-                                                     this.Get<YafBoardSettings>().TopicsPerPage,
-                                                     this.Get<YafBoardSettings>().UseStyledNicks,
-                                                     true,
-                                                     this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
-
-            if (dtTopics != null)
+                                                     this.Get<YafBoardSettings>().TopicsPerPage);
+            if (dtTopics != null && dtTopics.Rows.Count > 0)
             {
                 dtTopics = this.StyleTransformDataTable(dtTopics);
+                this.TopicList.DataSource = dtTopics;
+                this.TagsListLLbl.Param0 = dtTopics.Rows[0]["Tags"].ToString();
             }
-
-            this.TopicList.DataSource = dtTopics;
+            
+         
 
             this.DataBind();
 
@@ -409,51 +263,7 @@ namespace YAF.Pages
                 this.Pager.Count = dtTopics.AsEnumerable().First().Field<int>("TotalRows");
             }
         }
-
-        /// <summary>
-        /// The handle watch forum.
-        /// </summary>
-        private void HandleWatchForum()
-        {
-            if (this.PageContext.IsGuest || !this.PageContext.ForumReadAccess)
-            {
-                return;
-            }
-
-            // check if this forum is being watched by this user
-            using (DataTable dt = CommonDb.watchforum_check(PageContext.PageModuleID, this.PageContext.PageUserID, this.PageContext.PageForumID))
-            {
-                if (dt.Rows.Count > 0)
-                {
-                    // subscribed to this forum
-                    this.WatchForum.Text = this.GetText("unwatchforum");
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        this.WatchForumID.InnerText = row["WatchForumID"].ToString();
-                        break;
-                    }
-                }
-                else
-                {
-                    // not subscribed
-                    this.WatchForumID.InnerText = string.Empty;
-                    this.WatchForum.Text = this.GetText("watchforum");
-                }
-            }
-        }
-
-        /// <summary>
-        /// The mark read_ click.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void MarkRead_Click([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            this.Get<IReadTrackCurrentUser>().SetForumRead(this.PageContext.PageForumID);
-            this.BindData();
-        }
-
+   
         /// <summary>
         /// The pager_ page change.
         /// </summary>

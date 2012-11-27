@@ -1047,12 +1047,23 @@ namespace YAF.Pages
                 }
             }
 
-            if (!CheckTagLength(this.Tags.Text.Trim(),50))
+            bool tagCountIsAllowed = false;
+            bool forbiddenSymbols = false;
+            if (!CheckTagLength(this.Tags.Text.Trim(), this.Get<YafBoardSettings>().TagMaxLength, this.Get<YafBoardSettings>().TagTopicMaxCount, this.Get<YafBoardSettings>().TagForbiddenSymbols, out tagCountIsAllowed, out forbiddenSymbols))
             {
-                this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOLONG",50));
+                this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOLONG", this.Get<YafBoardSettings>().TagMaxLength));
                 return;
             }
-
+            if (!tagCountIsAllowed)
+            {
+                this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOMANY", this.Get<YafBoardSettings>().TagTopicMaxCount));
+                return;
+            }
+            if (!forbiddenSymbols)
+            {
+                this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_FORBIDDENSYMBOLS", this.Get<YafBoardSettings>().TagForbiddenSymbols));
+                return;
+            }
             // vzrus: automatically strip html tags from Topic Titles and Description
             // this.TopicSubjectTextBox.Text = HtmlHelper.StripHtml(this.TopicSubjectTextBox.Text);
             // this.TopicDescriptionTextBox.Text = HtmlHelper.StripHtml(this.TopicDescriptionTextBox.Text);
@@ -1577,17 +1588,33 @@ namespace YAF.Pages
         /// <param name="tags"></param>
         /// <param name="tagLength"></param>
         /// <returns></returns>
-        private bool CheckTagLength(string tags, int tagLength)
+        private bool CheckTagLength(string tags, int tagLength, int tagCount, string symbols, out bool tagCountIsAllowed, out bool forbiddenSymbols)
         {
+            forbiddenSymbols = false;
+            tagCountIsAllowed = true;
+            if (symbols.Any(tags.Contains))
+            {
+                forbiddenSymbols = true;
+                return true;
+            }
+
             string[] tagsArr = tags.Split(',');
+            int i = 0;
             foreach (var s in tagsArr)
             {
                 if (s.Length > tagLength)
                 {
                     return false;
                 }
+                if (i > tagCount)
+                {
+                    tagCountIsAllowed = false;
+                    return true;
+                }
+                i++;
             }
             return true;
+
         }
 
         #endregion

@@ -441,10 +441,9 @@ i integer :=1;
 i_tagid INT;
 i_tagids int[];
 BEGIN
-i_tagids = array(SELECT tagid FROM databaseSchema.objectQualifier_topictags where topicid = i_topicid);
    -- delete tags
 	DELETE FROM databaseSchema.objectQualifier_topictags where topicid = i_topicid;
-	UPDATE databaseSchema.objectQualifier_tags SET tagcount = tagcount-1 WHERE tagid IN (SELECT * FROM unnest(i_tagids));
+
  i_messageids = string_to_array(i_messageidsstr,',');
  -- i := 1; 
   WHILE i_messageids[i] IS NOT NULL LOOP
@@ -462,12 +461,13 @@ i_tagids = array(SELECT tagid FROM databaseSchema.objectQualifier_topictags wher
 		BEGIN
 			INSERT INTO databaseSchema.objectQualifier_topictags(tagid, topicid) VALUES (i_tagid, i_topicid);
 			-- increase tag count
-			UPDATE databaseSchema.objectQualifier_tags SET tagcount = tagcount+1 WHERE tagid = i_tagid;
+			
 		EXCEPTION WHEN unique_violation THEN
 			UPDATE databaseSchema.objectQualifier_topictags SET topicid = i_topicid where tagid = i_tagid and topicid = i_topicid;
 		    
 		END;
-		END IF;		
+		END IF;
+			UPDATE databaseSchema.objectQualifier_tags SET tagcount = (SELECT Count(tagid) from databaseSchema.objectQualifier_topictags WHERE tagid = i_tagid) where tagid = i_tagid;	
   i := i + 1; 
  END LOOP;
 

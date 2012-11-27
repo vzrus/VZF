@@ -8531,6 +8531,42 @@ namespace YAF.Classes.Data.MsSql
         }
 
         /// <summary>
+        /// Returns tags for a topic to show in posts.
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="boardId"></param>
+        /// <param name="pageUserId"></param>
+        /// <param name="topicId"></param>
+        /// <returns></returns>
+        public static DataTable topic_tags(string connectionString, int boardId, int pageUserId, int topicId)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("topic_tags"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardId);
+                cmd.Parameters.AddWithValue("PageUserId", pageUserId);
+                cmd.Parameters.AddWithValue("TopicId", topicId);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable topic_bytags(string connectionString, int boardId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("topic_bytags"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardId);
+                cmd.Parameters.AddWithValue("PageUserId", pageUserId);
+                cmd.Parameters.AddWithValue("Tags", tags);
+                cmd.Parameters.AddWithValue("SinceDate", sinceDate);
+                cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("PageSize", pageSize);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+
+        /// <summary>
         /// The topic_updatetopic.
         /// </summary>
         /// <param name="topicId">

@@ -1331,6 +1331,12 @@
     <Resource tag="STYLED_NICKS_HELP">If checked, you can use colors, font size change etc. for active users nicks.</Resource>
     <Resource tag="STYLED_TOPIC_TITLES">Use styled Topic Titles:</Resource>
     <Resource tag="STYLED_TOPIC_TITLES_HELP">If checked, Mods and Admins can use colors, font size change etc. for topic titles.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
+    <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
+    <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE">Thanks From template:</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE_HELP">Template for rendering user's thanks from.</Resource>
     <Resource tag="THANKS_TO_TEMPLATE">Thanks To template:</Resource>
@@ -3970,7 +3976,7 @@ p&gt;هذا الرابط يجلب لك صفحة التي تطلب منك ادخ�
   <page name="MOSTACTIVEUSERS">
     <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
-    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active users for last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
     <Resource tag="NUM_ALLPOSTS">All posts</Resource>
     <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
@@ -4146,7 +4152,9 @@ p&gt;هذا الرابط يجلب لك صفحة التي تطلب منك ادخ�
     <Resource tag="STICKY">مثبت</Resource>
     <Resource tag="SUBJECT"> عنوان الموضوع:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">A topic with the subject already exists or the subject is not unique enough to be added.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMBOLS">You tags have forbidden symbols:{0}.</Resource>
     <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAG_TOOMANY">You can add {0} topic tags only.</Resource>
     <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Topic description length cannot be more than 255 characters.</Resource>
@@ -4250,6 +4258,7 @@ p&gt;هذا الرابط يجلب لك صفحة التي تطلب منك ادخ�
     <Resource tag="SKYPE">(SKYPE)سكاي بي</Resource>
     <Resource tag="SKYPE_TITLE">Contact {0} via Skype</Resource>
     <Resource tag="STATISTICS">إحصاءات</Resource>
+    <Resource tag="TAGS_POSTS">Tags:</Resource>
     <Resource tag="THANKSFROM"> تم الشكر {0} مرات </Resource>
     <Resource tag="THANKSFROM_FEM">Thanks: {0} times</Resource>
     <Resource tag="THANKSFROM_MUSC">Thanks: {0} times</Resource>
@@ -4925,6 +4934,11 @@ Visit {forumname} at {forumlink}
     <Resource tag="WARN_LOGIN_FORUMWATCH">يجب عليك التسجيل  في المنتدى اولا.</Resource>
     <Resource tag="WATCHFORUM">مشاهدة المنتدى</Resource>
     <Resource tag="YESTERDAYAT">[b]الامس[/b] في {0:T}</Resource>
+  </page>
+  <page name="TOPICSBYTAGS">
+    <Resource tag="TAGS_LIST">Tags: {0}</Resource>
+    <Resource tag="TAGS_MORE">More Tags:</Resource>
+    <Resource tag="TITLE">Topics by tags</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]لا يوجد اي شكر.[/b]</Resource>

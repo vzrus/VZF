@@ -2627,6 +2627,8 @@ Spoiler Content
 			<Resource tag="SUBJECT">Subject:</Resource>
 			<Resource tag="SUBJECT_DUPLICATE">A topic with the subject already exists or the subject is not unique enough to be added.</Resource>
 			<Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+      <Resource tag="TAG_TOOMANY">You can add {0} topic tags only.</Resource>
+      <Resource tag="TAG_FORBIDDENSYMBOLS">You tags have forbidden symbols:{0}.</Resource>
 			<Resource tag="TAGS_TOADD">Topic Tags:</Resource>
 			<Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
 			<Resource tag="TOPICATTACH">Attach files to this post?</Resource>
@@ -2671,7 +2673,7 @@ Spoiler Content
 	 </page>
 	<page name="MOSTACTIVEUSERS">
 			<Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
-			<Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+			<Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active users for last {0} day(s)</Resource>
 			<Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
 			<Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
 			<Resource tag="TITLE">Most Active Users</Resource>
@@ -2680,6 +2682,11 @@ Spoiler Content
 			<Resource tag="PERC_PERPERIOD">All posts share</Resource>
 			<Resource tag="USERNAME">User name</Resource>
 	 </page>
+   <page name="TOPICSBYTAGS">
+			<Resource tag="TITLE">Topics by tags</Resource>
+			<Resource tag="TAGS_LIST">Tags: {0}</Resource>
+      <Resource tag="TAGS_MORE">More Tags:</Resource>
+  </page>
 	 <page name="POSTS">
 			<Resource tag="THANKSFROM">Thanks: {0} times</Resource>
 			<Resource tag="THANKSFROM_MUSC">Thanks: {0} times</Resource>
@@ -2755,6 +2762,7 @@ Spoiler Content
 			<Resource tag="SKYPE">SKYPE</Resource>
 			<Resource tag="STATISTICS">Statistics</Resource>
 			<Resource tag="THREADED">Threaded</Resource>
+      <Resource tag="TAGS_POSTS">Tags:</Resource>
 			<Resource tag="TIP_DELETE_TOPIC">Delete this topic</Resource>
 			<Resource tag="TIP_LOCK_TOPIC">Lock this topic</Resource>
 			<Resource tag="TIP_MOVE_TOPIC">Move this topic</Resource>
@@ -4216,7 +4224,7 @@ Visit {forumname} at {forumlink}
 		<page name="ADMIN_EDITACCESSMASKS">
 			<Resource tag="TITLE">Add/Edit Access Masks</Resource>
 			<Resource tag="MASK_NAME">Name:</Resource>
-			 <Resource tag="MASK_NAME_HELP">Name of this access mask.</Resource>
+			<Resource tag="MASK_NAME_HELP">Name of this access mask.</Resource>
 			<Resource tag="MASK_ORDER">Order:</Resource>
 			<Resource tag="MASK_ORDER_HELP">Sort order for this access mask.</Resource>
 			<Resource tag="ACCESS">Access</Resource>
@@ -4884,6 +4892,12 @@ Visit {forumname} at {forumlink}
 			 <Resource tag="TOPICS_PER_PAGE_HELP">Number of topics to show per page.</Resource>
 		 <Resource tag="SHOW_RELATIVE_TIME">Show Relative Time:</Resource>
 			 <Resource tag="SHOW_RELATIVE_TIME_HELP">If checked, client-side "Time Ago" library will be used to show "relative times" to users instead of UTC and or imperfect server-side times.</Resource>
+     <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
+       <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
+		 <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
+       <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+     <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
+       <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
 		 <Resource tag="TIMEAGO_INTERVAL">Relative Time Refresh Interval:</Resource>
 			 <Resource tag="TIMEAGO_INTERVAL_HELP">This allows to set how often the "Time Ago" library should refresh the relative time (In Milliseconds, 60000 ms = 60 seconds = 1 minute).</Resource>
 		 <Resource tag="DYNAMIC_METATAGS">Add Dynamic Page Meta Tags:</Resource>

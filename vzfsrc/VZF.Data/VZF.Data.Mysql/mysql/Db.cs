@@ -5962,23 +5962,14 @@ namespace YAF.Classes.Data.MySqlDb
 		  [NotNull] object useStyledNicks,
 		  [NotNull] object showMoved,
 		  [CanBeNull]bool findLastRead)
-		{       
-
-
-
-			DataTable dtt;
-			int rowNumber = 0;
+		{
 			using (MySqlCommand cmd = MySqlDbAccess.GetCommand("announcements_list"))
 			{
-
-				if (userId == null) { userId = DBNull.Value; }
-				if (sinceDate == null) { sinceDate = DBNull.Value; }     
-
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-				cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-				cmd.Parameters.Add("i_SinceDate", MySqlDbType.DateTime).Value = sinceDate;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add("i_SinceDate", MySqlDbType.DateTime).Value = sinceDate ?? DBNull.Value;
 				cmd.Parameters.Add("i_ToDate", MySqlDbType.DateTime).Value = toDate;
 				cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
 				cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
@@ -5986,58 +5977,8 @@ namespace YAF.Classes.Data.MySqlDb
 				cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
 				cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
-				dtt = MySqlDbAccess.GetData(cmd,connectionString);
-				cmd.Parameters.Clear();
+				return MySqlDbAccess.GetData(cmd,connectionString);
 			}
-
-			if (dtt != null && dtt.Columns.Count > 1)
-			{
-				if (dtt.Rows.Count > 0)
-				{
-					rowNumber = 0;
-					using (MySqlCommand cmd = MySqlDbAccess.GetCommand("announcements_list_result"))
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-
-						cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-						cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-						cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-						cmd.Parameters.Add("i_post_totalrowsnumber", MySqlDbType.Int32).Value =
-							dtt.Rows[rowNumber]["TopicTotalRowsNumber"];
-						cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = dtt.Rows[rowNumber]["PageIndex"];
-						cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-						cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-						cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-							dtt.Rows[rowNumber]["FirstSelectLastPosted"];
-						cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
-
-						return MySqlDbAccess.GetData(cmd,connectionString);
-					}
-				}
-				else
-				{
-					rowNumber = 0;
-					using (MySqlCommand cmd = MySqlDbAccess.GetCommand("announcements_list_result"))
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-
-						cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-						cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-						cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-						cmd.Parameters.Add("i_post_totalrowsnumber", MySqlDbType.Int32).Value =
-							1;
-						cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = (int)pageIndex + 1;
-						cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-						cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-						cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-						   DateTime.UtcNow;
-						cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
-
-						return MySqlDbAccess.GetData(cmd,connectionString);
-					}
-				}
-			}
-			return null;
 		}
 
 		static public DataTable topic_list(
@@ -6052,22 +5993,13 @@ namespace YAF.Classes.Data.MySqlDb
 		[NotNull] object showMoved,
 		[CanBeNull]bool findLastRead)
 		{
-
-
-
-			DataTable dtt;
-			int rowNumber = 0;
 			using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_list"))
 			{
-
-				if (userId == null) { userId = DBNull.Value; }
-				if (sinceDate == null) { sinceDate = DBNull.Value; }
-
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-				cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-				cmd.Parameters.Add("i_SinceDate", MySqlDbType.DateTime).Value = sinceDate;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add("i_SinceDate", MySqlDbType.DateTime).Value = sinceDate ?? DBNull.Value;
 				cmd.Parameters.Add("i_ToDate", MySqlDbType.DateTime).Value = toDate;
 				cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
 				cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
@@ -6075,62 +6007,8 @@ namespace YAF.Classes.Data.MySqlDb
 				cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
 				cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
-				dtt = MySqlDbAccess.GetData(cmd,connectionString);
-				cmd.Parameters.Clear();
+				return MySqlDbAccess.GetData(cmd,connectionString);
 			}
-
-			if (dtt != null && dtt.Columns.Count > 1)
-			{
-				if (dtt.Rows.Count > 0)
-				{
-					rowNumber = 0;
-					using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_list_result"))
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-
-						cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-						cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-						cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-						cmd.Parameters.Add("i_post_totalrowsnumber", MySqlDbType.Int32).Value =
-							dtt.Rows[rowNumber]["TopicTotalRowsNumber"];
-						cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = dtt.Rows[rowNumber]["PageIndex"];
-						cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-						cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-						cmd.Parameters.Add("i_shiftsticky", MySqlDbType.Int32).Value =
-							dtt.Rows[rowNumber]["ShiftSticky"];
-						cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-							dtt.Rows[rowNumber]["FirstSelectLastPosted"];
-						cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
-
-						return MySqlDbAccess.GetData(cmd,connectionString);
-					}
-				}
-				else
-				{
-					rowNumber = 0;
-					using (MySqlCommand cmd = MySqlDbAccess.GetCommand("topic_list_result"))
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-
-						cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
-						cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
-						cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
-						cmd.Parameters.Add("i_post_totalrowsnumber", MySqlDbType.Int32).Value =
-							1;
-						cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = (int)pageIndex+1;
-						cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
-						cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-						cmd.Parameters.Add("i_shiftsticky", MySqlDbType.Int32).Value =
-							0;
-						cmd.Parameters.Add("i_FirstSelectLastPosted", MySqlDbType.DateTime).Value =
-						   DateTime.UtcNow;
-						cmd.Parameters.Add("i_ShowMoved", MySqlDbType.Byte).Value = showMoved;
-
-						return MySqlDbAccess.GetData(cmd,connectionString);
-					}
-				}
-			}
-			return null;
 		}
 
 
@@ -6337,6 +6215,40 @@ namespace YAF.Classes.Data.MySqlDb
 				cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
 
 				return MySqlDbAccess.GetData(cmd,connectionString);
+			}
+		}
+
+
+		public static DataTable topic_tags(string connectionString, [NotNull] object boardId, [NotNull] object pageUserId, [NotNull] object topicId)
+		{
+
+			using (var cmd = MySqlDbAccess.GetCommand("topic_tags"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+				cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
+				cmd.Parameters.Add("i_TopicID", MySqlDbType.Int32).Value = topicId;
+
+				return MySqlDbAccess.GetData(cmd, connectionString);
+			}
+		}
+
+		public static DataTable topic_bytags(string connectionString, [NotNull] object boardId, [NotNull] object pageUserId, [NotNull] object tags, object sinceDate, int pageIndex, int pageSize)
+		{
+
+			using (var cmd = MySqlDbAccess.GetCommand("topic_bytags"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+				cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
+				cmd.Parameters.Add("i_Tags", MySqlDbType.VarChar).Value = tags;
+				cmd.Parameters.Add("i_SinceDate", MySqlDbType.DateTime).Value = sinceDate;
+				cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
+				cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
+
+				return MySqlDbAccess.GetData(cmd, connectionString);
 			}
 		}
 
@@ -6591,8 +6503,8 @@ namespace YAF.Classes.Data.MySqlDb
 			object posted, 
 			object blogPostID, 
 			object flags,
-            ref long messageID,
-            string tags)
+			ref long messageID,
+			string tags)
 		{          
 			   
 			using (var cmd = MySqlDbAccess.GetCommand( "topic_save" ) )
@@ -6611,7 +6523,7 @@ namespace YAF.Classes.Data.MySqlDb
 				cmd.Parameters.Add("i_Posted", MySqlDbType.DateTime).Value = posted;
 				cmd.Parameters.Add("i_BlogPostID", MySqlDbType.VarChar).Value = blogPostID;
 				cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
-                cmd.Parameters.Add("i_Tags", MySqlDbType.VarChar).Value = tags;
+				cmd.Parameters.Add("i_Tags", MySqlDbType.VarChar).Value = tags;
 				cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
 				DataTable dt = MySqlDbAccess.GetData(cmd,connectionString);

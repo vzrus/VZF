@@ -1061,6 +1061,10 @@ BEGIN
 	 IF (NOT column_exists('databaseSchema.objectQualifier_userpmessage','isreply')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_userpmessage ADD COLUMN isreply  boolean DEFAULT FALSE NOT NULL ;
 	 END IF;
+	 
+	 IF (NOT column_exists('databaseSchema.objectQualifier_tags','tagcount')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_tags ADD COLUMN tagcount  integer DEFAULT 0 NOT NULL ;
+	 END IF;
 
 	 /* IF (EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='objectQualifier_forumreadtracking' 
 											   AND indexname='ix_objectQualifier_forumreadtracking_userid_forumid')) THEN

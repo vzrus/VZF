@@ -1331,6 +1331,12 @@
     <Resource tag="STYLED_NICKS_HELP">If checked, you can use colors, font size change etc. for active users nicks.</Resource>
     <Resource tag="STYLED_TOPIC_TITLES">Use styled Topic Titles:</Resource>
     <Resource tag="STYLED_TOPIC_TITLES_HELP">If checked, Mods and Admins can use colors, font size change etc. for topic titles.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
+    <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
+    <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE">Thanks From template:</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE_HELP">Template for rendering user's thanks from.</Resource>
     <Resource tag="THANKS_TO_TEMPLATE">Thanks To template:</Resource>
@@ -1951,25 +1957,25 @@
     <Resource tag="SHOWHIDE">Show/Hide</Resource>
     <Resource tag="SUBMIT">Enviar</Resource>
     <Resource tag="TIMEAGO_JS">
-      // Spanish
-      jQuery.timeago.settings.strings = {
-      prefixAgo: "hace",
-      prefixFromNow: "dentro de",
-      suffixAgo: "",
-      suffixFromNow: "",
-      seconds: "menos de un minuto",
-      minute: "un minuto",
-      minutes: "unos %d minutos",
-      hour: "una hora",
-      hours: "%d horas",
-      day: "un día",
-      days: "%d días",
-      month: "un mes",
-      months: "%d meses",
-      year: "un año",
-      years: "%d años"
-      };
-    </Resource>
+			// Spanish
+			jQuery.timeago.settings.strings = {
+			prefixAgo: "hace",
+			prefixFromNow: "dentro de",
+			suffixAgo: "",
+			suffixFromNow: "",
+			seconds: "menos de un minuto",
+			minute: "un minuto",
+			minutes: "unos %d minutos",
+			hour: "una hora",
+			hours: "%d horas",
+			day: "un día",
+			days: "%d días",
+			month: "un mes",
+			months: "%d meses",
+			year: "un año",
+			years: "%d años"
+			};
+		</Resource>
     <Resource tag="TOPIC_NOTIFICATION_SUBJECT">Suscripción a un tema - Noticiación de nuevo mensaje (de {0})</Resource>
     <Resource tag="TT_ALIGNCENTER">Centrado</Resource>
     <Resource tag="TT_ALIGNLEFT">Justificado izquierda</Resource>
@@ -2566,7 +2572,7 @@
   <page name="HELP_INDEX">
     <Resource tag="ANOUNCECONTENT">&lt;p&gt;Announcements are special messages posted by the administrator or moderators. They are a simple one-way communication with the users and you can't reply. If you wish to discuss announcements, you will have to create a new thread in the forum.&lt;/p&gt;
 &lt;p&gt;Announcement topics are displayed at the top of forum listing pages, above regular and sticky topics.&lt;/p&gt;
-        </Resource>
+				</Resource>
     <Resource tag="ANOUNCETITLE">Announcements</Resource>
     <Resource tag="ATTACHMENTSCONTENT">&lt;p&gt;To attach a file to a post, you need to be using the main 'Post Reply' or 'New Topic' page and not 'Quick Reply', or Click the 'Attach' button to on an existing Message.&lt;/p&gt;
 &lt;p&gt;On this page, below the message box, you will find a Check box 'Attach files to this post?'. When you Click on the 'Post' button you are redirected to the Attachments Page where you can Upload and Attach Files.&lt;/p&gt;
@@ -2580,668 +2586,668 @@
     <Resource tag="ATTACHMENTSTITLE">Attachments and Images</Resource>
     <Resource tag="BBCODESCONTENT">&lt;p&gt;On this Page you find a list  of the BB code tags you can use to format your messages.&lt;/p&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-      BB Codes for Text formatting
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;
-      Bold Text
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [noparse][b] tag allows you to create text that is bold.
-    &lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [noparse][b]This text is bold[/b][/noparse]
-    &lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;strong&gt;This text is bold&lt;/strong&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+			BB Codes for Text formatting
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;
+			Bold Text
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [noparse][b] tag allows you to create text that is bold.
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[noparse][b]This text is bold[/b][/noparse]
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;strong&gt;This text is bold&lt;/strong&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;
-      Italic Text&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [i] tag allows you to create text that italic.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [i]This text is italic[/i]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;em&gt;This text is italic&lt;/em&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Underline Text&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [u] tag allows you to create text underlined.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [u]This text is underlined[/u]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;&lt;strong&gt;Output&lt;/strong&gt;&lt;/td&gt;
-    &lt;td&gt;
-      &lt;u&gt;This text is underlined&lt;/u&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;
+			Italic Text&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [i] tag allows you to create text that italic.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[i]This text is italic[/i]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;em&gt;This text is italic&lt;/em&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Underline Text&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [u] tag allows you to create text underlined.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[u]This text is underlined[/u]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;&lt;strong&gt;Output&lt;/strong&gt;&lt;/td&gt;
+		&lt;td&gt;
+			&lt;u&gt;This text is underlined&lt;/u&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Strike Text&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      Wrap these tags to strike through text&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [s]This text is Strike through[/strike]&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;s&gt;This text is Strike through&lt;/s&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Strike Text&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			Wrap these tags to strike through text&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[s]This text is Strike through[/strike]&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;s&gt;This text is Strike through&lt;/s&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Text Color&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [color] tag allows you to change the color of your text, by parsing the color you want.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [color=blue]this text is blue[/color]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;span style="color:blue"&gt;this text is blue&lt;/span&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-       &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Text Size&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [size] tag allows you to change the size of your text. You can define a value from 1-9, these values will be converted in percentage values 1=50, 2=70, 3=80, 4=90, 5=100, 6=120, 7=140, 8=160, 9=180&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [size=9]This Text has the font size of 180%[/size]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;span style="font-size:180%"&gt;This Text has the font size of 180%&lt;/span&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Text Font&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [font] tag allows you to change the font family of your text.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [font=courier]this text is in the courier font[/font]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;span style="font-family:courier"&gt;this text is in the courier font&lt;/span&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Text Color&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [color] tag allows you to change the color of your text, by parsing the color you want.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[color=blue]this text is blue[/color]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;span style="color:blue"&gt;this text is blue&lt;/span&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+			 &lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Text Size&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [size] tag allows you to change the size of your text. You can define a value from 1-9, these values will be converted in percentage values 1=50, 2=70, 3=80, 4=90, 5=100, 6=120, 7=140, 8=160, 9=180&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[size=9]This Text has the font size of 180%[/size]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;span style="font-size:180%"&gt;This Text has the font size of 180%&lt;/span&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Text Font&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [font] tag allows you to change the font family of your text.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[font=courier]this text is in the courier font[/font]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;span style="font-family:courier"&gt;this text is in the courier font&lt;/span&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Text Left / Right / Center Direction&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [left], [right] and [center] tags allow you to change the alignment of your text.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [left]this text is left aligned[/left]&lt;br /&gt;
-	  [center]this text is center aligned[/center]&lt;br /&gt;
-      [right]this text is right aligned[/right]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;div align="left"&gt;this text is left aligned&lt;/div&gt;
+		&lt;td class="header2" colspan="2"&gt;Text Left / Right / Center Direction&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [left], [right] and [center] tags allow you to change the alignment of your text.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[left]this text is left aligned[/left]&lt;br /&gt;
+		[center]this text is center aligned[/center]&lt;br /&gt;
+			[right]this text is right aligned[/right]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;div align="left"&gt;this text is left aligned&lt;/div&gt;
 			&lt;div align="center"&gt;this text is center aligned&lt;/div&gt;
 			&lt;div align="right"&gt;this text is right aligned&lt;/div&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Highlight&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [highlight] tag allows you to highlight your text.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [highlight]this text is highlighted[/highlight]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;span class="highlight"&gt;this text is highlighted&lt;/span&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Highlight&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [highlight] tag allows you to highlight your text.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[highlight]this text is highlighted[/highlight]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;span class="highlight"&gt;this text is highlighted&lt;/span&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-      BB Codes to create various Links
-    &lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+			BB Codes to create various Links
+		&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Email Links&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [email] tag allows you to link to an email address. You can include an optional parameter to add a Link Name&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [email]someone@mydomain.com[/email]&lt;br /&gt;
+		&lt;td class="header2" colspan="2"&gt;Email Links&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [email] tag allows you to link to an email address. You can include an optional parameter to add a Link Name&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[email]someone@mydomain.com[/email]&lt;br /&gt;
 			[email=someone@mydomain.com]Click Here to Email Me[/email]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;a href="mailto:someone@mydomain.com" title="someone@mydomain.com"&gt;someone@mydomain.com&lt;/a&gt;&lt;br /&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;a href="mailto:someone@mydomain.com" title="someone@mydomain.com"&gt;someone@mydomain.com&lt;/a&gt;&lt;br /&gt;
 			&lt;a href="mailto:someone@mydomain.com" title="Click Here to Email Me"&gt;Click Here to Email Me&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;URL Hyper Links&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [url] tag allows you to link to other websites and files. You can include an optional parameter to 'name' your link. You can also combine [url] tags with [img] tags to create image links.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [url]{0}[/url]&lt;br /&gt;
+		&lt;td class="header2" colspan="2"&gt;URL Hyper Links&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [url] tag allows you to link to other websites and files. You can include an optional parameter to 'name' your link. You can also combine [url] tags with [img] tags to create image links.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[url]{0}[/url]&lt;br /&gt;
 	 [url={0}]mydomain[/url]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;a href="{0}" target="_blank" title="{0}"&gt;{0}&lt;/a&gt;&lt;br /&gt;
-     &lt;a href="{0}" target="_blank" title="{0}"&gt;mydomain&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Modal URL Hyper Links&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [modalurl] tag allows you to link to other websites and files, the difference between the regular [url] tag is all links will be opened inside an modal dialog. You can include an optional parameter to 'name' your link. You can also combine [url] tags with [img] tags to create image links.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [modalurl]{0}[/modalurl]&lt;br /&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;a href="{0}" target="_blank" title="{0}"&gt;{0}&lt;/a&gt;&lt;br /&gt;
+		 &lt;a href="{0}" target="_blank" title="{0}"&gt;mydomain&lt;/a&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Modal URL Hyper Links&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [modalurl] tag allows you to link to other websites and files, the difference between the regular [url] tag is all links will be opened inside an modal dialog. You can include an optional parameter to 'name' your link. You can also combine [url] tags with [img] tags to create image links.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[modalurl]{0}[/modalurl]&lt;br /&gt;
 	 [modalurl={0}]mydomain[/modalurl]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;a class="ceebox" href="{0}" target="_blank" title="{0}"&gt;{0}&lt;/a&gt;&lt;br /&gt;
-     &lt;a class="ceebox" href="{0}" target="_blank" title="{0}"&gt;mydomain&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;a class="ceebox" href="{0}" target="_blank" title="{0}"&gt;{0}&lt;/a&gt;&lt;br /&gt;
+		 &lt;a class="ceebox" href="{0}" target="_blank" title="{0}"&gt;mydomain&lt;/a&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Topic Links&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [topic] tag allows you to link to topics inside the forum, by specifying the topic id and the Link Name.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [topic=123]Go to Topic[/thread]
-     &lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;a href="{0}yaf_postst123_topic_title.aspx" target="_blank" title="Go to Topic"&gt;Go to Topic&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Post Links&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [post] tag allows you to link to a specific post from a topic inside the forum, by specifying the post id and the Link Name.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [post=123]Go to Post[/post]
-     &lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;a href="{0}yaf_postsm123_topic_title.aspx#post123" target="_blank" title="Go to Post"&gt;Go to Post&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Topic Links&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [topic] tag allows you to link to topics inside the forum, by specifying the topic id and the Link Name.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[topic=123]Go to Topic[/thread]
+		 &lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;a href="{0}yaf_postst123_topic_title.aspx" target="_blank" title="Go to Topic"&gt;Go to Topic&lt;/a&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Post Links&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [post] tag allows you to link to a specific post from a topic inside the forum, by specifying the post id and the Link Name.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[post=123]Go to Post[/post]
+		 &lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;a href="{0}yaf_postsm123_topic_title.aspx#post123" target="_blank" title="Go to Post"&gt;Go to Post&lt;/a&gt;&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-      BB Codes to create Lists
-    &lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+			BB Codes to create Lists
+		&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Bullet Lists&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [list] tag allows you to create simple, bullet lists without specifying an option. Within the value portion, each bullet is denoted by the [*] tag.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [list]&lt;br /&gt;
-      [*]list item 1&lt;br /&gt;
-      [*]list item 2&lt;br /&gt;
-      [/list]
-    &lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;ul&gt;
-            &lt;li&gt;list item 1&lt;/li&gt;
-            &lt;li&gt;list item 2&lt;/li&gt;
-         &lt;/ul&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Bullet Lists&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [list] tag allows you to create simple, bullet lists without specifying an option. Within the value portion, each bullet is denoted by the [*] tag.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[list]&lt;br /&gt;
+			[*]list item 1&lt;br /&gt;
+			[*]list item 2&lt;br /&gt;
+			[/list]
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;ul&gt;
+						&lt;li&gt;list item 1&lt;/li&gt;
+						&lt;li&gt;list item 2&lt;/li&gt;
+				 &lt;/ul&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
 
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Numbered and Alphabetic Lists&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [list=1], [list=a] (or [list=A]) or [list=i] (or [list=I]) tag allows you to create numbered, alphabetic with (capital) letters, or a numbered with (capital) Roman numeral lists.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [list=1]&lt;br /&gt;
-      [*]list item 1&lt;br /&gt;
-      [*]list item 2&lt;br /&gt;
-      [/list]&lt;br /&gt;
-      &lt;br /&gt;
-      [list=a]&lt;br /&gt;
-      [*]list item a&lt;br /&gt;
-      [*]list item b&lt;br /&gt;
-      [/list]
-      &lt;br /&gt;&lt;br /&gt;
-      [list=A]&lt;br /&gt;
-      [*]list item A&lt;br /&gt;
-      [*]list item B&lt;br /&gt;
-      [/list]
-      &lt;br /&gt;&lt;br /&gt;
-      [list=i]&lt;br /&gt;
-      [*]list item i&lt;br /&gt;
-      [*]list item ii&lt;br /&gt;
-      [/list]&lt;br /&gt;&lt;br /&gt;
-      [list=I]&lt;br /&gt;
-      [*]list item I&lt;br /&gt;
-      [*]list item II&lt;br /&gt;
-      [/list]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;ol&gt;
-        &lt;li&gt;list item 1&lt;/li&gt;
-        &lt;li&gt;list item 2&lt;/li&gt;
-      &lt;/ol&gt;
-      &lt;ol type="a"&gt;
-        &lt;li&gt;list item a&lt;/li&gt;
-        &lt;li&gt;list item b&lt;/li&gt;
-      &lt;/ol&gt;
-      &lt;ol type="A"&gt;
-        &lt;li&gt;list item A&lt;/li&gt;
-        &lt;li&gt;list item B&lt;/li&gt;
-      &lt;/ol&gt;
-      &lt;ol type="i"&gt;
-        &lt;li&gt;list item i&lt;/li&gt;
-        &lt;li&gt;list item ii&lt;/li&gt;
-      &lt;/ol&gt;
-      &lt;ol type="I"&gt;
-        &lt;li&gt;list item I&lt;/li&gt;
-        &lt;li&gt;list item II&lt;/li&gt;
-      &lt;/ol&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;/table&gt;
+		&lt;td class="header2" colspan="2"&gt;Numbered and Alphabetic Lists&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [list=1], [list=a] (or [list=A]) or [list=i] (or [list=I]) tag allows you to create numbered, alphabetic with (capital) letters, or a numbered with (capital) Roman numeral lists.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[list=1]&lt;br /&gt;
+			[*]list item 1&lt;br /&gt;
+			[*]list item 2&lt;br /&gt;
+			[/list]&lt;br /&gt;
+			&lt;br /&gt;
+			[list=a]&lt;br /&gt;
+			[*]list item a&lt;br /&gt;
+			[*]list item b&lt;br /&gt;
+			[/list]
+			&lt;br /&gt;&lt;br /&gt;
+			[list=A]&lt;br /&gt;
+			[*]list item A&lt;br /&gt;
+			[*]list item B&lt;br /&gt;
+			[/list]
+			&lt;br /&gt;&lt;br /&gt;
+			[list=i]&lt;br /&gt;
+			[*]list item i&lt;br /&gt;
+			[*]list item ii&lt;br /&gt;
+			[/list]&lt;br /&gt;&lt;br /&gt;
+			[list=I]&lt;br /&gt;
+			[*]list item I&lt;br /&gt;
+			[*]list item II&lt;br /&gt;
+			[/list]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;ol&gt;
+				&lt;li&gt;list item 1&lt;/li&gt;
+				&lt;li&gt;list item 2&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;ol type="a"&gt;
+				&lt;li&gt;list item a&lt;/li&gt;
+				&lt;li&gt;list item b&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;ol type="A"&gt;
+				&lt;li&gt;list item A&lt;/li&gt;
+				&lt;li&gt;list item B&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;ol type="i"&gt;
+				&lt;li&gt;list item i&lt;/li&gt;
+				&lt;li&gt;list item ii&lt;/li&gt;
+			&lt;/ol&gt;
+			&lt;ol type="I"&gt;
+				&lt;li&gt;list item I&lt;/li&gt;
+				&lt;li&gt;list item II&lt;/li&gt;
+			&lt;/ol&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;/table&gt;
 &lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-      BB Codes to add Media Elements (Images, Videos)
-    &lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+			BB Codes to add Media Elements (Images, Videos)
+		&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Images&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;p&gt;The [img] tag allows you to add images to your posts. You can also combine [url] tags with [img] tags to create image links. &lt;/p&gt;
-      &lt;p&gt;There is also an Option to enter an Image Description, which will be shown when you hover over the Image with the Mouse.&lt;/p&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [img]{0}forumlogo.jpg[/img]&lt;br /&gt;&lt;br /&gt;
-      [img={0}forumlogo.jpg]YAF Logo[/img]&lt;br /&gt;&lt;br /&gt;
-	  [url={0}] [img]{0}forumlogo.jpg[/img] [/url] (Linked)
+		&lt;td class="header2" colspan="2"&gt;Images&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;p&gt;The [img] tag allows you to add images to your posts. You can also combine [url] tags with [img] tags to create image links. &lt;/p&gt;
+			&lt;p&gt;There is also an Option to enter an Image Description, which will be shown when you hover over the Image with the Mouse.&lt;/p&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[img]{0}forumlogo.jpg[/img]&lt;br /&gt;&lt;br /&gt;
+			[img={0}forumlogo.jpg]YAF Logo[/img]&lt;br /&gt;&lt;br /&gt;
+		[url={0}] [img]{0}forumlogo.jpg[/img] [/url] (Linked)
 	&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;img src="{0}forumlogo.jpg" alt="" /&gt;&lt;br /&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;img src="{0}forumlogo.jpg" alt="" /&gt;&lt;br /&gt;
 		&lt;br /&gt;&lt;img src="{0}forumlogo.jpg" alt="YAF Logo" title="YAF Logo" /&gt;&lt;br /&gt;
 		&lt;br /&gt;
 		&lt;a href="{0}" target="_blank" title="YAF Logo"&gt;&lt;img class="inlineimg" src="{0}forumlogo.jpg" alt="" /&gt;&lt;/a&gt; (Linked)
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;You Tube&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [youtube] tag allows the embedding of an &lt;a href="http://www.youtube.com/" title="http://www.youtube.com/"&gt;Youtube&lt;/a&gt; video, by using the Url to the Video.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [youtube]http://www.youtube.com/watch?v=jqxENMKaeCU[/youtube]&lt;br /&gt;&lt;br /&gt;
-      [youtube]http://youtu.be/jqxENMKaeCU[/youtube]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;!-- BEGIN youtube --&gt;&lt;object width="425" height="350"&gt;&lt;param name="movie" value="http://www.youtube.com/v/jqxENMKaeCU"&gt;&lt;/param&gt;&lt;embed src="http://www.youtube.com/v/jqxENMKaeCU" type="application/x-shockwave-flash" width="425" height="350"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;!-- END youtube --&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Vimeo&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [vimeo] tag allows the embedding of an &lt;a href="http://www.vimeo.com/" title="http://www.vimeo.com/"&gt;Vimeo&lt;/a&gt; video, by using the Url to the Video.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [vimeo]http://vimeo.com/25451551[/vimeo]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;      &lt;object width="425" height="350"&gt;
-      &lt;param name="allowfullscreen" value="true" /&gt;
-      &lt;param name="allowscriptaccess" value="always" /&gt;
-      &lt;param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=25451551&amp;amp;server=www.vimeo.com&amp;amp;show_title=1&amp;amp;show_byline=1&amp;amp;show_portrait=0&amp;amp;color=&amp;amp;fullscreen=1" /&gt;
-      &lt;embed src="http://www.vimeo.com/moogaloop.swf?clip_id=25451551&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="425" height="350"&gt;
-      &lt;/embed&gt;
-      &lt;/object&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Google Maps&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [googlemaps] tag allows the embedding a Map from Google Maps, by using the Url to the Map.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [googlemaps]http://maps.google.de/?ll=51.151786,10.415039&amp;amp;spn=21.97528,35.639648&amp;amp;t=h&amp;amp;z=5[/googlemaps]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.de/?ll=51.151786,10.415039&amp;amp;spn=21.97528,35.639648&amp;amp;t=h&amp;amp;z=5&amp;amp;output=embed"&gt;&lt;/iframe&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Google Gadgets (Widget)&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [googlewidget] tag allows the embedding a Google Gadget, you an find the The Gadgets from the &lt;a href="http://www.google.com/ig/directory?synd=open"&gt;Google Gadget Gallery&lt;/a&gt;. Select a Gadget and Copy the Html Code for the gadget.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [googlewidget]
-      &amp;lt;script src=
-      &amp;quot;http://www.gmodules.com/ig/ifr?url=http://ralph.feedback.googlepages.com/googlecalendarviewer.xml
-      &amp;amp;synd=open&amp;amp;w=320&amp;amp;h=200&amp;amp;title=&amp;amp;
-      border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;amp;output=js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-      [/googlewidget]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;&lt;!-- BEGIN Google Widget --&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;You Tube&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [youtube] tag allows the embedding of an &lt;a href="http://www.youtube.com/" title="http://www.youtube.com/"&gt;Youtube&lt;/a&gt; video, by using the Url to the Video.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[youtube]http://www.youtube.com/watch?v=jqxENMKaeCU[/youtube]&lt;br /&gt;&lt;br /&gt;
+			[youtube]http://youtu.be/jqxENMKaeCU[/youtube]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;!-- BEGIN youtube --&gt;&lt;object width="425" height="350"&gt;&lt;param name="movie" value="http://www.youtube.com/v/jqxENMKaeCU"&gt;&lt;/param&gt;&lt;embed src="http://www.youtube.com/v/jqxENMKaeCU" type="application/x-shockwave-flash" width="425" height="350"&gt;&lt;/embed&gt;&lt;/object&gt;&lt;!-- END youtube --&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Vimeo&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [vimeo] tag allows the embedding of an &lt;a href="http://www.vimeo.com/" title="http://www.vimeo.com/"&gt;Vimeo&lt;/a&gt; video, by using the Url to the Video.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[vimeo]http://vimeo.com/25451551[/vimeo]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;      &lt;object width="425" height="350"&gt;
+			&lt;param name="allowfullscreen" value="true" /&gt;
+			&lt;param name="allowscriptaccess" value="always" /&gt;
+			&lt;param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=25451551&amp;amp;server=www.vimeo.com&amp;amp;show_title=1&amp;amp;show_byline=1&amp;amp;show_portrait=0&amp;amp;color=&amp;amp;fullscreen=1" /&gt;
+			&lt;embed src="http://www.vimeo.com/moogaloop.swf?clip_id=25451551&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="425" height="350"&gt;
+			&lt;/embed&gt;
+			&lt;/object&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Google Maps&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [googlemaps] tag allows the embedding a Map from Google Maps, by using the Url to the Map.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[googlemaps]http://maps.google.de/?ll=51.151786,10.415039&amp;amp;spn=21.97528,35.639648&amp;amp;t=h&amp;amp;z=5[/googlemaps]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.de/?ll=51.151786,10.415039&amp;amp;spn=21.97528,35.639648&amp;amp;t=h&amp;amp;z=5&amp;amp;output=embed"&gt;&lt;/iframe&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Google Gadgets (Widget)&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [googlewidget] tag allows the embedding a Google Gadget, you an find the The Gadgets from the &lt;a href="http://www.google.com/ig/directory?synd=open"&gt;Google Gadget Gallery&lt;/a&gt;. Select a Gadget and Copy the Html Code for the gadget.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[googlewidget]
+			&amp;lt;script src=
+			&amp;quot;http://www.gmodules.com/ig/ifr?url=http://ralph.feedback.googlepages.com/googlecalendarviewer.xml
+			&amp;amp;synd=open&amp;amp;w=320&amp;amp;h=200&amp;amp;title=&amp;amp;
+			border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;amp;output=js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+			[/googlewidget]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;&lt;!-- BEGIN Google Widget --&gt;
 &lt;script type="text/javascript" src="http://www.gmodules.com/ig/ifr?url=http://ralph.feedback.googlepages.com/googlecalendarviewer.xml&amp;synd=open&amp;w=320&amp;h=200&amp;title=&amp;border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;output=js"&gt;&lt;/script&gt;
 &lt;!-- END Google Widget --&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;/table&gt;
-  &lt;br /&gt;
+	&lt;/tr&gt;
+	&lt;/table&gt;
+	&lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-      BB Codes to Quote other Postings, and BB Codes to include Code Text
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Quoting&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [quote] tag allows you to quote a text from a posting.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [quote]Quoted Text.[/quote]&lt;br /&gt;&lt;br /&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+			BB Codes to Quote other Postings, and BB Codes to include Code Text
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Quoting&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [quote] tag allows you to quote a text from a posting.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[quote]Quoted Text.[/quote]&lt;br /&gt;&lt;br /&gt;
 		[quote=John Doe]Quoted Text.[/quote]&lt;br /&gt;&lt;br /&gt;
 		[quote=John Doe;123]Quoted Text.[/quote]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      &lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;Quote:&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
-      &lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;John Doe wrote:&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
-      &lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;Originally Posted by: John Doe &lt;a href="{0}yaf_postsm123_posts.aspx#post123"&gt;&lt;img src="{0}Themes/GreenGrey/icon_latest_reply.gif" title="Go to Quoted Post" alt="Go to Quoted Post" /&gt;&lt;/a&gt;&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			&lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;Quote:&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+			&lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;John Doe wrote:&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+			&lt;div class="quote"&gt;&lt;span class="quotetitle"&gt;Originally Posted by: John Doe &lt;a href="{0}yaf_postsm123_posts.aspx#post123"&gt;&lt;img src="{0}Themes/GreenGrey/icon_latest_reply.gif" title="Go to Quoted Post" alt="Go to Quoted Post" /&gt;&lt;/a&gt;&lt;/span&gt;&lt;div class="innerquote"&gt;Quoted Text&lt;/div&gt;&lt;/div&gt;&lt;br /&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Code&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [code] tag allows you to post Code Text, if you define the Code Language the Code will be Syntax Highlighted.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [code]&lt;br /&gt;
+		&lt;td class="header2" colspan="2"&gt;Code&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [code] tag allows you to post Code Text, if you define the Code Language the Code will be Syntax Highlighted.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[code]&lt;br /&gt;
 		// Hello1.cs&lt;br /&gt;
 public class Hello1&lt;br /&gt;
 {{&lt;br /&gt;
@@ -3251,7 +3257,7 @@ public class Hello1&lt;br /&gt;
 &amp;nbsp;&amp;nbsp;}}&lt;br /&gt;
 }}&lt;br /&gt;
 		[/code]&lt;br /&gt;&lt;br /&gt;
-        [code=csharp]&lt;br /&gt;
+				[code=csharp]&lt;br /&gt;
 		// Hello1.cs&lt;br /&gt;
 public class Hello1&lt;br /&gt;
 {{&lt;br /&gt;
@@ -3261,12 +3267,12 @@ public class Hello1&lt;br /&gt;
 &amp;nbsp;&amp;nbsp;}}&lt;br /&gt;
 }}&lt;br /&gt;
 		[/code]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
 &lt;div class="code"&gt;&lt;strong&gt;Code:&lt;/strong&gt;&lt;div class="innercode"&gt;
 // Hello1.cs&lt;br /&gt;
 public class Hello1&lt;br /&gt;
@@ -3280,242 +3286,242 @@ public class Hello1&lt;br /&gt;
 // Hello1.cs
 public class Hello1
 {{
-   public static void Main()
-   {{
-      System.Console.WriteLine(&amp;quot;Hello, World!&amp;quot;);
-   }}
+	 public static void Main()
+	 {{
+			System.Console.WriteLine(&amp;quot;Hello, World!&amp;quot;);
+	 }}
 }}&lt;/pre&gt;
 &lt;/div&gt;&lt;/div&gt;&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-     BB Codes to show/Hide its Content only to specific users
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Hide&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [hide] tag hides content from people until they press the thank you button for the post.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [hide]Hidden Content[/hide]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    &lt;img src="{0}resources/images/HiddenWarnDescription.png" alt="The content of this post is hidden. After you THANK the poster, refresh the page to see the hidden content. You need to thank the Current Post" title="The content of this post is hidden. After you THANK the poster, refresh the page to see the hidden content. You need to thank the Current Post" /&gt;   
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+		 BB Codes to show/Hide its Content only to specific users
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Hide&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [hide] tag hides content from people until they press the thank you button for the post.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[hide]Hidden Content[/hide]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		&lt;img src="{0}resources/images/HiddenWarnDescription.png" alt="The content of this post is hidden. After you THANK the poster, refresh the page to see the hidden content. You need to thank the Current Post" title="The content of this post is hidden. After you THANK the poster, refresh the page to see the hidden content. You need to thank the Current Post" /&gt;   
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Group Hide&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [group-hide] tag Hide the Content from Guests, or other Roles if defined.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [group-hide]Hidden Content[/group-hide]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;You have insufficient rights to see the hidden content.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Group Hide&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [group-hide] tag Hide the Content from Guests, or other Roles if defined.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[group-hide]Hidden Content[/group-hide]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;You have insufficient rights to see the hidden content.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Hide-Thanks&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [hide-thanks] tag hides content from people who have below X thanks received.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [hide-thanks=2]Hidden Content[/hide-thanks]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered, and have at least 2 thank(s) received.)&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Hide-Thanks&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [hide-thanks] tag hides content from people who have below X thanks received.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[hide-thanks=2]Hidden Content[/hide-thanks]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered, and have at least 2 thank(s) received.)&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Hide-Posts&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [hide-posts] tag hides content from people who have below X posts.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [hide-posts=10]Hidden Content[/hide-posts]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and have 10 post(s) or more.)&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;/tr&gt;
+	
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Hide-Posts&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [hide-posts] tag hides content from people who have below X posts.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[hide-posts=10]Hidden Content[/hide-posts]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and have 10 post(s) or more.)&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Hide-Reply&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [hide-reply] tag hides content from people until they replied in the same thread.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [hide-reply]Hidden Content[/hide-reply]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and reply to the message to see the hidden Content.)&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;/tr&gt;
+	
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Hide-Reply&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [hide-reply] tag hides content from people until they replied in the same thread.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[hide-reply]Hidden Content[/hide-reply]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and reply to the message to see the hidden Content.)&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Hide-Reply-Thanks&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [hide-reply-thanks] tag hides content from people until they either reply in the same thread or press the thank you button for the post.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [hide-reply-thanks]Hidden Content[/hide-reply-thanks]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
-    
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and reply to the message, or give thank, to see the hidden Content.)&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
-    &lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
-    
-    &lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
-    &lt;p&gt;Hidden Content&lt;/p&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Hide-Reply-Thanks&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [hide-reply-thanks] tag hides content from people until they either reply in the same thread or press the thank you button for the post.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[hide-reply-thanks]Hidden Content[/hide-reply-thanks]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;p&gt;If you don't have the right to view the content, you see an Info Message that Informs you way you don't see the Content&lt;/p&gt;
+		
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;Hidden Content (You must be registered and reply to the message, or give thank, to see the hidden Content.)&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;Otherwise as Guest you see a Info Message&lt;/p&gt;
+		&lt;div class="ui-widget"&gt;&lt;div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"&gt;&lt;p&gt;&lt;span class="ui-icon ui-icon-alert" style="float: left; padding: 0 0 3px 2px;"&gt;&lt;/span&gt;This board requires you to be registered and logged-in before you can view hidden messages.&lt;/div&gt;&lt;/div&gt;
+		
+		&lt;p&gt;If you do have access to see the Content you simply see the Hidden Content&lt;/p&gt;&lt;br /&gt;
+		&lt;p&gt;Hidden Content&lt;/p&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Spoiler&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [spoiler] tag hides content from people until they click on "Show Spoiler".&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [spoiler]Spoiler Content[/spoiler]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;!-- BEGIN spoiler --&gt;
-    &lt;script type="text/javascript"&gt;
+		&lt;td class="header2" colspan="2"&gt;Spoiler&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [spoiler] tag hides content from people until they click on "Show Spoiler".&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[spoiler]Spoiler Content[/spoiler]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;!-- BEGIN spoiler --&gt;
+		&lt;script type="text/javascript"&gt;
 	function toggleSpoiler(btn,elid){{var el=document.getElementById(elid);if(el==null){{return}}if(el.style.display==''){{el.style.display='none';btn.value='Show Spoiler'}}else{{el.style.display='';btn.value='Hide Spoiler'}}}}
 	&lt;/script&gt;
 &lt;div class="spoilertitle"&gt;
@@ -3526,69 +3532,69 @@ Spoiler Content
 &lt;/div&gt;
 &lt;!-- END spoiler --&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt;
 &lt;table class="content" width="90%"&gt;
-  &lt;tr&gt;
-    &lt;td class="header1" colspan="2"&gt;
-     Other
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;User Link&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [userlink] tag generated a link to the provided User Profile Page, and shows if enabled the Users Online Status.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [userlink]Username[/userlink]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-    &lt;style type="text/css"&gt;.yafnet .userLinkContainer{{background: url({0}resources/icons/user.png) #fff no-repeat 4px 50%;border: 1px solid #eee;padding: 4px 2px 4px 25px;margin: 3px;font-size: 80%;font-weight: bold;    background-color: #fff;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}}.yafnet .userLinkContainer:hover{{border: 1px solid #ddd;background-color: #eee;}}
+	&lt;tr&gt;
+		&lt;td class="header1" colspan="2"&gt;
+		 Other
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;User Link&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [userlink] tag generated a link to the provided User Profile Page, and shows if enabled the Users Online Status.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[userlink]Username[/userlink]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+		&lt;style type="text/css"&gt;.yafnet .userLinkContainer{{background: url({0}resources/icons/user.png) #fff no-repeat 4px 50%;border: 1px solid #eee;padding: 4px 2px 4px 25px;margin: 3px;font-size: 80%;font-weight: bold;    background-color: #fff;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}}.yafnet .userLinkContainer:hover{{border: 1px solid #ddd;background-color: #eee;}}
 	&lt;/style&gt;
-    &lt;span class="userLinkContainer"&gt;
+		&lt;span class="userLinkContainer"&gt;
 &lt;a href="{0}yaf_profile1234.aspx" rel="nofollow" title="View profile" target="_blank" id="UserLinkBBCodeFor12224" class="UserLinkBBCode"&gt;Username&lt;/a&gt;
 &lt;img id="OnlineStatusImage" src="{0}/Themes/OrangeGrey/icon_useronline.png" alt="Online" style="vertical-align: bottom" title="User is Online"/&gt;
 &lt;/span&gt;
 	&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class="header2" colspan="2"&gt;Stop BB Code Parsing&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Description&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      The [noparse] tag allows you to stop the parsing of BB code inside the tag.&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Usage&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;
-      [ noparse][noparse][b]Sample text.[/b][/noparse][/ noparse]&lt;/td&gt;
-  &lt;/tr&gt;
-   &lt;tr&gt;
-    &lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
-      &lt;strong&gt;Output&lt;/strong&gt;
-    &lt;/td&gt;
-    &lt;td&gt;[noparse][b]Sample text.[/b][/noparse]
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td class="header2" colspan="2"&gt;Stop BB Code Parsing&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Description&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			The [noparse] tag allows you to stop the parsing of BB code inside the tag.&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Usage&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;
+			[ noparse][noparse][b]Sample text.[/b][/noparse][/ noparse]&lt;/td&gt;
+	&lt;/tr&gt;
+	 &lt;tr&gt;
+		&lt;td style="width:15%;padding-left:10px;vertical-align:top;"&gt;
+			&lt;strong&gt;Output&lt;/strong&gt;
+		&lt;/td&gt;
+		&lt;td&gt;[noparse][b]Sample text.[/b][/noparse]
 	&lt;/td&gt;
-  &lt;/tr&gt;
+	&lt;/tr&gt;
 &lt;/table&gt;
 
 &lt;p&gt;NOTE: Don't forget to close an open BB Code tag. Tags that are not closed will be not formatted.&lt;/p&gt;</Resource>
@@ -3603,9 +3609,9 @@ Spoiler Content
 &lt;p&gt;To request a user as Friend, view the profile page of the person you want to become friends with and click the 'Add as Friend' link.&lt;/p&gt;
 &lt;p&gt;To accept a Friend request friend, go to your 'My Friends' page. On the Tab 'Pending Requests' you see The List of Users with pending requests. There you have three choices...&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Approve&lt;/strong&gt; - You Become Friend of the User who requests it &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Deny&lt;/strong&gt; - Reject the request&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Body in your List.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Approve&lt;/strong&gt; - You Become Friend of the User who requests it &lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Deny&lt;/strong&gt; - Reject the request&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Body in your List.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Remove Friend&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;To remove a Friend from Your List go to your 'My Friends' page. On the Tab 'Friend List' Click on the Button 'Remove Friend' of the User you want to remove&lt;/p&gt;
@@ -3615,8 +3621,8 @@ Spoiler Content
     <Resource tag="DISPLAYCONTENT">&lt;p&gt;You have a choice over how you view topics. When you're in a thread, look at the top bar. On the right hand side you'll see 'View'. Click on this and it lets you change how posts are ordered.&lt;/p&gt;
 &lt;p&gt;You have two choices:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Normal&lt;/strong&gt; - Posts are displayed chronologically, usually from oldest to newest. Posts are shown in a flat mode so that many posts can be viewed simultaneously. &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Threaded&lt;/strong&gt; - A tree is shown along with every post. This shows you the relationship each post has to the others. It's easy to see who responded to whom. Only one post is shown at a time. By clicking on a single post in the post tree, the page will show that post and all posts made in response to it.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Normal&lt;/strong&gt; - Posts are displayed chronologically, usually from oldest to newest. Posts are shown in a flat mode so that many posts can be viewed simultaneously. &lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Threaded&lt;/strong&gt; - A tree is shown along with every post. This shows you the relationship each post has to the others. It's easy to see who responded to whom. Only one post is shown at a time. By clicking on a single post in the post tree, the page will show that post and all posts made in response to it.&lt;/li&gt;
 &lt;/ul&gt;
 </Resource>
     <Resource tag="DISPLAYTITLE">Thread Display Options</Resource>
@@ -3686,28 +3692,28 @@ Spoiler Content
 </Resource>
     <Resource tag="MEMBERSLISTTITLE">Members List</Resource>
     <Resource tag="MESSENGERCONTENT">
-        &lt;p&gt;Registered members may be able to send messages to other members of this forum using the private messaging system (If enabled by the Administrator).
-        &lt;/p&gt;
-        &lt;p&gt;When you  receive a Private Message you will be notified in the Forum Header, about how  many unread message you have, also a Notification will Pop Up. You can also  enable an E-Mail Notification&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;How do I send Private Messages?&lt;/strong&gt;&lt;/p&gt;
-        &lt;p&gt;Private  messages are similar to emails, but are limited to registered members of this  forum. You may be able to include BB code, smilies and images in private  messages that you send.&lt;br /&gt;
-        You can  send a Private message to a user by clicking on the &amp;ldquo;PM&amp;rdquo; Button on the User  Profile of the user, or you click on the &amp;ldquo;New Message&amp;rdquo; Link in your User  Control Panel. The message you send will be stored in the &amp;ldquo;Sent Items&amp;rdquo; folder after  you send it.&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Private  Message Folders&lt;/strong&gt;&lt;/p&gt;
-        &lt;p&gt;Just like  an Email Program you have 3 Folders the Inbox, the Sent Items and the Archive  Folder...&lt;/p&gt;
-        &lt;ul&gt;
-        &lt;li&gt;The &amp;ldquo;Inbox&amp;rdquo;  Folder contains any new messages you receive. It allows you to view all the  messages you have received, along with the name of the person who sent it, the  subject of the message, and the date and time it was sent.&lt;/li&gt;
-        &lt;li&gt;The &amp;ldquo;Sent  Items&amp;rdquo; copies of all the Private Messages you have sent.&lt;/li&gt;
-        &lt;li&gt;The &amp;ldquo;Archive&amp;rdquo;  folder contains only messages you moved to that folder.&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;p&gt;From Each  folder you have Options what you want to do with the messages that are in the  folder you can simply mark a message and …&lt;br /&gt;
-        &lt;/p&gt;
-        &lt;ul&gt;
-        &lt;li&gt;Archive  Selected / Archive All – Move the Message(s) to the archive folder&lt;/li&gt;
-        &lt;li&gt;Export  Selected / Export All – Export the Message(s) as file (You Can select the  export format bellow –XML-/CSV-/Text-File)&lt;/li&gt;
-        &lt;li&gt;Delete  Selected / Delete All – Delete the Message(s)&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;p&gt;Depending  on how many Messages you are allowed to have you should delete some of them from  time (You can export them before you delete them to keep them on your local computer). Otherwise when your Mailbox is full you are not able to receive new  messages. On the Bottom you will be informed how many Messages you have and how  many you can Maximal have.&lt;/p&gt;
-      </Resource>
+				&lt;p&gt;Registered members may be able to send messages to other members of this forum using the private messaging system (If enabled by the Administrator).
+				&lt;/p&gt;
+				&lt;p&gt;When you  receive a Private Message you will be notified in the Forum Header, about how  many unread message you have, also a Notification will Pop Up. You can also  enable an E-Mail Notification&lt;/p&gt;
+				&lt;p&gt;&lt;strong&gt;How do I send Private Messages?&lt;/strong&gt;&lt;/p&gt;
+				&lt;p&gt;Private  messages are similar to emails, but are limited to registered members of this  forum. You may be able to include BB code, smilies and images in private  messages that you send.&lt;br /&gt;
+				You can  send a Private message to a user by clicking on the &amp;ldquo;PM&amp;rdquo; Button on the User  Profile of the user, or you click on the &amp;ldquo;New Message&amp;rdquo; Link in your User  Control Panel. The message you send will be stored in the &amp;ldquo;Sent Items&amp;rdquo; folder after  you send it.&lt;/p&gt;
+				&lt;p&gt;&lt;strong&gt;Private  Message Folders&lt;/strong&gt;&lt;/p&gt;
+				&lt;p&gt;Just like  an Email Program you have 3 Folders the Inbox, the Sent Items and the Archive  Folder...&lt;/p&gt;
+				&lt;ul&gt;
+				&lt;li&gt;The &amp;ldquo;Inbox&amp;rdquo;  Folder contains any new messages you receive. It allows you to view all the  messages you have received, along with the name of the person who sent it, the  subject of the message, and the date and time it was sent.&lt;/li&gt;
+				&lt;li&gt;The &amp;ldquo;Sent  Items&amp;rdquo; copies of all the Private Messages you have sent.&lt;/li&gt;
+				&lt;li&gt;The &amp;ldquo;Archive&amp;rdquo;  folder contains only messages you moved to that folder.&lt;/li&gt;
+				&lt;/ul&gt;
+				&lt;p&gt;From Each  folder you have Options what you want to do with the messages that are in the  folder you can simply mark a message and …&lt;br /&gt;
+				&lt;/p&gt;
+				&lt;ul&gt;
+				&lt;li&gt;Archive  Selected / Archive All – Move the Message(s) to the archive folder&lt;/li&gt;
+				&lt;li&gt;Export  Selected / Export All – Export the Message(s) as file (You Can select the  export format bellow –XML-/CSV-/Text-File)&lt;/li&gt;
+				&lt;li&gt;Delete  Selected / Delete All – Delete the Message(s)&lt;/li&gt;
+				&lt;/ul&gt;
+				&lt;p&gt;Depending  on how many Messages you are allowed to have you should delete some of them from  time (You can export them before you delete them to keep them on your local computer). Otherwise when your Mailbox is full you are not able to receive new  messages. On the Bottom you will be informed how many Messages you have and how  many you can Maximal have.&lt;/p&gt;
+			</Resource>
     <Resource tag="MESSENGERTITLE">Private Messages (Messenger)</Resource>
     <Resource tag="MODSADMINSCONTENT">&lt;p&gt;Moderators oversee specific forums. They generally have the ability to edit and delete posts, move topics, and perform other actions. Becoming a moderator for a specific forum is usually rewarded to users who are particularly helpful and knowledgeable in the subject of the forum they are moderating.&lt;/p&gt;
 &lt;p&gt;Administrators are the people who have overall control of everything that happens on the board. They oversee how the board is styled, what forums to create and how to organize them, what information to require from members and who to appoint as moderators.&lt;/p&gt;</Resource>
@@ -3723,9 +3729,9 @@ Spoiler Content
 &lt;p&gt;You can modify your Avatar by clicking on 'Modify Avatar' under the 'Personal Profile' area of the navigation bar within the &lt;strong&gt;User Control Panel&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;There are three ways to add an Avatar (Maybe less if deactivated by the Administrator)...&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;If available in the forum you can choose from an existing collection of Avatars&lt;/li&gt;
-  &lt;li&gt;Enter an existing URL to an Image on a Remote Server&lt;/li&gt;
-  &lt;li&gt;Select an Image from Your Computer and Upload it&lt;/li&gt;
+	&lt;li&gt;If available in the forum you can choose from an existing collection of Avatars&lt;/li&gt;
+	&lt;li&gt;Enter an existing URL to an Image on a Remote Server&lt;/li&gt;
+	&lt;li&gt;Select an Image from Your Computer and Upload it&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;em&gt;Be aware that the Administrator can set the Allowed Image File types, Image Size, and Image Dimensions (Max Width and Height of an Image).&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;What are signatures?&lt;/strong&gt;&lt;/p&gt;
@@ -3737,33 +3743,33 @@ Spoiler Content
 &lt;p&gt;On the Left Side you will find Links to all Sub Pages and Forms that allow you to control..&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Messenger&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;Inbox&lt;/li&gt;
-  &lt;li&gt;Sent Items&lt;/li&gt;
-  &lt;li&gt;Archive&lt;/li&gt;
-  &lt;li&gt;New Message&lt;/li&gt;
+	&lt;li&gt;Inbox&lt;/li&gt;
+	&lt;li&gt;Sent Items&lt;/li&gt;
+	&lt;li&gt;Archive&lt;/li&gt;
+	&lt;li&gt;New Message&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Personal Profile&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;View Profile&lt;/li&gt;
-  &lt;li&gt;Edit Profile&lt;/li&gt;
-  &lt;li&gt;View Thanks&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;Edit Albums&lt;/li&gt;
-  &lt;li&gt;Modify Avatar&lt;/li&gt;
-  &lt;li&gt;Signature&lt;/li&gt;
-  &lt;li&gt;Email Notification Preferences&lt;/li&gt;
-  &lt;li&gt;Change Password&lt;/li&gt;
+	&lt;li&gt;View Profile&lt;/li&gt;
+	&lt;li&gt;Edit Profile&lt;/li&gt;
+	&lt;li&gt;View Thanks&lt;br /&gt;&lt;/li&gt;
+	&lt;li&gt;Edit Albums&lt;/li&gt;
+	&lt;li&gt;Modify Avatar&lt;/li&gt;
+	&lt;li&gt;Signature&lt;/li&gt;
+	&lt;li&gt;Email Notification Preferences&lt;/li&gt;
+	&lt;li&gt;Change Password&lt;/li&gt;
 &lt;/ul&gt;</Resource>
     <Resource tag="MYSETTINGSTITLE">My Settings (User Control Panel)</Resource>
     <Resource tag="NAVIGATION">Navigation</Resource>
     <Resource tag="NEWPOSTSCONTENT">
-      &lt;p&gt;If you are  not logged in, the 'Active Topics' link in the Header will show a list of all  topics that have been created or updated since your last visit, and on the  Second Tab there is a List with showing all Unanswered Topics.&lt;/p&gt;
-      &lt;p&gt;If you are  logged in, the 'Active Topics' link will change to 'My Topics'. On the My  Topics Page there are 5 Tabs that shows the…&lt;/p&gt;
-      &lt;li&gt;&lt;strong&gt;Active Topics&lt;/strong&gt; - Show a list of all  topics that have been created or updated since your last visit.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Unanswered Topics&lt;/strong&gt; - Shows all Topics which have no Replies.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Unread Topics&lt;/strong&gt; - Shows all Topics containing unread messages.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Topics you've posted in&lt;/strong&gt; - Shows all Topics you have created or posted in.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Favorite Topics&lt;/strong&gt; - Shows all Topics which you have  tagged as Favorite Topic.&lt;/li&gt;
-    </Resource>
+			&lt;p&gt;If you are  not logged in, the 'Active Topics' link in the Header will show a list of all  topics that have been created or updated since your last visit, and on the  Second Tab there is a List with showing all Unanswered Topics.&lt;/p&gt;
+			&lt;p&gt;If you are  logged in, the 'Active Topics' link will change to 'My Topics'. On the My  Topics Page there are 5 Tabs that shows the…&lt;/p&gt;
+			&lt;li&gt;&lt;strong&gt;Active Topics&lt;/strong&gt; - Show a list of all  topics that have been created or updated since your last visit.&lt;/li&gt;
+			&lt;li&gt;&lt;strong&gt;Unanswered Topics&lt;/strong&gt; - Shows all Topics which have no Replies.&lt;/li&gt;
+			&lt;li&gt;&lt;strong&gt;Unread Topics&lt;/strong&gt; - Shows all Topics containing unread messages.&lt;/li&gt;
+			&lt;li&gt;&lt;strong&gt;Topics you've posted in&lt;/strong&gt; - Shows all Topics you have created or posted in.&lt;/li&gt;
+			&lt;li&gt;&lt;strong&gt;Favorite Topics&lt;/strong&gt; - Shows all Topics which you have  tagged as Favorite Topic.&lt;/li&gt;
+		</Resource>
     <Resource tag="NEWPOSTSTITLE">Viewing New Posts</Resource>
     <Resource tag="NORESULTS">No Results found.</Resource>
     <Resource tag="PMCONTENT">&lt;p&gt;You can contact another by sending an E-Mail, you find them on the member list.&lt;/p&gt;
@@ -3783,10 +3789,10 @@ Spoiler Content
 &lt;p&gt;&lt;em&gt;An example poll might be:&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;What is your favorite color?&lt;/em&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;Blue&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Red&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Yellow&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Green&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Blue&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Red&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Yellow&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Green&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;You may also want to specify a time limit for the poll. For example: run the poll for 10 Days or you can also set it to never expire.&lt;/p&gt;
 &lt;p&gt;You can also decide if the user should be able to see the results without making a vote or if you enable the Check box 'You should vote in all polls to see results.&lt;em&gt;'&lt;/em&gt; you need to vote before seeing any results.&lt;/p&gt;
@@ -3803,10 +3809,10 @@ Spoiler Content
 &lt;p&gt;&lt;em&gt;An example poll might be:&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;What is your favorite color?&lt;/em&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;Blue&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Red&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Yellow&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Green&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Blue&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Red&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Yellow&lt;/em&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;em&gt;Green&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;You may also want to specify a time limit for the poll. For example: run the poll for 10 Days or you can also set it to never expire.&lt;/p&gt;
 &lt;p&gt;You can also decide if the user should be able to see the results without making a vote or if you enable the Check box 'You should vote in all polls to see results.&lt;em&gt;'&lt;/em&gt; you need to vote before seeing any results.&lt;/p&gt;
@@ -3820,19 +3826,19 @@ Spoiler Content
     <Resource tag="POPUPSCONTENT">&lt;p&gt;When you have logged in and load the Page you may receive an Pop Up Notification on the center of your Browser Window.&lt;/p&gt;
 &lt;p&gt;This will inform you about several actions...&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;New Private Message(s)&lt;/li&gt;
-  &lt;li&gt;New Friend Requests&lt;/li&gt;
-  &lt;li&gt;Approved Friend Requests&lt;/li&gt;
-  &lt;li&gt;Denied Friend Requests&lt;br /&gt;
-  &lt;/li&gt;
+	&lt;li&gt;New Private Message(s)&lt;/li&gt;
+	&lt;li&gt;New Friend Requests&lt;/li&gt;
+	&lt;li&gt;Approved Friend Requests&lt;/li&gt;
+	&lt;li&gt;Denied Friend Requests&lt;br /&gt;
+	&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;em&gt;You may also receive a couple of Information and Error Messages in the same way.&lt;/em&gt;&lt;/p&gt;</Resource>
     <Resource tag="POPUPSTITLE">PopUp Notifications</Resource>
     <Resource tag="POSTINGCONTENT">&lt;p&gt;When posting messages you may wish to include some formatting such as bold text, italic text and underlined text.&lt;/p&gt;
 &lt;p&gt;Adding formatting to your post can be done in two ways:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;Using clickable controls similar to those found in most word processors&lt;/li&gt;
-  &lt;li&gt;Typing formatting commands in BB code&lt;/li&gt;
+	&lt;li&gt;Using clickable controls similar to those found in most word processors&lt;/li&gt;
+	&lt;li&gt;Typing formatting commands in BB code&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Clickable controls are available in the Standard and Enhanced WYSIWYG (What You See Is What You Get) editors. The difference between these is that the standard editor will show the BB code in your message and be processed when it is displayed. The enhanced WYSIWYG editor will show your message as it will be displayed while you are typing.&lt;/p&gt;
 &lt;p&gt;Currently it depends on the Administrator which Editor is enabled ether WYSIWYG or the BB Code Editor.&lt;/p&gt;
@@ -3843,40 +3849,40 @@ Spoiler Content
     <Resource tag="PUBLICPROFILECONTENT">&lt;p&gt;As member you have a publicly viewable profile page. This page includes information provided by the member, either during the registration process or later on via the User Control Panel.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;There are a multiple ways to view a members profile...&lt;/em&gt;&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;When you see an username click on the name and you will see a dropdown menu which contains an Link 'User Profile' to view the Profile..&lt;/li&gt;
-  &lt;li&gt;The members list allows you to browse all registered members, and quickly click through to public profiles.&lt;/li&gt;
-  &lt;li&gt;When logged in, you can also view your own public profile by logging into the forums and clicking on The 'My Profile' Link in the header at the top of the page, to open the User Control Panel.&lt;/li&gt;
+	&lt;li&gt;When you see an username click on the name and you will see a dropdown menu which contains an Link 'User Profile' to view the Profile..&lt;/li&gt;
+	&lt;li&gt;The members list allows you to browse all registered members, and quickly click through to public profiles.&lt;/li&gt;
+	&lt;li&gt;When logged in, you can also view your own public profile by logging into the forums and clicking on The 'My Profile' Link in the header at the top of the page, to open the User Control Panel.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Which Informations are shown on that Page?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The Public Profile Page is grouped into 5 Tabs.&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;About&lt;/strong&gt; - Shows all Informations the user has provided on his Profile Page such as Real name, gender, Status if User is Online/Offline, Forum Rank, and other.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Statistics&lt;/strong&gt; - Shows statistical information such as Joined date, Last Visit, Number of thanks, Number of times this user was thanked                          and Number of posts for which this user was thanked.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Last 10 Post&lt;/strong&gt; - Shows if available the Last 10 Messages the User has written&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Friends - &lt;/strong&gt;Shows the Friends the User has in the Forum.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Albums - &lt;/strong&gt;Shows the Albums (if enabled) that the User has generated.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;About&lt;/strong&gt; - Shows all Informations the user has provided on his Profile Page such as Real name, gender, Status if User is Online/Offline, Forum Rank, and other.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Statistics&lt;/strong&gt; - Shows statistical information such as Joined date, Last Visit, Number of thanks, Number of times this user was thanked                          and Number of posts for which this user was thanked.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Last 10 Post&lt;/strong&gt; - Shows if available the Last 10 Messages the User has written&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Friends - &lt;/strong&gt;Shows the Friends the User has in the Forum.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Albums - &lt;/strong&gt;Shows the Albums (if enabled) that the User has generated.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Personal information such as E-Mail Address or Passwords are &lt;strong&gt;NOT&lt;/strong&gt; shown.&lt;/p&gt;</Resource>
     <Resource tag="PUBLICPROFILETITLE">My Public Profile</Resource>
     <Resource tag="READPOSTTOPICS">Reading and Posting Messages</Resource>
     <Resource tag="RECOVERCONTENT">&lt;p&gt;If you forget your password, you can click on the "&lt;a href="{0}"&gt;Lost Password&lt;/a&gt;" 
-  link. This will appear on any page that requires you to fill in your password. &lt;/p&gt;
+	link. This will appear on any page that requires you to fill in your password. &lt;/p&gt;
 &lt;p&gt;This link brings up a page where you should enter your User Name. An email will 
-  be sent to that address shortly, with instructions for resetting your password.&lt;/p&gt;
+	be sent to that address shortly, with instructions for resetting your password.&lt;/p&gt;
 &lt;p&gt; Since passwords are encrypted, there is no way to resend your original password. 
-  This option provides you with the ability to reset your password.  &lt;/p&gt;
+	This option provides you with the ability to reset your password.  &lt;/p&gt;
 &lt;p&gt;You must be able to receive emails to your registered email address for this to 
-  work. You may need to check your spam filters and folder if you do not see this 
-  email in a few minutes. &lt;/p&gt;</Resource>
+	work. You may need to check your spam filters and folder if you do not see this 
+	email in a few minutes. &lt;/p&gt;</Resource>
     <Resource tag="RECOVERTITLE">Recover lost password</Resource>
     <Resource tag="REGISTRATIONCONTENT">&lt;p&gt;The administrator will probably require you to register in order to use all the features of the forum. Being registered gives you an identity on the board, a fixed username on all messages you post and an online public profile.&lt;/p&gt;
 &lt;p&gt;Registration is free (unless otherwise specified), and offers an extended range of features, including:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;Posting new Topics&lt;/li&gt;
-  &lt;li&gt;Replying to other peoples' Topics&lt;/li&gt;
-  &lt;li&gt;Editing your messages&lt;/li&gt;
-  &lt;li&gt;Receiving email notification of replies to messages and topics you specify&lt;/li&gt;
-  &lt;li&gt;Sending private messages to other members&lt;/li&gt;
+	&lt;li&gt;Posting new Topics&lt;/li&gt;
+	&lt;li&gt;Replying to other peoples' Topics&lt;/li&gt;
+	&lt;li&gt;Editing your messages&lt;/li&gt;
+	&lt;li&gt;Receiving email notification of replies to messages and topics you specify&lt;/li&gt;
+	&lt;li&gt;Sending private messages to other members&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;How do I register?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;You register by clicking on the 'Register' in the Header. First You have to agree to the Forum Rules and Policies. Then You will be asked to choose a user name, password, a Security Question/Answer, and enter a valid email address. And if the Administrator you need to enter the Shown Captcha code in order to proceed. On the next Page you can optional Provide some basic Profile Settings.&lt;/p&gt;
@@ -3918,16 +3924,16 @@ Spoiler Content
 &lt;p&gt;&lt;strong&gt;View all Thanks&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;If you want to view all Posts you gave Thank, or show the list of posts you received thanks got to the page  Personal Profile -&amp;gt; 'View Thanks' from within the User Control Panel. There you see Two Tabs...&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt; &lt;strong&gt;thanked&lt;/strong&gt; - Shows the List of Messages where you gave a thank.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;was thanked -&lt;/strong&gt; Shows the List your Messages where you received thanks.&lt;/li&gt;
+	&lt;li&gt; &lt;strong&gt;thanked&lt;/strong&gt; - Shows the List of Messages where you gave a thank.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;was thanked -&lt;/strong&gt; Shows the List your Messages where you received thanks.&lt;/li&gt;
 &lt;/ul&gt;</Resource>
     <Resource tag="THANKSTITLE">Thanks Feature</Resource>
     <Resource tag="THREADOPTCONTENT">&lt;p&gt;At the top of each Topic, there is a link  'Options'. By clicking on this link, a menu will appear with a number of options:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Watch this topic&lt;/strong&gt; - by subscribing to a thread, you will receive periodic email updates on recent activity within it.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Print this topic&lt;/strong&gt; - This will show you a page with the thread post content in a reduced graphics format that is more 'printer friendly'.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Atom Feed&lt;/strong&gt; - This will show the Feed of this Topic with all Post as Feed Items.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Rss Feed&lt;/strong&gt; - This will show the Feed of this Topic with all Post as Feed Items.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Watch this topic&lt;/strong&gt; - by subscribing to a thread, you will receive periodic email updates on recent activity within it.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Print this topic&lt;/strong&gt; - This will show you a page with the thread post content in a reduced graphics format that is more 'printer friendly'.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Atom Feed&lt;/strong&gt; - This will show the Feed of this Topic with all Post as Feed Items.&lt;/li&gt;
+	&lt;li&gt;&lt;strong&gt;Rss Feed&lt;/strong&gt; - This will show the Feed of this Topic with all Post as Feed Items.&lt;/li&gt;
 &lt;/ul&gt;
 </Resource>
     <Resource tag="THREADOPTTITLE">Topic Options</Resource>
@@ -4145,7 +4151,7 @@ Spoiler Content
   <page name="MOSTACTIVEUSERS">
     <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
-    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active users for last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
     <Resource tag="NUM_ALLPOSTS">All posts</Resource>
     <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
@@ -4219,8 +4225,8 @@ Spoiler Content
     <Resource tag="NOT_GUEST">No puedes enviar mensajes privados a inbitado.</Resource>
     <Resource tag="OWN_PMBOX_FULL">Su bandeja de entrada de mensajes privados esta llena. El maximo permitido es {0}. Por favor borre mensajes para liberar espacio.</Resource>
     <Resource tag="PMLIMIT_ALL">
-        You have {0} private messages: {1} in Inbox and {2} in Outbox, {3} In Archive from total {4} allowed. Your mail is box filled on {5}%.
-    </Resource>
+				You have {0} private messages: {1} in Inbox and {2} in Outbox, {3} In Archive from total {4} allowed. Your mail is box filled on {5}%.
+		</Resource>
     <Resource tag="PREVIEWTITLE">Vista previa:</Resource>
     <Resource tag="RECIPIENTS_PMBOX_FULL">El usuario {0} tiene su bandeja de entrada de mensajes privados llena. Lo sentimos, no recibira su mensaje privado hasta que libere espacio.</Resource>
     <Resource tag="REPORTED_SUBJECT">Re: Reply to you post report.</Resource>
@@ -4324,7 +4330,9 @@ Spoiler Content
     <Resource tag="STICKY">Pegajoso</Resource>
     <Resource tag="SUBJECT">Asunto:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">A topic with the subject already exists or the subject is not unique enough to be added.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMBOLS">You tags have forbidden symbols:{0}.</Resource>
     <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAG_TOOMANY">You can add {0} topic tags only.</Resource>
     <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Topic description length cannot be more than 255 characters.</Resource>
@@ -4428,6 +4436,7 @@ Spoiler Content
     <Resource tag="SKYPE">SKYPE</Resource>
     <Resource tag="SKYPE_TITLE">Contact {0} via Skype</Resource>
     <Resource tag="STATISTICS">Estadísticas</Resource>
+    <Resource tag="TAGS_POSTS">Tags:</Resource>
     <Resource tag="THANKSFROM">Thanks: {0} times</Resource>
     <Resource tag="THANKSFROM_FEM">Thanks: {0} times</Resource>
     <Resource tag="THANKSFROM_MUSC">Thanks: {0} times</Resource>
@@ -4855,55 +4864,55 @@ Spoiler Content
 			{link}
 		</Resource>
     <Resource tag="NOTIFICATION_ON_FACEBOOK_REGISTER">
-      Hello {user}.
+			Hello {user}.
 
-      You have been successfully Registred on the {forumname} forum thru Facebook:
+			You have been successfully Registred on the {forumname} forum thru Facebook:
 
-      User Name: {user}
-	  Auto Generated Password: {pass}
-	  Auto Generated Security Answer: {answer}
-      User Email: {email} (Please dont change your email, or you are unable to login with facebook)
-	  
-    </Resource>
+			User Name: {user}
+		Auto Generated Password: {pass}
+		Auto Generated Security Answer: {answer}
+			User Email: {email} (Please dont change your email, or you are unable to login with facebook)
+		
+		</Resource>
     <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_TEXT">
-    Hello {user}.
+		Hello {user}.
 
-    Congratulations you have been award with the {medalname} on the {forumname} forum.
-  </Resource>
+		Congratulations you have been award with the {medalname} on the {forumname} forum.
+	</Resource>
     <Resource tag="NOTIFICATION_ON_MODERATOR_MESSAGE_APPROVAL_TEXT">
 		A new message that needs your approved has been posted in the {forumname} forum:
 		
 		Administration Link: {adminlink}
 	</Resource>
     <Resource tag="NOTIFICATION_ON_MODERATOR_REPORTED_MESSAGE_TEXT">
-      A message was reported by {reporter} for the following reason: {reason}
-	  
+			A message was reported by {reporter} for the following reason: {reason}
+		
 The Message was posted in the {forumname} forum.
-      
-      Administration Link: {adminlink}
-   </Resource>
+			
+			Administration Link: {adminlink}
+	 </Resource>
     <Resource tag="NOTIFICATION_ON_REGISTER">
-      Hello {user}.
+			Hello {user}.
 
-      You have been successfully Registred on the {forumname} forum:
+			You have been successfully Registred on the {forumname} forum:
 
-      User Name: {user}
-      Auto Generated Password: {pass}
-      Auto Generated Security Answer: {answer}
-      User Email: {email}
+			User Name: {user}
+			Auto Generated Password: {pass}
+			Auto Generated Security Answer: {answer}
+			User Email: {email}
 
-    </Resource>
+		</Resource>
     <Resource tag="NOTIFICATION_ON_TWITTER_REGISTER">
-      Hello {user}.
+			Hello {user}.
 
-      You have been successfully Registred on the {forumname} forum thru Twitter:
+			You have been successfully Registred on the {forumname} forum thru Twitter:
 
-      User Name: {user}
-	  Auto Generated Password: {pass}
-	  Auto Generated Security Answer: {answer}
-      User Email: {email} (Please change your Email adress to your real one in order to Receive E-Mails)
-	  
-    </Resource>
+			User Name: {user}
+		Auto Generated Password: {pass}
+		Auto Generated Security Answer: {answer}
+			User Email: {email} (Please change your Email adress to your real one in order to Receive E-Mails)
+		
+		</Resource>
     <Resource tag="NOTIFICATION_ON_USER_REGISTER">
 		Hello!
 
@@ -5097,6 +5106,11 @@ The Message was posted in the {forumname} forum.
     <Resource tag="WARN_LOGIN_FORUMWATCH">Debes estar registrado para vigilar foros.</Resource>
     <Resource tag="WATCHFORUM">Vigilar foro</Resource>
     <Resource tag="YESTERDAYAT">[b]Ayer[/b] a las {0:T}</Resource>
+  </page>
+  <page name="TOPICSBYTAGS">
+    <Resource tag="TAGS_LIST">Tags: {0}</Resource>
+    <Resource tag="TAGS_MORE">More Tags:</Resource>
+    <Resource tag="TITLE">Topics by tags</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]No thanks found.[/b]</Resource>

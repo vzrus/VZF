@@ -24,9 +24,6 @@
 		<td class="header2">
 			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="PERC_PERPERIOD" />
 		</td>
-		<td class="header2">
-			&nbsp;
-		</td>
 	</tr>
 	<asp:Repeater ID="UserList" OnItemDataBound="UserList_OnItemDataBound" runat="server">
 		<ItemTemplate>

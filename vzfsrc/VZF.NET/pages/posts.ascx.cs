@@ -776,6 +776,17 @@ namespace YAF.Pages
         }
 
         /// <summary>
+        /// The poll group id.
+        /// </summary>
+        /// <returns>
+        /// Returns The poll group id.
+        /// </returns>
+        protected int GetTopicId()
+        {
+            return !this._topic["TopicID"].IsNullOrEmptyDBField() ? this._topic["TopicID"].ToType<int>() : 0;
+        }
+
+        /// <summary>
         /// The post reply link_ click.
         /// </summary>
         /// <param name="sender">The source of the event.</param>

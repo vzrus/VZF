@@ -263,7 +263,7 @@ namespace YAF.Controls
             // "Active Users" Count and Most Users Count 
             DataRow activeStats = CommonDb.active_stats(PageContext.PageModuleID, this.PageContext.PageBoardID);
             this.ActiveUserCount.Text = this.FormatActiveUsers(activeStats);
-
+            this.MosActiveForLink.Text = this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK", 7);
             // Tommy MOD "Recent Users" Count.
             if (this.Get<YafBoardSettings>().ShowRecentUsers)
             {
@@ -283,6 +283,7 @@ namespace YAF.Controls
                         RecentUsers.Visible = true;
                     }
                     RecentUsersPlaceHolder.Visible = true;
+                    
                 }
             }
             else
@@ -371,6 +372,11 @@ namespace YAF.Controls
 
             this.GetTodaysBirthdays();
             ForumStatsImage.NavigateUrl = (YafBuildLink.GetLink(ForumPages.mostactiveusers));
+        }
+
+        protected void MosActiveForLink_Click(object o, EventArgs args)
+        {
+            Response.Redirect(YafBuildLink.GetLink(ForumPages.mostactiveusers));
         }
 
         #endregion

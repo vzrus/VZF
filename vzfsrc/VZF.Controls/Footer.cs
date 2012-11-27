@@ -182,7 +182,7 @@ namespace YAF.Controls
 						YafBuildLink.GetLink(ForumPages.forum, "fullsite=true"), this.GetText("COMMON", "MOBILE_FULLSITE")));
 			}
 			else if (this.PageContext.Vars.ContainsKey("IsMobile") && this.PageContext.Vars["IsMobile"] != null
-			         && this.PageContext.Vars["IsMobile"].ToType<bool>())
+					 && this.PageContext.Vars["IsMobile"].ToType<bool>())
 			{
 				footer.Append(
 					@"<a target=""_top"" title=""{1}"" href=""{0}"">{1}</a> | ".FormatWith(
@@ -228,45 +228,45 @@ namespace YAF.Controls
 				footer.AppendFormat(@"<span id=""themecredit"" style=""color:#999999"">{0}</span>", themeCredit);
 				footer.Append("<br />");
 			}
-		    string s = CommonDb.DataEngineName(YafContext.Current.PageModuleID);
-            switch (s)
-            {
-                case "System.Data.SqlClient":  
-                footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
-                      "ICONS",
-                      "MSSQLSERVER_SMALL",
-                      YafForumInfo.GetURLToResource("images/mssqlserver_small.png")), " {0} MySQL".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
-                   break;
-                case "Npgsql":
-                    footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
-                      "ICONS",
-                      "POSTGRESQL_SMALL",
-                      YafForumInfo.GetURLToResource("images/postgresql_small.png")), " {0} PostgreSQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
-                    break;
-                case "MySql.Data.MySqlClient":
-                    footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
-                      "ICONS",
-                      "MYSQL_SMALL",
-                      YafForumInfo.GetURLToResource("images/mysql_small.png")), " {0} MySQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
-                    break;
-                case "FirebirdSql.Data.FirebirdClient":
-                    footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
-                                         "ICONS",
-                                         "FIREBIRD_SMALL",
-                                         YafForumInfo.GetURLToResource("images/firebird_small.png")), " {0} Firebird ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
-                    break;
-                // case "oracle": 
-                // case "db2":  
-                // case "other":  
-                default:
-                    throw new ArgumentNullException(s);
+			string s = CommonDb.DataEngineName(YafContext.Current.PageModuleID);
+			switch (s)
+			{
+				case "System.Data.SqlClient":  
+				footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
+					  "ICONS",
+					  "MSSQLSERVER_SMALL",
+					  YafForumInfo.GetURLToResource("images/mssqlserver_small.png")), " {0} MsSQL".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+				   break;
+				case "Npgsql":
+					footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
+					  "ICONS",
+					  "POSTGRESQL_SMALL",
+					  YafForumInfo.GetURLToResource("images/postgresql_small.png")), " {0} PostgreSQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+					break;
+				case "MySql.Data.MySqlClient":
+					footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
+					  "ICONS",
+					  "MYSQL_SMALL",
+					  YafForumInfo.GetURLToResource("images/mysql_small.png")), " {0} MySQL ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+					break;
+				case "FirebirdSql.Data.FirebirdClient":
+					footer.Append(@"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(this.PageContext.Get<ITheme>().GetItem(
+										 "ICONS",
+										 "FIREBIRD_SMALL",
+										 YafForumInfo.GetURLToResource("images/firebird_small.png")), " {0} Firebird ".FormatWith(this.GetText("COMMON", "POWERED_BY"))));
+					break;
+				// case "oracle": 
+				// case "db2":  
+				// case "other":  
+				default:
+					throw new ArgumentNullException(s);
 
-            }    
-            
-            footer.Append(@"<a target=""_top"" title=""VZF"" href=""https://github.com/vzrus/VZF"">");
+			}    
+			
+			footer.Append(@"<a target=""_top"" title=""VZF"" href=""https://github.com/vzrus/VZF"">");
 			footer.Append(this.GetText("COMMON", "POWERED_BY"));
 			footer.Append(@" VZF");
-           
+		   
 			if (this.Get<YafBoardSettings>().ShowYAFVersion)
 			{
 				footer.AppendFormat(" {0} ", YafForumInfo.AppVersionName);
@@ -291,7 +291,7 @@ namespace YAF.Controls
 			footer.AppendFormat(
 				@"</a> | <a target=""_top"" title=""{0}"" href=""{1}"">VZF &copy; 2012-{2}, VZF</a>", 
 				"VZF",
-                "https://github.com/vzrus/VZF", 
+				"https://github.com/vzrus/VZF", 
 				DateTime.UtcNow.Year);
 		}
 

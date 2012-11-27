@@ -5759,6 +5759,37 @@ namespace YAF.Classes.Data.FirebirdDb
 	   
 		#region yaf_Topic
 
+		public static DataTable topic_tags(string connectionString, int boardId, int pageUserId, int topicId)
+		{
+			using (FbCommand cmd = FbDbAccess.GetCommand("topic_tags"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardId;
+				cmd.Parameters.Add("@I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
+				cmd.Parameters.Add("@I_TOPICID", FbDbType.Integer).Value = topicId;
+
+				return FbDbAccess.GetData(cmd, connectionString);
+			}
+		}
+
+		public static DataTable topic_bytags(string connectionString, int boardId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
+		{
+			using (FbCommand cmd = FbDbAccess.GetCommand("topic_bytags"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardId;
+				cmd.Parameters.Add("@I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
+				cmd.Parameters.Add("@I_TAGS", FbDbType.VarChar).Value = tags;
+                cmd.Parameters.Add("@I_SINCEDATE", FbDbType.TimeStamp).Value = sinceDate;
+				cmd.Parameters.Add("@I_PAGEINDEX", FbDbType.Integer).Value = pageIndex;
+				cmd.Parameters.Add("@I_PAGESIZE", FbDbType.Integer).Value = pageSize;
+
+				return FbDbAccess.GetData(cmd, connectionString);
+			}
+		}
+
 		public static void topic_updatetopic(string connectionString,
 			  int topicId, 
 			  string topic)

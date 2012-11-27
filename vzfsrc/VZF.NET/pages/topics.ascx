@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="YAF" TagName="ForumList" Src="../controls/ForumList.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="TopicLine" Src="../controls/TopicLine.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="../controls/ForumJumper.ascx" %>
+<%@ Register TagPrefix="YAF" Namespace="YAF.Controls" Assembly="VZF.Controls" %>
 
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
@@ -105,7 +106,8 @@
                         <asp:LinkButton runat="server" ID="MarkRead" />
                         <YAF:RssFeedLink ID="RssFeed" runat="server" FeedType="Topics" 
                             Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" TitleLocalizedTag="RSSICONTOOLTIPFORUM" />  
-                          <YAF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />                            
+                          <YAF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />     
+                                             
                     </td>
                 </tr>
             </table>

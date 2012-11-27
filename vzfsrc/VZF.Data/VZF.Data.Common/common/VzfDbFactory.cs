@@ -5803,6 +5803,49 @@ namespace YAF.Classes.Data
 			 }
 
 		 }
+
+		 static public DataTable topic_tags(int? mid, int boardId, int pageUserId, int topicId)
+		 {
+			 string dataEngine;
+			 string connectionString;
+			 string namePattern = string.Empty;
+			 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+			 switch (dataEngine)
+			 {
+				 case "System.Data.SqlClient": return MsSql.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
+				 case "Npgsql": return Postgre.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
+				 case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
+				 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
+				 // case "oracle":  return orPostgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
+				 // case "db2":  return db2Postgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
+				 // case "other":  return othPostgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId); 
+				 default:
+					 throw new ArgumentOutOfRangeException(dataEngine);
+			 }
+
+		 }
+		 static public DataTable topic_bytags(int? mid, int boardId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
+		 {
+			 string dataEngine;
+			 string connectionString;
+			 string namePattern = string.Empty;
+			 CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+			 switch (dataEngine)
+			 {
+				 case "System.Data.SqlClient": return MsSql.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 case "Npgsql": return Postgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 case "MySql.Data.MySqlClient": return MySqlDb.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 // case "oracle":  return orPostgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 // case "db2":  return db2Postgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 // case "other":  return othPostgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+				 default:
+					 throw new ArgumentOutOfRangeException(dataEngine);
+			 }
+
+		 }
 		 public static void topic_updatetopic(int? mid, int topicId, string topic)
 		 {
 			 string dataEngine;

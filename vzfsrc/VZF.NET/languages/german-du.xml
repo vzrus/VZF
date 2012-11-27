@@ -1324,6 +1324,12 @@
     <Resource tag="STYLED_NICKS_HELP">Wenn diese Option aktiviert, können Sie Farben, die Schriftgröße, usw. ändern für aktive Benutzer Nicknamen.</Resource>
     <Resource tag="STYLED_TOPIC_TITLES">Themen Titel Stil verwenden:</Resource>
     <Resource tag="STYLED_TOPIC_TITLES_HELP">Wenn aktiviert, können Mods. und Admins Schriftfarbe, Schriftgröße und andere Stile von Themen Titeln verändernt.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
+    <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
+    <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE">Danke von Vorlage:</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE_HELP">Vorlage für die Darstellung des Benutzers Danke von.</Resource>
     <Resource tag="THANKS_TO_TEMPLATE">Danke an Vorlage:</Resource>
@@ -4069,7 +4075,7 @@ Spoiler Content
   <page name="MOSTACTIVEUSERS">
     <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
-    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active users for last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
     <Resource tag="NUM_ALLPOSTS">All posts</Resource>
     <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
@@ -4243,7 +4249,9 @@ Spoiler Content
     <Resource tag="STICKY">Wichtig</Resource>
     <Resource tag="SUBJECT">Betreff:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">Ein Beitrag mit diesem Namen existiert bereits oder ist nicht eindeutig genug um ihn verwenden zu können.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMBOLS">You tags have forbidden symbols:{0}.</Resource>
     <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAG_TOOMANY">You can add {0} topic tags only.</Resource>
     <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Themen Beschreibung darf nicht mehr als {0} Zeichen lang sein.</Resource>
@@ -4346,6 +4354,7 @@ Spoiler Content
     <Resource tag="SKYPE">SKYPE</Resource>
     <Resource tag="SKYPE_TITLE"> {0} via Skype kontaktieren</Resource>
     <Resource tag="STATISTICS">Statistik</Resource>
+    <Resource tag="TAGS_POSTS">Tags:</Resource>
     <Resource tag="THANKSFROM">Dankte: {0} mal</Resource>
     <Resource tag="THANKSFROM_FEM">Dankte: {0} mal(e)</Resource>
     <Resource tag="THANKSFROM_MUSC">Dankte: {0} mal(e)</Resource>
@@ -5016,6 +5025,11 @@ Der Bestätigungscode lautet
     <Resource tag="WARN_LOGIN_FORUMWATCH">Du musst registriert sein, um dieses Forum zu sehen.</Resource>
     <Resource tag="WATCHFORUM">Dieses Forum abonnieren</Resource>
     <Resource tag="YESTERDAYAT">[b]Gestern[/b], um {0:T}</Resource>
+  </page>
+  <page name="TOPICSBYTAGS">
+    <Resource tag="TAGS_LIST">Tags: {0}</Resource>
+    <Resource tag="TAGS_MORE">More Tags:</Resource>
+    <Resource tag="TITLE">Topics by tags</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]Keine Danksagungen gefunden.[/b]</Resource>

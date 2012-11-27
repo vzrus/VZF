@@ -5537,21 +5537,37 @@ namespace YAF.Classes.Data.Postgre
 		
 		#region yaf_Topic
 
-		//TODO: Overloaded method for 1.9.3 FINAL comatability should be deleted beginning with v.2373
-		static public int topic_prune(string connectionString, object forumID, object days)
+		static public DataTable topic_tags(string connectionString, object boardId, object pageUserId, object topicId)
 		{
-			int boardId = 0;
-			using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand(String.Format("SELECT c.boardid FROM {0} f INNER JOIN {1} c ON f.categoryid=c.categoryd  WHERE forumid = @i_forumID;", PostgreDBAccess.GetObjectName("Forum"), PostgreDBAccess.GetObjectName("Category")), true))
+			using (var cmd = PostgreDBAccess.GetCommand("topic_tags"))
 			{
+				cmd.CommandType = CommandType.StoredProcedure;
 
-				cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
-				cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
-				boardId = Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString));
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
+
+				return PostgreDBAccess.GetData(cmd, connectionString);
 			}
-			
-			return topic_prune(connectionString,boardId, forumID, days, true);
 
 		}
+		static public DataTable topic_bytags(string connectionString, object boardId, object pageUserId, object tags, object sinceDate, int pageIndex, int pageSize)
+		{
+			using (var cmd = PostgreDBAccess.GetCommand("topic_bytags"))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserId;
+				cmd.Parameters.Add(new NpgsqlParameter("i_tags", NpgsqlDbType.Varchar)).Value = tags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_sincedate", NpgsqlDbType.TimestampTZ)).Value = sinceDate;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+				cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+				return PostgreDBAccess.GetData(cmd, connectionString);
+			}
+
+		}
+
 
 		public static void topic_updatetopic(string connectionString, int topicId, string topic)
 		{

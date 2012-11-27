@@ -1332,6 +1332,12 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="STYLED_NICKS_HELP">در صورت علامت زدن می توانید رنگ، قلم و اندازه برای نیک کاربران فعال استفاده نمائید.</Resource>
     <Resource tag="STYLED_TOPIC_TITLES">Use styled Topic Titles:</Resource>
     <Resource tag="STYLED_TOPIC_TITLES_HELP">If checked, Mods and Admins can use colors, font size change etc. for topic titles.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB">Tag's forbidden symbols.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMB_HELP">Tag's forbidden symbols delimited by comma.</Resource>
+    <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>
+    <Resource tag="TAG_MAXLENGTH_HELP">Tag's max length.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
+    <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE">قالب قدردانی ها از :</Resource>
     <Resource tag="THANKS_FROM_TEMPLATE_HELP">قالبی که قدردانی های شده از کاربر بر اساس آن تولید می شود.</Resource>
     <Resource tag="THANKS_TO_TEMPLATE">قالب قدردانی ها:</Resource>
@@ -4134,7 +4140,7 @@ Spoiler Content
   <page name="MOSTACTIVEUSERS">
     <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_ALL_LINK">Most active users</Resource>
-    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active for last {0} day(s)</Resource>
+    <Resource tag="MOSTACTIVEUSERS_FOR_LINK">Most active users for last {0} day(s)</Resource>
     <Resource tag="MOSTACTIVEUSERS_FORTODAY_LINK">Active Today</Resource>
     <Resource tag="NUM_ALLPOSTS">All posts</Resource>
     <Resource tag="NUM_PERIODPOSTS">Interval posts</Resource>
@@ -4306,7 +4312,9 @@ Spoiler Content
     <Resource tag="STICKY">مهم</Resource>
     <Resource tag="SUBJECT">موضوع:</Resource>
     <Resource tag="SUBJECT_DUPLICATE">موضوغی با این عنوان هم اکنون موجود است یا عنوان به قدر کافی یکتائی ندارد.</Resource>
+    <Resource tag="TAG_FORBIDDENSYMBOLS">You tags have forbidden symbols:{0}.</Resource>
     <Resource tag="TAG_TOOLONG">A topic tag should not be more then {0} symbols.</Resource>
+    <Resource tag="TAG_TOOMANY">You can add {0} topic tags only.</Resource>
     <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Topic description length cannot be more than 255 characters.</Resource>
@@ -4411,6 +4419,7 @@ Spoiler Content
     <Resource tag="SKYPE">اسکایپ</Resource>
     <Resource tag="SKYPE_TITLE">Contact {0} via Skype</Resource>
     <Resource tag="STATISTICS">آمار</Resource>
+    <Resource tag="TAGS_POSTS">Tags:</Resource>
     <Resource tag="THANKSFROM">تشکرها: {0} بار</Resource>
     <Resource tag="THANKSFROM_FEM">تشکرها: {0} بار</Resource>
     <Resource tag="THANKSFROM_MUSC">تشکرها: {0} بار</Resource>
@@ -5044,6 +5053,11 @@ The Message was posted in the {forumname} forum.
     <Resource tag="WARN_LOGIN_FORUMWATCH">شما برای مشاهده این انجمن باید ثبت نام کنید.</Resource>
     <Resource tag="WATCHFORUM">پیگیری انجمن</Resource>
     <Resource tag="YESTERDAYAT">[b]دیروز[/b] در {0:T}</Resource>
+  </page>
+  <page name="TOPICSBYTAGS">
+    <Resource tag="TAGS_LIST">Tags: {0}</Resource>
+    <Resource tag="TAGS_MORE">More Tags:</Resource>
+    <Resource tag="TITLE">Topics by tags</Resource>
   </page>
   <page name="VIEWTHANKS">
     <Resource tag="NO_THANKS">[b]تشکری یافت نشد[/b]</Resource>

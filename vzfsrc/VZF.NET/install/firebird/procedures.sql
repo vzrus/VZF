@@ -7674,8 +7674,8 @@ END;
 CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
  (
 	I_BOARDID INTEGER,
-	I_DISPLAYNUMBER INTEGER,
-	I_STARTDATE  TIMESTAMP
+	I_STARTDATE  TIMESTAMP,
+	I_DISPLAYNUMBER INTEGER	
  )
  RETURNS
   (
@@ -12228,3 +12228,202 @@ begin
 end;
 --GO
 
+CREATE PROCEDURE  objQual_TOPIC_TAGS(I_BOARDID INTEGER, I_PAGEUSERID INTEGER, I_TOPICID INTEGER) 
+RETURNS
+( "TagID" INTEGER,
+  "Tag" VARCHAR(255),
+  "TagCount" INTEGER,
+  "MaxTagCount" INTEGER)
+AS
+begin
+FOR	SELECT 
+		   tg.TAGID,
+		   tg.Tag,
+		   tg.TAGCOUNT,
+		   MAX(tg.TAGCOUNT)  
+		   FROM objQual_TAGS tg 
+		   JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
+		   JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
+		   JOIN objQual_ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
+		   WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID 
+		   GROUP BY  tg.Tag,tg.TagCount,tg.TAGID
+		   ORDER BY tg.Tag
+		   INTO
+		   :"TagID",
+		   :"Tag",
+		   :"TagCount",
+		   :"MaxTagCount"
+		   DO SUSPEND;
+end;
+--GO
+
+CREATE PROCEDURE  objQual_TOPIC_BYTAGS(I_BOARDID INTEGER, I_PAGEUSERID INTEGER,I_TAGS VARCHAR(1024), I_SINCEDATE TIMESTAMP, I_PAGEINDEX INTEGER, I_PAGESIZE INTEGER) 
+RETURNS
+ ("ForumID" integer,
+	"TopicID" integer,
+	"Posted" timestamp,
+	"LinkTopicID" integer,
+	"TopicMovedID" integer,
+	"FavoriteCount" integer,
+	"Subject" varchar(128),
+	"Status" varchar(255),
+	"Styles" varchar(255),
+	"Description" varchar(255),
+	"UserID" integer,
+	"Starter" varchar(128),
+	"StarterDisplay" varchar(128),
+	"Replies" integer,
+	"NumPostsDeleted" integer,
+	"Views" integer,
+	"LastPosted" timestamp,
+	"LastUserID" integer,
+	"LastUserName" varchar(128),
+	"LastUserDisplayName" varchar(128),
+	"LastMessageID" integer,
+	"LastTopicID" integer,
+	"LinkDate" timestamp,
+	"TopicFlags" integer,
+	"Priority" integer,
+	"PollID" integer,
+	"ForumFlags" integer,
+	"FirstMessage" blob sub_type 1,
+	"StarterStyle" varchar(255),
+	"LastUserStyle" varchar(255),
+	"LastForumAccess" timestamp,
+	"LastTopicAccess" timestamp,
+	"Tags" varchar(4000),
+	"TotalRows" integer,
+	"PageIndex" integer)
+AS
+DECLARE VARIABLE ici_ID INTEGER DEFAULT NULL;
+DECLARE VARIABLE ICI_FIRSTSELECTROWNUMBER INTEGER DEFAULT 0;
+ DECLARE VARIABLE ici_firstselectposted timestamp; 
+DECLARE ICI_TOTALROWS  INTEGER DEFAULT 0;
+DECLARE ICI_TOROW  INTEGER DEFAULT 0;
+begin
+I_PAGEINDEX = :I_PAGEINDEX + 1;	 
+select count(1)  
+		FROM   objQual_TOPIC t 
+		JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = t.TOPICID	
+		JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
+		WHERE aa.BOARDID = :I_BOARDID AND t.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND tt.TAGID = CAST(:I_TAGS AS INTEGER) AND t.POSTED > :I_SINCEDATE 
+		into :ICI_TOTALROWS ;
+			
+		ICI_FIRSTSELECTROWNUMBER = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1;
+		ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
+
+   SELECT FIRST 1
+		t.POSTED
+		FROM   objQual_TOPIC t 
+		JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = t.TOPICID 
+		JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
+		WHERE  BOARDID = :I_BOARDID AND t.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND tt.TAGID = CAST(:I_TAGS AS INTEGER) AND t.POSTED > :I_SINCEDATE 
+		ORDER BY t.POSTED DESC
+		into :ici_firstselectposted;
+
+FOR SELECT		c.FORUMID,
+		c.TOPICID,
+		c.POSTED,
+		COALESCE(c.TOPICMOVEDID,c.TOPICID) AS "LinkTopicID",
+		c.TOPICMOVEDID,
+		(SELECT COUNT(1) FROM objQual_FAVORITETOPIC 
+		WHERE TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID)),
+		COALESCE(c.TOPIC,NULL) AS "Subject",
+		c.STATUS,
+		c.STYLES,
+		c.DESCRIPTION,
+		c.USERID,
+		COALESCE(c.USERNAME,b.NAME) AS "Starter",
+		COALESCE(c.USERDISPLAYNAME,b.DISPLAYNAME) AS "StarterDisplay",
+		(c.NUMPOSTS - 1) AS "Replies",
+		(SELECT COUNT(1) FROM objQual_MESSAGE mes 
+				 WHERE mes.TOPICID = c.TOPICID AND mes.ISDELETED <> 0
+				 AND mes.ISAPPROVED <> 0 
+				 AND ((:I_PAGEUSERID IS NOT NULL AND mes.USERID = :I_PAGEUSERID) 
+				 OR (:I_PAGEUSERID IS NULL)) ) AS "NumPostsDeleted",
+		c.VIEWS AS "Views",
+		c.LASTPOSTED AS LASTPOSTED,
+		c.LASTUSERID AS LASTUSERID,
+		COALESCE(c.LASTUSERNAME,
+		(select NAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserName",
+		COALESCE(c.LASTUSERDISPLAYNAME,
+		(select DISPLAYNAME from objQual_USER x 
+		where x.USERID=c.LASTUSERID)) AS "LastUserDisplayName",
+		c.LASTMESSAGEID AS LASTMESSAGEID,
+		c.TOPICID AS LASTTOPICID,
+		c.LinkDate,
+		c.FLAGS AS "TopicFlags",
+		c."PRIORITY",
+		c.POLLID,
+		d.FLAGS AS "ForumFlags",
+		(SELECT FIRST 1 mes2.MESSAGE 
+				 FROM objQual_MESSAGE mes2 
+				 WHERE mes2.TOPICID = COALESCE(c.TOPICMOVEDID,c.TOPICID) 
+				 AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage",
+		(case(0)
+			when 1 then b.USERSTYLE  
+			else (SELECT '' FROM RDB$DATABASE)	 end),
+		(case(0)
+			when 1 then (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = c.LASTUSERID) 
+			else (SELECT '' FROM RDB$DATABASE)	 end),
+		(case(0)
+			 when 1 then
+			   (SELECT FIRST 1 x.LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=c.FORUMID AND x.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE) end) AS "LastForumAccess",
+		(case(0)
+			 when 1 then
+			   (SELECT FIRST 1 y.LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
+			 else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
+		(SELECT FIRST 1 TAG FROM objQual_TAGS where TagID = CAST(:I_TAGS AS INTEGER)),		
+		(SELECT :ICI_TOTALROWS FROM RDB$DATABASE) AS "TotalRows",
+		(SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex"
+FROM   objQual_TOPIC c 
+		JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = c.TOPICID
+		JOIN  objQual_TAGS tg ON tg.TAGID = tt.TAGID 
+		JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = c.FORUMID	
+		JOIN  objQual_MESSAGE m ON (m.TOPICID = c.TOPICID AND m."POSITION" = 0)	
+		JOIN  objQual_USER b ON b.UserID=c.UserID
+		JOIN  objQual_FORUM d on d.ForumID=c.ForumID
+		WHERE  aa.BOARDID = :I_BOARDID AND c.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND c.LASTPOSTED <= :ici_firstselectposted
+		AND tt.TAGID IN (SELECT CAST(:I_TAGS AS INTEGER) FROM RDB$DATABASE) AND c.POSTED > :I_SINCEDATE
+		ORDER BY c.POSTED DESC
+INTO
+:"ForumID",
+	:"TopicID",
+	:"Posted",
+	:"LinkTopicID",
+	:"TopicMovedID",
+	:"FavoriteCount",
+	:"Subject",
+	:"Status",
+	:"Styles",
+	:"Description",
+	:"UserID",    
+	:"Starter",
+	:"StarterDisplay",
+	:"Replies",
+	:"NumPostsDeleted",  
+	:"Views",
+	:"LastPosted",   
+	:"LastUserID",
+	:"LastUserName",
+	:"LastUserDisplayName",
+	:"LastMessageID",
+	:"LastTopicID",
+	:"LinkDate",
+	:"TopicFlags",
+	:"Priority",
+	:"PollID",
+	:"ForumFlags",
+	:"FirstMessage",
+	:"StarterStyle",
+	:"LastUserStyle",
+	:"LastForumAccess",
+	:"LastTopicAccess",
+	:"Tags",
+	:"TotalRows",
+	:"PageIndex"
+DO SUSPEND;
+end;
+--GO

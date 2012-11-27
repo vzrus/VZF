@@ -75,6 +75,11 @@
 						</asp:PlaceHolder>
 					</td>
 				</tr>
+				<tr class="post">
+						<td colspan="2" align="right">
+							<asp:LinkButton runat="server" OnClick="MosActiveForLink_Click" ID="MosActiveForLink" Text='<%# this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK",7) %>' />
+						</td>
+				</tr>
 			</asp:PlaceHolder>
 		</table>
 	</ContentTemplate>
