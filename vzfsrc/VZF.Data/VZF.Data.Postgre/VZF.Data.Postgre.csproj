@@ -54,12 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="pgsql\AccessClassess.cs" />
-    <Compile Include="pgsql\Fts\Search.cs" />
-    <Compile Include="pgsql\Db.cs" />
-    <Compile Include="pgsql\SettingsPropertyColumn.cs" />
-    <Compile Include="pgsql\DbAccess.cs" />
-    <Compile Include="pgsql\DbConnManager.cs" />
+    <Compile Include="AccessClassess.cs" />
+    <Compile Include="Fts\Search.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="SettingsPropertyColumn.cs" />
+    <Compile Include="DbAccess.cs" />
+    <Compile Include="DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

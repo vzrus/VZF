@@ -175,7 +175,7 @@ namespace YAF.Controls
 
             var rememberMe = this.Login1.FindControlAs<CheckBox>("RememberMe");
 
-            if (this.Get<YafBoardSettings>().AllowSingleSignOn && Config.FacebookAPIKey.IsSet())
+            if (this.Get<YafBoardSettings>().AllowSingleSignOn && Config.FacebookApiKey.IsSet())
             {
                 // setup jQuery and Facebook Scripts.
                 YafContext.Current.PageElements.RegisterJQuery();
@@ -274,7 +274,7 @@ namespace YAF.Controls
 
             if (this.Get<YafBoardSettings>().AllowSingleSignOn)
             {
-                faceBookHolder.Visible = Config.FacebookAPIKey.IsSet() && Config.FacebookSecretKey.IsSet();
+                faceBookHolder.Visible = Config.FacebookApiKey.IsSet() && Config.FacebookSecretKey.IsSet();
 
                 twitterHolder.Visible = Config.TwitterConsumerKey.IsSet() && Config.TwitterConsumerSecret.IsSet();
 

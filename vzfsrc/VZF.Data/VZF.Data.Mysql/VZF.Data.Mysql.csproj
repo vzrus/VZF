@@ -53,14 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mysql\Db.cs" />
-    <Compile Include="mysql\Search\SearchBuilder.cs" />
-    <Compile Include="mysql\Search\SearchBuilderExtensions.cs" />
-    <Compile Include="mysql\Search\SearchCondition.cs" />
-    <Compile Include="mysql\Search\SearchConditionType.cs" />
-    <Compile Include="mysql\SettingsPropertyColumn.cs" />
-    <Compile Include="mysql\DbAccess.cs" />
-    <Compile Include="mysql\DbConnManager.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="Search\SearchBuilder.cs" />
+    <Compile Include="Search\SearchBuilderExtensions.cs" />
+    <Compile Include="Search\SearchCondition.cs" />
+    <Compile Include="Search\SearchConditionType.cs" />
+    <Compile Include="SettingsPropertyColumn.cs" />
+    <Compile Include="DbAccess.cs" />
+    <Compile Include="DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

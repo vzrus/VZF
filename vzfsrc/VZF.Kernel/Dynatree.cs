@@ -30,6 +30,8 @@ namespace VZF.Kernel
     using System.Globalization;
     using System.Web;
     using VZF.Types;
+    using VZF.Types.Objects;
+
     using YAF.Classes.Data;
     using YAF.Core;
     using YAF.Types.Constants;

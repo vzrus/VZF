@@ -220,7 +220,7 @@ namespace YAF.Install
             {
                 try
                 {
-                    return int.Parse(Config.BoardID);
+                    return int.Parse(Config.BoardId);
                 }
                 catch
                 {

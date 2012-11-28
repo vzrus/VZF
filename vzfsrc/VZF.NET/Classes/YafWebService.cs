@@ -161,10 +161,10 @@ public class YafWebService : WebService, IHaveServiceLocator
                         displayName));
             }
 
-            var userFields = CommonDb.user_list((int?) YafContext.Current.PageModuleID, Config.BoardID, userId, null).Rows[0];
+            var userFields = CommonDb.user_list((int?) YafContext.Current.PageModuleID, Config.BoardId, userId, null).Rows[0];
 
             CommonDb.user_save(YafContext.Current.PageModuleID, userId,
-                Config.BoardID,
+                Config.BoardId,
                 null,
                 displayName,
                 null,

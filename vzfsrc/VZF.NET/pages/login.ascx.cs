@@ -208,7 +208,7 @@ namespace YAF.Pages
         /// </param>
         protected override void OnPreRender([NotNull] EventArgs e)
         {
-            if (this.Get<YafBoardSettings>().AllowSingleSignOn && Config.FacebookAPIKey.IsSet())
+            if (this.Get<YafBoardSettings>().AllowSingleSignOn && Config.FacebookApiKey.IsSet())
             {
                 // setup jQuery and Facebook Scripts.
                 YafContext.Current.PageElements.RegisterJQuery();
@@ -313,11 +313,11 @@ namespace YAF.Pages
             }
 
             if (this.Get<YafBoardSettings>().AllowSingleSignOn &&
-                (Config.FacebookAPIKey.IsSet() || Config.TwitterConsumerKey.IsSet()))
+                (Config.FacebookApiKey.IsSet() || Config.TwitterConsumerKey.IsSet()))
             {
                 singleSignOnRow.Visible = true;
 
-                facebookHolder.Visible = Config.FacebookAPIKey.IsSet() && Config.FacebookSecretKey.IsSet();
+                facebookHolder.Visible = Config.FacebookApiKey.IsSet() && Config.FacebookSecretKey.IsSet();
 
                 twitterHolder.Visible = Config.TwitterConsumerKey.IsSet() && Config.TwitterConsumerSecret.IsSet();
 

@@ -729,7 +729,7 @@ namespace YAF.Pages
             this.BindData();
 
             if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ShowShareTopicTo)
-                || !Config.FacebookAPIKey.IsSet())
+                || !Config.FacebookApiKey.IsSet())
             {
                 return;
             }
@@ -1800,7 +1800,7 @@ namespace YAF.Pages
                     @"window.open('{0}','Facebook','width=300,height=200,resizable=yes');".FormatWith(facebookUrl),
                     this.Get<ITheme>().GetItem("ICONS", "FACEBOOK"));
 
-                if (Config.FacebookAPIKey.IsSet())
+                if (Config.FacebookApiKey.IsSet())
                 {
                     this.ShareMenu.AddClientScriptItem(
                         this.GetText("FACEBOOK_SHARE_TOPIC"),

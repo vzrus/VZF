@@ -30,6 +30,8 @@ namespace YAF.Providers.Profile
   using System.Data.SqlClient;
   using System.Text;
 
+  using VZF.Data.MsSql;
+
   using YAF.Classes;
   using YAF.Classes.Pattern;
   using YAF.Core;
@@ -280,7 +282,7 @@ namespace YAF.Providers.Profile
     /// </exception>
     public static bool GetDbTypeAndSizeFromString(string providerData, out SqlDbType dbType, out int size)
     {
-        return YAF.Classes.Data.MsSql.Db.GetDbTypeAndSizeFromString(providerData, out dbType, out size);
+        return Db.GetDbTypeAndSizeFromString(providerData, out dbType, out size);
     }
     /// <summary>
     /// The get provider user key.

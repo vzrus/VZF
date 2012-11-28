@@ -24,6 +24,7 @@ namespace YAF.Classes
 
     using System;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.Configuration;
@@ -63,6 +64,18 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        ///  Gets Loaded  assemblies allowed masks like VZF..
+        /// </summary>
+        [NotNull]
+        public static string AllowedAssemblyMasks
+        {
+            get
+            {
+                return GetConfigValueAsString("VZF.AllowedAssemblyMasks") ?? "VZF*.dll";
+            }
+        }
+
+        /// <summary>
         ///     Gets the Used for Url Rewriting -- default is "default.\.(.+)$\.(.+)$"
         /// </summary>
         [NotNull]
@@ -90,7 +103,7 @@ namespace YAF.Classes
         ///     Gets the Current BoardID -- default is 1.
         /// </summary>
         [NotNull]
-        public static string BoardID
+        public static string BoardId
         {
             get
             {
@@ -122,9 +135,45 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        ///     Gets the Allowed Crawler User Agent Tokens.
+        /// </summary>
+        public static string[] CrawlerUserAgentTokens
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(GetConfigValueAsString("VZF.CrawlerUserAgentTokens")))
+                {
+                    return GetConfigValueAsString("VZF.CrawlerUserAgentTokens").Split();
+                }
+
+                return new[]
+                           {
+                               "Googlebot", "abachoBOT", "abcdatos_botlink", "ah-ha.com crawler", "Alexa", "antibot",
+                               "appie", "AltaVista-Intranet", "Acoon Robot", "Atomz", "Arachnoidea", "AESOP_com_SpiderMan", 
+                               "AxmoRobot", "ArchitextSpider", "AlkalineBOT", "Aranha", "asterias", "Baidu", "Bingbot",
+                               "Buscaplus Robi", "CanSeek", "ChristCRAWLER", "Clushbot", "Crawler", "CrawlerBoy",
+                               "DeepIndex", "DefaultCrawler", "DittoSpyder", "DIIbot", "EZResult", "EARTHCOM.info",
+                               "EuripBot", "ESISmartSpider", "FAST-WebCrawler", "FyberSearch", "Findexa Crawler", "Fluffy",
+                               "Googlebot", "geckobot", "GenCrawler", "GeonaBot", "getRAX", "Gulliver", "Hubater",
+                               "ia_archiver", "Slurp", "Scooter", "Mercator", "RaBot", "Jack", "Speedy Spider", "moget",
+                               "Toutatis", "IlTrovatore-Setaccio", "IncyWincy", "UltraSeek", "InfoSeek Sidewinder",
+                               "Mole2", "MP3Bot", "Knowledge.com", "kuloko-bot", "LNSpiderguy", "Linknzbot", "lookbot",
+                               "MantraAgent", "NetResearchServer", "Lycos", "JoocerBot", "HenryTheMiragoRobot",
+                               "MojeekBot", "mozDex", "MSNBOT", "Navadoo Crawler", "ObjectsSearch", "OnetSzukaj",
+                               "PicoSearch", "PJspider", "nttdirectory_robot", "maxbot.com", "Openfind", "psbot",
+                               "QweeryBot", "StackRambler", "SeznamBot", "Search-10", "Scrubby", "speedfind ramBot xtreme", 
+                               "Kototoi", "SearchByUsa", "Searchspider", "SightQuestBot", "Sogou", "Spider_Monkey",
+                               "Surfnomore", "teoma", "UK Searcher Spider", "Nazilla", "MuscatFerret", "ZyBorg",
+                               "WIRE WebRefiner", "WSCbot", "Yandex", "Yellopet-Spider", "YBSbot", "OceanSpiders",
+                               "MozSpider"
+                           };
+            }
+        }
+
+        /// <summary>
         ///     Gets the Allowed browser JS version.
         /// </summary>
-        public static string BrowserJSVersion
+        public static string BrowserJsVersion
         {
             get
             {
@@ -135,7 +184,7 @@ namespace YAF.Classes
         /// <summary>
         ///     Gets the Current CategoryID -- default is null.
         /// </summary>
-        public static string CategoryID
+        public static string CategoryId
         {
             get
             {
@@ -156,9 +205,9 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets a value indicating whether Css Blocks should be compressed (minified)? -- default is true.
+        ///     Gets a value indicating whether CSS Blocks should be compressed (minified)? -- default is true.
         /// </summary>
-        public static bool CompressCSSBlocks
+        public static bool CompressCssBlocks
         {
             get
             {
@@ -167,9 +216,9 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets a value indicating whether Javascript Blocks should be compressed (minified) -- default is true.
+        /// Gets a value indicating whether JavaScript Blocks should be compressed (minified) -- default is true.
         /// </summary>
-        public static bool CompressJSBlocks
+        public static bool CompressJsBlocks
         {
             get
             {
@@ -177,6 +226,9 @@ namespace YAF.Classes
             }
         }
 
+        /// <summary>
+        /// Gets the connection provider name.
+        /// </summary>
         public static string ConnectionProviderName
         {
             get
@@ -208,6 +260,9 @@ namespace YAF.Classes
             }
         }
 
+        /// <summary>
+        /// Gets the connection string settings.
+        /// </summary>
         public static ConnectionStringSettings ConnectionStringSettings
         {
             get
@@ -286,7 +341,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets a value indicating whether Is Jquery Registration disabled? -- default is false.
+        ///     Gets a value indicating whether Is JQuery Registration disabled? -- default is false.
         /// </summary>
         public static bool DisableJQuery
         {
@@ -299,7 +354,7 @@ namespace YAF.Classes
         /// <summary>
         ///     Gets a value indicating whether Is Url Rewriting enabled? -- default is false.
         /// </summary>
-        public static bool EnableURLRewriting
+        public static bool EnableUrlRewriting
         {
             get
             {
@@ -308,9 +363,9 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets Facebook API Key.
+        /// Gets Facebook API Key.
         /// </summary>
-        public static string FacebookAPIKey
+        public static string FacebookApiKey
         {
             get
             {
@@ -330,7 +385,7 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets a value indicating whether Used for Url Rewriting -- default is null -- used to define what the forum file name is for urls.
+        ///     Gets a value indicating whether Used for URL Rewriting -- default is null -- used to define what the forum file name is for URL's.
         /// </summary>
         public static string ForceScriptName
         {
@@ -361,7 +416,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["PortalSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("dotnetnuke") >= 0;
+                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("dotnetnuke", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;
@@ -378,7 +433,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["SiteSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("mojoportal") >= 0;
+                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("mojoportal", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;
@@ -417,7 +472,7 @@ namespace YAF.Classes
                 if (HttpContext.Current != null)
                 {
                     object obj = HttpContext.Current.Items["PortalSettings"];
-                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("rainbow") >= 0;
+                    return obj != null && obj.GetType().ToString().ToLower().IndexOf("rainbow", StringComparison.Ordinal) >= 0;
                 }
 
                 return false;
@@ -430,6 +485,7 @@ namespace YAF.Classes
         [NotNull]
         public static string JQueryAlias
         {
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
             get
             {
                 if (IsDotNetNuke)
@@ -630,7 +686,6 @@ namespace YAF.Classes
             }
         }
 
-
         /// <summary>
         ///     Gets ServerFileRoot.
         /// </summary>
@@ -712,14 +767,13 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets the Prefix used for Url Rewriting -- default is "yaf_"
+        ///     Gets the Prefix used for Url Rewriting -- default is "vzf_"
         /// </summary>
-        [NotNull]
         public static string UrlRewritingPrefix
         {
             get
             {
-                return GetConfigValueAsString("YAF.UrlRewritingPrefix") ?? "yaf_";
+                return GetConfigValueAsString("YAF.UrlRewritingPrefix") ?? "vzf_";
             }
         }
 
@@ -783,6 +837,7 @@ namespace YAF.Classes
         /// <param name="configKey"> The config key. </param>
         /// <param name="defaultValue"> if set to <c>true</c> [default value]. </param>
         /// <returns> Returns Bool Value </returns>
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         public static bool GetConfigValueAsBool([NotNull] string configKey, bool defaultValue)
         {
             string value = GetConfigValueAsString(configKey);

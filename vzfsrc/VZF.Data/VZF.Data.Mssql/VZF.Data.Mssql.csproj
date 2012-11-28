@@ -48,14 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mssql\Db.cs" />
-    <Compile Include="mssql\MsSqlDbAccess.cs" />
-    <Compile Include="mssql\MsSqlDbConnectionManager.cs" />
-    <Compile Include="mssql\Search\SearchBuilder.cs" />
-    <Compile Include="mssql\Search\SearchBuilderExtensions.cs" />
-    <Compile Include="mssql\Search\SearchCondition.cs" />
-    <Compile Include="mssql\Search\SearchConditionType.cs" />
-    <Compile Include="mssql\SettingsProfilePropertyColumn.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="MsSqlDbAccess.cs" />
+    <Compile Include="MsSqlDbConnectionManager.cs" />
+    <Compile Include="Search\SearchBuilder.cs" />
+    <Compile Include="Search\SearchBuilderExtensions.cs" />
+    <Compile Include="Search\SearchCondition.cs" />
+    <Compile Include="Search\SearchConditionType.cs" />
+    <Compile Include="SettingsProfilePropertyColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

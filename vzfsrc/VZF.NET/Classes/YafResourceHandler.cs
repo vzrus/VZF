@@ -17,10 +17,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Generic;
-using VZF.Kernel;
-using VZF.Types;
-
 namespace YAF
 {
     #region Using
@@ -38,6 +34,9 @@ namespace YAF
     using System.Web;
     using System.Web.Security;
     using System.Web.SessionState;
+
+    using VZF.Kernel;
+    using VZF.Types.Objects;
 
     using YAF.Classes;
     using YAF.Classes.Data;
@@ -490,9 +489,11 @@ namespace YAF
         }
 
         /// <summary>
-        /// Gets the user info as json string
+        /// Gets the user info as JSON string
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">
+        /// The context.
+        /// </param>
         private void GetUserInfo([NotNull] HttpContext context)
         {
             try
@@ -549,10 +550,8 @@ namespace YAF
                 if (userData.Profile.Region.IsSet() && userData.Profile.Country.IsSet())
                 {
                     var tag = "RGN_{0}_{1}".FormatWith(userData.Profile.Country.Trim(), userData.Profile.Region);
-
                     location += ", {0}".FormatWith(YafContext.Current.Get<IHaveLocalization>().GetText("REGION", tag));
                 }
-
                 var forumUrl = HttpUtility.UrlDecode(context.Request.QueryString.GetFirstOrDefault("forumUrl"));
                
                 if (Config.IsMojoPortal)
@@ -563,8 +562,7 @@ namespace YAF
                 {
                     forumUrl = forumUrl.Replace(".aspx", ".aspx?g={0}&u={1}".FormatWith(ForumPages.pmessage, userId));
                 }
-    
-               
+
                 var pmButton = new ThemeButton
                                    {
                                        ID = "PM",
@@ -618,8 +616,9 @@ namespace YAF
         }
 
         // Written by vzrus.
+
         /// <summary>
-        /// Gets the forum tree nodes info as a json string
+        /// Gets the forum tree nodes info as a JSON string
         /// </summary>
         /// <param name="context">The context.</param>
         private void GetForumsJumpTreeNodesAll([NotNull] HttpContext context)
@@ -650,10 +649,13 @@ namespace YAF
         }
 
         // Written by vzrus.
+
         /// <summary>
-        /// Gets the forum tree nodes info as a json string
+        /// Gets the forum tree nodes info as a JSON string
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">
+        /// The context.
+        /// </param>
         private void GetForumsAdminTreeNodeMove([NotNull] HttpContext context)
         {
             try
@@ -680,9 +682,11 @@ namespace YAF
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
         }
+
         // Written by vzrus.
+
         /// <summary>
-        /// Gets the forum tree nodes info as a json string
+        /// Gets the forum tree nodes info as a JSON string
         /// </summary>
         /// <param name="context">The context.</param>
         private void GetForumsJumpTreeNodesLevel([NotNull] HttpContext context)
@@ -692,49 +696,58 @@ namespace YAF
                 int access = 0;
                 int view = 0;
                 bool boardFirst = false;
-                
+
                 // var userId = YafContext.Current.CurrentUserData.UserID;
-               if ( context.Request.QueryString.GetFirstOrDefault("tjls") != null)
-               {
-                   access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
+                if (context.Request.QueryString.GetFirstOrDefault("tjls") != null)
+                {
+                    access = context.Request.QueryString.GetFirstOrDefault("tjls").ToType<int>();
                }
+
                if (context.Request.QueryString.GetFirstOrDefault("active") != null)
                {
                    this.Get<IYafSession>().NntpTreeActiveNode = context.Request.QueryString.GetFirstOrDefault("active");
-                   
                }
-               if (context.Request.QueryString.GetFirstOrDefault("selected") != null)
-               {
-                   this.Get<IYafSession>().SearchTreeSelectedNodes = context.Request.QueryString.GetFirstOrDefault("selected").Split('!');
-               }
-
-               if (context.Request.QueryString.GetFirstOrDefault("v") != null)
-               {
+                
+                if (context.Request.QueryString.GetFirstOrDefault("selected") != null)
+                {
+                    this.Get<IYafSession>().SearchTreeSelectedNodes = context.Request.QueryString.GetFirstOrDefault("selected").Split('!');
+                }
+                
+                if (context.Request.QueryString.GetFirstOrDefault("v") != null)
+                {
                    view = context.Request.QueryString.GetFirstOrDefault("v").ToType<int>();
-                   if (view == 0) access = 1;
-               }
-               if (context.Request.QueryString.GetFirstOrDefault("root") != null)
-               {
-                  if (context.Request.QueryString.GetFirstOrDefault("root").ToType<int>() == 0)
-                  {
-                      boardFirst = true;
-                  }
-                   
-               }
+                   if (view == 0)
+                   {
+                       access = 1;
+                   }
+                }
+                
+                if (context.Request.QueryString.GetFirstOrDefault("root") != null)
+                {
+                    if (context.Request.QueryString.GetFirstOrDefault("root").ToType<int>() == 0)
+                    {
+                        boardFirst = true;
+                    }
+                }
+                
                 context.Response.Clear();
                 context.Response.ContentType = "application/json";
                 context.Response.ContentEncoding = Encoding.UTF8;
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
                 if (context.Request.QueryString.GetFirstOrDefault("tjl") != "-100")
                 {
-
                     var forumUrl = context.Request.QueryString.GetFirstOrDefault("forumUrl");
                     context.Response.Write(
-                        Dynatree.GetForumsJumpTreeNodesLevel(context.Request.QueryString.GetFirstOrDefault("tjl"), view,
-                                                             access,
-                                                             context.Request.QueryString.GetFirstOrDefault("active"), boardFirst, forumUrl).
-                            ToJson());
+                        Dynatree.GetForumsJumpTreeNodesLevel(
+                            context.Request.QueryString.GetFirstOrDefault("tjl"),
+                            view,
+                            access,
+                            context.Request.QueryString.GetFirstOrDefault("active"),
+                            boardFirst,
+                            forumUrl).ToJson());
                 }
+
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
             catch (Exception x)
@@ -745,7 +758,9 @@ namespace YAF
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
             }
         }
+
         // Written by vzrus.
+
         /// <summary>
         /// Gets the forum tree nodes info as a json string
         /// </summary>
@@ -772,10 +787,10 @@ namespace YAF
 
                 context.Response.ContentType = "application/json";
                 context.Response.ContentEncoding = Encoding.UTF8;
-                DataTable dtLinks = CommonDb.forum_listpath(YafContext.Current.PageModuleID, forumId);
-                
-               // string dd = @"[{""title"": ""Item 1""},{""title"": ""Folder 2"", ""isFolder"": true, ""key"": ""folder2"",""children"": [{""title"": ""Sub-item 2.1""},{""title"": ""Sub-item 2.2""}]},{""title"": ""Folder 3"", ""isFolder"": true, ""key"": ""folder3"",""children"": [{""title"": ""Sub-item 3.1""},{""title"": ""Sub-item 3.2""}]},{""title"": ""Item 5""}]";
-                context.Response.Write(dtLinks.ToJson());
+                using (DataTable dtLinks = CommonDb.forum_listpath(YafContext.Current.PageModuleID, forumId))
+                {
+                    context.Response.Write(dtLinks.ToJson());
+                }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
@@ -834,12 +849,12 @@ namespace YAF
         /// <summary>
         /// Checks the access rights.
         /// </summary>
-        /// <param name="boardID">The board id.</param>
-        /// <param name="messageID">The message id.</param>
+        /// <param name="boardId">The board id.</param>
+        /// <param name="messageId">The message id.</param>
         /// <returns>
         /// The check access rights.
         /// </returns>
-        private bool CheckAccessRights([NotNull] object boardID, [NotNull] object messageID)
+        private bool CheckAccessRights([NotNull] object boardId, [NotNull] object messageId)
         {
             // Find user name
             MembershipUser user = Membership.GetUser();
@@ -876,9 +891,12 @@ namespace YAF
                 forumPage = string.Empty;
                 location = string.Empty;
             }
-            DataRow pageRow = CommonDb.pageload(mid: YafContext.Current.PageModuleID, 
-                sessionId: HttpContext.Current.Session.SessionID, 
-                boardId: boardID, userKey: userKey, 
+
+            DataRow pageRow = CommonDb.pageload(
+                mid: YafContext.Current.PageModuleID,
+                sessionId: HttpContext.Current.Session.SessionID,
+                boardId: boardId, 
+                userKey: userKey, 
                 ip: this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                 location: location,
                 forumPage: forumPage, 
@@ -887,9 +905,11 @@ namespace YAF
                 categoryId: null, 
                 forumId: null, 
                 topicId: null,
-                messageId: messageID,
-                // don't track if this is a search engine
-                                                isCrawler: isSearchEngine, isMobileDevice: isMobileDevice, donttrack: dontTrack);
+                messageId: messageId,
+                //// don't track if this is a search engine
+                isCrawler: isSearchEngine,
+                isMobileDevice: isMobileDevice,
+                donttrack: dontTrack);
 
             return pageRow["DownloadAccess"].ToType<bool>() || pageRow["ModeratorAccess"].ToType<bool>();
         }
@@ -897,9 +917,15 @@ namespace YAF
         /// <summary>
         /// The get album cover.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="localizationFile">The localization file.</param>
-        /// <param name="previewCropped">if set to <c>true</c> [preview cropped].</param>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <param name="localizationFile">
+        /// The localization file.
+        /// </param>
+        /// <param name="previewCropped">
+        /// if set to <c>true</c>  [preview cropped].
+        /// </param>
         private void GetAlbumCover(
             [NotNull] HttpContext context,
             string localizationFile,
@@ -1458,7 +1484,9 @@ namespace YAF
             if (General.GetCurrentTrustLevel() < AspNetHostingPermissionLevel.Medium)
             {
                 // don't bother... not supported.
-                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null,
+                CommonDb.eventlog_create(
+                    YafContext.Current.PageModuleID,
+                    null,
                     this.GetType().ToString(),
                     "Remote Avatar is NOT supported on your Hosting Permission Level (must be High)",
                     EventLogTypes.Error);
@@ -1546,115 +1574,6 @@ namespace YAF
 
         #endregion
 
-        /// <summary>
-        /// Yaf User Info
-        /// </summary>
-        [Serializable]
-        private class YafUserInfo
-        {
-            /// <summary>
-            /// Gets or sets the name.
-            /// </summary>
-            /// <value>
-            /// The name.
-            /// </value>
-            public string name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the realname.
-            /// </summary>
-            /// <value>
-            /// The realname.
-            /// </value>
-            public string realname { get; set; }
-
-            /// <summary>
-            /// Gets or sets the avatar.
-            /// </summary>
-            /// <value>
-            /// The avatar.
-            /// </value>
-            public string avatar { get; set; }
-
-            /// <summary>
-            /// Gets or sets the interests.
-            /// </summary>
-            /// <value>
-            /// The interests.
-            /// </value>
-            public string interests { get; set; }
-
-            /// <summary>
-            /// Gets or sets the homepage.
-            /// </summary>
-            /// <value>
-            /// The homepage.
-            /// </value>
-            public string homepage { get; set; }
-
-            /// <summary>
-            /// Gets or sets the profilelink.
-            /// </summary>
-            /// <value>
-            /// The profilelink.
-            /// </value>
-            public string profilelink { get; set; }
-
-            /// <summary>
-            /// Gets or sets the posts.
-            /// </summary>
-            /// <value>
-            /// The posts.
-            /// </value>
-            public string posts { get; set; }
-
-            /// <summary>
-            /// Gets or sets the points.
-            /// </summary>
-            /// <value>
-            /// The points.
-            /// </value>
-            public string points { get; set; }
-
-            /// <summary>
-            /// Gets or sets the rank.
-            /// </summary>
-            /// <value>
-            /// The rank.
-            /// </value>
-            public string rank { get; set; }
-
-            /// <summary>
-            /// Gets or sets the location.
-            /// </summary>
-            /// <value>
-            /// The location.
-            /// </value>
-            public string location { get; set; }
-
-            /// <summary>
-            /// Gets or sets the joined.
-            /// </summary>
-            /// <value>
-            /// The joined.
-            /// </value>
-            public string joined { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether this <see cref="YafUserInfo"/> is online.
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if online; otherwise, <c>false</c>.
-            /// </value>
-            public bool online { get; set; }
-
-            /// <summary>
-            /// Gets or sets the action buttons.
-            /// </summary>
-            /// <value>
-            /// The action buttons.
-            /// </value>
-            public string actionButtons { get; set; }
-        }
+ 
     }
 }

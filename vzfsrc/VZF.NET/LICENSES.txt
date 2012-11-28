@@ -1,0 +1,3 @@
+﻿The main code base is published under GPLv2 license.
+All the code is under compatable licenses except Firebird .NET provider which is under IDPv1 license.
+In this case a special distribution or publishing terms are in action.

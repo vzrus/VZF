@@ -546,10 +546,18 @@ namespace YAF.Pages
             {
                 YafBuildLink.AccessDenied();
             }
-            if (this.Get<YafBoardSettings>().AllowTopicTags && topicInfo != null && (topicInfo["UserID"].ToType<int>() == PageContext.CurrentUserData.UserID || PageContext.IsForumModerator || PageContext.IsAdmin))
+            
+            // If topic tags are disabled we don't show the tags box, any existing tags will be deleted.
+            if (this.Get<YafBoardSettings>().AllowTopicTags)
             {
+                // We deal with an existing topic.
+                if (topicInfo != null && (topicInfo["UserID"].ToType<int>() == PageContext.CurrentUserData.UserID || PageContext.IsForumModerator || PageContext.IsAdmin))
+                {
+                    this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
+                }
+
+                // The topic is added it has not any topic info.
                 this.TagsRow.Visible = true;
-                this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
             }
            
             // Message.EnableRTE = PageContext.BoardSettings.AllowRichEdit;
@@ -1059,7 +1067,7 @@ namespace YAF.Pages
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOMANY", this.Get<YafBoardSettings>().TagTopicMaxCount));
                 return;
             }
-            if (!forbiddenSymbols)
+            if (forbiddenSymbols)
             {
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_FORBIDDENSYMBOLS", this.Get<YafBoardSettings>().TagForbiddenSymbols));
                 return;
@@ -1592,7 +1600,7 @@ namespace YAF.Pages
         {
             forbiddenSymbols = false;
             tagCountIsAllowed = true;
-            if (symbols.Any(tags.Contains))
+            if (tags.IsSet() && symbols.Any(tags.Contains))
             {
                 forbiddenSymbols = true;
                 return true;

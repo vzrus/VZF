@@ -3500,6 +3500,7 @@
     <Content Include="languages\install\english.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="LICENSES.txt" />
     <Content Include="MANYDATABASES_HOWTO.txt" />
     <Content Include="pages\admin\eventloggroupaccess.ascx" />
     <Content Include="pages\admin\eventloggroups.ascx" />

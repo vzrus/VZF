@@ -114,7 +114,7 @@ namespace YAF.Classes
         {
           urlAssembly = "Portalomatic.NET.Utils.URLBuilder,Portalomatic.NET.Utils";
         }
-        else if (Config.EnableURLRewriting)
+        else if (Config.EnableUrlRewriting)
         {
           urlAssembly = "YAF.Core.RewriteUrlBuilder,VZF.Core";
         }

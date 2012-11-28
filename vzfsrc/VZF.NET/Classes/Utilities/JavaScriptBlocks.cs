@@ -60,7 +60,7 @@ namespace YAF.Utilities
                                    js = d.createElement('script'); js.id = id; js.async = true;
                                    js.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
                                    d.getElementsByTagName('head')[0].appendChild(js);
-                     }}(document));".FormatWith(Config.FacebookAPIKey, YafForumInfo.ForumBaseUrl);
+                     }}(document));".FormatWith(Config.FacebookApiKey, YafForumInfo.ForumBaseUrl);
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿/* Yet Another Forum.NET Firebird data layer by vzrus
- * Copyright (C) 2006-2012 Vladimir Zakharov
+ * Copyright (C) 2006-2013 Vladimir Zakharov
  * https://github.com/vzrus
  * http://sourceforge.net/projects/yaf-datalayers/
  * This program is free software; you can redistribute it and/or

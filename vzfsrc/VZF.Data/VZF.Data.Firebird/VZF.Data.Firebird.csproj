@@ -53,39 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="firebird\Db.cs" />
-    <Compile Include="firebird\SettingsPropertyColumn.cs" />
-    <Compile Include="firebird\DbAccess.cs" />
-    <Compile Include="firebird\DbConnManager.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="SettingsPropertyColumn.cs" />
+    <Compile Include="DbAccess.cs" />
+    <Compile Include="DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="firebird\_ReSharper.TempSolution\BuildScriptCache\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\BuildScriptCache\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\NamedArguments\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\NamedArguments\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\NamedArguments\1\63851615.dat" />
-    <None Include="firebird\_ReSharper.TempSolution\Resources\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\Resources\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\SymbolCache.bin" />
-    <None Include="firebird\_ReSharper.TempSolution\TagPrefixes\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\TagPrefixes\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\TodoCache\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\TodoCache\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\TodoCache\8\13239aa6.dat" />
-    <None Include="firebird\_ReSharper.TempSolution\WebsiteFileReferences\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\WebsiteFileReferences\.version" />
-    <None Include="firebird\_ReSharper.TempSolution\WordIndex\.crc" />
-    <None Include="firebird\_ReSharper.TempSolution\WordIndex\.version" />
     <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="firebird\YAF.Classes.Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="firebird\Search\" />
-    <Folder Include="firebird\_ReSharper.TempSolution\DecompilerCache\" />
-    <Folder Include="firebird\_ReSharper.TempSolution\PdbInfo\" />
+    <Folder Include="Search\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
