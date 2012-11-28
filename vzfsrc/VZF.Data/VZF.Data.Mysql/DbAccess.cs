@@ -17,27 +17,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Classes.Data
+namespace VZF.Data.Mysql
 {
-	/// <summary>
-	/// Provides open/close management for DB Connections
-	/// </summary>
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
-    using System.Collections.Concurrent;
     using System.Reflection;
-  
+
+    using MySql.Data.MySqlClient;
+
+    using VZF.Data.Utils;
+
+    using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Utils.Helpers;
 
-    using MySql.Data.MySqlClient;
-
+    /// <summary>
+    /// Provides open/close management for DB Connections
+    /// </summary>
     public static class MySqlDbAccess 
-	{
-        
+    {
         #region Constants and Fields
 
         /// <summary>
@@ -118,20 +120,20 @@ namespace YAF.Classes.Data
 
             return commandText;
         }
-		/// <summary>
-		/// Gets qualified object name
-		/// </summary>
-		/// <param name="name">Base name of an object</param>
-		/// <returns>Returns qualified object name of format {databaseName}.{objectQualifier}name</returns>
-		static public string GetObjectName( string name )
-		{
-			return String.Format(
-							"`{0}`.`{1}{2}`",
-							SchemaName,
-							Config.DatabaseObjectQualifier,
-							name
-							);
-		}
+        /// <summary>
+        /// Gets qualified object name
+        /// </summary>
+        /// <param name="name">Base name of an object</param>
+        /// <returns>Returns qualified object name of format {databaseName}.{objectQualifier}name</returns>
+        static public string GetObjectName( string name )
+        {
+            return String.Format(
+                            "`{0}`.`{1}{2}`",
+                            SchemaName,
+                            Config.DatabaseObjectQualifier,
+                            name
+                            );
+        }
         public static string GetConnectionString(
            params object[] conparams )
         {      
@@ -273,18 +275,18 @@ namespace YAF.Classes.Data
 
             return success;
         }
-		 /// <summary>
-		/// Creates new SqlCommand based on command text applying all qualifiers to the name.
-		/// </summary>
-		/// <param name="commandText">Command text to qualify.</param>
-		/// <param name="isText">Determines whether command text is text or stored procedure.</param>
-		/// <returns>New SqlCommand</returns>
+         /// <summary>
+        /// Creates new SqlCommand based on command text applying all qualifiers to the name.
+        /// </summary>
+        /// <param name="commandText">Command text to qualify.</param>
+        /// <param name="isText">Determines whether command text is text or stored procedure.</param>
+        /// <returns>New SqlCommand</returns>
         static public MySqlCommand GetCommand(string commandText, bool isText)
-		{
+        {
 
-			return GetCommand(commandText, isText, null );
-		}
-		 /// <summary>
+            return GetCommand(commandText, isText, null );
+        }
+         /// <summary>
         /// Creates new MySqlCommand based on command text applying all qualifiers to the name.
         /// </summary>
         /// <param name="commandText">Command text to qualify.</param>
@@ -895,7 +897,7 @@ namespace YAF.Classes.Data
 
 
         #endregion
-	}
+    }
 
 
 }

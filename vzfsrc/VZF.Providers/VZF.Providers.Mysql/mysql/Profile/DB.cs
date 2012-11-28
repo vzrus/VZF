@@ -29,19 +29,18 @@ namespace YAF.Providers.Profile
 {
     using System;
     using System.Configuration;
-    using System.Text;
-    using System.Web;
-    using System.IO;
-    using System.Globalization;
     using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
 
-    using MySql.Data;
     using MySql.Data.MySqlClient;
 
+    using VZF.Data.Mysql;
+
     using YAF.Classes;
-    using YAF.Core;
-    using YAF.Classes.Data;
     using YAF.Classes.Pattern;
+    using YAF.Core;
 
     public class VzfMySqlProfileDBConnManager : MySqlDbConnectionManager
     {
@@ -264,7 +263,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
             {
                 bool profileExists = false;  
                    string table =
-                                YAF.Classes.Data.MySqlDbAccess.GetObjectName("prov_Profile");
+                                MySqlDbAccess.GetObjectName("prov_Profile");
                         using (MySqlCommand cmd1 = MySqlDbAccess.GetCommand(String.Format("SELECT COUNT(1) FROM {0} WHERE UserID =UNHEX(REPLACE('{1}','-',''));", table, MySqlDbAccess.GuidConverter(new Guid(userID.ToString())).ToString()), true))
                         {
                             profileExists = Convert.ToBoolean( MySqlDbAccess.ExecuteScalar(cmd1,connectionString) );

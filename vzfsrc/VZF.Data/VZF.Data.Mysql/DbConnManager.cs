@@ -17,16 +17,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System;
-using MySql.Data.MySqlClient;
-
-namespace YAF.Classes.Data
+namespace VZF.Data.Mysql
 {
-  using System.Data;
-  
-  using YAF.Types;
-  using YAF.Types.Handlers;
-  using YAF.Types.Interfaces;
+    using System;
+    using System.Data;
+
+    using MySql.Data.MySqlClient;
+
+    using YAF.Classes;
+    using YAF.Types;
+    using YAF.Types.Handlers;
+
     /// <summary>
     /// Provides open/close management for DB Connections
     /// </summary>
@@ -47,7 +48,7 @@ namespace YAF.Classes.Data
         public MySqlDbConnectionManager(string connectionString)
         {
             // just initalize it (not open)
-            InitConnection(connectionString);
+            this.InitConnection(connectionString);
         }
 
         protected MySqlDbConnectionManager()
@@ -89,7 +90,7 @@ namespace YAF.Classes.Data
         public MySqlConnection DBConnection(string connectionString)
         {
          
-                InitConnection(connectionString);
+                this.InitConnection(connectionString);
                 return this._connection;
            
         }
@@ -102,7 +103,7 @@ namespace YAF.Classes.Data
         public  MySqlConnection OpenDBConnection(string connectionString)
         {
 
-            InitConnection(connectionString);
+            this.InitConnection(connectionString);
 
                 if (this._connection.State != ConnectionState.Open)
                 {
@@ -154,7 +155,7 @@ namespace YAF.Classes.Data
             {
                 // create the connection
                 this._connection = new MySqlConnection {ConnectionString = connectionString};
-                this._connection.InfoMessage += new MySqlInfoMessageEventHandler(Connection_InfoMessage);
+                this._connection.InfoMessage += new MySqlInfoMessageEventHandler(this.Connection_InfoMessage);
              
             }
             else if (this._connection.State != ConnectionState.Open)

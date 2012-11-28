@@ -19,7 +19,6 @@
 namespace VZF.Data.Firebird
 {
   using System.Configuration;
-  using System.Data;
   using FirebirdSql.Data.FirebirdClient;
   /// <summary>
   /// The settings property column.

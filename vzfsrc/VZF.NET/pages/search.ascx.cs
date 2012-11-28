@@ -31,10 +31,12 @@ namespace YAF.Pages
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using VZF.Data.Common;
+
     using nStuff.UpdateControls;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-
-namespace YAF.Classes.Data.pgsql.Fts
+﻿namespace VZF.Data.Postgre.Fts
 {
+    using System.Collections;
+    using System.Data;
+
     public class Search
     {
         public DataTable SearchIt()

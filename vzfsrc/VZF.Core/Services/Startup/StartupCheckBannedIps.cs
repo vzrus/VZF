@@ -25,7 +25,9 @@ namespace YAF.Core.Services
   using System.Linq;
   using System.Web;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Types;
   using YAF.Types.Constants;
   using YAF.Types.Interfaces;

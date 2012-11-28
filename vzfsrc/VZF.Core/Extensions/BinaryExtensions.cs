@@ -21,7 +21,7 @@ using System;
 
 namespace YAF.Core
 {
-  using YAF.Classes.Data;
+  
 
   public static class BinaryExtensions
   {

@@ -17,20 +17,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Diagnostics;
-using YAF.Types;
-using YAF.Types.Interfaces;
-using YAF.Utils;
-using YAF.Utils.Helpers;
-
-namespace YAF.Classes.Data
+namespace VZF.Data.Firebird
 {
-  using System;
-  using System.Configuration;
-  using System.Data;
-  using FirebirdSql.Data.FirebirdClient;
+    using System.Diagnostics;
 
-  /// <summary>
+    using VZF.Data.Utils;
+
+    using YAF.Classes;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
+    using YAF.Utils.Helpers;
+
+    using System;
+    using System.Configuration;
+    using System.Data;
+
+    using FirebirdSql.Data.FirebirdClient;
+
+    /// <summary>
   /// The yaf db access for SQL Server.
   /// </summary>
     public static class FbDbAccess 

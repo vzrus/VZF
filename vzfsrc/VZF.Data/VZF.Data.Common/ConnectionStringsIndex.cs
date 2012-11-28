@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-// using System.Web.UI.WebControls;
-
-namespace YAF.Classes.Data
+﻿namespace VZF.Data.Common
 {
+    using System;
+    using System.Collections.Generic;
+
     class ConnectionStringsIndex
     {
     }
@@ -18,9 +15,9 @@ namespace YAF.Classes.Data
         private int GetConnector(string currentConnector)
         {
 
-            for (int j = 0; j < _connectors.Length; j++)
+            for (int j = 0; j < this._connectors.Length; j++)
             {
-                if (_connectors[j] == currentConnector)
+                if (this._connectors[j] == currentConnector)
                 {
                     return j;
                 }
@@ -34,7 +31,7 @@ namespace YAF.Classes.Data
         {
             get
             {
-                return (GetConnector(connector));
+                return (this.GetConnector(connector));
             }
         }
     }
@@ -67,9 +64,9 @@ namespace YAF.Classes.Data
         private int GetConnector(ConnectionProperty currentConnector)
         {
 
-            for (int j = 0; j < _connectors.Count; j++)
+            for (int j = 0; j < this._connectors.Count; j++)
             {
-                if (_connectors[j] == currentConnector)
+                if (this._connectors[j] == currentConnector)
                 {
                     return j;
                 }
@@ -83,7 +80,7 @@ namespace YAF.Classes.Data
         {
             get
             {
-                return (GetConnector(connector));
+                return (this.GetConnector(connector));
             }
         }
     }
@@ -96,22 +93,22 @@ namespace YAF.Classes.Data
 
        public string Name
        {
-           get { return _name; }
-           set { _name = value; }
+           get { return this._name; }
+           set { this._name = value; }
        }
        private Type _type;
 
        public Type Type
        {
-           get { return _type; }
-           set { _type = value; }
+           get { return this._type; }
+           set { this._type = value; }
        }
        private object _value;
 
        public object Value
        {
-           get { return _value; }
-           set { _value = value; }
+           get { return this._value; }
+           set { this._value = value; }
        }
 
    }

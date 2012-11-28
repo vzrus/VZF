@@ -16,12 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Classes.Data
+namespace VZF.Data.MsSql
 {
-  using System.Configuration;
-  using System.Data;
+    using System.Configuration;
+    using System.Data;
 
-  /// <summary>
+    /// <summary>
   /// The settings property column.
   /// </summary>
   public class SettingsPropertyColumn

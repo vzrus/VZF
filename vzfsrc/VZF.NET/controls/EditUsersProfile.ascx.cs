@@ -34,8 +34,10 @@ namespace YAF.Controls
 
     using FarsiLibrary;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;

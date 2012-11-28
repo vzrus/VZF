@@ -28,8 +28,10 @@ namespace YAF.Pages.Admin
   using System.Linq;
   using System.Text.RegularExpressions;
 
+  using VZF.Data.Common;
+
   using YAF.Classes;
-  using YAF.Classes.Data;
+  
   using YAF.Core;
   using YAF.Core.BBCode;
   using YAF.Core.Services;

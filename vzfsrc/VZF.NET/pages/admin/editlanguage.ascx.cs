@@ -33,8 +33,10 @@ namespace YAF.Pages.Admin
     using System.Xml;
     using System.Xml.XPath;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;

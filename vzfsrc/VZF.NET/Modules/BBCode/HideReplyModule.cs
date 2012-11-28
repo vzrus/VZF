@@ -21,8 +21,10 @@ namespace YAF.Modules.BBCode
 {
     using System.Web.UI;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Controls;
     using YAF.Core;
     using YAF.Types.Interfaces;

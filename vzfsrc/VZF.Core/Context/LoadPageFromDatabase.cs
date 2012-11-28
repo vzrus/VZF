@@ -26,7 +26,9 @@ namespace YAF.Core
 	using System.Web;
 	using System.Web.Security;
 
-	using YAF.Classes.Data;
+	using VZF.Data.Common;
+
+	
 	using YAF.Types;
 	using YAF.Types.Attributes;
 	using YAF.Types.Constants;

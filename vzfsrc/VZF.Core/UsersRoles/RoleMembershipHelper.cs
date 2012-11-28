@@ -27,8 +27,10 @@ namespace YAF.Core
     using System.Threading.Tasks;
     using System.Web.Security;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Flags;

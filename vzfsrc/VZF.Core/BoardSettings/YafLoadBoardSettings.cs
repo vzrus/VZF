@@ -24,8 +24,10 @@ namespace YAF.Core
   using System.Data;
   using System.Web.Security;
 
+  using VZF.Data.Common;
+
   using YAF.Classes;
-  using YAF.Classes.Data;
+  
   using YAF.Types.Interfaces;
   using YAF.Utils;
   using YAF.Types;

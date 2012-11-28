@@ -17,16 +17,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-using System;
-using System.Diagnostics;
-using System.Web;
 
-namespace YAF.Classes.Data
+namespace VZF.Data.Utils
 {
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+    using System;
+    using System.Diagnostics;
+    using System.Web;
 
-  /// <summary>
+    using YAF.Utils;
+
+    /// <summary>
   /// The query counter.
   /// </summary>
   public sealed class QueryCounter : IDisposable

@@ -16,14 +16,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Classes.Data
+namespace VZF.Data.Utils
 {
   #region Using
 
-  using System;
-  using System.Data;
+    using System;
+    using System.Data;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Helper class to do basic data conversion for a DataRow.

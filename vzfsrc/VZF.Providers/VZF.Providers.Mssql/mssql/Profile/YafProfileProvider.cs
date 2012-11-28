@@ -29,7 +29,9 @@ namespace YAF.Providers.Profile
     using System.Text;
     using System.Web.Profile;
 
-    using YAF.Classes.Data;
+    using VZF.Data.MsSql;
+
+    
     using YAF.Classes.Pattern;
     using YAF.Core;
     // using YAF.Types.Extensions;

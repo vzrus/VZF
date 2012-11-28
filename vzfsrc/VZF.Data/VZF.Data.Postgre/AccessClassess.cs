@@ -17,17 +17,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Npgsql;
-using YAF.Classes.Data;
-using YAF.Types.Interfaces;
-
-namespace YAF.Classes.Data.Postgre
+namespace VZF.Data.Postgre
 {
+    using System;
+    using System.Data;
+
+    using Npgsql;
 
     /// <summary>
     /// The class creates accessmask_list stored procedure data access functionality.
@@ -45,8 +40,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -72,14 +67,14 @@ namespace YAF.Classes.Data.Postgre
         private accessmask_list()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("accessmask_list");
-            cmd.CommandType = CommandType.StoredProcedure;
+            this.cmd = PostgreDBAccess.GetCommand("accessmask_list");
+            this.cmd.CommandType = CommandType.StoredProcedure;
 
-            _boardId = cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
-            _accessMaskID = cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
-            _excludeFlags = cmd.Parameters.Add(new NpgsqlParameter("i_excludeflags", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._accessMaskID = this.cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._excludeFlags = this.cmd.Parameters.Add(new NpgsqlParameter("i_excludeflags", NpgsqlTypes.NpgsqlDbType.Integer));
 
         }
 
@@ -91,11 +86,11 @@ namespace YAF.Classes.Data.Postgre
         /// <returns></returns>
         public DataTable AccessMaskList(string connectionString, object boardId, object accessMaskID, object excludeFlags)
         {
-            _boardId.Value = boardId;
-            _accessMaskID.Value = accessMaskID;
-            _excludeFlags.Value = excludeFlags;
+            this._boardId.Value = boardId;
+            this._accessMaskID.Value = accessMaskID;
+            this._excludeFlags.Value = excludeFlags;
 
-            return PostgreDBAccess.GetData(cmd,connectionString);
+            return PostgreDBAccess.GetData(this.cmd,connectionString);
         }
     }
     /// <summary>
@@ -113,8 +108,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -140,12 +135,12 @@ namespace YAF.Classes.Data.Postgre
         private accessmask_delete()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("accessmask_delete");
-            cmd.CommandType = CommandType.StoredProcedure;
+            this.cmd = PostgreDBAccess.GetCommand("accessmask_delete");
+            this.cmd.CommandType = CommandType.StoredProcedure;
 
-            _accessMaskID = cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._accessMaskID = this.cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
 
         }
 
@@ -157,8 +152,8 @@ namespace YAF.Classes.Data.Postgre
         /// <returns></returns>
         public bool AccessMaskDelete(string connectionString, object accessMaskID)
         {
-            _accessMaskID.Value = accessMaskID;
-            return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd,connectionString)) != 0;
+            this._accessMaskID.Value = accessMaskID;
+            return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(this.cmd,connectionString)) != 0;
       
         }
     }
@@ -178,8 +173,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -218,26 +213,26 @@ namespace YAF.Classes.Data.Postgre
         private accessmask_save()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("accessmask_save");
-            cmd.CommandType = CommandType.StoredProcedure;
+            this.cmd = PostgreDBAccess.GetCommand("accessmask_save");
+            this.cmd.CommandType = CommandType.StoredProcedure;
 
-            _accessMaskID = cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
-            _boardId = cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlTypes.NpgsqlDbType.Integer));
-            _name = cmd.Parameters.Add(new NpgsqlParameter("i_name", NpgsqlTypes.NpgsqlDbType.Varchar));
-            _readAccess = cmd.Parameters.Add(new NpgsqlParameter("i_readaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _postAccess = cmd.Parameters.Add(new NpgsqlParameter("i_postaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _replyAccess = cmd.Parameters.Add(new NpgsqlParameter("i_replyaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _priorityAccess = cmd.Parameters.Add(new NpgsqlParameter("i_priorityaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _pollAccess = cmd.Parameters.Add(new NpgsqlParameter("i_pollaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _voteAccess = cmd.Parameters.Add(new NpgsqlParameter("i_voteaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _moderatorAccess = cmd.Parameters.Add(new NpgsqlParameter("i_moderatoraccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _editAccess = cmd.Parameters.Add(new NpgsqlParameter("i_editaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _deleteAccess = cmd.Parameters.Add(new NpgsqlParameter("i_deleteaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _uploadAccess = cmd.Parameters.Add(new NpgsqlParameter("i_uploadaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _downloadAccess = cmd.Parameters.Add(new NpgsqlParameter("i_downloadaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _sortOrder = cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlTypes.NpgsqlDbType.Smallint));	
+            this._accessMaskID = this.cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._name = this.cmd.Parameters.Add(new NpgsqlParameter("i_name", NpgsqlTypes.NpgsqlDbType.Varchar));
+            this._readAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_readaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._postAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_postaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._replyAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_replyaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._priorityAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_priorityaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._pollAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_pollaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._voteAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_voteaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._moderatorAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_moderatoraccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._editAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_editaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._deleteAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_deleteaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._uploadAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_uploadaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._downloadAccess = this.cmd.Parameters.Add(new NpgsqlParameter("i_downloadaccess", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._sortOrder = this.cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlTypes.NpgsqlDbType.Smallint));	
 
         }
 
@@ -254,23 +249,23 @@ namespace YAF.Classes.Data.Postgre
             object deleteAccess, object uploadAccess, object downloadAccess, 
             object sortOrder)
         {
-            _accessMaskID.Value = accessMaskID;
-            _boardId.Value = boardId;
-            _name.Value = name;
-            _readAccess.Value = readAccess;
-            _postAccess.Value = postAccess;
-            _replyAccess.Value = replyAccess;
-            _priorityAccess.Value = priorityAccess; 
-            _pollAccess.Value = pollAccess;
-            _voteAccess.Value = voteAccess;
-            _moderatorAccess.Value = moderatorAccess;
-            _editAccess.Value = editAccess;
-            _deleteAccess.Value = deleteAccess;
-            _uploadAccess.Value = uploadAccess;
-            _downloadAccess.Value = downloadAccess;
-            _sortOrder.Value = sortOrder;
+            this._accessMaskID.Value = accessMaskID;
+            this._boardId.Value = boardId;
+            this._name.Value = name;
+            this._readAccess.Value = readAccess;
+            this._postAccess.Value = postAccess;
+            this._replyAccess.Value = replyAccess;
+            this._priorityAccess.Value = priorityAccess; 
+            this._pollAccess.Value = pollAccess;
+            this._voteAccess.Value = voteAccess;
+            this._moderatorAccess.Value = moderatorAccess;
+            this._editAccess.Value = editAccess;
+            this._deleteAccess.Value = deleteAccess;
+            this._uploadAccess.Value = uploadAccess;
+            this._downloadAccess.Value = downloadAccess;
+            this._sortOrder.Value = sortOrder;
 
-            PostgreDBAccess.ExecuteNonQuery(cmd, connectionString);
+            PostgreDBAccess.ExecuteNonQuery(this.cmd, connectionString);
         }
     }
     /// <summary>
@@ -289,8 +284,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -319,15 +314,15 @@ namespace YAF.Classes.Data.Postgre
         private active_list()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("active_list");
-            cmd.CommandType = CommandType.StoredProcedure;
-            _boardId = cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
-            _guests = cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _showCrawlers = cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _interval = cmd.Parameters.Add(new NpgsqlParameter("i_interval", NpgsqlTypes.NpgsqlDbType.Integer));
-            _styledNicks = cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this.cmd = PostgreDBAccess.GetCommand("active_list");
+            this.cmd.CommandType = CommandType.StoredProcedure;
+            this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._guests = this.cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._showCrawlers = this.cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._interval = this.cmd.Parameters.Add(new NpgsqlParameter("i_interval", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._styledNicks = this.cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
         }
 
         /// <summary>
@@ -338,13 +333,13 @@ namespace YAF.Classes.Data.Postgre
         /// <returns></returns>
         public DataTable ActiveList(string connectionString, object boardId, object guests, object showCrawlers, int interval, object styledNicks)
         {
-            _boardId.Value = boardId;
-            _guests.Value = guests;
-            _showCrawlers.Value = showCrawlers;
-            _interval.Value = interval;
-            _styledNicks.Value = styledNicks;
+            this._boardId.Value = boardId;
+            this._guests.Value = guests;
+            this._showCrawlers.Value = showCrawlers;
+            this._interval.Value = interval;
+            this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(cmd, connectionString);
+            return PostgreDBAccess.GetData(this.cmd, connectionString);
         }
     }
     /// <summary>
@@ -362,8 +357,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -391,16 +386,16 @@ namespace YAF.Classes.Data.Postgre
         active_list_user()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("active_list_user");
-            cmd.CommandType = CommandType.StoredProcedure;
-            _boardId = cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
-            _userId = cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlTypes.NpgsqlDbType.Integer));
-            _guests = cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _showCrawlers = cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlTypes.NpgsqlDbType.Boolean));
-            _interval = cmd.Parameters.Add(new NpgsqlParameter("i_interval", NpgsqlTypes.NpgsqlDbType.Integer));
-            _styledNicks = cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this.cmd = PostgreDBAccess.GetCommand("active_list_user");
+            this.cmd.CommandType = CommandType.StoredProcedure;
+            this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._userId = this.cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._guests = this.cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._showCrawlers = this.cmd.Parameters.Add(new NpgsqlParameter("i_showcrawlers", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._interval = this.cmd.Parameters.Add(new NpgsqlParameter("i_interval", NpgsqlTypes.NpgsqlDbType.Integer));
+            this._styledNicks = this.cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
         }
 
         /// <summary>
@@ -412,14 +407,14 @@ namespace YAF.Classes.Data.Postgre
         public DataTable ActiveListUser(string connectionString, object boardId, object userId, 
             object guests, object showCrawlers, int activeTime, object styledNicks)
         {
-            _boardId.Value = boardId;
-            _userId.Value = userId;
-            _guests.Value = guests;
-            _showCrawlers.Value = showCrawlers;
-            _interval.Value = activeTime;
-            _styledNicks.Value = styledNicks;
+            this._boardId.Value = boardId;
+            this._userId.Value = userId;
+            this._guests.Value = guests;
+            this._showCrawlers.Value = showCrawlers;
+            this._interval.Value = activeTime;
+            this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(cmd, connectionString);
+            return PostgreDBAccess.GetData(this.cmd, connectionString);
         }
         class active_list_user_Nested
         {
@@ -443,8 +438,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -468,13 +463,13 @@ namespace YAF.Classes.Data.Postgre
         active_listforum()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("active_listforum");
-            cmd.CommandType = CommandType.StoredProcedure;
-            _forumId = cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlTypes.NpgsqlDbType.Integer));
+            this.cmd = PostgreDBAccess.GetCommand("active_listforum");
+            this.cmd.CommandType = CommandType.StoredProcedure;
+            this._forumId = this.cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlTypes.NpgsqlDbType.Integer));
           
-            _styledNicks = cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
+            this._styledNicks = this.cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlTypes.NpgsqlDbType.Boolean));
         }
 
         /// <summary>
@@ -485,10 +480,10 @@ namespace YAF.Classes.Data.Postgre
         /// <returns></returns>
         public DataTable ActiveListForum(string connectionString, object forumID, object styledNicks)
         {
-            _forumId.Value = forumID;
-            _styledNicks.Value = styledNicks;
+            this._forumId.Value = forumID;
+            this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(cmd, connectionString);
+            return PostgreDBAccess.GetData(this.cmd, connectionString);
         }
         class active_listforum_Nested
         {
@@ -513,8 +508,8 @@ namespace YAF.Classes.Data.Postgre
         /// </summary>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set { connectionString = value; }
+            get { return this.connectionString; }
+            set { this.connectionString = value; }
         }
 
         /// <summary>
@@ -538,11 +533,11 @@ namespace YAF.Classes.Data.Postgre
         private active_stats()
         {
             // Common properites
-            connectionString = string.Empty;
+            this.connectionString = string.Empty;
             // Specific data
-            cmd = PostgreDBAccess.GetCommand("active_stats");
-            cmd.CommandType = CommandType.StoredProcedure;
-            _boardId = cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
+            this.cmd = PostgreDBAccess.GetCommand("active_stats");
+            this.cmd.CommandType = CommandType.StoredProcedure;
+            this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
           }
 
         /// <summary>
@@ -553,9 +548,9 @@ namespace YAF.Classes.Data.Postgre
         /// <returns></returns>
         public DataRow ActiveStats(string connectionString, object boardId)
         {
-            _boardId.Value = boardId;
+            this._boardId.Value = boardId;
 
-            using (DataTable dt = PostgreDBAccess.GetData(cmd, connectionString))
+            using (DataTable dt = PostgreDBAccess.GetData(this.cmd, connectionString))
             {
                 return dt.Rows[0];
             }

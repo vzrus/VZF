@@ -22,7 +22,9 @@ namespace YAF.Core.Services
 
   using System.Web;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Utils;
   using YAF.Core.Tasks;
   using YAF.Types;

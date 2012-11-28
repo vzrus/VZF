@@ -33,7 +33,6 @@ namespace VZF.Data.Firebird
     using FirebirdSql.Data.FirebirdClient;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
@@ -7606,7 +7605,7 @@ namespace VZF.Data.Firebird
             }
             catch (Exception x)
             {
-                Db.eventlog_create(null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error);
+                Db.eventlog_create(null, "user_aspnet in VZF.Classes.Data.DB.cs", x, EventLogTypes.Error);
                 return 0;
             }
         }
@@ -8740,7 +8739,7 @@ namespace VZF.Data.Firebird
                 // use transactions...
                 if (useTransactions)
                 {
-                    using (FbTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.FbDbAccess.IsolationLevel))
+                    using (FbTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(FbDbAccess.IsolationLevel))
                     {
                         foreach (string sql0 in statements)
                         {
@@ -8845,7 +8844,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add("@I_ROLEPREFIX", FbDbType.VarChar).Value = rolePrefix;  
                 cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow; 
                       
-                YAF.Classes.Data.FbDbAccess.ExecuteNonQuery(cmd,connectionString);
+                FbDbAccess.ExecuteNonQuery(cmd,connectionString);
             
             }           
 
@@ -8862,7 +8861,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_VERSION", FbDbType.Integer)).Value = version;
                 cmd.Parameters.Add(new FbParameter("@I_VERSIONNAME", FbDbType.VarChar)).Value = name;
 
-                YAF.Classes.Data.FbDbAccess.ExecuteNonQuery(cmd,connectionString);
+                FbDbAccess.ExecuteNonQuery(cmd,connectionString);
             }
         }
         /// <summary>
@@ -8878,7 +8877,7 @@ namespace VZF.Data.Firebird
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
               
-                return YAF.Classes.Data.FbDbAccess.GetData(cmd,connectionString);
+                return FbDbAccess.GetData(cmd,connectionString);
             }
         }
         #endregion

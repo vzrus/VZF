@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes.Data;
+
 
 namespace YAF.Core
 {
@@ -31,8 +31,10 @@ namespace YAF.Core
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using VZF.Data.Utils;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Types;
     using YAF.Types.Attributes;
     using YAF.Types.Constants;

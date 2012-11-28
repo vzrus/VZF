@@ -26,8 +26,11 @@ namespace YAF.Core.Data
     using System.Data;
     using System.Data.Common;
 
+    using VZF.Data.Common;
+    using VZF.Data.Utils;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Data;

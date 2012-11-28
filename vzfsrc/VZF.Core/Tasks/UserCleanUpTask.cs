@@ -24,7 +24,9 @@ namespace YAF.Core.Tasks
   using System.Linq;
   using System.Threading;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Utils;
   using YAF.Utils.Helpers;
   using YAF.Utils.Helpers.StringUtils;

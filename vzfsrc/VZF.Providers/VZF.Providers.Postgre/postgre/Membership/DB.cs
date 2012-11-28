@@ -39,22 +39,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-using System;
-using System.Configuration.Provider;
-using System.Web;
-using System.Configuration;
-
-using System.Web.Security;
-using System.Data;
-using Npgsql;
-using NpgsqlTypes;
-using YAF.Classes;
-using YAF.Core;
-using YAF.Classes.Data;
-using YAF.Classes.Pattern;
 
 namespace YAF.Providers.Membership
 {
+    using System;
+    using System.Data;
+    using System.Web.Security;
+
+    using Npgsql;
+
+    using NpgsqlTypes;
+
+    using VZF.Data.Postgre;
+
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class PgMembershipDBConnManager : PostgreDbConnectionManager
     {
         public override string ConnectionString

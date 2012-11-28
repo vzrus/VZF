@@ -33,8 +33,10 @@ namespace YAF.Pages.Admin
 
     using FarsiLibrary;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.RegisterV2;
     using YAF.Types;

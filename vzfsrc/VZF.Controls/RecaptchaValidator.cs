@@ -28,8 +28,10 @@ namespace YAF.Controls
   using System.Text;
   using System.Web;
 
+  using VZF.Data.Common;
+
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Classes.Data;
+  
   using YAF.Utils;
   using YAF.Types;
 

@@ -15,8 +15,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes;
-
 namespace VZF.Kernel
 {
     #region Using
@@ -25,18 +23,19 @@ namespace VZF.Kernel
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
-    using System.Globalization;
     using System.Web;
-    using VZF.Types;
+
+    using VZF.Data.Common;
     using VZF.Types.Objects;
 
-    using YAF.Classes.Data;
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils; 
+    using YAF.Utils;
 
     #endregion
 

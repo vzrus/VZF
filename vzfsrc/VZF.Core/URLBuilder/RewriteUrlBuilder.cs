@@ -28,8 +28,10 @@ namespace YAF.Core
     using System.Web;
     using System.Web.Caching;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Types.Constants;
     using YAF.Utils;
     using YAF.Utils.Helpers.StringUtils;

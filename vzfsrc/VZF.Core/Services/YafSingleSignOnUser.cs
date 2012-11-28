@@ -25,8 +25,10 @@ namespace YAF.Core.Services
     using System.Web;
     using System.Web.Security;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core.Services.Twitter;
     using YAF.Types;
     using YAF.Types.Constants;

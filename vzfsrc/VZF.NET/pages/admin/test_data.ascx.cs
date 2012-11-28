@@ -20,8 +20,10 @@ namespace YAF.Pages.Admin
     using System.Web.Security;
     using System.Web.UI.WebControls;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;

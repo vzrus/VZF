@@ -23,8 +23,10 @@ namespace YAF.Pages.Admin
 
   using System;
 
+  using VZF.Data.Common;
+
   using YAF.Classes;
-  using YAF.Classes.Data;
+  
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Constants;

@@ -94,7 +94,7 @@ namespace YAF.Editors
 #if DEBUG
 				throw new Exception( "Unable to load editor class/dll: " + classBinStr + " Exception: " + x.Message );
 #else
-				YAF.Classes.Data.DB.eventlog_create(null, this.GetType().ToString(), x, EventLogTypes.Error);
+				VZF.Classes.Data.CommonDb.eventlog_create(null, this.GetType().ToString(), x, EventLogTypes.Error);
 #endif
 */
       }

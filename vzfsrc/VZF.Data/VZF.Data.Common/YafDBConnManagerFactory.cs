@@ -17,18 +17,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Types.Handlers;
-using YAF.Types.Interfaces;
-
-namespace YAF.Classes.Data
+namespace VZF.Data.Common
 {
-  using System;
-  using System.Data;
-  using Npgsql;
-  using YAF.Classes.Pattern;
+    using System.Data;
 
-  
-  /// <summary>
+    using Npgsql;
+
+    using YAF.Classes;
+    using YAF.Types.Handlers;
+    using YAF.Types.Interfaces;
+
+    /// <summary>
   /// Provides open/close management for DB Connections
   /// </summary>
     public class CommonSqlDbConnectionManager : IDbConnectionManager
@@ -44,7 +43,7 @@ namespace YAF.Classes.Data
     public CommonSqlDbConnectionManager()
     {
       // just initalize it (not open)
-      InitConnection();
+      this.InitConnection();
     }
 
     /// <summary>
@@ -65,7 +64,7 @@ namespace YAF.Classes.Data
     {
       get
       {
-        InitConnection();
+        this.InitConnection();
         return this._connection;
       }
     }
@@ -77,7 +76,7 @@ namespace YAF.Classes.Data
     {
       get
       {
-        InitConnection();
+        this.InitConnection();
 
         if (this._connection.State != ConnectionState.Open)
         {
@@ -97,7 +96,7 @@ namespace YAF.Classes.Data
     public virtual void Dispose()
     {
       // close and delete connection
-      CloseConnection();
+      this.CloseConnection();
       this._connection = null;
     }
 
@@ -117,13 +116,13 @@ namespace YAF.Classes.Data
       {
         // create the connection
         this._connection = new NpgsqlConnection();
-        this._connection.Notification += new NotificationEventHandler(Connection_InfoMessage);
-        this._connection.ConnectionString = ConnectionString;
+        this._connection.Notification += new NotificationEventHandler(this.Connection_InfoMessage);
+        this._connection.ConnectionString = this.ConnectionString;
       }
       else if (this._connection.State != ConnectionState.Open)
       {
         // verify the connection string is in there...
-        this._connection.ConnectionString = ConnectionString;
+        this._connection.ConnectionString = this.ConnectionString;
       }
     }
 
@@ -170,9 +169,9 @@ namespace YAF.Classes.Data
     /// </param>
     protected void Connection_InfoMessage(object sender, NpgsqlNotificationEventArgs e)
     {
-        if (InfoMessage != null)
+        if (this.InfoMessage != null)
         {
-            InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.PID.ToString() + ":::" + e.Condition));
+            this.InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.PID.ToString() + ":::" + e.Condition));
         }
     }
   }

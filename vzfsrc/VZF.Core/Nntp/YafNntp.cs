@@ -27,7 +27,9 @@ namespace YAF.Core.Nntp
   using System.Linq;
   using System.Web;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Types;
   using YAF.Types.Interfaces;
   using YAF.Types.Objects;

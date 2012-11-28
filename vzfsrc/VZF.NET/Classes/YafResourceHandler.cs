@@ -35,11 +35,12 @@ namespace YAF
     using System.Web.Security;
     using System.Web.SessionState;
 
+    using VZF.Data.Common;
     using VZF.Kernel;
     using VZF.Types.Objects;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Controls;
     using YAF.Core;
     using YAF.Core.Services;
@@ -1025,7 +1026,7 @@ namespace YAF
                 if (CheckETag(context, eTag))
                 {
                     // found eTag... no need to resend/create this image -- just mark another view?
-                    // YAF.Classes.Data.DB.album_image_download(YafContext.Current.PageModuleID,context.Request.QueryString.GetFirstOrDefault("image"));
+                    // VZF.Classes.Data.DB.album_image_download(YafContext.Current.PageModuleID,context.Request.QueryString.GetFirstOrDefault("image"));
                     return;
                 }
 

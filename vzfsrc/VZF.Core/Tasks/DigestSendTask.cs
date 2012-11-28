@@ -24,8 +24,11 @@ namespace YAF.Core.Tasks
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;

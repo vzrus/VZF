@@ -33,8 +33,9 @@ namespace VZF.Data.MsSql
     using System.Web.Hosting;
     using System.Web.Security;
 
+    using VZF.Data.MsSql.Search;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
@@ -8969,7 +8970,7 @@ namespace VZF.Data.MsSql
             }
             catch (Exception x)
             {
-                eventlog_create(connectionString,null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error);
+                eventlog_create(connectionString,null, "user_aspnet in VZF.Data.CommonDb.cs", x, EventLogTypes.Error);
                 return 0;
             }
         }

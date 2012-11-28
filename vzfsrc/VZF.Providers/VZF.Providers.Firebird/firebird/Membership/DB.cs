@@ -21,13 +21,13 @@ namespace YAF.Providers.Membership
 {
     using System;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.Security;
 
     using FirebirdSql.Data.FirebirdClient;
 
+    using VZF.Data.Firebird;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Classes.Pattern;
     using YAF.Core;
 

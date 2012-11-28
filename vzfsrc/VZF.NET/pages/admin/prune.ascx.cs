@@ -25,8 +25,10 @@ namespace YAF.Pages.Admin
   using System;
   using System.Web.UI.WebControls;
 
+  using VZF.Data.Common;
+
   using YAF.Classes;
-  using YAF.Classes.Data;
+  
   using YAF.Core;
   using YAF.Core.Tasks;
   using YAF.Types;

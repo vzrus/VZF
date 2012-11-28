@@ -16,16 +16,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Classes.Data
+namespace VZF.Data.MsSql.Search
 {
-  using System.Collections.Generic;
-  using System.Text;
+    using System.Collections.Generic;
+    using System.Text;
 
-  using YAF.Utils;
-  using YAF.Utils.Helpers;
-  using YAF.Types;
+    using YAF.Types;
+    using YAF.Utils;
 
-  /// <summary>
+    /// <summary>
   /// The search builder extensions.
   /// </summary>
   public static class SearchBuilderExtensions

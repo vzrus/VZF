@@ -21,6 +21,7 @@ namespace VZF.Data.MySqlDb
 {
   using System.Configuration;
   using MySql.Data.MySqlClient;
+
   /// <summary>
   /// The settings property column.
   /// </summary>

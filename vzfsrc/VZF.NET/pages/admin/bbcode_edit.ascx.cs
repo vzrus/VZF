@@ -24,7 +24,9 @@ namespace YAF.Pages.Admin
   using System;
   using System.Data;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Core;
   using YAF.Core.BBCode;
   using YAF.Core.Services;

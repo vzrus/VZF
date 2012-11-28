@@ -17,19 +17,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.IO;
-using YAF.Types;
-using YAF.Types.Handlers;
-using YAF.Types.Interfaces;
-
-namespace YAF.Classes.Data
+namespace VZF.Data.Firebird
 {
-  using System;
-  using System.Data;
-  using FirebirdSql.Data.FirebirdClient;
-  using YAF.Classes.Pattern;  
+    using System.IO;
 
-  /// <summary>
+    using YAF.Classes;
+    using YAF.Types;
+    using YAF.Types.Handlers;
+
+    using System;
+    using System.Data;
+
+    using FirebirdSql.Data.FirebirdClient;
+
+    /// <summary>
   /// Provides open/close management for DB Connections
   /// </summary>
   public class FbDbConnectionManager : IDisposable
@@ -46,7 +47,7 @@ namespace YAF.Classes.Data
     public FbDbConnectionManager(string connectionString)
     {
       // just initalize it (not open)
-      InitConnection(connectionString);
+      this.InitConnection(connectionString);
     }
 
       protected FbDbConnectionManager()
@@ -71,7 +72,7 @@ namespace YAF.Classes.Data
     public FbConnection DBConnection(string connectionString)
     {
    
-          InitConnection(connectionString);
+          this.InitConnection(connectionString);
         return this._connection;
      
     }
@@ -82,7 +83,7 @@ namespace YAF.Classes.Data
     public FbConnection OpenDBConnection(string connectionString)
     {
   
-          InitConnection(connectionString);
+          this.InitConnection(connectionString);
 
           if (this._connection.State != ConnectionState.Open)
           {
@@ -112,7 +113,7 @@ namespace YAF.Classes.Data
     public virtual void Dispose()
     {
       // close and delete connection
-      CloseConnection();
+      this.CloseConnection();
       this._connection = null;
     }
 
@@ -164,9 +165,9 @@ namespace YAF.Classes.Data
     /// </param>
     protected void Connection_InfoMessage([NotNull] object sender, [NotNull] FbInfoMessageEventArgs e)
     {
-      if (InfoMessage != null)
+      if (this.InfoMessage != null)
       {
-        InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.Message));
+        this.InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.Message));
       }
     }
 

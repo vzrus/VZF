@@ -24,10 +24,12 @@ namespace YAF.Providers.Roles
   using System.Data;
   using System.Data.SqlClient;
 
+  using VZF.Data.MsSql;
+
   using YAF.Classes;
   using YAF.Classes.Pattern;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Classes.Data;
+  
   using YAF.Types;
 
   #endregion

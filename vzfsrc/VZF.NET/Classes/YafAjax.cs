@@ -38,7 +38,8 @@ namespace YAF.Classes
     using System.Web.Services;
     using System.Xml;
 
-    using YAF.Classes.Data;
+    using VZF.Data.Common;
+    
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;

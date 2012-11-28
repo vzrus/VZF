@@ -36,7 +36,7 @@ namespace YAF.Controls
     using System.Data;
     using System.Text;
 
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Types;
     using YAF.Utils;

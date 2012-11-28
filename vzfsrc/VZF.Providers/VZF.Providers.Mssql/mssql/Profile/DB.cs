@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes.Data;
+
 
 namespace YAF.Providers.Profile
 {
@@ -37,7 +37,7 @@ namespace YAF.Providers.Profile
   using YAF.Core;
   // using YAF.Types.Extensions;
   using YAF.Types.Interfaces; 
-  using YAF.Classes.Data;
+  
   using YAF.Utils;
   using YAF.Types;
 

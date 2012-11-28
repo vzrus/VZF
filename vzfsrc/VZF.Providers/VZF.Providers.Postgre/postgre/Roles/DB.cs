@@ -19,27 +19,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
-using System.Configuration.Provider;
-using System.Configuration;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Web.Security;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography;
-using System.Data;
-using Npgsql;
-
-using YAF.Classes;
-using YAF.Core;
-using YAF.Classes.Data;
-using YAF.Classes.Pattern;
-
 namespace YAF.Providers.Roles
 {
+    using System;
+    using System.Data;
+
+    using Npgsql;
+
+    using VZF.Data.Postgre;
+
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class YafRolesDBConnManager : PostgreDbConnectionManager
     {
         public override string ConnectionString

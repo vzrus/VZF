@@ -18,19 +18,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System;
-
-namespace YAF.Classes.Data
+namespace VZF.Data.MsSql
 {
     #region Using
 
+    using System;
     using System.Data;
     using System.Data.SqlClient;
 
+    using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Handlers;
-    using YAF.Types.Interfaces;
-    using YAF.Types.Interfaces.Data;
 
     #endregion
 
@@ -56,7 +54,7 @@ namespace YAF.Classes.Data
         public MsSqlDbConnectionManager(string connectionString)
         {
             // just initalize it (not open)
-            InitConnection(connectionString);
+            this.InitConnection(connectionString);
         }
 
         protected MsSqlDbConnectionManager()
@@ -95,7 +93,7 @@ namespace YAF.Classes.Data
         public SqlConnection DBConnection(string connectionString)
         {
 
-            InitConnection(connectionString);
+            this.InitConnection(connectionString);
             return this._connection;
 
         }
@@ -107,7 +105,7 @@ namespace YAF.Classes.Data
         public SqlConnection OpenDBConnection(string connectionString)
         {
 
-            InitConnection(connectionString);
+            this.InitConnection(connectionString);
 
             if (this._connection.State != ConnectionState.Open)
             {
@@ -144,7 +142,7 @@ namespace YAF.Classes.Data
             {
                 // create the connection
                 this._connection = new SqlConnection { ConnectionString = connectionString };
-                this._connection.InfoMessage += new SqlInfoMessageEventHandler(Connection_InfoMessage);
+                this._connection.InfoMessage += new SqlInfoMessageEventHandler(this.Connection_InfoMessage);
 
             }
             else if (this._connection.State != ConnectionState.Open)

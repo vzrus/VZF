@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Xml;
-using YAF.Classes;
-using YAF.Classes.Data;
-using YAF.Core;
-using YAF.Types.Constants;
-using YAF.Utils;
-
-namespace YAF
+﻿namespace YAF
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Web;
+    using System.Xml;
+
+    using VZF.Data.Common;
+
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types.Constants;
+    using YAF.Utils;
+
     public class SitemapHandler : IHttpHandler
     {
         protected enum ChangeFrequency

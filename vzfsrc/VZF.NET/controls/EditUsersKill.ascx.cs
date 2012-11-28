@@ -29,7 +29,9 @@ namespace YAF.Controls
   using System.Linq;
   using System.Web.Security;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Core;
   using YAF.Core.Services;
   using YAF.Types;

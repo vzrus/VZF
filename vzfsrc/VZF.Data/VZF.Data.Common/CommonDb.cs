@@ -1,21 +1,28 @@
-﻿/* VZF by vzrus
- * Copyright (C) 2006-2013 Vladimir Zakharov
- * https://github.com/vzrus
- * http://sourceforge.net/projects/yaf-datalayers/
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; version 2 only
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="CommonDb.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The common db.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace YAF.Classes.Data
+namespace VZF.Data.Common
 {
     using System;
     using System.Collections.Generic;
@@ -27,6 +34,7 @@ namespace YAF.Classes.Data
    
     using VZF.Types.Data;
 
+    using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Objects;
@@ -996,26 +1004,26 @@ namespace YAF.Classes.Data
         /// </exception>
         public static void bbcode_delete(int? mid, object bbcodeID)
         {
-          string dataEngine;
-          string namePattern = string.Empty;
-          string connectionString;
-          CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-          
-          switch (dataEngine)
-          {
-              case "System.Data.SqlClient": VZF.Data.MsSql.Db.bbcode_delete(connectionString, bbcodeID); break;
-              case "Npgsql": VZF.Data.Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-              case "MySql.Data.MySqlClient": VZF.Data.Mysql.Db.bbcode_delete(connectionString, bbcodeID); break;
-              case "FirebirdSql.Data.FirebirdClient":  VZF.Data.Firebird.Db.bbcode_delete(connectionString, bbcodeID); break;
-              // case "oracle":  orPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-              // case "db2": db2Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-              // case "other": othPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-          }
-      }
+            string dataEngine;
+            string namePattern = string.Empty;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient": VZF.Data.MsSql.Db.bbcode_delete(connectionString, bbcodeID); break;
+                case "Npgsql": VZF.Data.Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
+                case "MySql.Data.MySqlClient": VZF.Data.Mysql.Db.bbcode_delete(connectionString, bbcodeID); break;
+                case "FirebirdSql.Data.FirebirdClient": VZF.Data.Firebird.Db.bbcode_delete(connectionString, bbcodeID); break;
+                // case "oracle":  orPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
+                // case "db2": db2Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
+                // case "other": othPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
-      static public DataTable bbcode_list(int? mid, object boardId, object bbcodeID)
+      public static DataTable bbcode_list(int? mid, object boardId, object bbcodeID)
       {
           string dataEngine;
           string connectionString;
@@ -1049,7 +1057,7 @@ namespace YAF.Classes.Data
               case "System.Data.SqlClient": VZF.Data.MsSql.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               case "Npgsql": VZF.Data.Postgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               case "MySql.Data.MySqlClient": VZF.Data.Mysql.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-              case "FirebirdSql.Data.FirebirdClient":  VZF.Data.Firebird.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
+              case "FirebirdSql.Data.FirebirdClient": VZF.Data.Firebird.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               // case "oracle":  orPostgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               // case "db2": db2Postgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
               // case "other": othPostgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
@@ -1170,14 +1178,14 @@ namespace YAF.Classes.Data
         /// Recalculates topic and post numbers and updates last post for all forums in all boards
         /// </summary>
         /// <param name="mid"> </param>
-        static public void board_resync(int? mid)
+        public static void board_resync(int? mid)
       {
           board_resync(mid,null);
       }
       /// <summary>
       /// Recalculates topic and post numbers and updates last post for all forums in all boards
       /// </summary>
-      static public void board_resync(int? mid, object boardId)
+      public static void board_resync(int? mid, object boardId)
       {
          string dataEngine;
           string connectionString;
@@ -1447,7 +1455,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void category_save(int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
+      public static void category_save(int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
       {
           string dataEngine;
           string connectionString;
@@ -1487,7 +1495,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void checkemail_save(int? mid, object userId, object hash, object email)
+      public static void checkemail_save(int? mid, object userId, object hash, object email)
       {
           string dataEngine;
           string connectionString;
@@ -1529,7 +1537,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public void choice_add(int? mid, object pollID, object choice, object path, object mime)
+      public static void choice_add(int? mid, object pollID, object choice, object path, object mime)
       {
           string dataEngine;
           string connectionString;
@@ -1550,7 +1558,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public void choice_delete(int? mid, object choiceID)
+      public static void choice_delete(int? mid, object choiceID)
       {
           string dataEngine;
           string connectionString;
@@ -1570,7 +1578,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void choice_update(int? mid, object choiceID, object choice, object path, object mime)
+      public static void choice_update(int? mid, object choiceID, object choice, object path, object mime)
       {
           string dataEngine;
           string connectionString;
@@ -1590,7 +1598,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void choice_vote(int? mid, object choiceID, object userId, object remoteIP)
+      public static void choice_vote(int? mid, object choiceID, object userId, object remoteIP)
       {
           string dataEngine;
           string connectionString;
@@ -1611,7 +1619,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public string db_getstats_new(int? mid)
+      public static string db_getstats_new(int? mid)
       {
           string dataEngine;
           string connectionString;
@@ -1654,7 +1662,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public string db_recovery_mode_warning(int? mid, string dbRecoveryMode)
+      public static string db_recovery_mode_warning(int? mid, string dbRecoveryMode)
       {
           string dataEngine;
           string connectionString;
@@ -1698,12 +1706,12 @@ namespace YAF.Classes.Data
 
       } */
       //Set Recovery
-      static public string db_recovery_mode_warning(int? mid)
+      public static string db_recovery_mode_warning(int? mid)
       {
           return "";
       }
 
-      static public string db_recovery_mode_new(int? mid, string dbRecoveryMode)
+      public static string db_recovery_mode_new(int? mid, string dbRecoveryMode)
       {
           string dataEngine;
           string connectionString;
@@ -1724,7 +1732,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public string db_reindex_new(int? mid)
+      public static string db_reindex_new(int? mid)
       {
           string dataEngine;
           string connectionString;
@@ -1784,7 +1792,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public string  db_shrink_new(int? mid)
+      public static string  db_shrink_new(int? mid)
       {
           string dataEngine;
           string connectionString;
@@ -1845,12 +1853,12 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void eventlog_create(int? mid, object userId, object source, object description)
+      public static void eventlog_create(int? mid, object userId, object source, object description)
       {
          eventlog_create(mid, userId, (object)source.GetType().ToString(), description, (object)0);
       }
      
-      static public void eventlog_create(int? mid, object userId, object source, object description, object type)
+      public static void eventlog_create(int? mid, object userId, object source, object description, object type)
       {
           string dataEngine;
           string connectionString;
@@ -1871,7 +1879,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public void eventlog_delete(int? mid, int boardId)
+      public static void eventlog_delete(int? mid, int boardId)
       {
           eventlog_delete(mid, null, boardId);
       }
@@ -1882,7 +1890,7 @@ namespace YAF.Classes.Data
         /// <param name="mid"> </param>
         /// <param name="eventLogID">ID of event log entry.</param>
         /// <param name="pageUserId"> </param>
-        static public void eventlog_delete(int? mid, object eventLogID, object pageUserId)
+        public static void eventlog_delete(int? mid, object eventLogID, object pageUserId)
       {
           eventlog_delete(mid, eventLogID, null, pageUserId);
       }
@@ -1907,7 +1915,7 @@ namespace YAF.Classes.Data
 
           }
       }
-      static public void eventlog_deletebyuser(int? mid, object boardID, object userId)
+      public static void eventlog_deletebyuser(int? mid, object boardID, object userId)
       {
           string dataEngine;
           string connectionString;
@@ -1987,7 +1995,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void eventloggroupaccess_save(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
+      public static void eventloggroupaccess_save(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
       {
           string dataEngine;
           string connectionString;
@@ -2007,7 +2015,7 @@ namespace YAF.Classes.Data
                   throw new ArgumentOutOfRangeException(dataEngine);
           }
       }
-      static public void extension_delete(int? mid, object extensionId)
+      public static void extension_delete(int? mid, object extensionId)
       {
           string dataEngine;
           string connectionString;
@@ -2028,7 +2036,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public void eventloggroupaccess_delete(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
+      public static void eventloggroupaccess_delete(int? mid, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
       {
           string dataEngine;
           string connectionString;
@@ -2071,7 +2079,7 @@ namespace YAF.Classes.Data
       }
 
       // Returns an extension list for a given Board
-      static public DataTable extension_list(int? mid, object boardId)
+      public static DataTable extension_list(int? mid, object boardId)
       {
           return extension_list(mid, boardId, string.Empty);
 
@@ -2098,7 +2106,7 @@ namespace YAF.Classes.Data
           }
       }
 
-      static public void extension_save(int? mid, object extensionId, object boardId, object extension)
+      public static void extension_save(int? mid, object extensionId, object boardId, object extension)
       {
           string dataEngine;
           string connectionString;
@@ -2207,7 +2215,7 @@ namespace YAF.Classes.Data
         /// <param name="boardId">BoardID</param>
         /// <param name="userId">ID of user</param>
         /// <returns>DataTable of all accessible forums</returns>
-      static public DataTable forum_listall(int? mid, object boardId, object userId)
+      public static DataTable forum_listall(int? mid, object boardId, object userId)
         {
             return forum_listall(mid,boardId, userId, 0,false);
         }
@@ -2240,7 +2248,7 @@ namespace YAF.Classes.Data
         /// <param name="boardId">BoardID</param>
         /// <param name="categoryID">The category ID. </param>
         /// <returns>DataTable with list</returns>
-        static public DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID)
+        public static DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID)
         {
             return forum_listall_fromCat(mid, boardId, categoryID, true);
         }
@@ -2267,7 +2275,7 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow, bool returnAll)
+        public static DataTable forum_sort_list(int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent, int[] forumidExclusions, bool emptyFirstRow, bool returnAll)
         {
             var listDestination = new DataTable {TableName = "forum_sort_list"};
             listDestination.Columns.Add("ForumID", typeof(String));
@@ -2312,12 +2320,12 @@ namespace YAF.Classes.Data
 
             return listDestination;
         }
-        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
+        public static DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
         {
             return forum_listall_sorted(mid, boardId, userId, null, false, 0, false );
         }
 
-        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId)
+        public static DataTable forum_listall_sorted(int? mid, object boardId, object userId)
         {
             if (!Config.LargeForumTree)
             {
@@ -2330,7 +2338,7 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public DataTable forum_listall_sorted_all(int? mid, object boardId, object userId, bool returnAll)
+        public static DataTable forum_listall_sorted_all(int? mid, object boardId, object userId, bool returnAll)
         {
             if (!Config.LargeForumTree)
             {
@@ -2362,17 +2370,10 @@ namespace YAF.Classes.Data
                 // case "other":  dtTable = othPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
-          
-                return dtTable;
-            
 
-               
-           
-
+            return dtTable;
         }
-
 
         public static DataTable forum_ns_getchildren(int? mid, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
         {
@@ -2417,7 +2418,7 @@ namespace YAF.Classes.Data
         /// </param>
         /// <returns>
         /// </returns>
-        static public DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt, bool returnAll)
+        public static DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions, bool emptyFirstRow, int startAt, bool returnAll)
         {
             using (DataTable dataTable = forum_listall(mid, boardId, userId, startAt, returnAll))
             {
@@ -2442,7 +2443,7 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public void forum_list_sort_basic(int? mid, DataTable listsource, DataTable list, int parentid, int currentLvl)
+        public static void forum_list_sort_basic(int? mid, DataTable listsource, DataTable list, int parentid, int currentLvl)
         {
             for (int i = 0; i < listsource.Rows.Count; i++)
             {
@@ -2462,7 +2463,7 @@ namespace YAF.Classes.Data
             }
         }
 
-        static public void forum_sort_list_recursive(int? mid, DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent, bool returnAll)
+        public static void forum_sort_list_recursive(int? mid, DataTable listSource, DataTable listDestination, int parentID, int categoryID, int currentIndent, bool returnAll)
         {
             DataRow newRow;
 
@@ -2610,7 +2611,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <param name="boardId">BoardID</param>
-        static public void forum_resync(int? mid, object boardId)
+        public static void forum_resync(int? mid, object boardId)
         {
             forum_resync(mid,boardId, null);
         }
@@ -3140,7 +3141,7 @@ namespace YAF.Classes.Data
         /// <param name="mid"> </param>
         /// <param name="boardId">ID of board of which medals to delete. Required.</param>
         /// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
-        static public void medal_delete(int? mid, object boardId, object category)
+        public static void medal_delete(int? mid, object boardId, object category)
          {
              medal_delete(mid,boardId, null, category);
          }
@@ -3150,7 +3151,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <param name="medalID">ID of medal to delete.</param>
-        static public void medal_delete(int? mid, object medalID)
+        public static void medal_delete(int? mid, object medalID)
          {
              medal_delete(mid,null, medalID, null);
          }
@@ -3181,7 +3182,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <param name="medalID">ID of medal to list.</param>
-        static public DataTable medal_list(int? mid, object medalID)
+        public static DataTable medal_list(int? mid, object medalID)
          {
              string dataEngine;
              string connectionString;
@@ -3210,7 +3211,7 @@ namespace YAF.Classes.Data
         /// <param name="mid"> </param>
         /// <param name="boardId">ID of board of which medals to list. Required.</param>
         /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-        static public DataTable medal_list(int? mid, object boardId, object category)
+        public static DataTable medal_list(int? mid, object boardId, object category)
          {
              string dataEngine;
              string connectionString;
@@ -3241,7 +3242,7 @@ namespace YAF.Classes.Data
         /// <param name="medalID"> </param>
         /// <param name="boardId">ID of board of which medals to list. Required.</param>
         /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-        static public DataTable medal_listusers(int? mid, object medalID)
+        public static DataTable medal_listusers(int? mid, object medalID)
          {
              string dataEngine;
              string connectionString;
@@ -3283,7 +3284,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public bool medal_save(int? mid, object boardId, object medalID, object name, object description, object message, object category, object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth, object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
+         public static bool medal_save(int? mid, object boardId, object medalID, object name, object description, object message, object category, object medalURL, object ribbonURL, object smallMedalURL, object smallRibbonURL, object smallMedalWidth, object smallMedalHeight, object smallRibbonWidth, object smallRibbonHeight, object sortOrder, object flags)
          {
              string dataEngine;
              string connectionString;
@@ -3304,7 +3305,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public string message_AddThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
+         public static string message_AddThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
          {
              string dataEngine;
              string connectionString;
@@ -3345,7 +3346,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public void message_delete(int? mid, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
+         public static void message_delete(int? mid, object messageID, bool isModeratorChanged, string deleteReason, int isDeleteAction, bool DeleteLinked)
          {
              message_delete(mid,messageID, isModeratorChanged, deleteReason, isDeleteAction, DeleteLinked, false);
          }
@@ -3370,7 +3371,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable message_findunread(int? mid, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
+         public static DataTable message_findunread(int? mid, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
          {
              string dataEngine;
              string connectionString;
@@ -3391,7 +3392,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_getRepliesList(int? mid, object messageID)
+         public static DataTable message_getRepliesList(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
@@ -3412,7 +3413,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_GetTextByIds(int? mid, string messageIDs)
+         public static DataTable message_GetTextByIds(int? mid, string messageIDs)
          {
              string dataEngine;
              string connectionString;
@@ -3433,7 +3434,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_GetThanks(int mid, object messageID)
+         public static DataTable message_GetThanks(int mid, object messageID)
          {
              string dataEngine;
              string connectionString;
@@ -3454,7 +3455,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_list(int? mid, object messageID)
+         public static DataTable message_list(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
@@ -3475,7 +3476,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_listreported(int? mid, object forumID)
+         public static DataTable message_listreported(int? mid, object forumID)
          {
              string dataEngine;
              string connectionString;
@@ -3503,12 +3504,12 @@ namespace YAF.Classes.Data
         /// <param name="messageID"> </param>
         /// <param name="MessageID">Should not be NULL</param>
         /// <returns>Returns reporters DataTable for a reported message.</returns>
-        static public DataTable message_listreporters(int? mid, int messageID)
+        public static DataTable message_listreporters(int? mid, int messageID)
          {
              return message_listreporters(mid,messageID, null);
          }
 
-         static public DataTable message_listreporters(int? mid, int messageID, object userID)
+         public static DataTable message_listreporters(int? mid, int messageID, object userID)
          {
              string dataEngine;
              string connectionString;
@@ -3548,7 +3549,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public string message_RemoveThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
+         public static string message_RemoveThanks(int? mid, object fromUserID, object messageID, bool useDisplayName)
          {
              string dataEngine;
              string connectionString;
@@ -3629,7 +3630,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public bool message_save(int? mid, [NotNull] object topicId, [NotNull] object userId, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags, ref long messageId)
+         public static bool message_save(int? mid, [NotNull] object topicId, [NotNull] object userId, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags, ref long messageId)
          {
              string dataEngine;
              string connectionString;
@@ -3650,7 +3651,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_secdata(int? mid, int MessageID, object pageUserId)
+         public static DataTable message_secdata(int? mid, int MessageID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
@@ -3671,7 +3672,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_simplelist(int? mid, int StartID, int Limit)
+         public static DataTable message_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
@@ -3692,7 +3693,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public int message_ThanksNumber(int? mid, object messageID)
+         public static int message_ThanksNumber(int? mid, object messageID)
          {
              string dataEngine;
              string connectionString;
@@ -3713,7 +3714,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable message_unapproved(int? mid, object forumID)
+         public static DataTable message_unapproved(int? mid, object forumID)
          {
              string dataEngine;
              string connectionString;
@@ -3756,7 +3757,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public IEnumerable<TypedAllThanks> MessageGetAllThanks(int? mid, string messageIdsSeparatedWithColon)
+         public static IEnumerable<TypedAllThanks> MessageGetAllThanks(int? mid, string messageIdsSeparatedWithColon)
          {
              string dataEngine;
              string connectionString;
@@ -3777,7 +3778,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable messagehistory_list(int? mid, int messageID, int daysToClean)
+         public static DataTable messagehistory_list(int? mid, int messageID, int daysToClean)
          {
              string dataEngine;
              string connectionString;
@@ -3799,7 +3800,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public IEnumerable<TypedMessageList> MessageList(int? mid, int messageID)
+         public static IEnumerable<TypedMessageList> MessageList(int? mid, int messageID)
          {
              string dataEngine;
              string connectionString;
@@ -4025,7 +4026,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable nntpforum_list(int? mid, object boardId, object minutes, object nntpForumID, object active)
+         public static DataTable nntpforum_list(int? mid, object boardId, object minutes, object nntpForumID, object active)
          {
              string dataEngine;
              string connectionString;
@@ -4088,7 +4089,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public IEnumerable<TypedNntpForum> NntpForumList(int? mid, int boardId, int? minutes, int? nntpForumID, bool? active)
+         public static IEnumerable<TypedNntpForum> NntpForumList(int? mid, int boardId, int? minutes, int? nntpForumID, bool? active)
          {
              string dataEngine;
              string connectionString;
@@ -4130,7 +4131,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable nntpserver_list(int? mid, object boardId, object nntpServerID)
+         public static DataTable nntpserver_list(int? mid, object boardId, object nntpServerID)
          {
              string dataEngine;
              string connectionString;
@@ -4172,7 +4173,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable nntptopic_list(int? mid, object thread)
+         public static DataTable nntptopic_list(int? mid, object thread)
          {
              string dataEngine;
              string connectionString;
@@ -4213,7 +4214,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataRow pageload(int? mid, object sessionId, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryId, object forumId, object topicId, object messageId, object isCrawler, object isMobileDevice, object donttrack)
+         public static DataRow pageload(int? mid, object sessionId, object boardId, object userKey, object ip, object location, object forumPage, object browser, object platform, object categoryId, object forumId, object topicId, object messageId, object isCrawler, object isMobileDevice, object donttrack)
          {
              string dataEngine;
              string connectionString;
@@ -4261,7 +4262,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <param name="userPMessageID"></param>
-        static public void pmessage_delete(int? mid, object userPMessageID)
+        public static void pmessage_delete(int? mid, object userPMessageID)
          {
              pmessage_delete(mid, userPMessageID, false);
          }
@@ -4285,7 +4286,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable pmessage_info(int? mid)
+         public static DataTable pmessage_info(int? mid)
          {
              string dataEngine;
              string connectionString;
@@ -4319,11 +4320,11 @@ namespace YAF.Classes.Data
         /// <param name="fromUserID"></param>
         /// <param name="pMessageID">The id of the private message</param>
         /// <returns></returns>
-        static public DataTable pmessage_list(int? mid, object userPMessageID)
+        public static DataTable pmessage_list(int? mid, object userPMessageID)
          {
              return pmessage_list(mid, null, null, userPMessageID);
          }
-         static public DataTable pmessage_list(int? mid, object toUserID, object fromUserID, object userPMessageID)
+         public static DataTable pmessage_list(int? mid, object toUserID, object fromUserID, object userPMessageID)
          {
              string dataEngine;
              string connectionString;
@@ -4424,7 +4425,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int? poll_save(int? mid, List<PollSaveList> pollList)
+         public static int? poll_save(int? mid, List<PollSaveList> pollList)
          {
              string dataEngine;
              string connectionString;
@@ -4445,7 +4446,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable poll_stats(int? mid, int? pollId)
+         public static DataTable poll_stats(int? mid, int? pollId)
          {
              string dataEngine;
              string connectionString;
@@ -4466,7 +4467,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public int pollgroup_attach(int? mid, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+         public static int pollgroup_attach(int? mid, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
          {
              string dataEngine;
              string connectionString;
@@ -4507,7 +4508,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable pollgroup_stats(int? mid, int? pollGroupId)
+         public static DataTable pollgroup_stats(int? mid, int? pollGroupId)
          {
              string dataEngine;
              string connectionString;
@@ -4548,7 +4549,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable pollgroup_votecheck(int? mid, object pollGroupId, object userId, object remoteIp)
+         public static DataTable pollgroup_votecheck(int? mid, object pollGroupId, object userId, object remoteIp)
          {
              string dataEngine;
              string connectionString;
@@ -4569,7 +4570,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public IEnumerable<TypedPollGroup> PollGroupList(int? mid, int userID, int? forumId, int boardId)
+         public static IEnumerable<TypedPollGroup> PollGroupList(int? mid, int userID, int? forumId, int boardId)
          {
              string dataEngine;
              string connectionString;
@@ -4591,7 +4592,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public DataTable pollvote_check(int? mid, object pollid, object userid, object remoteip)
+         public static DataTable pollvote_check(int? mid, object pollid, object userid, object remoteip)
          {
              string dataEngine;
              string connectionString;
@@ -4613,7 +4614,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public DataTable post_alluser(int? mid, object boardid, object userid, object pageUserID, object topCount)
+         public static DataTable post_alluser(int? mid, object boardid, object userid, object pageUserID, object topCount)
          {
              string dataEngine;
              string connectionString;
@@ -4635,7 +4636,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public DataTable post_list(int? mid, object topicId, object currentUserID, object authoruserId, object updateViewCount, bool showDeleted, bool styledNicks, bool showReputation, DateTime sincePostedDate, DateTime toPostedDate, DateTime sinceEditedDate, DateTime toEditedDate, int pageIndex, int pageSize, int sortPosted, int sortEdited, int sortPosition, bool showThanks, int messagePosition)
+         public static DataTable post_list(int? mid, object topicId, object currentUserID, object authoruserId, object updateViewCount, bool showDeleted, bool styledNicks, bool showReputation, DateTime sincePostedDate, DateTime toPostedDate, DateTime sinceEditedDate, DateTime toEditedDate, int pageIndex, int pageSize, int sortPosted, int sortEdited, int sortPosition, bool showThanks, int messagePosition)
          {
              string dataEngine;
              string connectionString;
@@ -4656,7 +4657,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable post_list_reverse10(int? mid, object topicID)
+         public static DataTable post_list_reverse10(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
@@ -4697,7 +4698,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable rank_list(int? mid, object boardId, object rankID)
+         public static DataTable rank_list(int? mid, object boardId, object rankID)
          {
              string dataEngine;
              string connectionString;
@@ -4739,7 +4740,7 @@ namespace YAF.Classes.Data
                     
              }
          }
-         static public DataTable recent_users(int? mid, object boardID, int timeSinceLastLogin, object styledNicks)
+         public static DataTable recent_users(int? mid, object boardID, int timeSinceLastLogin, object styledNicks)
          {
              string dataEngine;
              string connectionString;
@@ -4766,7 +4767,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <param name="mid"> </param>
         /// <returns>DataTable filled will all registry entries</returns>
-        static public DataTable registry_list(int? mid)
+        public static DataTable registry_list(int? mid)
          {
              return registry_list(mid, null, null);
          }
@@ -4778,11 +4779,11 @@ namespace YAF.Classes.Data
         /// <param name="name"> </param>
         /// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
         /// <returns>DataTable filled will registry entries</returns>
-        static public DataTable registry_list(int? mid, object name)
+        public static DataTable registry_list(int? mid, object name)
          {
              return registry_list(mid, name, null);
          }
-         static public DataTable registry_list(int? mid, object name, object boardId)
+         public static DataTable registry_list(int? mid, object name, object boardId)
          {
              string dataEngine;
              string connectionString;
@@ -4813,7 +4814,7 @@ namespace YAF.Classes.Data
         /// <param name="value"> </param>
         /// <param name="Name">Unique name associated with this entry</param>
         /// <param name="Value">Value associated with this entry which can be null</param>
-        static public void registry_save(int? mid, object name, object value)
+        public static void registry_save(int? mid, object name, object value)
          {
 
              registry_save(mid, name, value, DBNull.Value);
@@ -4859,7 +4860,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable replace_words_list(int? mid, object boardId, object id)
+         public static DataTable replace_words_list(int? mid, object boardId, object id)
          {
              string dataEngine;
              string connectionString;
@@ -4900,7 +4901,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable rss_topic_latest(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
+         public static DataTable rss_topic_latest(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts)
          {
              string dataEngine;
              string connectionString;
@@ -4921,11 +4922,11 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable rsstopic_list(int? mid, int forumID, int topicCount)
+         public static DataTable rsstopic_list(int? mid, int forumID, int topicCount)
          {
              return rsstopic_list(mid, forumID, 0, topicCount);
          }
-         static public DataTable rsstopic_list(int? mid, int forumID, int topicStart, int topicCount)
+         public static DataTable rsstopic_list(int? mid, int forumID, int topicStart, int topicCount)
          {
              string dataEngine;
              string connectionString;
@@ -4967,7 +4968,7 @@ namespace YAF.Classes.Data
              }
          }
        
-         static public bool shoutbox_clearmessages(int? mid, int boardId)
+         public static bool shoutbox_clearmessages(int? mid, int boardId)
          {
              string dataEngine;
              string connectionString;
@@ -4988,7 +4989,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable shoutbox_getmessages(int? mid, int boardId, int numberOfMessages, object useStyledNicks)
+         public static DataTable shoutbox_getmessages(int? mid, int boardId, int numberOfMessages, object useStyledNicks)
          {
              string dataEngine;
              string connectionString;
@@ -5009,7 +5010,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public bool shoutbox_savemessage(int? mid, int boardId, string message, string userName, int userID, object ip)
+         public static bool shoutbox_savemessage(int? mid, int boardId, string message, string userName, int userID, object ip)
          {
              string dataEngine;
              string connectionString;
@@ -5050,7 +5051,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable smiley_list(int? mid, object boardId, object smileyID)
+         public static DataTable smiley_list(int? mid, object boardId, object smileyID)
          {
              string dataEngine;
              string connectionString;
@@ -5071,7 +5072,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable smiley_listunique(int? mid, object boardId)
+         public static DataTable smiley_listunique(int? mid, object boardId)
          {
              string dataEngine;
              string connectionString;
@@ -5132,7 +5133,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public IEnumerable<TypedSmileyList> SmileyList(int? mid, int boardId, int? smileyID)
+         public static IEnumerable<TypedSmileyList> SmileyList(int? mid, int boardId, int? smileyID)
          {
              string dataEngine;
              string connectionString;
@@ -5233,7 +5234,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable system_list(int? mid)
+         public static DataTable system_list(int? mid)
          {
              string dataEngine;
              string connectionString;
@@ -5297,7 +5298,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public DataTable topic_announcements(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId)
+         public static DataTable topic_announcements(int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId)
          {
              string dataEngine;
              string connectionString;
@@ -5406,7 +5407,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable TopicStatus_Edit(int? mid, [NotNull] object topicStatusID)
+         public static DataTable TopicStatus_Edit(int? mid, [NotNull] object topicStatusID)
          {
              string dataEngine;
              string connectionString;
@@ -5427,7 +5428,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable TopicStatus_List(int? mid, [NotNull] object topicStatusID)
+         public static DataTable TopicStatus_List(int? mid, [NotNull] object topicStatusID)
          {
              string dataEngine;
              string connectionString;
@@ -5467,7 +5468,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public long topic_create_by_message(int? mid, object messageID, object forumId, object newTopicSubj)
+         public static long topic_create_by_message(int? mid, object messageID, object forumId, object newTopicSubj)
          {
              string dataEngine;
              string connectionString;
@@ -5489,7 +5490,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public void topic_delete(int? mid, object topicID)
+         public static void topic_delete(int? mid, object topicID)
          {
              topic_delete(mid,topicID, false);
          }
@@ -5555,7 +5556,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_favorite_list(int? mid, object userID)
+         public static DataTable topic_favorite_list(int? mid, object userID)
          {
              string dataEngine;
              string connectionString;
@@ -5597,7 +5598,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public int topic_findduplicate(int? mid, object topicName)
+         public static int topic_findduplicate(int? mid, object topicName)
          {
              string dataEngine;
              string connectionString;
@@ -5618,7 +5619,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_findnext(int? mid, object topicID)
+         public static DataTable topic_findnext(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
@@ -5639,7 +5640,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_findprev(int? mid, object topicID)
+         public static DataTable topic_findprev(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
@@ -5660,7 +5661,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataRow topic_info(int? mid, object topicID)
+         public static DataRow topic_info(int? mid, object topicID)
          {
              string dataEngine;
              string connectionString;
@@ -5681,7 +5682,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_latest(int? mid, object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts, [CanBeNull] bool findLastRead)
+         public static DataTable topic_latest(int? mid, object boardID, object numOfPostsToRetrieve, object pageUserId, bool useStyledNicks, bool showNoCountPosts, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
@@ -5702,7 +5703,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull] bool findLastRead)
+         public static DataTable topic_list(int? mid, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull] bool findLastRead)
          {
              string dataEngine;
              string connectionString;
@@ -5785,7 +5786,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int topic_prune(int? mid, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
+         public static int topic_prune(int? mid, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
          {
              string dataEngine;
              string connectionString;
@@ -5806,7 +5807,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public long topic_save(int? mid, object forumID, object subject, object status, object styles, object description, object message, object userId, object priority, object userName, object ip, object posted, object blogPostID, object flags, ref long messageID, string tags)
+         public static long topic_save(int? mid, object forumID, object subject, object status, object styles, object description, object message, object userId, object priority, object userName, object ip, object posted, object blogPostID, object flags, ref long messageID, string tags)
          {
              string dataEngine;
              string connectionString;
@@ -5827,7 +5828,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_simplelist(int? mid, int StartID, int Limit)
+         public static DataTable topic_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
@@ -5849,7 +5850,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public DataTable topic_tags(int? mid, int boardId, int pageUserId, int topicId)
+         public static DataTable topic_tags(int? mid, int boardId, int pageUserId, int topicId)
          {
              string dataEngine;
              string connectionString;
@@ -5870,7 +5871,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable topic_bytags(int? mid, int boardId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
+         public static DataTable topic_bytags(int? mid, int boardId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
          {
              string dataEngine;
              string connectionString;
@@ -5911,7 +5912,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int  TopicFavoriteCount(int? mid, int topicId)
+         public static int  TopicFavoriteCount(int? mid, int topicId)
          {
              string dataEngine;
              string connectionString;
@@ -5953,7 +5954,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable user_accessmasks(int? mid, object boardId, object userId)
+         public static DataTable user_accessmasks(int? mid, object boardId, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -5974,7 +5975,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_accessmasksbyforum(int? mid, object boardId, object userId)
+         public static DataTable user_accessmasksbyforum(int? mid, object boardId, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -5995,7 +5996,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_accessmasksbygroup(int? mid, object boardId, object userId)
+         public static DataTable user_accessmasksbygroup(int? mid, object boardId, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6016,7 +6017,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_activity_rank(int? mid, object boardId, object startDate, object displayNumber)
+         public static DataTable user_activity_rank(int? mid, object boardId, object startDate, object displayNumber)
          {
              string dataEngine;
              string connectionString;
@@ -6139,7 +6140,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int user_aspnet(int? mid, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
+         public static int user_aspnet(int? mid, int boardId, string userName, string displayName, string email, object providerUserKey, object isApproved)
          {
              string dataEngine;
              string connectionString;
@@ -6160,7 +6161,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_avatarimage(int? mid, object userId)
+         public static DataTable user_avatarimage(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6181,7 +6182,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public bool user_changepassword(int? mid, object userId, object oldPassword, object newPassword)
+         public static bool user_changepassword(int? mid, object userId, object oldPassword, object newPassword)
          {
              string dataEngine;
              string connectionString;
@@ -6263,7 +6264,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable user_emails(int? mid, object boardId, object groupID)
+         public static DataTable user_emails(int? mid, object boardId, object groupID)
          {
              string dataEngine;
              string connectionString;
@@ -6285,7 +6286,7 @@ namespace YAF.Classes.Data
 
          }
 
-         static public int user_get(int? mid, int boardId, object providerUserKey)
+         public static int user_get(int? mid, int boardId, object providerUserKey)
          {
              string dataEngine;
              string connectionString;
@@ -6306,7 +6307,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_getalbumsdata(int? mid, object userID, object boardID)
+         public static DataTable user_getalbumsdata(int? mid, object userID, object boardID)
          {
              string dataEngine;
              string connectionString;
@@ -6327,7 +6328,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public int user_getpoints(int? mid, object userId)
+         public static int user_getpoints(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6349,7 +6350,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public string user_getsignature(int? mid, object userId)
+         public static string user_getsignature(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6370,7 +6371,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_getsignaturedata(int? mid, object userID, object boardID)
+         public static DataTable user_getsignaturedata(int? mid, object userID, object boardID)
          {
              string dataEngine;
              string connectionString;
@@ -6392,7 +6393,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public int user_getthanks_from(int? mid, object userID, object pageUserId)
+         public static int user_getthanks_from(int? mid, object userID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
@@ -6412,7 +6413,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int[] user_getthanks_to(int? mid, object userID, object pageUserId)
+         public static int[] user_getthanks_to(int? mid, object userID, object pageUserId)
          {
              string dataEngine;
              string connectionString;
@@ -6432,7 +6433,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int? user_guest(int? mid, object boardId)
+         public static int? user_guest(int? mid, object boardId)
          {
              string dataEngine;
              string connectionString;
@@ -6452,7 +6453,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable user_ignoredlist(int? mid, object userId)
+         public static DataTable user_ignoredlist(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6473,7 +6474,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public bool user_isuserignored(int? mid, object userId, object ignoredUserId)
+         public static bool user_isuserignored(int? mid, object userId, object ignoredUserId)
          {
              string dataEngine;
              string connectionString;
@@ -6493,7 +6494,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataRow user_lazydata(int? mid, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
+         public static DataRow user_lazydata(int? mid, object userID, object boardID, bool showPendingMails, bool showPendingBuddies, bool showUnreadPMs, bool showUserAlbums, bool styledNicks)
          {
              string dataEngine;
              string connectionString;
@@ -6574,7 +6575,7 @@ namespace YAF.Classes.Data
         /// </summary>
         /// <returns>
         /// </returns>
-         static public DataTable user_list(int? mid, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
+         public static DataTable user_list(int? mid, object boardId, object userId, object approved, object groupID, object rankID, object useStyledNicks)
          {
              string dataEngine;
              string connectionString;
@@ -6595,7 +6596,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_listmedals(int? mid, object userId)
+         public static DataTable user_listmedals(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6616,7 +6617,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_listmembers(int? mid, object boardId, object userId, object approved, object groupId, object rankId, object useStyledNicks, object lastUserId, object literals, object exclude, object beginsWith, object pageIndex, object pageSize, object sortName, object sortRank, object sortJoined, object sortPosts, object sortLastVisit, object numPosts, object numPostCompare)
+         public static DataTable user_listmembers(int? mid, object boardId, object userId, object approved, object groupId, object rankId, object useStyledNicks, object lastUserId, object literals, object exclude, object beginsWith, object pageIndex, object pageSize, object sortName, object sortRank, object sortJoined, object sortPosts, object sortLastVisit, object numPosts, object numPostCompare)
          {
              string dataEngine;
              string connectionString;
@@ -6658,7 +6659,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable user_medal_list(int? mid, object userId, object medalID)
+         public static DataTable user_medal_list(int? mid, object userId, object medalID)
          {
              string dataEngine;
              string connectionString;
@@ -6720,7 +6721,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public int user_nntp(int? mid, object boardId, object userName, object email, int? timeZone)
+         public static int user_nntp(int? mid, object boardId, object userName, object email, int? timeZone)
          {
              string dataEngine;
              string connectionString;
@@ -6740,7 +6741,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable user_pmcount(int? mid, object userId)
+         public static DataTable user_pmcount(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -6761,7 +6762,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public object user_recoverpassword(int? mid, object boardId, object userName, object email)
+         public static object user_recoverpassword(int? mid, object boardId, object userName, object email)
          {
              string dataEngine;
              string connectionString;
@@ -6782,7 +6783,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public bool user_register(int? mid, object boardId, object userName, object password, object hash, object email, object location, object homePage, object timeZone, bool approved)
+         public static bool user_register(int? mid, object boardId, object userName, object password, object hash, object email, object location, object homePage, object timeZone, bool approved)
          {
              string dataEngine;
              string connectionString;
@@ -6845,7 +6846,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public bool  user_RepliedTopic(int? mid, [NotNull] object messageId, [NotNull] object userId)
+         public static bool  user_RepliedTopic(int? mid, [NotNull] object messageId, [NotNull] object userId)
          {
              string dataEngine;
              string connectionString;
@@ -7047,7 +7048,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public DataTable user_simplelist(int? mid, int StartID, int Limit)
+         public static DataTable user_simplelist(int? mid, int StartID, int Limit)
          {
              string dataEngine;
              string connectionString;
@@ -7110,7 +7111,7 @@ namespace YAF.Classes.Data
              }
          }
 
-         static public bool user_ThankedMessage(int? mid, object messageId, object userId)
+         public static bool user_ThankedMessage(int? mid, object messageId, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -7131,7 +7132,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public int user_ThankFromCount(int? mid, [NotNull] object userId)
+         public static int user_ThankFromCount(int? mid, [NotNull] object userId)
          {
              string dataEngine;
              string connectionString;
@@ -7152,7 +7153,7 @@ namespace YAF.Classes.Data
              }
          }
         
-         static public DataTable user_viewthanksfrom(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+         public static DataTable user_viewthanksfrom(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
          {
              string dataEngine;
              string connectionString;
@@ -7173,7 +7174,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public DataTable user_viewthanksto(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+         public static DataTable user_viewthanksto(int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
          {
              string dataEngine;
              string connectionString;
@@ -7194,7 +7195,7 @@ namespace YAF.Classes.Data
              }
 
          }
-         static public IEnumerable<TypedUserFind> UserFind(int? mid, int boardId, bool filter, string userName, string email, string displayName, object notificationType, object dailyDigest)
+         public static IEnumerable<TypedUserFind> UserFind(int? mid, int boardId, bool filter, string userName, string email, string displayName, object notificationType, object dailyDigest)
          {
              string dataEngine;
              string connectionString;
@@ -7237,7 +7238,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable userforum_list(int? mid, object userId, object forumID)
+         public static DataTable userforum_list(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
@@ -7279,7 +7280,7 @@ namespace YAF.Classes.Data
                     
              }
          }
-         static public DataTable usergroup_list(int? mid, object userId)
+         public static DataTable usergroup_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -7320,7 +7321,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public IEnumerable<TypedUserList> UserList(int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
+         public static IEnumerable<TypedUserList> UserList(int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
          {
              string dataEngine;
              string connectionString;
@@ -7361,7 +7362,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable watchforum_check(int? mid, object userId, object forumID)
+         public static DataTable watchforum_check(int? mid, object userId, object forumID)
          {
              string dataEngine;
              string connectionString;
@@ -7403,7 +7404,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable watchforum_list(int? mid, object userId)
+         public static DataTable watchforum_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;
@@ -7444,7 +7445,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable watchtopic_check(int? mid, object userId, object topicID)
+         public static DataTable watchtopic_check(int? mid, object userId, object topicID)
          {
              string dataEngine;
              string connectionString;
@@ -7485,7 +7486,7 @@ namespace YAF.Classes.Data
                      throw new ArgumentOutOfRangeException(dataEngine);
              }
          }
-         static public DataTable watchtopic_list(int? mid, object userId)
+         public static DataTable watchtopic_list(int? mid, object userId)
          {
              string dataEngine;
              string connectionString;

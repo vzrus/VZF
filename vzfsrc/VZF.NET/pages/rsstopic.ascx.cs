@@ -32,8 +32,10 @@ namespace YAF.Pages
     using System.Web;
     using System.Xml;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Core;
     using YAF.Core.Syndication;
     using YAF.Types;

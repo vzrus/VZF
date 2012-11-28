@@ -27,7 +27,9 @@ namespace YAF.Pages
   using System.Data;
   using System.Web;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Core;
   using YAF.Core.Services;
   using YAF.Types;

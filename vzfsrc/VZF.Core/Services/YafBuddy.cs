@@ -23,7 +23,9 @@ namespace YAF.Core.Services
   using System;
   using System.Data;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Types;
   using YAF.Types.Constants;
   using YAF.Types.EventProxies;

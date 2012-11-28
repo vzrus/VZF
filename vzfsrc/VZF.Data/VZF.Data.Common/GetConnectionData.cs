@@ -1,13 +1,14 @@
-﻿using System;
-using System.Configuration;
-using System.Text;
-// using VZF.Tools;
-// using VZF.Tools;
-using VZF.Tools;
-using YAF.Utils;
-
-namespace YAF.Classes.Data
+﻿
+namespace VZF.Data.Common
 {
+    using System;
+    using System.Configuration;
+    using System.Text;
+
+    using VZF.Tools;
+
+    using YAF.Classes;
+    using YAF.Utils;
 
     public partial class CommonSqlDbAccess
     {

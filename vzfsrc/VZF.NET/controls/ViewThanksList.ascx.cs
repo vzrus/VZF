@@ -19,7 +19,7 @@
  */
 
 using YAF.Classes;
-using YAF.Classes.Data;
+
 using YAF.Utils;
 
 namespace YAF.Controls
@@ -32,6 +32,8 @@ namespace YAF.Controls
     using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
+
+    using VZF.Data.Common;
 
     using YAF.Core;
     using YAF.Types;

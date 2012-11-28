@@ -23,7 +23,9 @@ namespace YAF.Modules
   using System;
   using System.Web;
 
-  using YAF.Classes.Data;
+  using VZF.Data.Common;
+
+  
   using YAF.Types;
   using YAF.Types.Attributes;
   using YAF.Types.EventProxies;

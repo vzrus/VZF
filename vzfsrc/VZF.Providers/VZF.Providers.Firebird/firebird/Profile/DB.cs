@@ -16,22 +16,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-using System;
-using System.IO;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Configuration;
-using System.Data;
-using FirebirdSql.Data;
-using FirebirdSql.Data.FirebirdClient;
-using YAF.Classes;
-using YAF.Core;
-using YAF.Classes.Data;
-using YAF.Classes.Pattern;
 
 namespace YAF.Providers.Profile
 {
+    using System;
+    using System.Configuration;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+   
+    using FirebirdSql.Data.FirebirdClient;
+
+    using VZF.Data.Firebird;
+
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class VzfFirebirdDBConnManager : FbDbConnectionManager
     {
         public override string ConnectionString
@@ -164,10 +166,10 @@ namespace YAF.Providers.Profile
         }
 
         public DataTable GetProfiles(string connectionString, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate)
-		{
-			using ( FbCommand cmd = FbDbAccess.GetCommand( "P_profile_getprofiles" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+        {
+            using ( FbCommand cmd = FbDbAccess.GetCommand( "P_profile_getprofiles" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar));
                 cmd.Parameters[0].Value = appName;
 
@@ -191,26 +193,26 @@ namespace YAF.Providers.Profile
 
                 return dt;
 
-			}
-		}
+            }
+        }
 
-		 public DataTable GetProfileStructure(string connectionString)
-		{
+         public DataTable GetProfileStructure(string connectionString)
+        {
             
        
             string sql = String.Format(@"SELECT FIRST 1 * FROM {0}", FbDbAccess.GetObjectName(@"P_profile"));
 
-			using ( FbCommand cmd = new FbCommand( sql ) )
-			{
-				cmd.CommandType = CommandType.Text;
+            using ( FbCommand cmd = new FbCommand( sql ) )
+            {
+                cmd.CommandType = CommandType.Text;
                 return FbDbAccess.GetData(cmd, connectionString);
-			}
-		}
+            }
+        }
 
          public void AddProfileColumn(string connectionString, string Name, FbDbType columnType, int size)
-		{
-			// get column type...
-			string type = columnType.ToString();
+        {
+            // get column type...
+            string type = columnType.ToString();
            // FbDbType.SmallInt
            // FbDbType.TimeStamp
           //  FbDbType.VarChar
@@ -220,43 +222,43 @@ namespace YAF.Providers.Profile
             if (type.ToLower()=="timestamp")
             { type = "TimeStamp"; }
 
-			if ( size > 0 )
-			{
-				type += "(" + size.ToString() + ")";
-			}
+            if ( size > 0 )
+            {
+                type += "(" + size.ToString() + ")";
+            }
             if ( type.Contains("VarChar") && FbDbAccess.DatabaseEncoding !=null)
-			{
+            {
                 type += " CHARACTER SET " + FbDbAccess.DatabaseEncoding;
 
                       if (FbDbAccess.DatabaseCollation !=null)
-			      {
-				      type += " COLLATE " +  FbDbAccess.DatabaseCollation;
-			      }
+                  {
+                      type += " COLLATE " +  FbDbAccess.DatabaseCollation;
+                  }
             }
           
             string sql = String.Format(@"ALTER TABLE {0} ADD {1}  {2};", FbDbAccess.GetObjectName("P_profile"), Name, type);
              
-			using ( FbCommand cmd = new FbCommand( sql ) )
-			{
-				cmd.CommandType = CommandType.Text;
-				FbDbAccess.ExecuteNonQuery(cmd,connectionString );
-			}
-		}
+            using ( FbCommand cmd = new FbCommand( sql ) )
+            {
+                cmd.CommandType = CommandType.Text;
+                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
+            }
+        }
 
-		 public object GetProviderUserKey(string connectionString, object appName, object username )
-		{
+         public object GetProviderUserKey(string connectionString, object appName, object username )
+        {
             DataRow row = YAF.Providers.Membership.FbDB.Current.GetUser(connectionString, appName.ToString(), null, username.ToString(), false);
 
-			if ( row != null )
-			{
-				return row ["UserID"];
-			}
+            if ( row != null )
+            {
+                return row ["UserID"];
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		 public void SetProfileProperties(string connectionString, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<FbSettingsPropertyColumn> settingsColumnsList )
-		{      
+         public void SetProfileProperties(string connectionString, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<FbSettingsPropertyColumn> settingsColumnsList )
+        {      
             // EOF 'apply new profile properties'
             if (String.IsNullOrEmpty(userID.ToString())) return;
             if (values.Count <= 0) return;
@@ -270,7 +272,7 @@ namespace YAF.Providers.Profile
             if (count < 1) return;
 
             bool profileExists = false;
-            using (FbCommand cmd1 = FbDbAccess.GetCommand(String.Format(@"SELECT COUNT(1) FROM {0} WHERE USERID =CHAR_TO_UUID('{1}');", YAF.Classes.Data.FbDbAccess.GetObjectName("P_PROFILE"), userID), true))
+            using (FbCommand cmd1 = FbDbAccess.GetCommand(String.Format(@"SELECT COUNT(1) FROM {0} WHERE USERID =CHAR_TO_UUID('{1}');", FbDbAccess.GetObjectName("P_PROFILE"), userID), true))
             {
                 profileExists = Convert.ToBoolean(FbDbAccess.ExecuteScalar(cmd1,connectionString));
             }
@@ -284,7 +286,7 @@ namespace YAF.Providers.Profile
 
                       using (FbCommand cmd = FbDbAccess.GetCommand(
                      String.Format(@"UPDATE {0} SET valueindex = ?,stringdata=?,binarydata=?,LASTUPDATEDDATE=? 
-                            WHERE USERID =CHAR_TO_UUID('{1}');", YAF.Classes.Data.FbDbAccess.GetObjectName("P_PROFILE"), userID), true))
+                            WHERE USERID =CHAR_TO_UUID('{1}');", FbDbAccess.GetObjectName("P_PROFILE"), userID), true))
                 {
                     cmd.Parameters.Add(new FbParameter("@I_valueindex", FbDbType.Binary)).Value = index;
                     cmd.Parameters.Add(new FbParameter("@I_stringdata", FbDbType.Binary)).Value = stringData;
@@ -299,7 +301,7 @@ namespace YAF.Providers.Profile
             {
                 using (FbCommand cmd = FbDbAccess.GetCommand(
                    String.Format(@"INSERT INTO {0}(USERID,valueindex,stringdata,binarydata,LASTUPDATEDDATE) 
-                       VALUES(CHAR_TO_UUID(@I_USERID), @I_valueindex, @I_stringdata, @I_binarydata,@current_utctimestamp);", YAF.Classes.Data.FbDbAccess.GetObjectName("P_PROFILE")), true))
+                       VALUES(CHAR_TO_UUID(@I_USERID), @I_valueindex, @I_stringdata, @I_binarydata,@current_utctimestamp);", FbDbAccess.GetObjectName("P_PROFILE")), true))
                 {
                     cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;                  
                     cmd.Parameters.Add(new FbParameter("@I_valueindex", FbDbType.Binary)).Value = index;                    
@@ -311,10 +313,10 @@ namespace YAF.Providers.Profile
                    
                 }
             }
-		}
+        }
 
          public int DeleteProfiles(string connectionString, object appName, object userNames)
-		{
+        {
             int deleted = 0; 
             char [] sep= new char [1]{','};
             string [] userNamesArr = userNames.ToString().Split(sep[0]);
@@ -334,29 +336,29 @@ namespace YAF.Providers.Profile
                 }
             }
             return deleted;
-		}
+        }
 
          public int DeleteInactiveProfiles(string connectionString, object appName, object inactiveSinceDate)
-		{
-			using ( FbCommand cmd = FbDbAccess.GetCommand( "P_profile_deleteinactive" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+        {
+            using ( FbCommand cmd = FbDbAccess.GetCommand( "P_profile_deleteinactive" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar));
                 cmd.Parameters[0].Value = appName;
 
                 cmd.Parameters.Add(new FbParameter("@i_InactiveSinceDate", FbDbType.TimeStamp));
                 cmd.Parameters[1].Value = inactiveSinceDate;
 
-				
-				return Convert.ToInt32( FbDbAccess.ExecuteScalar(cmd,connectionString ) );
-			}
-		}
+                
+                return Convert.ToInt32( FbDbAccess.ExecuteScalar(cmd,connectionString ) );
+            }
+        }
 
          public int GetNumberInactiveProfiles(string connectionString, object appName, object inactiveSinceDate)
-		{
+        {
             using (FbCommand cmd = FbDbAccess.GetCommand("P_PROFILE_GETNUMINACT"))
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 
                 cmd.Parameters.Add(new FbParameter("@I_APPLICATIONNAME", FbDbType.VarChar));
                 cmd.Parameters[0].Value = appName;
@@ -364,24 +366,24 @@ namespace YAF.Providers.Profile
                 cmd.Parameters.Add(new FbParameter("i_InactiveSinceDate", FbDbType.TimeStamp));
                 cmd.Parameters[1].Value = inactiveSinceDate;
 
-				
-				return Convert.ToInt32( FbDbAccess.ExecuteScalar(cmd,connectionString ) );
-			}
-		}
+                
+                return Convert.ToInt32( FbDbAccess.ExecuteScalar(cmd,connectionString ) );
+            }
+        }
 
-		/*
-		public  void ValidateAddColumnInProfile( string columnName, NpgsqlTypes.NpgsqlDbType columnType )
-		{
-			FbCommand cmd = new FbCommand( sprocName );
-			cmd.CommandType = CommandType.StoredProcedure;
-			cmd.Parameters.Add( "@ApplicationName", appName );
-			cmd.Parameters.Add( "@Username", username );
-			cmd.Parameters.Add( "@IsUserAnonymous", isAnonymous );
+        /*
+        public  void ValidateAddColumnInProfile( string columnName, NpgsqlTypes.NpgsqlDbType columnType )
+        {
+            FbCommand cmd = new FbCommand( sprocName );
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add( "@ApplicationName", appName );
+            cmd.Parameters.Add( "@Username", username );
+            cmd.Parameters.Add( "@IsUserAnonymous", isAnonymous );
 
-			return cmd;
-		}
-		*/
+            return cmd;
+        }
+        */
         
   
-	}
+    }
 }

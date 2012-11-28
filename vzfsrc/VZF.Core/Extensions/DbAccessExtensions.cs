@@ -16,13 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Classes.Data
+namespace VZF.Data.Common
 {
-	using System;
-	using System.Data;
-	using System.Data.Common;
+    using System.Data.Common;
 
-	using YAF.Types;
+    using YAF.Classes;
+    using YAF.Types;
 	using YAF.Types.Interfaces;
 	using YAF.Types.Interfaces.Extensions;
 

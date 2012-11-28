@@ -30,8 +30,10 @@ namespace YAF.Controls
     using System.Text.RegularExpressions;
     using System.Web.UI;
 
+    using VZF.Data.Common;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
+    
     using YAF.Classes.Pattern;
     using YAF.Core;
     using YAF.Core.Services;

@@ -25,10 +25,12 @@ namespace YAF.Providers.Membership
   using System.Data.SqlClient;
   using System.Web.Security;
 
+  using VZF.Data.MsSql;
+
   using YAF.Classes;
   using YAF.Classes.Pattern;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Classes.Data;
+  
   using YAF.Types;
 
   #endregion

@@ -23,8 +23,10 @@ namespace YAF.Core
   using System.Collections.Generic;
   using System.Net.Mail;
 
+  using VZF.Data.Common;
+
   using YAF.Core.Services;
-  using YAF.Classes.Data;
+  
   using YAF.Types;
   using YAF.Types.Interfaces;
 

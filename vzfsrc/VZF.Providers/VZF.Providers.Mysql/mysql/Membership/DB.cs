@@ -28,17 +28,16 @@
 namespace YAF.Providers.Membership
 {
     using System;
-    using System.Web;
-    using System.Web.Security;
-    using System.Text.RegularExpressions;
-    using System.Security.Cryptography;
     using System.Data;
+    using System.Web.Security;
+
     using MySql.Data.MySqlClient;
-    using MySql.Data;
+
+    using VZF.Data.Mysql;
+
     using YAF.Classes;
-    using YAF.Core;
-    using YAF.Classes.Data;
     using YAF.Classes.Pattern;
+    using YAF.Core;
 
     public class VzfMySqlMembershipDBConnManager : MySqlDbConnectionManager
     {

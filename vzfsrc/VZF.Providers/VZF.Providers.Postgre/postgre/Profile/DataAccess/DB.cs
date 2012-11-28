@@ -19,25 +19,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Configuration;
-using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Data;
-using System.Web.Security;
-using NpgsqlTypes;
-using YAF.Classes;
-using YAF.Core;
-using YAF.Classes.Pattern;
-using YAF.Classes.Data;
-using Npgsql;
-using YAFProviders.Passthru;
-
-
 namespace YAF.Providers.Profile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Text;
+    using System.Web.Security;
+
+    using Npgsql;
+
+    using NpgsqlTypes;
+
+    using VZF.Data.Postgre;
+
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class YafProfileDBConnManager : PostgreDbConnectionManager
     {
         public override string ConnectionString
@@ -165,11 +167,11 @@ namespace YAF.Providers.Profile
             }
         }
 
-		 public DataTable __GetProfiles( string connectionString, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate )
-		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_getprofiles" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+         public DataTable __GetProfiles( string connectionString, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate )
+        {
+            using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_getprofiles" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_PageIndex", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageIndex;
                 cmd.Parameters.Add(new NpgsqlParameter("i_PageSize", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageSize;
@@ -179,98 +181,96 @@ namespace YAF.Providers.Profile
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
                 DataTable dt = PostgreDBAccess.GetData(cmd,connectionString );				
-				return dt;
-			}
-		}
+                return dt;
+            }
+        }
 
-		 public DataTable __GetProfileStructure(string connectionString)
-		{
+         public DataTable __GetProfileStructure(string connectionString)
+        {
             
        
             string sql = String.Format(@"SELECT DISTINCT * FROM {0} LIMIT 1", PostgreDBAccess.GetObjectName(@"prov_profile"));
 
-			using ( NpgsqlCommand cmd = new NpgsqlCommand( sql ) )
-			{
-				cmd.CommandType = CommandType.Text;
+            using ( NpgsqlCommand cmd = new NpgsqlCommand( sql ) )
+            {
+                cmd.CommandType = CommandType.Text;
                 return PostgreDBAccess.GetData(cmd,connectionString);
-			}
-		}
-
-       public void __AddProfileColumn(string connectionString, string Name, NpgsqlTypes.NpgsqlDbType columnType, int size)
-		{
-			// get column type...
-			string type = columnType.ToString();
-
-			if ( size > 0 )
-			{
-				type += "(" + size.ToString() + ")";
-			}
-           
-			string sql = String.Format( @"ALTER TABLE {0} ADD  {1}  {2} ", PostgreDBAccess.GetObjectName( "prov_profile" ), Name, type );
-
-			using ( NpgsqlCommand cmd = new NpgsqlCommand( sql ) )
-			{
-				cmd.CommandType = CommandType.Text;
-				PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
-			}
-		} 
-
-		public object __GetProviderUserKey(string connectionString, object appName, object username )
-		{
-            if (YAF.Classes.Config.IsMojoPortal)
-            {
-             
-                return System.Web.Security.Membership.GetUser(username.ToString(),true).ProviderUserKey;
             }
-            else
+        }
+
+       public void __AddProfileColumn(string connectionString, string Name, NpgsqlDbType columnType, int size)
+        {
+            // get column type...
+            string type = columnType.ToString();
+
+            if ( size > 0 )
             {
+                type += "(" + size.ToString() + ")";
+            }
+           
+            string sql = string.Format( @"ALTER TABLE {0} ADD  {1}  {2} ", PostgreDBAccess.GetObjectName( "prov_profile" ), Name, type );
 
+            using (var cmd = new NpgsqlCommand(sql))
+            {
+                cmd.CommandType = CommandType.Text;
+                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+            }
+        } 
 
-                DataRow row = Membership.DB.Current.__GetUser(connectionString, appName.ToString(), null,
-                                                              username.ToString(), false);
-
-                if (row != null)
-                {
-                    return row["UserID"];
-                }
+        public object __GetProviderUserKey(string connectionString, object appName, object username )
+        {
+            if (Config.IsMojoPortal)
+            {
+                return Membership.GetUser(username.ToString(),true).ProviderUserKey;
             }
 
-		    return null;
-		}
+            var row = Providers.Membership.DB.Current.__GetUser(
+                connectionString, appName.ToString(), null, username.ToString(), false);
 
-		 public void __SetProfileProperties( string connectionString, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<SettingsPropertyColumn> settingsColumnsList )
-		{
-            
-            SettingsContext sc = new SettingsContext();
-            sc.Add("IsAuthenticated", true);
-            sc.Add("UserID", userID);
-            sc.Add("ApplicationName", appName);
-           
-              
-            __SetPropertyValues(connectionString, sc, values, settingsColumnsList);
-            
-           
-		}
+            if (row != null)
+            {
+                return row["UserID"];
+            }
 
-		 public int __DeleteProfiles(string connectionString,  object appName, object userNames )
-		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_deleteprofiles" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+            return null;
+        }
+
+        public void __SetProfileProperties(
+            string connectionString,
+            object appName,
+            object userID,
+            SettingsPropertyValueCollection values,
+            List<SettingsPropertyColumn> settingsColumnsList)
+        {
+            var sc = new SettingsContext
+                         {
+                             { "IsAuthenticated", true },
+                             { "UserID", userID },
+                             { "ApplicationName", appName }
+                         };
+
+            this.__SetPropertyValues(connectionString, sc, values, settingsColumnsList);
+         }
+
+         public int __DeleteProfiles(string connectionString,  object appName, object userNames )
+        {
+            using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_deleteprofiles" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_UserNames", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userNames;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
 
                 return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
-			}
-		}
+            }
+        }
 
-		 public int __DeleteInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
-		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_deleteinactive" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+         public int __DeleteInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
+        {
+            using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_deleteinactive" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlDbType.Varchar));
                 cmd.Parameters[0].Value = appName;
 
@@ -281,48 +281,52 @@ namespace YAF.Providers.Profile
 
 
                 return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
-			}
-		}
+            }
+        }
 
-		 public int __GetNumberInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
-		{
-			using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_getnumberinactiveprofiles" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+         public int __GetNumberInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
+        {
+            using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_getnumberinactiveprofiles" ) )
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlDbType.Varchar)).Value = appName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_InactiveSinceDate", NpgsqlDbType.Timestamp)).Value = inactiveSinceDate;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
                 return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
-			}
-		}
+            }
+        }
 
-		/*
-		public  void ValidateAddColumnInProfile( string columnName, NpgsqlTypes.NpgsqlDbType columnType )
-		{
-			NpgsqlCommand cmd = new NpgsqlCommand( sprocName );
-			cmd.CommandType = CommandType.StoredProcedure;
-			cmd.Parameters.Add( "@ApplicationName", appName );
-			cmd.Parameters.Add( "@Username", username );
-			cmd.Parameters.Add( "@IsUserAnonymous", isAnonymous );
+        /*
+        public  void ValidateAddColumnInProfile( string columnName, NpgsqlTypes.NpgsqlDbType columnType )
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand( sprocName );
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add( "@ApplicationName", appName );
+            cmd.Parameters.Add( "@Username", username );
+            cmd.Parameters.Add( "@IsUserAnonymous", isAnonymous );
 
-			return cmd;
-		}
-		*/
-         public void __SetPropertyValues(string connectionString, SettingsContext context, SettingsPropertyValueCollection collection, System.Collections.Generic.List<SettingsPropertyColumn> settingsColumnsList)
-         {
+            return cmd;
+        }
+        */
 
-             bool isAuthenticated = (bool)context["IsAuthenticated"];
-             String appName = (string)context["ApplicationName"];
+        public void __SetPropertyValues(
+            string connectionString,
+            SettingsContext context,
+            SettingsPropertyValueCollection collection,
+            List<SettingsPropertyColumn> settingsColumnsList)
+        {
+            bool isAuthenticated = (bool)context["IsAuthenticated"];
+             string appName = (string)context["ApplicationName"];
              // sc.Add("IsAnonymous", isAnonymous);
              // sc.Add("LastActivityDate", lastActivityDate);
              if (context["UserID"] == null) return;
              Guid userid = (Guid)context["UserID"];
              if (collection.Count < 1) return;
 
-             string index = String.Empty;
-             string stringData = String.Empty;
+             string index = string.Empty;
+             string stringData = string.Empty;
              byte[] binaryData = null;
              int count = EncodeProfileData(collection, isAuthenticated, ref index, ref stringData, ref binaryData);
              if (count < 1) return;
@@ -335,7 +339,7 @@ namespace YAF.Providers.Profile
              // either create a new user or fetch the existing user id
              Guid userId = SchemaManager.CreateOrFetchUserId(userid, isAuthenticated);
              bool profileExists = false;
-             using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand(String.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", YAF.Classes.Data.PostgreDBAccess.GetObjectName("prov_Profile"), userId), true))
+             using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand(string.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", PostgreDBAccess.GetObjectName("prov_Profile"), userId), true))
              {
                  profileExists = Convert.ToBoolean(PostgreDBAccess.ExecuteScalar(cmd1,connectionString));
              }
@@ -346,7 +350,7 @@ namespace YAF.Providers.Profile
              {
 
                  using (var cmd = PostgreDBAccess.GetCommand(
-                      String.Format(@"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
+                      string.Format(@"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
 lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,username= :i_username WHERE userid = :i_userid and applicationid = :i_applicationid;", PostgreDBAccess.GetObjectName("prov_profile")), true))
                  {
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
@@ -369,7 +373,7 @@ lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,userna
              else
              {
                  using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand(
-                    String.Format(@"INSERT INTO {0}(
+                    string.Format(@"INSERT INTO {0}(
 userid,
 valueindex,
 stringdata,
@@ -389,7 +393,7 @@ VALUES (
 :i_applicationid,
 :i_isanonymous,
 :i_username) ;",
-                    YAF.Classes.Data.PostgreDBAccess.GetObjectName("prov_profile")), true))
+                    PostgreDBAccess.GetObjectName("prov_profile")), true))
                  {
                      cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Uuid)).Value = userId;
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
@@ -418,18 +422,18 @@ VALUES (
         private object GetApplicationIdFromName(string connectionString, string appName )
         {
             using ( var cmd = PostgreDBAccess.GetCommand( "prov_createapplication" ) )
-			{
-				cmd.CommandType = CommandType.StoredProcedure;
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value =  Guid.NewGuid();;
-			    var appId = new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid);
+                var appId = new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid);
                 appId.Direction = ParameterDirection.Output;
-			    cmd.Parameters.Add(appId);
+                cmd.Parameters.Add(appId);
 
                 return PostgreDBAccess.ExecuteScalar(cmd, connectionString);
-			}
+            }
             
         }
-	}
+    }
 }

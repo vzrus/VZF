@@ -24,7 +24,9 @@ namespace YAF.Core
 
     using System;
 
-    using YAF.Classes.Data;
+    using VZF.Data.Common;
+
+    
     using YAF.Types;
     using YAF.Utils;
 

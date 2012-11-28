@@ -16,20 +16,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Classes.Data
+namespace VZF.Data.MsSql.Search
 {
   #region Using
 
-  using System.Collections.Generic;
-  using System.Diagnostics;
-  using System.Linq;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
 
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
-  using YAF.Types;
-  using YAF.Types.Constants;
+    using YAF.Utils;
+    using YAF.Types;
+    using YAF.Types.Constants;
 
-  #endregion
+    #endregion
 
   #region Enums
 

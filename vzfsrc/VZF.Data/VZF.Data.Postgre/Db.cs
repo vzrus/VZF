@@ -24,7 +24,6 @@ namespace VZF.Data.Postgre
     using NpgsqlTypes;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Types.Handlers;
 
     using System;
@@ -7698,7 +7697,7 @@ namespace VZF.Data.Postgre
                     catch (Exception x)
                     {
                         trans.Rollback();
-                        eventlog_create(null, "user_register in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
+                        eventlog_create(null, "user_register in VZF.Classes.Data.Db.cs", x, EventLogTypes.Error);
                         return false;
                     }
                 }
@@ -7727,7 +7726,7 @@ namespace VZF.Data.Postgre
             }
             catch (Exception x)
             {
-                Db.eventlog_create( null, "user_aspnet in YAF.Classes.Data.Db.cs", x, EventLogTypes.Error);
+                Db.eventlog_create( null, "user_aspnet in VZF.Classes.Data.Db.cs", x, EventLogTypes.Error);
                 return 0;
             }
         }
@@ -8835,7 +8834,7 @@ namespace VZF.Data.Postgre
                 // use transactions..
                 if (useTransactions)
                 {
-                    using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.PostgreDBAccess.IsolationLevel))
+                    using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDBAccess.IsolationLevel))
                     {
                         foreach (var sql0 in statements)
                         {
@@ -9004,7 +9003,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_roleprefix", NpgsqlDbType.Varchar)).Value = rolePrefix;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
                 
-                YAF.Classes.Data.PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
                                 
             }
 
@@ -9018,7 +9017,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_version", NpgsqlDbType.Integer)).Value = version;
                 cmd.Parameters.Add(new NpgsqlParameter("i_versionname", NpgsqlDbType.Varchar)).Value = name;
               
-                YAF.Classes.Data.PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
+                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString);
             }
         }
         /// <summary>
@@ -9032,7 +9031,7 @@ namespace VZF.Data.Postgre
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardID;
-                return YAF.Classes.Data.PostgreDBAccess.GetData(cmd,connectionString);
+                return PostgreDBAccess.GetData(cmd,connectionString);
             }
         }
         #endregion

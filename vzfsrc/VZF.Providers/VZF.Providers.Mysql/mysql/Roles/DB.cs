@@ -27,25 +27,16 @@
 namespace YAF.Providers.Roles
 {
     using System;
-    //using System.Collections.Generic;
-    using System.Text;
-    using System.Web;
-    using System.Configuration.Provider;
-    using System.Configuration;
-    using System.Collections;
-    using System.Collections.Specialized;
-    using System.Web.Security;
-    using System.Text.RegularExpressions;
-    using System.Security.Cryptography;
     using System.Data;
 
-    using MySql.Data;
     using MySql.Data.MySqlClient;
 
+    using VZF.Data.Mysql;
+
     using YAF.Classes;
-    using YAF.Core;
-    using YAF.Classes.Data;
     using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class VzfMySqlRolesDBConnManager : MySqlDbConnectionManager
     {
    
@@ -170,23 +161,23 @@ namespace YAF.Providers.Roles
             }
         }
 
-				/// <summary>
-				/// Database Action - Get Role Exists
-				/// </summary>
-				/// <param name="appName">Application Name</param>
-				/// <param name="roleName">Role Name</param>
-				/// <returns>Database containing Role Information</returns>
+                /// <summary>
+                /// Database Action - Get Role Exists
+                /// </summary>
+                /// <param name="appName">Application Name</param>
+                /// <param name="roleName">Role Name</param>
+                /// <returns>Database containing Role Information</returns>
         public object GetRoleExists(string connectionString, object appName, object roleName)
-				{
-					using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_role_exists" ) ) )
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-						cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
+                {
+                    using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_role_exists" ) ) )
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
                         cmd.Parameters.Add( "i_RoleName", MySqlDbType.VarChar ).Value = roleName;
-						
-						return MySqlDbAccess.ExecuteScalar(cmd,connectionString) ;
-					}
-				}
+                        
+                        return MySqlDbAccess.ExecuteScalar(cmd,connectionString) ;
+                    }
+                }
 
         /// <summary>
         /// Database Action - Add User to Role

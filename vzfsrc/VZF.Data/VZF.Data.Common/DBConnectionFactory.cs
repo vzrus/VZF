@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using YAF.Types;
-using YAF.Types.Interfaces;
-using YAF.Utils;
-
-namespace YAF.Classes.Data
+﻿namespace VZF.Data.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+
+    using VZF.Data.Firebird;
+    using VZF.Data.MsSql;
+    using VZF.Data.Mysql;
+    using VZF.Data.Postgre;
+
+    using YAF.Types;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
+
     public partial class CommonSqlDbAccess: IDbAccess 
-	{ 
+    { 
         /// <summary>
         ///   The _connection manager type.
         /// </summary>
@@ -786,15 +792,15 @@ namespace YAF.Classes.Data
         /// 
         public DataTable GetData(IDbCommand cmd, string connectionString)
         {
-            return GetDataTableFromReader(cmd, false, true, connectionString);
+            return this.GetDataTableFromReader(cmd, false, true, connectionString);
         }
         public DataTable GetData(IDbCommand cmd, bool transaction, string connectionString)
         {
-            return GetDataTableFromReader(cmd, transaction, true,  connectionString);
+            return this.GetDataTableFromReader(cmd, transaction, true,  connectionString);
         }
         public DataTable GetData(IDbCommand cmd, bool transaction, bool acceptChanges, string connectionString)
         {
-            return GetDataTableFromReader(cmd, transaction, acceptChanges,  connectionString);
+            return this.GetDataTableFromReader(cmd, transaction, acceptChanges,  connectionString);
         }
 
         /// <summary>
@@ -805,7 +811,7 @@ namespace YAF.Classes.Data
         /// <remarks>Without transaction.</remarks>
         public DataTable GetData(string commandText, string connectionString)
         {
-            return GetData(commandText, false, connectionString);
+            return this.GetData(commandText, false, connectionString);
         }
         public DataTable GetData(string commandText, bool transaction, string connectionString)
         {
@@ -840,7 +846,7 @@ namespace YAF.Classes.Data
         public void ExecuteNonQuery(IDbCommand cmd, string connectionString)
         {
             // defaults to using a transaction for non-queries
-            ExecuteNonQuery(cmd, true, connectionString);
+            this.ExecuteNonQuery(cmd, true, connectionString);
         }
 
         public void ExecuteNonQuery(IDbCommand cmd, bool transaction, string connectionString)
@@ -870,7 +876,7 @@ namespace YAF.Classes.Data
         public int ExecuteNonQueryInt(IDbCommand cmd, string connectionString)
         {
             // defaults to using a transaction for non-queries
-            return ExecuteNonQueryInt(cmd, true, connectionString);
+            return this.ExecuteNonQueryInt(cmd, true, connectionString);
         }
         public int ExecuteNonQueryInt(IDbCommand cmd, bool transaction, string connectionString)
         {
@@ -900,7 +906,7 @@ namespace YAF.Classes.Data
         public object ExecuteScalar(IDbCommand cmd, string connectionString)
         {
             // default to using a transaction for scaler commands
-            return ExecuteScalar(cmd, true, connectionString);
+            return this.ExecuteScalar(cmd, true, connectionString);
         }
         public object ExecuteScalar(IDbCommand cmd, bool transaction, string connectionString)
         {
@@ -936,12 +942,12 @@ namespace YAF.Classes.Data
         /// <returns></returns>
         public DataTable GetDataTableFromReader(IDbCommand cmd, string connectionString )
         {
-            return GetDataTableFromReader(cmd, false, true, connectionString);
+            return this.GetDataTableFromReader(cmd, false, true, connectionString);
         }
         public DataTable GetDataTableFromReader(IDbCommand cmd,
               bool transaction, string connectionString)
         {
-            return GetDataTableFromReader(cmd, transaction, true, connectionString);
+            return this.GetDataTableFromReader(cmd, transaction, true, connectionString);
         }
         public DataTable GetDataTableFromReader(IDbCommand cmd,
            bool transaction, bool acceptChanges, string connectionString)
@@ -973,7 +979,7 @@ namespace YAF.Classes.Data
 
         public DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges, int firstColumnIndex, string connectionString)
         {
-            return AddValuesToDataTableFromReader(cmd, dt, transaction, acceptChanges, firstColumnIndex, 0, connectionString);
+            return this.AddValuesToDataTableFromReader(cmd, dt, transaction, acceptChanges, firstColumnIndex, 0, connectionString);
         }
         public DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges, int firstColumnIndex, int currentRow, string connectionString)
         {
@@ -998,9 +1004,8 @@ namespace YAF.Classes.Data
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
             }
-
-
         }
+
         #endregion
 
         /// <summary>
@@ -1051,5 +1056,5 @@ namespace YAF.Classes.Data
 
             return defaultName;
         }
-	}
+    }
 }

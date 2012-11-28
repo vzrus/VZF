@@ -17,24 +17,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Core;
-
 namespace YAF.Classes
 {
   #region Using
 
-  using System;
-  using System.Web;
+    using System;
+    using System.Web;
 
-  using YAF.Classes.Data;
-  using YAF.Core.Tasks;
-  using YAF.RegisterV2;
-  using YAF.Types;
-  using YAF.Types.Attributes;
-  using YAF.Types.Interfaces;
-  using YAF.Utils;
+    using VZF.Data.Common;
 
-  #endregion
+    using YAF.Core;
+    using YAF.Core.Tasks;
+    using YAF.RegisterV2;
+    using YAF.Types;
+    using YAF.Types.Attributes;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
+
+    #endregion
 
   /// <summary>
   /// Gets the latest information from YAF headquarters

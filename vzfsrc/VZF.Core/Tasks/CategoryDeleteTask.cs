@@ -23,8 +23,10 @@ namespace YAF.Core.Tasks
 {
 	using System;
 
-    using YAF.Types.Constants;
-	using YAF.Classes.Data;
+	using VZF.Data.Common;
+
+	using YAF.Types.Constants;
+	
 	using YAF.Types.Interfaces;
 	using YAF.Utils;
 

@@ -17,21 +17,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System;
-using System.Text;
-using System.Web;
-using System.Configuration;
-using System.Web.Security;
-using System.Data;
-using FirebirdSql.Data.FirebirdClient;
-
-using YAF.Classes;
-using YAF.Core;
-using YAF.Classes.Data;
-using YAF.Classes.Pattern;
-
 namespace YAF.Providers.Roles
 {
+    using System;
+    using System.Data;
+
+    using FirebirdSql.Data.FirebirdClient;
+
+    using VZF.Data.Firebird;
+
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+
     public class VzfFirebirdDBConnManager : FbDbConnectionManager
     {
         public override string ConnectionString

@@ -36,7 +36,6 @@ namespace VZF.Data.Mysql
     using VZF.Data.MySqlDb;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
@@ -8222,7 +8221,7 @@ namespace VZF.Data.Mysql
             }
             catch ( Exception x )
             {
-                Db.eventlog_create(connectionString,null, "user_aspnet in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error );
+                Db.eventlog_create(connectionString,null, "user_aspnet in VZF.Classes.Data.DB.cs", x, EventLogTypes.Error );
                 return 0;
             }
         }
@@ -9398,7 +9397,7 @@ namespace VZF.Data.Mysql
             script = system_initialize_replace_entries(connectionString, script);
 
 
-            using (YAF.Classes.Data.MySqlDbConnectionManager connMan = new MySqlDbConnectionManager(connectionString))
+            using (MySqlDbConnectionManager connMan = new MySqlDbConnectionManager(connectionString))
             {                   
               
                 
@@ -9411,7 +9410,7 @@ namespace VZF.Data.Mysql
                 // use transactions...
                 if (useTransactions)
                 {
-                    using (MySqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.MySqlDbAccess.IsolationLevel))
+                    using (MySqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(MySqlDbAccess.IsolationLevel))
                     {
                         foreach (string sql0 in statements)
                         {
@@ -9591,7 +9590,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_RolePrefix", MySqlDbType.String).Value = rolePrefix;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                               
-                YAF.Classes.Data.MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
+                MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
             }
         }
         static public void system_updateversion(string connectionString, int version, string name)
@@ -9603,7 +9602,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add(new MySqlParameter("i_Version", MySqlDbType.Int32)).Value = version;
                 cmd.Parameters.Add(new MySqlParameter("i_VersionName", MySqlDbType.VarChar)).Value = name;
 
-                YAF.Classes.Data.MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
+                MySqlDbAccess.ExecuteNonQuery(cmd,connectionString);
             }
         }
         /// <summary>
@@ -9617,7 +9616,7 @@ namespace VZF.Data.Mysql
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new MySqlParameter("i_BoardID", MySqlDbType.Int32)).Value = boardID;
-                return YAF.Classes.Data.MySqlDbAccess.GetData(cmd,connectionString);
+                return MySqlDbAccess.GetData(cmd,connectionString);
             }
         }
 

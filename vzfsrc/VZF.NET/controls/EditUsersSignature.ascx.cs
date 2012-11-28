@@ -25,7 +25,9 @@ namespace YAF.Controls
     using System.Data;
     using System.Text;
 
-    using YAF.Classes.Data;
+    using VZF.Data.Common;
+
+    
     using YAF.Core;
     using YAF.Editors;
     using YAF.Types;

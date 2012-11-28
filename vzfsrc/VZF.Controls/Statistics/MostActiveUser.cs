@@ -26,11 +26,13 @@ namespace YAF.Controls.Statistics
     using System.Text;
     using System.Web.UI;
 
+    using VZF.Data.Common;
+
     using YAF.Core;
     using YAF.Types.Interfaces;
     using YAF.Types.Constants;
     using YAF.Core.Services;
-    using YAF.Classes.Data;
+    
     using YAF.Utils;
     using YAF.Types;
     using YAF.Types.Constants;

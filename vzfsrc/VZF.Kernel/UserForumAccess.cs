@@ -22,7 +22,9 @@ namespace VZF.Kernel
     using System.Data;
     using System.Linq;
     using System.Text;
-    using YAF.Classes.Data;
+
+    using VZF.Data.Common;
+ 
     using YAF.Core;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;

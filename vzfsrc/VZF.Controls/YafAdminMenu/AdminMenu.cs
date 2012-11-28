@@ -20,7 +20,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
-using YAF.Classes.Data;
+
 
 namespace YAF.Controls
 {
@@ -34,6 +34,8 @@ namespace YAF.Controls
   using System.Text;
   using System.Web.UI;
   using System.Xml.Serialization;
+
+  using VZF.Data.Common;
 
   using YAF.Core;
   using YAF.Types;

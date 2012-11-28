@@ -28,9 +28,11 @@ namespace YAF.Controls
   using System.Web;
   using System.Web.UI;
 
+  using VZF.Data.Common;
+
   using YAF.Classes;
   using YAF.Core; 
-  using YAF.Classes.Data;
+  
   using YAF.Utils;
   using YAF.Utils.Helpers;
   using YAF.Types;
