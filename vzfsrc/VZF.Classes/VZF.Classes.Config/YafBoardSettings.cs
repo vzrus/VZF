@@ -292,6 +292,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets MostActiveUserDays.
+        /// </summary>
+        public int MostActiveUserDays
+        {
+            get
+            {
+                return this._regBoard.GetValue("MostActiveUserDays", 7);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("MostActiveUserDays", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets Jquery UI Theme.
         /// </summary>
         public string JqueryUITheme

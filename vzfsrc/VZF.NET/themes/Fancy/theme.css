@@ -19,10 +19,10 @@
     font-style: normal;
 }
 body {
-	background-color: #2a4985;
+    background-color: #2a4985;
     background-image: -ms-linear-gradient(top, #2a4985, #446bb8);
     background-image: -webkit-linear-gradient(top, #2a4985, #446bb8);
-	background-image: -moz-linear-gradient(top, #2a4985, #446bb8);
+    background-image: -moz-linear-gradient(top, #2a4985, #446bb8);
     background-image: -o-linear-gradient(top, #2a4985, #446bb8);
     background-image: linear-gradient(top, #2a4985, #446bb8);
 }
@@ -31,16 +31,16 @@ html { min-height: 100%; }
 .yafnet img {border: 0;}
 
 .yafnet {
-	font-size:12px;
-	font-family: "Trebuchet MS", "Tahoma", "Verdana", "Arial", sans-serif;
-	color: white;
+    font-size:12px;
+    font-family: "Trebuchet MS", "Tahoma", "Verdana", "Arial", sans-serif;
+    color: white;
 }
 .yafnet .content {color: black;}
 
 /* Input (Textboxes) Styling */
 .yafnet textarea {
-		width:98%;
-		padding:0px;
+        width:98%;
+        padding:0px;
 }
 .yafnet input[type="image"] {border: 0;}
 
@@ -103,7 +103,7 @@ html { min-height: 100%; }
 /****************************************/
 
 .yafnet .yafcssimagebutton img {
-	padding-right: 5px;
+    padding-right: 5px;
 }
 .yafnet .gotoPageForm input[type="button"],
 .yafnet input[type="checkbox"],
@@ -378,18 +378,18 @@ html { min-height: 100%; }
 /* the checked MultiQuote Button */
 .yafnet .MultiQuoteButton input[type="checkbox"] {left:-9999px;}
 .yafnet .Checked {
-	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
-	-moz-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
-	box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 3px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    -moz-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 3px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
 }
 /****************************************/
 
 .yafnet ul {
-	margin: 2px 2px 2px 2px;
-	padding: 0;
+    margin: 2px 2px 2px 2px;
+    padding: 0;
 }
 .yafnet li {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 /* Header 1 - Main header */
 .yafnet .header1,
@@ -397,10 +397,10 @@ html { min-height: 100%; }
 .yafnet tr.forumRowTitle,
 .yafnet .topicTitle th {	
     font-weight:normal!important;
-	padding-left: 10px;
-	font-size: 14pt;
-	line-height: 20px;
-	text-align:left;
+    padding-left: 10px;
+    font-size: 14pt;
+    line-height: 20px;
+    text-align:left;
     font-family:'Lobster',Arial, Helvetica, sans-serif;
 }
 
@@ -409,16 +409,16 @@ html { min-height: 100%; }
 .yafnet tr.header2 th,
 .yafnet td.header2,
 .yafnet th.header2 {
-	border-top:1px solid #ccc;
-	line-height: 25px;
-	font-weight: bold;
-	padding-left: 10px;
+    border-top:1px solid #ccc;
+    line-height: 25px;
+    font-weight: bold;
+    padding-left: 10px;
 }
 .yafnet .headerReplies,
 .yafnet .headerViews,
 .yafnet .headerPosts,
 .yafnet .headerTopics {
-	text-align:center;
+    text-align:center;
 }
 
 .topicSubTitle .headerLastPost {text-align:left;}
@@ -431,9 +431,9 @@ html { min-height: 100%; }
 .content .header2 td.header1 {border-top:none;}
 
 .yafnet #yafprofilecontainer .content {
-	-webkit-box-shadow: 0 0px 2px rgba(244,244,244,0.9);
-	-moz-box-shadow: 0 0px 2px rgba(0,0,0,0.9);
-	box-shadow: 0 0px 2px rgba(225, 223, 192,0.9);
+    -webkit-box-shadow: 0 0px 2px rgba(244,244,244,0.9);
+    -moz-box-shadow: 0 0px 2px rgba(0,0,0,0.9);
+    box-shadow: 0 0px 2px rgba(225, 223, 192,0.9);
 }
 
 .yafnet #yafprofilecontainer .footer1 {background:white;}
@@ -444,8 +444,8 @@ html { min-height: 100%; }
 .yafnet tr.topicRow a.post_link,
 .yafnet tr.topicRow_Alt a.post_link
 {
-	font-size:9pt;
-	font-weight: bold;
+    font-size:9pt;
+    font-weight: bold;
 }
 
 .yafnet th.header2 a:link,
@@ -454,12 +454,12 @@ html { min-height: 100%; }
 .yafnet th.header2 a:hover { color: black; text-decoration: underline; }
 
 .yafnet td.infoTable {
-	background-color: white;
-	padding: 10px;
-	border: 1px solid white;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid white;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
 }
 
 /* all links */
@@ -467,22 +467,22 @@ html { min-height: 100%; }
 .yafnet .content a:hover	{ color: #001090; text-decoration: underline; }
 /* Footer1 - Bottom of tables */
 .yafnet .footer1 {
-	font-size: 7pt;
-	height: 28px;	
+    font-size: 7pt;
+    height: 28px;	
 }
 .yafnet .footer1 select,
 .yafnet .footer1 td {
-	font-size: 10px;
+    font-size: 10px;
 }
 .yafnet .forumheading {
-	font-size: 9pt;
-	font-weight: bold;
+    font-size: 9pt;
+    font-weight: bold;
 }
 .yafnet a.post_link
 {
-	font-size: 9pt;
-	font-weight: bold;
-	text-decoration: none;
+    font-size: 9pt;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .yafnet .postheader {}
@@ -506,41 +506,41 @@ html { min-height: 100%; }
 .yafnet .post_alt,
 .forumRow_Alt td,
 .topicRow_Alt td {
-	
+    
 }
 
 .yafnet .postNavigation .post {
-	background-color: transparent;
-	border: none;
-	
+    background-color: transparent;
+    border: none;
+    
 } 
 .yafnet .postNavigation .post a {
-	color: white;
+    color: white;
 }
 
 .yafnet tr.topicRow:hover td,
 .yafnet tr.topicRow_Alt:hover td{
-	background-color: #eee;
-	-moz-transition: color .15s linear,background-color .15s linear;
-	-webkit-transition: color .15s linear,background-color .15s linear;
-	transition: color .15s linear,background-color .15s linear;
+    background-color: #eee;
+    -moz-transition: color .15s linear,background-color .15s linear;
+    -webkit-transition: color .15s linear,background-color .15s linear;
+    transition: color .15s linear,background-color .15s linear;
 }
 /* Footer of posts */
 .yafnet .postfooter {
-	height: 30px;
+    height: 30px;
 }
 /* most tables are class 'content' */
 .yafnet table.content {
-	border-spacing: 0;
-	margin-bottom:2em;
+    border-spacing: 0;
+    margin-bottom:2em;
 }
 
 .yafnet .contentShadow {
-	position:relative;
+    position:relative;
           
-	padding:1em; 
-	background:white;
-	-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 60px rgba(0, 0, 0, 0.1) inset;
+    padding:1em; 
+    background:white;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 60px rgba(0, 0, 0, 0.1) inset;
     -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
     box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
@@ -550,8 +550,8 @@ html { min-height: 100%; }
     content:"";
     position:absolute; 
     z-index:-2;
-	bottom:15px;
-	left:10px;
+    bottom:15px;
+    left:10px;
     width:50%;
     height:20%;
 }
@@ -594,72 +594,72 @@ html { min-height: 100%; }
                     box-shadow:0 8px 10px rgba(0, 0, 0, 0.5);
 }
 .yafnet .postformheader {
-	font-weight:bold;
+    font-weight:bold;
 }
 .yafnet .fileattach .filetitle,
 .yafnet .fileattach .imgtitle {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	font-size: 12px;
-	font-style: italic;
-	color:#333;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-style: italic;
+    color:#333;
 }
 .yafnet .fileattach .attachedimg,
 .yafnet .fileattach .attachedfile {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 .yafnet .fileattach a {
-	font-weight: bold;
+    font-weight: bold;
 }
 .yafnet table.content td {
-	padding: 5px;
+    padding: 5px;
 }
 .yafnet tr.forumRowTitle th
 {
     padding: 8px;
 }
 .yafnet .content td table td table td {
-	padding: 0px;	
+    padding: 0px;	
 }
 .yafnet .content .headersub {
-	color: #ffffff;
-	font-weight: bold;
-	padding-left: 10px;
-	font-size: 15px;
-	line-height: 30px;	
+    color: #ffffff;
+    font-weight: bold;
+    padding-left: 10px;
+    font-size: 15px;
+    line-height: 30px;	
 }
 /* used for quoting messages */
 .yafnet .code,
 .yafnet .quote {
     padding: 4px;
-	border: 1px solid white;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
-	
-	background-color: white;
-	width:90%;
-	-webkit-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.455);
+    border: 1px solid white;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    
+    background-color: white;
+    width:90%;
+    -webkit-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.455);
     -moz-box-shadow:    0px 1px 5px rgba(0, 0, 0, 0.455);
     box-shadow:         0px 1px 5px rgba(0, 0, 0, 0.455);
-	margin: 10px;
+    margin: 10px;
 }
 .yafnet .quotetitle {
-	padding-bottom:2px;
-	display:block;
-	color:#666;
-	font-weight:bold;
+    padding-bottom:2px;
+    display:block;
+    color:#666;
+    font-weight:bold;
 }
 .yafnet  .innerquote {
     font-style: italic;
 }
 /* used for code */
 .yafnet .innercode {
-	padding: 4px;
-	
-	color: #000000;
-	line-height: 1.3em;
-	font-family: "courier new", "times new roman", monospace;
+    padding: 4px;
+    
+    color: #000000;
+    line-height: 1.3em;
+    font-family: "courier new", "times new roman", monospace;
     overflow-x: auto;
 }
 /* font sizes */
@@ -667,17 +667,17 @@ html { min-height: 100%; }
 .yafnet .largefont	{ font-size: 11px; }
 /* Image Links */
 .yafnet a.imagelink {
-	font-weight: bold;
-	color: #000000;
+    font-weight: bold;
+    color: #000000;
 }
 .yafnet a:hover.imagelink {
-	text-decoration: none;
-	/*background-color: #D0D0D0;*/
+    text-decoration: none;
+    /*background-color: #D0D0D0;*/
 }
 /* Used for editor textarea */
 .yafnet .posteditor {
-	width: 100%;
-	height: 200px;
+    width: 100%;
+    height: 200px;
 }
 /* Forum Welcome Message */
 .yafForumWelcome {position:absolute;left:-9999px;}
@@ -709,28 +709,28 @@ html { min-height: 100%; }
 
 /* for printing */
 .yafnet table.print {
-	border: solid 1px #C0C0C0;
-	-moz-border-radius: 0.4em; 
-	-webkit-border-radius: 0.4em;
-	border-radius: 0.4em;
+    border: solid 1px #C0C0C0;
+    -moz-border-radius: 0.4em; 
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
 }
 .yafnet .printheader {
-	background-color: #DDDDDD;
-	color: #000000;
-	padding: 4px;
+    background-color: #DDDDDD;
+    color: #000000;
+    padding: 4px;
 }
 .yafnet .printbody {
-	background-color: #FFFFFF;
-	color: #000000;
-	padding: 4px;
+    background-color: #FFFFFF;
+    color: #000000;
+    padding: 4px;
 }
 .yafnet .textfield {
-	background-color: #FFFFFF;
-	border: 1px solid #3B3b3b;
-	-moz-border-radius: 0.4em; 
-	-webkit-border-radius: 0.4em;
-	border-radius: 0.4em;
-	width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #3B3b3b;
+    -moz-border-radius: 0.4em; 
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+    width: 100%;
 }
 
 .yafnet div.postdiv {width: 100%;min-height: 100px;overflow: auto;	}
@@ -753,31 +753,31 @@ html { min-height: 100%; }
 .yafnet .yafpopupmenu li {padding: 5px 10px 5px 10px;list-style-type: none;margin: 0;color:black;font-size:12px;font-family: "Trebuchet MS", "Tahoma", "Verdana", "Arial", sans-serif;}
 .yafnet .yafpopupmenu li.popupitemhover {background-color: #ccc;}
 .yafnet .yafpopupmenu li:first-child.popupitemhover {background-color: #ccc;-moz-border-radius-topleft:0.3em;-webkit-border-top-left-radius:0.3em;border-top-left-radius:0.3em;
-	-moz-border-radius-topright:0.3em;
+    -moz-border-radius-topright:0.3em;
     -webkit-border-top-right-radius:0.3em;
     border-top-right-radius:0.3em;}
 .yafnet .yafpopupmenu li:last-child.popupitemhover {background-color: #ccc;-moz-border-radius-bottomleft:0.3em;-webkit-border-bottom-left-radius:0.3em;border-bottom-left-radius:0.3em;
-	
-	-moz-border-radius-bottomright:0.3em;
+    
+    -moz-border-radius-bottomright:0.3em;
     -webkit-border-bottom-right-radius:0.3em;
     border-bottom-right-radius:0.3em;}
 
 /*Modal Popup*/
 .modalBackground
 {
-	background-color:#000;
-	filter:alpha(opacity=80);
-	opacity:0.8;
+    background-color:#000;
+    filter:alpha(opacity=80);
+    opacity:0.8;
 }
 
 .modalPopup
 {
-	background-color: #ffffff;
-	border: solid 1px #aaaaaa;
-	-moz-border-radius: 0.4em; 
-	-webkit-border-radius: 0.4em;
-	border-radius: 0.4em;
-	width: 400px;
+    background-color: #ffffff;
+    border: solid 1px #aaaaaa;
+    -moz-border-radius: 0.4em; 
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+    width: 400px;
 }
 
 .modalPopup .modalBase
@@ -787,57 +787,57 @@ html { min-height: 100%; }
 
 .modalPopup .modalHeader
 {
-	
-	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.62);
+    
+    -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.62);
 -moz-box-shadow:    0px 0px 2px rgba(0, 0, 0, 0.62);
 box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
-	background: url('images/HeaderBack.png') #333;
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
-	background: -moz-linear-gradient(top,  #666,  #000);
-	background: -o-linear-gradient(top,  #666,  #000);
-	
-	
-	color: #ffffff;
-	font-weight: bold;
-	padding-left: 10px;
-	font-size: 15px;
-	line-height: 30px;
+    background: url('images/HeaderBack.png') #333;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
+    background: -moz-linear-gradient(top,  #666,  #000);
+    background: -o-linear-gradient(top,  #666,  #000);
+    
+    
+    color: #ffffff;
+    font-weight: bold;
+    padding-left: 10px;
+    font-size: 15px;
+    line-height: 30px;
 }
 
 .modalPopup .modalInner
 {
-	padding: 10px;
-	text-align:center;
+    padding: 10px;
+    text-align:center;
 }
 
 .modalPopup .modalInnerMain
 {
-	font-size: 9pt;
-	font-weight: bold;
-	color: #992222;
-	text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+    color: #992222;
+    text-align: center;
 }
 
 .modalPopup .modalInnerSub
 {
-	font-size: 8pt;
-	color: #333333;
-	text-align: center;
+    font-size: 8pt;
+    color: #333333;
+    text-align: center;
 }
 
 .modalPopup .modalFooter
 {
-	padding: 5px;
-	background-color: #f4f4f4;	
-	line-height: 20px;
+    padding: 5px;
+    background-color: #f4f4f4;	
+    line-height: 20px;
 }
 
 .modalPopup .modalFooter input
 {
-	display:block;
-	vertical-align: middle;
-	margin:0 auto;
+    display:block;
+    vertical-align: middle;
+    margin:0 auto;
 }
 
 /* Goto Page Form */
@@ -851,8 +851,8 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 
 /* Userbox */
 .yafnet div.section {
-	padding: 5px;
-	margin-bottom:5px;
+    padding: 5px;
+    margin-bottom:5px;
 }
 .postUser a {font-weight:bold;}
 .message, .UserBox {vertical-align:top;}
@@ -873,36 +873,36 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 .YAF_Pages_team .avatarimage {width: 40px; height: 40px;}
 
 .AvatarWrap {
-	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
-	-moz-box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
-	box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
+    -moz-box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
+    box-shadow: inset 0 0 1px rgba(0,0,0,.8), inset 0 2px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,0,0,.4);
 
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
 .topicLastPost .AvatarWrap,
 .topicMain .AvatarWrap,
 .YAF_Pages_members .AvatarWrap,
 .YAF_Pages_team .AvatarWrap {
-	float: left;
-	
-	width: 40px;
-	height: 40px;
-	margin-right:5px;
-	
-	display: inline-block;
-	
-	-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
-	-moz-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
-	box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    float: left;
+    
+    width: 40px;
+    height: 40px;
+    margin-right:5px;
+    
+    display: inline-block;
+    
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    -moz-box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
+    box-shadow: 0 1px 0 rgba(255,255,255,.2), inset 0 4px 5px rgba(0,0,0,.6), inset 0 1px 0 rgba(0,0,0,.6);
 
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	
-	background-size:40px!important;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    
+    background-size:40px!important;
 }
 
 .yafnet span.highlight {
@@ -913,12 +913,12 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 .yafnet .menuList li a,
 .yafnet .menuAdminList li a
 {
-	font-family:"Lobster";
+    font-family:"Lobster";
     font-weight: bold;
-	
-	font-size: 14pt;
-	color: black;
-	font-weight:lighter;
+    
+    font-size: 14pt;
+    color: black;
+    font-weight:lighter;
 }
 .yafnet .menuMyList li a
 {
@@ -938,36 +938,36 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 .guestUser { position:absolute;left:-9999px;}
 
 .yafnet .menuContainer {
-	border-spacing: 0;
-	margin-top:10px;
-	margin-bottom:10px;
-	color: black;	
-	width:100%;
-	padding:4px 4px 4px 0px!important; 
-	
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
+    border-spacing: 0;
+    margin-top:10px;
+    margin-bottom:10px;
+    color: black;	
+    width:100%;
+    padding:4px 4px 4px 0px!important; 
+    
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
 }
 
 .yafnet .menuContainer ul li a,
 .QuickSearch a {
-	color:black;
+    color:black;
 }
 .QuickSearch input {
-	border: 1px solid #ccc;
-	background-color: white;
+    border: 1px solid #ccc;
+    background-color: white;
 }
 .yafnet .postOptions li {
-	list-style-type: none;
+    list-style-type: none;
 }
 .yafnet .adminMenu
 {
-	padding: 1px 5px 5px 5px;
+    padding: 1px 5px 5px 5px;
 }
 .yafnet .outerMenuContainer a {
-	text-decoration: none;
-	color:white;
+    text-decoration: none;
+    color:white;
 }
 .QuickSearchButton
 {
@@ -977,38 +977,38 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
   vertical-align:top
 }
 .yafnet a.QuickSearchButton {
-	color:black;
+    color:black;
 }
 .yafnet .outerMenuContainer a:hover {
-	color:red;
+    color:red;
 }
 .yafnet #yafhelpmenu ul li a {
     font-size: 11px;
-	font-weight: 400;
+    font-weight: 400;
 }
 .menuAdmin a {
-	color:#F00!important;
+    color:#F00!important;
 }
 
 /* Override jquery ui font-size */
 .ui-widget { font-size: 9pt!important; }
 
 .yafnet .PrevTopicLink {
-	background: url("images/LeftArrow.png") transparent no-repeat 0% 50%;
+    background: url("images/LeftArrow.png") transparent no-repeat 0% 50%;
 }
 
 .yafnet .NextTopicLink {
-	background: url("images/RightArrow.png") transparent no-repeat 100% 50%;
+    background: url("images/RightArrow.png") transparent no-repeat 100% 50%;
 }
 .yafnet .EditUserProfileTable .postheader {
-	padding-left: 30px;
-	height: 20px;
+    padding-left: 30px;
+    height: 20px;
 }
 .yafnet .header2 input[type=image],
 .yafnet .header1 input[type=image] {
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,.4);
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0,.4);
-	box-shadow: 0 1px 4px rgba(0,0,0,.4);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    box-shadow: 0 1px 4px rgba(0,0,0,.4);
 }
 .yafnet tr.forumRowTitle .headerForum {padding-left:34px;}
 .yafnet tr.forumRowTitle .headerModerators,
@@ -1019,7 +1019,7 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 
 /* model dialog theming */
 .ModalDialog input[type=text], .ModalDialog input[type=password] {
-	background: #ccc;
+    background: #ccc;
 }
 .ModalDialog input.OkButton:hover,
 .ModalDialog input.OkButton {
@@ -1041,22 +1041,22 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 }
 .ModalDialog input.CancelButton:hover,
 .ModalDialog input.CancelButton{
-	background: #d81b21;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#aa1317));
-	background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
-	background: -o-linear-gradient(top,  #ed1c24,  #aa1317);
+    background: #d81b21;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#aa1317));
+    background: -moz-linear-gradient(top,  #ed1c24,  #aa1317);
+    background: -o-linear-gradient(top,  #ed1c24,  #aa1317);
 }
 
 .ModalDialog .header,
 .ModalDialog .modalHeader {
-	background:none;
-	border:none;
-	box-shadow: none;
-	color: rgb(67, 67, 67);
-	height: 35px;
-	width:100%;
-	text-align:center;
-	font-size: 12.5pt;
+    background:none;
+    border:none;
+    box-shadow: none;
+    color: rgb(67, 67, 67);
+    height: 35px;
+    width:100%;
+    text-align:center;
+    font-size: 12.5pt;
 }
 .ModalDialog .header h3,
 .ModalDialog .modalHeader h3 {display:inline}
@@ -1066,13 +1066,13 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 
 /* Header Notification Badges */
 .yafnet .Unread {
-	margin-left: 2px;
+    margin-left: 2px;
     padding:2px 4px 2px 4px;
     background-color:red;
-	height:20px;
-	vertical-align:super;
+    height:20px;
+    vertical-align:super;
     -webkit-border-radius: 0.4em;
-	border-radius: 0.4em;
+    border-radius: 0.4em;
     box-shadow:1px 1px 1px gray;
 }
 .yafnet .Unread a {color:white!important;font-weight:bold!important;font-size:0.9em!important;padding-left: 0px!important;}
@@ -1080,29 +1080,29 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 
 /* Alpha Sort Control */
 .yafnet dl.AlphaSort {
-	margin-bottom:10px;
-		
-	-webkit-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.455);
+    margin-bottom:10px;
+        
+    -webkit-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.455);
     -moz-box-shadow:    0px 1px 5px rgba(0, 0, 0, 0.455);
     box-shadow:         0px 1px 5px rgba(0, 0, 0, 0.455);
 
     border: 1px solid white;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
-	
-	background-color: white;
-	padding:10px 0 10px 0;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    
+    background-color: white;
+    padding:10px 0 10px 0;
 }
 .yafnet dl.AlphaSort dt {
-	padding:10px 0 4px 10px;height:22px;
-	
-	-moz-border-radius-topleft:3px;
-	-moz-border-radius-topright:3px;
+    padding:10px 0 4px 10px;height:22px;
+    
+    -moz-border-radius-topleft:3px;
+    -moz-border-radius-topright:3px;
     -webkit-border-top-left-radius:3px;
-	-webkit-border-top-right-radius:3px;
+    -webkit-border-top-right-radius:3px;
     border-top-left-radius:3px;
-	border-top-right-radius:3px;
+    border-top-right-radius:3px;
 }
 .yafnet dl.AlphaSort .SelectedLetter {background-color: #e5e5e5;color:#3b3b3b;font-weight:bold}
 
@@ -1120,16 +1120,16 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
 /* Album */
 .yafnet .albumtitle:hover
 {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 /* Profile Menu */
 .yafnet #yafprofilemessenger li,
 .yafnet #yafprofilepersonal li {
-	list-style-type:none;
-	line-height:20px;
-	
-	background: url("images/ProfileMenu.png") no-repeat top left;
+    list-style-type:none;
+    line-height:20px;
+    
+    background: url("images/ProfileMenu.png") no-repeat top left;
 }
 
 .yafnet #yafprofilemessenger li a,
@@ -1431,3 +1431,24 @@ box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.62);
   border-radius: 4px;
 }
 .yafnet .ui-tabs-hide {display:none !important;}
+
+/*
+------------------------------
+  Tag Cloud
+------------------------------
+*/
+.tagcloud
+{
+	font-family:Tahoma,Helvetica,Arial,Verdana;
+}
+.tag0{font-size: 0.6em}
+.tag1{font-size: 0.7em}
+.tag10{font-size: 0.8em}
+.tag20{font-size: 0.9em}
+.tag30{font-size: 1em}
+.tag40{font-size: 1.2em}
+.tag50{font-size: 1.4em}
+.tag60{font-size: 1.5em}
+.tag70{font-size: 1.7em}
+.tag80{font-size: 1.9em}
+.tag90{font-size: 2.0em}

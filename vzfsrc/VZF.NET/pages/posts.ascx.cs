@@ -18,13 +18,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Generic;
-
 namespace YAF.Pages
 {
     #region Using
 
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.IO;
     using System.Linq;
@@ -36,7 +35,6 @@ namespace YAF.Pages
     using VZF.Data.Common;
 
     using YAF.Classes;
-    
     using YAF.Controls;
     using YAF.Core;
     using YAF.Core.Services;

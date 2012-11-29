@@ -12235,18 +12235,25 @@ RETURNS
   "TagCount" INTEGER,
   "MaxTagCount" INTEGER)
 AS
+DECLARE ICI_ALLCOUNT INTEGER;
 begin
 FOR	SELECT 
-		   tg.TAGID,
-		   tg.Tag,
-		   tg.TAGCOUNT,
 		   MAX(tg.TAGCOUNT)  
 		   FROM objQual_TAGS tg 
 		   JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
 		   JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
 		   JOIN objQual_ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
-		   WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID 
-		   GROUP BY  tg.Tag,tg.TagCount,tg.TAGID
+		   WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID INTO :ICI_ALLCOUNT;
+FOR	SELECT 
+		   tg.TAGID,
+		   tg.Tag,
+		   tg.TAGCOUNT,
+		   (SELECT ::ICI_ALLCOUNT FROM RDB$DATABASE) 
+		   FROM objQual_TAGS tg 
+		   JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
+		   JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
+		   JOIN objQual_ACTIVEACCESS aa ON (aa.ForumID = t.ForumID AND aa.UserID = :I_PAGEUSERID)
+		   WHERE aa.BoardID=:I_BOARDID and t.TopicID=:I_TOPICID		  
 		   ORDER BY tg.Tag
 		   INTO
 		   :"TagID",

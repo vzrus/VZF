@@ -67,7 +67,7 @@ namespace YAF.Utils
         /// The message.
         /// </param>
         /// <returns>
-        /// The encode message.
+        /// The encoded message.
         /// </returns>
         public static string EncodeMessage([NotNull] string message)
         {
@@ -151,7 +151,7 @@ namespace YAF.Utils
         /// The trace resources.
         /// </summary>
         /// <returns>
-        /// The trace resources.
+        /// The trace resources result string.
         /// </returns>
         public static string TraceResources()
         {

@@ -21,7 +21,6 @@ namespace YAF.Controls
 
     using System;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -68,7 +67,6 @@ namespace YAF.Controls
             }
         }
 
-
         #region Methods
 
         /// <summary>
@@ -86,16 +84,16 @@ namespace YAF.Controls
             {
                 return null;
             }
+
             string tagLabel = null;
-            if (this.Get<YafBoardSettings>().AllowTopicTags && tagNameWithFrequencies != null && tagNameWithFrequencies.Rows.Count > 0)
+            if (this.Get<YafBoardSettings>().AllowTopicTags && tagNameWithFrequencies.Rows.Count > 0)
             {
                 var tagsTopicLineIcon = this.Get<ITheme>().GetItem("ICONS", "TOPIC_TAG");
 
                 if (tagsTopicLineIcon.IsSet())
                 {
                     tagLabel = "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" style=\"border: 0;width:16px;height:16px\" />&nbsp;"
-                            .FormatWith(
-                                tagsTopicLineIcon, this.Get<ILocalization>().GetText("POSTS","TAGS_POSTS"));
+                            .FormatWith(tagsTopicLineIcon, this.Get<ILocalization>().GetText("POSTS", "TAGS_POSTS"));
                 }
             }
 
@@ -105,12 +103,10 @@ namespace YAF.Controls
             foreach (DataRow tag in tagNameWithFrequencies.Rows)
             {
                 string tagItem;
-                string tagClass = "content";
+                string tagClass = ".tagcloud " + this.GetTagClass(tag["TagCount"].ToType<int>(), tag["MaxTagCount"].ToType<int>());
                 
                 if (tag["TagCount"].ToType<int>() > 1)
                 {
-                    // GetTagClass(tagNameWithFrequesncies[tag], highestFrequency);
-                    // TODO: need to set proper URL where links should redirect to
                     string targetUrl = YafBuildLink.GetLinkNotEscaped(
                         ForumPages.topicsbytags, "tagid={0}&t={1}".FormatWith(tag["TagID"], this.TopicId));
                     tagItem = "<a class=\"{0}\" href=\"{1}\">{2}({3})</a>&nbsp;&nbsp;".FormatWith(
@@ -149,30 +145,62 @@ namespace YAF.Controls
         public string GetTagClass(int tagFrequency, int highestFrequency)
         {
             if (tagFrequency == 0 || highestFrequency == 0)
+            {
                 return "tag0";
+            }
 
-            var percentageFrequency = (tagFrequency*100)/highestFrequency;
+            var percentageFrequency = (tagFrequency * 100) / highestFrequency;
 
             if (percentageFrequency >= 90)
+            {
                 return "tag90";
+            }
+
             if (percentageFrequency >= 80)
+            {
                 return "tag80";
+            }
+
             if (percentageFrequency >= 70)
+            {
                 return "tag70";
+            }
+
             if (percentageFrequency >= 60)
+            {
                 return "tag60";
+            }
+
             if (percentageFrequency >= 50)
+            {
                 return "tag50";
+            }
+
             if (percentageFrequency >= 40)
+            {
                 return "tag40";
+            }
+
             if (percentageFrequency >= 30)
+            {
                 return "tag30";
+            }
+
             if (percentageFrequency >= 20)
+            {
                 return "tag20";
+            }
+
             if (percentageFrequency >= 10)
+            {
                 return "tag10";
+            }
+
             if (percentageFrequency >= 1)
+            {
                 return "tag1";
+            }
+
             return null;
         }
 

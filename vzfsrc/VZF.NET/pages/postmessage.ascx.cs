@@ -257,8 +257,7 @@ namespace YAF.Pages
                     this.PageContext.AddLoadMessage(
                         this.GetTextFormatted(
                             "wait",
-                            (this.Get<IYafSession>().LastPost
-                             - DateTime.UtcNow.AddSeconds(-this.Get<YafBoardSettings>().PostFloodDelay)).Seconds));
+                            (this.Get<IYafSession>().LastPost - DateTime.UtcNow.AddSeconds(-this.Get<YafBoardSettings>().PostFloodDelay)).Seconds));
                     return true;
                 }
             }
@@ -450,10 +449,7 @@ namespace YAF.Pages
                         }*/
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "spellcheckerjs",
-                JavaScriptBlocks.SpellCheckerLoadJs(
-                    editorClientId,
-                    editorSpellBtnId,
-                    this.PageContext.CultureUser.IsSet()
+                JavaScriptBlocks.SpellCheckerLoadJs(editorClientId,editorSpellBtnId,this.PageContext.CultureUser.IsSet()
                         ? this.PageContext.CultureUser.Substring(0, 2)
                         : this.Get<YafBoardSettings>().Culture,
                     this.GetText("SPELL_CORRECT")));
@@ -558,8 +554,11 @@ namespace YAF.Pages
                     this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
                 }
 
-                // The topic is added it has not any topic info.
-                this.TagsRow.Visible = true;
+                // The topic is added it has not any topic info. We can edit tags for the first message only.
+                if (topicInfo == null || (currentMessage != null  && currentMessage.Position == 0))
+                {
+                    this.TagsRow.Visible = true;
+                }
             }
            
             // Message.EnableRTE = PageContext.BoardSettings.AllowRichEdit;
@@ -1449,7 +1448,7 @@ namespace YAF.Pages
         }
 
         /// <summary>
-        /// The init quoted reply.
+        /// The initialize quoted reply.
         /// </summary>
         /// <param name="message">
         /// The current TypedMessage. 
@@ -1500,6 +1499,7 @@ namespace YAF.Pages
             // Ederon : 9/9/2007 - moderators can reply in locked topics
             if (topicFlags.IsLocked && !this.PageContext.ForumModeratorAccess)
             {
+                // YafBuildLink.Redirect(ForumPages.topics);
                 this.Response.Redirect(this.Get<HttpRequestBase>().UrlReferrer.ToString());
             }
 
@@ -1595,14 +1595,29 @@ namespace YAF.Pages
         /// <summary>
         /// Tag Length checker.
         /// </summary>
-        /// <param name="tags"></param>
-        /// <param name="tagLength"></param>
-        /// <returns></returns>
+        /// <param name="tags">
+        /// </param>
+        /// <param name="tagLength">
+        /// </param>
+        /// <param name="tagCount">
+        /// The tag Count.
+        /// </param>
+        /// <param name="symbols">
+        /// The symbols.
+        /// </param>
+        /// <param name="tagCountIsAllowed">
+        /// The tag Count Is Allowed.
+        /// </param>
+        /// <param name="forbiddenSymbols">
+        /// The forbidden Symbols.
+        /// </param>
+        /// <returns>
+        /// </returns>
         private bool CheckTagLength(string tags, int tagLength, int tagCount, string symbols, out bool tagCountIsAllowed, out bool forbiddenSymbols)
         {
             forbiddenSymbols = false;
             tagCountIsAllowed = true;
-            if (tags.IsSet() && symbols.Any(tags.Contains))
+            if (tags.IsSet() && symbols.Any(tags.Replace(",",string.Empty).Contains))
             {
                 forbiddenSymbols = true;
                 return true;
@@ -1616,15 +1631,17 @@ namespace YAF.Pages
                 {
                     return false;
                 }
+
                 if (i > tagCount)
                 {
                     tagCountIsAllowed = false;
                     return true;
                 }
+
                 i++;
             }
-            return true;
 
+            return true;
         }
 
         #endregion

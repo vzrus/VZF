@@ -265,13 +265,30 @@ namespace YAF.Controls
             // "Active Users" Count and Most Users Count 
             DataRow activeStats = CommonDb.active_stats(PageContext.PageModuleID, this.PageContext.PageBoardID);
             this.ActiveUserCount.Text = this.FormatActiveUsers(activeStats);
-            this.MosActiveForLink.Text = this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK", 7);
+            int daysMostActive = this.Get<YafBoardSettings>().MostActiveUserDays;
+            if (daysMostActive > 1)
+            {
+                this.MosActiveForLink.Text = this.GetTextFormatted(
+                    "MOSTACTIVEUSERS_FOR_LINK", this.Get<YafBoardSettings>().MostActiveUserDays);
+            }
+
+            if (daysMostActive == 1)
+            {
+                this.MosActiveForLink.Text = this.GetText(
+                    "MOSTACTIVEUSERS_FORTODAY_LINK");
+            }
+
+            if (daysMostActive <= 0)
+            {
+                this.MosActiveForLink.Visible = false;
+            }
+
             // Tommy MOD "Recent Users" Count.
             if (this.Get<YafBoardSettings>().ShowRecentUsers)
             {
                 var activeUsers30Day = this.Get<IDataCache>().GetOrSet(
                     Constants.Cache.VisitorsInTheLast30Days,
-                    () => this.Get<IDBBroker>().GetRecentUsers(60*24*30),
+                    () => this.Get<IDBBroker>().GetRecentUsers(60 * 24 * 30),
                     TimeSpan.FromMinutes(this.Get<YafBoardSettings>().ForumStatisticsCacheTimeout));
                 if (activeUsers30Day != null && activeUsers30Day.Rows.Count > 0)
                 {

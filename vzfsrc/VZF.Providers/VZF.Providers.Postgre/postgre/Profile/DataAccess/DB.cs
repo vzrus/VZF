@@ -58,8 +58,6 @@ namespace YAF.Providers.Profile
 
     public class DB
     {
-       
-
         public static DB Current
         {
             get
@@ -68,9 +66,12 @@ namespace YAF.Providers.Profile
             }
         }
 
-       
-        private static int EncodeProfileData(SettingsPropertyValueCollection collection, bool isAuthenticated,
-           ref string index, ref string stringData, ref byte[] binaryData)
+        private static int EncodeProfileData(
+            SettingsPropertyValueCollection collection,
+            bool isAuthenticated,
+            ref string index,
+            ref string stringData,
+            ref byte[] binaryData)
         {
             bool itemsToSave = false;
 
@@ -78,13 +79,24 @@ namespace YAF.Providers.Profile
             // this is an optimization
             foreach (SettingsPropertyValue value in collection)
             {
-                if (!value.IsDirty) continue;
-                if (value.Property.Attributes["AllowAnonymous"].Equals(false) &&
-                    !isAuthenticated) continue;
+                if (!value.IsDirty)
+                {
+                    continue;
+                }
+
+                if (value.Property.Attributes["AllowAnonymous"].Equals(false) && !isAuthenticated)
+                {
+                    continue;
+                }
+
                 itemsToSave = true;
                 break;
             }
-            if (!itemsToSave) return 0;
+
+            if (!itemsToSave)
+            {
+                return 0;
+            }
 
             StringBuilder indexBuilder = new StringBuilder();
             StringBuilder stringDataBuilder = new StringBuilder();
@@ -100,18 +112,21 @@ namespace YAF.Providers.Profile
 
                 // we don't save properties that require the user to be authenticated when the
                 // current user is not authenticated.
-                if (value.Property.Attributes["AllowAnonymous"].Equals(false) &&
-                    !isAuthenticated) continue;
+                if (value.Property.Attributes["AllowAnonymous"].Equals(false) && !isAuthenticated)
+                {
+                    continue;
+                }
 
                 count++;
                 object propValue = value.SerializedValue;
-                if ((value.Deserialized && value.PropertyValue == null) ||
-                    value.SerializedValue == null)
+                if ((value.Deserialized && value.PropertyValue == null) || value.SerializedValue == null)
+                {
                     indexBuilder.AppendFormat("{0}//0/-1:", value.Name);
+                }
                 else if (propValue is string)
                 {
-                    indexBuilder.AppendFormat("{0}/0/{1}/{2}:", value.Name,
-                        stringDataBuilder.Length, (propValue as string).Length);
+                    indexBuilder.AppendFormat(
+                        "{0}/0/{1}/{2}:", value.Name, stringDataBuilder.Length, (propValue as string).Length);
                     stringDataBuilder.Append(propValue);
                 }
                 else
@@ -146,10 +161,13 @@ namespace YAF.Providers.Profile
             {
                 string[] parts = index.Split('/');
                 SettingsPropertyValue value = values[parts[0]];
-                if (value == null) continue;
+                if (value == null)
+                {
+                    continue;
+                }
 
-                int pos = Int32.Parse(parts[2], CultureInfo.InvariantCulture);
-                int len = Int32.Parse(parts[3], CultureInfo.InvariantCulture);
+                int pos = int.Parse(parts[2], CultureInfo.InvariantCulture);
+                int len = int.Parse(parts[3], CultureInfo.InvariantCulture);
                 if (len == -1)
                 {
                     value.PropertyValue = null;
@@ -157,10 +175,12 @@ namespace YAF.Providers.Profile
                     value.Deserialized = true;
                 }
                 else if (parts[1].Equals("0"))
+                {
                     value.SerializedValue = stringData.Substring(pos, len);
+                }
                 else
                 {
-                    byte[] buf = new byte[len];
+                    var buf = new byte[len];
                     Buffer.BlockCopy(binaryData, pos, buf, 0, len);
                     value.SerializedValue = buf;
                 }
@@ -168,10 +188,10 @@ namespace YAF.Providers.Profile
         }
 
          public DataTable __GetProfiles( string connectionString, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate )
-        {
-            using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_getprofiles" ) )
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
+         {
+             using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand("prov_profile_getprofiles"))
+             {
+                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_PageIndex", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageIndex;
                 cmd.Parameters.Add(new NpgsqlParameter("i_PageSize", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageSize;
@@ -180,16 +200,14 @@ namespace YAF.Providers.Profile
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                DataTable dt = PostgreDBAccess.GetData(cmd,connectionString );				
+                var dt = PostgreDBAccess.GetData(cmd, connectionString);
                 return dt;
             }
         }
-
-         public DataTable __GetProfileStructure(string connectionString)
+        
+        public DataTable __GetProfileStructure(string connectionString)
         {
-            
-       
-            string sql = String.Format(@"SELECT DISTINCT * FROM {0} LIMIT 1", PostgreDBAccess.GetObjectName(@"prov_profile"));
+            string sql = string.Format(@"SELECT DISTINCT * FROM {0} LIMIT 1", PostgreDBAccess.GetObjectName(@"prov_profile"));
 
             using ( NpgsqlCommand cmd = new NpgsqlCommand( sql ) )
             {
@@ -266,7 +284,22 @@ namespace YAF.Providers.Profile
             }
         }
 
-         public int __DeleteInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
+        /// <summary>
+        /// The __ delete inactive profiles.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="inactiveSinceDate">
+        /// The inactive since date.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int __DeleteInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
         {
             using ( NpgsqlCommand cmd = PostgreDBAccess.GetCommand( "prov_profile_deleteinactive" ) )
             {
@@ -318,20 +351,31 @@ namespace YAF.Providers.Profile
             List<SettingsPropertyColumn> settingsColumnsList)
         {
             bool isAuthenticated = (bool)context["IsAuthenticated"];
-             string appName = (string)context["ApplicationName"];
-             // sc.Add("IsAnonymous", isAnonymous);
-             // sc.Add("LastActivityDate", lastActivityDate);
-             if (context["UserID"] == null) return;
-             Guid userid = (Guid)context["UserID"];
-             if (collection.Count < 1) return;
+            string appName = (string)context["ApplicationName"];
 
-             string index = string.Empty;
-             string stringData = string.Empty;
-             byte[] binaryData = null;
-             int count = EncodeProfileData(collection, isAuthenticated, ref index, ref stringData, ref binaryData);
-             if (count < 1) return;
+            // sc.Add("IsAnonymous", isAnonymous);
+            // sc.Add("LastActivityDate", lastActivityDate);
+            if (context["UserID"] == null)
+            {
+                return;
+            }
 
-             // save the encoded profile data to the database
+            var userid = (Guid)context["UserID"];
+            if (collection.Count < 1)
+            {
+                return;
+            }
+
+            string index = string.Empty;
+            string stringData = string.Empty;
+            byte[] binaryData = null;
+            int count = EncodeProfileData(collection, isAuthenticated, ref index, ref stringData, ref binaryData);
+            if (count < 1)
+            {
+                return;
+            }
+
+            // save the encoded profile data to the database
 
              // using (TransactionScope ts = new TransactionScope())
              // {
@@ -339,19 +383,23 @@ namespace YAF.Providers.Profile
              // either create a new user or fetch the existing user id
              Guid userId = SchemaManager.CreateOrFetchUserId(userid, isAuthenticated);
              bool profileExists = false;
-             using (NpgsqlCommand cmd1 = PostgreDBAccess.GetCommand(string.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", PostgreDBAccess.GetObjectName("prov_Profile"), userId), true))
+             using (var cmd1 = PostgreDBAccess.GetCommand(string.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", PostgreDBAccess.GetObjectName("prov_Profile"), userId), true))
              {
                  profileExists = Convert.ToBoolean(PostgreDBAccess.ExecuteScalar(cmd1,connectionString));
              }
 
-             MembershipUser mu = System.Web.Security.Membership.GetUser(userId);
+             var mu = Membership.GetUser(userId);
 
              if (profileExists)
              {
-
-                 using (var cmd = PostgreDBAccess.GetCommand(
-                      string.Format(@"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
-lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,username= :i_username WHERE userid = :i_userid and applicationid = :i_applicationid;", PostgreDBAccess.GetObjectName("prov_profile")), true))
+                 using (
+                     var cmd =
+                         PostgreDBAccess.GetCommand(
+                             string.Format(
+                                 @"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
+lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,username= :i_username WHERE userid = :i_userid and applicationid = :i_applicationid;",
+                                 PostgreDBAccess.GetObjectName("prov_profile")),
+                             true))
                  {
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
                      cmd.Parameters.Add(new NpgsqlParameter("i_stringData", NpgsqlDbType.Varchar)).Value = stringData;
@@ -366,14 +414,15 @@ lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,userna
                      int res = PostgreDBAccess.ExecuteNonQueryInt(cmd,connectionString);
                      if (res == 0)
                      {
-                         //Error
+                         // Error
                      }
                  }
              }
              else
              {
                  using (NpgsqlCommand cmd = PostgreDBAccess.GetCommand(
-                    string.Format(@"INSERT INTO {0}(
+                     string.Format(
+                         @"INSERT INTO {0}(
 userid,
 valueindex,
 stringdata,
@@ -392,8 +441,8 @@ VALUES (
 :i_lastactivitydate,
 :i_applicationid,
 :i_isanonymous,
-:i_username) ;",
-                    PostgreDBAccess.GetObjectName("prov_profile")), true))
+:i_username) ;", PostgreDBAccess.GetObjectName("prov_profile")),
+                     true))
                  {
                      cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Uuid)).Value = userId;
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
@@ -412,11 +461,6 @@ VALUES (
                      }
                  }
              }
-
-             // ts.Complete();
-             // }
-
-
          }
        
         private object GetApplicationIdFromName(string connectionString, string appName )

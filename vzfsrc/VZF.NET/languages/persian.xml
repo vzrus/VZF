@@ -1147,6 +1147,10 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MODAL_DIALOG">Modal Dialog</Resource>
     <Resource tag="MODAL_LOGIN">از جعبه ورود استفاده کن:</Resource>
     <Resource tag="MODAL_LOGIN_HELP">در صورت علامت گذاری، کنترل ورود مانند جعبه نمایش داده می شود.</Resource>
+    <Resource tag="MOSTACTIVEUSER_DAYS">Days to the most active users:</Resource>
+    <Resource tag="MOSTACTIVEUSER_DAYS_HELP">The number of days when the most active users statistics is gathered.</Resource>
+    <Resource tag="MOSTAVTIVEUSER_DAYS">Days to the most active users:</Resource>
+    <Resource tag="MOSTAVTIVEUSER_DAYS_HELP">The number of days when the most active users statistics is gathered.</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE">My Topics List Page Size:</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Number entries on a page on the My Topics page. </Resource>
     <Resource tag="NAME_LENGTH">حداکثر طول نام کاربری:</Resource>

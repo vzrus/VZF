@@ -49,13 +49,13 @@ namespace YAF.Pages {
         protected global::YAF.Controls.LocalizedLabel LocalizedLabelLatestActions;
         
         /// <summary>
-        /// LocalizedLabel4 control.
+        /// DaysPeriodLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel4;
+        protected global::YAF.Controls.LocalizedLabel DaysPeriodLbl;
         
         /// <summary>
         /// LocalizedLabel1 control.

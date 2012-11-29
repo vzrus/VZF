@@ -2911,13 +2911,31 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.TextBox TopicsPerPage;
         
         /// <summary>
-        /// LocalizedLabel36 control.
+        /// HelpLabel223 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel36;
+        protected global::YAF.Controls.HelpLabel HelpLabel223;
+        
+        /// <summary>
+        /// MostActiveUserDays control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MostActiveUserDays;
+        
+        /// <summary>
+        /// LocalizedLabel38 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.LocalizedLabel LocalizedLabel38;
         
         /// <summary>
         /// HelpLabel165 control.

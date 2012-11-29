@@ -1,8 +1,5 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.mostactiveusers" CodeBehind="mostactiveusers.ascx.cs" %>
-<%@ Import Namespace="YAF.Core"%>
-<%@ Import Namespace="YAF.Core.Services" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
 <YAF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator"></div>
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
@@ -19,7 +16,7 @@
 			<YAF:LocalizedLabel ID="LocalizedLabelLatestActions" runat="server" LocalizedTag="JOINED" />
 		</td>
 		<td class="header2">
-			<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="NUM_PERIODPOSTS" />
+			<YAF:LocalizedLabel ID="DaysPeriodLbl" runat="server" LocalizedTag="NUM_PERIODPOSTS" />
 		</td>
 		<td class="header2">
 			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="PERC_PERPERIOD" />
@@ -29,10 +26,7 @@
 		<ItemTemplate>
 			<tr>
 				<td class="post">		
-					<YAF:UserLink ID="NameLink"  runat="server" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName
-							  ? Eval("DisplayName")
-							  : Eval("Name") %>'  UserID='<%# Convert.ToInt32(Eval("ID")) %>' 				
-					 Style='<%# Eval("UserStyle").ToString() %>' />
+					<YAF:UserLink ID="NameLink"  runat="server" />
 					<asp:PlaceHolder ID="HiddenPlaceHolder" runat="server" Visible='<%# Convert.ToBoolean(Eval("IsHidden"))%>' >
 					(<YAF:LocalizedLabel ID="Hidden" LocalizedTag="HIDDEN" runat="server" />)
 					</asp:PlaceHolder>				    

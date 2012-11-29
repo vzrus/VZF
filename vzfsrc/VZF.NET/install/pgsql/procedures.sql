@@ -9490,6 +9490,7 @@ BEGIN
 		where x.userid=t.lastuserid)) AS LastUserDisplayName,
 		t.lastmessageid AS LastMessageID,
 		t.topicid AS LastTopicID,
+		t.linkdate,
 		t.flags AS TopicFlags,
 		t.priority,
 		t.pollid,
@@ -9501,19 +9502,19 @@ BEGIN
 varchar(4000)) AS FirstMessage,
 		(case(i_stylednicks)
 			when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = t.userid)  
-			else ''	 end) AS StarterStyle , 
+			else ''	 end) AS StarterStyle, 
 		(case(i_stylednicks)
 			when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = t.lastuserid)  
 			else ''	 end)  AS LastUserStyle,
 	   (case(i_findlastunread)
 			 when true THEN
-			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_forumreadtracking x WHERE x.forumid=d.forumid AND x.userid = i_userid), i_utctimestamp)
+			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_forumreadtracking x WHERE x.forumid=d.forumid AND x.userid = i_userid), TIMESTAMP '-infinity')
 			 else TIMESTAMP '-infinity'	 end) AS LastForumAccess,
 		(case(i_findlastunread)
 			 when true THEN
-			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid), i_utctimestamp)
+			   COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid), TIMESTAMP '-infinity')
 			 else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
-				(SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid),		  
+		(SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid),		  
 		ici_post_priorityrowsnumber AS TotalRows,
 		ici_pageindex	AS 	PageIndex
 		FROM
@@ -9527,6 +9528,8 @@ varchar(4000)) AS FirstMessage,
 		AND	(t.priority=2) 
 		AND	(t.flags & 8) <> 8
 		AND	((t.topicmovedid IS NOT NULL) OR (t.numposts > 0)) 
+		AND
+		t.lastposted <= COALESCE(ici_firstselectposted,TIMESTAMP '-infinity')
 		AND
 		((i_showmoved IS TRUE)
 		or
@@ -9706,7 +9709,7 @@ varchar(4000)) AS FirstMessage,
 		ON r.rankid=b.rankid
 		join databaseSchema.objectQualifier_forum d on d.ForumID=t.ForumID	
 		WHERE t.forumid = i_forumid
-		AND	(( (t.priority>0 AND t.priority<>2)) OR (t.priority <=0 AND t.lastposted<=ici_firstselectposted )) 
+		AND	(( (t.priority>0 AND t.priority<>2)) OR (t.priority <=0 AND t.lastposted<= COALESCE(ici_firstselectposted,TIMESTAMP '-infinity'))) 
 		AND	(t.flags & 8) <> 8
 		AND	((t.topicmovedid IS NOT NULL) OR (t.numposts > 0)) 
 		AND
@@ -15967,14 +15970,21 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_tags(i_boardid i
 				   RETURNS SETOF databaseSchema.objectQualifier_topic_tags_rt AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_topic_tags_rt%ROWTYPE;
+_maxcount integer;
 BEGIN
-FOR _rec IN SELECT tg.tagid,tg.tag,tg.tagcount,MAX(tg.tagcount) AS MaxTagCount 
+SELECT MAX(tg.tagcount) INTO _maxcount
 	        FROM databaseSchema.objectQualifier_tags tg 
 	        JOIN  databaseSchema.objectQualifier_topictags tt ON tt.TagID = tg.TagID 
 	        JOIN  databaseSchema.objectQualifier_topic t ON t.TopicID = tt.TopicID
 	        JOIN  databaseSchema.objectQualifier_activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
-	WHERE aa.boardid=i_boardid and t.topicid=i_topicid 
-	GROUP BY  tg.tag,tg.tagcount,tg.tagid
+	WHERE aa.boardid=i_boardid and t.topicid=i_topicid; 
+
+FOR _rec IN SELECT tg.tagid,tg.tag,tg.tagcount,_maxcount AS MaxTagCount 
+	        FROM databaseSchema.objectQualifier_tags tg 
+	        JOIN  databaseSchema.objectQualifier_topictags tt ON tt.TagID = tg.TagID 
+	        JOIN  databaseSchema.objectQualifier_topic t ON t.TopicID = tt.TopicID
+	        JOIN  databaseSchema.objectQualifier_activeaccess aa ON (aa.ForumID = t.ForumID AND aa.userid = i_pageuserid)
+	WHERE aa.boardid=i_boardid and t.topicid=i_topicid 	
 	ORDER BY tg.tag
 LOOP
 RETURN NEXT _rec;

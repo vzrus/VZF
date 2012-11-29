@@ -15,30 +15,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections;
-using YAF.Utils.Helpers;
-
 namespace YAF.Pages
 {
-    // YAF.Pages
-
     #region Using
 
     using System;
     using System.Data;
-    using System.Linq;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
 
     using YAF.Classes;
-    
     using YAF.Controls;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utils;
+    using YAF.Utils.Helpers;
 
     #endregion
 
@@ -47,16 +42,25 @@ namespace YAF.Pages
     /// </summary>
     public partial class mostactiveusers : ForumPage
     {
-        int recordsToShow = 10;
-        int daysToShow = 7; 
+        /// <summary>
+        /// The records to show.
+        /// </summary>
+        private const int recordsToShow = 10;
+
+        /// <summary>
+        /// The days to show.
+        /// </summary>
+        private readonly int daysToShow;
+
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "moderating" /> class.
+        /// Initializes a new instance of the <see cref="mostactiveusers"/> class.
         /// </summary>
         public mostactiveusers()
             : base("MOSACTIVEUSERS")
         {
+            this.daysToShow = this.Get<YafBoardSettings>().MostActiveUserDays;
         }
 
         #endregion
@@ -68,10 +72,38 @@ namespace YAF.Pages
         /// </summary>
         protected void BindData()
         {
-            this.Stats_Renew();
-            DataBind();
+            DataTable table = this.Get<IDataCache>()
+                                  .GetOrSet(
+                                      Constants.Cache.MostActiveUsers,
+                                      () =>
+                                      CommonDb.user_activity_rank(
+                                          PageContext.PageModuleID,
+                                          this.PageContext.PageBoardID,
+                                          DateTime.UtcNow.AddHours(-this.daysToShow * 24),
+                                          recordsToShow),
+                                      TimeSpan.FromMinutes(30));
+            if (table.Rows.Count <= 0)
+            {
+                return;
+            }
+
+            DataTable dt = table.Clone();
+            foreach (DataRow dataRow in table.Rows)
+            {
+                if (dataRow["IsHidden"].ToType<bool>() && !this.PageContext.IsAdmin)
+                {
+                    continue;
+                }
+
+                DataRow drr = dt.NewRow();
+                drr.ItemArray = dataRow.ItemArray;
+                dt.Rows.Add(drr);
+            }
+
+            this.UserList.DataSource = dt;
+            this.DataBind();
         }
-    
+
         /// <summary>
         /// The page_ load.
         /// </summary>
@@ -79,49 +111,23 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-          if (!this.IsPostBack)
+            // the feature is disabled.
+            if (this.daysToShow <= 0)
             {
+                this.RedirectNoAccess();
+            }
 
-               //  this.PageLinks.AddForumLinks(this.PageContext.PageForumID);
+            if (!this.IsPostBack)
+            {
                 this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
                 this.PageLinks.AddLink(this.GetText("MOSTACTIVEUSERS", "TITLE"));
-                this.HeaderLbl.Text = this.GetText("MOSTACTIVEUSERS", "TITLE") + "-" +
-                                      this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK",daysToShow);
-                // this.PagerTop.PageSize = 25;
+                this.HeaderLbl.Text = this.GetText("MOSTACTIVEUSERS", "TITLE") + "-"
+                                      + (this.daysToShow == 1
+                                             ? this.GetTextFormatted("MOSTACTIVEUSERS_FORTODAY_LINK", this.daysToShow)
+                                             : this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK", this.daysToShow));
             }
 
             this.BindData();
-        }
-
-
-        /// <summary>
-        /// The stats_ renew.
-        /// </summary>
-        protected void Stats_Renew()
-        {
-          
-            // Renew PM Statistics
-            DataTable rankDt = this.Get<IDataCache>().GetOrSet(
-              Constants.Cache.MostActiveUsers,
-              () =>
-              CommonDb.user_activity_rank(PageContext.PageModuleID, this.PageContext.PageBoardID, DateTime.UtcNow.AddDays(-daysToShow), recordsToShow),
-              TimeSpan.FromMinutes(5));
-            if (rankDt.Rows.Count > 0)
-            {
-                DataTable dt = rankDt.Clone(); 
-                foreach (DataRow dataRow in rankDt.Rows)
-                {
-                    if (!dataRow["IsHidden"].ToType<bool>() || PageContext.IsAdmin)
-                    {
-                        DataRow drr = dt.NewRow();
-                        drr.ItemArray = dataRow.ItemArray;
-                        dt.Rows.Add(drr);
-                    }
-               
-                }
-               // dt.AcceptChanges();
-                this.UserList.DataSource = dt;
-            }
         }
 
         /// <summary>
@@ -131,51 +137,54 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.Web.UI.WebControls.RepeaterItemEventArgs"/> instance containing the event data.</param>
         protected void UserList_OnItemDataBound([NotNull] object source, [NotNull] RepeaterItemEventArgs e)
         {
-            RepeaterItem item = e.Item;
+            var item = e.Item;
 
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+            if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
             {
-                var drowv = (DataRowView) e.Item.DataItem;
-                item.FindControlRecursiveAs<Label>("PercentsOf").Text = this.GetPMessageText(
-                    drowv["NumOfPosts"],
-                    drowv["NumOfAllIntervalPosts"]);
+                return;
             }
-        }
 
+            var drowv = (DataRowView)e.Item.DataItem;
+            item.FindControlRecursiveAs<Label>("PercentsOf").Text = this.GetPMessageText(
+                drowv["NumOfPosts"], drowv["NumOfAllIntervalPosts"]);
+           var ul = item.FindControlRecursiveAs<UserLink>("NameLink");
+           ul.ReplaceName = (string)(this.Get<YafBoardSettings>().EnableDisplayName ? drowv["DisplayName"] : drowv["Name"]);
+           ul.UserID = drowv["ID"].ToType<int>();
+           ul.Style = this.Get<YafBoardSettings>().UseStyledNicks
+                                          ? this.Get<IStyleTransform>().DecodeStyleByString(
+                                            drowv["UserStyle"].ToString(), false)
+                                          : null;
+        }
 
         /// <summary>
-                    /// Gets the message text.
-                    /// </summary>
-                    /// <param name="_total">The _total.</param>
-                    /// <param name="_limit">The _limit.</param>
-                    /// <returns>Returns the Message Text</returns>
-                protected
-                string GetPMessageText(
-            [NotNull] object _total,
-            [NotNull] object _limit)
+        /// Gets the message text.
+        /// </summary>
+        /// <param name="_total">The _total.</param>
+        /// <param name="_limit">The _limit.</param>
+        /// <returns>Returns the Message Text</returns>
+        protected string GetPMessageText([NotNull] object _total, [NotNull] object _limit)
         {
-           
             if (_limit.ToType<int>() != 0)
             {
-                return decimal.Round((_total.ToType<decimal>()/_limit.ToType<decimal>())*100, 2).ToString();
+                return decimal.Round((_total.ToType<decimal>() / _limit.ToType<decimal>()) * 100, 2).ToString();
             }
-           
-             return  0.ToString();
+
+            return 0.ToString(CultureInfo.InvariantCulture);
         }
 
-                /// <summary>
-                /// Button click.
-                /// </summary>
-                /// <param name="sender">
-                /// The sender.
-                /// </param>
-                /// <param name="e">
-                /// The Event args
-                /// </param>
-                protected void btnReturn_Click([NotNull] object sender, [NotNull] EventArgs e)
-                {
-                    YafBuildLink.Redirect(ForumPages.forum);
-                }
+        /// <summary>
+        /// Button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The Event args
+        /// </param>
+        protected void btnReturn_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            YafBuildLink.Redirect(ForumPages.forum);
+        }
 
         #endregion
     }
