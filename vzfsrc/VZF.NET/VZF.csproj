@@ -6643,9 +6643,6 @@
     <Content Include="YafWebService.asmx" />
     <None Include="images\emoticons\eusa.pak" />
     <None Include="images\emoticons\ModernSmileyPack.pak" />
-    <Content Include="mail.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="themes\soclean.xml" />
     <Content Include="themes\soclean\bg_header1.png" />
     <Content Include="themes\soclean\buttonBack.gif" />

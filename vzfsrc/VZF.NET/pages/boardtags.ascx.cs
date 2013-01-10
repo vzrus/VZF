@@ -99,7 +99,8 @@
         /// The bind data.
         /// </summary>
         private void BindData()
-        {
+        {   
+          
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag") != null)
             {
                 this.UserSearchName.Text = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag")));
