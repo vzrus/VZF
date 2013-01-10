@@ -94,6 +94,7 @@
     <YAF:ForumUsers runat="server" />
     <tr>
         <td align="center" colspan="6" class="footer1">
+             <YAF:SimpleTagCloud ID="Stc1" runat="server"/>  
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                     <td width="1%" style="white-space: nowrap">

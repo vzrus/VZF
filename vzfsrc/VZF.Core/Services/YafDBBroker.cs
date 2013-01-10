@@ -421,23 +421,6 @@ namespace YAF.Core.Services
         }
 
         /// <summary>
-        /// The get latest topics by User.
-        /// </summary>
-        /// <param name="numberOfPosts">
-        /// The number of posts.
-        /// </param>
-        /// <param name="userId">
-        /// The user id.
-        /// </param>
-        /// <returns>
-        ///  Returns List with Latest Topics.
-        /// </returns>
-        public DataTable GetLatestTopics(int numberOfPosts, int userId)
-        {
-            return this.GetLatestTopics(numberOfPosts, userId, "Style");
-        }
-
-        /// <summary>
         /// The get latest topics.
         /// </summary>
         /// <param name="numberOfPosts">
@@ -456,8 +439,10 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    CommonDb.topic_latest(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
-                        numberOfPosts, 
+                    CommonDb.topic_latest(
+                        YafContext.Current.PageModuleID,
+                        YafContext.Current.PageBoardID,
+                        numberOfPosts,
                         userId, 
                         this.Get<YafBoardSettings>().UseStyledNicks, 
                         this.Get<YafBoardSettings>().NoCountForumsInActiveDiscussions,
@@ -486,7 +471,7 @@ namespace YAF.Core.Services
         /// The time since last login in minutes.
         /// </param>
         /// <returns>
-        /// The list of users in Datatable format.
+        /// The list of users in DataTable format.
         /// </returns>
         public DataTable GetRecentUsers(int timeSinceLastLogin)
         {
@@ -502,7 +487,7 @@ namespace YAF.Core.Services
         /// The board id.
         /// </param>
         /// <returns>
-        /// Retuns the shout box messages.
+        /// Returns the shout box messages.
         /// </returns>
         public IEnumerable<DataRow> GetShoutBoxMessages(int boardId)
         {
@@ -510,8 +495,10 @@ namespace YAF.Core.Services
                 Constants.Cache.Shoutbox, 
                 () =>
                     {
-                        var messages = CommonDb.shoutbox_getmessages(YafContext.Current.PageModuleID, boardId, 
-                            this.Get<YafBoardSettings>().ShoutboxShowMessageCount, 
+                        var messages = CommonDb.shoutbox_getmessages(
+                            YafContext.Current.PageModuleID,
+                            boardId,
+                            this.Get<YafBoardSettings>().ShoutboxShowMessageCount,
                             this.Get<YafBoardSettings>().UseStyledNicks);
 
                         // Set colorOnly parameter to false, as we get all color info from data base
@@ -558,7 +545,7 @@ namespace YAF.Core.Services
         public List<SimpleForum> GetSimpleForumTopic(int boardId, int userId, DateTime timeFrame, int maxCount)
         {
             var forumData =
-                CommonDb.forum_listall((int?)YafContext.Current.PageModuleID, boardId, userId).SelectTypedList(
+                CommonDb.forum_listall(YafContext.Current.PageModuleID, boardId, userId).SelectTypedList(
                     x => new SimpleForum { ForumID = x.Field<int>("ForumID"), Name = x.Field<string>("Forum") }).ToList();
 
             // get topics for all forums...
@@ -568,7 +555,7 @@ namespace YAF.Core.Services
 
                 // add topics
                 var topics =
-                    CommonDb.topic_list(YafContext.Current.PageModuleID, forum.ForumID, userId, timeFrame, DateTime.UtcNow, 0, maxCount, false, false, false).
+                    CommonDb.topic_list(YafContext.Current.PageModuleID, forum.ForumID, userId, timeFrame, DateTime.UtcNow, 0, maxCount, false, false, false, this.Get<YafBoardSettings>().AllowTopicTags).
                         SelectTypedList(x => this.LoadSimpleTopic(x, forum1)).Where(x => x.LastPostDate >= timeFrame).ToList();
 
                 forum.Topics = topics;
@@ -581,7 +568,7 @@ namespace YAF.Core.Services
         /// The get smilies.
         /// </summary>
         /// <returns>
-        /// Table with list of smiles
+        /// Table with list of smilies
         /// </returns>
         public IEnumerable<TypedSmileyList> GetSmilies()
         {
@@ -599,8 +586,9 @@ namespace YAF.Core.Services
         /// </param>
         public void LoadMessageText(IEnumerable<DataRow> dataRows)
         {
+            var enumerable = dataRows as IList<DataRow> ?? dataRows.ToList();
             var messageIds =
-                dataRows.AsEnumerable().Where(x => x.Field<string>("Message").IsNotSet()).Select(
+                enumerable.AsEnumerable().Where(x => x.Field<string>("Message").IsNotSet()).Select(
                     x => x.Field<int>("MessageID"));
 
             var messageTextTable = CommonDb.message_GetTextByIds(YafContext.Current.PageModuleID, messageIds.ToDelimitedString(","));
@@ -611,7 +599,7 @@ namespace YAF.Core.Services
             }
 
             // load them into the page data...
-            foreach (var dataRow in dataRows)
+            foreach (var dataRow in enumerable)
             {
                 // find the message id in the results...
                 DataRow row = dataRow;
@@ -676,17 +664,17 @@ namespace YAF.Core.Services
         /// <summary>
         /// The Buddy list for the user with the specified UserID.
         /// </summary>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The User ID.
         /// </param>
         /// <returns>
         /// The user buddy list.
         /// </returns>
-        public DataTable UserBuddyList(int userID)
+        public DataTable UserBuddyList(int userId)
         {
             return this.DataCache.GetOrSet(
-                Constants.Cache.UserBuddies.FormatWith(userID), 
-                () => CommonDb.buddy_list(YafContext.Current.PageModuleID, userID), 
+                Constants.Cache.UserBuddies.FormatWith(userId), 
+                () => CommonDb.buddy_list(YafContext.Current.PageModuleID, userId), 
                 TimeSpan.FromMinutes(10));
         }
 

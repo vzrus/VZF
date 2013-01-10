@@ -51,19 +51,84 @@ namespace YAF.Controls
         }
 
         /// <summary>
-        ///   Gets or sets CSS Class.
+        ///   Gets or sets TopicId.
         /// </summary>
         [NotNull]
         public int TopicId
         {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///   Gets or sets ForumId.
+        /// </summary>
+        [NotNull]
+        public int ForumId
+        {
+            get;
+            set;
+
+        }
+
+        /// <summary>
+        ///  Gets or sets BoardId.
+        /// </summary>
+        [NotNull]
+        public int BoardId
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///  Gets or sets TagsData.
+        /// </summary>
+        [NotNull]
+        public DataTable TagsData
+        {
             get
             {
-                return this.ViewState["TopicId"] != null ? this.ViewState["TopicId"].ToType<int>() : 0;
+                return this.ViewState["TagsData"] != null ? this.ViewState["TagsData"].ToType<DataTable>() : null;
             }
 
             set
             {
-                this.ViewState["TopicId"] = value;
+                this.ViewState["TagsData"] = value;
+            }
+        }
+
+        /// <summary>
+        ///  Gets or sets PageIndex.
+        /// </summary>
+        [NotNull]
+        public int PageIndex
+        {
+            get
+            {
+                return this.ViewState["PageIndex"] != null ? this.ViewState["PageIndex"].ToType<int>() : 0;
+            }
+
+            set
+            {
+                this.ViewState["PageIndex"] = value;
+            }
+        }
+
+        /// <summary>
+        ///  Gets or sets PageSize.
+        /// </summary>
+        [NotNull]
+        public int PageSize
+        {
+            get
+            {
+                return this.ViewState["PageSize"] != null ? this.ViewState["PageSize"].ToType<int>() : 1000;
+            }
+
+            set
+            {
+                this.ViewState["PageSize"] = value;
             }
         }
 
@@ -80,7 +145,7 @@ namespace YAF.Controls
         /// </returns>
         public string GetTagCloudHtml(DataTable tagNameWithFrequencies)
         {
-            if (tagNameWithFrequencies == null && tagNameWithFrequencies.Rows.Count <= 0)
+            if (tagNameWithFrequencies == null || tagNameWithFrequencies.Rows.Count <= 0)
             {
                 return null;
             }
@@ -98,24 +163,44 @@ namespace YAF.Controls
             }
 
             var tagCloudString = new StringBuilder();
-
             int tagCount = 0;
             foreach (DataRow tag in tagNameWithFrequencies.Rows)
             {
                 string tagItem;
                 string tagClass = ".tagcloud " + this.GetTagClass(tag["TagCount"].ToType<int>(), tag["MaxTagCount"].ToType<int>());
-                
-                if (tag["TagCount"].ToType<int>() > 1)
+
+                string numberOfTags = null;
+                if (this.Get<YafBoardSettings>().ShowNumberOfTags)
                 {
+                    numberOfTags = "({0})".FormatWith(tag["TagCount"].ToType<int>());
+                }
+
+                string addQweryParams = null;
+
+                if (tag["TagCount"].ToType<int>() > 1 || this.TopicId <= 0)
+                {
+                    if (this.TopicId > 0)
+                    {
+                        addQweryParams = "t={0}".FormatWith(this.TopicId);
+                    }
+                    else if (this.ForumId > 0)
+                    {
+                        addQweryParams = "f={0}".FormatWith(this.ForumId);
+                    }
+                    else if (this.BoardId > 0)
+                    {
+                        addQweryParams = "b={0}".FormatWith(this.BoardId);
+                    }
+
                     string targetUrl = YafBuildLink.GetLinkNotEscaped(
-                        ForumPages.topicsbytags, "tagid={0}&t={1}".FormatWith(tag["TagID"], this.TopicId));
-                    tagItem = "<a class=\"{0}\" href=\"{1}\">{2}({3})</a>&nbsp;&nbsp;".FormatWith(
-                        tagClass, targetUrl, tag["Tag"], tag["TagCount"].ToType<int>() - 1);
+                        ForumPages.topicsbytags, "tagid={0}&{1}".FormatWith(tag["TagID"], addQweryParams));
+                    tagItem = "<a class=\"{0}\" href=\"{1}\">{2}{3}</a>&nbsp;&nbsp;".FormatWith(
+                        tagClass, targetUrl, tag["Tag"], numberOfTags);
                 }
                 else
                 {
-                    tagItem = "<span class=\"{0}\">{1}({2})</span>&nbsp;&nbsp;".FormatWith(
-                        tagClass, tag["Tag"], tag["TagCount"].ToType<int>() - 1);
+                    tagItem = "<span class=\"{0}\">{1}{2}</span>&nbsp;&nbsp;".FormatWith(
+                        tagClass, tag["Tag"], numberOfTags);
                 }
 
                 tagCloudString.Append(tagItem);
@@ -227,12 +312,40 @@ namespace YAF.Controls
         private void SimpleTagCloud_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             var tag = new HtmlGenericControl();
-            tag.Attributes.Add("class", "iconlegend");
+            tag.Attributes.Add("class", "tagcloud");
             Controls.Add(tag);
 
-            DataTable dt = CommonDb.topic_tags(
-                PageContext.PageModuleID, PageContext.PageBoardID, PageContext.PageUserID, this.TopicId);
-            tag.InnerHtml = new SimpleTagCloud().GetTagCloudHtml(dt);
+            DataTable dt = this.TagsData;
+            if (dt != null)
+            {
+                tag.InnerHtml = this.GetTagCloudHtml(dt);
+                return;
+            }
+
+            if (this.TopicId > 0)
+            {
+                dt = CommonDb.topic_tags(
+                    PageContext.PageModuleID, PageContext.PageBoardID, PageContext.PageUserID, this.TopicId);
+                tag.InnerHtml = this.GetTagCloudHtml(dt);
+                return;
+            }
+
+            if (this.ForumId > 0)
+            {
+                dt = CommonDb.forum_tags(
+                    PageContext.PageModuleID, PageContext.PageBoardID, PageContext.PageUserID, this.ForumId, this.PageIndex, this.PageSize,string.Empty, false);
+                tag.InnerHtml = this.GetTagCloudHtml(dt);
+                return;
+            }
+
+            if (this.BoardId <= 0)
+            {
+                return;
+            }
+
+            dt = CommonDb.forum_tags(
+                this.PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, 0, this.PageIndex, this.PageSize, string.Empty, false);
+            tag.InnerHtml = this.GetTagCloudHtml(dt);
         }
 
         #endregion

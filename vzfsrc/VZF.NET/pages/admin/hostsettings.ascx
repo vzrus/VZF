@@ -554,7 +554,15 @@
                         <td class="post">
                             <asp:CheckBox ID="AllowTopicTags" runat="server"></asp:CheckBox>
                         </td>
-                    </tr>       
+                    </tr> 
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <YAF:HelpLabel ID="HelpLabel224" runat="server" LocalizedTag="SHOW_TOPICTAGSCOUNT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ShowNumberOfTags" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr> 
                     <tr>
                         <td class="postheader" style="width:50%">
                             <YAF:HelpLabel ID="HelpLabel221" runat="server" LocalizedTag="ALLOW_AUTOTOPICTAGS" LocalizedPage="ADMIN_HOSTSETTINGS" />

@@ -144,6 +144,7 @@
   </page>
   <page name="ADMIN_ACCESSMASKS">
     <Resource tag="CONFIRM_DELETE">Diese Zugangsmaske löschen?</Resource>
+    <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Löschen</Resource>
     <Resource tag="DOWNLOAD">Herunterladen</Resource>
     <Resource tag="EDIT">Bearbeiten</Resource>
@@ -377,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Zugang</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
     <Resource tag="DELETE_ACCESS_HELP">Allows Users to Delete their own Posts</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Download Access</Resource>
@@ -822,12 +825,30 @@
     <Resource tag="TITLE">Erweiterungen importieren</Resource>
   </page>
   <page name="ADMIN_FORUMS">
+    <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Dieses Forum permanent löschen inkl. ALLER Themen, Umfragen, Anhänge und Beiträge die darin enthalten sind?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Dieser Kategorie löschen?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Sie sind SICHER?</Resource>
+    <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
+    <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
+    <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
+    <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
+    <Resource tag="FORUM_SELECTANODE_MSG">You should select a node.</Resource>
+    <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
+    <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
+    <Resource tag="FORUM_SELECTEDITEDNODE_MSG">You should select a node to edit.</Resource>
+    <Resource tag="FORUM_SELECTEDNODE_MSG">Selected node:</Resource>
+    <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
+    <Resource tag="FORUM_SELECTTARGETNODE_MSG">You should select a target node.</Resource>
+    <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+    <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
+    <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">Sie können diese Kategorie nicht löschen da Sie mindestens ein Forum enthält.\nUm das Forum zu verschieben klicken Sie auf  \"Bearbeiten\" und ändern Sie die Kategorie.</Resource>
     <Resource tag="NEW_CATEGORY">Neue Kategorie</Resource>
     <Resource tag="NEW_FORUM">Neues Forum</Resource>
+    <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Zu YAF hinzufügen</Resource>
@@ -1295,6 +1316,8 @@
     <Resource tag="SHOW_THANK_DATE_HELP">Wenn diese Option aktiviert ist, können Benutzer sehen, an welchem Datum ihn für diesen Beitrag gedankt wurde. (Die Danke Funktion muss dafür zunächst aktiviert werden.)</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS">Heutige Geburtstage anzeigen in den Foren Statistiken:</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS_HELP">Aktivieren, um eine Liste mit den Benutzern anzugeigen die heute Geburtstag haben.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
     <Resource tag="SHOW_UNREAD_LINKS">Ungelesene Links zeigen:</Resource>
     <Resource tag="SHOW_UNREAD_LINKS_HELP">Ungelesene Links werden angezeigt die direkt zu dem ersten ungelesenen Beitrag innerhalb eines Themas führen.</Resource>
     <Resource tag="SHOW_USER_STATUS">Benutzer Online / Offline Status:</Resource>
@@ -4727,6 +4750,10 @@ Durch das Abschließen der Registrierung stimmst Du diesen Nutzungsbedingungen z
     <Resource tag="HEADER_MEANING">Meint</Resource>
     <Resource tag="HEADER_SMILE">Smiley</Resource>
     <Resource tag="TITLE">Verfügbare Smileys</Resource>
+  </page>
+  <page name="TAGSBOARD">
+    <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
+    <Resource tag="TITLE">Board Tags</Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Admins</Resource>

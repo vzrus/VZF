@@ -52,6 +52,7 @@ c.Flags & 128 AS EditAccess,
 c.Flags & 256 AS DeleteAccess,
 c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
+c.Flags & 32768 AS UserForumAccess
 0 AS AdminGroup                                 
 FROM          {databaseName}.{objectQualifier}UserForum AS b
 INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
@@ -72,6 +73,7 @@ d.Flags & 128 AS EditAccess,
 d.Flags & 256 AS DeleteAccess,
 d.Flags & 512 AS UploadAccess,
 d.Flags & 1024 AS DownloadAccess,
+d.Flags & 32768 AS UserForumAccess,
 e.Flags & 1 AS AdminGroup  
 FROM   {databaseName}.{objectQualifier}UserGroup AS b
 INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
@@ -95,6 +97,7 @@ CREATE VIEW {databaseName}.{objectQualifier}vaccessfull3 AS
 				   0 AS DeleteAccess,
 				   0 AS UploadAccess,
 				   0 AS DownloadAccess,
+				   0 AS UserForumAccess,
 				   0 AS AdminGroup 
 			FROM  {databaseName}.{objectQualifier}User a1;
 --GO
@@ -116,6 +119,7 @@ c.Flags & 128 AS EditAccess,
 c.Flags & 256 AS DeleteAccess,
 c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
+c.Flags & 32768 AS UserForumAccess,
 0 AS AdminGroup                                 
 FROM          {databaseName}.{objectQualifier}UserForum AS b
 INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
@@ -135,6 +139,7 @@ d.Flags & 128 AS EditAccess,
 d.Flags & 256 AS DeleteAccess,
 d.Flags & 512 AS UploadAccess,
 d.Flags & 1024 AS DownloadAccess,
+d.Flags & 32768 AS UserForumAccess,
 e.Flags & 1 AS AdminGroup  
 FROM   {databaseName}.{objectQualifier}UserGroup AS b
 INNER JOIN {databaseName}.{objectQualifier}ForumAccess AS c
@@ -158,6 +163,7 @@ UserID,
 0 AS DeleteAccess,
 0 AS UploadAccess,
 0 AS DownloadAccess,
+0 AS UserForumAccess,
 0 AS AdminGroup 
 FROM {databaseName}.{objectQualifier}User AS a;
 --GO 
@@ -335,7 +341,8 @@ MAX(x_1.ModeratorAccess) AS ModeratorAccess,
 MAX(x_1.EditAccess) AS EditAccess,
 MAX(x_1.DeleteAccess) AS DeleteAccess,
 MAX(x_1.UploadAccess) AS UploadAccess,
-MAX(x_1.DownloadAccess) AS DownloadAccess
+MAX(x_1.UserForumAccess) AS UserForumAccess
+UserForumAccess
 FROM     {databaseName}.{objectQualifier}vaccessfull x_1
 INNER JOIN  {databaseName}.{objectQualifier}UserGroup AS a
 ON a.UserID = x_1.UserID

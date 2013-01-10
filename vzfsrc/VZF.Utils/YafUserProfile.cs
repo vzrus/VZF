@@ -308,7 +308,7 @@ namespace YAF.Utils
     /// Gets or sets Country.
     /// </summary>
     [SettingsAllowAnonymous(false)]
-    [CustomProviderData("Country;nvarchar;2")]
+    [CustomProviderData("Country;nvarchar;5")]
     public string Country
     {
         get

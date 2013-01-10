@@ -267,14 +267,17 @@ namespace YAF.Pages.moderate
 
             try
             {
-                if (this.Get<YafBoardSettings>().SpamServiceType.Equals(2) && !string.IsNullOrEmpty(this.Get<YafBoardSettings>().AkismetApiKey))
+                if (!this.Get<YafBoardSettings>().SpamServiceType.Equals(2)
+                    || string.IsNullOrEmpty(this.Get<YafBoardSettings>().AkismetApiKey))
                 {
-                    var service = new AkismetSpamClient(this.Get<YafBoardSettings>().AkismetApiKey, new Uri(BaseUrlBuilder.BaseUrl));
-
-                    service.SubmitSpam(new Comment(null, string.Empty) { Content = comment });
-
-                    this.PageContext.AddLoadMessage(this.GetText("MODERATE_DEFAULT", "SPAM_REPORTED"));
+                    return;
                 }
+
+                var service = new AkismetSpamClient(this.Get<YafBoardSettings>().AkismetApiKey, new Uri(BaseUrlBuilder.BaseUrl));
+
+                service.SubmitSpam(new Comment(null, string.Empty) { Content = comment });
+
+                this.PageContext.AddLoadMessage(this.GetText("MODERATE_DEFAULT", "SPAM_REPORTED"));
             }
             catch (Exception)
             {

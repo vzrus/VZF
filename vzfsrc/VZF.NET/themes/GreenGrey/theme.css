@@ -1,8 +1,4 @@
-.yafnet {
-    font-size:12px;
-    font-family:Arial;
-    color: #000;
-}
+.yafnet,
 .yafnet td {
     font-size:12px;
     font-family:Arial;
@@ -22,17 +18,16 @@
 }
 .yafnet textarea {
         width:98%;
-        padding:0px;
+        padding:0;
 }
 .yafnet input[type="image"]
+.yafnet input[type="checkbox"]
 {
-    padding: 0px;
-    border: 0px;
+    padding: 0;
+    border: 0;
 }
 .yafnet input[type="checkbox"]
 {
-    border: 0px;
-    padding: 0px;
     margin: 5px;
 }
 
@@ -87,23 +82,21 @@
     padding-left: 10px;
     font-size: 11pt;
     line-height: 20px;
-    background: url('HeaderBack.png') #9eda29;
-    
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    background: url('HeaderBack.png') #42a5ff;
     
-    background: -webkit-gradient(linear, left top, left bottom, from(#9eda29), to(#6ca300));
-    background: -moz-linear-gradient(top,  #9eda29,  #6ca300);
-    background: -o-linear-gradient(top,  #9eda29,  #6ca300);
+    background: -webkit-gradient(linear, left top, left bottom, from(#0c75d5), to(#42a5ff));
+    background: -moz-linear-gradient(top,  #0c75d5,  #42a5ff);
+    background: -o-linear-gradient(top,  #0c75d5,  #42a5ff);
 }
-.yafnet tr.forumRowTitle th {color: #ffffff;}
 
 .yafnet a.HeaderTopicLink {
     color: #ffffff!important;
     font-weight: bold;
     font-size: 11pt;
     text-decoration:none;
-    text-shadow: 0 1px 1px rgba(0,0,0,.3);
 }
+.yafnet tr.forumRowTitle th {color: #ffffff;}
 .yafnet tr.header1 a {
     color: #ffffff;
     text-decoration: none;
@@ -126,28 +119,22 @@
     padding-left: 10px;
     font-size: 15px;
     line-height: 30px;
-}	
+}
 .yafnet .postTitle .rightItem a
 {
     color: White;
 }
 
-.yafnet tr.header2 {
-    background-color: #e3e3e3;
-    color: #55a055;
-    font-weight: bold;
-}
 .yafnet tr.header2 td,
 .yafnet tr.header2 th,
 .yafnet td.header2,
 .yafnet th.header2 {
     border-top:1px solid #555;
     line-height: 25px;
-    background: url('Header2Back.png') repeat-x -3px #ffffff;
-    
+    background: url('Header2Back.png') repeat-x  #ffffff;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#e3e3e3', endColorstr='#ffffff');
     background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#ffffff));
-    background: -moz-linear-gradient(top,  #e3e3e3,  #ffffff);
-    background: -o-linear-gradient(top,  #e3e3e3,  #ffffff);
+    background: -moz-linear-gradient(top,  #e3e3e3,  #ffffff); 
     
     color: black;
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
@@ -178,11 +165,7 @@
     font-weight: bold;
 }
 
-/* all links */
-.yafnet .content a			{ color: #001090; text-decoration: none; }
-.yafnet .content a:hover	{ color: #001090; text-decoration: underline; }
-
-.yafnet th.header2 a:link,
+yafnet th.header2 a:link,
 .yafnet th.header2 a:visited,
 .yafnet th.header2 a:active,
 .yafnet th.header2 a:hover { color: black; text-decoration: underline; }
@@ -194,6 +177,18 @@
     -webkit-border-radius: 0.4em;
     border-radius: 0.4em;
 }
+
+.yafnet td.infoTable {
+    background-color: #FAFAFA;
+    padding: 10px;
+    border: 1px solid #F2F2F2;
+    -moz-border-radius: 0.4em; 
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
+}
+/* all links */
+.yafnet .content a			{ color: #001090; text-decoration: none; }
+.yafnet .content a:hover	{ color: #001090; text-decoration: underline; }
 /* Footer1 - Bottom of tables */
 .yafnet .footer1 {
     font-size: 7pt;
@@ -231,6 +226,7 @@
 .smiliesContent .post,
 #yafprofilecontent .post,
 #yafprofilecontent .postheader {border-top:none;}
+.yafnet .LastPosts .header2 {border-top:none;}
 
 .yafnet .linkedPostsContent .postheader,
 .yafnet .LastPosts .postheader {
@@ -281,11 +277,10 @@
 /* Area between posts */
 .yafnet .postsep {
     background-color: #dfeec3;
-
     height: 10px;
 }
 /* most tables are class 'content' */
-.yafnet dl.content,
+.yafnet table.content,
 .yafnet table.content {
     border-spacing: 0;
     border: solid 1px #777777;
@@ -328,7 +323,6 @@ border-bottom-left-radius:0.3em;}
 .yafnet .fileattach {
     padding: 4px;
     border: 1px solid #110000;
-    border-left: 4px solid blue;
     -moz-border-radius: 0.4em; 
     -webkit-border-radius: 0.4em;
     border-radius: 0.4em;
@@ -371,7 +365,7 @@ border-bottom-left-radius:0.3em;}
     padding: 8px;
 }
 .yafnet .content td table td table td {
-    padding: 0px;	
+    padding: 0;	
 }
 .yafnet .content .headersub {
     color: #ffffff;
@@ -384,10 +378,10 @@ border-bottom-left-radius:0.3em;}
 .yafnet .quote {
   padding: 4px;
     border: 1px solid #110000;
-    border-left: 4px solid green;
     -moz-border-radius: 0.4em; 
     -webkit-border-radius: 0.4em;
     border-radius: 0.4em;
+    border-left: 4px solid green;
     
     font-family: "Tahoma", "Calibri", "Verdana", "Geneva", sans-serif;
   
@@ -403,12 +397,12 @@ border-bottom-left-radius:0.3em;}
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
     margin: 10px;
 }
-.yafnet .quotetitle {
+.yafnet .quote b,
+.yafnet .quote strong {
     padding-bottom:2px;
     display:block;
     font-size:80%;
     color:#666;
-    font-weight:bold;
 }
 .yafnet  .innerquote {
     font-style: italic;
@@ -416,16 +410,14 @@ border-bottom-left-radius:0.3em;}
 /* used for code */
 .yafnet .code {
     margin: 10px;
-    background-color: #f9f9f9;
-    border: solid 1px #110000;
-    border-left: 4px solid red;
-    -moz-border-radius: 0.4em; 
-    -webkit-border-radius: 0.4em;
-    border-radius: 0.4em;
 }
 .yafnet .innercode {
     padding: 4px;
-    
+    background-color: #f9f9f9;
+    border: solid 1px #110000;
+    -moz-border-radius: 0.4em; 
+    -webkit-border-radius: 0.4em;
+    border-radius: 0.4em;
     color: #000000;
     line-height: 1.3em;
     font-family: "courier new", "times new roman", monospace;
@@ -553,7 +545,7 @@ Use this to setup overflow feature for your site.
 On IE that would mean specifying a width so that the overflow will work properly.
 This CSS already works on FireFox.
 */
-.yafnet .postdiv {
+.yafnet div.postdiv {
     width: 100%;
     min-height: 100px;
     overflow: auto;	
@@ -574,7 +566,7 @@ This CSS already works on FireFox.
 /* CSS Pagelinks */
 .yafnet .yafpager {
     color: #555555;
-    margin: 6px 0px 6px 0px;
+    margin: 6px 0 6px 0;
 }
 .yafnet a.pagelink,
 .yafnet a.pagelinkfirst,
@@ -607,7 +599,6 @@ This CSS already works on FireFox.
     text-decoration: none;
     color: #000090;
 }
-
 /* CCS Buttons */
 .yafnet .postTopLink,
 .yafnet .MultiQuoteButton,
@@ -638,12 +629,8 @@ This CSS already works on FireFox.
     background: url('HeaderBack.png') #9eda29;
     
     background: -webkit-gradient(linear, left top, left bottom, from(#9eda29), to(#6ca300));
-    background: -moz-linear-gradient(top,  #9eda29,  #6ca300);
-    
-    -moz-transition: color .15s linear,background-color .15s linear;
-    -webkit-transition: color .15s linear,background-color .15s linear;
-    transition: color .15s linear,background-color .15s linear;
-    
+    background: -moz-linear-gradient(top,  #9eda29,  #6ca300);   
+    background: -o-linear-gradient(top,  #9eda29,  #6ca300);    
 }
 .yafnet a.yafcssbigbutton:hover,
 .yafnet .pbutton:hover,
@@ -664,8 +651,7 @@ This CSS already works on FireFox.
 .yafnet a.yafcssbigbutton:active,
 .yafnet .postTopLink:active,
 .yafnet .Checked,
-.yafnet a.yaflittlebutton:active,
-.yafnet a.yafcssimagebutton:active {
+.yafnet a.yaflittlebutton:active,.yafnet a.yafcssimagebutton:active {
     color: #ffffff;
     
     background: url('ButtonActive.png') #7db72f;
@@ -707,10 +693,6 @@ This CSS already works on FireFox.
     background: -webkit-gradient(linear, left top, left bottom, from(#9eda29), to(#6ca300));
     background: -moz-linear-gradient(top,  #9eda29,  #6ca300);
     background: -o-linear-gradient(top,  #9eda29,  #6ca300);
-    
-    -moz-transition: color .15s linear,background-color .15s linear;
-    -webkit-transition: color .15s linear,background-color .15s linear;
-    transition: color .15s linear,background-color .15s linear;
 }
 .yafnet a.yafcssbigbutton span{
     display: block;
@@ -719,10 +701,10 @@ This CSS already works on FireFox.
 }
 .yafnet a.yafcssbigbutton img{
     vertical-align: top;
-    padding: 0px 4px 0px 0px;
+    padding: 0 4px 0 0;
 }
 .yafnet a.yafcssbigbutton:active img{
-    padding: 0px 4px 0px 0px;
+    padding: 0 4px 0 0;
 }
 .yafnet a.yafcssbigbutton:active span{
     background-position: bottom left;
@@ -846,7 +828,11 @@ This CSS already works on FireFox.
 .modalPopup .modalFooter
 {
     padding: 5px;
-    background-color: #f4f4f4;	
+    background: #f4f4f4;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f4f4f4));
+    background: -moz-linear-gradient(top,  #ffffff,  #f4f4f4);
+
     line-height: 20px;
 }
 
@@ -900,7 +886,7 @@ This CSS already works on FireFox.
     margin: 2px;
 }
 
-.yafnet table.content postContainer {
+.yafnet table.content .postContainer {
 height:80em;
 }
 
@@ -1042,7 +1028,7 @@ height:80em;
 .ui-helper-reset li {list-style-type:none}
 
 .message, .UserBox {vertical-align:top;}
-.yafnet .UserBox {border-right: 1px solid #ccc}
+.UserBox {border-right: 1px solid #ccc}
 
 .avatarimage {
     display: inline-block;
@@ -1118,6 +1104,12 @@ height:80em;
     color: black;
     font-weight: bold;
     
+}
+
+.yafnet .menuMyList li
+{
+    display: inline;
+    padding:0px;
 }
 
 .yafnet .menuMyList li
@@ -1450,11 +1442,12 @@ height:80em;
   Tag Cloud
 ------------------------------
 */
-.tagcloud
+.yafnet .tagcloud
+
 {
     font-family:Tahoma,Helvetica,Arial,Verdana;
 }
-.tag0{font-size: 0.6em}
+.yafnet .tag0{font-size: 0.6em}
 .tag1{font-size: 0.7em}
 .tag10{font-size: 0.8em}
 .tag20{font-size: 0.9em}

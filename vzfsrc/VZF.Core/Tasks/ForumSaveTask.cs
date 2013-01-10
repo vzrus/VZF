@@ -445,13 +445,29 @@ namespace YAF.Core.Tasks
             {
                 this.Logger.Info(
                     "Starting Forum Update||Add Task for ForumID {0}, {1} CategoryID, ParentID {2}.",
-                    this.ForumId, this.CategoryId, this.ParentId);
-                _forumOut = CommonDb.forum_save(YafContext.Current.PageModuleID, this.ForumId, this.CategoryId, this.ParentId, this.Name,
-                                                   this.Description,
-                                                   this.SortOrder, this.Locked, this.Hidden, this.IsTest, this.Moderated,
-                                                   this.AccessMaskId, this.RemoteURL, this.ThemeURL, this.ImageURL,
-                                                   this.Styles,
-                                                   this.Dummy);
+                    this.ForumId,
+                    this.CategoryId,
+                    this.ParentId);
+                _forumOut = CommonDb.forum_save(
+                    YafContext.Current.PageModuleID,
+                    this.ForumId,
+                    this.CategoryId,
+                    this.ParentId,
+                    this.Name,
+                    this.Description,
+                    this.SortOrder, 
+                    this.Locked,
+                    this.Hidden, 
+                    this.IsTest, 
+                    this.Moderated,
+                    this.AccessMaskId, 
+                    this.RemoteURL, 
+                    this.ThemeURL, 
+                    this.ImageURL,
+                    this.Styles,
+                    this.Dummy,
+                    YafContext.Current.PageUserID,
+                    false);
                 this.Logger.Info("Forum Update||Add Task is completed. Handled forum {0}.", _forumOut);
             }
             catch (Exception x)

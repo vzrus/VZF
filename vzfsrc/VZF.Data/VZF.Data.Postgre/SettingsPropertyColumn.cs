@@ -19,7 +19,6 @@
 namespace VZF.Data.Postgre
 {
   using System.Configuration;
-  using System.Data;
 
   /// <summary>
   /// The settings property column.

@@ -34,7 +34,6 @@ using System.Security;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 #if (!COMPACT_FRAMEWORK)
-
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 

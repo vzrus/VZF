@@ -69,7 +69,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("accessmask_list");
+            this.cmd = PostgreDbAccess.GetCommand("accessmask_list");
             this.cmd.CommandType = CommandType.StoredProcedure;
 
             this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
@@ -90,7 +90,7 @@ namespace VZF.Data.Postgre
             this._accessMaskID.Value = accessMaskID;
             this._excludeFlags.Value = excludeFlags;
 
-            return PostgreDBAccess.GetData(this.cmd,connectionString);
+            return PostgreDbAccess.GetData(this.cmd,connectionString);
         }
     }
     /// <summary>
@@ -137,7 +137,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("accessmask_delete");
+            this.cmd = PostgreDbAccess.GetCommand("accessmask_delete");
             this.cmd.CommandType = CommandType.StoredProcedure;
 
             this._accessMaskID = this.cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
@@ -153,7 +153,7 @@ namespace VZF.Data.Postgre
         public bool AccessMaskDelete(string connectionString, object accessMaskID)
         {
             this._accessMaskID.Value = accessMaskID;
-            return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(this.cmd,connectionString)) != 0;
+            return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(this.cmd,connectionString)) != 0;
       
         }
     }
@@ -215,7 +215,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("accessmask_save");
+            this.cmd = PostgreDbAccess.GetCommand("accessmask_save");
             this.cmd.CommandType = CommandType.StoredProcedure;
 
             this._accessMaskID = this.cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlTypes.NpgsqlDbType.Integer));
@@ -265,7 +265,7 @@ namespace VZF.Data.Postgre
             this._downloadAccess.Value = downloadAccess;
             this._sortOrder.Value = sortOrder;
 
-            PostgreDBAccess.ExecuteNonQuery(this.cmd, connectionString);
+            PostgreDbAccess.ExecuteNonQuery(this.cmd, connectionString);
         }
     }
     /// <summary>
@@ -316,7 +316,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("active_list");
+            this.cmd = PostgreDbAccess.GetCommand("active_list");
             this.cmd.CommandType = CommandType.StoredProcedure;
             this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
             this._guests = this.cmd.Parameters.Add(new NpgsqlParameter("i_guests", NpgsqlTypes.NpgsqlDbType.Boolean));
@@ -339,7 +339,7 @@ namespace VZF.Data.Postgre
             this._interval.Value = interval;
             this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(this.cmd, connectionString);
+            return PostgreDbAccess.GetData(this.cmd, connectionString);
         }
     }
     /// <summary>
@@ -388,7 +388,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("active_list_user");
+            this.cmd = PostgreDbAccess.GetCommand("active_list_user");
             this.cmd.CommandType = CommandType.StoredProcedure;
             this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
             this._userId = this.cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlTypes.NpgsqlDbType.Integer));
@@ -414,7 +414,7 @@ namespace VZF.Data.Postgre
             this._interval.Value = activeTime;
             this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(this.cmd, connectionString);
+            return PostgreDbAccess.GetData(this.cmd, connectionString);
         }
         class active_list_user_Nested
         {
@@ -465,7 +465,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("active_listforum");
+            this.cmd = PostgreDbAccess.GetCommand("active_listforum");
             this.cmd.CommandType = CommandType.StoredProcedure;
             this._forumId = this.cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlTypes.NpgsqlDbType.Integer));
           
@@ -483,7 +483,7 @@ namespace VZF.Data.Postgre
             this._forumId.Value = forumID;
             this._styledNicks.Value = styledNicks;
 
-            return PostgreDBAccess.GetData(this.cmd, connectionString);
+            return PostgreDbAccess.GetData(this.cmd, connectionString);
         }
         class active_listforum_Nested
         {
@@ -535,7 +535,7 @@ namespace VZF.Data.Postgre
             // Common properites
             this.connectionString = string.Empty;
             // Specific data
-            this.cmd = PostgreDBAccess.GetCommand("active_stats");
+            this.cmd = PostgreDbAccess.GetCommand("active_stats");
             this.cmd.CommandType = CommandType.StoredProcedure;
             this._boardId = this.cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlTypes.NpgsqlDbType.Integer));
           }
@@ -550,7 +550,7 @@ namespace VZF.Data.Postgre
         {
             this._boardId.Value = boardId;
 
-            using (DataTable dt = PostgreDBAccess.GetData(this.cmd, connectionString))
+            using (DataTable dt = PostgreDbAccess.GetData(this.cmd, connectionString))
             {
                 return dt.Rows[0];
             }

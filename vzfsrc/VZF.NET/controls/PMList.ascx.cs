@@ -22,6 +22,7 @@ namespace YAF.Controls
     #region Using
 
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
     using System.IO;
@@ -33,8 +34,7 @@ namespace YAF.Controls
 
     using VZF.Data.Common;
 
-    using YAF.Classes;
-    
+    using YAF.Classes;    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -326,7 +326,7 @@ namespace YAF.Controls
         /// </param>
         protected void ExportAll_Click([NotNull] object source, [NotNull] EventArgs e)
         {
-            var messageList = (DataView)this.MessagesView.DataSource;
+         var messageList = this.GetMessagesForExport(null);          
 
             // Return if No Messages are Available to Export
             if (messageList.Table.Rows.Count.Equals(0))
@@ -360,18 +360,14 @@ namespace YAF.Controls
         /// </param>
         protected void ExportSelected_Click([NotNull] object source, [NotNull] EventArgs e)
         {
-            int nItemCount = 0;
+            var exportPMIds =
+                this.MessagesView.Rows.Cast<GridViewRow>()
+                    .Where(item => ((CheckBox)item.FindControl("ItemCheck")).Checked)
+                    .Select(item => (int)this.MessagesView.DataKeys[item.RowIndex].Value)
+                    .ToList();
 
-            var messageList = (DataView)this.MessagesView.DataSource;
-
-            foreach (GridViewRow item in
-                this.MessagesView.Rows.Cast<GridViewRow>().Where(
-                    item => !((CheckBox)item.FindControl("ItemCheck")).Checked))
-            {
-                messageList.Table.Rows.RemoveAt(item.RowIndex - nItemCount);
-                nItemCount++;
-            }
-
+            var messageList = this.GetMessagesForExport(exportPMIds);
+            
             // Return if No Message Selected
             if (messageList.Table.Rows.Count.Equals(0))
             {
@@ -407,9 +403,9 @@ namespace YAF.Controls
         /// <returns>
         /// The format body.
         /// </returns>
-        protected string FormatBody([NotNull] object o)
+        protected string FormatBody([NotNull] object dataRowView)
         {
-            var row = (DataRowView)o;
+            var row = (DataRowView)dataRowView;
             return (string)row["Body"];
         }
 
@@ -718,6 +714,75 @@ namespace YAF.Controls
         {
             this.SetSort("Subject", true);
             this.BindData();
+        }
+
+ /// <summary>
+        /// Gets the messages for export.
+        /// </summary>
+        /// <param name="exportPmIds">The export pm ids.</param>
+        /// <returns>
+        /// Returns the filtered Messages
+        /// </returns>
+        private DataView GetMessagesForExport([CanBeNull] List<int> exportPmIds)
+        {
+            var messageList = (DataView)this.MessagesView.DataSource;
+
+            for (int i = messageList.Table.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow row = messageList.Table.Rows[i];
+
+                if (exportPmIds != null  && !exportPmIds.Contains(row["PMessageID"].ToType<int>()))
+                {
+                    messageList.Table.Rows.RemoveAt(i);
+                    continue;
+                }
+
+                if (row["IsDeleted"].ToType<bool>())
+                {
+                    messageList.Table.Rows.RemoveAt(i);
+                }
+                else
+                {
+                    switch (this.View)
+                    {
+                        case PMView.Inbox:
+                            {
+                                if (row["IsArchived"].ToType<bool>())
+                                {
+                                    messageList.Table.Rows.RemoveAt(i);
+                                }
+                            }
+
+                            break;
+                        case PMView.Outbox:
+                            {
+                                if (!row["IsInOutbox"].ToType<bool>())
+                                {
+                                    messageList.Table.Rows.RemoveAt(i);
+                                }
+                            }
+
+                            break;
+                        case PMView.Archive:
+                            {
+                                if (!row["IsArchived"].ToType<bool>())
+                                {
+                                    messageList.Table.Rows.RemoveAt(i);
+                                }
+                            }
+
+                            break;
+                    }
+                }
+            }
+
+            // Remove Columns that are not needed
+            messageList.Table.Columns.Remove("IsDeleted");
+            messageList.Table.Columns.Remove("IsArchived");
+            messageList.Table.Columns.Remove("IsInOutbox");
+            messageList.Table.Columns.Remove("Flags");
+            
+            return messageList;
         }
 
         /// <summary>

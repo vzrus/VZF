@@ -420,6 +420,27 @@ namespace YAF.Core.Services
         }
 
         /// <summary>
+        ///   Gets or sets ForumAdminTreeAddForum.
+        /// </summary>
+        public int? ForumAdminTreeAddForum
+        {
+            get
+            {
+                if (this.SessionState["forumadmintreeaddforum"] != null)
+                {
+                    return (int)this.SessionState["forumadmintreeaddforum"];
+                }
+
+                return null;
+            }
+
+            set
+            {
+                this.SessionState["forumadmintreeaddforum"] = value;
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets active node for a tree.
         /// </summary>
         public string NntpTreeActiveNode
@@ -437,6 +458,48 @@ namespace YAF.Core.Services
             set
             {
                 this.SessionState["nntptreeactivenode"] = value;
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets selected forum node id for move or for adding.
+        /// </summary>
+        public string ForumTreeChangerActiveNode
+        {
+            get
+            {
+                if (this.SessionState["forumtreechangeractivenode"] != null)
+                {
+                    return (string)this.SessionState["forumtreechangeractivenode"];
+                }
+
+                return null;
+            }
+
+            set
+            {
+                this.SessionState["forumtreechangeractivenode"] = value;
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets selected forum node id for move or for adding.
+        /// </summary>
+        public string ForumTreeChangerActiveTargetNode
+        {
+            get
+            {
+                if (this.SessionState["forumtreechangeractivetargetnode"] != null)
+                {
+                    return (string)this.SessionState["forumtreechangeractivetargetnode"];
+                }
+
+                return null;
+            }
+
+            set
+            {
+                this.SessionState["forumtreechangeractivetargetnode"] = value;
             }
         }
 

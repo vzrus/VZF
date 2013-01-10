@@ -48,7 +48,7 @@ namespace YAF.Core
         /// <summary>
         /// The cache size.
         /// </summary>
-        private int _cacheSize = 500;
+        private int _cacheSize = 1000;
 
         #endregion
 

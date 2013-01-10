@@ -18,23 +18,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes;
-
 namespace YAF.Pages
 {
   #region Using
 
-  using System;
-  using System.Web;
+    using System;
+    using System.Web;
 
-  using YAF.Core;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
-  using YAF.Utilities;
-  using YAF.Utils;
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using YAF.Utilities;
+    using YAF.Utils;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// the Albums Page.

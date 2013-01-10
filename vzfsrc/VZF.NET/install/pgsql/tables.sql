@@ -17,7 +17,27 @@ CREATE TABLE databaseSchema.objectQualifier_accessmask
 			 boardid                   integer NOT NULL,
 			 name                      varchar(128) NOT NULL CHECK (name <> ''),
 			 flags                     integer DEFAULT 0 NOT NULL,
-			 sortorder                 smallint DEFAULT 0 NOT NULL
+			 sortorder                 smallint DEFAULT 0 NOT NULL,
+			 createdbyuserid           integer,
+			 createdbyusername         varchar(255),
+			 createdbyuserdisplayname  varchar(255),
+			 createddate               timestampTZ,
+			 isusermask                boolean  DEFAULT false NOT NULL,
+			 isadminmask               boolean  DEFAULT false NOT NULL
+			) 
+	   WITH (OIDS=withOIDs);
+END IF;
+
+IF NOT EXISTS (select 1 from pg_tables 
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_accessmaskhistory' limit 1) THEN
+CREATE TABLE databaseSchema.objectQualifier_accessmaskhistory 
+			(
+			 accessmaskid              integer NOT NULL,
+			 changeduserid             integer,
+			 changedusername           varchar(255) NOT NULL,
+			 changeddisplayname        varchar(255) NOT NULL,		
+			 changeddate               timestampTZ
 			) 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -67,7 +87,8 @@ CREATE TABLE databaseSchema.objectQualifier_activeaccess
 			 editaccess			       boolean NOT NULL default false,
 			 deleteaccess		       boolean NOT NULL default false,
 			 uploadaccess		       boolean NOT NULL default false,
-			 downloadaccess		       boolean NOT NULL default false			
+			 downloadaccess		       boolean NOT NULL default false,
+			 userforumaccess		   boolean NOT NULL default false			
 			 ) 
 	   WITH (OIDS=withOIDs,fillfactor=10,autovacuum_enabled=true);
 END IF;
@@ -259,8 +280,27 @@ CREATE TABLE databaseSchema.objectQualifier_forum
 			 themeurl                  varchar(255),
 			 imageurl                  varchar(255),
 			 styles                    varchar(255),
-			 pollgroupid               integer
+			 pollgroupid               integer,
+			 createdbyuserid           integer,
+			 createdbyusername         varchar(255),
+			 createdbyuserdisplayname  varchar(255),
+			 createddate               timestampTZ,
+			 isuserforum  boolean  DEFAULT false NOT NULL
 			 ) 
+	   WITH (OIDS=withOIDs);
+END IF;
+
+IF NOT EXISTS (select 1 from pg_tables 
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_forumhistory' limit 1) THEN
+CREATE TABLE databaseSchema.objectQualifier_forumhistory 
+			(
+			 forumid                   integer  NOT NULL,
+			 changeduserid             integer,
+			 changedusername           varchar(255) NOT NULL,
+			 changeddisplayname        varchar(255) NOT NULL,		
+			 changeddate               timestampTZ
+			) 
 	   WITH (OIDS=withOIDs);
 END IF;
 
@@ -293,8 +333,28 @@ CREATE TABLE databaseSchema.objectQualifier_group
 			 usrsigbbcodes	           varchar(255),
 			 usrsightmltags            varchar(255),
 			 usralbums                 integer  DEFAULT 0 NOT NULL,
-			 usralbumimages            integer   DEFAULT 0 NOT NULL
+			 usralbumimages            integer  DEFAULT 0 NOT NULL,
+			 createdbyuserid           integer,
+			 createdbyusername         varchar(255),
+			 createdbyuserdisplayname  varchar(255),
+			 createddate               timestampTZ,			
+			 isusergroup               boolean  DEFAULT false NOT NULL,
+			 ishidden                  boolean  DEFAULT false NOT NULL
 			 ) 
+	   WITH (OIDS=withOIDs);
+END IF;
+
+IF NOT EXISTS (select 1 from pg_tables 
+			   where schemaname='databaseSchema' 
+				 AND tablename='objectQualifier_grouphistory' limit 1) THEN
+CREATE TABLE databaseSchema.objectQualifier_grouphistory 
+			(
+			 groupid              integer NOT NULL,
+			 changeduserid             integer,
+			 changedusername           varchar(255) NOT NULL,
+			 changeddisplayname        varchar(255) NOT NULL,		
+			 changeddate               timestampTZ
+			) 
 	   WITH (OIDS=withOIDs);
 END IF;
 
@@ -1066,6 +1126,74 @@ BEGIN
 		 ALTER TABLE databaseSchema.objectQualifier_tags ADD COLUMN tagcount  integer DEFAULT 0 NOT NULL ;
 	 END IF;
 
+	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','createdbyuserid')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createdbyuserid  integer;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','createdbyusername')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createdbyusername  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','createdbyuserdisplayname')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createdbyuserdisplayname  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','createddate')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createddate  timestampTZ;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','isuserforum')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN isuserforum  boolean  DEFAULT false NOT NULL ;
+	 END IF;
+
+	  IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserid')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyuserid  integer;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyusername')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyusername  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserdisplayname')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyuserdisplayname  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','createddate')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createddate  timestampTZ;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','isusergroup')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN isusergroup  boolean  DEFAULT false NOT NULL ;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','ishidden')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN ishidden  boolean  DEFAULT false NOT NULL;
+	 END IF;
+
+	 	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createdbyuserid')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createdbyuserid  integer;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createdbyusername')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createdbyusername  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createdbyuserdisplayname')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createdbyuserdisplayname  varchar(255);
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createddate')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createddate  timestampTZ;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','isusermask')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN isusermask  boolean  DEFAULT false NOT NULL ;
+	 END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','isadminmask')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN isadminmask  boolean  DEFAULT false NOT NULL ;
+	 END IF;
+
 	 /* IF (EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='objectQualifier_forumreadtracking' 
 											   AND indexname='ix_objectQualifier_forumreadtracking_userid_forumid')) THEN
 		 DROP INDEX  ix_objectQualifier_forumreadtracking_userid_forumid;
@@ -1092,6 +1220,9 @@ BEGIN
 	 IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_messagereportedaudit'::regclass and attname='reported' and not attnotnull)) THEN
 	 ALTER TABLE databaseSchema.objectQualifier_messagereportedaudit ALTER COLUMN reported SET NOT NULL;
 	END IF;
+	 IF (NOT column_exists('databaseSchema.objectQualifier_activeaccess','userforumaccess')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_activeaccess ADD COLUMN userforumaccess  boolean  DEFAULT false NOT NULL ;
+	 END IF;
 	END;	
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT

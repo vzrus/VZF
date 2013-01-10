@@ -604,7 +604,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.controls.ForumJumper fj1;
+        protected global::YAF.Сontrols.ForumJumper fj1;
         
         /// <summary>
         /// PageAccess1 control.

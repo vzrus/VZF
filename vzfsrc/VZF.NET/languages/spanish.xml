@@ -144,6 +144,7 @@
   </page>
   <page name="ADMIN_ACCESSMASKS">
     <Resource tag="CONFIRM_DELETE">Delete this access mask?</Resource>
+    <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Delete</Resource>
     <Resource tag="DOWNLOAD">Download</Resource>
     <Resource tag="EDIT">Edit</Resource>
@@ -377,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Access</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
     <Resource tag="DELETE_ACCESS_HELP">Allows Users to Delete their own Posts</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Download Access</Resource>
@@ -827,14 +830,32 @@
     <Resource tag="TITLE">Import Extensions</Resource>
   </page>
   <page name="ADMIN_FORUMS">
+    <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
     <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
+    <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
+    <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
+    <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
+    <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
+    <Resource tag="FORUM_SELECTANODE_MSG">You should select a node.</Resource>
+    <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
+    <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
+    <Resource tag="FORUM_SELECTEDITEDNODE_MSG">You should select a node to edit.</Resource>
+    <Resource tag="FORUM_SELECTEDNODE_MSG">Selected node:</Resource>
+    <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
+    <Resource tag="FORUM_SELECTTARGETNODE_MSG">You should select a target node.</Resource>
+    <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+    <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
+    <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">You cannot delete this Category as it has at least one forum assigned to it.\nTo move forums click on \"Edit\" and change the category the forum is assigned to.</Resource>
     <Resource tag="NEW_CATEGORY">New Category</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
+    <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
@@ -1302,6 +1323,8 @@
     <Resource tag="SHOW_THANK_DATE_HELP">If checked users can see on which date posts have been thanked. (Thanks Mod must be enabled first.)</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS">Show Todays Birthdays in Forum Info:</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS_HELP">Enable to Show What members have a Birthday today.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
     <Resource tag="SHOW_UNREAD_LINKS">Show Unread Links:</Resource>
     <Resource tag="SHOW_UNREAD_LINKS_HELP">Unread Links will be displayed.</Resource>
     <Resource tag="SHOW_USER_STATUS">Show User Online/Offline Status:</Resource>
@@ -4808,6 +4831,10 @@ Spoiler Content
     <Resource tag="HEADER_MEANING">Significado</Resource>
     <Resource tag="HEADER_SMILE">Cara</Resource>
     <Resource tag="TITLE">Caritas disponibles</Resource>
+  </page>
+  <page name="TAGSBOARD">
+    <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
+    <Resource tag="TITLE">Board Tags</Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Administrators</Resource>

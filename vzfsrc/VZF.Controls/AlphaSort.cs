@@ -65,6 +65,11 @@ namespace YAF.Controls
       }
     }
 
+    /// <summary>
+    ///   Gets pager redirect.
+    /// </summary>
+    public ForumPages PagerPage { get; set; }
+
     #endregion
 
     #region Methods
@@ -114,7 +119,7 @@ namespace YAF.Controls
                       ToolTip = this.GetTextFormatted("ALPHABET_FILTER_BY", letter.ToString()),
                       Text = letter.ToString(),
                       NavigateUrl =
-                          YafBuildLink.GetLinkNotEscaped(ForumPages.members, "letter={0}", letter == '#' ? '_' : letter)
+                          YafBuildLink.GetLinkNotEscaped(this.PagerPage, "letter={0}", letter == '#' ? '_' : letter)
                   };
 
               alphaListItem.Controls.Add(link);

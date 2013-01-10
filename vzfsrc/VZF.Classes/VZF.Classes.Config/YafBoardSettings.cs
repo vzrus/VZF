@@ -3888,6 +3888,38 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether show number of tags.
+        /// </summary>
+        public bool ShowNumberOfTags
+        {
+            get
+            {
+                return this._reg.GetValue("ShowNumberOfTags", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("ShowNumberOfTags", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether DeleteTopicTagsIfDisabled.
+        /// </summary>
+        public bool DeleteTopicTagsIfDisabled
+        {
+            get
+            {
+                return this._reg.GetValue("DeleteTopicTagsIfDisabled", true);
+            }
+
+            set
+            {
+                this._reg.SetValue("DeleteTopicTagsIfDisabled", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether AllowAutoTopicTags.
         /// </summary>
         public bool AllowAutoTopicTags

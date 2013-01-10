@@ -536,7 +536,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Call SQL Password to Change
-      DB.Current.__ChangePassword(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
+      Db.__ChangePassword(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
         this.ApplicationName, 
         username, 
         newEncPassword, 
@@ -601,7 +601,7 @@ namespace YAF.Providers.Membership
       {
         try
         {
-            DB.Current.__ChangePasswordQuestionAndAnswer(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
+            Db.__ChangePasswordQuestionAndAnswer(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
             this.ApplicationName, username, newPasswordQuestion, newPasswordAnswer);
           return true;
         }
@@ -741,7 +741,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Process database user creation request
-      DB.Current.__CreateUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
+      Db.__CreateUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
         this.ApplicationName, 
         username, 
         pass, 
@@ -781,7 +781,7 @@ namespace YAF.Providers.Membership
       // Process database user deletion request
       try
       {
-          DB.Current.__DeleteUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, username, deleteAllRelatedData);
+          Db.__DeleteUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, username, deleteAllRelatedData);
 
           return true;
       }
@@ -827,7 +827,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.__FindUsersByEmail(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in Db.__FindUsersByEmail(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -894,7 +894,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.__FindUsersByName(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in Db.__FindUsersByName(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -934,7 +934,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.__GetAllUsers(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in Db.__GetAllUsers(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -952,7 +952,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override int GetNumberOfUsersOnline()
     {
-        return DB.Current.__GetNumberOfUsersOnline(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, Membership.UserIsOnlineTimeWindow);
+        return Db.__GetNumberOfUsersOnline(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, Membership.UserIsOnlineTimeWindow);
     }
 
     /// <summary>
@@ -1018,13 +1018,13 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgument("MEMBERSHIP", "USERNAMENULL");
       }
 
-      // if it's empty don't bother calling the DB.
+      // if it's empty don't bother calling the Db.
       if (username.IsNotSet())
       {
         return null;
       }
 
-      DataRow dr = DB.Current.__GetUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, null, username, userIsOnline);
+      DataRow dr = Db.__GetUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, null, username, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1048,7 +1048,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "USERKEYNULL");
       }
 
-      DataRow dr = DB.Current.__GetUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, providerUserKey, null, userIsOnline);
+      DataRow dr = Db.__GetUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, providerUserKey, null, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1069,7 +1069,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "EMAILNULL");
       }
 
-      DataTable users = DB.Current.__GetUserNameByEmail(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, email);
+      DataTable users = Db.__GetUserNameByEmail(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, email);
 
       if (this.RequiresUniqueEmail && users.Rows.Count > 1)
       {
@@ -1258,7 +1258,7 @@ namespace YAF.Providers.Membership
           this.MSCompliant);
 
         // save to the database
-        DB.Current.__ResetPassword(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
+        Db.__ResetPassword(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(),
           this.ApplicationName, 
           username, 
           newPasswordEnc, 
@@ -1293,7 +1293,7 @@ namespace YAF.Providers.Membership
 
       try
       {
-          DB.Current.__UnlockUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, userName);
+          Db.__UnlockUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, userName);
         return true;
       }
       catch
@@ -1319,7 +1319,7 @@ namespace YAF.Providers.Membership
       }
 
       // Update User
-      int updateStatus = DB.Current.__UpdateUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, user, this.RequiresUniqueEmail);
+      int updateStatus = Db.__UpdateUser(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, user, this.RequiresUniqueEmail);
 
       // Check update was not successful
       if (updateStatus != 0)

@@ -129,6 +129,7 @@
     <Compile Include="Interfaces\Extensions\KeyValuePairExtensions.cs" />
     <Compile Include="Interfaces\Extensions\LocatablePageExtension.cs" />
     <Compile Include="Interfaces\Extensions\ReadTrackCurrentUserExtensions.cs" />
+    <Compile Include="Constants\ForumMoveType.cs" />
     <Compile Include="Interfaces\IAvatars.cs" />
     <Compile Include="Interfaces\IBackgroundTask.cs" />
     <Compile Include="Interfaces\IBadWordReplace.cs" />

@@ -112,7 +112,7 @@ namespace VZF.Data.Common
         /// <param name="accessMaskID">
         /// ID of access mask
         /// </param>
-        /// <returns></returns>
+        /// <returns> A <see cref="T:System.Data.DataTable"/> of Access Masks. </returns>
         public static DataTable accessmask_list(int? mid, object boardId, object accessMaskID, object excludeFlags)
         {
             string dataEngine;
@@ -140,7 +140,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module id.
         /// </param>
-        /// <param name="accessMaskID">
+        /// <param name="accessMaskId">
         /// The access mask ID.
         /// </param>
         /// <param name="boardId">
@@ -187,7 +187,7 @@ namespace VZF.Data.Common
         /// </param>
         public static void accessmask_save(
             int? mid,
-            object accessMaskID,
+            object accessMaskId,
             object boardId,
             object name,
             object readAccess,
@@ -201,7 +201,10 @@ namespace VZF.Data.Common
             object deleteAccess,
             object uploadAccess,
             object downloadAccess,
-            object sortOrder)
+            object userForumAccess,
+            object sortOrder,
+            object userId,
+            object isUserMask)
         {
             string dataEngine;
             string connectionString;
@@ -212,7 +215,7 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     VZF.Data.MsSql.Db.accessmask_save(
                         connectionString,
-                        accessMaskID,
+                        accessMaskId,
                         boardId,
                         name,
                         readAccess,
@@ -226,12 +229,15 @@ namespace VZF.Data.Common
                         deleteAccess,
                         uploadAccess,
                         downloadAccess,
-                        sortOrder);
+                        userForumAccess,
+                        sortOrder,
+                        userId,
+                        isUserMask);
                     break;
                 case "Npgsql":
                     VZF.Data.Postgre.Db.accessmask_save(
                         connectionString,
-                        accessMaskID,
+                        accessMaskId,
                         boardId,
                         name,
                         readAccess,
@@ -245,12 +251,15 @@ namespace VZF.Data.Common
                         deleteAccess,
                         uploadAccess,
                         downloadAccess,
-                        sortOrder);
+                        userForumAccess,
+                        sortOrder,
+                        userId,
+                        isUserMask);
                     break;
                 case "MySql.Data.MySqlClient":
                     VZF.Data.Mysql.Db.accessmask_save(
                         connectionString,
-                        accessMaskID,
+                        accessMaskId,
                         boardId,
                         name,
                         readAccess,
@@ -264,12 +273,15 @@ namespace VZF.Data.Common
                         deleteAccess,
                         uploadAccess,
                         downloadAccess,
-                        sortOrder);
+                        userForumAccess,
+                        sortOrder,
+                        userId,
+                        isUserMask);
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     VZF.Data.Firebird.Db.accessmask_save(
                         connectionString,
-                        accessMaskID,
+                        accessMaskId,
                         boardId,
                         name,
                         readAccess,
@@ -283,11 +295,14 @@ namespace VZF.Data.Common
                         deleteAccess,
                         uploadAccess,
                         downloadAccess,
-                        sortOrder);
+                        userForumAccess,
+                        sortOrder,
+                        userId,
+                        isUserMask);
                     break;
-                    // case "oracle": orPostgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder);break;
-                    // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder);break;
-                    // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, sortOrder);break;
+                // case "oracle": orPostgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask);break;
+                // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask);break;
+                // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -306,6 +321,15 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="guests">
         /// Show guests, boolean
+        /// </param>
+        /// <param name="showCrawlers">
+        /// Show crawlers.
+        /// </param>
+        /// <param name="interval">
+        /// The interval.
+        /// </param>
+        /// <param name="styledNicks">
+        /// Return styled nicks info.
         /// </param>
         /// <returns>Returns  a <see cref="T:System.Data.DataTable"/>  of active users</returns>  
         public static DataTable active_list(
@@ -1056,10 +1080,18 @@ namespace VZF.Data.Common
         /// <summary>
         /// Image list in an album.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="AlbumID">The album Id.</param>
-        /// <param name="ImageID">The image ID.</param>
-        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with album images for an album.</returns>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="AlbumID">
+        /// The album Id.
+        /// </param>
+        /// <param name="ImageID">
+        /// The image ID.
+        /// </param>
+        /// <returns>
+        /// Returns a <see cref="T:System.Data.DataTable"/> with album images for an album.
+        /// </returns>
         public static DataTable album_image_list(int? mid, object AlbumID, object ImageID)
         {
             string dataEngine;
@@ -1089,13 +1121,27 @@ namespace VZF.Data.Common
         /// <summary>
         /// Saves an image in an album.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="ImageID">The image Id.</param>
-        /// <param name="AlbumID">The album Id.</param>
-        /// <param name="Caption">The album caption.</param>
-        /// <param name="FileName">The image file name.</param>
-        /// <param name="Bytes">Image size in bytes.</param>
-        /// <param name="ContentType">The content type.</param>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="ImageID">
+        /// The image Id.
+        /// </param>
+        /// <param name="AlbumID">
+        /// The album Id.
+        /// </param>
+        /// <param name="Caption">
+        /// The album caption.
+        /// </param>
+        /// <param name="FileName">
+        /// The image file name.
+        /// </param>
+        /// <param name="Bytes">
+        /// Image size in bytes.
+        /// </param>
+        /// <param name="ContentType">
+        /// The content type.
+        /// </param>
         public static void album_image_save(
             int? mid, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
         {
@@ -1133,10 +1179,18 @@ namespace VZF.Data.Common
         /// <summary>
         /// Album list.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="UserID">The userId.</param>
-        /// <param name="AlbumID">The album Id.</param>
-        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with an album list.</returns>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="UserID">
+        /// The userId.
+        /// </param>
+        /// <param name="AlbumID">
+        /// The album Id.
+        /// </param>
+        /// <returns>
+        /// Returns a <see cref="T:System.Data.DataTable"/> with an album list.
+        /// </returns>
         public static DataTable album_list(int? mid, object UserID, object AlbumID)
         {
             string dataEngine;
@@ -1165,12 +1219,24 @@ namespace VZF.Data.Common
         /// <summary>
         /// Saves an album.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="AlbumID">The album Id.</param>
-        /// <param name="UserID">The user Id.</param>
-        /// <param name="Title">An album title.</param>
-        /// <param name="CoverImageID">The album cover image id.</param>
-        /// <returns>Returns a <see cref="T:System.Int32"/> with a saved album Id.</returns>
+        /// <param name="mid">
+        /// The module ID
+        /// .</param>
+        /// <param name="AlbumID">
+        /// The album Id.
+        /// </param>
+        /// <param name="UserID">
+        /// The user Id.
+        /// </param>
+        /// <param name="Title">
+        /// An album title.
+        /// </param>
+        /// <param name="CoverImageID">
+        /// The album cover image id.
+        /// </param>
+        /// <returns>
+        /// Returns a <see cref="T:System.Int32"/> with a saved album Id.
+        /// </returns>
         public static int album_save(int? mid, object AlbumID, object UserID, object Title, object CoverImageID)
         {
             string dataEngine;
@@ -1199,8 +1265,12 @@ namespace VZF.Data.Common
         /// <summary>
         /// Deletes an attachment by its id.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="attachmentID">The attachment id.</param>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="attachmentID">
+        /// The attachment id.
+        /// </param>
         public static void attachment_delete(int? mid, object attachmentID)
         {
             string dataEngine;
@@ -1233,8 +1303,12 @@ namespace VZF.Data.Common
         /// <summary>
         /// Download an attachment with an Id.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="attachmentID">The attachmentId</param>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="attachmentID">
+        /// The attachmentId
+        /// </param>
         public static void attachment_download(int? mid, object attachmentID)
         {
             string dataEngine;
@@ -1268,13 +1342,27 @@ namespace VZF.Data.Common
         /// Returnes a paged list of attachments to a message 
         /// or a list of all attachments, depending on arguments. 
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="messageID">The message ID.</param>
-        /// <param name="attachmentID">The attachment ID.</param>
-        /// <param name="boardId">The board ID.</param>
-        /// <param name="pageIndex">The page index. 0-based.</param>
-        /// <param name="pageSize">The page size. 0-based.</param>
-        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with an attachments list.</returns>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="messageID">
+        /// The message ID.
+        /// </param>
+        /// <param name="attachmentID">
+        /// The attachment ID.
+        /// </param>
+        /// <param name="boardId">
+        /// The board ID.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index. 0-based.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size. 0-based
+        /// .</param>
+        /// <returns>
+        /// Returns a <see cref="T:System.Data.DataTable"/> with an attachments list.
+        /// </returns>
         public static DataTable attachment_list(
             int? mid, object messageID, object attachmentID, object boardId, object pageIndex, object pageSize)
         {
@@ -1308,12 +1396,24 @@ namespace VZF.Data.Common
         /// <summary>
         /// Saves an attachement.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="messageID">The message ID.</param>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="bytes">The number of bytes.</param>
-        /// <param name="contentType">The type of content.</param>
-        /// <param name="stream">The bytes stream for the attachment.</param>
+        /// <param name="mid">
+        /// The module ID
+        /// .</param>
+        /// <param name="messageID">
+        /// The message ID.
+        /// </param>
+        /// <param name="fileName">
+        /// The file name.
+        /// </param>
+        /// <param name="bytes">
+        /// The number of bytes.
+        /// </param>
+        /// <param name="contentType">
+        /// The type of content.
+        /// </param>
+        /// <param name="stream">
+        /// The bytes stream for the attachment.
+        /// </param>
         public static void attachment_save(
             int? mid, object messageID, object fileName, object bytes, object contentType, Stream stream)
         {
@@ -1349,8 +1449,12 @@ namespace VZF.Data.Common
         /// <summary>
         /// Deletes a banned ip with an ID.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="ID">The banned IP ID</param>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="ID">
+        /// The banned IP ID
+        /// </param>
         public static void bannedip_delete(int? mid, object ID)
         {
             string dataEngine;
@@ -1383,12 +1487,24 @@ namespace VZF.Data.Common
         /// <summary>
         /// The list of banned Ips.
         /// </summary>
-        /// <param name="mid">The module ID.</param>
-        /// <param name="boardId">The board ID.</param>
-        /// <param name="ID">The banned IP ID.</param>
-        /// <param name="pageIndex">The 0-based page index.</param>
-        /// <param name="pageSize">The page size.</param>
-        /// <returns>Returns a <see cref="T:System.Data.DataTable"/> with a banned ip list.</returns>
+        /// <param name="mid">
+        /// The module ID.
+        /// </param>
+        /// <param name="boardId">
+        /// The board ID.
+        /// </param>
+        /// <param name="ID">
+        /// The banned IP ID.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The 0-based page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// Returns a <see cref="T:System.Data.DataTable"/> with a banned ip list.
+        /// </returns>
         public static DataTable bannedip_list(
             int? mid, object boardId, object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
         {
@@ -1437,6 +1553,7 @@ namespace VZF.Data.Common
         /// The user id.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
         /// </exception>
         public static void bannedip_save(int? mid, object ID, object boardId, object Mask, string reason, int userID)
         {
@@ -1477,6 +1594,7 @@ namespace VZF.Data.Common
         /// The bbcode id.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
         /// </exception>
         public static void bbcode_delete(int? mid, object bbcodeID)
         {
@@ -1507,6 +1625,24 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The bbcode_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="bbcodeID">
+        /// The bbcode id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/> with list of bbcodes.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static DataTable bbcode_list(int? mid, object boardId, object bbcodeID)
         {
             string dataEngine;
@@ -1530,9 +1666,59 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The bbcode_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="bbcodeID">
+        /// The bbcode id.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="description">
+        /// The description.
+        /// </param>
+        /// <param name="onclickjs">
+        /// The onclickjs.
+        /// </param>
+        /// <param name="displayjs">
+        /// The displayjs.
+        /// </param>
+        /// <param name="editjs">
+        /// The editjs.
+        /// </param>
+        /// <param name="displaycss">
+        /// The displaycss.
+        /// </param>
+        /// <param name="searchregex">
+        /// The searchregex.
+        /// </param>
+        /// <param name="replaceregex">
+        /// The replaceregex.
+        /// </param>
+        /// <param name="variables">
+        /// The variables.
+        /// </param>
+        /// <param name="usemodule">
+        /// The usemodule.
+        /// </param>
+        /// <param name="moduleclass">
+        /// The moduleclass.
+        /// </param>
+        /// <param name="execorder">
+        /// The execorder.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static void bbcode_save(
             int? mid,
             object bbcodeID,
@@ -1635,10 +1821,27 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
-
             }
         }
 
+        /// <summary>
+        /// The bb code list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="bbcodeID">
+        /// The bbcode id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/> of BBCode list.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static IEnumerable<TypedBBCode> BBCodeList(int? mid, int boardId, int? bbcodeID)
         {
             string dataEngine;
@@ -1665,6 +1868,48 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_create.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="adminUsername">
+        /// The admin username.
+        /// </param>
+        /// <param name="adminUserEmail">
+        /// The admin user email.
+        /// </param>
+        /// <param name="adminUserKey">
+        /// The admin user key.
+        /// </param>
+        /// <param name="boardName">
+        /// The board name.
+        /// </param>
+        /// <param name="culture">
+        /// The culture.
+        /// </param>
+        /// <param name="languageFile">
+        /// The language file.
+        /// </param>
+        /// <param name="boardMembershipName">
+        /// The board membership name.
+        /// </param>
+        /// <param name="boardRolesName">
+        /// The board roles name.
+        /// </param>
+        /// <param name="rolePrefix">
+        /// The role prefix.
+        /// </param>
+        /// <param name="isHostUser">
+        /// The is host user.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/> id of a new board.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static int board_create(
             int? mid,
             object adminUsername,
@@ -1745,6 +1990,18 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static void board_delete(int? mid, object boardId)
         {
             string dataEngine;
@@ -1774,6 +2031,21 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/> of the board list.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static DataTable board_list(int? mid, object boardId)
         {
             string dataEngine;
@@ -1799,6 +2071,27 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_poststats.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="showNoCountPosts">
+        /// The show no count posts.
+        /// </param>
+        /// <returns>
+        /// The <see cref="board_poststats_Result"/> with post statistics for a board.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static board_poststats_Result board_poststats(
             int? mid, int? boardId, bool useStyledNicks, bool showNoCountPosts)
         {
@@ -1846,15 +2139,26 @@ namespace VZF.Data.Common
         /// <summary>
         /// Recalculates topic and post numbers and updates last post for all forums in all boards
         /// </summary>
-        /// <param name="mid"> </param>
+        /// <param name="mid">
+        /// The module Id.
+        /// </param>
         public static void board_resync(int? mid)
         {
             board_resync(mid, null);
         }
 
         /// <summary>
-        /// Recalculates topic and post numbers and updates last post for all forums in all boards
+        /// The board_resync.
         /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException. 
+        /// </exception>
         public static void board_resync(int? mid, object boardId)
         {
             string dataEngine;
@@ -1881,10 +2185,36 @@ namespace VZF.Data.Common
                     // case "other": othPostgre.Db.board_resync(connectionString, boardId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
+        /// <summary>
+        /// The board_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="languageFile">
+        /// The language file.
+        /// </param>
+        /// <param name="culture">
+        /// The culture.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="allowThreaded">
+        /// The allow threaded.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/> id of a saved board.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static int board_save(
             int? mid, object boardId, object languageFile, object culture, object name, object allowThreaded)
         {
@@ -1915,6 +2245,21 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_stats.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="board_stats_Result"/> class with common board statistics.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static board_stats_Result board_stats(int? mid, object boardId)
         {
             string dataEngine;
@@ -1942,14 +2287,12 @@ namespace VZF.Data.Common
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                    ;
                 case "FirebirdSql.Data.FirebirdClient":
                     return
                         VZF.Data.Firebird.Db.board_stats(connectionString, boardId)
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                    ;
                     // case "oracle":  return orPostgre.Db.board_stats(connectionString, boardId);
                     // case "db2":  return db2Postgre.Db.board_stats(connectionString, boardId);
                     // case "other":  return othPostgre.Db.board_stats(connectionString, boardId); 
@@ -1958,6 +2301,21 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The board_userstats.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataRow"/> with board user statistics.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static DataRow board_userstats(int? mid, int? boardId)
         {
             string dataEngine;
@@ -1983,6 +2341,24 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The buddy_addrequest.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="FromUserID">
+        /// The from user id.
+        /// </param>
+        /// <param name="ToUserID">
+        /// The to user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string[]"/> of buddies.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static string[] buddy_addrequest(int? mid, object FromUserID, object ToUserID)
         {
             string dataEngine;
@@ -2008,6 +2384,27 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The buddy_approve request.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="FromUserID">
+        /// The from user id.
+        /// </param>
+        /// <param name="ToUserID">
+        /// The to user id.
+        /// </param>
+        /// <param name="Mutual">
+        /// The mutual.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static string buddy_approveRequest(int? mid, object FromUserID, object ToUserID, object Mutual)
         {
             string dataEngine;
@@ -2033,6 +2430,24 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The buddy_deny request.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="FromUserID">
+        /// The from user id.
+        /// </param>
+        /// <param name="ToUserID">
+        /// The to user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static string buddy_denyRequest(int? mid, object FromUserID, object ToUserID)
         {
             string dataEngine;
@@ -2058,6 +2473,21 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The buddy_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="FromUserID">
+        /// The from user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static DataTable buddy_list(int? mid, object FromUserID)
         {
             string dataEngine;
@@ -2083,6 +2513,24 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The buddy_remove.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="FromUserID">
+        /// The from user id.
+        /// </param>
+        /// <param name="ToUserID">
+        /// The to user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static string buddy_remove(int? mid, object FromUserID, object ToUserID)
         {
             string dataEngine;
@@ -2108,6 +2556,21 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The category_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="CategoryID">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The<see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The ArgumentOutOfRangeException.
+        /// </exception>
         public static bool category_delete(int? mid, object CategoryID)
         {
             string dataEngine;
@@ -2133,6 +2596,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The category_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable category_list(int? mid, object boardId, object categoryID)
         {
             string dataEngine;
@@ -2158,6 +2638,71 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The category_getadjacentforum.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="isAfter">
+        /// The is after.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static DataTable category_getadjacentforum(int? mid, object boardId, object categoryID, object userId, bool isAfter)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                // case "oracle":  return orPostgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                // case "db2":  return db2Postgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                // case "other":  return othPostgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
+        /// <summary>
+        /// The category_listread.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable category_listread(int? mid, object boardId, object userId, object categoryID)
         {
             string dataEngine;
@@ -2183,6 +2728,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The category_simplelist.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="startID">
+        /// The start id.
+        /// </param>
+        /// <param name="limit">
+        /// The limit.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable category_simplelist(int? mid, int startID, int limit)
         {
             string dataEngine;
@@ -2208,6 +2770,29 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The category_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="categoryImage">
+        /// The category image.
+        /// </param>
+        /// <param name="sortOrder">
+        /// The sort order.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void category_save(
             int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
         {
@@ -2242,6 +2827,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The checkemail_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="email">
+        /// The email.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable checkemail_list(int? mid, object email)
         {
             string dataEngine;
@@ -2267,6 +2866,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The checkemail_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="hash">
+        /// The hash.
+        /// </param>
+        /// <param name="email">
+        /// The email.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void checkemail_save(int? mid, object userId, object hash, object email)
         {
             string dataEngine;
@@ -2296,6 +2912,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The checkemail_update.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="hash">
+        /// The hash.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable checkemail_update(int? mid, object hash)
         {
             string dataEngine;
@@ -3680,6 +4310,31 @@ namespace VZF.Data.Common
             }
         }
 
+        public static DataTable forum_tags(int? mid, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case "oracle":  return orPostgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case "db2":  return db2Postgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case "other":  return othPostgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
         public static DataTable forum_listallMyModerated(int? mid, object boardId, object userId)
         {
             string dataEngine;
@@ -3873,7 +4528,9 @@ namespace VZF.Data.Common
             object themeURL,
             object imageURL,
             object styles,
-            bool dummy)
+            bool dummy,
+            object userId,
+            bool isUserForum)
         {
             string dataEngine;
             string connectionString;
@@ -3900,7 +4557,9 @@ namespace VZF.Data.Common
                         themeURL,
                         imageURL,
                         styles,
-                        dummy);
+                        dummy,
+                        userId,
+                        isUserForum);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.forum_save(
                         connectionString,
@@ -3919,7 +4578,9 @@ namespace VZF.Data.Common
                         themeURL,
                         imageURL,
                         styles,
-                        dummy);
+                        dummy,
+                        userId,
+                        isUserForum);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.forum_save(
                         connectionString,
@@ -3938,7 +4599,9 @@ namespace VZF.Data.Common
                         themeURL,
                         imageURL,
                         styles,
-                        dummy);
+                        dummy,
+                        userId,
+                        isUserForum);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.forum_save(
                         connectionString,
@@ -3957,10 +4620,13 @@ namespace VZF.Data.Common
                         themeURL,
                         imageURL,
                         styles,
-                        dummy);
-                    // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
-                    // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy);
-                    // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy); 
+                        dummy,
+                        userId,
+                        isUserForum);
+                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
+                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
+                // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
+                // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4511,14 +5177,14 @@ namespace VZF.Data.Common
 
         public static long group_save(
             int? mid,
-            object groupID,
+            object groupId,
             object boardId,
             object name,
             object isAdmin,
             object isGuest,
             object isStart,
             object isModerator,
-            object accessMaskID,
+            object accessMaskId,
             object pmLimit,
             object style,
             object sortOrder,
@@ -4527,7 +5193,9 @@ namespace VZF.Data.Common
             object usrSigBBCodes,
             object usrSigHTMLTags,
             object usrAlbums,
-            object usrAlbumImages)
+            object usrAlbumImages,
+            object userId,
+            object isUserGroup)
         {
             string dataEngine;
             string connectionString;
@@ -4539,14 +5207,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.group_save(
                         connectionString,
-                        groupID,
+                        groupId,
                         boardId,
                         name,
                         isAdmin,
                         isGuest,
                         isStart,
                         isModerator,
-                        accessMaskID,
+                        accessMaskId,
                         pmLimit,
                         style,
                         sortOrder,
@@ -4555,18 +5223,20 @@ namespace VZF.Data.Common
                         usrSigBBCodes,
                         usrSigHTMLTags,
                         usrAlbums,
-                        usrAlbumImages);
+                        usrAlbumImages,
+                        userId,
+                        isUserGroup);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.group_save(
                         connectionString,
-                        groupID,
+                        groupId,
                         boardId,
                         name,
                         isAdmin,
                         isGuest,
                         isStart,
                         isModerator,
-                        accessMaskID,
+                        accessMaskId,
                         pmLimit,
                         style,
                         sortOrder,
@@ -4575,18 +5245,20 @@ namespace VZF.Data.Common
                         usrSigBBCodes,
                         usrSigHTMLTags,
                         usrAlbums,
-                        usrAlbumImages);
+                        usrAlbumImages,
+                        userId,
+                        isUserGroup);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.group_save(
                         connectionString,
-                        groupID,
+                        groupId,
                         boardId,
                         name,
                         isAdmin,
                         isGuest,
                         isStart,
                         isModerator,
-                        accessMaskID,
+                        accessMaskId,
                         pmLimit,
                         style,
                         sortOrder,
@@ -4595,18 +5267,20 @@ namespace VZF.Data.Common
                         usrSigBBCodes,
                         usrSigHTMLTags,
                         usrAlbums,
-                        usrAlbumImages);
+                        usrAlbumImages, 
+                        userId,
+                        isUserGroup);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.group_save(
                         connectionString,
-                        groupID,
+                        groupId,
                         boardId,
                         name,
                         isAdmin,
                         isGuest,
                         isStart,
                         isModerator,
-                        accessMaskID,
+                        accessMaskId,
                         pmLimit,
                         style,
                         sortOrder,
@@ -4615,10 +5289,12 @@ namespace VZF.Data.Common
                         usrSigBBCodes,
                         usrSigHTMLTags,
                         usrAlbums,
-                        usrAlbumImages);
-                    // case "oracle":  return orPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
-                    // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages);
-                    // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages); 
+                        usrAlbumImages,
+                        userId,
+                        isUserGroup);
+                    // case "oracle":  return orPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup);
+                    // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup);
+                    // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5822,7 +6498,6 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
         public static IEnumerable<TypedMessageList> MessageList(int? mid, int messageID)
@@ -7755,6 +8430,7 @@ namespace VZF.Data.Common
             int boardId,
             string appname,
             int userId,
+            string userName,
             SettingsPropertyValueCollection collection,
             bool dirtyOnly = true)
         {
@@ -7767,19 +8443,19 @@ namespace VZF.Data.Common
             {
                 case "System.Data.SqlClient":
                     VZF.Data.MsSql.Db.SetPropertyValues(
-                        connectionString, boardId, appname, userId, collection, dirtyOnly);
+                        connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
                 case "Npgsql":
                     VZF.Data.Postgre.Db.SetPropertyValues(
-                        connectionString, boardId, appname, userId, collection, dirtyOnly);
+                        connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
                 case "MySql.Data.MySqlClient":
                     VZF.Data.Mysql.Db.SetPropertyValues(
-                        connectionString, boardId, appname, userId, collection, dirtyOnly);
+                        connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     VZF.Data.Firebird.Db.SetPropertyValues(
-                        connectionString, boardId, appname, userId, collection, dirtyOnly);
+                        connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
                     // case "oracle":   orPostgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                     // case "db2":   db2Postgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
@@ -9039,7 +9715,7 @@ namespace VZF.Data.Common
 
         }
 
-        public static DataRow topic_info(int? mid, object topicID)
+        public static DataRow topic_info(int? mid, object topicID, bool getTags)
         {
             string dataEngine;
             string connectionString;
@@ -9049,16 +9725,16 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.topic_info(connectionString, topicID);
+                    return VZF.Data.MsSql.Db.topic_info(connectionString, topicID, getTags);
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.topic_info(connectionString, topicID);
+                    return VZF.Data.Postgre.Db.topic_info(connectionString, topicID, getTags);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.topic_info(connectionString, topicID);
+                    return VZF.Data.Mysql.Db.topic_info(connectionString, topicID, getTags);
                 case "FirebirdSql.Data.FirebirdClient":
-                    return VZF.Data.Firebird.Db.topic_info(connectionString, topicID);
-                    // case "oracle":  return orPostgre.Db.topic_info(connectionString, topicID);
-                    // case "db2":  return db2Postgre.Db.topic_info(connectionString, topicID);
-                    // case "other":  return othPostgre.Db.topic_info(connectionString, topicID); 
+                    return VZF.Data.Firebird.Db.topic_info(connectionString, topicID, getTags);
+                // case "oracle":  return orPostgre.Db.topic_info(connectionString, topicID, getTags);
+                // case "db2":  return db2Postgre.Db.topic_info(connectionString, topicID, getTags);
+                // case "other":  return othPostgre.Db.topic_info(connectionString, topicID, getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9136,7 +9812,8 @@ namespace VZF.Data.Common
             [NotNull] object pageSize,
             [NotNull] object useStyledNicks,
             [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead)
+            [CanBeNull] bool findLastRead,
+            [NotNull] bool getTags)
         {
             string dataEngine;
             string connectionString;
@@ -9156,7 +9833,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.topic_list(
                         connectionString,
@@ -9168,7 +9846,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.topic_list(
                         connectionString,
@@ -9180,7 +9859,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.topic_list(
                         connectionString,
@@ -9192,10 +9872,11 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
-                    // case "other":  return othPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
+                        findLastRead,
+                        getTags);
+                // case "oracle":  return orPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case "db2":  return db2Postgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case "other":  return othPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9212,7 +9893,8 @@ namespace VZF.Data.Common
             [NotNull] object pageSize,
             [NotNull] object useStyledNicks,
             [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead)
+            [CanBeNull] bool findLastRead,
+            [NotNull] bool getTags)
         {
             string dataEngine;
             string connectionString;
@@ -9232,7 +9914,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.announcements_list(
                         connectionString,
@@ -9244,7 +9927,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.announcements_list(
                         connectionString,
@@ -9256,7 +9940,8 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
+                        findLastRead,
+                        getTags);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.announcements_list(
                         connectionString,
@@ -9268,10 +9953,11 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         showMoved,
-                        findLastRead);
-                    // case "oracle":  return orPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
-                    // case "db2":  return db2Postgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead);
-                    // case "other":  return othPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead); 
+                        findLastRead,
+                        getTags);
+                // case "oracle":  return orPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case "db2":  return db2Postgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case "other":  return othPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9526,7 +10212,7 @@ namespace VZF.Data.Common
         }
 
         public static DataTable topic_bytags(
-            int? mid, int boardId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
+            int? mid, int boardId, int forumId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
         {
             string dataEngine;
             string connectionString;
@@ -9537,19 +10223,19 @@ namespace VZF.Data.Common
             {
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.topic_bytags(
-                        connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+                        connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.topic_bytags(
-                        connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+                        connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.topic_bytags(
-                        connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+                        connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.topic_bytags(
-                        connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
-                    // case "oracle":  return orPostgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
-                    // case "db2":  return db2Postgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
-                    // case "other":  return othPostgre.Db.topic_bytags(connectionString, boardId, pageUserId, tags, date, pageIndex, pageSize);
+                        connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case "oracle":  return orPostgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case "db2":  return db2Postgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case "other":  return othPostgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12256,14 +12942,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter1_Name;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter1_Name;
+                    return VZF.Data.Postgre.Db.Parameter1Name;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter1_Name;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter1Name;
-                    // case "oracle":  return orPostgre.Db.Parameter1_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter1_Name;
-                    // case "other":  return othPostgre.Db.Parameter1_Name; 
+                    // case "oracle":  return orPostgre.Db.Parameter1Name;
+                    // case "db2":  return db2Postgre.Db.Parameter1Name;
+                    // case "other":  return othPostgre.Db.Parameter1Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12281,14 +12967,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter1_Value;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter1_Value;
+                    return VZF.Data.Postgre.Db.Parameter1Value;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter1_Value;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter1Value;
-                    // case "oracle":  return orPostgre.Db.Parameter1_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter1_Value;
-                    // case "other":  return othPostgre.Db.Parameter1_Value; 
+                    // case "oracle":  return orPostgre.Db.Parameter1Value;
+                    // case "db2":  return db2Postgre.Db.Parameter1Value;
+                    // case "other":  return othPostgre.Db.Parameter1Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12306,14 +12992,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter1_Visible;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter1_Visible;
+                    return VZF.Data.Postgre.Db.Parameter1Visible;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter1_Visible;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter1Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter1_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter1_Visible;
-                    // case "other":  return othPostgre.Db.Parameter1_Visible; 
+                    // case "oracle":  return orPostgre.Db.Parameter1Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter1Visible;
+                    // case "other":  return othPostgre.Db.Parameter1Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12333,14 +13019,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter2_Name;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter2_Name;
+                    return VZF.Data.Postgre.Db.Parameter2Name;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter2_Name;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter2Name;
-                    // case "oracle":  return orPostgre.Db.Parameter2_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter2_Name;
-                    // case "other":  return othPostgre.Db.Parameter2_Name; 
+                    // case "oracle":  return orPostgre.Db.Parameter2Name;
+                    // case "db2":  return db2Postgre.Db.Parameter2Name;
+                    // case "other":  return othPostgre.Db.Parameter2Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12358,14 +13044,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter2_Value;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter2_Value;
+                    return VZF.Data.Postgre.Db.Parameter2Value;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter2_Value;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter2Value;
-                    // case "oracle":  return orPostgre.Db.Parameter2_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter2_Value;
-                    // case "other":  return othPostgre.Db.Parameter2_Value; 
+                    // case "oracle":  return orPostgre.Db.Parameter2Value;
+                    // case "db2":  return db2Postgre.Db.Parameter2Value;
+                    // case "other":  return othPostgre.Db.Parameter2Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12383,14 +13069,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter2_Visible;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter2_Visible;
+                    return VZF.Data.Postgre.Db.Parameter2Visible;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter2_Visible;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter2Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter2_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter2_Visible;
-                    // case "other":  return othPostgre.Db.Parameter2_Visible; 
+                    // case "oracle":  return orPostgre.Db.Parameter2Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter2Visible;
+                    // case "other":  return othPostgre.Db.Parameter2Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12410,14 +13096,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter3_Name;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter3_Name;
+                    return VZF.Data.Postgre.Db.Parameter3Name;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter3_Name;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter3Name;
-                    // case "oracle":  return orPostgre.Db.Parameter3_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter3_Name;
-                    // case "other":  return othPostgre.Db.Parameter3_Name; 
+                    // case "oracle":  return orPostgre.Db.Parameter3Name;
+                    // case "db2":  return db2Postgre.Db.Parameter3Name;
+                    // case "other":  return othPostgre.Db.Parameter3Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12435,14 +13121,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter3_Value;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter3_Value;
+                    return VZF.Data.Postgre.Db.Parameter3Value;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter3_Value;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter3Value;
-                    // case "oracle":  return orPostgre.Db.Parameter3_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter3_Value;
-                    // case "other":  return othPostgre.Db.Parameter3_Value; 
+                    // case "oracle":  return orPostgre.Db.Parameter3Value;
+                    // case "db2":  return db2Postgre.Db.Parameter3Value;
+                    // case "other":  return othPostgre.Db.Parameter3Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12460,14 +13146,14 @@ namespace VZF.Data.Common
                 case "System.Data.SqlClient":
                     return VZF.Data.MsSql.Db.Parameter3_Visible;
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.Parameter3_Visible;
+                    return VZF.Data.Postgre.Db.Parameter3Visible;
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.Parameter3_Visible;
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.Parameter3Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter3_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter3_Visible;
-                    // case "other":  return othPostgre.Db.Parameter3_Visible; 
+                    // case "oracle":  return orPostgre.Db.Parameter3Visible;
+                    // case "db2":  return db2Postgre.Db.Parameter3Visible;
+                    // case "other":  return othPostgre.Db.Parameter3Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

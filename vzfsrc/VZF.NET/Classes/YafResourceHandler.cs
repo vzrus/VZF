@@ -667,11 +667,24 @@ namespace YAF
 
                 context.Response.ContentType = "text/plain";
                 context.Response.ContentEncoding = Encoding.UTF8;
-                context.Response.Cache.SetCacheability(HttpCacheability.Private);
-                context.Response.Cache.SetExpires(
-                    DateTime.UtcNow.AddMinutes(5));
-                context.Response.Cache.SetLastModified(DateTime.UtcNow);
-                context.Response.Write(Dynatree.MoveForum(userId, context.Request.QueryString.GetFirstOrDefault("tnm")));
+                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
+                if (context.Request.QueryString.GetFirstOrDefault("tnm") != null)
+                {
+                    if (this.Get<IYafSession>().ForumTreeChangerActiveNode.IsNotSet() || (this.Get<IYafSession>().ForumTreeChangerActiveTargetNode.IsSet() && this.Get<IYafSession>().ForumTreeChangerActiveNode.IsSet()))
+                    {
+                        this.Get<IYafSession>().ForumTreeChangerActiveNode =
+                            context.Request.QueryString.GetFirstOrDefault("tnm");
+                    }
+                    else
+                    {
+                        this.Get<IYafSession>().ForumTreeChangerActiveTargetNode =
+                          this.Get<IYafSession>().ForumTreeChangerActiveTargetNode;
+
+                        this.Get<IYafSession>().ForumTreeChangerActiveTargetNode =
+                           context.Request.QueryString.GetFirstOrDefault("tnm");
+                    }
+                }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
@@ -885,6 +898,7 @@ namespace YAF
             {
                 userKey = user.ProviderUserKey;
             }
+
             string forumPage = this.Get<HttpRequestBase>().QueryString.ToString();
             string location = this.Get<HttpRequestBase>().FilePath;
             if (location.Contains("resource.ashx"))

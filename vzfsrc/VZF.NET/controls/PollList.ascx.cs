@@ -1255,7 +1255,7 @@ namespace YAF.Controls
         // Only if this control is in a topic we find the topic creator
         if (this.TopicId > 0)
         {
-            DataRow dti = CommonDb.topic_info(PageContext.PageModuleID, this.TopicId);
+            DataRow dti = CommonDb.topic_info(this.PageContext.PageModuleID, this.TopicId, true);
             this._topicUser = dti["UserID"].ToType<int>();
             if (!dti["PollID"].IsNullOrEmptyDBField())
             {

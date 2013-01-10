@@ -1399,7 +1399,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// Sort Order?
         /// </param>
-        public static void accessmask_save(string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object sortOrder)
+        public static void accessmask_save(string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object userForumAccess, [NotNull] object sortOrder, [CanBeNull] object userId, [NotNull] object isUserMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_save"))
             {
@@ -1418,7 +1418,12 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("DeleteAccess", deleteAccess);
                 cmd.Parameters.AddWithValue("UploadAccess", uploadAccess);
                 cmd.Parameters.AddWithValue("DownloadAccess", downloadAccess);
+                cmd.Parameters.AddWithValue("UserForumAccess", userForumAccess);
                 cmd.Parameters.AddWithValue("SortOrder", sortOrder);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IsUserMask", isUserMask);
+                cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
+
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
@@ -2670,6 +2675,37 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("CategoryID", categoryID);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// The category_getadjacentforum.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="isAfter">
+        /// The is after.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable category_getadjacentforum(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID, object userId, bool isAfter)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("category_getadjacentforum"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("CategoryID", categoryID);
+                cmd.Parameters.AddWithValue("PageUserID", userId);
+                cmd.Parameters.AddWithValue("IsAfter", isAfter);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -4464,7 +4500,7 @@ namespace VZF.Data.MsSql
         /// The forum_save.
         /// </returns>
         public static long forum_save(string connectionString, [NotNull] object forumID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object name, [NotNull] object description, [NotNull] object sortOrder, [NotNull] object locked, [NotNull] object hidden, [NotNull] object isTest, [NotNull] object moderated, [NotNull] object accessMaskID, [NotNull] object remoteURL, [NotNull] object themeURL, [NotNull] object imageURL, [NotNull] object styles,
-          bool dummy)
+          bool dummy, object userId, bool isUserForum)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_save"))
             {
@@ -4484,6 +4520,10 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("ImageURL", imageURL);
                 cmd.Parameters.AddWithValue("Styles", styles);
                 cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IsUserForum", isUserForum);
+                cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
+
                 return long.Parse(MsSqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
             }
         }
@@ -4882,7 +4922,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The group_save.
         /// </returns>
-        public static long group_save(string connectionString, [NotNull] object groupID, [NotNull] object boardID, [NotNull] object name, [NotNull] object isAdmin, [NotNull] object isGuest, [NotNull] object isStart, [NotNull] object isModerator, [NotNull] object accessMaskID, [NotNull] object pmLimit, [NotNull] object style, [NotNull] object sortOrder, [NotNull] object description, [NotNull] object usrSigChars, [NotNull] object usrSigBBCodes, [NotNull] object usrSigHTMLTags, [NotNull] object usrAlbums, [NotNull] object usrAlbumImages)
+        public static long group_save(string connectionString, [NotNull] object groupID, [NotNull] object boardID, [NotNull] object name, [NotNull] object isAdmin, [NotNull] object isGuest, [NotNull] object isStart, [NotNull] object isModerator, [NotNull] object accessMaskID, [NotNull] object pmLimit, [NotNull] object style, [NotNull] object sortOrder, [NotNull] object description, [NotNull] object usrSigChars, [NotNull] object usrSigBBCodes, [NotNull] object usrSigHTMLTags, [NotNull] object usrAlbums, [NotNull] object usrAlbumImages, [NotNull] object userId, [NotNull] object isUserGroup)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_save"))
             {
@@ -4904,6 +4944,9 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("UsrSigHTMLTags", usrSigHTMLTags);
                 cmd.Parameters.AddWithValue("UsrAlbums", usrAlbums);
                 cmd.Parameters.AddWithValue("UsrAlbumImages", usrAlbumImages);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IsUserGroup", isUserGroup);
+                cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 
                 return long.Parse(MsSqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
             }
@@ -8191,12 +8234,13 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataRow topic_info(string connectionString, [NotNull] object topicID)
+        public static DataRow topic_info(string connectionString, [NotNull] object topicID, [NotNull] bool getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_info"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("TopicID", topicID);
+                cmd.Parameters.AddWithValue("GetTags", getTags);
                 using (DataTable dt = MsSqlDbAccess.GetData(cmd, connectionString))
                 {
                     return dt.Rows.Count > 0 ? dt.Rows[0] : null;
@@ -8275,7 +8319,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
+        public static DataTable topic_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull] bool getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_list"))
             {
@@ -8289,10 +8333,12 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
                 cmd.Parameters.AddWithValue("ShowMoved", showMoved);
                 cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                cmd.Parameters.AddWithValue("GetTags", getTags);
                 return MsSqlDbAccess.GetData(cmd, true,connectionString);
             }
         }
 
+        
         /// <summary>
         /// The topic_list.
         /// </summary>
@@ -8325,7 +8371,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable announcements_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead)
+        public static DataTable announcements_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull]bool getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("announcements_list"))
             {
@@ -8339,6 +8385,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
                 cmd.Parameters.AddWithValue("ShowMoved", showMoved);
                 cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                cmd.Parameters.AddWithValue("GetTags", getTags);
                 return MsSqlDbAccess.GetData(cmd, true,connectionString);
             }
         }
@@ -8533,13 +8580,23 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
-        /// Returns tags for a topic to show in posts.
+        /// Tags for a topic to show in posts.
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="boardId"></param>
-        /// <param name="pageUserId"></param>
-        /// <param name="topicId"></param>
-        /// <returns></returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable topic_tags(string connectionString, int boardId, int pageUserId, int topicId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_tags"))
@@ -8552,12 +8609,40 @@ namespace VZF.Data.MsSql
             }
         }
 
-        public static DataTable topic_bytags(string connectionString, int boardId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
+        /// <summary>
+        /// The topic_bytags.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="tags">
+        /// The tags.
+        /// </param>
+        /// <param name="sinceDate">
+        /// The since date.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable topic_bytags(string connectionString, int boardId, int forumId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_bytags"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardId);
+                cmd.Parameters.AddWithValue("ForumID", forumId);
                 cmd.Parameters.AddWithValue("PageUserId", pageUserId);
                 cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("SinceDate", sinceDate);
@@ -10777,18 +10862,36 @@ namespace VZF.Data.MsSql
         /// <summary>
         /// The set property values.
         /// </summary>
-        /// <param name="context">
-        /// The context.
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="appname">
+        /// The appname.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
         /// </param>
         /// <param name="collection">
         /// The collection.
         /// </param>
-        public static void SetPropertyValues(string connectionString, int boardId, string appname, int userId, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
+        /// <param name="dirtyOnly">
+        /// The dirty only.
+        /// </param>
+        public static void SetPropertyValues(string connectionString, int boardId, string appname, int userId, string userName, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
         {
-            if (userId == 0 || collection.Count < 1)
+            // guest should not be in profile
+            int? userIdG = Db.user_guest(connectionString, boardId);
+            if (userId <= 0 || userIdG == userId || collection.Count < 1)
             {
                 return;
             }
+
             bool itemsToSave = true;
             if (dirtyOnly)
             {
@@ -10796,7 +10899,6 @@ namespace VZF.Data.MsSql
             }
 
             // First make sure we have at least one item to save
-
             if (!itemsToSave)
             {
                 return;
@@ -10804,21 +10906,31 @@ namespace VZF.Data.MsSql
             
             // load the data for the configuration
             List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(connectionString,collection);
-            
-            if (spc != null && spc.Count > 0)
+
+            if (spc != null && spc.Count > 0 && userName.IsSet())
             {
                 // start saving...
-                Db.SetProfileProperties(connectionString,boardId, appname, userId, collection, spc, dirtyOnly);
+                Db.SetProfileProperties(connectionString, boardId, appname, userId, userName, collection, spc, dirtyOnly);
             }
         }
+
         /// <summary>
         /// The set profile properties.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
         /// <param name="appName">
         /// The app name.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user id.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
         /// </param>
         /// <param name="values">
         /// The values.
@@ -10826,30 +10938,27 @@ namespace VZF.Data.MsSql
         /// <param name="settingsColumnsList">
         /// The settings columns list.
         /// </param>
-        public static void SetProfileProperties(string connectionString, [NotNull] int boardId, [NotNull] object appName, [NotNull] int userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList, bool dirtyOnly)
+        /// <param name="dirtyOnly">
+        /// The dirty only.
+        /// </param>
+        public static void SetProfileProperties(
+            string connectionString,
+            [NotNull] int boardId,
+            [NotNull] object appName,
+            [NotNull] int userId,
+            [NotNull] string userName,
+            [NotNull] SettingsPropertyValueCollection values,
+            [NotNull] List<SettingsPropertyColumn> settingsColumnsList,
+            bool dirtyOnly)
         {
-            string userName = string.Empty;
-            var dtu =  Db.UserList(connectionString,boardId, userID, true, null, null, true);
-            foreach (var typedUserList in dtu)
+            using (var conn = new MsSqlDbConnectionManager(connectionString).OpenDBConnection(connectionString))
             {
-                userName = typedUserList.Name;
-                break;
+                var cmd = new SqlCommand { Connection = conn };
 
-            }
-            if (userName.IsNotSet())
-            {
-                return;
-            }
-            using ( var conn = new MsSqlDbConnectionManager(connectionString).OpenDBConnection(connectionString))
-            {
-                var cmd = new SqlCommand();
-
-                cmd.Connection = conn;
-                
                 string table = MsSqlDbAccess.GetObjectName("UserProfile");
                 StringBuilder sqlCommand = new StringBuilder("IF EXISTS (SELECT 1 FROM ").Append(table);
                 sqlCommand.Append(" WHERE UserId = @UserID AND ApplicationName = @ApplicationName) ");
-                cmd.Parameters.AddWithValue("@UserID", userID);
+                cmd.Parameters.AddWithValue("@UserID", userId);
                 cmd.Parameters.AddWithValue("@ApplicationName", appName);
 
                 // Build up strings used in the query
@@ -10914,10 +11023,10 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("@UserName", userName);
 
                 sqlCommand.Append("BEGIN UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString());
-                sqlCommand.Append(" WHERE UserId = ").Append(userID.ToString()).Append("");
+                sqlCommand.Append(" WHERE UserId = ").Append(userId.ToString()).Append("");
 
                 sqlCommand.Append(" END ELSE BEGIN INSERT ").Append(table).Append(" (UserId").Append(columnStr.ToString());
-                sqlCommand.Append(") VALUES (").Append(userID.ToString()).Append("").Append(valueStr.ToString()).Append(
+                sqlCommand.Append(") VALUES (").Append(userId.ToString()).Append("").Append(valueStr.ToString()).Append(
                   ") END");
 
                 cmd.CommandText = sqlCommand.ToString();
@@ -11270,6 +11379,47 @@ namespace VZF.Data.MsSql
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// The forum_tags.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="forumId">
+        /// The forum id.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable forum_tags(string connectionString, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("forum_tags"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardId);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserId);
+                cmd.Parameters.AddWithValue("ForumID", forumId);
+                cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("PageSize", pageSize);
+                cmd.Parameters.AddWithValue("SearchText", searchText);
+                cmd.Parameters.AddWithValue("BeginsWith", beginsWith);
+
+                return MsSqlDbAccess.GetData(cmd, true, connectionString);
             }
         }
 

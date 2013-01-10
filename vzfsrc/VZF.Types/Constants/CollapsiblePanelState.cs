@@ -35,4 +35,5 @@ namespace YAF.Types.Constants
     /// </summary>
     Collapsed = 1
   }
+
 }

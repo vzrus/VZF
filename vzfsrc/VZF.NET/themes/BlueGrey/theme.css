@@ -834,7 +834,7 @@ This CSS already works on FireFox.
 .modalPopup .modalFooter
 {
     padding: 5px;
-    background:  #f4f4f4;
+    background: #f4f4f4;
     
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f4f4f4));
     background: -moz-linear-gradient(top,  #ffffff,  #f4f4f4);
@@ -1449,11 +1449,12 @@ height:80em;
   Tag Cloud
 ------------------------------
 */
-.tagcloud
+.yafnet .tagcloud
+
 {
     font-family:Tahoma,Helvetica,Arial,Verdana;
 }
-.tag0{font-size: 0.6em}
+.yafnet .tag0{font-size: 0.6em}
 .tag1{font-size: 0.7em}
 .tag10{font-size: 0.8em}
 .tag20{font-size: 0.9em}

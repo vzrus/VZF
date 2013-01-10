@@ -62,7 +62,7 @@
                     case "System.Data.SqlClient":
                      //   return MsDBAccess.IsolationLevel;
                     case "Npgsql":
-                        return PostgreDBAccess.IsolationLevel;
+                        return PostgreDbAccess.IsolationLevel;
                     case "MySql.Data.MySqlClient":
                        // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -93,7 +93,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.DatabaseOwner;
+                        return PostgreDbAccess.DatabaseOwner;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -122,7 +122,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.ObjectQualifier;
+                        return PostgreDbAccess.ObjectQualifier;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -151,7 +151,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.SchemaName;
+                        return PostgreDbAccess.SchemaName;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -180,7 +180,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.DatabaseEncoding;
+                        return PostgreDbAccess.DatabaseEncoding;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -209,7 +209,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.GranteeName;
+                        return PostgreDbAccess.GranteeName;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -238,7 +238,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.DBName;
+                        return PostgreDbAccess.DBName;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -267,7 +267,7 @@
                     case "System.Data.SqlClient":
                     //    return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
-                        return PostgreDBAccess.HostName;
+                        return PostgreDbAccess.HostName;
                     case "MySql.Data.MySqlClient":
                     // return PostgreDBAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -296,7 +296,7 @@
                     case "System.Data.SqlClient":
                     return string.Empty;
                     case "Npgsql":
-                        return PostgreDBAccess.HostName;
+                        return PostgreDbAccess.HostName;
                     case "MySql.Data.MySqlClient":
                         return string.Empty;
                     case "FirebirdSql.Data.FirebirdClient":
@@ -442,7 +442,7 @@
                 case "System.Data.SqlClient":
                     return MsSqlDbAccess.GetObjectName(name);
                 case "Npgsql":
-                    return PostgreDBAccess.GetObjectName(name);
+                    return PostgreDbAccess.GetObjectName(name);
                 case "MySql.Data.MySqlClient":
                     return MySqlDbAccess.GetObjectName(name);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -518,7 +518,7 @@
                         userId,
                         userPassword);
                 case "Npgsql":
-                    return PostgreDBAccess.GetConnectionString(parm1,
+                    return PostgreDbAccess.GetConnectionString(parm1,
                         parm2,
                         parm3,
                         parm4,
@@ -653,7 +653,7 @@
                 case "System.Data.SqlClient":
                     return MsSqlDbAccess.TestConnection(connectionString, out exceptionMessage);
                 case "Npgsql":
-                    return PostgreDBAccess.TestConnection(connectionString, out exceptionMessage);
+                    return PostgreDbAccess.TestConnection(connectionString, out exceptionMessage);
                 case "MySql.Data.MySqlClient":
                     return MySqlDbAccess.TestConnection(connectionString, out exceptionMessage);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -686,7 +686,7 @@
                 case "System.Data.SqlClient":
                     return MsSqlDbAccess.GetCommand(commandText, isText);
                 case "Npgsql":
-                    return PostgreDBAccess.GetCommand(commandText,isText);
+                    return PostgreDbAccess.GetCommand(commandText,isText);
                 case "MySql.Data.MySqlClient":
                     return MySqlDbAccess.GetCommand(commandText, isText);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -720,7 +720,7 @@
                 case "System.Data.SqlClient":
                   return MsSqlDbAccess.GetCommandTextReplaced(commandText);
                 case "Npgsql":
-                    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "MySql.Data.MySqlClient":
                     return MySqlDbAccess.GetCommandTextReplaced(commandText);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -821,7 +821,7 @@
                 case "System.Data.SqlClient":
                     return MsSqlDbAccess.GetData(commandText, transaction, connectionString);
                 case "Npgsql":
-                    return PostgreDBAccess.GetData(commandText, transaction, connectionString);
+                    return PostgreDbAccess.GetData(commandText, transaction, connectionString);
                 case "MySql.Data.MySqlClient":
                    return  MySqlDbAccess.Current.GetData(commandText, transaction, connectionString);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -857,7 +857,7 @@
                 case "System.Data.SqlClient":
                     MsSqlDbAccess.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "Npgsql":
-                    PostgreDBAccess.ExecuteNonQuery(cmd, transaction, connectionString); break;
+                    PostgreDbAccess.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "MySql.Data.MySqlClient":
                     MySqlDbAccess.Current.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "FirebirdSql.Data.FirebirdClient":
@@ -916,7 +916,7 @@
                 case "System.Data.SqlClient":
                     return MsSqlDbAccess.ExecuteScalar(cmd, transaction, connectionString);
                 case "Npgsql":
-                    return PostgreDBAccess.ExecuteScalar( cmd, transaction, connectionString);
+                    return PostgreDbAccess.ExecuteScalar( cmd, transaction, connectionString);
                 case "MySql.Data.MySqlClient":
                   return MySqlDbAccess.Current.ExecuteScalar( cmd, transaction, connectionString);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -956,9 +956,9 @@
             switch (GetProviderNameFromConnectionString(connectionString))
             {
                 case "System.Data.SqlClient":
-                 return MsSqlDbAccess.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                 return MsSqlDbAccess.GetDataTableFromReader(cmd,transaction, acceptChanges,connectionString);
                 case "Npgsql":
-                    return PostgreDBAccess.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                    return PostgreDbAccess.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "MySql.Data.MySqlClient":
                  return MySqlDbAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "FirebirdSql.Data.FirebirdClient":
@@ -989,7 +989,7 @@
                 case "System.Data.SqlClient":
                 //  return MsDBAccess.Current.AddValuesToDataTableFromReader( cmd,  dt,  transaction,  acceptChanges,  firstColumnIndex,  currentRow);
                 case "Npgsql":
-                    return PostgreDBAccess.AddValuesToDataTableFromReader( cmd,  dt,  transaction,  acceptChanges,  firstColumnIndex,  currentRow, connectionString);
+                    return PostgreDbAccess.AddValuesToDataTableFromReader( cmd,  dt,  transaction,  acceptChanges,  firstColumnIndex,  currentRow, connectionString);
                 case "MySql.Data.MySqlClient":
                     return MySqlDbAccess.Current.AddValuesToDataTableFromReader(cmd, dt, transaction, acceptChanges, firstColumnIndex, currentRow, connectionString);
                 case "FirebirdSql.Data.FirebirdClient":

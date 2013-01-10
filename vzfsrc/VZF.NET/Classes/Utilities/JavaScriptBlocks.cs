@@ -131,12 +131,12 @@ namespace YAF.Utilities
                 {0}('#SmiliesPager').pagination(num_entries, {{
                     callback: pageselectCallback,
                     items_per_page:1,
-					num_display_entries: 3,
-					num_edge_entries: 1,
+                    num_display_entries: 3,
+                    num_edge_entries: 1,
                     prev_class: 'smiliesPagerPrev',
-					next_class: 'smiliesPagerNext',
-					prev_text: '&laquo;',
-					next_text: '&raquo;'
+                    next_class: 'smiliesPagerNext',
+                    prev_text: '&laquo;',
+                    next_text: '&raquo;'
                 }});
             }});"
                         .FormatWith(Config.JQueryAlias);
@@ -153,7 +153,7 @@ namespace YAF.Utilities
             {
                 return
                     @"{0}(document).ready(function() {{ 
-					{0}('.ceebox').ceebox({{titles:true}});}});".FormatWith(
+                    {0}('.ceebox').ceebox({{titles:true}});}});".FormatWith(
                         Config.JQueryAlias);
             }
         }
@@ -236,13 +236,13 @@ namespace YAF.Utilities
             {
                 return
                     @"
-	var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
 
-	prm.add_beginRequest(beginRequest);
+    prm.add_beginRequest(beginRequest);
 
-	function beginRequest() {
-		prm._scrollPosition = null;
-	}
+    function beginRequest() {
+        prm._scrollPosition = null;
+    }
 ";
             }
         }
@@ -257,7 +257,7 @@ namespace YAF.Utilities
             {
                 return
                     @"{0}(document).ready(function() {{
-					SyntaxHighlighter.all()}});".FormatWith(
+                    SyntaxHighlighter.all()}});".FormatWith(
                         Config.JQueryAlias);
             }
         }
@@ -272,11 +272,11 @@ namespace YAF.Utilities
             {
                 return
                     @"{0}(document).ready(function() {{
-					{0}('.ReputationBar').progressbar({{
-			            create: function(event, ui) {{
-			                    ChangeReputationBarColor({0}(this).attr('data-percent'),{0}(this).attr('data-text'), this);
-			                    }}
-		             }});}});"
+                    {0}('.ReputationBar').progressbar({{
+                        create: function(event, ui) {{
+                                ChangeReputationBarColor({0}(this).attr('data-percent'),{0}(this).attr('data-text'), this);
+                                }}
+                     }});}});"
                         .FormatWith(Config.JQueryAlias);
             }
         }
@@ -294,7 +294,7 @@ namespace YAF.Utilities
             {2}.timeago.settings.refreshMillis = {1};			      	
             {0}
               {2}('abbr.timeago').timeago();	
-			      }}"
+                  }}"
                         .FormatWith(
                             YafContext.Current.Get<ILocalization>().GetText("TIMEAGO_JS"),
                             YafContext.Current.Get<YafBoardSettings>().RelativeTimeRefreshTime,
@@ -648,7 +648,7 @@ namespace YAF.Utilities
 
             return
                 @"{3}(document).ready(function() {{
-					{3}('#{0}').tabs(
+                    {3}('#{0}').tabs(
                     {{
             show: function() {{
                 var sel = {3}('#{0}').tabs('option', 'selected');
@@ -677,7 +677,7 @@ namespace YAF.Utilities
                 @"Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(loadGotoAnchor);
             function loadGotoAnchor() {{
                window.location.hash = ""{0}"";               
-			      }}"
+                  }}"
                     .FormatWith(anchor);
         }
 
@@ -954,8 +954,19 @@ namespace YAF.Utilities
         {
             // treeId = "tree";
 
-            return
-                String.Format(@"$(function() 
+        /*  return String.Format(
+                @"$(function() 
+                {{
+                  DynatreeGetNodesAdminLazyJS('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');}});", 
+                                                                                      treeId, 
+                                                                                      jsonData, 
+                                                                                      boardId, 
+                                                                                      arguments, 
+                                                                                      echoActive, 
+                                                                                      forumPath, 
+                                                                                      Config.JQueryAlias); */
+
+            return String.Format(@"$(function() 
                 {{
                 $('#{0}').dynatree(
                         {{
@@ -963,60 +974,22 @@ namespace YAF.Utilities
                            fx: {{ height: 'toggle', duration: 200 }},
                            autoFocus: false,
                            initAjax: {{
-                                       url: '{1}' + 's={2}{5}' 
+                                       url: '{1}' + '?tjls={2}{5}' 
                                      }},
 
                            onActivate: function (node) {{
-                                                            $('#{4}').text(node.data.title);                                                           
+                                                            $('#{4}').text(node.data.key + ':' + node.data.title);  
+                                                           {6}.get('{1}' + '?tnm=' + node.data.key);
                                                          }},
 
                            onLazyRead: function (node) {{
                                                           node.appendAjax({{
-                           url: '{1}=' + node.data.key + '{3}{5}'                    }});
-                                                          }},
-    dnd: {{
-      onDragStart: function(node) {{  
-     logMsg('tree.onDragStart(%o)', node);
-
-          return true;
-      }},
-      onDragStop: function(node) {{
-logMsg('tree.onDragStop(%o', node);
-
-      }},
-      autoExpandMS: 1000,
-      preventVoidMoves: true, 
-      onDragEnter: function(node, sourceNode) {{      
-      logMsg('tree.onDragEnter(%o, %o)', node, sourceNode);
-        return true;
-      }},
-      onDragOver: function(node, sourceNode, hitMode) {{
-       logMsg('tree.onDragOver(%o, %o, %o)', node, sourceNode, hitMode);
-         if(node.isDescendantOf(sourceNode)){{
-          return false;
-        }}      
-        if( !node.data.isFolder && hitMode === 'over'){{
-          return 'after';
-        }}
-      }},
-      onDrop: function(node, sourceNode, hitMode, ui, draggable) {{ 
-       logMsg('tree.onDrop(%o, %o, %s)', node, sourceNode, hitMode);
-
-         sourceNode.move(node, hitMode);
-         
-          /**  $.get('resource.ashx?tnm=' + dtnode.data.key + '!' + sourceNode.data.key);
-           * alert( node.data.key + ' source node - ' + sourceNode.data.key + ' -parent ' + node.getParent().data.key+ ' -nextsibling ' + dtnode.getNextSibling().data.key);     
-           */       
-      }},
-      onDragLeave: function(node, sourceNode) {{ 
-      logMsg('tree.onDragLeave(%o, %o)', node, sourceNode);
-
-      }}
-}}
+                           url: '{1}' + '?tjl=' + node.data.key + '{3}{5}'                    }});
+                                                          }}
  
                         }} );
 
-              }});", treeId, jsonData, boardId, arguments, echoActive,forumPath);
+              }});", treeId, jsonData, boardId, arguments, echoActive, forumPath, Config.JQueryAlias);
         }
 
         /// <summary>
@@ -1111,11 +1084,11 @@ logMsg('tree.onDragStop(%o', node);
                     {0}('.AddReputation_{1}').remove();
                     {0}('.RemoveReputation_{1}').remove();
                     {0}('.ReputationUser_{1}').replaceWith('{2}');
-					{0}('.ReputationBar').progressbar({{
-			            create: function(event, ui) {{
-			                    ChangeReputationBarColor({0}(this).attr('data-percent'),{0}(this).attr('data-text'), this);
-			                    }}
-		             }});}});"
+                    {0}('.ReputationBar').progressbar({{
+                        create: function(event, ui) {{
+                                ChangeReputationBarColor({0}(this).attr('data-percent'),{0}(this).attr('data-text'), this);
+                                }}
+                     }});}});"
                     .FormatWith(Config.JQueryAlias, userId, generateReputationBar);
         }
 
@@ -1132,7 +1105,7 @@ logMsg('tree.onDragStop(%o', node);
             return
                 @"function toggleEventLogItem(detailId) {{
                            var show = '{1}';var hide = '{2}';
-	                       {0}('#Show'+ detailId).text({0}('#Show'+ detailId).text() == show ? hide : show);
+                           {0}('#Show'+ detailId).text({0}('#Show'+ detailId).text() == show ? hide : show);
                            {0}('#eventDetails' + detailId).slideToggle('slow'); return false;
                   }}"
                     .FormatWith(Config.JQueryAlias, showText, hideText);

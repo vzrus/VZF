@@ -406,6 +406,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_list_result;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_tags;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_list_old;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_listmessages;
@@ -721,6 +723,7 @@ DECLARE ici_EditAccess INT DEFAULT 0;
 DECLARE ici_DeleteAccess INT DEFAULT 0;
 DECLARE ici_UploadAccess INT DEFAULT 0;
 DECLARE ici_DownloadAccess INT DEFAULT 0;
+DECLARE ici_UserForumAccess INT DEFAULT 0;
 
 DECLARE out_UserID INT;
 DECLARE out_ForumID INT;
@@ -739,16 +742,17 @@ DECLARE out_EditAccess INT DEFAULT 0;
 DECLARE out_DeleteAccess INT DEFAULT 0;
 DECLARE out_UploadAccess INT DEFAULT 0;
 DECLARE out_DownloadAccess INT DEFAULT 0;
+DECLARE out_UserForumAccess INT DEFAULT 0;
 
 SELECT 
 IFNULL(UserID,i_UserID),IFNULL(ForumID,0),IFNULL(ReadAccess,0), IFNULL(PostAccess,0),IFNULL(ReplyAccess,0),IFNULL(PriorityAccess,0),
 IFNULL(PollAccess,0),IFNULL(VoteAccess,0),IFNULL(ModeratorAccess,0),IFNULL(EditAccess,0),
-DeleteAccess,UploadAccess,DownloadAccess
+IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0),IFNULL(UserForumAccess,0)
 INTO
 ici_UserID,ici_ForumID,
 ici_ReadAccess,ici_PostAccess,ici_ReplyAccess,ici_PriorityAccess,
 ici_PollAccess,ici_VoteAccess,ici_ModeratorAccess, ici_EditAccess,
-ici_DeleteAccess,ici_UploadAccess, ici_DownloadAccess
+ici_DeleteAccess,ici_UploadAccess, ici_DownloadAccess, ici_UserForumAccess
 FROM
  {databaseName}.{objectQualifier}vaccessfull1  
  WHERE UserID=i_UserID AND ForumID = IFNULL(i_ForumID,0) LIMIT 1; 
@@ -756,12 +760,12 @@ FROM
  SELECT 
 IFNULL(UserID,i_UserID),IFNULL(ForumID,0),IFNULL(ReadAccess,0), IFNULL(PostAccess,0),IFNULL(ReplyAccess,0),IFNULL(PriorityAccess,0),
 IFNULL(PollAccess,0),IFNULL(VoteAccess,0),IFNULL(ModeratorAccess,0),IFNULL(EditAccess,0),
-IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0)
+IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0),IFNULL(UserForumAccess,0)
 INTO 
 out_UserID,out_ForumID,
 out_ReadAccess,out_PostAccess,out_ReplyAccess,out_PriorityAccess,
 out_PollAccess,out_VoteAccess,out_ModeratorAccess, out_EditAccess,
-out_DeleteAccess,out_UploadAccess, out_DownloadAccess
+out_DeleteAccess,out_UploadAccess, out_DownloadAccess, out_UserForumAccess
 FROM
  {databaseName}.{objectQualifier}vaccessfull2  
  WHERE UserID=i_UserID AND ForumID = IFNULL(i_ForumID,0) LIMIT 1;
@@ -802,7 +806,8 @@ AND (y.Flags & 64 <> 0)) AS IsModerator,
 (CASE WHEN ici_EditAccess > out_EditAccess THEN ici_EditAccess ELSE out_EditAccess END) AS EditAccess,
 (CASE WHEN ici_DeleteAccess > out_DeleteAccess THEN ici_DeleteAccess ELSE out_DeleteAccess END) AS DeleteAccess,
 (CASE WHEN ici_UploadAccess > out_UploadAccess THEN ici_UploadAccess ELSE out_UploadAccess END) AS UploadAccess,
-(CASE WHEN ici_DownloadAccess > out_DownloadAccess THEN ici_DownloadAccess ELSE out_DownloadAccess END) AS DownloadAccess;
+(CASE WHEN ici_DownloadAccess > out_DownloadAccess THEN ici_DownloadAccess ELSE out_DownloadAccess END) AS DownloadAccess,
+(CASE WHEN ici_UserForumAccess > out_UserForumAccess THEN ici_UserForumAccess ELSE out_UserForumAccess END) AS UserForumAccess;
 END;
 
 --GO
@@ -827,6 +832,7 @@ DECLARE ici_EditAccess INT DEFAULT 0;
 DECLARE ici_DeleteAccess INT DEFAULT 0;
 DECLARE ici_UploadAccess INT DEFAULT 0;
 DECLARE ici_DownloadAccess INT DEFAULT 0;
+DECLARE ici_UserForumAccess INT DEFAULT 0;
 
 DECLARE out_UserID INT;
 DECLARE out_ForumID INT;
@@ -845,16 +851,17 @@ DECLARE out_EditAccess INT DEFAULT 0;
 DECLARE out_DeleteAccess INT DEFAULT 0;
 DECLARE out_UploadAccess INT DEFAULT 0;
 DECLARE out_DownloadAccess INT DEFAULT 0;
+DECLARE out_UserForumAccess INT DEFAULT 0;
 
 SELECT 
 IFNULL(UserID,i_UserID),IFNULL(ForumID,0),IFNULL(ReadAccess,0), IFNULL(PostAccess,0),IFNULL(ReplyAccess,0),IFNULL(PriorityAccess,0),
 IFNULL(PollAccess,0),IFNULL(VoteAccess,0),IFNULL(ModeratorAccess,0),IFNULL(EditAccess,0),
-DeleteAccess,UploadAccess,DownloadAccess
+IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0),IFNULL(UserForumAccess,0)
 INTO
 ici_UserID,ici_ForumID,
 ici_ReadAccess,ici_PostAccess,ici_ReplyAccess,ici_PriorityAccess,
 ici_PollAccess,ici_VoteAccess,ici_ModeratorAccess, ici_EditAccess,
-ici_DeleteAccess,ici_UploadAccess, ici_DownloadAccess
+ici_DeleteAccess,ici_UploadAccess, ici_DownloadAccess, ici_UserForumAccess
 FROM
  {databaseName}.{objectQualifier}vaccessfull1  
  WHERE UserID=i_UserID AND ForumID = IFNULL(i_ForumID,0) LIMIT 1; 
@@ -862,12 +869,12 @@ FROM
  SELECT 
 IFNULL(UserID,i_UserID),IFNULL(ForumID,0),IFNULL(ReadAccess,0), IFNULL(PostAccess,0),IFNULL(ReplyAccess,0),IFNULL(PriorityAccess,0),
 IFNULL(PollAccess,0),IFNULL(VoteAccess,0),IFNULL(ModeratorAccess,0),IFNULL(EditAccess,0),
-IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0)
+IFNULL(DeleteAccess,0),IFNULL(UploadAccess,0),IFNULL(DownloadAccess,0),IFNULL(UserForumAccess,0)
 INTO 
 out_UserID,out_ForumID,
 out_ReadAccess,out_PostAccess,out_ReplyAccess,out_PriorityAccess,
 out_PollAccess,out_VoteAccess,out_ModeratorAccess, out_EditAccess,
-out_DeleteAccess,out_UploadAccess, out_DownloadAccess
+out_DeleteAccess,out_UploadAccess, out_DownloadAccess, out_UserForumAccess 
 FROM
  {databaseName}.{objectQualifier}vaccessfull2  
  WHERE UserID=i_UserID AND ForumID = IFNULL(i_ForumID,0) LIMIT 1;
@@ -908,7 +915,8 @@ AND (y.Flags & 64 <> 0)) AS IsModerator,
 (CASE WHEN ici_EditAccess > out_EditAccess THEN ici_EditAccess ELSE out_EditAccess END) AS EditAccess,
 (CASE WHEN ici_DeleteAccess > out_DeleteAccess THEN ici_DeleteAccess ELSE out_DeleteAccess END) AS DeleteAccess,
 (CASE WHEN ici_UploadAccess > out_UploadAccess THEN ici_UploadAccess ELSE out_UploadAccess END) AS UploadAccess,
-(CASE WHEN ici_DownloadAccess > out_DownloadAccess THEN ici_DownloadAccess ELSE out_DownloadAccess END) AS DownloadAccess;
+(CASE WHEN ici_DownloadAccess > out_DownloadAccess THEN ici_DownloadAccess ELSE out_DownloadAccess END) AS DownloadAccess,
+(CASE WHEN ici_UserForumAccess > out_UserForumAccess THEN ici_UserForumAccess ELSE out_UserForumAccess END) AS UserForumAccess;
 END;
 
 --GO
@@ -2444,6 +2452,29 @@ ORDER BY a.SortOrder;
 END;
 --GO
 
+create procedure {databaseName}.{objectQualifier}category_getadjacentforum(i_BoardID int,i_CategoryID int,i_PageUserID int, i_IsAfter tinyint(1)) as
+begin
+declare ici_ForumID int default 0;
+declare ici_SortOrder int default 0;
+   -- find first forum in category and its sort order. If no forums, returns 0 for both and is a first forum in a category.
+   if i_IsAfter > 0 then 
+    select IFNULL(f.ForumID,0),IFNULL(f.SortOrder,0) 
+    INTO ici_ForumID
+    from {databaseName}.{objectQualifier}Forum f 
+    JOIN {databaseName}.{objectQualifier}Category c
+    ON c.CategoryID = f.CategoryID
+    JOIN {databaseName}.{objectQualifier}ActiveAccess aa
+    ON (aa.ForumID = f.ForumID and aa.UserID = i_PageUserID)
+    where BoardID = i_BoardID and CategoryID = i_CategoryID order by f.SortOrder LIMIT 1;
+   end if;
+
+   -- increase order to shift forums order in the category
+  if ici_ForumID > 0 and ici_SortOrder = 0 then  
+  UPDATE {databaseName}.{objectQualifier}Forum set SortOrder = SortOrder + 1 where CategoryID =  i_CategoryID;
+  end if;
+   SELECT ici_ForumID as ForumID, ici_SortOrder as SortOrder;
+end;
+--GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 
 CREATE PROCEDURE {databaseName}.{objectQualifier}category_save
@@ -3729,13 +3760,19 @@ END;
     i_ThemeURL		VARCHAR(128),
     i_ImageURL		VARCHAR(128),
     i_Styles 		VARCHAR(255),
-    i_AccessMaskID	INT 
+    i_AccessMaskID	INT,
+    i_UserID        INT,
+    i_IsUserForum   TINYINT(1),
+    i_UTCTIMESTAMP  datetime  
  )
 BEGIN
     DECLARE l_BoardID	INT;
     DECLARE l_Flags		INT;
     DECLARE l_HasDependency		INT;
-    
+    DECLARE ici_UserName  VARCHAR(255);
+    DECLARE ici_UserDisplayName  VARCHAR(255);
+    DECLARE ici_BoardID INT;
+
     SET l_Flags = 0;
     IF i_Locked<>0 THEN SET l_Flags = l_Flags | 1;END IF;
     IF i_Hidden<>0 THEN SET l_Flags = l_Flags | 2;END IF;
@@ -3760,12 +3797,13 @@ BEGIN
   ThemeURL = i_ThemeURL,
   ImageURL = i_ImageURL,
   Styles = i_Styles,
-  Flags = l_Flags
+  Flags = l_Flags,
+  IsUserForum = i_IsUserForum
   WHERE ForumID=i_ForumID;
   END IF;
   ELSE
-  INSERT INTO {databaseName}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags)
-  VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags);
+  INSERT INTO {databaseName}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags,IsUserForum)
+  VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags,i_IsUserForum);
   SET i_ForumID = LAST_INSERT_ID();
   SET l_BoardID = (SELECT BoardID  
   from {databaseName}.{objectQualifier}Category
@@ -3775,6 +3813,26 @@ BEGIN
   FROM {databaseName}.{objectQualifier}Group
   WHERE BoardID = l_BoardID;
   END IF;
+
+  IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+       -- guests should not create forums
+    ELSE
+   
+   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+    if exists (select 1 from {databaseName}.{objectQualifier}ForumHistory where ForumID = i_ForumID and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+    update {databaseName}.{objectQualifier}ForumHistory set 
+           ChangedUserID = i_UserID,	
+           ChangedUserName = ici_UserName,
+           ChangedDisplayName = ici_UserDisplayName
+     where ForumID = i_ForumID and CreatedDate = i_UTCTIMESTAMP; 
+    else    
+    INSERT INTO {databaseName}.{objectQualifier}ForumHistory(ForumID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
+    VALUES (i_ForumID,i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    end IF;
+
   SELECT i_ForumID AS ForumID;
   END;
 --GO
@@ -4244,9 +4302,13 @@ END;
         i_UsrSigBBCodes	VARCHAR(255),
         i_UsrSigHTMLTags VARCHAR(255),
         i_UsrAlbums INT,
-        i_UsrAlbumImages INT)
+        i_UsrAlbumImages INT,
+     IN i_UserID          INT,
+     IN i_IsUserGroup      TINYINT(1),
+     IN i_UTCTIMESTAMP    DATETIME)
         BEGIN
-
+        DECLARE ici_UserName  VARCHAR(255);
+        DECLARE ici_UserDisplayName  VARCHAR(255);
         DECLARE  iciFlags INT;
         SET iciFlags = 0;
         IF i_IsAdmin <> 0 THEN
@@ -4269,7 +4331,8 @@ END;
                  UsrSigBBCodes = i_UsrSigBBCodes,
                  UsrSigHTMLTags = i_UsrSigHTMLTags,
                  UsrAlbums = i_UsrAlbums,
-                 UsrAlbumImages = i_UsrAlbumImages 
+                 UsrAlbumImages = i_UsrAlbumImages,
+                 IsUserGroup =  i_IsUserGroup
             WHERE  GroupID = i_GroupID;        
         ELSE        
             INSERT INTO {databaseName}.{objectQualifier}Group
@@ -4284,7 +4347,8 @@ END;
                         UsrSigBBCodes,
                         UsrSigHTMLTags,
                         UsrAlbums,
-                        UsrAlbumImages)
+                        UsrAlbumImages,
+                        IsUserGroup)
             VALUES     (i_Name,
                         i_BoardID,
                         iciFlags,
@@ -4296,7 +4360,8 @@ END;
                         i_UsrSigBBCodes,
                         i_UsrSigHTMLTags,
                         i_UsrAlbums,
-                        i_UsrAlbumImages);
+                        i_UsrAlbumImages,
+                        i_IsUserGroup);
             SET i_GroupID = LAST_INSERT_ID();
             INSERT INTO {databaseName}.{objectQualifier}ForumAccess
                        (GroupID,
@@ -4311,6 +4376,22 @@ END;
             WHERE  b.BoardID = i_BoardID;
          END IF; 
         CALL {databaseName}.{objectQualifier}user_savestyle(null, i_GroupID);
+        IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+       -- guests should not create forums
+    ELSE    
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+    if exists (select 1 from {databaseName}.{objectQualifier}GroupHistory where GroupID = i_GroupID and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+    update {databaseName}.{objectQualifier}GroupHistory set 
+           ChangedUserID = i_UserID,	
+           ChangedUserName = ici_UserName,
+           ChangedDisplayName = ici_UserDisplayName
+     where  GroupID = i_GroupID  and CreatedDate = i_UTCTIMESTAMP; 
+    else    
+    INSERT INTO {databaseName}.{objectQualifier}GroupHistory(GroupID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
+    VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    end IF;
         SELECT i_GroupID AS GroupID; 
     END;
 --GO
@@ -6101,7 +6182,8 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             EditAccess,
             DeleteAccess,
             UploadAccess,
-            DownloadAccess)
+            DownloadAccess,
+            UserForumAccess)
             select 
             UserID, 
             i_BoardID, 
@@ -6121,7 +6203,8 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             IFNULL(SIGN(EditAccess),0),
             SIGN(DeleteAccess),
             SIGN(UploadAccess),
-            SIGN(DownloadAccess)			
+            SIGN(DownloadAccess),
+            SIGN(UserForumAccess)			
             from {databaseName}.{objectQualifier}vaccess 
             where UserID = ici_UserID;			
     end if;
@@ -6150,7 +6233,8 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             EditAccess,
             DeleteAccess,
             UploadAccess,
-            DownloadAccess)
+            DownloadAccess,
+            UserForumAccess)
             select 
             UserID, 
             i_BoardID, 
@@ -6170,7 +6254,8 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             IFNULL(SIGN(EditAccess),0),
             SIGN(DeleteAccess),
             SIGN(UploadAccess),
-            SIGN(DownloadAccess)			
+            SIGN(DownloadAccess),
+            SIGN(UserForumAccess)			
             from {databaseName}.{objectQualifier}vaccess 
             where UserID = ici_GuestID;			
     end if;
@@ -8041,26 +8126,28 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_info
  (
     i_TopicID INT,
-    i_ShowDeleted TINYINT(1)
+    i_ShowDeleted TINYINT(1).
+    i_GetTags TINYINT(1)
  )
  BEGIN
     IF i_TopicID = 0 THEN SET i_TopicID = NULL; END IF;
  
-    IF i_TopicID IS NULL THEN
-    
-        IF i_ShowDeleted = 1 THEN
-        SELECT t.*,(SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) AS TopicTags
- FROM {databaseName}.{objectQualifier}Topic t;
+    IF i_TopicID IS NULL THEN    
+      IF i_ShowDeleted = 1 THEN
+        SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        FROM {databaseName}.{objectQualifier}Topic t;
         ELSE
-            SELECT t.*,(SELECT GROUP_CONCAT(tg.tag separator ',')  FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) AS TopicTags  FROM {databaseName}.{objectQualifier}Topic t WHERE (Flags & 8) = 0;
-    END IF;
+        SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        FROM {databaseName}.{objectQualifier}Topic t WHERE (Flags & 8) = 0;
+      END IF;
     ELSE 	
         IF i_ShowDeleted = 1 THEN
-            SELECT t.*,(SELECT GROUP_CONCAT(tg.tag separator ',')  FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) AS TopicTags FROM {databaseName}.{objectQualifier}Topic t WHERE TopicID = i_TopicID;
+            SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
         ELSE
-            SELECT t.*,(SELECT GROUP_CONCAT(tg.tag separator ',')  FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) AS TopicTags FROM {databaseName}.{objectQualifier}Topic t WHERE TopicID = i_TopicID AND (Flags & 8) = 0;		
-    END IF;
-        END IF; 
+            SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags 
+            FROM {databaseName}.{objectQualifier}Topic t WHERE TopicID = i_TopicID AND (Flags & 8) = 0;		
+        END IF;
+   END IF; 
 END;
 --GO
 
@@ -8094,7 +8181,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}announcements_list
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
-    i_FindLastRead TINYINT(1)
+    i_FindLastRead TINYINT(1),
+    i_GetTags TINYINT(1)
 )
 BEGIN
  DECLARE  ici_RowTotalCount INT DEFAULT 0; 
@@ -8206,7 +8294,10 @@ t.LastPosted INTO @i_FirstSelectLastPosted
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
              else ''''	 end) AS LastTopicAccess,
-              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 	
+             (case(',i_GetTags,')
+             when 1 then
+             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
+             else ''''	 end)  AS TopicTags, 
             {databaseName}.{objectQualifier}biginttoint(',ici_post_priorityrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex
     from	
@@ -8241,7 +8332,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_list
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
-    i_FindLastRead TINYINT(1)
+    i_FindLastRead TINYINT(1),
+    i_GetTags TINYINT(1)
 )
 BEGIN
  DECLARE  ici_RowTotalCount INT DEFAULT 0; 
@@ -8378,7 +8470,10 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
              else ''''	 end) AS LastTopicAccess,	
-             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
+           (case(',i_GetTags,')
+             when 1 then
+             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
+             else ''''	 end)  AS TopicTags, 
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     from	
@@ -8406,6 +8501,7 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_bytags
 (
     i_BoardID INT,
+    i_ForumID INT,
     i_UserID INT,
     i_Tags VARCHAR(1024),
     i_SinceDate DATETIME,	
@@ -8427,7 +8523,7 @@ BEGIN
            JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = t.TopicID
            JOIN {databaseName}.{objectQualifier}Tags tg ON tg.TagID = tt.TagID
            JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = t.ForumID and aa.UserID = i_UserID) 
-           where   (t.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(i_Tags AS UNSIGNED)) and t.Posted > i_SinceDate;
+           where   (t.Flags & 8) <> 8 and (i_ForumID <= 0 OR t.ForumID = i_ForumID) and tt.TagID  IN (SELECT CAST(i_Tags AS UNSIGNED)) and t.Posted > i_SinceDate;
     
       select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum;
  
@@ -8441,7 +8537,7 @@ BEGIN
            JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = t.TopicID
            JOIN {databaseName}.{objectQualifier}Tags tg ON tg.TagID = tt.TagID
            JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON (aa.ForumID = t.ForumID and aa.UserID = ',COALESCE(i_UserID,0),') 
-           where   (t.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and t.Posted > ''',i_SinceDate,'''
+           where   (t.Flags & 8) <> 8 and (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,')  and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and t.Posted > ''',i_SinceDate,'''
     order by
         t.Posted DESC LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
         PREPARE ttlist2 from @ttlist2_str;
@@ -8505,7 +8601,7 @@ BEGIN
            JOIN {databaseName}.{objectQualifier}Message m ON (m.TopicID = c.TopicID and m.Position = 0)
            JOIN {databaseName}.{objectQualifier}User b ON b.UserID=c.UserID
            JOIN {databaseName}.{objectQualifier}Forum d on d.ForumID=c.ForumID
-           where c.Posted <= ''',COALESCE(@i_FirstSelectPosted,UTC_TIMESTAMP()),''' AND  (c.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and c.Posted > ''',i_SinceDate,'''	
+           where  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,')  and c.Posted <= ''',COALESCE(@i_FirstSelectPosted,UTC_TIMESTAMP()),''' AND  (c.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and c.Posted > ''',i_SinceDate,'''	
     order by
          c.Posted DESC LIMIT ',i_PageSize,' ;'); 
          PREPARE ttlist1 FROM @ttlist1_str;
@@ -9535,8 +9631,7 @@ begin
         and x.GroupID=?)) and
         (? is null or a.RankID = ?) AND
         IFNULL(a.Flags & 4,0) <> 4
-            AND
-     
+            AND     
          LOWER(a.DisplayName) LIKE (CASE 
             WHEN (? = 0 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (?) 
             WHEN (? = 1 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (?)
@@ -10725,15 +10820,13 @@ BEGIN
     ELSE
     IF NOT EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}UserGroup WHERE UserID=i_UserID AND GroupID=i_GroupID) THEN
         INSERT INTO {databaseName}.{objectQualifier}UserGroup(UserID,GroupID)
-        VALUES (i_UserID,i_GroupID);
-         
+        VALUES (i_UserID,i_GroupID);         
          UPDATE {databaseName}.{objectQualifier}User SET UserStyle= IFNULL(( SELECT f.Style FROM {databaseName}.{objectQualifier}UserGroup e 
         join {databaseName}.{objectQualifier}Group f on f.GroupID=e.GroupID WHERE e.UserID=i_UserID AND CHAR_LENGTH(f.Style) > 2 ORDER BY f.SortOrder LIMIT 1), (SELECT r.Style FROM {databaseName}.{objectQualifier}Rank r where r.RankID = {databaseName}.{objectQualifier}User.RankID LIMIT 1)) 
         WHERE UserID = i_UserID; 
-        
         END IF;
     END IF;
-CALL {databaseName}.{objectQualifier}user_savestyle(i_GroupID,null);
+
 END;
 --GO
 
@@ -11044,8 +11137,14 @@ IN i_EditAccess      TINYINT(1),
 IN i_DeleteAccess    TINYINT(1),
 IN i_UploadAccess    TINYINT(1),
 IN i_DownloadAccess  TINYINT(1),
-IN i_SortOrder  INT)
+IN i_UserForumAccess TINYINT(1),
+IN i_SortOrder       INT,
+IN i_UserID          INT,
+IN i_IsUserMask      TINYINT(1),
+IN i_UTCTIMESTAMP    DATETIME)
 BEGIN
+DECLARE ici_UserName  VARCHAR(255);
+DECLARE ici_UserDisplayName  VARCHAR(255);
 DECLARE  l_Flags INT;
 SET l_Flags = 0;
 
@@ -11082,20 +11181,42 @@ END IF;
 IF i_DownloadAccess <> 0 THEN
 SET l_Flags = l_Flags | 1024;
 END IF;
+IF i_UserForumAccess <> 0 THEN
+SET l_Flags = l_Flags | 32768;
+END IF;
+
 IF i_AccessMaskID IS NULL THEN
 INSERT INTO {databaseName}.{objectQualifier}AccessMask
 (`Name`,
 `BoardID`,
-`Flags`,`SortOrder`)
+`Flags`,`SortOrder`,`IsUserMask`)
 VALUES     (i_Name,
 i_BoardID,
-l_Flags,i_SortOrder);
+l_Flags,i_SortOrder,i_IsUserMask);
 ELSE
 UPDATE {databaseName}.{objectQualifier}AccessMask
 SET    `Name` = i_Name,
 `Flags` = l_Flags,`SortOrder` = i_SortOrder
-WHERE  AccessMaskID = i_AccessMaskID;
+WHERE  AccessMaskID = i_AccessMaskID, IsUserMask = i_IsUserMask;
 END IF;
+
+ IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+       -- guests should not create forums
+    ELSE    
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+    if exists (select 1 from {databaseName}.{objectQualifier}AccessMaskHistory where AccessMaskID = i_AccessMask and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+    update {databaseName}.{objectQualifier}AccessMaskHistory set 
+           ChangedUserID = i_UserID,	
+           ChangedUserName = ici_UserName,
+           ChangedDisplayName = ici_UserDisplayName
+     where AccessMaskID = i_AccessMaskID and CreatedDate = i_UTCTIMESTAMP; 
+    else    
+    INSERT INTO {databaseName}.{objectQualifier}AccessMaskHistory(AccessMaskID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
+    VALUES (i_AccessMask, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    end IF;
+
 END;
 --GO
 /* My procedures */
@@ -11395,11 +11516,11 @@ END;
         IF i_Limit IS NOT NULL THEN SET l_Limit=i_Limit;END IF;
            
          SET @stmt_fsl_rec = CONCAT('SELECT   f.`ForumID`,
-                  f.`Name`
+                  f.`Name`, f.LastPosted
          FROM     {databaseName}.{objectQualifier}Forum f
          WHERE    f.ForumID >= ',l_StartID,'   
          AND    f.ForumID < ',(l_StartID+l_Limit),'     
-         ORDER BY f.`ForumID` LIMIT ',l_Limit,'');
+         ORDER BY f.`ForumID` ');
        PREPARE stmt_fsl FROM  @stmt_fsl_rec;
            EXECUTE stmt_fsl;
            DEALLOCATE PREPARE stmt_fsl;          
@@ -13431,6 +13552,76 @@ begin
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
     WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID	
     ORDER BY Tag;
+end;
+--GO
+
+create procedure {databaseName}.{objectQualifier}forum_tags(i_BoardID int, i_PageUserID int, i_ForumID int, i_PageIndex int, i_PageSize int, i_SearchText varchar(255), i_BeginsWith tinyint(1)) 
+begin	
+    DECLARE ici_maxcount int;   
+    DECLARE ici_tags_totalrowsnumber INT DEFAULT 0;
+    DECLARE ici_firstselectrownum INT DEFAULT 0;
+ 
+    SELECT MAX(tg.TagCount) INTO ici_maxcount
+    FROM {databaseName}.{objectQualifier}Tags tg 
+    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID;	
+
+    SET i_PageIndex = i_PageIndex + 1;
+            
+    -- find total returned count
+    SELECT
+        COUNT(DISTINCT(tg.TagID))
+        INTO ici_tags_totalrowsnumber
+    FROM {databaseName}.{objectQualifier}Tags tg 
+    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID;
+    AND     
+         LOWER(tg.Tag) LIKE (CASE 
+            WHEN (i_BeginsWith = 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT('%',LOWER(IFNULL(i_SearchText,'')),'%'))) 
+            WHEN (i_BeginsWith <> 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(i_SearchText,'')),'%')))                
+            ELSE ('%') END);
+
+    select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum;
+    
+    SET @i_FirstSelectedTag = NULL; 
+    
+    SET @tlist2_str = CONCAT('select
+        DISTINCT(t.Tag) INTO @i_FirstSelectedTag
+        FROM {databaseName}.{objectQualifier}Tags tg 
+    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+    WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
+    AND     
+         LOWER(tg.Tag) LIKE (CASE 
+            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(,'i_SearchText,''')),'%')))     
+             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(,'i_SearchText,''')),'%')))                
+            ELSE (''%'') END) ORDER BY tg.Tag   	    
+    LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
+        PREPARE tlist2 from @tlist2_str;
+        EXECUTE tlist2;		 
+        DEALLOCATE PREPARE tlist2;			
+              
+    SET @tlist1_str = CONCAT( 
+    'SELECT DISTINCT(tg.TagID),tg.Tag,tg.TagCount,ici_maxcount AS MaxTagCount, ici_tags_totalrowsnumber as TotalRows 
+    FROM {databaseName}.{objectQualifier}Tags tg 
+    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+         WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
+         AND     
+         LOWER(tg.Tag) LIKE (CASE 
+            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(,'i_SearchText,''')),'%')))     
+             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(,'i_SearchText,''')),'%')))                
+            ELSE (''%'') END)  AND tg.Tag <= ',COALESCE(@i_FirstSelectedTag,''''),' )) 
+      ORDER BY tg.Tag LIMIT ',i_PageSize,' ;'); 
+         PREPARE tlist1 FROM @tlist1_str;
+         EXECUTE tlist1;		 
+        DEALLOCATE PREPARE tlist1;
 end;
 --GO
 

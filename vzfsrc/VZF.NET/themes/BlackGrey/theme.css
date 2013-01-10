@@ -1429,18 +1429,19 @@ height:80em;
   Tag Cloud
 ------------------------------
 */
-.tagcloud
+.tagcloud
+
 {
     font-family:Tahoma,Helvetica,Arial,Verdana;
 }
-.tag0{font-size: 0.6em}
-.tag1{font-size: 0.7em}
-.tag10{font-size: 0.8em}
-.tag20{font-size: 0.9em}
-.tag30{font-size: 1em}
-.tag40{font-size: 1.2em}
-.tag50{font-size: 1.4em}
-.tag60{font-size: 1.5em}
-.tag70{font-size: 1.7em}
-.tag80{font-size: 1.9em}
-.tag90{font-size: 2.0em}
+.tagcloud .tag0{font-size: 0.6em}
+.tagcloud .tag1{font-size: 0.7em}
+.tagcloud .tag10{font-size: 0.8em}
+.tagcloud .tag20{font-size: 0.9em}
+.tagcloud .tag30{font-size: 1em}
+.tagcloud .tag40{font-size: 1.2em}
+.tagcloud .tag50{font-size: 1.4em}
+.tagcloud .tag60{font-size: 1.5em}
+.tagcloud .tag70{font-size: 1.7em}
+.tagcloud .tag80{font-size: 1.9em}
+.tagcloud .tag90{font-size: 2.0em}

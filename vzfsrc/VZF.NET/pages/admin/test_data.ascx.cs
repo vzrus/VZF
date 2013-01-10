@@ -340,6 +340,7 @@ namespace YAF.Pages.Admin
                 100,
                 false,
                 false,
+                false,
                 false);
 
             this.PostsTopic.DataSource = topics;
@@ -769,7 +770,9 @@ namespace YAF.Pages.Admin
                 long _forumID = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
                 DataTable _accessForumList = CommonDb.forumaccess_list(PageContext.PageModuleID, _forumID);
-                _forumID = CommonDb.forum_save(PageContext.PageModuleID, _forumID,
+                _forumID = CommonDb.forum_save(
+                    PageContext.PageModuleID,
+                    _forumID,
                     categoryID,
                     parentID,
                     this.ForumPrefixTB.Text.Trim() + this.randomGuid,
@@ -784,6 +787,8 @@ namespace YAF.Pages.Admin
                     null,
                     null,
                     null,
+                    false,
+                    PageContext.PageUserID,
                     false);
 
                 if (_forumID <= 0)
@@ -793,7 +798,9 @@ namespace YAF.Pages.Admin
 
                 for (int i1 = 0; i1 < _accessForumList.Rows.Count; i1++)
                 {
-                    CommonDb.forumaccess_save(PageContext.PageModuleID, _forumID,
+                    CommonDb.forumaccess_save(
+                        PageContext.PageModuleID,
+                        _forumID,
                         _accessForumList.Rows[i1]["GroupID"],
                         _accessForumList.Rows[i1]["AccessMaskID"].ToType<int>());
                 }
@@ -1223,7 +1230,9 @@ namespace YAF.Pages.Admin
                         !(this.UsersBoardsList.Items[iboards].Value.ToType<int>() == YafContext.Current.PageBoardID &&
                           _excludeCurrentBoard))
                     {
-                        CommonDb.user_save(PageContext.PageModuleID, CommonDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
+                        CommonDb.user_save(
+                            PageContext.PageModuleID,
+                            CommonDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
                             boardID,
                             null,
                             null,

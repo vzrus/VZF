@@ -142,13 +142,13 @@ namespace YAF.Types.Flags
       IsModerated = 8
 
       /* for future use
-			xxxxx = 16,
-			xxxxx = 32,
-			xxxxx = 64,
-			xxxxx = 128,
-			xxxxx = 256,
-			xxxxx = 512
-			 */
+            xxxxx = 16,
+            xxxxx = 32,
+            xxxxx = 64,
+            xxxxx = 128,
+            xxxxx = 256,
+            xxxxx = 512
+             */
     }
 
     #endregion

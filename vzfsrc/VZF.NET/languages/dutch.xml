@@ -144,6 +144,7 @@
   </page>
   <page name="ADMIN_ACCESSMASKS">
     <Resource tag="CONFIRM_DELETE">Verwijder dit Toegangsmasker?</Resource>
+    <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Verwijderen</Resource>
     <Resource tag="DOWNLOAD">Downloaden</Resource>
     <Resource tag="EDIT">Bewerken</Resource>
@@ -377,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Toegang</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
     <Resource tag="DELETE_ACCESS_HELP">Allows Users to Delete their own Posts</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Download Access</Resource>
@@ -822,12 +825,30 @@
     <Resource tag="TITLE">Importeer Extensies</Resource>
   </page>
   <page name="ADMIN_FORUMS">
+    <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Verwijder dit forum definitief, inclusief ALLE topics, polls, bijlagen en berichten?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Verwijder deze categorie?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Weet je het ZEKER?</Resource>
+    <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
+    <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
+    <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
+    <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
+    <Resource tag="FORUM_SELECTANODE_MSG">You should select a node.</Resource>
+    <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
+    <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
+    <Resource tag="FORUM_SELECTEDITEDNODE_MSG">You should select a node to edit.</Resource>
+    <Resource tag="FORUM_SELECTEDNODE_MSG">Selected node:</Resource>
+    <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
+    <Resource tag="FORUM_SELECTTARGETNODE_MSG">You should select a target node.</Resource>
+    <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+    <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
+    <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">n forum aan hangt.\nOm forums te verplaatsen, klik op \"Bewerk\" en wijzig de categorie van het forum.</Resource>
     <Resource tag="NEW_CATEGORY">Nieuwe Categorie</Resource>
     <Resource tag="NEW_FORUM">Nieuw Forum</Resource>
+    <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Rol Toevoegen aan Forum</Resource>
@@ -1296,6 +1317,8 @@
     <Resource tag="SHOW_THANK_DATE_HELP">Als deze is aangevinkt, kunnen gebruikers zien op welke datum bedankjes zijn gedaan (Bedanksysteem moet wel actief zijn).</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS">Laat de verjaardagen van vandaag zien in de forum info:</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS_HELP">Zet aan om gebruikers te laten zien die vandaag jarig zijn.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
     <Resource tag="SHOW_UNREAD_LINKS">Laat Ongelezen Links zien:</Resource>
     <Resource tag="SHOW_UNREAD_LINKS_HELP">Ongelezen Links zijn zichtbaar.</Resource>
     <Resource tag="SHOW_USER_STATUS">Laat Online/Offline status van de Gebruikers zien:</Resource>
@@ -4753,6 +4776,10 @@ Spoiler Inhoud
     <Resource tag="HEADER_MEANING">Betekenis</Resource>
     <Resource tag="HEADER_SMILE">Smiley</Resource>
     <Resource tag="TITLE">Beschikbare smiley's</Resource>
+  </page>
+  <page name="TAGSBOARD">
+    <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
+    <Resource tag="TITLE">Board Tags</Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Beheerders</Resource>

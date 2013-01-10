@@ -647,7 +647,8 @@ SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifie
 CREATE TYPE databaseSchema.objectQualifier_forum_simplelist_return_type AS
 (
 "ForumID" integer,
-"Name" varchar(128)
+"Name" varchar(128),
+"LastPosted" timestampTZ
 );
 --GO
 
@@ -2185,6 +2186,7 @@ CREATE TYPE databaseSchema.objectQualifier_pageload_return_type AS
 "DeleteAccess" integer,
 "UploadAccess" integer,		
 "DownloadAccess" integer,
+"UserForumAccess" integer,
 "IsCrawler" boolean,
 "IsMobileDevice" boolean,		
 "CategoryID" integer,
@@ -2270,7 +2272,8 @@ CREATE TYPE databaseSchema.objectQualifier_vaccess_combo_return_type AS
    "EditAccess" integer,
    "DeleteAccess" integer,
    "UploadAccess" integer,		
-   "DownloadAccess" integer
+   "DownloadAccess" integer,
+   "UserForumAccess" integer
 );
 --GO
 
@@ -2774,4 +2777,26 @@ CREATE TYPE databaseSchema.objectQualifier_topic_tags_rt AS
 "MaxTagCount" integer
 );
 --GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_forum_tags_rt');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_forum_tags_rt AS
+(
+"TagID" integer,
+"Tag" varchar(128),
+"TagCount" integer,
+"MaxTagCount" integer,
+"TotalCount" integer
+);
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_category_getadjacentforum_rt');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_category_getadjacentforum_rt AS
+(
+"ForumID" integer,
+"SortOrder" integer
+);
+--GO
+
 

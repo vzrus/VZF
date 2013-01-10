@@ -176,7 +176,12 @@ namespace YAF.Types.Flags
       /// <summary>
       /// The download access.
       /// </summary>
-      DownloadAccess = 1024
+      DownloadAccess = 1024,
+
+      /// <summary>
+      /// The create user forum access.
+      /// </summary>
+      UserForumAccess = 32768
     }
 
     #endregion
@@ -363,7 +368,7 @@ namespace YAF.Types.Flags
     /// </summary>
     public bool DownloadAccess
     {
-      // int value 512
+      // int value 1024
       get
       {
         return this[10];
@@ -373,6 +378,23 @@ namespace YAF.Types.Flags
       {
         this[10] = value;
       }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether create user forum access.
+    /// </summary>
+    public bool UserForumAccess
+    {
+        // int value 32768
+        get
+        {
+            return this[15];
+        }
+
+        set
+        {
+            this[15] = value;
+        }
     }
 
     #endregion

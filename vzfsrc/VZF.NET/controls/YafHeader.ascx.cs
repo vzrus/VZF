@@ -596,7 +596,7 @@ namespace YAF.Controls
             // Logout
             if (!Config.IsAnyPortal && Config.AllowLoginAndLogoff)
             {
-                this.LogutItem.Visible = true;
+                this.LogoutItem.Visible = true;
                 this.LogOutButton.Text = this.GetText("TOOLBAR", "LOGOUT");
                 this.LogOutButton.ToolTip = this.GetText("TOOLBAR", "LOGOUT");
             }

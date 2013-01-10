@@ -57,7 +57,12 @@ namespace YAF.Types.Constants
     /// <summary>
     /// The activeusers.
     /// </summary>
-    activeusers, 
+    activeusers,
+
+    /// <summary>
+    /// The boardtags.
+    /// </summary>
+    boardtags, 
 
     /// <summary>
     /// The moderating.

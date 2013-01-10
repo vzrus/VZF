@@ -229,7 +229,9 @@ namespace YAF.Pages.Admin
             null, 
             null, 
             0, 
-            0);
+            0,
+            PageContext.PageUserID,
+            false);
 
           // redirect to newly created role
           YafBuildLink.Redirect(ForumPages.admin_editgroup, "i={0}", groupID);

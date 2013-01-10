@@ -91,7 +91,8 @@ namespace YAF.Pages
         /// </param>
         protected void ForumList_SelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            this.TopicsList.DataSource = CommonDb.topic_list(PageContext.PageModuleID, this.ForumList.SelectedValue, null, DateTimeHelper.SqlDbMinTime(), DateTime.UtcNow, 0, 32762, false, false, false);
+            this.TopicsList.DataSource = CommonDb.topic_list(
+                PageContext.PageModuleID, this.ForumList.SelectedValue, null, DateTimeHelper.SqlDbMinTime(), DateTime.UtcNow, 0, 32762, false, false, false, this.Get<YafBoardSettings>().AllowTopicTags);
             this.TopicsList.DataTextField = "Subject";
             this.TopicsList.DataValueField = "TopicID";
             this.TopicsList.DataBind();

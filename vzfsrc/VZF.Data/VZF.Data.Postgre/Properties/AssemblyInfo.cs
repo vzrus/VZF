@@ -37,7 +37,6 @@ using System.Security;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 #if (!COMPACT_FRAMEWORK)
-
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 

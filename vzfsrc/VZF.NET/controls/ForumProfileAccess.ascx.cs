@@ -115,7 +115,8 @@ namespace YAF.Controls
             var imgDeleteAccess = item.FindControlRecursiveAs<HtmlImage>("accessTypeDeleteAccess");
             var imgUploadAccess = item.FindControlRecursiveAs<HtmlImage>("accessTypeUploadAccess");
             var imgDownloadAccess = item.FindControlRecursiveAs<HtmlImage>("accessTypeDownloadAccess");
-          
+            var imgUserForumAccess = item.FindControlRecursiveAs<HtmlImage>("accessTypeUserForumAccess");
+
             var linkForumName = item.FindControlRecursiveAs<HtmlAnchor>("forumLink");
 
             bool iReadAccess = false;
@@ -151,6 +152,9 @@ namespace YAF.Controls
             bool iDownloadAccess = false;
             string iDownloadAccessLegend = string.Empty;
 
+            bool iUserForumAccess = false;
+            string iUserForumAccessLegend = string.Empty;
+
             foreach (var accessMask in amasks)
             {
                 iReadAccess = iReadAccess || accessMask.AccessMaskFlags.BinaryAnd(AccessFlags.Flags.ReadAccess);
@@ -184,7 +188,11 @@ namespace YAF.Controls
                 iUploadAccessLegend = iUploadAccessLegend + (!accessMask.IsUserMask ? ("Group:" + accessMask.GroupName + ":") : " PersonalAccess:") + accessMask.AccessMaskName + ":" + "{0}".FormatWith(iUploadAccess ? "+" : "-") + ","; 
                 
                 iDownloadAccess = iDownloadAccess || accessMask.AccessMaskFlags.BinaryAnd(AccessFlags.Flags.DownloadAccess);
-                iDownloadAccessLegend = iDownloadAccessLegend + (!accessMask.IsUserMask ? ("Group:" + accessMask.GroupName + ":") : " PersonalAccess:") + accessMask.AccessMaskName + ":" + "{0}".FormatWith(iDownloadAccess ? "+" : "-") + ","; 
+                iDownloadAccessLegend = iDownloadAccessLegend + (!accessMask.IsUserMask ? ("Group:" + accessMask.GroupName + ":") : " PersonalAccess:") + accessMask.AccessMaskName + ":" + "{0}".FormatWith(iDownloadAccess ? "+" : "-") + ",";
+
+                iUserForumAccess = iUserForumAccess || accessMask.AccessMaskFlags.BinaryAnd(AccessFlags.Flags.UserForumAccess);
+                iUserForumAccessLegend = iUserForumAccessLegend + (!accessMask.IsUserMask ? ("Group:" + accessMask.GroupName + ":") : " PersonalAccess:") + accessMask.AccessMaskName + ":" + "{0}".FormatWith(iUserForumAccess ? "+" : "-") + ",";
+                
             }
 
             linkForumName.InnerHtml = drowv.ForumName;
@@ -234,6 +242,10 @@ namespace YAF.Controls
             imgDownloadAccess.Attributes["Title"] = iDownloadAccessLegend;
             imgDownloadAccess.Alt = "{0}".FormatWith(iDownloadAccess ? "+" : "-");
             imgDownloadAccess.Src = iDownloadAccess ? yesImage : noImage;
+
+            imgUserForumAccess.Attributes["Title"] = iUserForumAccessLegend;
+            imgUserForumAccess.Alt = "{0}".FormatWith(iUserForumAccess ? "+" : "-");
+            imgUserForumAccess.Src = iUserForumAccess ? yesImage : noImage;
         }
         private static string GetNodeTitle(string title, string path, int userid, int forumId, int access)
         {

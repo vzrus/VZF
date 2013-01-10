@@ -76,9 +76,24 @@ namespace YAF.Types.Interfaces
         int? FavoriteTopicSince { get; set; }
 
         /// <summary>
-        ///   Gets or sets active node for a tree.
+        /// Gets or sets the forum admin tree add forum.
+        /// </summary>
+        int? ForumAdminTreeAddForum { get; set; }
+
+        /// <summary>
+        ///   Gets or sets active node for an nntp tree.
         /// </summary>
         string NntpTreeActiveNode { get; set; }
+
+        /// <summary>
+        ///   Gets or sets active node for a tree.
+        /// </summary>
+        string ForumTreeChangerActiveNode { get; set; }
+
+        /// <summary>
+        ///   Gets or sets active target node for a tree.
+        /// </summary>
+        string ForumTreeChangerActiveTargetNode { get; set; }
 
         /// <summary>
         ///   Gets or sets selected nodes for a search forum tree.

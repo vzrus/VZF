@@ -20,31 +20,31 @@
 
 namespace YAF.Pages.Admin
 {
-  #region Using
+    #region Using
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web.UI.WebControls;
+    
+    using VZF.Data.Common;
+    using VZF.Types.Constants;
 
-  using System;
-  using System.Data;
-  using System.IO;
-  using System.Linq;
-  using System.Text.RegularExpressions;
-  using System.Web.UI.WebControls;
-
-  using VZF.Data.Common;
-
-  using YAF.Classes;
-  
-  using YAF.Core;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Flags;
-  using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Helpers;
-
-  #endregion
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Flags;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
+    using YAF.Utils.Helpers;
+    
+    #endregion
 
   /// <summary>
-  /// Administrative Page for the editting of forum properties.
+  /// Administrative Page for the editing of forum properties.
   /// </summary>
   public partial class editforum : AdminPage
   {
@@ -205,8 +205,12 @@ namespace YAF.Pages.Admin
 
       var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
-      if (!forumId.HasValue)
-      {
+ 
+
+
+
+        if (!forumId.HasValue)
+        {
           // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
           using (
           DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
@@ -504,6 +508,8 @@ namespace YAF.Pages.Admin
         themeUrl, 
         this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : null, 
         this.Styles.Text, 
+        false,
+        PageContext.PageUserID,
         false);
 
       CommonDb.activeaccess_reset(PageContext.PageModuleID);
@@ -530,6 +536,149 @@ namespace YAF.Pages.Admin
         YafBuildLink.Redirect(ForumPages.admin_editforum, "f={0}", newForumId);
       }
     }
+
+      private string GetAncorNodeData(out int boardId, out int categoryId, out object parentId, out int sortOrder, out bool isNew)
+      {
+          boardId = PageContext.PageBoardID;
+          categoryId = 0;
+          sortOrder = 0;
+          parentId = null;
+          isNew = false;
+          if (this.Request.QueryString.GetFirstOrDefault("after") != null)
+          {
+              int afterBoardId;
+              int afterCategoryId;
+              int afterForumId;
+              TreeViewUtils.TreeNodeIdParser(
+                  this.Request.QueryString.GetFirstOrDefault("after"),
+                  out afterForumId,
+                  out afterCategoryId,
+                  out afterBoardId);
+
+              // Insert after a forum
+              if (afterForumId > 0)
+              {
+                  using (
+                      DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, afterForumId))
+                  {
+                      sortOrder = 1;
+
+                      if (dt.Rows.Count > 0)
+                      {
+                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
+                          sortOrder = sortOrder + 1;
+                      }
+                      else
+                      {
+                          return "Incorrect parameters!"; 
+                      }
+
+                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
+                      this.SortOrder.Enabled = false;
+                      parentId = afterForumId;
+                      return string.Empty;
+                  }
+              }
+
+              // Insert after a category
+              if (categoryId > 0)
+              {
+                  using (
+                      DataTable dt = CommonDb.category_getadjacentforum(PageContext.PageModuleID, this.PageContext.PageBoardID,categoryId, PageContext.PageUserID,true))
+                  {
+                      sortOrder = 1;
+
+                      if (dt.Rows.Count > 0)
+                      {
+                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
+                          sortOrder = sortOrder + 1;
+                      }
+
+                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
+                      this.SortOrder.Enabled = false;
+                      return string.Empty;
+                  }
+              }
+          }
+
+          if (this.Request.QueryString.GetFirstOrDefault("before") != null)
+          {
+              int beforeBoardId;
+              int beforeCategoryId;
+              int beforeForumId;
+              TreeViewUtils.TreeNodeIdParser(
+                  this.Request.QueryString.GetFirstOrDefault("before"),
+                  out beforeForumId,
+                  out beforeCategoryId,
+                  out beforeBoardId);
+
+              // Insert after a forum
+              if (beforeForumId > 0)
+              {
+                  using (
+                      var dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeForumId))
+                  {
+                      sortOrder = 1;
+
+                      if (dt.Rows.Count > 0)
+                      {
+                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
+                          if (sortOrder > 0)
+                          {
+                              sortOrder = sortOrder + 1;
+                          }
+                          else
+                          {
+                              sortOrder = 0;
+                          }
+                      }
+
+                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
+                      this.SortOrder.Enabled = false;
+                      return string.Empty;  
+                  }
+              }
+
+              // Insert after a category
+              if (beforeCategoryId > 0)
+              {
+                  using (
+                      DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, beforeCategoryId))
+                  {
+                      sortOrder = 1;
+
+                      if (dt.Rows.Count > 0)
+                      {
+                          sortOrder = dt.Rows[0]["SortOrder"].ToType<int>();
+                          sortOrder = sortOrder + 1;
+                      }
+
+                      this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
+                      this.SortOrder.Enabled = false;
+                      return string.Empty ;
+                  }
+              }
+          }
+
+          if (this.Request.QueryString.GetFirstOrDefault("addchild") != null)
+          {
+              int addchildBoardId;
+              int addchildCategoryId;
+              int addchildForumId;
+              TreeViewUtils.TreeNodeIdParser(
+                  this.Request.QueryString.GetFirstOrDefault("addchild"),
+                  out addchildForumId,
+                  out addchildCategoryId,
+                  out addchildBoardId);
+          }
+
+          if (this.Request.QueryString.GetFirstOrDefault("new") != null)
+          {
+              isNew = this.Request.QueryString.GetFirstOrDefault("new") == "1";
+          }
+
+          return null;
+      }
 
     #endregion
   }

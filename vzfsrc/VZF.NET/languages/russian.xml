@@ -144,6 +144,7 @@
   </page>
   <page name="ADMIN_ACCESSMASKS">
     <Resource tag="CONFIRM_DELETE">Удалить эту маску доступа?</Resource>
+    <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
     <Resource tag="DELETE">Удаление</Resource>
     <Resource tag="DOWNLOAD">Загрузка</Resource>
     <Resource tag="EDIT">Редактирование</Resource>
@@ -377,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Доступ</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Удаление сообщений</Resource>
     <Resource tag="DELETE_ACCESS_HELP">Пользователи могут удалять собственные сообщения.</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Загрузка вложений</Resource>
@@ -822,12 +825,30 @@
     <Resource tag="TITLE">Импорт расширений</Resource>
   </page>
   <page name="ADMIN_FORUMS">
+    <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Удалить этот форум навсегда, включая темы, сообщения, вложения и другую связанную с ним информацию?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Удалить категорию?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Вы уверены, что вменяемы сегодня?</Resource>
+    <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
+    <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
+    <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
+    <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
+    <Resource tag="FORUM_SELECTANODE_MSG">You should select a node.</Resource>
+    <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
+    <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
+    <Resource tag="FORUM_SELECTEDITEDNODE_MSG">You should select a node to edit.</Resource>
+    <Resource tag="FORUM_SELECTEDNODE_MSG">Selected node:</Resource>
+    <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
+    <Resource tag="FORUM_SELECTTARGETNODE_MSG">You should select a target node.</Resource>
+    <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+    <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
+    <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">Вы не можете удалить категорию, до тех пор пока в ней есть хотя бы один форум. Чтобы переместит форум нажмите \"Изменить\"  и переместите форум в другую категорию.</Resource>
     <Resource tag="NEW_CATEGORY">Добавить категорию</Resource>
     <Resource tag="NEW_FORUM">Добавить форум</Resource>
+    <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
     <Resource tag="ADD_ROLETOYAF">Добавить к YAF</Resource>
@@ -1293,6 +1314,8 @@
     <Resource tag="SHOW_THANK_DATE_HELP">Показывать дату, когда пользователя сказали «Спасибо» за пост. (Функция Спасибо должна быть включена.)</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS">Показывать дни рождения:</Resource>
     <Resource tag="SHOW_TODAYS_BIRTHDAYS_HELP">Показывать сегодняшние дни рождения пользователей.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
+    <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
     <Resource tag="SHOW_UNREAD_LINKS">Показывать ссылки на последнее непрочитанное:</Resource>
     <Resource tag="SHOW_UNREAD_LINKS_HELP">Ссылки будут вести к последнему непрочитанному сообщению.</Resource>
     <Resource tag="SHOW_USER_STATUS">Показывать иконку пользователя онлайн/оффлайн:</Resource>
@@ -4764,6 +4787,10 @@ Spoiler Content
     <Resource tag="HEADER_MEANING">Значение</Resource>
     <Resource tag="HEADER_SMILE">Смайл</Resource>
     <Resource tag="TITLE">Доступные смайлы</Resource>
+  </page>
+  <page name="TAGSBOARD">
+    <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
+    <Resource tag="TITLE">Board Tags</Resource>
   </page>
   <page name="TEAM">
     <Resource tag="ADMINS">Администраторы</Resource>

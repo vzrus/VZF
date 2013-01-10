@@ -758,7 +758,7 @@ namespace YAF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this._currentUserId, settingsPropertyValueCollection);
+            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this._currentUserId, userProfile.UserName, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

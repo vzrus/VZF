@@ -208,6 +208,13 @@
     <Compile Include="controls\ForumJumper.ascx.designer.cs">
       <DependentUpon>ForumJumper.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controls\ForumsAdminTree.ascx.cs">
+      <DependentUpon>ForumsAdminTree.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\ForumsAdminTree.ascx.designer.cs">
+      <DependentUpon>ForumsAdminTree.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controls\PollChoiceList.ascx.cs">
       <DependentUpon>PollChoiceList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -605,6 +612,20 @@
     <Compile Include="pages\avatar.ascx.designer.cs">
       <DependentUpon>avatar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\boardtags.ascx.cs">
+      <DependentUpon>boardtags.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\boardtags.ascx.designer.cs">
+      <DependentUpon>boardtags.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\editforum.ascx.cs">
+      <DependentUpon>editforum.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\editforum.ascx.designer.cs">
+      <DependentUpon>editforum.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\topicsbytags.ascx.cs">
       <DependentUpon>topicsbytags.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -891,6 +912,7 @@
     <Content Include="controls\BuddyList.ascx" />
     <Content Include="controls\DialogBox.ascx" />
     <Content Include="controls\ForumJumper.ascx" />
+    <Content Include="controls\ForumsAdminTree.ascx" />
     <Content Include="controls\PollChoiceList.ascx" />
     <Content Include="controls\DisplayAd.ascx" />
     <Content Include="controls\DisplayPost.ascx">
@@ -933,6 +955,9 @@
     <Content Include="controls\TopicLine.ascx" />
     <Content Include="controls\ViewThanksList.ascx" />
     <Content Include="controls\YafHeader.ascx" />
+    <Content Include="db.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="digest.aspx" />
     <Content Include="default.aspx" />
     <Content Include="editors\ckeditor\adapters\jquery.js" />
@@ -3447,6 +3472,18 @@
     <Content Include="install\firebird\ukeys.sql" />
     <Content Include="install\firebird\views.sql" />
     <Content Include="install\firebird\views_drop.sql" />
+    <Content Include="install\mssql\constraints.sql" />
+    <Content Include="install\mssql\forum_ns.sql" />
+    <Content Include="install\mssql\fulltext.sql" />
+    <Content Include="install\mssql\functions.sql" />
+    <Content Include="install\mssql\indexes.sql" />
+    <Content Include="install\mssql\procedures.sql" />
+    <Content Include="install\mssql\providers\indexes.sql" />
+    <Content Include="install\mssql\providers\procedures.sql" />
+    <Content Include="install\mssql\providers\tables.sql" />
+    <Content Include="install\mssql\tables.sql" />
+    <Content Include="install\mssql\triggers.sql" />
+    <Content Include="install\mssql\views.sql" />
     <Content Include="install\mysql\constraints.sql" />
     <Content Include="install\mysql\fkeys.sql" />
     <Content Include="install\mysql\functions.sql" />
@@ -3511,6 +3548,8 @@
     <Content Include="pages\admin\topicstatus_edit.ascx" />
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
+    <Content Include="pages\boardtags.ascx" />
+    <Content Include="pages\editforum.ascx" />
     <Content Include="pages\topicsbytags.ascx" />
     <Content Include="pages\mostactiveusers.ascx" />
     <Content Include="ReadMe.htm" />
@@ -4381,6 +4420,7 @@
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />
     <Content Include="resources\js\ui.core.js" />
+    <Content Include="resources\js\vzfDynatree.js" />
     <Content Include="resources\js\yaf.js" />
     <Content Include="resources\js\_src\jquery.ceebox.js" />
     <Content Include="resources\js\_src\jquery.dynatree-1.2.2.js" />
@@ -4959,91 +4999,132 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="App_Browsers\w3cvalidator.browser" />
-    <Content Include="app_my.config" />
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
     <Content Include="rss.xsl" />
+    <Content Include="themes\BlackGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\BlackGrey\arrow-branch-270.png" />
+    <Content Include="themes\BlackGrey\arrow-branch.png" />
     <Content Include="themes\BlackGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlackGrey\frog3.gif" />
     <Content Include="themes\BlackGrey\minus-circle.png" />
     <Content Include="themes\BlackGrey\odnoklassniki.png" />
     <Content Include="themes\BlackGrey\pin--plus.png" />
     <Content Include="themes\BlackGrey\plus-circle.png" />
+    <Content Include="themes\BlackGrey\plus-shield.png" />
     <Content Include="themes\BlackGrey\tag-label.png" />
+    <Content Include="themes\BlueGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\BlueGrey\arrow-branch-270.png" />
+    <Content Include="themes\BlueGrey\arrow-branch.png" />
     <Content Include="themes\BlueGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlueGrey\frog3.gif" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
     <Content Include="themes\BlueGrey\pin--plus.png" />
     <Content Include="themes\BlueGrey\plus-circle.png" />
+    <Content Include="themes\BlueGrey\plus-shield.png" />
     <Content Include="themes\BlueGrey\tag-label.png" />
+    <Content Include="themes\cleanSlate\arrow-branch-090-left.png" />
+    <Content Include="themes\cleanSlate\arrow-branch-270.png" />
+    <Content Include="themes\cleanSlate\arrow-branch.png" />
     <Content Include="themes\cleanSlate\balloon-twitter-retweet.png" />
     <Content Include="themes\cleanSlate\frog3.gif" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
     <Content Include="themes\cleanSlate\pin--plus.png" />
     <Content Include="themes\cleanSlate\plus-circle.png" />
+    <Content Include="themes\cleanSlate\plus-shield.png" />
     <Content Include="themes\cleanSlate\tag-label.png" />
+    <Content Include="themes\Fancy\images\arrow-branch-090-left.png" />
+    <Content Include="themes\Fancy\images\arrow-branch-270.png" />
+    <Content Include="themes\Fancy\images\arrow-branch.png" />
     <Content Include="themes\Fancy\images\frog3.gif" />
     <Content Include="themes\Fancy\images\balloon-twitter-retweet.png" />
     <Content Include="themes\Fancy\images\minus-circle.png" />
     <Content Include="themes\Fancy\images\pin--plus.png" />
     <Content Include="themes\Fancy\images\plus-circle.png" />
+    <Content Include="themes\Fancy\images\plus-shield.png" />
     <Content Include="themes\Fancy\images\tag-label.png" />
+    <Content Include="themes\GreenGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\GreenGrey\arrow-branch-270.png" />
+    <Content Include="themes\GreenGrey\arrow-branch.png" />
     <Content Include="themes\GreenGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreenGrey\frog3.gif" />
     <Content Include="themes\GreenGrey\minus-circle.png" />
     <Content Include="themes\GreenGrey\pin--plus.png" />
     <Content Include="themes\GreenGrey\plus-circle.png" />
+    <Content Include="themes\GreenGrey\plus-shield.png" />
     <Content Include="themes\GreenGrey\tag-label.png" />
+    <Content Include="themes\GreyGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\GreyGrey\arrow-branch-270.png" />
+    <Content Include="themes\GreyGrey\arrow-branch.png" />
     <Content Include="themes\GreyGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreyGrey\frog3.gif" />
     <Content Include="themes\GreyGrey\minus-circle.png" />
     <Content Include="themes\GreyGrey\pin--plus.png" />
     <Content Include="themes\GreyGrey\plus-circle.png" />
+    <Content Include="themes\GreyGrey\plus-shield.png" />
     <Content Include="themes\GreyGrey\tag-label.png" />
+    <Content Include="themes\OrangeGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\OrangeGrey\arrow-branch-270.png" />
+    <Content Include="themes\OrangeGrey\arrow-branch.png" />
     <Content Include="themes\OrangeGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\OrangeGrey\frog3.gif" />
     <Content Include="themes\OrangeGrey\minus-circle.png" />
     <Content Include="themes\OrangeGrey\pin--plus.png" />
     <Content Include="themes\OrangeGrey\plus-circle.png" />
+    <Content Include="themes\OrangeGrey\plus-shield.png" />
     <Content Include="themes\OrangeGrey\tag-label.png" />
+    <Content Include="themes\RedGrey\arrow-branch-090-left.png" />
+    <Content Include="themes\RedGrey\arrow-branch-270.png" />
+    <Content Include="themes\RedGrey\arrow-branch.png" />
     <Content Include="themes\RedGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\RedGrey\frog3.gif" />
     <Content Include="themes\RedGrey\minus-circle.png" />
     <Content Include="themes\RedGrey\pin--plus.png" />
     <Content Include="themes\RedGrey\plus-circle.png" />
+    <Content Include="themes\RedGrey\plus-shield.png" />
     <Content Include="themes\RedGrey\tag-label.png" />
+    <Content Include="themes\soclean\arrow-branch-090-left.png" />
+    <Content Include="themes\soclean\arrow-branch-270.png" />
+    <Content Include="themes\soclean\arrow-branch.png" />
     <Content Include="themes\soclean\balloon-twitter-retweet.png" />
     <Content Include="themes\soclean\frog3.gif" />
     <Content Include="themes\soclean\minus-circle.png" />
     <Content Include="themes\soclean\pin--plus.png" />
     <Content Include="themes\soclean\plus-circle.png" />
+    <Content Include="themes\soclean\plus-shield.png" />
     <Content Include="themes\soclean\tag-label.png" />
+    <Content Include="themes\Yafmobile\arrow-branch-090-left.png" />
+    <Content Include="themes\Yafmobile\arrow-branch-270.png" />
+    <Content Include="themes\Yafmobile\arrow-branch.png" />
     <Content Include="themes\Yafmobile\balloon-twitter-retweet.png" />
     <Content Include="themes\Yafmobile\frog3.gif" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
     <Content Include="themes\Yafmobile\pin--plus.png" />
     <Content Include="themes\Yafmobile\plus-circle.png" />
+    <Content Include="themes\Yafmobile\plus-shield.png" />
     <Content Include="themes\Yafmobile\tag-label.png" />
+    <Content Include="themes\yafpro\arrow-branch-090-left.png" />
+    <Content Include="themes\yafpro\arrow-branch-270.png" />
+    <Content Include="themes\yafpro\arrow-branch.png" />
     <Content Include="themes\yafpro\balloon-twitter-retweet.png" />
     <Content Include="themes\yafpro\frog3.gif" />
     <Content Include="themes\yafpro\minus-circle.png" />
     <Content Include="themes\yafpro\pin--plus.png" />
     <Content Include="themes\yafpro\plus-circle.png" />
+    <Content Include="themes\yafpro\plus-shield.png" />
     <Content Include="themes\yafpro\tag-label.png" />
+    <Content Include="themes\yafvision\arrow-branch-090-left.png" />
+    <Content Include="themes\yafvision\arrow-branch-270.png" />
+    <Content Include="themes\yafvision\arrow-branch.png" />
     <Content Include="themes\yafvision\balloon-twitter-retweet.png" />
     <Content Include="themes\yafvision\frog3.gif" />
     <Content Include="themes\yafvision\minus-circle.png" />
     <Content Include="themes\yafvision\pin--plus.png" />
     <Content Include="themes\yafvision\plus-circle.png" />
-    <Content Include="app_fb.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="app_pg.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="themes\yafvision\plus-shield.png" />
     <Content Include="themes\yafvision\tag-label.png" />
     <Content Include="web_fb.config">
       <SubType>Designer</SubType>
@@ -5052,9 +5133,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="web_my.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="web_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
@@ -5073,6 +5151,7 @@
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="install\mssql\procedures.sql.orig.orig" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -6562,9 +6641,6 @@
     <None Include="Web References\RegisterV2\RegisterV2.disco" />
     <Content Include="YafAjax.asmx" />
     <Content Include="YafWebService.asmx" />
-    <Content Include="db.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="images\emoticons\eusa.pak" />
     <None Include="images\emoticons\ModernSmileyPack.pak" />
     <Content Include="mail.config">
@@ -6786,7 +6862,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51871</DevelopmentServerPort>
+          <DevelopmentServerPort>4508</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

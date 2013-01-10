@@ -557,7 +557,7 @@ namespace YAF.Pages
             this._quickReplyEditor.BaseDir = "{0}editors".FormatWith(YafForumInfo.ForumClientFileRoot);
             this._quickReplyEditor.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
 
-            this._topic = CommonDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
+            this._topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
 
             // in case topic is deleted or not existant
             if (this._topic == null)
@@ -723,11 +723,11 @@ namespace YAF.Pages
                     this.UnlockTopic2.Visible = !this.LockTopic2.Visible;
                 }
             }
-
+            this.Stc1.TopicId = this.PageContext.PageTopicID;
             #endregion
 
             this.BindData();
-
+            
             if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ShowShareTopicTo)
                 || !Config.FacebookApiKey.IsSet())
             {
@@ -776,10 +776,10 @@ namespace YAF.Pages
         }
 
         /// <summary>
-        /// The poll group id.
+        /// The topic id.
         /// </summary>
         /// <returns>
-        /// Returns The poll group id.
+        /// Returns topic id.
         /// </returns>
         protected int GetTopicId()
         {

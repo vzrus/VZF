@@ -17,24 +17,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Concurrent;
-
 namespace YAF.Providers.Roles
 {
-  using System;
-  using System.Collections.Specialized;
-  using System.Configuration;
-  using System.Data;
-  using System.Linq;
-  using System.Web.Security;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Data;
+    using System.Linq;
+    using System.Web.Security;
 
-  using YAF.Classes.Pattern;
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Types;
-  using YAF.Utils;
-  using YAF.Providers.Utils;
+    using YAF.Core;
+    using YAF.Providers.Utils;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
 
-  /// <summary>
+    /// <summary>
   /// The yaf role provider.
   /// </summary>
   public class PgRoleProvider : RoleProvider
@@ -160,7 +158,7 @@ namespace YAF.Providers.Roles
           // only add user if this role actually exists...
           if (roleName.IsSet() && allRoles.Contains(roleName))
           {
-              DB.Current.__AddUserToRole(  ConnectionString, this.ApplicationName, username, roleName);
+              Db.__AddUserToRole(ConnectionString, this.ApplicationName, username, roleName);
           }
         }
 
@@ -181,7 +179,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      DB.Current.__CreateRole(  ConnectionString, this.ApplicationName, roleName);
+      Db.__CreateRole(  ConnectionString, this.ApplicationName, roleName);
     }
 
     /// <summary>
@@ -196,7 +194,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
     {
-        int returnValue = DB.Current.__DeleteRole(  ConnectionString, this.ApplicationName, roleName, throwOnPopulatedRole);
+        int returnValue = Db.__DeleteRole(  ConnectionString, this.ApplicationName, roleName, throwOnPopulatedRole);
 
       this.ClearUserRoleCache();
 
@@ -224,7 +222,7 @@ namespace YAF.Providers.Roles
       }
 
       // Roles
-      DataTable users = DB.Current.__FindUsersInRole(  ConnectionString, this.ApplicationName, roleName);
+      DataTable users = Db.__FindUsersInRole(  ConnectionString, this.ApplicationName, roleName);
       var usernames = new StringCollection();
       foreach (DataRow user in users.Rows)
       {
@@ -235,14 +233,14 @@ namespace YAF.Providers.Roles
     }
 
     /// <summary>
-    /// Grabs all the roles from the DB
+    /// Grabs all the roles from the Db
     /// </summary>
     /// <returns>
     /// </returns>
     public override string[] GetAllRoles()
     {
       // get all roles...
-        DataTable roles = DB.Current.__GetRoles(  ConnectionString, this.ApplicationName, null);
+        DataTable roles = Db.__GetRoles(  ConnectionString, this.ApplicationName, null);
 
       // make a string collection to store the role list...
       var roleNames = new StringCollection();
@@ -256,7 +254,7 @@ namespace YAF.Providers.Roles
     }
 
     /// <summary>
-    /// Grabs all the roles from the DB
+    /// Grabs all the roles from the Db
     /// </summary>
     /// <param name="username">
     /// The username.
@@ -277,7 +275,7 @@ namespace YAF.Providers.Roles
       {
         roleNames = new StringCollection();
 
-        DataTable roles = DB.Current.__GetRoles(  ConnectionString, this.ApplicationName, username);
+        DataTable roles = Db.__GetRoles(  ConnectionString, this.ApplicationName, username);
 
         foreach (DataRow dr in roles.Rows)
         {
@@ -312,7 +310,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      DataTable users = DB.Current.__FindUsersInRole(  ConnectionString, this.ApplicationName, roleName);
+      DataTable users = Db.__FindUsersInRole(  ConnectionString, this.ApplicationName, roleName);
 
       var userNames = new StringCollection();
 
@@ -383,7 +381,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool IsUserInRole(string username, string roleName)
     {
-        DataTable roles = DB.Current.__IsUserInRole(  ConnectionString, this.ApplicationName, username, roleName);
+        DataTable roles = Db.__IsUserInRole(  ConnectionString, this.ApplicationName, username, roleName);
 
       return roles.Rows.Count > 0;
     }
@@ -405,7 +403,7 @@ namespace YAF.Providers.Roles
         // Loop through roles
         foreach (string roleName in roleNames)
         {
-            DB.Current.__RemoveUserFromRole(  ConnectionString, this.ApplicationName, username, roleName); // Remove role
+            Db.__RemoveUserFromRole(  ConnectionString, this.ApplicationName, username, roleName); // Remove role
 
           // invalidate cache for this user...
           this.DeleteFromRoleCacheIfExists(username.ToLower());
@@ -425,7 +423,7 @@ namespace YAF.Providers.Roles
     public override bool RoleExists(string roleName)
     {
       // get this role...
-        object exists = DB.Current.__GetRoleExists(  ConnectionString, this.ApplicationName, roleName);
+        object exists = Db.__GetRoleExists(  ConnectionString, this.ApplicationName, roleName);
 
       // if there are any rows then this role exists...
       if (Convert.ToInt32(exists) > 0)

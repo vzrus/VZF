@@ -28,148 +28,39 @@ namespace VZF.Data.Postgre
     using YAF.Classes;
     using YAF.Types.Handlers;
 
-    /// <summary>
+  /// <summary>
   /// Provides open/close management for DB Connections
   /// </summary>
-    public class PostgreDbConnectionManager : IDisposable
+  public static class PostgreDbConnectionManager
   {
     /// <summary>
-    /// The _connection.
+    /// The info message.
     /// </summary>
-    protected NpgsqlConnection _connection = null;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="YafDBConnManager"/> class.
-    /// </summary>
-    public PostgreDbConnectionManager()
-    {
-      // just initalize it (not open)
-      this.InitConnection();
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="YafDBConnManager"/> class.
-    /// </summary>
-    public PostgreDbConnectionManager(string connectionString)
-    {
-        // just initalize it (not open)
-        this.InitConnection(connectionString);
-    }
-
-
-
-    /// <summary>
-    /// Gets ConnectionString.
-    /// </summary>
-    public virtual string ConnectionString
-    {
-      get
-      {
-        return Config.ConnectionString;
-      }
-    }
-
-    /// <summary>
-    /// Gets the current DB Connection in any state.
-    /// </summary>
-    public NpgsqlConnection DBConnection
-    {
-      get
-      {
-        this.InitConnection();
-        return this._connection;
-      }
-    }
+    public static event YafDBConnInfoMessageEventHandler InfoMessage;
 
     /// <summary>
     /// Gets an open connection to the DB. Can be called any number of times.
     /// </summary>
-    public NpgsqlConnection OpenDBConnection(string connectionString)
+    /// <param name="connectionString">
+    /// The connection String.
+    /// </param>
+    /// <returns>
+    /// The <see cref="NpgsqlConnection"/>.
+    /// </returns>
+    public static NpgsqlConnection OpenDBConnection(string connectionString)
     {
-
-        this.InitConnection(connectionString);
-
-        if (this._connection.State != ConnectionState.Open)
-        {
-          // open it up...
-          this._connection.Open();
-        }
-
-        return this._connection;
-      
-    }
-
-    #region IDisposable Members
-
-    /// <summary>
-    /// The dispose.
-    /// </summary>
-    public virtual void Dispose()
-    {
-      // close and delete connection
-      this.CloseConnection();
-      this._connection = null;
-    }
-
-    #endregion
-
-    /// <summary>
-    /// The info message.
-    /// </summary>
-    public event YafDBConnInfoMessageEventHandler InfoMessage;
-
-    /// <summary>
-    /// The init connection.
-    /// </summary>
-    public void InitConnection()
-    {
-      if (this._connection == null)
-      {
         // create the connection
-        this._connection = new NpgsqlConnection();
-        this._connection.Notification += new NotificationEventHandler(this.Connection_InfoMessage);
-        this._connection.ConnectionString = this.ConnectionString;
-      }
-      else if (this._connection.State != ConnectionState.Open)
-      {
-        // verify the connection string is in there...
-        this._connection.ConnectionString = this.ConnectionString;
-      }
-    }
-
-    /// <summary>
-    /// The init connection.
-    /// </summary>
-    public void InitConnection(string connectionString)
-    {
-        if (this._connection == null)
+        var connection = new NpgsqlConnection(connectionString);
+             connection.Notification += new NotificationEventHandler(Connection_InfoMessage);
+             connection.Open();
+        if (connection.State == ConnectionState.Broken)
         {
-            // create the connection
-            this._connection = new NpgsqlConnection(connectionString);
-            this._connection.Notification += new NotificationEventHandler(this.Connection_InfoMessage);
-            this._connection.ConnectionString = this.ConnectionString;
+            connection.Close();
+            connection.Open();
         }
-        else if (this._connection.State != ConnectionState.Open)
-        {
-            // verify the connection string is in there...
-            this._connection.ConnectionString = this.ConnectionString;
-        }
+
+        return connection;
     }
-
-
-    /// <summary>
-    /// The close connection.
-    /// </summary>
-    public void CloseConnection()
-    {
-      if (this._connection != null && this._connection.State != ConnectionState.Closed)
-      {
-        this._connection.Close();
-      }
-    }
-
-
-
 
     /// <summary>
     /// The connection_ info message.
@@ -180,13 +71,12 @@ namespace VZF.Data.Postgre
     /// <param name="e">
     /// The e.
     /// </param>
-    protected void Connection_InfoMessage(object sender, NpgsqlNotificationEventArgs e)
+    public static void Connection_InfoMessage(object sender, NpgsqlNotificationEventArgs e)
     {
-        if (this.InfoMessage != null)
+        if (InfoMessage != null)
         {
-            this.InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.PID.ToString(CultureInfo.InvariantCulture) + ":::" + e.Condition));
+            InfoMessage(sender, e: new YafDBConnInfoMessageEventArgs(e.PID.ToString(CultureInfo.InvariantCulture) + ":::" + e.Condition));
         }
     }
-
   }
 }

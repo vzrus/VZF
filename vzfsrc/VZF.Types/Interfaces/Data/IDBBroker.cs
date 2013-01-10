@@ -149,19 +149,6 @@ namespace YAF.Types.Interfaces
     /// <param name="userId">
     /// The user id.
     /// </param>
-    /// <returns>
-    /// </returns>
-    DataTable GetLatestTopics(int numberOfPosts, int userId);
-
-    /// <summary>
-    /// The get latest topics.
-    /// </summary>
-    /// <param name="numberOfPosts">
-    /// The number of posts.
-    /// </param>
-    /// <param name="userId">
-    /// The user id.
-    /// </param>
     /// <param name="styleColumnNames">
     /// The style Column Names.
     /// </param>
@@ -238,11 +225,11 @@ namespace YAF.Types.Interfaces
     /// <summary>
     /// The Buddy list for the user with the specified UserID.
     /// </summary>
-    /// <param name="UserID">
+    /// <param name="userId">
     /// </param>
     /// <returns>
     /// </returns>
-    DataTable UserBuddyList(int UserID);
+    DataTable UserBuddyList(int userId);
 
     /// <summary>
     /// The user ignored list.

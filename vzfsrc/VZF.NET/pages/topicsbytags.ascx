@@ -54,26 +54,16 @@
             <YAF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </AlternatingItemTemplate>
     </asp:Repeater>
-   <tr>
-        <td align="center" colspan="6" class="footer1">
-            <table cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    <td width="1%" style="white-space: nowrap">
-                        <YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="showtopics" />
-                        <asp:DropDownList ID="ShowList" runat="server" AutoPostBack="True" />
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
 </table>
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left" colspan="2">
             <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="Pager" UsePostBack="False" />
+        </td>
+    </tr>
+     <tr>
+        <td align="left" colspan="2">
+            <asp:Button ID="OKButon"  Text='<%# this.GetText("COMMON","OK") %>' CausesValidation="False" CommandName="Action" CommandArgument='<%# this.retBtnArgs %>' OnClick="okBtn_click"  runat="server"/>
         </td>
     </tr>
 </table>

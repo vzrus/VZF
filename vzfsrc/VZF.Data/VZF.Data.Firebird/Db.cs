@@ -308,7 +308,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -375,7 +375,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -383,7 +383,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -429,7 +429,7 @@ namespace VZF.Data.Firebird
             get
             {
 
-                return "";
+                return string.Empty;
             }
         }
 
@@ -478,7 +478,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -503,7 +503,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -528,7 +528,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -553,7 +553,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -578,7 +578,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -603,7 +603,7 @@ namespace VZF.Data.Firebird
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -633,7 +633,7 @@ namespace VZF.Data.Firebird
         /// <returns>An integer value for database size</returns>
         public static int GetDBSize(string connectionString)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("DB_SIZE"))
+            using (var cmd = FbDbAccess.GetCommand("DB_SIZE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_DBNAME", FbDbType.VarChar)).Value =
@@ -786,7 +786,7 @@ namespace VZF.Data.Firebird
             {
                 try
                 {
-                    using (FbCommand cmd = FbDbAccess.GetCommand("PAGELOAD"))
+                    using (var cmd = FbDbAccess.GetCommand("PAGELOAD"))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -873,7 +873,7 @@ namespace VZF.Data.Firebird
                    }
              string searchSql = new SearchBuilder().BuildSearchSql(toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, userID, searchDisplayName, boardId, maxResults, useFullText, forumIds);
     
-                   using (FbCommand cmd = FbDbAccess.GetCommand(searchSql, true))
+                   using (var cmd = FbDbAccess.GetCommand(searchSql, true))
                    {
                        return FbDbAccess.GetData(cmd,connectionString);
                    } 
@@ -897,7 +897,7 @@ namespace VZF.Data.Firebird
 
             /*  string searchSql = new SearchBuilder().BuildSearchSql(toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, userID, searchDisplayName, boardId, maxResults, useFullText, forumIds);
 
-              using (FbCommand cmd = FbDbAccess.GetCommand(searchSql, true))
+              using (var cmd = FbDbAccess.GetCommand(searchSql, true))
               {
                   return FbDbAccess.GetData(cmd,connectionString);
               } */
@@ -905,10 +905,10 @@ namespace VZF.Data.Firebird
             // if ( ToSearch.Length == 0 )
             //	return new DataTable();
 
-            if (toSearchWhat == "*") toSearchWhat = "";
-            string forumIDs = "";
-            string limitString = "";
-            string orderString = "";
+            if (toSearchWhat == "*") toSearchWhat = string.Empty;
+            string forumIDs = string.Empty;
+            string limitString = string.Empty;
+            string orderString = string.Empty;
 
             if (forumIDToStartAt.Any())
             {
@@ -1054,7 +1054,7 @@ namespace VZF.Data.Firebird
                         words = toSearchWhat.Split(' ');
                         if (useFullText)
                         {
-                            string ftInner = "";
+                            string ftInner = string.Empty;
 
                             // make the inner FULLTEXT search
                             foreach (string word in words)
@@ -1083,7 +1083,7 @@ namespace VZF.Data.Firebird
 
                         if (useFullText)
                         {
-                            string ftInner = "";
+                            string ftInner = string.Empty;
 
                             // make the inner FULLTEXT search
                             foreach (string word in words)
@@ -1128,7 +1128,7 @@ namespace VZF.Data.Firebird
                 searchSql += string.Format(@"AND a.FORUMID IN ({0})", forumIDs);
             }
 
-            if (orderString != "")
+            if (orderString != string.Empty)
             {
                 orderString += ", ";
             }
@@ -1142,7 +1142,7 @@ namespace VZF.Data.Firebird
 
 
 
-            using (FbCommand cmd = FbDbAccess.GetCommand(searchSql, true))
+            using (var cmd = FbDbAccess.GetCommand(searchSql, true))
             {
                 return FbDbAccess.GetData(cmd, connectionString);
             }
@@ -1221,7 +1221,7 @@ namespace VZF.Data.Firebird
         public static DataTable accessmask_list(
             string connectionString, object boardID, object accessMaskID, object excludeFlags)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("accessmask_list"))
+            using (var cmd = FbDbAccess.GetCommand("accessmask_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
@@ -1242,7 +1242,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static bool accessmask_delete(string connectionString, object accessMaskID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("accessmask_delete"))
+            using (var cmd = FbDbAccess.GetCommand("accessmask_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer));
@@ -1285,39 +1285,34 @@ namespace VZF.Data.Firebird
             object deleteAccess,
             object uploadAccess,
             object downloadAccess,
-            object sortOrder)
+            [NotNull] object userForumAccess,
+            object sortOrder, 
+            [CanBeNull] object userId, 
+            [NotNull] object isUserMask)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("accessmask_save"))
+            using (var cmd = FbDbAccess.GetCommand("accessmask_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer));
-                cmd.Parameters[0].Value = accessMaskID;
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[1].Value = boardID;
-                cmd.Parameters.Add(new FbParameter("@I_NAME", FbDbType.VarChar));
-                cmd.Parameters[2].Value = name;
-                cmd.Parameters.Add(new FbParameter("@I_READACCESS", FbDbType.Boolean));
-                cmd.Parameters[3].Value = readAccess;
-                cmd.Parameters.Add(new FbParameter("@I_POSTACCESS", FbDbType.Boolean));
-                cmd.Parameters[4].Value = postAccess;
-                cmd.Parameters.Add(new FbParameter("@I_REPLYACCESS", FbDbType.Boolean));
-                cmd.Parameters[5].Value = replyAccess;
-                cmd.Parameters.Add(new FbParameter("@I_PRIORITYACCESS", FbDbType.Boolean));
-                cmd.Parameters[6].Value = priorityAccess;
-                cmd.Parameters.Add(new FbParameter("@I_POLLACCESS", FbDbType.Boolean));
-                cmd.Parameters[7].Value = pollAccess;
-                cmd.Parameters.Add(new FbParameter("@I_VOTEACCESS", FbDbType.Boolean));
-                cmd.Parameters[8].Value = voteAccess;
-                cmd.Parameters.Add(new FbParameter("@I_MODERATORACCESS", FbDbType.Boolean));
-                cmd.Parameters[9].Value = moderatorAccess;
-                cmd.Parameters.Add(new FbParameter("@I_EDITACCESS", FbDbType.Boolean));
-                cmd.Parameters[10].Value = editAccess;
+                cmd.Parameters.Add("@I_ACCESSMASKID", FbDbType.Integer).Value = accessMaskID;
+                cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardID;
+                cmd.Parameters.Add("@I_NAME", FbDbType.VarChar).Value = name;
+                cmd.Parameters.Add("@I_READACCESS", FbDbType.Boolean).Value = readAccess;
+                cmd.Parameters.Add("@I_POSTACCESS", FbDbType.Boolean).Value = postAccess;
+                cmd.Parameters.Add("@I_REPLYACCESS", FbDbType.Boolean).Value = replyAccess;
+                cmd.Parameters.Add("@I_PRIORITYACCESS", FbDbType.Boolean).Value = priorityAccess;
+                cmd.Parameters.Add("@I_POLLACCESS", FbDbType.Boolean).Value = pollAccess;
+                cmd.Parameters.Add("@I_VOTEACCESS", FbDbType.Boolean).Value = voteAccess;
+                cmd.Parameters.Add("@I_MODERATORACCESS", FbDbType.Boolean).Value = moderatorAccess;
+                cmd.Parameters.Add("@I_EDITACCESS", FbDbType.Boolean).Value = editAccess;
                 cmd.Parameters.Add("@I_DELETEACCESS", FbDbType.Boolean).Value = deleteAccess;
                 cmd.Parameters.Add("@I_UPLOADACCESS", FbDbType.Boolean).Value = uploadAccess;
                 cmd.Parameters.Add("@I_DOWNLOADACCESS", FbDbType.Boolean).Value = downloadAccess;
+                cmd.Parameters.Add("@I_USERFORUMACCESS", FbDbType.Boolean).Value = userForumAccess;
                 cmd.Parameters.Add("@I_SORTORDER", FbDbType.Integer).Value = sortOrder;
-
+                cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
+                cmd.Parameters.Add("@I_ISUSERMASK", FbDbType.Boolean).Value = isUserMask;
+                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -1333,7 +1328,6 @@ namespace VZF.Data.Firebird
         /// <param name="boardID">BoardID</param>
         /// <param name="Guests"></param>
         /// <returns>Returns a DataTable of active users</returns>
-        ///         
         public static DataTable active_list(
             string connectionString,
             object boardID,
@@ -1346,7 +1340,7 @@ namespace VZF.Data.Firebird
             {
                 Guests = 0;
             }
-            using (FbCommand cmd = FbDbAccess.GetCommand("active_list"))
+            using (var cmd = FbDbAccess.GetCommand("active_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1390,7 +1384,7 @@ namespace VZF.Data.Firebird
             int activeTime,
             object styledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("active_list_user"))
+            using (var cmd = FbDbAccess.GetCommand("active_list_user"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1413,7 +1407,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable of all ative users in a forum</returns>
         public static DataTable active_listforum(string connectionString, object forumID, object styledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("active_listforum"))
+            using (var cmd = FbDbAccess.GetCommand("active_listforum"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
@@ -1429,7 +1423,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable of all users that are in a topic</returns>
         public static DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("active_listtopic"))
+            using (var cmd = FbDbAccess.GetCommand("active_listtopic"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1448,7 +1442,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataRow of activity stata</returns>
         public static DataRow active_stats(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("active_stats"))
+            using (var cmd = FbDbAccess.GetCommand("active_stats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1480,7 +1474,7 @@ namespace VZF.Data.Firebird
             [CanBeNull] object pageIndex,
             [CanBeNull] object pageSize)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("attachment_list"))
+            using (var cmd = FbDbAccess.GetCommand("attachment_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1510,7 +1504,7 @@ namespace VZF.Data.Firebird
             object contentType,
             System.IO.Stream stream)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("attachment_save"))
+            using (var cmd = FbDbAccess.GetCommand("attachment_save"))
             {
                 byte[] fileData = null;
                 if (stream != null)
@@ -1543,7 +1537,7 @@ namespace VZF.Data.Firebird
             //If the files are actually saved in the Hard Drive
             if (!UseFileTable)
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("attachment_list"))
+                using (var cmd = FbDbAccess.GetCommand("attachment_list"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1578,7 +1572,7 @@ namespace VZF.Data.Firebird
                     }
                 }
             }
-            using (FbCommand cmd = FbDbAccess.GetCommand("attachment_delete"))
+            using (var cmd = FbDbAccess.GetCommand("attachment_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1596,7 +1590,7 @@ namespace VZF.Data.Firebird
         /// <param name="attachmentID">ID of attachemnt to download</param>
         public static void attachment_download(string connectionString, object attachmentID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("attachment_download"))
+            using (var cmd = FbDbAccess.GetCommand("attachment_download"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1623,7 +1617,7 @@ namespace VZF.Data.Firebird
             [CanBeNull] object pageIndex,
             [CanBeNull] object pageSize)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bannedip_list"))
+            using (var cmd = FbDbAccess.GetCommand("bannedip_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
@@ -1644,7 +1638,7 @@ namespace VZF.Data.Firebird
         public static void bannedip_save(
             string connectionString, object ID, object boardID, object Mask, string reason, int userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bannedip_save"))
+            using (var cmd = FbDbAccess.GetCommand("bannedip_save"))
             {
                 //Regex for ip
                 //  \b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b
@@ -1667,7 +1661,7 @@ namespace VZF.Data.Firebird
         /// <param name="ID">ID of banned ip to delete</param>
         public static void bannedip_delete(string connectionString, object ID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bannedip_delete"))
+            using (var cmd = FbDbAccess.GetCommand("bannedip_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1701,7 +1695,7 @@ namespace VZF.Data.Firebird
                 (Platform.AllocatedMemory / 1024 / 1024).ToString(),
                 " Mb.");
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_list"))
+            using (var cmd = FbDbAccess.GetCommand("board_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1720,7 +1714,7 @@ namespace VZF.Data.Firebird
         public static DataRow board_poststats(
             string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_poststats"))
+            using (var cmd = FbDbAccess.GetCommand("board_poststats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1740,7 +1734,7 @@ namespace VZF.Data.Firebird
             }
 
             // vzrus - this happens at a new install only when we don't have posts or when they are not visible to a user 
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_poststats"))
+            using (var cmd = FbDbAccess.GetCommand("board_poststats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1769,7 +1763,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataRow board_userstats(string connectionString, int? boardId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_userstats"))
+            using (var cmd = FbDbAccess.GetCommand("board_userstats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
@@ -1794,7 +1788,7 @@ namespace VZF.Data.Firebird
         /// <param name="boardID">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
         public static void board_resync(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_resync"))
+            using (var cmd = FbDbAccess.GetCommand("board_resync"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1815,7 +1809,7 @@ namespace VZF.Data.Firebird
 
         public static DataRow board_stats(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_stats"))
+            using (var cmd = FbDbAccess.GetCommand("board_stats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1839,7 +1833,7 @@ namespace VZF.Data.Firebird
             object name,
             object allowThreaded)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BOARD_SAVE"))
+            using (var cmd = FbDbAccess.GetCommand("BOARD_SAVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1875,7 +1869,7 @@ namespace VZF.Data.Firebird
             [NotNull] object rolePrefix,
             [NotNull] object isHostUser)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BOARD_CREATE"))
+            using (var cmd = FbDbAccess.GetCommand("BOARD_CREATE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1902,7 +1896,7 @@ namespace VZF.Data.Firebird
         /// <param name="boardID">ID of board to delete</param>
         public static void board_delete(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("board_delete"))
+            using (var cmd = FbDbAccess.GetCommand("board_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1917,18 +1911,24 @@ namespace VZF.Data.Firebird
         #region yaf_Category
 
         /// <summary>
-        /// Deletes a category
+        /// Deletes a category.
         /// </summary>
-        /// <param name="CategoryID">ID of category to delete</param>
-        /// <returns>Bool value indicationg if category was deleted</returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="CategoryID">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/> value indicationg if category was deleted .
+        /// </returns>
         public static bool category_delete(string connectionString, object CategoryID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("category_delete"))
+            using (var cmd = FbDbAccess.GetCommand("category_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                cmd.Parameters[0].Value = CategoryID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = CategoryID;
 
                 return (int)FbDbAccess.ExecuteScalar(cmd, connectionString) != 0;
             }
@@ -1942,14 +1942,43 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable with a list of forums in a category</returns>
         public static DataTable category_list(string connectionString, object boardID, object categoryID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("category_list"))
+            using (var cmd = FbDbAccess.GetCommand("category_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
 
-                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                cmd.Parameters[1].Value = categoryID;
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// The category_getadjacentforum.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="isAfter">
+        /// The is after.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable category_getadjacentforum(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID, object userId, bool isAfter)
+        {
+            using (var cmd = FbDbAccess.GetCommand("category_getadjacentforum"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
+                cmd.Parameters.Add(new FbParameter("@I_PAGEUSERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_ISAFTER", FbDbType.Boolean)).Value = isAfter;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
@@ -1958,27 +1987,32 @@ namespace VZF.Data.Firebird
         /// <summary>
         /// Gets a list of forum categories
         /// </summary>
-        /// <param name="boardID"></param>
-        /// <param name="userID"></param>
-        /// <param name="categoryID"></param>
-        /// <returns></returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable category_listread(
-            string connectionString, object boardID, object userID, object categoryID)
+            string connectionString, object boardId, object userId, object categoryId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("category_listread"))
+            using (var cmd = FbDbAccess.GetCommand("category_listread"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
-
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[1].Value = userID;
-
-
-                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                cmd.Parameters[2].Value = categoryID;
-
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryId;
+               
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -1991,7 +2025,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable category_simplelist(string connectionString, int startID, int limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("category_simplelist"))
+            using (var cmd = FbDbAccess.GetCommand("category_simplelist"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2005,19 +2039,32 @@ namespace VZF.Data.Firebird
         /// <summary>
         /// Saves changes to a category
         /// </summary>
-        /// <param name="boardID">BoardID</param>
-        /// <param name="CategoryID">CategoryID so save changes to</param>
-        /// <param name="Name">Name of the category</param>
-        /// <param name="SortOrder">Sort Order</param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="categoryImage">
+        /// The category image.
+        /// </param>
+        /// <param name="sortOrder">
+        /// The sort order.
+        /// </param>
         public static void category_save(
             string connectionString,
-            object boardID,
+            object boardId,
             object categoryId,
             object name,
             object categoryImage,
             object sortOrder)
         {
-
             int sortOrderChecked = 0;
             bool result = Int32.TryParse(sortOrder.ToString(), out sortOrderChecked);
             if (result)
@@ -2027,11 +2074,11 @@ namespace VZF.Data.Firebird
                     sortOrderChecked = 0;
                 }
             }
-            using (FbCommand cmd = FbDbAccess.GetCommand("category_save"))
+            using (var cmd = FbDbAccess.GetCommand("category_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryId;
                 cmd.Parameters.Add(new FbParameter("@I_NAME", FbDbType.VarChar)).Value = name;
                 cmd.Parameters.Add(new FbParameter("@I_SORTORDER", FbDbType.SmallInt)).Value = sortOrderChecked;
@@ -2053,7 +2100,7 @@ namespace VZF.Data.Firebird
         /// <param name="Email">email of user</param>
         public static void checkemail_save(string connectionString, object userID, object hash, object email)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("checkemail_save"))
+            using (var cmd = FbDbAccess.GetCommand("checkemail_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2074,7 +2121,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable with user information</returns>
         public static DataTable checkemail_update(string connectionString, object hash)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("checkemail_update"))
+            using (var cmd = FbDbAccess.GetCommand("checkemail_update"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2091,7 +2138,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable with check email information</returns>
         public static DataTable checkemail_list(string connectionString, object email)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("checkemail_list"))
+            using (var cmd = FbDbAccess.GetCommand("checkemail_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2111,7 +2158,7 @@ namespace VZF.Data.Firebird
         /// <param name="choiceID">Choice of the vote</param>
         public static void choice_vote(string connectionString, object choiceID, object userID, object remoteIP)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("choice_vote"))
+            using (var cmd = FbDbAccess.GetCommand("choice_vote"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2139,7 +2186,7 @@ namespace VZF.Data.Firebird
             try
             {
                 if (userID == null) userID = DBNull.Value;
-                using (FbCommand cmd = FbDbAccess.GetCommand("eventlog_create"))
+                using (var cmd = FbDbAccess.GetCommand("eventlog_create"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2192,7 +2239,7 @@ namespace VZF.Data.Firebird
         public static void eventlog_delete(
             string connectionString, object eventLogID, object boardID, object pageUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("eventlog_delete"))
+            using (var cmd = FbDbAccess.GetCommand("eventlog_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2241,7 +2288,7 @@ namespace VZF.Data.Firebird
             [NotNull] object toDate,
             [NotNull] object eventIDs)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("eventlog_list"))
+            using (var cmd = FbDbAccess.GetCommand("eventlog_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
@@ -2368,7 +2415,7 @@ namespace VZF.Data.Firebird
         {
             try
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("extension_delete"))
+                using (var cmd = FbDbAccess.GetCommand("extension_delete"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2387,7 +2434,7 @@ namespace VZF.Data.Firebird
         // Get Extension record by extensionId
         public static DataTable extension_edit(string connectionString, object extensionId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("extension_edit"))
+            using (var cmd = FbDbAccess.GetCommand("extension_edit"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2402,7 +2449,7 @@ namespace VZF.Data.Firebird
         // Used to validate a file before uploading
         public static DataTable extension_list(string connectionString, object boardID, object extension)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("extension_list"))
+            using (var cmd = FbDbAccess.GetCommand("extension_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2420,7 +2467,7 @@ namespace VZF.Data.Firebird
         // Returns an extension list for a given Board
         public static DataTable extension_list(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("extension_list"))
+            using (var cmd = FbDbAccess.GetCommand("extension_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2442,7 +2489,7 @@ namespace VZF.Data.Firebird
         {
             try
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("extension_save"))
+                using (var cmd = FbDbAccess.GetCommand("extension_save"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2475,7 +2522,7 @@ namespace VZF.Data.Firebird
         /// <param name="choiceID">Choice of the vote</param>
         public static DataTable pollvote_check(string connectionString, object pollid, object userid, object remoteip)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pollvote_check"))
+            using (var cmd = FbDbAccess.GetCommand("pollvote_check"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2502,7 +2549,7 @@ namespace VZF.Data.Firebird
         public static DataTable pollgroup_votecheck(
             string connectionString, object pollGroupId, object userId, object remoteIp)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pollgroup_votecheck"))
+            using (var cmd = FbDbAccess.GetCommand("pollgroup_votecheck"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_POLLGROUPID", FbDbType.Integer).Value = pollGroupId;
@@ -2547,9 +2594,12 @@ namespace VZF.Data.Firebird
                     newRow = row;
 
                     int currentIndent = (int)row["Level"];
-                    string sIndent = "";
+                    string sIndent = string.Empty;
 
-                    for (int j = 0; j < currentIndent; j++) sIndent += "--";
+                    for (int j = 0; j < currentIndent; j++)
+                    {
+                        sIndent += "--";
+                    }
                     if (currentIndent == 1 && !forumRow)
                     {
                         newRow["ForumID"] = currentIndent;
@@ -2563,19 +2613,41 @@ namespace VZF.Data.Firebird
                         forumRow = false;
                     }
 
-
                     // import the row into the destination
-
-
-
-
                     sorted.Rows.Add(newRow);
                 }
-                return sorted;
 
+                return sorted;
             }
         }
 
+        /// <summary>
+        /// The forum_ns_getchildren.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardid">
+        /// The boardid.
+        /// </param>
+        /// <param name="categoryid">
+        /// The categoryid.
+        /// </param>
+        /// <param name="forumid">
+        /// The forumid.
+        /// </param>
+        /// <param name="notincluded">
+        /// The notincluded.
+        /// </param>
+        /// <param name="immediateonly">
+        /// The immediateonly.
+        /// </param>
+        /// <param name="indentchars">
+        /// The indentchars.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_ns_getchildren(
             string connectionString,
             int? boardid,
@@ -2599,6 +2671,36 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The forum_ns_getchildren_activeuser.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardid">
+        /// The boardid.
+        /// </param>
+        /// <param name="categoryid">
+        /// The categoryid.
+        /// </param>
+        /// <param name="forumid">
+        /// The forumid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="notincluded">
+        /// The notincluded.
+        /// </param>
+        /// <param name="immediateonly">
+        /// The immediateonly.
+        /// </param>
+        /// <param name="indentchars">
+        /// The indentchars.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_ns_getchildren_activeuser(
             string connectionString,
             int? boardid,
@@ -2630,9 +2732,12 @@ namespace VZF.Data.Firebird
                     newRow = row;
 
                     int currentIndent = (int)row["Level"];
-                    string sIndent = "";
+                    string sIndent = string.Empty;
 
-                    for (int j = 0; j < currentIndent; j++) sIndent += "--";
+                    for (int j = 0; j < currentIndent; j++)
+                    {
+                        sIndent += "--";
+                    }
                     if (currentIndent == 1 && !forumRow)
                     {
                         newRow["ForumID"] = currentIndent;
@@ -2646,16 +2751,11 @@ namespace VZF.Data.Firebird
                         forumRow = false;
                     }
 
-
                     // import the row into the destination
-
-
-
-
                     sorted.Rows.Add(newRow);
                 }
-                return sorted;
 
+                return sorted;
             }
         }
 
@@ -2667,7 +2767,7 @@ namespace VZF.Data.Firebird
         /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
         public static DataTable forum_categoryaccess_activeuser(string connectionString, object boardID, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_cataccess_activeuser"))
+            using (var cmd = FbDbAccess.GetCommand("forum_cataccess_activeuser"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2679,13 +2779,14 @@ namespace VZF.Data.Firebird
         }
 
         //ABOT NEW 16.04.04
+
         /// <summary>
         /// Deletes attachments out of a entire forum
         /// </summary>
         /// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
         private static void forum_deleteAttachments(string connectionString, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listtopics"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listtopics"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2713,26 +2814,70 @@ namespace VZF.Data.Firebird
         /// <returns>bool to indicate that forum has been deleted</returns>
         public static bool forum_delete(string connectionString, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listSubForums"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listSubForums"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-                cmd.Parameters[0].Value = forumID;
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
 
-                if (!(FbDbAccess.ExecuteScalar(cmd, connectionString) is DBNull)) return false;
+                if (!(FbDbAccess.ExecuteScalar(cmd, connectionString) is DBNull))
+                {
+                    return false;
+                }
 
                 forum_deleteAttachments(connectionString, forumID);
-                using (var cmd_new = FbDbAccess.GetCommand("forum_delete"))
+                using (var cmdNew = FbDbAccess.GetCommand("forum_delete"))
                 {
-                    cmd_new.CommandType = CommandType.StoredProcedure;
-                    cmd_new.CommandTimeout = 99999;
-                    cmd_new.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-                    cmd_new.Parameters[0].Value = forumID;
+                    cmdNew.CommandType = CommandType.StoredProcedure;
+                    cmdNew.CommandTimeout = 99999;
+                    cmdNew.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
 
-                    FbDbAccess.ExecuteNonQuery(cmd_new, connectionString);
+                    FbDbAccess.ExecuteNonQuery(cmdNew, connectionString);
                 }
+
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// The forum_tags.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="forumId">
+        /// The forum id.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable forum_tags(string connectionString, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
+        {
+            using (var cmd = FbDbAccess.GetCommand("forum_tags"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_boardid", FbDbType.Integer).Value = boardId;
+                cmd.Parameters.Add("i_pageuserid", FbDbType.Integer).Value = pageUserId;
+                cmd.Parameters.Add("i_forumid", FbDbType.Integer).Value = forumId;
+                cmd.Parameters.Add("i_pageindex", FbDbType.Integer).Value = pageIndex;
+                cmd.Parameters.Add("i_pagesize", FbDbType.Integer).Value = pageSize;
+                cmd.Parameters.Add("i_searchtext", FbDbType.VarChar).Value = searchText;
+                cmd.Parameters.Add("i_beginswith", FbDbType.Boolean).Value = beginsWith;
+
+                return FbDbAccess.GetData(cmd, true, connectionString);
             }
         }
 
@@ -2743,7 +2888,7 @@ namespace VZF.Data.Firebird
         /// <returns>bool to indicate that forum has been deleted</returns>
         public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listSubForums"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listSubForums"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2773,7 +2918,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable of moderated forums</returns>
         public static DataTable forum_listallMyModerated(string connectionString, object boardID, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listallmymoderated"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listallmymoderated"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -2793,20 +2938,12 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable with list of topics from a forum</returns>
         public static DataTable forum_list(string connectionString, object boardID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_list"))
+            using (var cmd = FbDbAccess.GetCommand("forum_list"))
             {
-                if (forumID == null)
-                {
-                    forumID = DBNull.Value;
-                }
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
-
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-                cmd.Parameters[1].Value = forumID;
-
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID ?? DBNull.Value; 
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
@@ -2833,23 +2970,34 @@ namespace VZF.Data.Firebird
         public static DataTable forum_listall(
             string connectionString, object boardID, object userID, object startAt, bool returnAll)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listall"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listall"))
             {
-                if (startAt == null)
-                {
-                    startAt = 0;
-                }
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
-                cmd.Parameters.Add(new FbParameter("@I_ROOT", FbDbType.Integer)).Value = startAt;
+                cmd.Parameters.Add(new FbParameter("@I_ROOT", FbDbType.Integer)).Value = startAt ?? 0;
                 cmd.Parameters.Add(new FbParameter("@I_RETURNALL", FbDbType.Integer)).Value = returnAll;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The forum list all.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
         public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
         {
             return
@@ -2858,6 +3006,21 @@ namespace VZF.Data.Firebird
                     .Select(r => new TypedForumListAll(r));
         }
 
+        /// <summary>
+        /// The bb code list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="bbcodeID">
+        /// The bbcode id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
         [NotNull]
         public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
         {
@@ -2888,6 +3051,7 @@ namespace VZF.Data.Firebird
 
                 // replace temp forum ids with these...
                 tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
+
                 // add them...
                 forumIds.AddRange(tempForumIds);
             }
@@ -2904,7 +3068,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable forum_simplelist(string connectionString, int StartID, int Limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_simplelist"))
+            using (var cmd = FbDbAccess.GetCommand("forum_simplelist"))
             {
                 if (StartID <= 0)
                 {
@@ -2933,22 +3097,16 @@ namespace VZF.Data.Firebird
         public static DataTable forum_listall_fromCat(
             string connectionString, object boardID, object categoryID, bool emptyFirstRow)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_listall_fromCat"))
+            using (var cmd = FbDbAccess.GetCommand("forum_listall_fromCat"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
-
-                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                cmd.Parameters[1].Value = categoryID;
-
-
-                int intCategoryID = Convert.ToInt32(categoryID.ToString());
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
 
                 using (DataTable dt = FbDbAccess.GetData(cmd, connectionString))
                 {
-                    return forum_sort_list(connectionString, dt, 0, intCategoryID, 0, null, emptyFirstRow);
+                    return forum_sort_list(connectionString, dt, 0, Convert.ToInt32(categoryID.ToString()), 0, null, emptyFirstRow);
                 }
             }
         }
@@ -2984,13 +3142,32 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
-        /// Lists read topics
+        /// The forum_listread.
         /// </summary>
-        /// <param name="boardID">BoardID</param>
-        /// <param name="UserID">UserID</param>
-        /// <param name="CategoryID">CategoryID</param>
-        /// <param name="parentID">ParentID</param>
-        /// <returns>DataTable with list</returns> 
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="parentID">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_listread(
             string connectionString,
             [NotNull] object boardID,
@@ -3000,41 +3177,25 @@ namespace VZF.Data.Firebird
             [NotNull] object useStyledNicks,
             [NotNull] object findLastRead)
         {
-
-            if (categoryID == null)
-            {
-                categoryID = DBNull.Value;
-            }
-            if (parentID == null)
-            {
-                parentID = DBNull.Value;
-            }
-            /* using (FbCommand cmd0 = FbDbAccess.GetCommand("EXECUTE BLOCK as BEGIN IF (NOT EXISTS( SELECT 1 FROM  RDB$RELATIONS a WHERE a.RDB$RELATION_NAME='objQual_TMP_FLR')) THEN EXECUTE STATEMENT 'CREATE GLOBAL TEMPORARY TABLE objQual_TMP_FLR(CATEGORYID INTEGER, CATEGORY VARCHAR(128),FORUMID INTEGER, FORUM VARCHAR(128), DESCRIPTION VARCHAR(128),TOPICS INTEGER, POSTS INTEGER, SUBFORUMS INTEGER, FLAGS INTEGER, VIEWING INTEGER,REMOTEURL VARCHAR(255), READACCESS INTEGER, LASTTOPICID INTEGER, LASTPOSTED TIMESTAMP) ON COMMIT DELETE ROWS';END",true))
-             {
-               
-                FbDbAccess.ExecuteNonQuery(cmd0, true);
-                 //return dt1;
-             }*/
             if (!Config.LargeForumTree)
             {
-                using (FbCommand cmd1 = FbDbAccess.GetCommand("FORUM_LISTREAD"))
+                using (var cmd1 = FbDbAccess.GetCommand("FORUM_LISTREAD"))
                 {
                     cmd1.CommandType = CommandType.StoredProcedure;
 
                     cmd1.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardID;
                     cmd1.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
-                    cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID;
-                    cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID;
+                    cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID ?? DBNull.Value;
+                    cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID ?? DBNull.Value;
                     cmd1.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
-                    cmd1.Parameters.Add(new FbParameter("@I_FINDLASTREAD", FbDbType.Boolean)).Value = findLastRead;
-                    cmd1.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+                    cmd1.Parameters.Add("@I_FINDLASTREAD", FbDbType.Boolean).Value = findLastRead;
+                    cmd1.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                     return FbDbAccess.GetData(cmd1, false, connectionString);
-                    //return dt1;
                 }
             }
 
-            using (FbCommand cmd1 = FbDbAccess.GetCommand("FORUM_NS_LISTREAD"))
+            using (var cmd1 = FbDbAccess.GetCommand("FORUM_NS_LISTREAD"))
             {
                 cmd1.CommandType = CommandType.StoredProcedure;
 
@@ -3043,52 +3204,11 @@ namespace VZF.Data.Firebird
                 cmd1.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryID;
                 cmd1.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentID;
                 cmd1.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
-                cmd1.Parameters.Add(new FbParameter("@I_FINDLASTREAD", FbDbType.Boolean)).Value = findLastRead;
-                cmd1.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+                cmd1.Parameters.Add("@I_FINDLASTREAD", FbDbType.Boolean).Value = findLastRead;
+                cmd1.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 return FbDbAccess.GetData(cmd1, false, connectionString);
-                //return dt1;
             }
-            //Add extra columns to data table
-            /* int cntr = 0;
-             int firstColumnIndex = dt1.Columns.Count;
-             int dt1rc = dt1.Rows.Count;
-             if (dt1rc != 0)
-             {
-                 foreach (DataRow dr1 in dt1.Rows)
-                 {
-
-                     using (FbCommand cmd3 = FbDbAccess.GetCommand("FORUM_LISTREAD_HELPER"))
-                     {
-                         cmd3.CommandType = CommandType.StoredProcedure;
-
-                         cmd3.Parameters.Add("@I_FORUMID", FbDbType.Integer).Value = dr1["ForumID"];
-
-                         if (cntr != dt1rc - 1 || dt1rc == 0)
-                             dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, true, firstColumnIndex, cntr);
-                         else
-                             dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd3, dt1, false, false, firstColumnIndex, cntr);
-                     }
-
-
-                     cntr++;
-                 }
-             }
-             else
-             {
-                 //We simply get rows' structure
-                 using (FbCommand cmd2 = FbDbAccess.GetCommand("forum_listread_helper"))
-                 {
-                     cmd2.CommandType = CommandType.StoredProcedure;
-
-                     cmd2.Parameters.Add("i_forumid", FbDbType.Integer).Value = 0;
-
-                     dt2 = FbDbAccess.AddValuesToDataTableFromReader(cmd2, dt1, false, true, firstColumnIndex, 0);
-                 }
-             }
-
-             return dt2;*/
-
         }
 
         /// <summary>
@@ -3108,7 +3228,7 @@ namespace VZF.Data.Firebird
                             FbDbAccess.GetObjectName("category_list"), connMan.OpenDBConnection(connectionString)))
                     {
                         using (
-                            FbTransaction trans = da.SelectCommand.Connection.BeginTransaction(
+                            var trans = da.SelectCommand.Connection.BeginTransaction(
                                 FbDbAccess.IsolationLevel))
                         {
                             da.SelectCommand.Transaction = trans;
@@ -3129,6 +3249,7 @@ namespace VZF.Data.Firebird
                             da.SelectCommand.Parameters[1].Value = userID;
 
                             da.Fill(ds, FbDbAccess.GetObjectName("ForumUnsorted"));
+
                             DataTable dtForumListSorted = ds.Tables[FbDbAccess.GetObjectName("ForumUnsorted")].Clone();
                             dtForumListSorted.TableName = FbDbAccess.GetObjectName("Forum");
                             ds.Tables.Add(dtForumListSorted);
@@ -3140,10 +3261,12 @@ namespace VZF.Data.Firebird
                                 0,
                                 0);
                             ds.Tables.Remove(FbDbAccess.GetObjectName("ForumUnsorted"));
+
                             // vzrus: Remove here all forums with no reports. Would be better to do it in query...
                             // Array to write categories numbers
                             int[] categories = new int[ds.Tables[FbDbAccess.GetObjectName("Forum")].Rows.Count];
                             int cntr = 0;
+
                             //We should make it before too as the colection was changed
                             ds.Tables[FbDbAccess.GetObjectName("Forum")].AcceptChanges();
                             foreach (DataRow dr in ds.Tables[FbDbAccess.GetObjectName("Forum")].Rows)
@@ -3157,6 +3280,7 @@ namespace VZF.Data.Firebird
                                 }
                                 cntr++;
                             }
+
                             ds.Tables[FbDbAccess.GetObjectName("Forum")].AcceptChanges();
 
                             foreach (DataRow dr in ds.Tables[FbDbAccess.GetObjectName("Category")].Rows)
@@ -3171,8 +3295,13 @@ namespace VZF.Data.Firebird
                                         deleteMe = false;
                                     }
                                 }
-                                if (deleteMe) dr.Delete();
+
+                                if (deleteMe)
+                                {
+                                    dr.Delete();
+                                }
                             }
+
                             ds.Tables[FbDbAccess.GetObjectName("Category")].AcceptChanges();
 
                             ds.Relations.Add(
@@ -3189,7 +3318,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable forum_moderators(string connectionString, object styledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_moderators"))
+            using (var cmd = FbDbAccess.GetCommand("forum_moderators"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Integer)).Value = styledNicks;
@@ -3224,12 +3353,13 @@ namespace VZF.Data.Firebird
         /// <param name="forumID">If null, all forums in board are updated</param>
         public static void forum_resync(string connectionString, object boardID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_resync"))
+            using (var cmd = FbDbAccess.GetCommand("forum_resync"))
             {
                 if (forumID == null)
                 {
                     forumID = DBNull.Value;
                 }
+
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
@@ -3259,9 +3389,11 @@ namespace VZF.Data.Firebird
             [NotNull] object themeURL,
             [NotNull] object imageURL,
             [NotNull] object styles,
-            bool dummy)
+            [NotNull] bool dummy,
+            [NotNull] object userId,
+            [NotNull] bool isUserForum)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_save"))
+            using (var cmd = FbDbAccess.GetCommand("forum_save"))
             {
                 if (parentID == null)
                 {
@@ -3314,6 +3446,9 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_IMAGEURL", FbDbType.VarChar)).Value = imageURL;
                 cmd.Parameters.Add(new FbParameter("@I_STYLES", FbDbType.VarChar)).Value = styles;
                 cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
+                cmd.Parameters.Add("@I_ISUSERFORUM", FbDbType.Boolean).Value = isUserForum;
+                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 String resultop = FbDbAccess.ExecuteScalar(cmd, connectionString).ToString();
                 if (String.IsNullOrEmpty(resultop))
@@ -3337,7 +3472,7 @@ namespace VZF.Data.Firebird
         /// <returns>Integer value for a found dependency</returns>
         public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forum_save_parentschecker"))
+            using (var cmd = FbDbAccess.GetCommand("forum_save_parentschecker"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
@@ -3386,7 +3521,7 @@ namespace VZF.Data.Firebird
 
             if (forumidExclusions != null && forumidExclusions.Length > 0)
             {
-                string strExclusions = "";
+                string strExclusions = string.Empty;
                 bool bFirst = true;
 
                 foreach (int forumID in forumidExclusions)
@@ -3451,7 +3586,7 @@ namespace VZF.Data.Firebird
 
                 if ((int)row["ParentID"] == parentid)
                 {
-                    string sIndent = "";
+                    string sIndent = string.Empty;
                     int iIndent = Convert.ToInt32(currentLvl);
                     for (int j = 0; j < iIndent; j++) sIndent += "--";
                     row["Name"] = string.Format(" -{0} {1}", sIndent, row["Name"]);
@@ -3488,7 +3623,7 @@ namespace VZF.Data.Firebird
                         listDestination.Rows.Add(newRow);
                     }
 
-                    string sIndent = "";
+                    string sIndent = string.Empty;
 
                     for (int j = 0; j < currentIndent; j++) sIndent += "--";
 
@@ -3520,7 +3655,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable forumaccess_list(string connectionString, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_list"))
+            using (var cmd = FbDbAccess.GetCommand("forumaccess_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3534,7 +3669,7 @@ namespace VZF.Data.Firebird
         public static void forumaccess_save(
             string connectionString, object forumID, object groupID, object accessMaskID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_save"))
+            using (var cmd = FbDbAccess.GetCommand("forumaccess_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3548,7 +3683,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable forumaccess_group(string connectionString, object groupID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("forumaccess_group"))
+            using (var cmd = FbDbAccess.GetCommand("forumaccess_group"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3564,7 +3699,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable group_list(string connectionString, [NotNull] object boardID, [NotNull] object groupID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_list"))
+            using (var cmd = FbDbAccess.GetCommand("group_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3577,7 +3712,7 @@ namespace VZF.Data.Firebird
 
         public static void group_delete(string connectionString, object groupID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_delete"))
+            using (var cmd = FbDbAccess.GetCommand("group_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3589,7 +3724,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable group_member(string connectionString, object boardID, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_member"))
+            using (var cmd = FbDbAccess.GetCommand("group_member"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3618,9 +3753,11 @@ namespace VZF.Data.Firebird
             [NotNull] object usrSigBBCodes,
             [NotNull] object usrSigHTMLTags,
             [NotNull] object usrAlbums,
-            [NotNull] object usrAlbumImages)
+            [NotNull] object usrAlbumImages,
+            [CanBeNull] object userId,
+            [NotNull] object isUserGroup)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_save"))
+            using (var cmd = FbDbAccess.GetCommand("group_save"))
             {
                 if (accessMaskID == null)
                 {
@@ -3647,6 +3784,9 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_USRSIGSHTMLTAGS", FbDbType.VarChar)).Value = usrSigHTMLTags;
                 cmd.Parameters.Add(new FbParameter("@I_USRALBUMS", FbDbType.Integer)).Value = usrAlbums;
                 cmd.Parameters.Add(new FbParameter("@I_USRALBUMIMAGES", FbDbType.Integer)).Value = usrAlbumImages;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERGROUP", FbDbType.Boolean)).Value = isUserGroup;
+                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 return long.Parse(FbDbAccess.ExecuteScalar(cmd, connectionString).ToString());
             }
@@ -3658,7 +3798,7 @@ namespace VZF.Data.Firebird
 
         public static void mail_delete(string connectionString, object mailID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("mail_delete"))
+            using (var cmd = FbDbAccess.GetCommand("mail_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3678,7 +3818,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("MAIL_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("MAIL_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_PROCESSID", FbDbType.Integer)).Value = processId;
@@ -3698,7 +3838,7 @@ namespace VZF.Data.Firebird
             object bodyHtml,
             object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("mail_createwatch"))
+            using (var cmd = FbDbAccess.GetCommand("mail_createwatch"))
             {
                 if (fromName == null)
                 {
@@ -3735,7 +3875,7 @@ namespace VZF.Data.Firebird
             [NotNull] object bodyHtml)
         {
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("mail_create"))
+            using (var cmd = FbDbAccess.GetCommand("mail_create"))
             {
                 //if (fromName == null) { fromName = DBNull.Value; }
                 // if (toName == null) { toName = DBNull.Value; }
@@ -3782,7 +3922,7 @@ namespace VZF.Data.Firebird
             bool showThanks,
             int messagePosition)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("POST_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("POST_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3814,7 +3954,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable post_list_reverse10(string connectionString, object topicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("post_list_reverse10"))
+            using (var cmd = FbDbAccess.GetCommand("post_list_reverse10"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3835,7 +3975,7 @@ namespace VZF.Data.Firebird
         public static DataTable post_alluser(
             string connectionString, object boardID, object userID, object pageUserID, object topCount)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("post_alluser"))
+            using (var cmd = FbDbAccess.GetCommand("post_alluser"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3863,7 +4003,7 @@ namespace VZF.Data.Firebird
             list.Columns.Add("UserName", typeof(string));
             list.Columns.Add("Signature", typeof(string));
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_reply_list"))
+            using (var cmd = FbDbAccess.GetCommand("message_reply_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3893,7 +4033,7 @@ namespace VZF.Data.Firebird
         private static void message_getRepliesList_populate(
             string connectionString, DataTable listsource, DataTable list, int messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_reply_list"))
+            using (var cmd = FbDbAccess.GetCommand("message_reply_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGEID", FbDbType.Integer));
@@ -3925,7 +4065,7 @@ namespace VZF.Data.Firebird
         public static long topic_create_by_message(
             string connectionString, object messageId, object forumId, object newTopicSubj)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_create_by_message"))
+            using (var cmd = FbDbAccess.GetCommand("topic_create_by_message"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3942,7 +4082,7 @@ namespace VZF.Data.Firebird
         [Obsolete("Use MessageList(int messageId) instead")]
         public static DataTable message_list(string connectionString, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_list"))
+            using (var cmd = FbDbAccess.GetCommand("message_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -3962,7 +4102,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_list"))
+            using (var cmd = FbDbAccess.GetCommand("message_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -4007,7 +4147,7 @@ namespace VZF.Data.Firebird
         // <summary> Retrieve all reported messages with the correct forumID argument. </summary>
         public static DataTable message_listreported(string connectionString, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_listreported"))
+            using (var cmd = FbDbAccess.GetCommand("message_listreported"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4030,7 +4170,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable message_listreporters(string connectionString, int messageID, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_LISTREPORTERS"))
+            using (var cmd = FbDbAccess.GetCommand("MESSAGE_LISTREPORTERS"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGEID", FbDbType.Integer)).Value = messageID;
@@ -4047,7 +4187,7 @@ namespace VZF.Data.Firebird
             [NotNull] object reportedDateTime,
             [NotNull] object reportText)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_report"))
+            using (var cmd = FbDbAccess.GetCommand("message_report"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4064,7 +4204,7 @@ namespace VZF.Data.Firebird
         // <summary> Copy current Message text over reported Message text. </summary>
         public static void message_reportcopyover(string connectionString, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_reportcopyover"))
+            using (var cmd = FbDbAccess.GetCommand("message_reportcopyover"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4078,7 +4218,7 @@ namespace VZF.Data.Firebird
         public static void message_reportresolve(
             string connectionString, [NotNull] object messageFlag, [NotNull] object messageID, [NotNull] object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_reportresolve"))
+            using (var cmd = FbDbAccess.GetCommand("message_reportresolve"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4193,7 +4333,7 @@ namespace VZF.Data.Firebird
             // Ederon : erase message for good
             if (eraseMessages)
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("message_delete"))
+                using (var cmd = FbDbAccess.GetCommand("message_delete"))
                 {
                     int eraseMessagesInt = 0;
                     if (eraseMessages == true)
@@ -4221,7 +4361,7 @@ namespace VZF.Data.Firebird
             {
                 //Delete Message
                 // undelete function added
-                using (FbCommand cmd = FbDbAccess.GetCommand("message_deleteundelete"))
+                using (var cmd = FbDbAccess.GetCommand("message_deleteundelete"))
                 {
                     int isModeratorChangedInt = 0;
                     if (isModeratorChanged == true)
@@ -4256,7 +4396,7 @@ namespace VZF.Data.Firebird
         // <summary> Set flag on message to approved and store in DB </summary>
         public static void message_approve(string connectionString, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_approve"))
+            using (var cmd = FbDbAccess.GetCommand("message_approve"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4274,7 +4414,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable message_simplelist(string connectionString, int StartID, int Limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_simplelist"))
+            using (var cmd = FbDbAccess.GetCommand("message_simplelist"))
             {
                 if (StartID <= 0)
                 {
@@ -4313,7 +4453,7 @@ namespace VZF.Data.Firebird
             [NotNull] object editedBy,
             string tags)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_update"))
+            using (var cmd = FbDbAccess.GetCommand("message_update"))
             {
                 if (overrideApproval == null)
                 {
@@ -4356,7 +4496,7 @@ namespace VZF.Data.Firebird
             [NotNull] object flags,
             ref long messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_save"))
+            using (var cmd = FbDbAccess.GetCommand("message_save"))
             {
                 if (userName == null)
                 {
@@ -4398,7 +4538,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable message_unapproved(string connectionString, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_unapproved"))
+            using (var cmd = FbDbAccess.GetCommand("message_unapproved"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4416,7 +4556,7 @@ namespace VZF.Data.Firebird
             [NotNull] object showDeleted,
             [NotNull] object authorUserID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_findunread"))
+            using (var cmd = FbDbAccess.GetCommand("message_findunread"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4434,7 +4574,7 @@ namespace VZF.Data.Firebird
         public static void message_move(
             string connectionString, [NotNull] object messageID, [NotNull] object moveToTopic, bool moveAll)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_move"))
+            using (var cmd = FbDbAccess.GetCommand("message_move"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4447,7 +4587,7 @@ namespace VZF.Data.Firebird
             // it's in charge of moving answers of moved post
             if (moveAll)
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("message_getReplies"))
+                using (var cmd = FbDbAccess.GetCommand("message_getReplies"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4469,7 +4609,7 @@ namespace VZF.Data.Firebird
             bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
             //Delete replies
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_getReplies"))
+            using (var cmd = FbDbAccess.GetCommand("message_getReplies"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4500,7 +4640,7 @@ namespace VZF.Data.Firebird
         //           otherwise returns false. </summary>
         public static bool message_isThankedByUser(string connectionString, object userID, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_isthankedbyuser"))
+            using (var cmd = FbDbAccess.GetCommand("message_isthankedbyuser"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 FbParameter paramOutput = new FbParameter();
@@ -4517,7 +4657,7 @@ namespace VZF.Data.Firebird
         //           has been thanked. </summary>
         public static int message_ThanksNumber(string connectionString, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_thanksnumber"))
+            using (var cmd = FbDbAccess.GetCommand("message_thanksnumber"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 FbParameter paramOutput = new FbParameter();
@@ -4533,7 +4673,7 @@ namespace VZF.Data.Firebird
         //           with the provided messageID. </summary>
         public static DataTable message_GetThanks(string connectionString, object messageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_GETTHANKS"))
+            using (var cmd = FbDbAccess.GetCommand("MESSAGE_GETTHANKS"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_MESSAGEID", FbDbType.Integer).Value = messageID;
@@ -4552,7 +4692,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable message_GetTextByIds(string connectionString, string messageIDs)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_gettextbyids"))
+            using (var cmd = FbDbAccess.GetCommand("message_gettextbyids"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("I_MESSAGEIDS", FbDbType.VarChar).Value = messageIDs;
@@ -4566,7 +4706,7 @@ namespace VZF.Data.Firebird
         [Obsolete("Use MessageGetAllThanks(string messageIdsSeparatedWithColon) instead")]
         public static DataTable message_GetAllThanks(string connectionString, object MessageIDs)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_getallthanks"))
+            using (var cmd = FbDbAccess.GetCommand("message_getallthanks"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("I_MESSAGEIDS", FbDbType.VarChar).Value = MessageIDs;
@@ -4586,7 +4726,7 @@ namespace VZF.Data.Firebird
         public static IEnumerable<TypedAllThanks> MessageGetAllThanks(
             string connectionString, string messageIdsSeparatedWithColon)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_getallthanks"))
+            using (var cmd = FbDbAccess.GetCommand("message_getallthanks"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("I_MESSAGEIDS", FbDbType.VarChar).Value = messageIdsSeparatedWithColon;
@@ -4598,7 +4738,7 @@ namespace VZF.Data.Firebird
         public static string message_AddThanks(
             string connectionString, object FromUserID, object MessageID, bool useDisplayName)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGE_ADDTHANKS"))
+            using (var cmd = FbDbAccess.GetCommand("MESSAGE_ADDTHANKS"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4644,7 +4784,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable messagehistory_list(string connectionString, int messageID, int daysToClean)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("MESSAGEHISTORY_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("MESSAGEHISTORY_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4664,7 +4804,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable message_secdata(string connectionString, int messageID, object pageUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("message_secdata"))
+            using (var cmd = FbDbAccess.GetCommand("message_secdata"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4707,7 +4847,7 @@ namespace VZF.Data.Firebird
         /// <param name="category">Cateogry of medals to list. Must be complemented with not-null boardID parameter.</param>
         public static DataTable medal_list(string connectionString, object boardID, object medalID, object category)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("medal_list"))
+            using (var cmd = FbDbAccess.GetCommand("medal_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4727,7 +4867,7 @@ namespace VZF.Data.Firebird
         /// <returns>List of users with their user id and usernames, who own this medal.</returns>
         public static DataTable medal_listusers(string connectionString, object medalID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("medal_listusers"))
+            using (var cmd = FbDbAccess.GetCommand("medal_listusers"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4756,7 +4896,7 @@ namespace VZF.Data.Firebird
         /// <param name="category">Cateogry of medals to delete. Must be complemented with not-null boardID parameter.</param>
         public static void medal_delete(string connectionString, object boardID, object medalID, object category)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("medal_delete"))
+            using (var cmd = FbDbAccess.GetCommand("medal_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4808,7 +4948,7 @@ namespace VZF.Data.Firebird
             [NotNull] object sortOrder,
             [NotNull] object flags)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("medal_save"))
+            using (var cmd = FbDbAccess.GetCommand("medal_save"))
             {
                 if (boardID == null)
                 {
@@ -4884,7 +5024,7 @@ namespace VZF.Data.Firebird
         /// <param name="move">Change of sort.</param>
         public static void medal_resort(string connectionString, object boardID, object medalID, int move)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("medal_resort"))
+            using (var cmd = FbDbAccess.GetCommand("medal_resort"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -4924,7 +5064,7 @@ namespace VZF.Data.Firebird
         public static DataTable group_medal_list(
             string connectionString, [NotNull] object groupID, [NotNull] object medalID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_medal_list"))
+            using (var cmd = FbDbAccess.GetCommand("group_medal_list"))
             {
                 if (groupID == null)
                 {
@@ -4973,7 +5113,7 @@ namespace VZF.Data.Firebird
                 }
             }
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_medal_save"))
+            using (var cmd = FbDbAccess.GetCommand("group_medal_save"))
             {
                 if (message == null)
                 {
@@ -5002,7 +5142,7 @@ namespace VZF.Data.Firebird
         /// <param name="medalID">ID of medal.</param>
         public static void user_medal_delete(string connectionString, object userID, object medalID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_medal_delete"))
+            using (var cmd = FbDbAccess.GetCommand("user_medal_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5022,7 +5162,7 @@ namespace VZF.Data.Firebird
         /// <param name="medalID">ID of medal to list.</param>
         public static DataTable user_medal_list(string connectionString, object userID, object medalID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_medal_list"))
+            using (var cmd = FbDbAccess.GetCommand("user_medal_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -5056,7 +5196,7 @@ namespace VZF.Data.Firebird
             object sortOrder,
             object dateAwarded)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_medal_save"))
+            using (var cmd = FbDbAccess.GetCommand("user_medal_save"))
             {
                 if (message == null)
                 {
@@ -5094,7 +5234,7 @@ namespace VZF.Data.Firebird
         /// <returns>List of medals, ribbon bar only first.</returns>
         public static DataTable user_listmedals(string connectionString, [NotNull] object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_listmedals"))
+            using (var cmd = FbDbAccess.GetCommand("user_listmedals"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5111,7 +5251,7 @@ namespace VZF.Data.Firebird
         public static DataTable nntpforum_list(
             string connectionString, object boardID, object minutes, object nntpForumID, object active)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_list"))
+            using (var cmd = FbDbAccess.GetCommand("nntpforum_list"))
             {
                 if (minutes == null)
                 {
@@ -5157,7 +5297,7 @@ namespace VZF.Data.Firebird
             [NotNull] object lastMessageNo,
             [NotNull] object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_update"))
+            using (var cmd = FbDbAccess.GetCommand("nntpforum_update"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5179,7 +5319,7 @@ namespace VZF.Data.Firebird
             [NotNull] object active,
             [NotNull] object datecutoff)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_save"))
+            using (var cmd = FbDbAccess.GetCommand("nntpforum_save"))
             {
                 if (nntpForumID == null)
                 {
@@ -5203,7 +5343,7 @@ namespace VZF.Data.Firebird
 
         public static void nntpforum_delete(string connectionString, object nntpForumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpforum_delete"))
+            using (var cmd = FbDbAccess.GetCommand("nntpforum_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_NNTPFORUMID", FbDbType.Integer));
@@ -5218,7 +5358,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable nntpserver_list(string connectionString, object boardID, object nntpServerID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpserver_list"))
+            using (var cmd = FbDbAccess.GetCommand("nntpserver_list"))
             {
                 if (boardID == null)
                 {
@@ -5248,7 +5388,7 @@ namespace VZF.Data.Firebird
             [NotNull] object userName,
             [NotNull] object userPass)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpserver_save"))
+            using (var cmd = FbDbAccess.GetCommand("nntpserver_save"))
             {
                 if (nntpServerID == null)
                 {
@@ -5279,7 +5419,7 @@ namespace VZF.Data.Firebird
 
         public static void nntpserver_delete(string connectionString, object nntpServerID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntpserver_delete"))
+            using (var cmd = FbDbAccess.GetCommand("nntpserver_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5295,7 +5435,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable nntptopic_list(string connectionString, object thread)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntptopic_list"))
+            using (var cmd = FbDbAccess.GetCommand("nntptopic_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -5336,7 +5476,7 @@ namespace VZF.Data.Firebird
              
             newbody = newbody.Replace("&", "^^^"); */
             //string newbody = body.ToString().Replace(@"&lt;br&gt;", "> ").Replace(@"&amp;lt;", "<").Replace(@"&lt;hr&gt;", "> ").Replace(@"&amp;quot;", @"""").Replace(@"&lt;", @"<").Replace(@"br&gt;", @"> ").Replace(@"&amp;gt;", @"> ").Replace(@"&gt;", "> ").Replace("&quot;", @"""").Replace("[-snip-]", "(SNIP)").Replace(@"@I_", "[dog]").Replace("_.", "");
-            using (FbCommand cmd = FbDbAccess.GetCommand("nntptopic_savemessage"))
+            using (var cmd = FbDbAccess.GetCommand("nntptopic_savemessage"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5372,7 +5512,7 @@ namespace VZF.Data.Firebird
         public static DataTable pmessage_list(
             string connectionString, object toUserID, object fromUserID, object userPMessageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("PMESSAGE_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("PMESSAGE_LIST"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -5410,7 +5550,7 @@ namespace VZF.Data.Firebird
         /// <param name="fromOutbox">If true, removes the message from the outbox.  Otherwise deletes the message completely.</param>
         public static void pmessage_delete(string connectionString, object userPMessageID, bool fromOutbox)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_delete"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5437,7 +5577,7 @@ namespace VZF.Data.Firebird
         /// <param name="pMessageID">The ID of the private message</param>
         public static void pmessage_archive(string connectionString, object userPMessageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_archive"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_archive"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -5458,7 +5598,7 @@ namespace VZF.Data.Firebird
             object Flags,
             object replyTo)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_save"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5476,7 +5616,7 @@ namespace VZF.Data.Firebird
 
         public static void pmessage_markread(string connectionString, object userPMessageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_markread"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_markread"))
             {
                 if (userPMessageID == null)
                 {
@@ -5493,7 +5633,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable pmessage_info(string connectionString)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_info"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_info"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 return FbDbAccess.GetData(cmd, connectionString);
@@ -5502,7 +5642,7 @@ namespace VZF.Data.Firebird
 
         public static void pmessage_prune(string connectionString, object daysRead, object daysUnread)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pmessage_prune"))
+            using (var cmd = FbDbAccess.GetCommand("pmessage_prune"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5528,7 +5668,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("pollgroup_stats"))
+            using (var cmd = FbDbAccess.GetCommand("pollgroup_stats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_POLLGROUPID", FbDbType.Integer)).Value = pollGroupId;
@@ -5561,7 +5701,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable poll_stats(string connectionString, object pollID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("poll_stats"))
+            using (var cmd = FbDbAccess.GetCommand("poll_stats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5878,7 +6018,7 @@ namespace VZF.Data.Firebird
             [NotNull] object questionPath,
             [NotNull] object questionMime)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("POLL_UPDATE"))
+            using (var cmd = FbDbAccess.GetCommand("POLL_UPDATE"))
             {
                 if (closes == null)
                 {
@@ -5911,7 +6051,7 @@ namespace VZF.Data.Firebird
             bool removeCompletely,
             bool removeEverywhere)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("poll_remove"))
+            using (var cmd = FbDbAccess.GetCommand("poll_remove"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_POLLGROUPID", FbDbType.Integer)).Value = pollGroupID;
@@ -5941,7 +6081,7 @@ namespace VZF.Data.Firebird
         public static IEnumerable<TypedPollGroup> PollGroupList(
             string connectionString, int userID, int? forumId, int boardId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("POLLGROUP_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("POLLGROUP_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -5981,7 +6121,7 @@ namespace VZF.Data.Firebird
             bool removeCompletely,
             bool removeEverywhere)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("POLLGROUP_REMOVE"))
+            using (var cmd = FbDbAccess.GetCommand("POLLGROUP_REMOVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_POLLGROUPID", FbDbType.Integer)).Value = pollGroupID;
@@ -5997,7 +6137,7 @@ namespace VZF.Data.Firebird
 
         public static void choice_delete(string connectionString, [NotNull] object choiceID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("CHOICE_DELETE"))
+            using (var cmd = FbDbAccess.GetCommand("CHOICE_DELETE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6014,7 +6154,7 @@ namespace VZF.Data.Firebird
             [NotNull] object path,
             [NotNull] object mime)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("CHOICE_UPDATE"))
+            using (var cmd = FbDbAccess.GetCommand("CHOICE_UPDATE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6034,7 +6174,7 @@ namespace VZF.Data.Firebird
             [NotNull] object path,
             [NotNull] object mime)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("choice_add"))
+            using (var cmd = FbDbAccess.GetCommand("choice_add"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -6054,7 +6194,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable rank_list(string connectionString, object boardID, object rankID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("rank_list"))
+            using (var cmd = FbDbAccess.GetCommand("rank_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -6085,9 +6225,9 @@ namespace VZF.Data.Firebird
             object usrAlbums,
             object usrAlbumImages)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("rank_save"))
+            using (var cmd = FbDbAccess.GetCommand("rank_save"))
             {
-                if (minPosts.ToString() == "")
+                if (minPosts.ToString() == string.Empty)
                 {
                     minPosts = 0;
                 }
@@ -6116,7 +6256,7 @@ namespace VZF.Data.Firebird
 
         public static void rank_delete(string connectionString, [NotNull] object rankID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("rank_delete"))
+            using (var cmd = FbDbAccess.GetCommand("rank_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6135,7 +6275,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable smiley_list(string connectionString, object boardID, object smileyID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("smiley_list"))
+            using (var cmd = FbDbAccess.GetCommand("smiley_list"))
             {
                 if (smileyID == null)
                 {
@@ -6164,7 +6304,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardID, int? smileyID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("smiley_list"))
+            using (var cmd = FbDbAccess.GetCommand("smiley_list"))
             {
                 // if (smileyID == null) { smileyID = DBNull.Value; }
 
@@ -6179,7 +6319,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable smiley_listunique(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("smiley_listunique"))
+            using (var cmd = FbDbAccess.GetCommand("smiley_listunique"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6191,7 +6331,7 @@ namespace VZF.Data.Firebird
 
         public static void smiley_delete(string connectionString, object smileyID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("smiley_delete"))
+            using (var cmd = FbDbAccess.GetCommand("smiley_delete"))
             {
                 if (smileyID == null)
                 {
@@ -6215,7 +6355,7 @@ namespace VZF.Data.Firebird
             object sortOrder,
             object replace)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("smiley_save"))
+            using (var cmd = FbDbAccess.GetCommand("smiley_save"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -6253,7 +6393,7 @@ namespace VZF.Data.Firebird
         public static DataTable bbcode_list(
             string connectionString, [NotNull] object boardID, [NotNull] object bbcodeID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bbcode_list"))
+            using (var cmd = FbDbAccess.GetCommand("bbcode_list"))
             {
                 if (bbcodeID == null)
                 {
@@ -6270,7 +6410,7 @@ namespace VZF.Data.Firebird
 
         public static void bbcode_delete(string connectionString, [NotNull] object bbcodeID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bbcode_delete"))
+            using (var cmd = FbDbAccess.GetCommand("bbcode_delete"))
             {
                 if (bbcodeID == null)
                 {
@@ -6301,7 +6441,7 @@ namespace VZF.Data.Firebird
             [NotNull] object moduleclass,
             [NotNull] object execorder)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("bbcode_save"))
+            using (var cmd = FbDbAccess.GetCommand("bbcode_save"))
             {
                 //My input defaults
                 if (bbcodeID == null)
@@ -6384,7 +6524,7 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable filled will registry entries</returns>
         public static DataTable registry_list(string connectionString, object name, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("registry_list"))
+            using (var cmd = FbDbAccess.GetCommand("registry_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6421,7 +6561,7 @@ namespace VZF.Data.Firebird
         /// <param name="Value">Value associated with this entry which can be null</param>
         public static void registry_save(string connectionString, [NotNull] object name, [NotNull] object value)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("registry_save"))
+            using (var cmd = FbDbAccess.GetCommand("registry_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6442,7 +6582,7 @@ namespace VZF.Data.Firebird
         public static void registry_save(
             string connectionString, [NotNull] object name, [NotNull] object value, [NotNull] object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("registry_save"))
+            using (var cmd = FbDbAccess.GetCommand("registry_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6464,7 +6604,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable system_list(string connectionString)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("system_list"))
+            using (var cmd = FbDbAccess.GetCommand("system_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 return FbDbAccess.GetData(cmd, connectionString);
@@ -6477,7 +6617,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable topic_tags(string connectionString, int boardId, int pageUserId, int topicId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_tags"))
+            using (var cmd = FbDbAccess.GetCommand("topic_tags"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6492,17 +6632,19 @@ namespace VZF.Data.Firebird
         public static DataTable topic_bytags(
             string connectionString,
             int boardId,
+            int forumId, 
             object pageUserId,
             string tags,
             object sinceDate,
             int pageIndex,
             int pageSize)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_bytags"))
+            using (var cmd = FbDbAccess.GetCommand("topic_bytags"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardId;
+                cmd.Parameters.Add("@I_FORUMID", FbDbType.Integer).Value = forumId;
                 cmd.Parameters.Add("@I_PAGEUSERID", FbDbType.Integer).Value = pageUserId;
                 cmd.Parameters.Add("@I_TAGS", FbDbType.VarChar).Value = tags;
                 cmd.Parameters.Add("@I_SINCEDATE", FbDbType.TimeStamp).Value = sinceDate;
@@ -6515,7 +6657,7 @@ namespace VZF.Data.Firebird
 
         public static void topic_updatetopic(string connectionString, int topicId, string topic)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_updatetopic"))
+            using (var cmd = FbDbAccess.GetCommand("topic_updatetopic"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId;
@@ -6529,7 +6671,7 @@ namespace VZF.Data.Firebird
         {
             int boardID = 0;
             using (
-                FbCommand cmd =
+                var cmd =
                     FbDbAccess.GetCommand(
                         String.Format(
                             @"SELECT c.BOARDID FROM {0} f INNER JOIN {1} c ON f.CATEGORYID=c.CATEGORYID  WHERE FORUMID={2};",
@@ -6549,7 +6691,7 @@ namespace VZF.Data.Firebird
         public static int topic_prune(
             string connectionString, object boardId, object forumId, object days, object permDelete)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_prune"))
+            using (var cmd = FbDbAccess.GetCommand("topic_prune"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6572,10 +6714,11 @@ namespace VZF.Data.Firebird
             [NotNull] object pageSize,
             [NotNull] object useStyledNicks,
             [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead)
+            [CanBeNull] bool findLastRead,
+            [NotNull] bool getTags)
         {
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_LIST"))
             {
 
                 if (userId == null)
@@ -6598,6 +6741,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
                 cmd.Parameters.Add(new FbParameter("@I_SHOWMOVED", FbDbType.Boolean)).Value = showMoved;
                 cmd.Parameters.Add(new FbParameter("@I_FINDLASTUNREAD", FbDbType.Boolean)).Value = findLastRead;
+                cmd.Parameters.Add(new FbParameter("@I_GETTAGS", FbDbType.Boolean)).Value = getTags;
 
                 return FbDbAccess.GetData(cmd, true, connectionString);
             }
@@ -6605,7 +6749,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable announcements_list(
             string connectionString,
-            [NotNull] object forumID,
+            [NotNull] object forumId,
             [NotNull] object userId,
             [NotNull] object sinceDate,
             [NotNull] object toDate,
@@ -6613,12 +6757,14 @@ namespace VZF.Data.Firebird
             [NotNull] object pageSize,
             [NotNull] object useStyledNicks,
             [NotNull] object showMoved,
-            [CanBeNull] bool findLastRead)
+            [CanBeNull] bool findLastRead, 
+            [NotNull]bool getTags)
         {
             using (var cmd = FbDbAccess.GetCommand("announcements_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
+
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumId;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new FbParameter("@I_DATE", FbDbType.TimeStamp)).Value = sinceDate;
                 cmd.Parameters.Add(new FbParameter("@I_TODATE", FbDbType.TimeStamp)).Value = toDate;
@@ -6627,6 +6773,8 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
                 cmd.Parameters.Add(new FbParameter("@I_SHOWMOVED", FbDbType.Boolean)).Value = showMoved;
                 cmd.Parameters.Add(new FbParameter("@I_FINDLASTUNREAD", FbDbType.Boolean)).Value = findLastRead;
+                cmd.Parameters.Add(new FbParameter("@I_GETTAGS", FbDbType.Boolean)).Value = getTags;
+                
                 return FbDbAccess.GetData(cmd, true, connectionString);
             }
         }
@@ -6639,7 +6787,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable topic_simplelist(string connectionString, int startId, int limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_simplelist"))
+            using (var cmd = FbDbAccess.GetCommand("topic_simplelist"))
             {
                 if (startId <= 0)
                 {
@@ -6662,7 +6810,7 @@ namespace VZF.Data.Firebird
         public static void topic_move(
             string connectionString, object topicId, object forumId, object showMoved, object linkDays)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_move"))
+            using (var cmd = FbDbAccess.GetCommand("topic_move"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6679,7 +6827,7 @@ namespace VZF.Data.Firebird
         public static DataTable topic_announcements(
             string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_announcements"))
+            using (var cmd = FbDbAccess.GetCommand("topic_announcements"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6717,7 +6865,7 @@ namespace VZF.Data.Firebird
             bool showNoCountPosts,
             object findLastRead)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_LATEST"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_LATEST"))
             {
                 int style = 0;
                 if (useStyledNicks) style = 1;
@@ -6759,7 +6907,7 @@ namespace VZF.Data.Firebird
             bool useStyledNicks,
             bool showNoCountPosts)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("rss_topic_latest"))
+            using (var cmd = FbDbAccess.GetCommand("rss_topic_latest"))
             {
                 int style = 0;
                 if (useStyledNicks) style = 1;
@@ -6806,7 +6954,7 @@ namespace VZF.Data.Firebird
 
         private static void topic_deleteAttachments(string connectionString, object topicId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_listmessages"))
+            using (var cmd = FbDbAccess.GetCommand("topic_listmessages"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6819,7 +6967,7 @@ namespace VZF.Data.Firebird
                 {
                     foreach (DataRow row in dt.Rows)
                     {
-                        message_deleteRecursively(connectionString, row["MessageID"], true, "", 0, true, false);
+                        message_deleteRecursively(connectionString, row["MessageID"], true, string.Empty, 0, true, false);
                     }
                 }
             }
@@ -6834,7 +6982,7 @@ namespace VZF.Data.Firebird
         {
             topic_deleteAttachments(connectionString, topicId);
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_delete"))
+            using (var cmd = FbDbAccess.GetCommand("topic_delete"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -6849,7 +6997,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable topic_findprev(string connectionString, object topicId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FINDPREV"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_FINDPREV"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId;
@@ -6859,7 +7007,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable topic_findnext(string connectionString, object topicId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FINDNEXT"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_FINDNEXT"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId;
@@ -6869,7 +7017,7 @@ namespace VZF.Data.Firebird
 
         public static void topic_lock(string connectionString, object topicId, object locked)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_lock"))
+            using (var cmd = FbDbAccess.GetCommand("topic_lock"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6898,7 +7046,7 @@ namespace VZF.Data.Firebird
             ref long messageId,
             string tags)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_save"))
+            using (var cmd = FbDbAccess.GetCommand("topic_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -6924,20 +7072,19 @@ namespace VZF.Data.Firebird
             }
         }
 
-        public static DataRow topic_info(string connectionString, object topicId)
+        public static DataRow topic_info(string connectionString, object topicId, [NotNull] bool getTags)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_info"))
+            using (var cmd = FbDbAccess.GetCommand("topic_info"))
             {
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId ?? DBNull.Value;
                 cmd.Parameters.Add(new FbParameter("@I_SHOWDELETED", FbDbType.Boolean)).Value = false;
+                cmd.Parameters.Add(new FbParameter("@I_GETTAGS", FbDbType.Boolean)).Value = getTags;
 
                 using (DataTable dt = FbDbAccess.GetData(cmd, connectionString))
                 {
-                    if (dt.Rows.Count > 0) return dt.Rows[0];
-                    else return null;
+                    return dt.Rows.Count > 0 ? dt.Rows[0] : null;
                 }
             }
         }
@@ -6950,7 +7097,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static int TopicFavoriteCount(string connectionString, int topicId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_favorite_count"))
+            using (var cmd = FbDbAccess.GetCommand("topic_favorite_count"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7197,7 +7344,7 @@ namespace VZF.Data.Firebird
 
         public static int topic_findduplicate(string connectionString, object topicName)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("topic_findduplicate"))
+            using (var cmd = FbDbAccess.GetCommand("topic_findduplicate"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_TOPICNAME", FbDbType.VarChar)).Value = topicName;
@@ -7246,7 +7393,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable topic_favorite_list(string connectionString, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
@@ -7265,7 +7412,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static void topic_favorite_remove(string connectionString, object userID, object topicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_REMOVE"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_REMOVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
@@ -7285,7 +7432,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static void topic_favorite_add(string connectionString, object userID, object topicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_ADD"))
+            using (var cmd = FbDbAccess.GetCommand("TOPIC_FAVORITE_ADD"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
@@ -7306,7 +7453,7 @@ namespace VZF.Data.Firebird
         public static DataTable replace_words_list(
             string connectionString, [NotNull] object boardId, [NotNull] object id)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("replace_words_list"))
+            using (var cmd = FbDbAccess.GetCommand("replace_words_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -7327,7 +7474,7 @@ namespace VZF.Data.Firebird
         public static void replace_words_save(
             string connectionString, object boardId, object id, object badword, object goodword)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("replace_words_save"))
+            using (var cmd = FbDbAccess.GetCommand("replace_words_save"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -7347,7 +7494,7 @@ namespace VZF.Data.Firebird
         /// <param name="ID">ID of bad/good word to delete</param>
         public static void replace_words_delete(string connectionString, object id)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("replace_words_delete"))
+            using (var cmd = FbDbAccess.GetCommand("replace_words_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7363,7 +7510,7 @@ namespace VZF.Data.Firebird
 
         public static void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_ADDIGNOREDUSER"))
+            using (var cmd = FbDbAccess.GetCommand("USER_ADDIGNOREDUSER"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7376,7 +7523,7 @@ namespace VZF.Data.Firebird
 
         public static void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_REMOVEIGNOREDUSER"))
+            using (var cmd = FbDbAccess.GetCommand("USER_REMOVEIGNOREDUSER"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
@@ -7388,7 +7535,7 @@ namespace VZF.Data.Firebird
 
         public static bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_ISUSERIGNORED"))
+            using (var cmd = FbDbAccess.GetCommand("USER_ISUSERIGNORED"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
@@ -7400,7 +7547,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable user_ignoredlist(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_IGNOREDLIST"))
+            using (var cmd = FbDbAccess.GetCommand("USER_IGNOREDLIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7435,7 +7582,7 @@ namespace VZF.Data.Firebird
             {
                 try
                 {
-                    using (FbCommand cmd = FbDbAccess.GetCommand("user_lazydata"))
+                    using (var cmd = FbDbAccess.GetCommand("user_lazydata"))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
@@ -7596,7 +7743,7 @@ namespace VZF.Data.Firebird
             object rankID,
             object useStyledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_list"))
+            using (var cmd = FbDbAccess.GetCommand("user_list"))
             {
                 if (userID == null)
                 {
@@ -7660,7 +7807,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("RankID", FbDbType.Integer)).Value = rankId;
                 cmd.Parameters.Add(new FbParameter("StyledNicks", FbDbType.Boolean)).Value = useStyledNicks;
                 cmd.Parameters.Add(new FbParameter("Literals", FbDbType.VarChar)).Value =
-                    literals.ToString().Replace("\0", "");
+                    literals.ToString().Replace("\0", string.Empty);
                 cmd.Parameters.Add(new FbParameter("Exclude", FbDbType.Boolean)).Value = exclude;
                 cmd.Parameters.Add(new FbParameter("BeginsWith", FbDbType.VarChar)).Value = beginsWith;
                 cmd.Parameters.Add(new FbParameter("PageIndex", FbDbType.Integer)).Value = pageIndex;
@@ -7710,7 +7857,7 @@ namespace VZF.Data.Firebird
         /// <returns></returns>
         public static DataTable user_simplelist(string connectionString, int StartID, int Limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_simplelist"))
+            using (var cmd = FbDbAccess.GetCommand("user_simplelist"))
             {
                 if (StartID <= 0)
                 {
@@ -7732,7 +7879,7 @@ namespace VZF.Data.Firebird
 
         public static void user_delete(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_delete"))
+            using (var cmd = FbDbAccess.GetCommand("user_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7746,7 +7893,7 @@ namespace VZF.Data.Firebird
         {
             // System.Guid guid = new System.Guid(providerUserKey.ToString());
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_setrole"))
+            using (var cmd = FbDbAccess.GetCommand("user_setrole"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7761,7 +7908,7 @@ namespace VZF.Data.Firebird
         public static void user_setinfo(string connectionString, int boardID, System.Web.Security.MembershipUser user)
         {
             using (
-                FbCommand cmd =
+                var cmd =
                     FbDbAccess.GetCommand(
                         "update {databaseOwner}.objQual_USER set Name=@I_USERNAME,Email=@I_EMAIL where BoardID=@I_BOARDID and ProviderUserKey=@I_PROVIDERUSERKEY",
                         true))
@@ -7780,7 +7927,7 @@ namespace VZF.Data.Firebird
         public static void user_migrate(
             string connectionString, object userID, object providerUserKey, object updateProvider)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_migrate"))
+            using (var cmd = FbDbAccess.GetCommand("user_migrate"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -7797,7 +7944,7 @@ namespace VZF.Data.Firebird
 
         public static void user_deleteold(string connectionString, [NotNull] object boardId, [NotNull] object days)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_deleteold"))
+            using (var cmd = FbDbAccess.GetCommand("user_deleteold"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7811,7 +7958,7 @@ namespace VZF.Data.Firebird
 
         public static void user_approve(string connectionString, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_approve"))
+            using (var cmd = FbDbAccess.GetCommand("user_approve"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7823,7 +7970,7 @@ namespace VZF.Data.Firebird
 
         public static void user_approveall(string connectionString, object boardId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_approveall"))
+            using (var cmd = FbDbAccess.GetCommand("user_approveall"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7835,7 +7982,7 @@ namespace VZF.Data.Firebird
 
         public static void user_suspend(string connectionString, object userID, object suspend)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_suspend"))
+            using (var cmd = FbDbAccess.GetCommand("user_suspend"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -7856,7 +8003,7 @@ namespace VZF.Data.Firebird
         public static DataTable user_getsignaturedata(
             string connectionString, [NotNull] object userId, [NotNull] object boardId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_getsignaturedata"))
+            using (var cmd = FbDbAccess.GetCommand("user_getsignaturedata"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7875,7 +8022,7 @@ namespace VZF.Data.Firebird
         public static DataTable user_getalbumsdata(
             string connectionString, [NotNull] object userID, [NotNull] object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_getalbumsdata"))
+            using (var cmd = FbDbAccess.GetCommand("user_getalbumsdata"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7889,7 +8036,7 @@ namespace VZF.Data.Firebird
         public static bool user_changepassword(
             string connectionString, object userId, object oldPassword, object newPassword)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_changepassword"))
+            using (var cmd = FbDbAccess.GetCommand("user_changepassword"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7903,7 +8050,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable user_pmcount(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_pmcount"))
+            using (var cmd = FbDbAccess.GetCommand("user_pmcount"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -7934,7 +8081,7 @@ namespace VZF.Data.Firebird
             [NotNull] object hideUser,
             [NotNull] object notificationType)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_save"))
+            using (var cmd = FbDbAccess.GetCommand("user_save"))
             {
 
                 if (useMobileTheme == null || useMobileTheme.ToString() == "false")
@@ -8036,7 +8183,7 @@ namespace VZF.Data.Firebird
             object notificationType,
             object dailyDigest)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_savenotification"))
+            using (var cmd = FbDbAccess.GetCommand("user_savenotification"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
@@ -8059,7 +8206,7 @@ namespace VZF.Data.Firebird
             object rankId)
         {
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_adminsave"))
+            using (var cmd = FbDbAccess.GetCommand("user_adminsave"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8077,7 +8224,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable user_emails(string connectionString, object boardId, object groupId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_emails"))
+            using (var cmd = FbDbAccess.GetCommand("user_emails"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -8091,7 +8238,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable user_accessmasks(string connectionString, object boardID, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_accessmasks"))
+            using (var cmd = FbDbAccess.GetCommand("user_accessmasks"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8169,7 +8316,7 @@ namespace VZF.Data.Firebird
 
                 if ((int)row["ParentID"] == parentID)
                 {
-                    string sIndent = "";
+                    string sIndent = string.Empty;
 
                     for (int j = 0; j < currentIndent; j++) sIndent += "--";
 
@@ -8221,7 +8368,7 @@ namespace VZF.Data.Firebird
         public static object user_recoverpassword(
             string connectionString, object boardID, object userName, object email)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_recoverpassword"))
+            using (var cmd = FbDbAccess.GetCommand("user_recoverpassword"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8235,7 +8382,7 @@ namespace VZF.Data.Firebird
 
         public static void user_savepassword(string connectionString, object userID, object password)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_savepassword"))
+            using (var cmd = FbDbAccess.GetCommand("user_savepassword"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8249,7 +8396,7 @@ namespace VZF.Data.Firebird
 
         public static object user_login(string connectionString, object boardID, object name, object password)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_login"))
+            using (var cmd = FbDbAccess.GetCommand("user_login"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8263,7 +8410,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable user_avatarimage(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_avatarimage"))
+            using (var cmd = FbDbAccess.GetCommand("user_avatarimage"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8275,7 +8422,7 @@ namespace VZF.Data.Firebird
 
         public static int user_get(string connectionString, int boardId, object providerUserKey)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_get"))
+            using (var cmd = FbDbAccess.GetCommand("user_get"))
             {
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new FbParameter("@I_PROVIDERUSERKEY", FbDbType.VarChar)).Value = providerUserKey;
@@ -8294,7 +8441,7 @@ namespace VZF.Data.Firebird
             object notificationType,
             object dailyDigest)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_find"))
+            using (var cmd = FbDbAccess.GetCommand("user_find"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -8315,7 +8462,7 @@ namespace VZF.Data.Firebird
 
         public static string user_getsignature(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_getsignature"))
+            using (var cmd = FbDbAccess.GetCommand("user_getsignature"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8327,7 +8474,7 @@ namespace VZF.Data.Firebird
 
         public static void user_savesignature(string connectionString, object userID, object signature)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_savesignature"))
+            using (var cmd = FbDbAccess.GetCommand("user_savesignature"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8341,7 +8488,7 @@ namespace VZF.Data.Firebird
         public static void user_saveavatar(
             string connectionString, object userID, object avatar, System.IO.Stream stream, object avatarImageType)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_saveavatar"))
+            using (var cmd = FbDbAccess.GetCommand("user_saveavatar"))
             {
                 byte[] data = null;
 
@@ -8378,7 +8525,7 @@ namespace VZF.Data.Firebird
 
         public static void user_deleteavatar(string connectionString, [NotNull] object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_deleteavatar"))
+            using (var cmd = FbDbAccess.GetCommand("user_deleteavatar"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8399,7 +8546,7 @@ namespace VZF.Data.Firebird
         {
             try
             {
-                using (FbCommand cmd = FbDbAccess.GetCommand("user_aspnet"))
+                using (var cmd = FbDbAccess.GetCommand("user_aspnet"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8423,7 +8570,7 @@ namespace VZF.Data.Firebird
 
         public static int? user_guest(string connectionString, [NotNull] object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_guest"))
+            using (var cmd = FbDbAccess.GetCommand("user_guest"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8454,7 +8601,7 @@ namespace VZF.Data.Firebird
         public static DataTable user_activity_rank(
             string connectionString, [NotNull] object boardId, object startDate, object displayNumber)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_activity_rank"))
+            using (var cmd = FbDbAccess.GetCommand("user_activity_rank"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8469,7 +8616,7 @@ namespace VZF.Data.Firebird
         public static int user_nntp(
             string connectionString, object boardID, object userName, object email, object timeZone)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_NNTP"))
+            using (var cmd = FbDbAccess.GetCommand("USER_NNTP"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8494,7 +8641,7 @@ namespace VZF.Data.Firebird
             string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_addpoints"))
+            using (var cmd = FbDbAccess.GetCommand("user_addpoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8510,7 +8657,7 @@ namespace VZF.Data.Firebird
         public static void user_removepoints(
             string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_removepoints"))
+            using (var cmd = FbDbAccess.GetCommand("user_removepoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8535,7 +8682,7 @@ namespace VZF.Data.Firebird
 
         public static void user_setpoints(string connectionString, object userId, object points)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_setpoints"))
+            using (var cmd = FbDbAccess.GetCommand("user_setpoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8548,7 +8695,7 @@ namespace VZF.Data.Firebird
 
         public static int user_getpoints(string connectionString, object userId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_getpoints"))
+            using (var cmd = FbDbAccess.GetCommand("user_getpoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8561,7 +8708,7 @@ namespace VZF.Data.Firebird
         public static int user_getthanks_from(string connectionString, object userID, object pageUserId)
         {
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("USER_GETTHANKS_FROM"))
+            using (var cmd = FbDbAccess.GetCommand("USER_GETTHANKS_FROM"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
@@ -8572,7 +8719,7 @@ namespace VZF.Data.Firebird
 
         public static int[] user_getthanks_to(string connectionString, object userID, object pageUserId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_getthanks_to"))
+            using (var cmd = FbDbAccess.GetCommand("user_getthanks_to"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 FbParameter paramThanksToNumber = new FbParameter("@ThanksToNumber", 0);
@@ -8613,7 +8760,7 @@ namespace VZF.Data.Firebird
         public static DataTable user_viewthanksto(
             string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_viewthanksto"))
+            using (var cmd = FbDbAccess.GetCommand("user_viewthanksto"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("I_USERID", FbDbType.Integer).Value = UserID;
@@ -8636,7 +8783,7 @@ namespace VZF.Data.Firebird
         public static DataTable user_viewthanksfrom(
             string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("user_viewthanksfrom"))
+            using (var cmd = FbDbAccess.GetCommand("user_viewthanksfrom"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("I_USERID", FbDbType.Integer).Value = UserID;
@@ -8682,7 +8829,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable userforum_list(string connectionString, object userID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("userforum_list"))
+            using (var cmd = FbDbAccess.GetCommand("userforum_list"))
             {
                 if (userID == null)
                 {
@@ -8709,7 +8856,7 @@ namespace VZF.Data.Firebird
 
         public static void userforum_delete(string connectionString, object userID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("userforum_delete"))
+            using (var cmd = FbDbAccess.GetCommand("userforum_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8722,7 +8869,7 @@ namespace VZF.Data.Firebird
 
         public static void userforum_save(string connectionString, object userID, object forumID, object accessMaskID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("userforum_save"))
+            using (var cmd = FbDbAccess.GetCommand("userforum_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8741,7 +8888,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable usergroup_list(string connectionString, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("usergroup_list"))
+            using (var cmd = FbDbAccess.GetCommand("usergroup_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8754,7 +8901,7 @@ namespace VZF.Data.Firebird
 
         public static void usergroup_save(string connectionString, object userID, object groupID, object member)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("usergroup_save"))
+            using (var cmd = FbDbAccess.GetCommand("usergroup_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8778,7 +8925,7 @@ namespace VZF.Data.Firebird
 
         public static void watchforum_add(string connectionString, object userID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_add"))
+            using (var cmd = FbDbAccess.GetCommand("watchforum_add"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8792,7 +8939,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable watchforum_list(string connectionString, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_list"))
+            using (var cmd = FbDbAccess.GetCommand("watchforum_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8807,7 +8954,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable watchforum_check(string connectionString, object userID, object forumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_check"))
+            using (var cmd = FbDbAccess.GetCommand("watchforum_check"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8823,7 +8970,7 @@ namespace VZF.Data.Firebird
 
         public static void watchforum_delete(string connectionString, object watchForumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchforum_delete"))
+            using (var cmd = FbDbAccess.GetCommand("watchforum_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8840,7 +8987,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable watchtopic_list(string connectionString, object userID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_list"))
+            using (var cmd = FbDbAccess.GetCommand("watchtopic_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8853,7 +9000,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable watchtopic_check(string connectionString, object userID, object topicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_check"))
+            using (var cmd = FbDbAccess.GetCommand("watchtopic_check"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
@@ -8867,7 +9014,7 @@ namespace VZF.Data.Firebird
 
         public static void watchtopic_delete(string connectionString, object watchTopicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_delete"))
+            using (var cmd = FbDbAccess.GetCommand("watchtopic_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -8881,7 +9028,7 @@ namespace VZF.Data.Firebird
 
         public static void watchtopic_add(string connectionString, object userID, object topicID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("watchtopic_add"))
+            using (var cmd = FbDbAccess.GetCommand("watchtopic_add"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9137,7 +9284,7 @@ namespace VZF.Data.Firebird
 
         public static DataTable rsstopic_list(string connectionString, int forumID, int start, int limit)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("rsstopic_list"))
+            using (var cmd = FbDbAccess.GetCommand("rsstopic_list"))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -9154,7 +9301,7 @@ namespace VZF.Data.Firebird
         {
 
             using (
-                FbCommand cmd =
+                var cmd =
                     FbDbAccess.GetCommand(
                         String.Format(
                             "SELECT a.RDB$INDEX_NAME FROM RDB$INDICES a WHERE a.RDB$FOREIGN_KEY IS NULL AND a.RDB$SYSTEM_FLAG=0 AND a.RDB$UNIQUE_FLAG IS NULL AND a.RDB$RELATION_NAME LIKE '%{0}%'",
@@ -9222,7 +9369,7 @@ namespace VZF.Data.Firebird
             DataTable indexList = Db.db_index_simplelist(connectionString);
             foreach (DataRow indexName in indexList.Rows)
             {
-                using (FbCommand cmd1 = new FbCommand(String.Format("SET STATISTICS INDEX {0}", indexName[0])))
+                using (var cmd1 = new FbCommand(String.Format("SET STATISTICS INDEX {0}", indexName[0])))
                 {
                     cmd1.CommandType = CommandType.Text;
                     // up the command timeout...
@@ -9246,7 +9393,7 @@ namespace VZF.Data.Firebird
             foreach (DataRow indexName in indexList.Rows)
             {
 
-                // using (FbCommand cmd = new FbCommand(String.Format("EXECUTE BLOCK AS BEGIN EXECUTE STATEMENT 'ALTER INDEX {0} INACTIVE'; EXECUTE STATEMENT 'ALTER INDEX {0} ACTIVE';END", indexName[0])))
+                // using (var cmd = new FbCommand(String.Format("EXECUTE BLOCK AS BEGIN EXECUTE STATEMENT 'ALTER INDEX {0} INACTIVE'; EXECUTE STATEMENT 'ALTER INDEX {0} ACTIVE';END", indexName[0])))
                 try
                 {
                     using (var connMan = new FbDbConnectionManager(connectionString))
@@ -9561,7 +9708,7 @@ namespace VZF.Data.Firebird
         public static void system_deleteinstallobjects(string connectionString)
         {
             string tSQL = "DROP FUNCTION" + FbDbAccess.GetObjectName("system_initialize");
-            using (FbCommand cmd = FbDbAccess.GetCommand(tSQL, true))
+            using (var cmd = FbDbAccess.GetCommand(tSQL, true))
             {
                 cmd.CommandType = CommandType.Text;
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -9623,7 +9770,7 @@ namespace VZF.Data.Firebird
 
                                 if (sql.Length > 0)
                                 {
-                                    using (FbCommand cmd = new FbCommand())
+                                    using (var cmd = new FbCommand())
                                     {
                                         cmd.Transaction = trans;
                                         cmd.Connection = connMan.DBConnection(connectionString);
@@ -9657,7 +9804,7 @@ namespace VZF.Data.Firebird
 
                             if (sql.Length > 0)
                             {
-                                using (FbCommand cmd = new FbCommand())
+                                using (var cmd = new FbCommand())
                                 {
                                     cmd.Connection = connMan.OpenDBConnection(connectionString);
                                     cmd.CommandType = CommandType.Text;
@@ -9700,7 +9847,7 @@ namespace VZF.Data.Firebird
         {
             string gs = providerUserKey.ToString();
 
-            using (FbCommand cmd = FbDbAccess.GetCommand("SYSTEM_INITIALIZE"))
+            using (var cmd = FbDbAccess.GetCommand("SYSTEM_INITIALIZE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 // added so command won't timeout anymore...
@@ -9728,7 +9875,7 @@ namespace VZF.Data.Firebird
 
         public static void system_updateversion(string connectionString, int version, string name)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("SYSTEM_UPDATEVERSION"))
+            using (var cmd = FbDbAccess.GetCommand("SYSTEM_UPDATEVERSION"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9746,7 +9893,7 @@ namespace VZF.Data.Firebird
         /// </summary>
         public static DataTable group_rank_style(string connectionString, object boardID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("group_rank_style"))
+            using (var cmd = FbDbAccess.GetCommand("group_rank_style"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9795,7 +9942,7 @@ namespace VZF.Data.Firebird
         public static DataTable shoutbox_getmessages(
             string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("SHOUTBOX_GETMESSAGES"))
+            using (var cmd = FbDbAccess.GetCommand("SHOUTBOX_GETMESSAGES"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9810,7 +9957,7 @@ namespace VZF.Data.Firebird
         public static bool shoutbox_savemessage(
             string connectionString, int boardId, string message, string userName, int userID, object ip)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("SHOUTBOX_SAVEMESSAGE"))
+            using (var cmd = FbDbAccess.GetCommand("SHOUTBOX_SAVEMESSAGE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
@@ -9829,7 +9976,7 @@ namespace VZF.Data.Firebird
 
         public static Boolean shoutbox_clearmessages(string connectionString, int boardId)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("SHOUTBOX_CLEARMESSAGES"))
+            using (var cmd = FbDbAccess.GetCommand("SHOUTBOX_CLEARMESSAGES"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardId;
@@ -9909,7 +10056,7 @@ namespace VZF.Data.Firebird
         public static string[] buddy_addrequest(
             string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BUDDY_ADDREQUEST"))
+            using (var cmd = FbDbAccess.GetCommand("BUDDY_ADDREQUEST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9940,7 +10087,7 @@ namespace VZF.Data.Firebird
         public static string buddy_approveRequest(
             string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID, [NotNull] object Mutual)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BUDDY_APPROVEREQUEST"))
+            using (var cmd = FbDbAccess.GetCommand("BUDDY_APPROVEREQUEST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_FROMUSERID", FbDbType.Integer).Value = FromUserID;
@@ -9972,7 +10119,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static string buddy_denyRequest(string connectionString, object FromUserID, object ToUserID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BUDDY_DENYREQUEST"))
+            using (var cmd = FbDbAccess.GetCommand("BUDDY_DENYREQUEST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 var paramOutput = new FbParameter("@I_PARAMOUTPUT", FbDbType.VarChar, 255);
@@ -9999,7 +10146,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static string buddy_remove(string connectionString, object FromUserID, object ToUserID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BUDDY_REMOVE"))
+            using (var cmd = FbDbAccess.GetCommand("BUDDY_REMOVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 var paramOutput = new FbParameter("@I_PARAMOUTPUT", FbDbType.VarChar, 128);
@@ -10026,7 +10173,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable buddy_list(string connectionString, object FromUserID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("BUDDY_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("BUDDY_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@I_FROMUSERID", FbDbType.Integer).Value = FromUserID;
@@ -10067,7 +10214,7 @@ namespace VZF.Data.Firebird
             // Profile columns cannot yet exist when we first are gettinng data.
             try
             {
-                var sqlBuilder = new StringBuilder("");
+                var sqlBuilder = new StringBuilder(string.Empty);
                     // @"EXECUTE BLOCK (I_STYLEDNICKS BOOL = :I_STYLEDNICKS,I_BOARDID INTEGER = :I_BOARDID, I_UTCTIMESTAMP TIMESTAMP = :I_UTCTIMESTAMP, I_UTCTIMESTAMP2 TIMESTAMP = :I_UTCTIMESTAMP) RETURNS (""Birthday"" TIMESTAMP, ""UserName"" VARCHAR(255), ""UserDisplayName"" VARCHAR(255),""Style"" VARCHAR(255)) ");
                 // objQual_DBINFO_TABLE_COLUMNS_INFO
                 var dt = GetTableColumnsInfo(connectionString, FbDbAccess.GetObjectName("USERPROFILE"));
@@ -10204,24 +10351,43 @@ namespace VZF.Data.Firebird
         /// <summary>
         /// The set property values.
         /// </summary>
-        /// <param name="context">
-        /// The context.
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="appname">
+        /// The appname.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
         /// </param>
         /// <param name="collection">
         /// The collection.
+        /// </param>
+        /// <param name="dirtyOnly">
+        /// The dirty only.
         /// </param>
         public static void SetPropertyValues(
             string connectionString,
             int boardId,
             string appname,
-            int userId,
+            int userId, 
+            string userName,
             SettingsPropertyValueCollection collection,
             bool dirtyOnly = true)
         {
-            if (userId == 0 || collection.Count < 1)
+            // guest should not be in profile
+            int? userIdG = Db.user_guest(connectionString, boardId);
+            if (userId <= 0 || userIdG == userId || collection.Count < 1)
             {
                 return;
             }
+
             bool itemsToSave = true;
             if (dirtyOnly)
             {
@@ -10229,7 +10395,6 @@ namespace VZF.Data.Firebird
             }
 
             // First make sure we have at least one item to save
-
             if (!itemsToSave)
             {
                 return;
@@ -10238,21 +10403,30 @@ namespace VZF.Data.Firebird
             // load the data for the configuration
             List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(connectionString, collection);
 
-            if (spc != null && spc.Count > 0)
+            if (spc != null && spc.Count > 0 && userName.IsSet())
             {
                 // start saving...
-                Db.SetProfileProperties(connectionString, boardId, appname, userId, collection, spc, dirtyOnly);
+                Db.SetProfileProperties(connectionString, boardId, appname, userId, userName, collection, spc, dirtyOnly);
             }
         }
 
         /// <summary>
         /// The set profile properties.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
         /// <param name="appName">
         /// The app name.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user id.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
         /// </param>
         /// <param name="values">
         /// The values.
@@ -10260,38 +10434,27 @@ namespace VZF.Data.Firebird
         /// <param name="settingsColumnsList">
         /// The settings columns list.
         /// </param>
+        /// <param name="dirtyOnly">
+        /// The dirty only.
+        /// </param>
         public static void SetProfileProperties(
             string connectionString,
             [NotNull] int boardId,
             [NotNull] object appName,
-            [NotNull] int userID,
+            [NotNull] int userId,
+            [NotNull] string userName,
             [NotNull] SettingsPropertyValueCollection values,
             [NotNull] List<SettingsPropertyColumn> settingsColumnsList,
             bool dirtyOnly)
         {
-            string userName = string.Empty;
-            var dtu = Db.UserList(connectionString, boardId, userID, true, null, null, true);
-            foreach (var typedUserList in dtu)
-            {
-                userName = typedUserList.Name;
-                break;
-
-            }
-            if (userName.IsNotSet())
-            {
-                return;
-            }
             using (var conn = new FbDbConnectionManager(connectionString).OpenDBConnection(connectionString))
             {
-                var cmd = new FbCommand();
+                var cmd = new FbCommand { Connection = conn };
 
-                cmd.Connection = conn;
-                bool profileExists = false;
-
-                cmd.Parameters.AddWithValue("@UserID", userID);
+                cmd.Parameters.AddWithValue("@UserID", userId);
                 cmd.Parameters.AddWithValue("@ApplicationName", appName);
                 string table = FbDbAccess.GetObjectName("UserProfile");
-                StringBuilder sqlCommand = new StringBuilder();
+                var sqlCommand = new StringBuilder();
                 /* StringBuilder sqlCommand = new StringBuilder("EXECUTE BLOCK AS BEGIN IF (EXISTS (SELECT 1 FROM ").Append(table);
                  sqlCommand.Append(" WHERE USERID = @UserID AND ApplicationName = @ApplicationName)) THEN "); 
                
@@ -10376,7 +10539,7 @@ namespace VZF.Data.Firebird
                           .Append(" (USERID")
                           .Append(columnStr.ToString());
                 sqlCommand.Append(") VALUES (@UserID")
-                          .Append("")
+                          .Append(string.Empty)
                           .Append(valueStr.ToString())
                           .Append(") MATCHING (USERID);");
 
@@ -10654,7 +10817,7 @@ namespace VZF.Data.Firebird
             [NotNull] object title,
             [NotNull] object coverImageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_SAVE"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_SAVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -10683,7 +10846,7 @@ namespace VZF.Data.Firebird
         /// </returns>
         public static DataTable album_list(string connectionString, object UserID, object AlbumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_USERID", FbDbType.Integer)).Value = UserID;
@@ -10700,7 +10863,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static void album_delete(string connectionString, object AlbumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_DELETE"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_DELETE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_ALBUMID", FbDbType.Integer)).Value = AlbumID;
@@ -10716,7 +10879,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static string album_gettitle(string connectionString, object AlbumID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_GETTITLE"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_GETTITLE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -10782,7 +10945,7 @@ namespace VZF.Data.Firebird
             [NotNull] object bytes,
             [NotNull] object contentType)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_SAVE"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_SAVE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_IMAGEID", FbDbType.Integer)).Value = imageID;
@@ -10813,7 +10976,7 @@ namespace VZF.Data.Firebird
         public static DataTable album_image_list(
             string connectionString, [NotNull] object albumID, [NotNull] object imageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_LIST"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_LIST"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_ALBUMID", FbDbType.Integer)).Value = albumID;
@@ -10830,7 +10993,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static void album_image_delete(string connectionString, object ImageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_DELETE"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_DELETE"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_IMAGEID", FbDbType.Integer)).Value = ImageID;
@@ -10849,7 +11012,7 @@ namespace VZF.Data.Firebird
         /// </param>
         public static void album_image_download(string connectionString, object ImageID)
         {
-            using (FbCommand cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_DOWNLOAD"))
+            using (var cmd = FbDbAccess.GetCommand("ALBUM_IMAGE_DOWNLOAD"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new FbParameter("I_IMAGEID", FbDbType.Integer)).Value = ImageID;

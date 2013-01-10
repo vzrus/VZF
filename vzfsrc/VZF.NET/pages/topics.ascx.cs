@@ -206,7 +206,7 @@ namespace YAF.Pages
             {
                 YafBuildLink.AccessDenied();
             }
-
+            this.Stc1.ForumId = PageContext.PageForumID;
             this.Get<IYafSession>().UnreadTopics = 0;
             this.AtomFeed.AdditionalParameters =
                 "f={0}".FormatWith(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f"));
@@ -285,6 +285,7 @@ namespace YAF.Pages
                 return;
             }
 
+            
             this.moderate1.Visible = false;
             this.moderate2.Visible = false;
         }
@@ -363,7 +364,8 @@ namespace YAF.Pages
                 10,
                 this.Get<YafBoardSettings>().UseStyledNicks,
                 true,
-                this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
+                this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
+                this.Get<YafBoardSettings>().AllowTopicTags);
 
             if (this.Get<YafBoardSettings>().UseStyledNicks && dt != null)
             {
@@ -384,15 +386,18 @@ namespace YAF.Pages
                 date = DateTime.UtcNow.AddDays(-days[this._showTopicListSelected]);
             }
 
-            DataTable dtTopics = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
-                                                     userId,
-                                                     date,
-                                                     DateTime.UtcNow,
-                                                     this.Pager.CurrentPageIndex,
-                                                     this.Get<YafBoardSettings>().TopicsPerPage,
-                                                     this.Get<YafBoardSettings>().UseStyledNicks,
-                                                     true,
-                                                     this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
+            DataTable dtTopics = CommonDb.topic_list(
+                PageContext.PageModuleID,
+                this.PageContext.PageForumID,
+                userId,
+                date,
+                DateTime.UtcNow,
+                this.Pager.CurrentPageIndex,
+                this.Get<YafBoardSettings>().TopicsPerPage,
+                this.Get<YafBoardSettings>().UseStyledNicks,
+                true,
+                this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
+                this.Get<YafBoardSettings>().AllowTopicTags);
 
             if (dtTopics != null)
             {
@@ -489,6 +494,19 @@ namespace YAF.Pages
             {
                 this.Get<IReadTrackCurrentUser>().SetForumRead(this.PageContext.PageForumID);
             }
+        }
+
+        /// <summary>
+        /// The ForumID.
+        /// </summary>
+        /// <returns>
+        /// Returns The ForumID.
+        /// </returns>
+        protected int GetForumId()
+        {
+            bool ff = !this._forum["ForumID"].IsNullOrEmptyDBField();
+            int fi = !this._forum["ForumID"].IsNullOrEmptyDBField() ? this._forum["ForumID"].ToType<int>() : 0;
+            return fi;
         }
 
         #endregion

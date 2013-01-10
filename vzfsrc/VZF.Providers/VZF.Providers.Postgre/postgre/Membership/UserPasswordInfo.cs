@@ -188,7 +188,7 @@ namespace YAF.Providers.Membership
 
     #endregion
 
-    // used to create an instance of this class from the DB...
+    // used to create an instance of this class from the Db...
     #region Properties
 
     /// <summary>
@@ -400,7 +400,7 @@ namespace YAF.Providers.Membership
       string hashRemoveChars, 
       bool msCompliant)
     {
-        DataTable userData = DB.Current.__GetUserPasswordInfo(connectionString, appName, username, updateUser);
+        DataTable userData = Db.__GetUserPasswordInfo(connectionString, appName, username, updateUser);
 
       if (userData.Rows.Count > 0)
       {

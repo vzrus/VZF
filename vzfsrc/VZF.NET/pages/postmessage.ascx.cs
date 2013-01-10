@@ -467,7 +467,7 @@ namespace YAF.Pages
             this.PageContext.QueryIDs = new QueryStringIDHelper(new[] { "m", "t", "q", "page" }, false);
 
             TypedMessageList currentMessage = null;
-            DataRow topicInfo = CommonDb.topic_info(PageContext.PageModuleID, this.PageContext.PageTopicID);
+            DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
           
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
@@ -545,15 +545,19 @@ namespace YAF.Pages
                 YafBuildLink.AccessDenied();
             }
             
-            // If topic tags are disabled we don't show the tags box, any existing tags will be deleted.
-            if (this.Get<YafBoardSettings>().AllowTopicTags)
+            // If topic tags are disabled we don't show the tags box, any existing tags will be deleted. 
+            // Else we fill in the textbox.
+            if (!this.Get<YafBoardSettings>().DeleteTopicTagsIfDisabled)
             {
                 // We deal with an existing topic.
                 if (topicInfo != null && (topicInfo["UserID"].ToType<int>() == PageContext.CurrentUserData.UserID || PageContext.IsForumModerator || PageContext.IsAdmin))
                 {
                     this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
                 }
+            }
 
+            if (this.Get<YafBoardSettings>().AllowTopicTags)
+            {
                 // The topic is added it has not any topic info. We can edit tags for the first message only.
                 if (topicInfo == null || (currentMessage != null  && currentMessage.Position == 0))
                 {
@@ -1493,7 +1497,7 @@ namespace YAF.Pages
         /// </summary>
         private void InitReplyToTopic()
         {
-            DataRow topic = CommonDb.topic_info(PageContext.PageModuleID, this.TopicID);
+            DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, this.TopicID, true);
             var topicFlags = new TopicFlags(topic["Flags"].ToType<int>());
 
             // Ederon : 9/9/2007 - moderators can reply in locked topics

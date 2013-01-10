@@ -56,9 +56,9 @@ namespace YAF.Providers.Membership
     using YAF.Classes.Pattern;
     using YAF.Core;
 
-    public class PgMembershipDBConnManager : PostgreDbConnectionManager
+    public static class PgMembershipDBConnManager 
     {
-        public override string ConnectionString
+        public static string ConnectionString
         {
             get
             {
@@ -72,28 +72,16 @@ namespace YAF.Providers.Membership
         }
     }
 
-    public class DB
+    public static  class Db
     {
-       
-
-        public static DB Current
-        {
-            get
-            {
-                return PageSingleton<DB>.Instance;
-            }
-        }
-
-      
-
-        public void UpgradeMembership(int previousVersion, int newVersion)
+        public static void UpgradeMembership(int previousVersion, int newVersion)
         {
             UpgradeMembership(string.Empty, previousVersion, newVersion);
         }
 
-        public void UpgradeMembership(string connectionString, int previousVersion, int newVersion)
+        public static void UpgradeMembership(string connectionString, int previousVersion, int newVersion)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_upgrade")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_upgrade")))
             {
                 /*
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -106,9 +94,9 @@ namespace YAF.Providers.Membership
 
         }
 
-        public void __ChangePassword(string connectionString, string appName, string username, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
+        public static void __ChangePassword(string connectionString, string appName, string username, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_changepassword")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_changepassword")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -122,13 +110,13 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_passwordanswer", NpgsqlDbType.Varchar)).Value = newPasswordAnswer;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
         }
 
-        public void __ChangePasswordQuestionAndAnswer(string connectionString, string appName, string username, string passwordQuestion, string passwordAnswer)
+        public static void __ChangePasswordQuestionAndAnswer(string connectionString, string appName, string username, string passwordQuestion, string passwordAnswer)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_changepasswordquestionandanswer")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_changepasswordquestionandanswer")))
             {
 
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -139,13 +127,13 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_passwordanswer", NpgsqlDbType.Varchar)).Value = passwordAnswer;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
         }
 
-        public void __CreateUser(string connectionString, string appName, string username, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
+        public static void __CreateUser(string connectionString, string appName, string username, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_createuser")))
+            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_createuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -168,16 +156,16 @@ namespace YAF.Providers.Membership
                 
 
                 //Execute
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
                 //Retrieve Output Parameters
                 providerUserKey = paramUserKey.Value;
 
             }
         }
 
-        public void __DeleteUser(string connectionString, string appName, string username, bool deleteAllRelatedData)
+        public static void __DeleteUser(string connectionString, string appName, string username, bool deleteAllRelatedData)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_deleteuser")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_deleteuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -186,13 +174,13 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
                 cmd.Parameters.Add(new NpgsqlParameter("i_deleteallrelated", NpgsqlDbType.Boolean)).Value = deleteAllRelatedData;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
         }
 
-        public DataTable __FindUsersByEmail(string connectionString, string appName, string emailToMatch, int pageIndex, int pageSize)
+        public static DataTable __FindUsersByEmail(string connectionString, string appName, string emailToMatch, int pageIndex, int pageSize)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_findusersbyemail")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_findusersbyemail")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -202,13 +190,13 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
                 cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                return PostgreDBAccess.GetData(cmd,connectionString );
+                return PostgreDbAccess.GetData(cmd,connectionString );
             }
         }
 
-        public DataTable __FindUsersByName(string connectionString, string appName, string usernameToMatch, int pageIndex, int pageSize)
+        public static DataTable __FindUsersByName(string connectionString, string appName, string usernameToMatch, int pageIndex, int pageSize)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_findusersbyname")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_findusersbyname")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -221,13 +209,13 @@ namespace YAF.Providers.Membership
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                return PostgreDBAccess.GetData(cmd,connectionString );
+                return PostgreDbAccess.GetData(cmd,connectionString );
             }
         }
 
-        public DataTable __GetAllUsers(string connectionString, string appName, int pageIndex, int pageSize)
+        public static DataTable __GetAllUsers(string connectionString, string appName, int pageIndex, int pageSize)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_getallusers")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getallusers")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -235,13 +223,13 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
                 cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                return PostgreDBAccess.GetData(cmd,connectionString );
+                return PostgreDbAccess.GetData(cmd,connectionString );
             }
         }
 
-        public int __GetNumberOfUsersOnline(string connectionString, string appName, int TimeWindow)
+        public static int __GetNumberOfUsersOnline(string connectionString, string appName, int TimeWindow)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_getnumberofusersonline")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getnumberofusersonline")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -254,14 +242,14 @@ namespace YAF.Providers.Membership
                 p.Direction = ParameterDirection.ReturnValue;
                 cmd.Parameters.Add(p);
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
                 return Convert.ToInt32(cmd.Parameters["i_returnvalue"].Value);
             }
         }
 
-        public DataRow __GetUser(string connectionString, string appName, object providerUserKey, string userName, bool userIsOnline)
+        public static DataRow __GetUser(string connectionString, string appName, object providerUserKey, string userName, bool userIsOnline)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_getuser")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -272,7 +260,7 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                using (DataTable dt = PostgreDBAccess.GetData(cmd,connectionString ))
+                using (DataTable dt = PostgreDbAccess.GetData(cmd,connectionString ))
                 {
                     if (dt.Rows.Count > 0)
                     {
@@ -286,9 +274,9 @@ namespace YAF.Providers.Membership
 
         }
 
-        public DataTable __GetUserPasswordInfo(string connectionString, string appName, string username, bool updateUser)
+        public static DataTable __GetUserPasswordInfo(string connectionString, string appName, string username, bool updateUser)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_getuser")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -300,14 +288,14 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
-                return PostgreDBAccess.GetData(cmd,connectionString );
+                return PostgreDbAccess.GetData(cmd,connectionString );
             }
 
         }
 
-        public DataTable __GetUserNameByEmail(string connectionString, string appName, string email)
+        public static DataTable __GetUserNameByEmail(string connectionString, string appName, string email)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_getusernamebyemail")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getusernamebyemail")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -315,14 +303,14 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                return PostgreDBAccess.GetData(cmd,connectionString );
+                return PostgreDbAccess.GetData(cmd,connectionString );
             }
         }
 
 
-        public void __ResetPassword(string connectionString, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
+        public static void __ResetPassword(string connectionString, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_resetpassword")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_resetpassword")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -336,27 +324,27 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_currenttimeutc", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
 
         }
 
-        public void __UnlockUser(string connectionString, string appName, string userName)
+        public static void __UnlockUser(string connectionString, string appName, string userName)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_unlockuser")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_unlockuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
                 // Nonstandard args
                 cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString );
+                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
             }
         }
 
-        public int __UpdateUser(string connectionString, object appName, MembershipUser user, bool requiresUniqueEmail)
+        public static int __UpdateUser(string connectionString, object appName, MembershipUser user, bool requiresUniqueEmail)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDBAccess.GetObjectName("prov_updateuser")))
+            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_updateuser")))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
@@ -371,7 +359,7 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_uniqueemail", NpgsqlDbType.Boolean)).Value = requiresUniqueEmail;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
 
-                return Convert.ToInt32(PostgreDBAccess.ExecuteScalar(cmd, connectionString));
+                return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(cmd, connectionString));
             }
         }
 

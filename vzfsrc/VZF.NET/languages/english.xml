@@ -3386,6 +3386,10 @@ Visit {forumname} at {forumlink}
       <Resource tag="UTC-9">(UTC-9:00) Alaska</Resource>
       <Resource tag="UTC9.5">(UTC+9:30) Adelaide, Darwin</Resource>
    </page>
+  <page name="TAGSBOARD">
+     <Resource tag="TAGS_BOARD_LNK">Tags</Resource>
+     <Resource tag="TITLE">Board Tags</Resource>
+  </page>
    <page name="TOOLBAR">
       <Resource tag="MYALBUMS">My Albums</Resource>
       <Resource tag="INBOX">My Inbox</Resource>
@@ -3958,10 +3962,30 @@ Visit {forumname} at {forumlink}
       <Resource tag="BOARD_EMAIL_REPORTMODS_HELP">Should all the moderators of a forum be notified if someone reported a post?</Resource>
     </page>
      <page name="ADMIN_FORUMS">
+      <Resource tag="CATEGORY_CANTADDASCHILD_MSG">You can't add a category as a child of other category.</Resource>
+      <Resource tag="CATEGORY_CANTADDFORUMBEFORE_MSG">You can't add a forum directly before a category, select a category to add after or a forum.</Resource> 
       <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
       <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
       <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
       <Resource tag="MSG_NOT_DELETE">You cannot delete this Category as it has at least one forum assigned to it.\nTo move forums click on "Edit" and change the category the forum is assigned to.</Resource>
+      <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
+      <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
+      <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
+      <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+      <Resource tag="FORUM_SELECTEDITEDNODE_MSG">You should select a node to edit.</Resource>
+      <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
+      <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+      <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+      <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
+      <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
+      <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
+      <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
+      <Resource tag="FORUM_SELECTTARGETNODE_MSG">You should select a target node.</Resource>
+      <Resource tag="FORUM_SELECTANODE_MSG">You should select a node.</Resource>
+      <Resource tag="FORUM_SELECTEDNODE_MSG">Selected node:</Resource>
+      <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
+      <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
+      <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
       <Resource tag="NEW_CATEGORY">New Category</Resource>
       <Resource tag="NEW_FORUM">New Forum</Resource>
     </page>
@@ -4217,6 +4241,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="VOTE">Vote</Resource>
       <Resource tag="MODERATOR">Moderate</Resource>
       <Resource tag="EDIT">Edit</Resource>
+      <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
       <Resource tag="DELETE">Delete</Resource>
       <Resource tag="UPLOAD">Upload</Resource>
       <Resource tag="DOWNLOAD">Download</Resource>
@@ -4255,6 +4280,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="UPLOAD_ACCESS_HELP">Allows Users to Upload Attachments in Posts.</Resource>
       <Resource tag="DOWNLOAD_ACCESS">Download Access</Resource>
       <Resource tag="DOWNLOAD_ACCESS_HELP">Allows Users to Download Attachments in Posts.</Resource>
+      <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
+      <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     </page>
   <page name="ADMIN_GROUPS">
      <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
@@ -4580,6 +4607,8 @@ Visit {forumname} at {forumlink}
      <Resource tag="ALLOW_USERTEXTEDITOR_HELP">Allow users to pick text editor in their profiles.</Resource>
      <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
      <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
+     <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
+     <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
      <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
      <Resource tag="ALLOW_AUTOTOPICTAGS_HELP">If enabled tags will be added by guessing. If users can add tags it will add auto tags to user tags.</Resource>
      <Resource tag="EVENTLOG_MAX_MESSAGES">Max event log message</Resource>

@@ -73,11 +73,11 @@ namespace YAF.Providers.Profile
 
                 // retrieve encoded profile data from the database
 
-                DataTable dt = DB.Current.__GetProfiles(ConnectionString,ApplicationName, 0, 1, username, null);
+                DataTable dt = Db.__GetProfiles(ConnectionString,ApplicationName, 0, 1, username, null);
 
                 if (dt.Rows.Count > 0)
                 {
-                    YAF.Providers.Profile.DB.DecodeProfileData(dt.Rows[0], settingPropertyCollection);
+                    YAF.Providers.Profile.Db.DecodeProfileData(dt.Rows[0], settingPropertyCollection);
                     /* foreach (SettingsPropertyValue prop in settingPropertyCollection)
                      {
                          object val = dt.Rows[0][prop.Name];
@@ -135,11 +135,11 @@ namespace YAF.Providers.Profile
             // load the data for the configuration
             LoadFromPropertyValueCollection(collection);
 
-            object userID = DB.Current.__GetProviderUserKey(ConnectionString, this.ApplicationName, username);
+            object userID = Db.__GetProviderUserKey(ConnectionString, this.ApplicationName, username);
             if (userID != null)
             {
                 // start saving...
-                DB.Current.__SetProfileProperties(ConnectionString, this.ApplicationName, userID, collection, _settingsColumnsList);
+                Db.__SetProfileProperties(ConnectionString, this.ApplicationName, userID, collection, _settingsColumnsList);
                 // erase from the cache
                 DeleteFromProfileCacheIfExists(username.ToLower());
             }

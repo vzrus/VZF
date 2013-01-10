@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.controls {
+namespace YAF.Сontrols {
     
     
     public partial class ForumJumper {

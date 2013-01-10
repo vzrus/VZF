@@ -85,13 +85,13 @@ namespace YAF.Controls {
         protected global::System.Web.UI.WebControls.PlaceHolder MyTopicItem;
         
         /// <summary>
-        /// LogutItem control.
+        /// LogoutItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder LogutItem;
+        protected global::System.Web.UI.WebControls.PlaceHolder LogoutItem;
         
         /// <summary>
         /// LogOutButton control.

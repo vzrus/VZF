@@ -294,7 +294,9 @@ namespace YAF.Pages.Admin
               this.UsrSigBBCodes.Text,
               this.UsrSigHTMLTags.Text,
               this.UsrAlbums.Text.Trim(),
-              this.UsrAlbumImages.Text.Trim());
+              this.UsrAlbumImages.Text.Trim(),
+              PageContext.PageUserID,
+              false);
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);

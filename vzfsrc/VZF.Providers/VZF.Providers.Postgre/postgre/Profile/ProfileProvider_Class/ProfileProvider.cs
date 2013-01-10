@@ -19,27 +19,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Collections.Concurrent;
-using System.Web.Profile;
-using NpgsqlTypes;
-using YAF.Types.Interfaces;
-
 namespace YAF.Providers.Profile
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Configuration;
     using System.Data;
-    using System.Text;
+    using System.Web.Profile;
+
+    using NpgsqlTypes;
+
     using YAF.Core;
-    using YAF.Classes.Pattern;
     using YAF.Providers.Utils;
-    using Npgsql;
-	/// <summary>
-	/// YAF Custom Profile Provider
-	/// </summary>
-	public partial class PgProfileProvider : ProfileProvider
+    using YAF.Types.Interfaces;
+
+    /// <summary>
+    ///  YAF Custom Profile Provider
+    /// </summary>
+    public partial class PgProfileProvider : ProfileProvider
     {
        #region Constants and Fields
 
@@ -47,8 +45,11 @@ namespace YAF.Providers.Profile
         /// The conn str app key name.
         /// </summary>
         private static string _connStrAppKeyName = "PgProfileConnectionString";
+
+        /// <summary>
+        /// The _connection string.
+        /// </summary>
         private static string _connectionString;
- 
 
         /// <summary>
         /// The _conn str name.
@@ -70,10 +71,9 @@ namespace YAF.Providers.Profile
         /// </summary>
         private List<SettingsPropertyColumn> _settingsColumnsList = new List<SettingsPropertyColumn>();
 
-        
         #endregion
 
-       #region Override Public Properties
+        #region Override Public Properties
         /// <summary>
         /// Gets the Connection String App Key Name.
         /// </summary>
@@ -84,6 +84,7 @@ namespace YAF.Providers.Profile
                 return _connStrAppKeyName;
             }
         }
+
         /// <summary>
         /// Gets the Connection String App Key Name.
         /// </summary>
@@ -93,18 +94,20 @@ namespace YAF.Providers.Profile
             {
                 return _connectionString;
             }
+
             set
             {
                 _connectionString = value;
             }
         }
-		
-		#endregion
+       
+        #endregion
     
-       #region Common Properties
-    /// <summary>
-    /// Gets UserProfileCache.
-    /// </summary>  
+        #region Common Properties
+
+        /// <summary>
+        ///  Gets UserProfileCache.
+        /// </summary>  
         private ConcurrentDictionary<string, SettingsPropertyValueCollection> _userProfileCache = null;
 
         /// <summary>
@@ -137,195 +140,269 @@ namespace YAF.Providers.Profile
 
             this.UserProfileCache.TryRemove(key, out collection);
         }
+
         /// <summary>
         /// The clear user profile cache.
         /// </summary>
-		private void ClearUserProfileCache()
-		{
-            YafContext.Current.Get<IObjectStore>().Remove(
-       this.GenerateCacheKey("UserProfileDictionary"));
-		}
+        private void ClearUserProfileCache()
+        {
+            YafContext.Current.Get<IObjectStore>().Remove(this.GenerateCacheKey("UserProfileDictionary"));
+        }
 
-		private string GenerateCacheKey( string name )
-		{
-			return String.Format( "PgProfileProvider-{0}-{1}", name, this.ApplicationName );
-		}
+        /// <summary>
+        /// The generate cache key.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private string GenerateCacheKey(string name)
+        {
+            return string.Format("PgProfileProvider-{0}-{1}", name, this.ApplicationName);
+        }
 
-		#region Overriden Public Methods
+        #region Overriden Public Methods
 
+        /// <summary>
+        /// The load from property collection.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        protected void LoadFromPropertyCollection(SettingsPropertyCollection collection)
+        {
+            if (this._propertiesSetup)
+            {
+                return;
+            }
 
-		protected void LoadFromPropertyCollection( SettingsPropertyCollection collection )
-		{
-			if ( !_propertiesSetup )
-			{
-                lock (_propertyLock)
-				// clear it out just in case something is still in there...
-				_settingsColumnsList.Clear();
+            lock (this._propertyLock)
+            {
+                // clear it out just in case something is still in there...
+                this._settingsColumnsList.Clear();
+            }
 
-				// validiate all the properties and populate the internal settings collection
-				foreach ( SettingsProperty property in collection )
-				{
-					NpgsqlDbType dbType;
-					int size;
+            // validiate all the properties and populate the internal settings collection
+            foreach (SettingsProperty property in collection)
+            {
+                NpgsqlDbType dbType;
+                int size;
 
-					// parse custom provider data...
-					GetDbTypeAndSizeFromString( property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
+                // parse custom provider data...
+                this.GetDbTypeAndSizeFromString(property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
-					// default the size to 256 if no size is specified
-                    // default the size to 256 if no size is specified
-                    if (dbType == NpgsqlDbType.Varchar && size == -1)
-                    {
-                        size = 256;
-                    }
-					_settingsColumnsList.Add( new SettingsPropertyColumn( property, dbType, size ) );
-				}
+                // default the size to 256 if no size is specified
+                // default the size to 256 if no size is specified
+                if (dbType == NpgsqlDbType.Varchar && size == -1)
+                {
+                    size = 256;
+                }
 
-				// sync profile table structure with the db...
-				DataTable structure = DB.Current.__GetProfileStructure("");
+                this._settingsColumnsList.Add(new SettingsPropertyColumn(property, dbType, size));
+            }
 
-				// verify all the columns are there...
-				foreach ( SettingsPropertyColumn column in _settingsColumnsList )
-				{
-					// see if this column exists
-					if ( !structure.Columns.Contains( column.Settings.Name ) )
-					{
-						// if not, create it...
-                        DB.Current.__AddProfileColumn(  ConnectionString, column.Settings.Name, column.DataType, column.Size);
-					}
-				}
+            // sync profile table structure with the db...
+            DataTable structure = Db.__GetProfileStructure(ConnectionString);
 
-				// it's setup now...
-				_propertiesSetup = true;
-			}
-		}
+            // verify all the columns are there...
+            foreach (SettingsPropertyColumn column in this._settingsColumnsList)
+            {
+                // see if this column exists
+                if (!structure.Columns.Contains(column.Settings.Name))
+                {
+                    // if not, create it...
+                    Db.__AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                }
+            }
 
-		protected void LoadFromPropertyValueCollection( SettingsPropertyValueCollection collection )
-		{
-			if ( !_propertiesSetup )
-			{
-				// clear it out just in case something is still in there...
-				_settingsColumnsList.Clear();
+            // it's setup now...
+            this._propertiesSetup = true;
+        }
 
-				// validiate all the properties and populate the internal settings collection
-				foreach ( SettingsPropertyValue value in collection )
-				{
-					NpgsqlTypes.NpgsqlDbType dbType;
-					int size;
+        /// <summary>
+        /// The load from property value collection.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        protected void LoadFromPropertyValueCollection(SettingsPropertyValueCollection collection)
+        {
+            if (_propertiesSetup)
+            {
+                return;
+            }
 
-					// parse custom provider data...
-					GetDbTypeAndSizeFromString( value.Property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
+            // clear it out just in case something is still in there...
+            this._settingsColumnsList.Clear();
 
-                    if (dbType == NpgsqlTypes.NpgsqlDbType.Varchar && size == -1)
-                    {
-                        size = 256;
-                    }
-					_settingsColumnsList.Add( new SettingsPropertyColumn( value.Property, dbType, size ) );
-				}
+            // validiate all the properties and populate the internal settings collection
+            foreach (SettingsPropertyValue value in collection)
+            {
+                NpgsqlDbType dbType;
+                int size;
 
-				// sync profile table structure with the db...
-                DataTable structure = DB.Current.__GetProfileStructure("");
+                // parse custom provider data...
+                this.GetDbTypeAndSizeFromString(value.Property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
 
-				// verify all the columns are there...
-				foreach ( SettingsPropertyColumn column in _settingsColumnsList )
-				{
-					// see if this column exists
-					if ( !structure.Columns.Contains( column.Settings.Name ) )
-					{
-						// if not, create it...
-                        DB.Current.__AddProfileColumn(  ConnectionString, column.Settings.Name, column.DataType, column.Size);
-					}
-				}
+                if (dbType == NpgsqlDbType.Varchar && size == -1)
+                {
+                    size = 256;
+                }
 
-				// it's setup now...
-				_propertiesSetup = true;
-			}
-		}
+                this._settingsColumnsList.Add( new SettingsPropertyColumn(value.Property, dbType, size));
+            }
 
-		private bool GetDbTypeAndSizeFromString( string providerData, out NpgsqlTypes.NpgsqlDbType dbType, out int size )
-		{
-			size = -1;
-			dbType = NpgsqlTypes.NpgsqlDbType.Varchar;
+            // sync profile table structure with the db...
+            DataTable structure = Db.__GetProfileStructure(ConnectionString);
 
-			if ( String.IsNullOrEmpty( providerData ) )
-			{
-				return false;
-			}
+            // verify all the columns are there...
+            foreach (SettingsPropertyColumn column in this._settingsColumnsList)
+            {
+                // see if this column exists
+                if (!structure.Columns.Contains(column.Settings.Name))
+                {
+                    // if not, create it...
+                    Db.__AddProfileColumn( ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                }
+            }
 
-			// split the data
-			string [] chunk = providerData.Split( new char [] { ';' } );
+            // it's setup now...
+            this._propertiesSetup = true;
+        }
+
+        /// <summary>
+        /// The get db type and size from string.
+        /// </summary>
+        /// <param name="providerData">
+        /// The provider data.
+        /// </param>
+        /// <param name="dbType">
+        /// The db type.
+        /// </param>
+        /// <param name="size">
+        /// The size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
+        private bool GetDbTypeAndSizeFromString( string providerData, out NpgsqlDbType dbType, out int size )
+        {
+            size = -1;
+            dbType = NpgsqlDbType.Varchar;
+
+            if (string.IsNullOrEmpty(providerData))
+            {
+                return false;
+            }
+
+            // split the data
+            string[] chunk = providerData.Split(new[] { ';' });
         
             // first item is the column name...
             string columnName = chunk[0];
+
             // vzrus addon convert values from mssql types...
-            if (chunk[1].IndexOf("varchar") >= 0)
-            { chunk[1] = "Varchar"; }
-            if (chunk[1].IndexOf("int") >= 0)
-            { chunk[1] = "Integer"; }
-            if (chunk[1].IndexOf("DateTime") >= 0)
-            { chunk[1] = "Timestamp"; }			
-		
+            if (chunk[1].IndexOf("varchar", StringComparison.Ordinal) >= 0)
+            {
+                chunk[1] = "Varchar";
+            }
 
-			// get the datatype and ignore case...
-			dbType = ( NpgsqlTypes.NpgsqlDbType )Enum.Parse( typeof( NpgsqlTypes.NpgsqlDbType ), chunk [1], true );
+            if (chunk[1].IndexOf("int", StringComparison.Ordinal) >= 0)
+            {
+                chunk[1] = "Integer";
+            }
 
-			if ( chunk.Length > 2 )
-			{
-				// handle size...
-				if ( !Int32.TryParse( chunk [2], out size ) )
-				{
-					throw new ArgumentException( "Unable to parse as integer: " + chunk [2] );
-				}
-			}
+            if (chunk[1].IndexOf("DateTime", StringComparison.Ordinal) >= 0)
+            {
+                chunk[1] = "Timestamp";
+            }
 
-			return true;
-		}
+            // get the datatype and ignore case...
+            dbType = (NpgsqlDbType)Enum.Parse(typeof(NpgsqlDbType), chunk[1], true);
 
-		
+            if (chunk.Length > 2)
+            {
+                // handle size...
+                if (!int.TryParse(chunk[2], out size))
+                {
+                    throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
+                }
+            }
 
-		private ProfileInfoCollection GetProfileAsCollection( ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, object userNameToMatch, object inactiveSinceDate, out int totalRecords )
-		{
-			if ( authenticationOption == ProfileAuthenticationOption.Anonymous )
-			{
-				ExceptionReporter.ThrowArgument( "PROFILE", "NOANONYMOUS" );
-			}
-			if ( pageIndex < 0 )
-			{
-				ExceptionReporter.ThrowArgument( "PROFILE", "PAGEINDEXTOOSMALL" );
-			}
-			if ( pageSize < 1 )
-			{
-				ExceptionReporter.ThrowArgument( "PROFILE", "PAGESIZETOOSMALL" );
-			}
+            return true;
+        }
 
-			// get all the profiles...
-			//DataSet allProfilesDS = DB.GetProfiles( this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate );
+        /// <summary>
+        /// The get profile as collection.
+        /// </summary>
+        /// <param name="authenticationOption">
+        /// The authentication option.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <param name="userNameToMatch">
+        /// The user name to match.
+        /// </param>
+        /// <param name="inactiveSinceDate">
+        /// The inactive since date.
+        /// </param>
+        /// <param name="totalRecords">
+        /// The total records.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ProfileInfoCollection"/>.
+        /// </returns>
+        private ProfileInfoCollection GetProfileAsCollection( ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, object userNameToMatch, object inactiveSinceDate, out int totalRecords )
+        {
+            if (authenticationOption == ProfileAuthenticationOption.Anonymous)
+            {
+                ExceptionReporter.ThrowArgument("PROFILE", "NOANONYMOUS");
+            }
 
-			// create an instance for the profiles...
-			ProfileInfoCollection profiles = new ProfileInfoCollection();
-            DataTable allProfilesDT = DB.Current.__GetProfiles(  ConnectionString, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
-			//DataTable allProfilesDT = allProfilesDS.Tables [0];
-			//DataTable profilesCountDT = allProfilesDS.Tables [1];
+            if (pageIndex < 0)
+            {
+                ExceptionReporter.ThrowArgument( "PROFILE", "PAGEINDEXTOOSMALL");
+            }
 
-			foreach ( DataRow profileRow in allProfilesDT.Rows )
-			{				
+            if (pageSize < 1)
+            {
+                ExceptionReporter.ThrowArgument("PROFILE", "PAGESIZETOOSMALL");
+            }
+
+            // get all the profiles...
+            // DataSet allProfilesDS = Db.GetProfiles( this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate );
+
+            // create an instance for the profiles...
+            var profiles = new ProfileInfoCollection();
+            DataTable allProfilesDt = Db.__GetProfiles(ConnectionString, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
+            
+            // DataTable allProfilesDT = allProfilesDS.Tables [0];
+            // DataTable profilesCountDT = allProfilesDS.Tables [1];
+            foreach (DataRow profileRow in allProfilesDt.Rows)
+            {
                 string username = profileRow["Username"].ToString();
-                DateTime lastActivity = DateTime.SpecifyKind(Convert.ToDateTime(profileRow["LastActivity"]), DateTimeKind.Utc);
-                DateTime lastUpdated = DateTime.SpecifyKind(Convert.ToDateTime(profileRow["LastUpdated"]), DateTimeKind.Utc);
+                var lastActivity = DateTime.SpecifyKind(Convert.ToDateTime(profileRow["LastActivity"]), DateTimeKind.Utc);
+                var lastUpdated = DateTime.SpecifyKind(Convert.ToDateTime(profileRow["LastUpdated"]), DateTimeKind.Utc);
 
-				profiles.Add( new ProfileInfo( username, false, lastActivity, lastUpdated, 0 ) );
-			}
+                profiles.Add(new ProfileInfo(username, false, lastActivity, lastUpdated, 0));
+            }
 
-			// get the first record which is the count...
-            totalRecords = Convert.ToInt32(allProfilesDT.Rows[0]["TotalCount"]);
+            // get the first record which is the count...
+            totalRecords = Convert.ToInt32(allProfilesDt.Rows[0]["TotalCount"]);
 
-			return profiles;
-		}
-        
+            return profiles;
+        }
 
-		#endregion
-	}
-	
-   
+        #endregion
+    }
 }
 
 

@@ -155,7 +155,10 @@ namespace YAF.Pages.Admin
                 this.DeleteAccess.Checked,
                 this.UploadAccess.Checked,
                 this.DownloadAccess.Checked,
-                sortOrder);
+                this.UserForumAccess.Checked,
+                sortOrder,
+                PageContext.PageUserID,
+                false);
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
@@ -200,6 +203,7 @@ namespace YAF.Pages.Admin
                     this.DeleteAccess.Checked = flags.DeleteAccess;
                     this.UploadAccess.Checked = flags.UploadAccess;
                     this.DownloadAccess.Checked = flags.DownloadAccess;
+                    this.UserForumAccess.Checked = flags.UserForumAccess;
                 }
             }
 

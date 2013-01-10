@@ -25,6 +25,7 @@ namespace YAF.Pages
 
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
@@ -98,7 +99,7 @@ namespace YAF.Pages
         public void Search_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // re-bind data
-            this.BindData(true);
+            this.BindData();
         }
 
         /// <summary>
@@ -304,7 +305,7 @@ namespace YAF.Pages
                 this.Ranks.DataBind();
             }
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -318,7 +319,7 @@ namespace YAF.Pages
         /// </param>
         protected void Pager_PageChange(object sender, EventArgs e)
         {
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -339,7 +340,7 @@ namespace YAF.Pages
             ViewState["SortNumPostsField"] = 0;
             ViewState["SortLastVisitField"] = 0;
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -360,7 +361,7 @@ namespace YAF.Pages
             ViewState["SortJoinedField"] = 0;
             ViewState["SortNumPostsField"] = 0;
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -381,7 +382,7 @@ namespace YAF.Pages
             ViewState["SortJoinedField"] = 0;
             ViewState["SortLastVisitField"] = 0;
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -402,7 +403,7 @@ namespace YAF.Pages
             ViewState["SortNumPostsField"] = 0;
             ViewState["SortLastVisitField"] = 0;
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
@@ -423,24 +424,22 @@ namespace YAF.Pages
             ViewState["SortNumPostsField"] = 0;
             ViewState["SortLastVisitField"] = 0;
 
-            this.BindData(false);
+            this.BindData();
         }
 
         /// <summary>
         /// The bind data.
         /// </summary>
-        /// <param name="isSearch">
-        /// The search.
-        /// </param>
-        private void BindData(bool isSearch)
+        private void BindData()
         {
+            this.AlphaSort1.PagerPage = ForumPages.members;
             this.Pager.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;
 
             // get the user list...
             int totalCount;
 
-            string selectedLetter = this.UserSearchName.Text.IsSet() ? this.UserSearchName.Text.Trim() : selectedCharLetter.ToString();
+            string selectedLetter = this.UserSearchName.Text.IsSet() ? this.UserSearchName.Text.Trim() : selectedCharLetter.ToString(CultureInfo.InvariantCulture);
             
             int numpostsTb;
 
@@ -461,7 +460,7 @@ namespace YAF.Pages
             this._userListDataTable = this.GetUserList(
                 selectedLetter,
                 0,
-                this.UserSearchName.Text.IsNotSet() || (selectedCharLetter == char.MinValue && selectedCharLetter == '#'),
+                this.UserSearchName.Text.IsNotSet() || (selectedCharLetter == char.MinValue || selectedCharLetter == '#'),
                 out totalCount);
             
             // get the view from the datatable

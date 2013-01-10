@@ -58,7 +58,7 @@
     <Compile Include="Fts\Search.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="SettingsPropertyColumn.cs" />
-    <Compile Include="DbAccess.cs" />
+    <Compile Include="PostgreDbAccess.cs" />
     <Compile Include="DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

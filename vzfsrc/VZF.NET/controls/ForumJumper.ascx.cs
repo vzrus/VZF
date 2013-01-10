@@ -15,12 +15,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Web;
-using YAF.Types.Constants;
-
-namespace YAF.controls
+namespace YAF.Сontrols
 {
     using System;
+    using System.Web;
+
     using YAF.Classes;
     using YAF.Controls;
     using YAF.Core;
@@ -33,8 +32,6 @@ namespace YAF.controls
         protected void Page_Load(object sender, EventArgs e)
         {
            // if (Page.IsPostBack) return;
-
-           
 
             if (Config.LargeForumTree)
             {

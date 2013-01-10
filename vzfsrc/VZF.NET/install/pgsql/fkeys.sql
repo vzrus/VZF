@@ -474,6 +474,27 @@ ALTER TABLE databaseSchema.objectQualifier_eventloggroupaccess
       ON UPDATE NO ACTION ON DELETE CASCADE; 
 END IF;
 
+ IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_forumhistory_objectQualifier_forum_forumid' LIMIT 1) THEN
+ALTER TABLE databaseSchema.objectQualifier_forumhistory
+  ADD CONSTRAINT fk_databaseSchema_objectQualifier_forumhistory_objectQualifier_forum_forumid FOREIGN KEY (forumid)
+      REFERENCES databaseSchema.objectQualifier_forum(forumid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE; 
+END IF;
+
+ IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_grouphistory_objectQualifier_group_groupid' LIMIT 1) THEN
+ALTER TABLE databaseSchema.objectQualifier_grouphistory
+  ADD CONSTRAINT fk_databaseSchema_objectQualifier_grouphistory_objectQualifier_group_groupid FOREIGN KEY (groupid)
+      REFERENCES databaseSchema.objectQualifier_group(groupid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE; 
+END IF;
+
+ IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_grouphistory_objectQualifier_group_groupid' LIMIT 1) THEN
+ALTER TABLE databaseSchema.objectQualifier_accessmaskhistory
+  ADD CONSTRAINT fk_databaseSchema_objectQualifier_accessmaskhistory_objectQualifier_accessmask_accessmaskid FOREIGN KEY (accessmaskid)
+      REFERENCES databaseSchema.objectQualifier_accessmask(accessmaskid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE; 
+END IF;
+
 -- Foreign Key: fk_databaseSchema_objectQualifier_useralbum_objectQualifier_useralbumimage
 /* IF NOT EXISTS(SELECT 1 FROM pg_constraint where contype='f' and conname ='fk_databaseSchema_objectQualifier_album_objectQualifier_albumimage') THEN
 ALTER TABLE databaseSchema.objectQualifier_useralbumimage

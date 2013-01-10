@@ -427,7 +427,7 @@ namespace VZF.Kernel
                 YafContext.Current.User != null ? YafContext.Current.PageUserID.ToString() : UserMembershipHelper.GuestUserName),
                 () => CommonDb.forum_listall_sorted(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.PageUserID),
                 TimeSpan.FromMinutes(5)))
-            {
+            { 
                 if (childRows != null && childRows.Rows.Count > 0)
                 {
 
@@ -646,8 +646,9 @@ namespace VZF.Kernel
                         string accessRow = string.Empty;
                         if (view == 1)
                         {
-                            accessRow =" : " + UserForumAccess.AddAccessImagesAndTips(YafContext.Current.PageUserID,
-                                                                               row["ForumID"].ToType<int>());
+                            accessRow = " : "
+                                        + UserForumAccess.AddAccessImagesAndTips(
+                                            YafContext.Current.PageUserID, row["ForumID"].ToType<int>());
                         }
                         if (view == 3)
                         {
@@ -656,12 +657,14 @@ namespace VZF.Kernel
                         else
                         {
                             tn.title = row["NoAccess"].ToType<bool>()
-                                          ? "{0}{1}".FormatWith(row["Title"],
-                                                                YafContext.Current.Get<ILocalization>().GetText(
-                                                                    "DEFAULT", "NO_FORUM_ACCESS"))
-                                          : @"<a href='{0}' target='_top' title='{1}'>{1}</a>{2}".FormatWith(
-                                               realU.Replace("***", row["ForumID"].ToString()), HttpUtility.HtmlEncode(row["Title"]),
-                                              accessRow);
+                                           ? "{0}{1}".FormatWith(
+                                               row["Title"],
+                                               YafContext.Current.Get<ILocalization>()
+                                                         .GetText("DEFAULT", "NO_FORUM_ACCESS"))
+                                           : @"<a href='{0}' target='_top' title='{1}'>{1}</a>{2}".FormatWith(
+                                               realU.Replace("***", row["ForumID"].ToString()),
+                                               HttpUtility.HtmlEncode(row["Title"]),
+                                               accessRow);
                         }
                       
                         tn.isLazy = row["HasChildren"].ToType<bool>();

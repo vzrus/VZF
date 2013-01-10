@@ -201,7 +201,10 @@ namespace YAF.Controls
             {
                 DateTime birth;
 
-                if (!DateTime.TryParse(user["Birthday"].ToString(), out birth)) continue;
+                if (!DateTime.TryParse(user["Birthday"].ToString(), out birth))
+                {
+                    continue;
+                }
 
                 int tz;
 
@@ -214,9 +217,12 @@ namespace YAF.Controls
                 var dtt = birth.AddYears(DateTime.UtcNow.Year - birth.Year);
               
                 // The user can be congratulated. The time zone in profile is saved in the list user timezone
-                if (DateTime.UtcNow <= dtt.AddMinutes(-tz).ToUniversalTime() ||
-                    DateTime.UtcNow >= dtt.AddMinutes(-tz + 1440).ToUniversalTime()) continue;
-                
+                if (DateTime.UtcNow <= dtt.AddMinutes(-tz).ToUniversalTime()
+                    || DateTime.UtcNow >= dtt.AddMinutes(-tz + 1440).ToUniversalTime())
+                {
+                    continue;
+                }
+
                 this.BirthdayUsers.Controls.Add(
                     new UserLink
                     {
@@ -236,6 +242,7 @@ namespace YAF.Controls
                     this.BirthdayUsers.Visible = true;
                 }
             }
+
             if (this.BirthdayUsers.Visible)
             {
                 // Remove last Separator
@@ -272,15 +279,23 @@ namespace YAF.Controls
                     "MOSTACTIVEUSERS_FOR_LINK", this.Get<YafBoardSettings>().MostActiveUserDays);
             }
 
-            if (daysMostActive == 1)
-            {
-                this.MosActiveForLink.Text = this.GetText(
-                    "MOSTACTIVEUSERS_FORTODAY_LINK");
-            }
-
             if (daysMostActive <= 0)
             {
                 this.MosActiveForLink.Visible = false;
+            }
+            else
+            {
+                if (daysMostActive == 1)
+                {
+                    this.MosActiveForLink.Text = this.GetText(
+                        "MOSTACTIVEUSERS_FORTODAY_LINK");
+                }
+            }
+
+            if (this.Get<YafBoardSettings>().TagTopicMaxCount > 0)
+            {
+                this.BoardTagsLink.Visible = this.Get<YafBoardSettings>().TagTopicMaxCount > 0;
+                this.BoardTagsLink.Text = this.GetText("TAGSBOARD", "TAGS_BOARD_LNK");
             }
 
             // Tommy MOD "Recent Users" Count.
@@ -296,18 +311,17 @@ namespace YAF.Controls
                         activeUsers30Day.Select("LastVisit >= '{0}'".FormatWith(DateTime.UtcNow.AddDays(-1)));
                     this.RecentUsersCount.Text = this.GetTextFormatted(
                         "RECENT_ONLINE_USERS", activeUsers1Day1.Length, activeUsers30Day.Rows.Count);
+                    this.RecentUsersPlaceHolder.Visible = true;
                     if (activeUsers1Day1.Length > 0)
                     {
                         this.RecentUsers.ActiveUserTable = activeUsers1Day1.CopyToDataTable();
-                        RecentUsers.Visible = true;
+                        this.RecentUsers.Visible = true;
                     }
-                    RecentUsersPlaceHolder.Visible = true;
-                    
                 }
             }
             else
             {
-                RecentUsersPlaceHolder.Visible = false;
+                this.RecentUsersPlaceHolder.Visible = false;
             }
 
             // Forum Statistics
@@ -317,11 +331,11 @@ namespace YAF.Controls
               {
                   // get the post stats
                   var dr = CommonDb.board_poststats(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<YafBoardSettings>().UseStyledNicks, true);
-                  
+              
                   // Set colorOnly parameter to false, as we get here color from data field in the place
                   dr.LastUserStyle = this.Get<YafBoardSettings>().UseStyledNicks
                                           ? this.Get<IStyleTransform>().DecodeStyleByString(
-                                            dr.LastUserStyle, false)
+                                          dr.LastUserStyle ?? string.Empty, false)
                                           : null;
                   return dr;
               },
@@ -368,7 +382,7 @@ namespace YAF.Controls
                     "stats_lastpost",
                     new DisplayDateTime
                         {
-                            DateTime = postsStatisticsDataRow.LastPost, 
+                            DateTime = postsStatisticsDataRow.LastPost,
                             Format = DateTimeFormat.BothTopic
                         }.RenderToString());
             }
@@ -390,12 +404,35 @@ namespace YAF.Controls
             this.CollapsibleImage.ToolTip = this.GetText("COMMON", "SHOWHIDE");
 
             this.GetTodaysBirthdays();
-            ForumStatsImage.NavigateUrl = (YafBuildLink.GetLink(ForumPages.mostactiveusers));
+            this.ForumStatsImage.NavigateUrl = YafBuildLink.GetLink(ForumPages.mostactiveusers);
         }
 
+        /// <summary>
+        /// The mos active for link_ click.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        /// <param name="args">
+        /// The args.
+        /// </param>
         protected void MosActiveForLink_Click(object o, EventArgs args)
         {
             Response.Redirect(YafBuildLink.GetLink(ForumPages.mostactiveusers));
+        }
+
+        /// <summary>
+        /// The board tags link_ click.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        protected void BoardTagsLink_Click(object o, EventArgs args)
+        {
+            Response.Redirect(YafBuildLink.GetLink(ForumPages.boardtags));
         }
 
         #endregion

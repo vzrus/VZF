@@ -1309,6 +1309,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowTopicTags;
         
         /// <summary>
+        /// HelpLabel224 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.HelpLabel HelpLabel224;
+        
+        /// <summary>
+        /// ShowNumberOfTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ShowNumberOfTags;
+        
+        /// <summary>
         /// HelpLabel221 control.
         /// </summary>
         /// <remarks>

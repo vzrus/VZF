@@ -92,7 +92,8 @@ namespace YAF.Pages
                 this.PagerTop.PageSize,
                 false,
                 true,
-                false);
+                false,
+                this.Get<YafBoardSettings>().AllowTopicTags);
 
             this.topiclist.DataSource = dt;
             this.UserList.DataSource = CommonDb.userforum_list(PageContext.PageModuleID, null, this.PageContext.PageForumID);
