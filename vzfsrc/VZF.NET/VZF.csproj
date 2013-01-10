@@ -6778,7 +6778,9 @@
     <Content Include="themes\yafvision\vote_lcap.gif" />
     <Content Include="themes\yafvision\vote_rcap.gif" />
     <Content Include="themes\yafvision\voting_bar.gif" />
-    <Content Include="UrlRewriter.config" />
+    <Content Include="UrlRewriter.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />

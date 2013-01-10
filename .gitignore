@@ -36,3 +36,8 @@ vzfsrc/VZF.NET/install/mssql
 vzfsrc/VZF.ImmigrationEnforcement/
 *.ncrunchsolution
 *.ncrunchproject
+vzfsrc/VZF.NET/app_offline.htm
+vzfsrc/VZF.NET/dbmy.config
+vzfsrc/VZF.NET/web_pg_remote.config
+vzfsrc/VZF.NET/app_pg_remote.config
+vzfsrc/VZF.NET/app_offline1.htm

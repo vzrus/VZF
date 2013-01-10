@@ -179,7 +179,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      Db.__CreateRole(  ConnectionString, this.ApplicationName, roleName);
+      Db.__CreateRole(ConnectionString, this.ApplicationName, roleName);
     }
 
     /// <summary>

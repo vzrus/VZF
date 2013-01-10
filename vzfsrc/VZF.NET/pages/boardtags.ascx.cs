@@ -4,6 +4,7 @@
     using System.Data;
     using System.Globalization;
     using System.Linq;
+    using System.Text;
     using System.Web;
 
     using VZF.Data.Common;
@@ -70,9 +71,11 @@
         /// </param>
         public void Search_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
+           
             // re-bind data
-           // this.AlphaSort1.DataBind();
-            YafBuildLink.Redirect(ForumPages.boardtags, "tag={0}".FormatWith(this.UserSearchName.Text.Trim()));
+          //  this.BindData();
+             HttpContext.Current.Response.Charset = Encoding.UTF8.WebName;
+            YafBuildLink.Redirect(ForumPages.boardtags, "tag={0}".FormatWith(HttpUtility.HtmlEncode(HttpUtility.UrlEncode(this.UserSearchName.Text.Trim()))));
         }
 
         /// <summary>
@@ -99,11 +102,11 @@
         {
             if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag") != null)
             {
-                this.UserSearchName.Text = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag");
+                this.UserSearchName.Text = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("tag")));
             }
            
             char selectedCharLetter = this.AlphaSort1.CurrentLetter;
-            string selectedLetter = null;
+            string selectedLetter;
 
             bool beginsWith = this.UserSearchName.Text.IsNotSet()
                               || !(selectedCharLetter == char.MinValue || selectedCharLetter == '#');
@@ -124,7 +127,7 @@
                     beginsWith))
             {
                 this.TagCloudBoard.TagsData = dtTopics;
-
+               
                 if (dtTopics != null && dtTopics.Rows.Count > 0)
                 {
                     this.PagerTop.Count = dtTopics.AsEnumerable().First().Field<int>("TotalCount");
