@@ -159,7 +159,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void ForumsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable forums_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>());
+            DataTable forums_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>(), false);
             this.ForumsParent.DataSource = forums_category;
             this.ForumsParent.DataBind();
         }
@@ -238,7 +238,7 @@ namespace YAF.Pages.Admin
             this.PostsCategory.DataSource = categories;
 
             // Access Mask Lists               
-            this.ForumsStartMask.DataSource = CommonDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.ForumsStartMask.DataSource = CommonDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
             this.ForumsGroups.DataSource = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
@@ -309,7 +309,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void PostsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable posts_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>());
+            DataTable posts_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PostsCategory.SelectedValue.ToType<int>(),false);
             this.PostsForum.DataSource = posts_category;
             this.PostsForum.DataBind();
         }
@@ -358,7 +358,7 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void TopicsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable topic_forums = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>());
+            DataTable topic_forums = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.TopicsCategory.SelectedValue.ToType<int>(),false);
             this.TopicsForum.DataSource = topic_forums;
             this.TopicsForum.DataBind();
         }
@@ -769,7 +769,7 @@ namespace YAF.Pages.Admin
             {
                 long _forumID = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
-                DataTable _accessForumList = CommonDb.forumaccess_list(PageContext.PageModuleID, _forumID);
+                DataTable _accessForumList = CommonDb.forumaccess_list(this.PageContext.PageModuleID, _forumID, null, false);
                 _forumID = CommonDb.forum_save(
                     PageContext.PageModuleID,
                     _forumID,

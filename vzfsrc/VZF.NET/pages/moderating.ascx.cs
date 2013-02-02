@@ -29,6 +29,7 @@ namespace YAF.Pages
     using System;
     using System.Data;
     using System.Linq;
+    using System.Web;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
@@ -157,7 +158,26 @@ namespace YAF.Pages
         {
             if (!this.PageContext.ForumModeratorAccess)
             {
-                YafBuildLink.AccessDenied();
+            var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
+                if (forumId != null)
+                {
+                    using (
+                        var dt = CommonDb.forum_byuserlist(
+                            PageContext.PageModuleID, PageContext.PageBoardID, forumId, PageContext.PageUserID, true))
+                    {
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                        }
+                        else
+                        {
+                            YafBuildLink.AccessDenied(); 
+                        }
+                    }
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
             }
 
             if (!this.IsPostBack)

@@ -449,8 +449,8 @@ namespace YAF.Pages
                         }*/
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "spellcheckerjs",
-                JavaScriptBlocks.SpellCheckerLoadJs(editorClientId,editorSpellBtnId,this.PageContext.CultureUser.IsSet()
-                        ? this.PageContext.CultureUser.Substring(0, 2)
+                JavaScriptBlocks.SpellCheckerLoadJs(editorClientId, editorSpellBtnId, this.PageContext.CurrentUserData.CultureUser.IsSet()
+                        ? this.PageContext.CurrentUserData.CultureUser.Substring(0, 2)
                         : this.Get<YafBoardSettings>().Culture,
                     this.GetText("SPELL_CORRECT")));
 

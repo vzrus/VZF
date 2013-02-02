@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
 <script runat="server">
-	
+    
 </script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -10,8 +10,8 @@
         name="scriptlanguage" content="text/javascript" />
     <meta id="YafMetaStyles" http-equiv="Content-Style-Type" runat="server" name="styles"
         content="text/css" />
-    <meta id="YafMetaDescription" runat="server" name="description" content="Yet Another Forum.NET -- A bulletin board system written in ASP.NET" />
-    <meta id="YafMetaKeywords" runat="server" name="keywords" content="Yet Another Forum.net, Forum, ASP.NET, BB, Bulletin Board, opensource" />
+    <meta id="YafMetaDescription" runat="server" name="description" content="VZF.NET -- A bulletin board system written in ASP.NET" />
+    <meta id="YafMetaKeywords" runat="server" name="keywords" content="vzf.net, Forum, ASP.NET, BB, Bulletin Board, opensource" />
     <meta name="HandheldFriendly" content="true"/>
     <meta name="viewport" content="width=device-width,user-scalable=yes"/>
     <title></title>

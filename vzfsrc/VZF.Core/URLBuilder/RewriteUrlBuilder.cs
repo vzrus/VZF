@@ -104,7 +104,6 @@ namespace YAF.Core
                 newUrl = before + Config.UrlRewritingPrefix;
 
                 string useKey = string.Empty;
-                string useKey2 = string.Empty;
                 string description = string.Empty;
                 string pageName = parser["g"];
                 bool isFeed = false;
@@ -159,8 +158,9 @@ namespace YAF.Core
                         if (parser["pg"].IsSet())
                         {
                             useKey = "pg";
+                            description = parser[useKey].ToEnum<YafRssFeeds>().ToString().ToLower(); 
                             //// pageName += "pg";
-                            if (parser[useKey].ToType<int>() == YafRssFeeds.Active.ToInt())
+                           /* if (parser[useKey].ToType<int>() == YafRssFeeds.Active.ToInt())
                             {
                                 description = "active";
                             }
@@ -187,9 +187,10 @@ namespace YAF.Core
                             else if (parser[useKey].ToType<int>() == YafRssFeeds.Topics.ToInt())
                             {
                                 description = "topics";
-                            }
+                            } */
                         }
 
+                        string useKey2;
                         if (parser["f"].IsSet())
                         {
                             useKey2 = "f";

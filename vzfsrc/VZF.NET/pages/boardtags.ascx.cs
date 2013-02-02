@@ -6,6 +6,8 @@
     using System.Linq;
     using System.Text;
     using System.Web;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
 
@@ -15,6 +17,7 @@
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utils;
+    using YAF.Utils.Helpers;
 
     /// <summary>
     /// The boardtags.
@@ -32,16 +35,20 @@
         /// </param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!this.IsPostBack)
+            if (this.IsPostBack)
             {
-                this.PageLinksTop.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
-                this.PageLinksTop.AddLink(this.GetText("TAGSBOARD", "TITLE"), string.Empty);
-                this.SearchByUserName.Text = this.GetText("SEARCH", "BTNSEARCH");
-                this.ResetUserSearch.Text = this.GetText("SEARCH", "CLEAR");
-                this.OKButton.Text = this.GetText("OK");
-                this.AlphaSort1.PagerPage = ForumPages.boardtags;
-                this.BindData();
+                return;
             }
+
+            this.PageLinksTop.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
+            this.PageLinksTop.AddLink(this.GetText("TAGSBOARD", "TITLE"), string.Empty);
+            this.SearchByUserName.Text = this.GetText("SEARCH", "BTNSEARCH");
+            this.ResetUserSearch.Text = this.GetText("SEARCH", "CLEAR");
+            this.OKButton.Text = this.GetText("OK");
+
+           // this.AlphaSort1.PagerPage = ForumPages.boardtags;
+
+            this.BindData();
         }
 
         /// <summary>
@@ -58,6 +65,26 @@
             YafBuildLink.Redirect(ForumPages.forum);
         }
 
+        protected void TagList_OnItemDataBound(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            // populate the controls here...
+            if (repeaterItemEventArgs.Item.ItemType != ListItemType.Item && repeaterItemEventArgs.Item.ItemType != ListItemType.AlternatingItem)
+            {
+                return;
+            }
+
+            var currentRow = (DataRowView)repeaterItemEventArgs.Item.DataItem;
+
+            // get the controls
+
+            var tagLink = repeaterItemEventArgs.Item.FindControlRecursiveAs<HtmlAnchor>("TagLink");
+            tagLink.HRef = YafBuildLink.GetLinkNotEscaped(
+                ForumPages.topicsbytags,
+                "tagid={0}&{1}".FormatWith(currentRow["TagID"], "b={0}".FormatWith(PageContext.PageBoardID)));
+            tagLink.Attributes["alt"] = this.HtmlEncode(currentRow["Tag"]);
+            tagLink.Title = this.HtmlEncode(currentRow["Tag"]);
+        }
+        
         #region Public Methods
 
         /// <summary>
@@ -71,11 +98,8 @@
         /// </param>
         public void Search_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-           
             // re-bind data
-          //  this.BindData();
-             HttpContext.Current.Response.Charset = Encoding.UTF8.WebName;
-            YafBuildLink.Redirect(ForumPages.boardtags, "tag={0}".FormatWith(HttpUtility.HtmlEncode(HttpUtility.UrlEncode(this.UserSearchName.Text.Trim()))));
+            this.BindData();
         }
 
         /// <summary>
@@ -91,6 +115,21 @@
         {
             // re-direct to self.
             YafBuildLink.Redirect(ForumPages.boardtags);
+        }
+
+
+        /// <summary>
+        /// The pager_ page change.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Pager_PageChange(object sender, EventArgs e)
+        {
+            this.BindData();
         }
 
         #endregion
@@ -127,12 +166,15 @@
                     selectedLetter,
                     beginsWith))
             {
-                this.TagCloudBoard.TagsData = dtTopics;
-               
+               this.TagList.DataSource = dtTopics; 
+               this.TagList.DataBind();
+              // this.TagCloudBoard.TagsData = dtTopics;
+              // this.TagCloudBoard.DataBind();
                 if (dtTopics != null && dtTopics.Rows.Count > 0)
                 {
                     this.PagerTop.Count = dtTopics.AsEnumerable().First().Field<int>("TotalCount");
                 }
+                
             }
         }
     }

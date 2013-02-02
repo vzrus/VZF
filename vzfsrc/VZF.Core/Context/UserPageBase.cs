@@ -69,28 +69,6 @@ namespace YAF.Core
         }
 
         /// <summary>
-        ///   Gets the culture code for the user
-        /// </summary>
-        public string CultureUser
-        {
-            get
-            {
-                return this.PageValueAsString("CultureUser");
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether the time zone offset for the user
-        /// </summary>
-        public bool DSTUser
-        {
-            get
-            {
-                return this._userFlags != null && this._userFlags.IsDST;
-            }
-        }
-
-        /// <summary>
         ///   Gets a value indicating whether the current user can delete own messages in the current forum (True).
         /// </summary>
         public bool ForumDeleteAccess
@@ -518,6 +496,17 @@ namespace YAF.Core
             get
             {
                 return this.PageValueAsString("TopicName");
+            }
+        }
+
+        /// <summary>
+        ///   Gets the CultureUser
+        /// </summary>
+        public string CultureUser
+        {
+            get
+            {
+                return this.PageValueAsString("CultureUser");
             }
         }
 

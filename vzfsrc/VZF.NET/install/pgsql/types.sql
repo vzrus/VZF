@@ -102,7 +102,9 @@ CREATE TYPE databaseSchema.objectQualifier_accessmask_list_return_type AS
 "BoardID" integer,
 "Name" varchar,
 "Flags" integer,
-"SortOrder" smallint
+"SortOrder" smallint,
+"IsUserMask" boolean,
+"IsAdminMask" boolean
 );
 --GO
 

@@ -1157,7 +1157,7 @@ namespace VZF.Data.Firebird
         /// </summary>
         /// <param name="boardID">BoardID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin(string connectionString, [NotNull] object boardID)
+        public static DataSet ds_forumadmin(string connectionString, [NotNull] object boardID, object pageUserID, object isUserForum)
         {
             using (FbDbConnectionManager connMan = new FbDbConnectionManager(connectionString))
             {
@@ -1173,15 +1173,15 @@ namespace VZF.Data.Firebird
                         {
                             da.SelectCommand.Transaction = trans;
 
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[0].Value = boardID;
-
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[1].Value = DBNull.Value;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = DBNull.Value;
+                          
 
                             da.SelectCommand.CommandType = CommandType.StoredProcedure;
                             da.Fill(ds, FbDbAccess.GetObjectName("Category"));
                             da.SelectCommand.CommandText = FbDbAccess.GetObjectName("forum_list");
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = pageUserID;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_ISUSERFORUM", FbDbType.Boolean)).Value = isUserForum;
                             da.Fill(ds, FbDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted = ds.Tables[FbDbAccess.GetObjectName("ForumUnsorted")].Clone();
                             dtForumListSorted.TableName = FbDbAccess.GetObjectName("Forum");
@@ -1219,17 +1219,54 @@ namespace VZF.Data.Firebird
         /// <param name="accessMaskID">ID of access mask</param>
         /// <returns></returns>
         public static DataTable accessmask_list(
-            string connectionString, object boardID, object accessMaskID, object excludeFlags)
+            string connectionString, object boardID, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = FbDbAccess.GetCommand("accessmask_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
-                cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer));
-                cmd.Parameters[1].Value = accessMaskID;
-                cmd.Parameters.Add(new FbParameter("@I_EXCLUDEFLAGS", FbDbType.Integer));
-                cmd.Parameters[2].Value = excludeFlags;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add(new FbParameter("@I_EXCLUDEFLAGS", FbDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new FbParameter("@I_PAGEUSEID", FbDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERMASK", FbDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new FbParameter("@I_ISADMINMASK", FbDbType.Boolean)).Value = isAdminMask;
+                
+                return FbDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_pforumlist(
+           string connectionString, object boardID, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = FbDbAccess.GetCommand("accessmask_pforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add(new FbParameter("@I_EXCLUDEFLAGS", FbDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new FbParameter("@I_PAGEUSEID", FbDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERMASK", FbDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new FbParameter("@I_ISADMINMASK", FbDbType.Boolean)).Value = isAdminMask;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_aforumlist(
+           string connectionString, object boardID, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = FbDbAccess.GetCommand("accessmask_aforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add(new FbParameter("@I_EXCLUDEFLAGS", FbDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new FbParameter("@I_PAGEUSEID", FbDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERMASK", FbDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new FbParameter("@I_ISADMINMASK", FbDbType.Boolean)).Value = isAdminMask;
+
                 return FbDbAccess.GetData(cmd, connectionString);
 
             }
@@ -1287,8 +1324,8 @@ namespace VZF.Data.Firebird
             object downloadAccess,
             [NotNull] object userForumAccess,
             object sortOrder, 
-            [CanBeNull] object userId, 
-            [NotNull] object isUserMask)
+            [CanBeNull] object userId,
+            [NotNull] object isUserMask, [NotNull] object isAdminMask)
         {
             using (var cmd = FbDbAccess.GetCommand("accessmask_save"))
             {
@@ -1312,6 +1349,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add("@I_SORTORDER", FbDbType.Integer).Value = sortOrder;
                 cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
                 cmd.Parameters.Add("@I_ISUSERMASK", FbDbType.Boolean).Value = isUserMask;
+                cmd.Parameters.Add("@I_ISADMINMASK", FbDbType.Boolean).Value = isAdminMask;
                 cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -2943,11 +2981,29 @@ namespace VZF.Data.Firebird
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID ?? DBNull.Value; 
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID ?? DBNull.Value;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = DBNull.Value;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERFORUM", FbDbType.Boolean)).Value = false; 
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
+
+        public static DataTable forum_byuserlist(string connectionString, object boardID, object forumID, object userId, object isUserForum)
+        {
+            using (var cmd = FbDbAccess.GetCommand("forum_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID ?? DBNull.Value;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERFORUM", FbDbType.Boolean)).Value = isUserForum;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
 
         /// <summary>
         /// Listes all forums accessible to a user
@@ -3095,7 +3151,7 @@ namespace VZF.Data.Firebird
         /// <param name="EmptyFirstRow">EmptyFirstRow</param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            string connectionString, object boardID, object categoryID, bool emptyFirstRow)
+            string connectionString, object boardID, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = FbDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -3103,7 +3159,8 @@ namespace VZF.Data.Firebird
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
                 cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
-
+                cmd.Parameters.Add(new FbParameter("@I_ALLOWUSERFORUMSONLY", FbDbType.Boolean)).Value = allowUserForumsOnly;
+   
                 using (DataTable dt = FbDbAccess.GetData(cmd, connectionString))
                 {
                     return forum_sort_list(connectionString, dt, 0, Convert.ToInt32(categoryID.ToString()), 0, null, emptyFirstRow);
@@ -3232,10 +3289,8 @@ namespace VZF.Data.Firebird
                                 FbDbAccess.IsolationLevel))
                         {
                             da.SelectCommand.Transaction = trans;
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[0].Value = boardID;
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[1].Value = DBNull.Value;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = DBNull.Value;
 
                             da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
@@ -3243,11 +3298,9 @@ namespace VZF.Data.Firebird
                             da.Fill(ds, FbDbAccess.GetObjectName("Category"));
                             da.SelectCommand.CommandText = FbDbAccess.GetObjectName("forum_moderatelist");
                             da.SelectCommand.Parameters.Clear();
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[0].Value = boardID;
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                            da.SelectCommand.Parameters[1].Value = userID;
-
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = boardID;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = userID;
+                           
                             da.Fill(ds, FbDbAccess.GetObjectName("ForumUnsorted"));
 
                             DataTable dtForumListSorted = ds.Tables[FbDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -3653,14 +3706,15 @@ namespace VZF.Data.Firebird
 
         #region yaf_ForumAccess
 
-        public static DataTable forumaccess_list(string connectionString, object forumID)
+        public static DataTable forumaccess_list(string connectionString, object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = FbDbAccess.GetCommand("forumaccess_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-                cmd.Parameters[0].Value = forumID;
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_INCLUDEUSERGROUPS", FbDbType.Boolean)).Value = includeUserGroups;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
@@ -3705,6 +3759,21 @@ namespace VZF.Data.Firebird
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
                 cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable group_byuserlist(string connectionString, [NotNull] object boardID, [NotNull] object groupID, object userId, object isUserGroup)
+        {
+            using (var cmd = FbDbAccess.GetCommand("group_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_ISUSERGROUP", FbDbType.Integer)).Value = isUserGroup;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }

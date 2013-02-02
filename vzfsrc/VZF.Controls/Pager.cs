@@ -358,13 +358,13 @@ if (jQuery('#' + id).parents('.ui-tabs').length > 0)
 
 gotoForm.css({{position:'absolute',zindex:999,top:topOffset,left:leftOffset}});
 gotoForm.fadeIn( 'slow', function() {{
-	jQuery('#{0}').bind('click', openGotoPageClick);  
-	jQuery(document).bind('click', function(e) {{
-		jQuery('#{0}').hide();
-		var fn = arguments.callee;
-		jQuery(document).unbind('click', fn);
-		jQuery('#{0}').unbind('click', openGotoPageClick);
-	}});
+    jQuery('#{0}').bind('click', openGotoPageClick);  
+    jQuery(document).bind('click', function(e) {{
+        jQuery('#{0}').hide();
+        var fn = arguments.callee;
+        jQuery(document).unbind('click', fn);
+        jQuery('#{0}').unbind('click', openGotoPageClick);
+    }});
   jQuery('#{1}').focus();
 
 }});

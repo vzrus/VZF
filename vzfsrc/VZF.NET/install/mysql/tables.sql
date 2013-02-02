@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Forum
        `ParentID` INT NULL,
        `Name` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
-       `SortOrder` SMALLINT(5) NOT NULL,
+       `SortOrder` INT NOT NULL DEFAULT 0,
        `LastPosted` DATETIME NULL,
        `LastTopicID` INT NULL,
        `LastMessageID` INT NULL,
@@ -1792,6 +1792,9 @@ CREATE  PROCEDURE {databaseName}.{objectQualifier}change_table_columns()
              ALTER TABLE  {databaseName}.{objectQualifier}BannedIP CHANGE `Mask` `Mask` VARCHAR(57);
              ALTER TABLE  {databaseName}.{objectQualifier}Active CHANGE `Location` `Location` VARCHAR(255);
              ALTER TABLE  {databaseName}.{objectQualifier}User CHANGE `Culture` `Culture` VARCHAR(10);
+             ALTER TABLE  {databaseName}.{objectQualifier}AccessMask CHANGE `SortOrder` `SortOrder` INT;
+             ALTER TABLE  {databaseName}.{objectQualifier}Group CHANGE `SortOrder` `SortOrder` INT;
+             ALTER TABLE  {databaseName}.{objectQualifier}Forum CHANGE `SortOrder` `SortOrder` INT;
         END;
 --GO
 CALL {databaseName}.{objectQualifier}change_table_columns();

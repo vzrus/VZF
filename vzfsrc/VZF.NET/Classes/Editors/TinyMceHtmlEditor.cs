@@ -101,7 +101,7 @@ namespace YAF.Editors
     {
         YafContext.Current.PageElements.RegisterJsBlock(
         "editorlang",
-        @"var editorLanguage = ""{0}"";".FormatWith(YafContext.Current.CultureUser.IsSet() ? YafContext.Current.CultureUser.Substring(0, 2) : this.Get<YafBoardSettings>().Culture.Substring(0, 2)));
+        @"var editorLanguage = ""{0}"";".FormatWith(YafContext.Current.CurrentUserData.CultureUser.IsSet() ? YafContext.Current.CurrentUserData.CultureUser.Substring(0, 2) : this.Get<YafBoardSettings>().Culture.Substring(0, 2)));
 
       YafContext.Current.PageElements.RegisterJsInclude("tinymceinit", this.ResolveUrl("tiny_mce/tiny_mce_init.js"));
     }

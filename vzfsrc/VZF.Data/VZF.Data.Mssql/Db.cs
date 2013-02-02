@@ -1335,11 +1335,11 @@ namespace VZF.Data.MsSql
         /// ID of access mask
         /// </param>
         /// <param name="excludeFlags">
-        /// Ommit access masks with this flags set.
+        /// Omit access masks with this flags set.
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable accessmask_list(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags)
+        public static DataTable accessmask_list(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_list"))
             {
@@ -1347,6 +1347,53 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
                 cmd.Parameters.AddWithValue("ExcludeFlags", excludeFlags);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                cmd.Parameters.AddWithValue("IsUserMask", isUserMask);
+                cmd.Parameters.AddWithValue("IsAdminMask", isAdminMask);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of access mask properities
+        /// </summary>
+        /// <param name="boardID">
+        /// ID of Board
+        /// </param>
+        /// <param name="accessMaskID">
+        /// ID of access mask
+        /// </param>
+        /// <param name="excludeFlags">
+        /// Ommit access masks with this flags set.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable accessmask_pforumlist(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("accessmask_pforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
+                cmd.Parameters.AddWithValue("ExcludeFlags", excludeFlags);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                cmd.Parameters.AddWithValue("IsUserMask", isUserMask);
+                cmd.Parameters.AddWithValue("IsAdminMask", isAdminMask);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable accessmask_aforumlist(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("accessmask_aforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
+                cmd.Parameters.AddWithValue("ExcludeFlags", excludeFlags);
+                cmd.Parameters.AddWithValue("PageUserID", pageUserID);
+                cmd.Parameters.AddWithValue("IsUserMask", isUserMask);
+                cmd.Parameters.AddWithValue("IsAdminMask", isAdminMask);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -1399,7 +1446,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// Sort Order?
         /// </param>
-        public static void accessmask_save(string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object userForumAccess, [NotNull] object sortOrder, [CanBeNull] object userId, [NotNull] object isUserMask)
+        public static void accessmask_save(string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object userForumAccess, [NotNull] object sortOrder, [CanBeNull] object userId, [NotNull] object isUserMask, [NotNull] object isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_save"))
             {
@@ -1422,6 +1469,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("SortOrder", sortOrder);
                 cmd.Parameters.AddWithValue("UserID", userId);
                 cmd.Parameters.AddWithValue("IsUserMask", isUserMask);
+                cmd.Parameters.AddWithValue("IsAdminMask", isAdminMask);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -2675,6 +2723,7 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("CategoryID", categoryID);
+               
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -3496,7 +3545,7 @@ namespace VZF.Data.MsSql
         /// DataSet with categories
         /// </returns>
         [NotNull]
-        public static DataSet ds_forumadmin(string connectionString, [NotNull] object boardID)
+        public static DataSet ds_forumadmin(string connectionString, [NotNull] object boardID, object pageUserID, object isUserForum)
         {
             // TODO: this function is TERRIBLE. Recode or remove completely.
             using (var connMan = new MsSqlDbConnectionManager(connectionString))
@@ -3509,9 +3558,13 @@ namespace VZF.Data.MsSql
                         {
                             da.SelectCommand.Transaction = trans;
                             da.SelectCommand.Parameters.AddWithValue("BoardID", boardID);
+                          
                             da.SelectCommand.CommandType = CommandType.StoredProcedure;
                             da.Fill(ds, MsSqlDbAccess.GetObjectName("Category"));
                             da.SelectCommand.CommandText = MsSqlDbAccess.GetObjectName("forum_list");
+                           
+                            da.SelectCommand.Parameters.AddWithValue("UserID", pageUserID);
+                            da.SelectCommand.Parameters.AddWithValue("IsUserForum", isUserForum);
                             da.Fill(ds, MsSqlDbAccess.GetObjectName("ForumUnsorted"));
 
                             DataTable dtForumListSorted = ds.Tables[MsSqlDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -4005,6 +4058,21 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("ForumID", forumID);
+                cmd.Parameters.AddWithValue("UserID", null);
+                cmd.Parameters.AddWithValue("IsUserForum", false);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable forum_byuserlist(string connectionString, [NotNull] object boardID, [CanBeNull] object forumID, object userId, object isUserForum)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("forum_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("ForumID", forumID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IsUserForum", isUserForum);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -4100,13 +4168,14 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list
         /// </returns>
-        public static DataTable forum_listall_fromCat(string connectionString, [NotNull] object boardID, [NotNull] object categoryID, bool emptyFirstRow)
+        public static DataTable forum_listall_fromCat(string connectionString, [NotNull] object boardID, [NotNull] object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listall_fromCat"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("CategoryID", categoryID);
+                cmd.Parameters.AddWithValue("AllowUserForumsOnly",allowUserForumsOnly);
 
                 int intCategoryID = Convert.ToInt32(categoryID.ToString());
 
@@ -4600,12 +4669,14 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forumaccess_list(string connectionString, [NotNull] object forumID)
+        public static DataTable forumaccess_list(string connectionString, [NotNull] object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("ForumID", forumID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IncludeUserGroups", includeUserGroups);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -4739,6 +4810,19 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BoardID", boardID);
                 cmd.Parameters.AddWithValue("GroupID", groupID);
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable group_byuserlist(string connectionString, [NotNull] object boardID, [NotNull] object groupID, object userId, object isUserGroup)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("group_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("GroupID", groupID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IsUserGroup", isUserGroup);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }

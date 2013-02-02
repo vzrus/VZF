@@ -19,7 +19,7 @@
  */
 namespace YAF.Core
 {
-	#region Using
+    #region Using
 
 	using System;
 	using System.Collections.Generic;
@@ -33,10 +33,9 @@ namespace YAF.Core
 	using YAF.Types.Interfaces;
 
 	#endregion
-
-	/// <summary>
-	/// Summary description for Localizer.
-	/// </summary>
+    
+    /// <summary>
+    ///  Summary description for Localizer./// </summary>
 	public class Localizer
 	{
 		#region Constants and Fields
@@ -271,6 +270,7 @@ namespace YAF.Core
 				return;
 			}
 
+
 			var langCode = this.CurrentCulture.TwoLetterISOLanguageName;
 
 			// vzrus: Culture code is missing for a user until he saved his profile.
@@ -287,7 +287,7 @@ namespace YAF.Core
 				this._currentCulture = new CultureInfo(YafContext.Current.BoardSettings.Culture);
 			}
 
-			string cultureUser = YafContext.Current.CultureUser;
+			string cultureUser = YafContext.Current.CurrentUserData.CultureUser;
 
 			if (!cultureUser.IsSet())
 			{

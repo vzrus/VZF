@@ -1455,6 +1455,30 @@
                     </tr>
                     <tr>
                         <td class="postheader">
+                            <YAF:HelpLabel ID="HelpLabel225" runat="server" LocalizedTag="ALLOW_PERSONALFORUMS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="AllowPersonalForums" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <YAF:HelpLabel ID="HelpLabel226" runat="server" LocalizedTag="PERSONALFORUMS_ACCESSMASKSNUMBER" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="PersonalAccessMasksNumber" MaxLength="2" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <YAF:HelpLabel ID="HelpLabel227" runat="server" LocalizedTag="PERSONALFORUMS_GROUPS" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="PersonalGroupsNumber" MaxLength="2" runat="server"></asp:TextBox>
+                        </td>
+                    </tr>         
+                    <tr>
+                        <td class="postheader">
                             <YAF:HelpLabel ID="HelpLabel78" runat="server" LocalizedTag="ALLOW_MOD_VIEWIP" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">

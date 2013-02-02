@@ -146,6 +146,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_move;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_list;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_byuserlist;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listall;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listall_fromcat;
@@ -191,6 +193,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forumaccess_save;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}group_delete;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}group_list;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}group_byuserlist;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}group_medal_delete;
 --GO
@@ -569,6 +573,10 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_listmedals;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_thankedmessage;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}accessmask_list;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}accessmask_pforumlist;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}accessmask_aforumlist;
 --GO
 DROP PROCEDURE IF EXISTS {objectQualifier}accessmask_delete;
 --GO
@@ -3063,7 +3071,7 @@ end;
  --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
- CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_list(i_BoardID INT,i_ForumID INT) 
+ CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_list(i_BoardID INT,i_ForumID INT, i_UserID INT, i_IsUserForum TINYINT(1)) 
 READS SQL DATA
 BEGIN
         IF i_ForumID = 0 THEN 
@@ -3083,6 +3091,30 @@ BEGIN
         END IF;
 END;
 --GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+ CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_byuserlist(i_BoardID INT,i_ForumID INT, i_UserID INT, i_IsUserForum TINYINT(1)) 
+READS SQL DATA
+BEGIN
+        IF i_ForumID = 0 THEN 
+                             SET i_ForumID = NULL; END IF; 
+        IF i_ForumID IS NULL THEN
+                      SELECT a.* FROM {databaseName}.{objectQualifier}Forum a 
+                                  JOIN {databaseName}.{objectQualifier}Category b 
+                                     ON b.CategoryID=a.CategoryID                                  
+                                        WHERE b.BoardID=i_BoardID and a.IsUserForum = i_IsUserForum
+										and (i_UserID IS NULL OR a.CreatedByUserID = i_UserID)
+                                          ORDER BY a.SortOrder;
+    ELSE
+        SELECT a.* FROM {databaseName}.{objectQualifier}Forum a 
+                   JOIN {databaseName}.{objectQualifier}Category b 
+                    ON b.CategoryID=a.CategoryID 
+                     WHERE b.BoardID=i_BoardID 
+                      AND a.ForumID = i_ForumID;
+        END IF;
+END;
+--GO
+
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listall (i_BoardID INT,i_UserID INT, i_Root INT, i_ReturnAll TINYINT(1))
@@ -3169,7 +3201,7 @@ END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
- CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listall_fromcat(i_BoardID INT,i_CategoryID INT) 
+ CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listall_fromcat(i_BoardID INT,i_CategoryID INT,i_AllowUserForumsOnly TINYINT(1)) 
  READS SQL DATA
  BEGIN
     SELECT b.CategoryID,
@@ -3185,6 +3217,7 @@ END;
            WHERE
             b.CategoryID=i_CategoryID and
             b.BoardID=i_BoardID
+			and (i_AllowUserForumsOnly = 0 OR IsUserForum = 1)
            ORDER BY
             b.SortOrder,
             a.SortOrder;
@@ -3529,7 +3562,7 @@ END;
 
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}forum_moderatelist(i_BoardID INT,i_UserID INT) 
+CREATE PROCEDURE {databaseName}.{objectQualifier}forum_moderatelist(i_BoardID INT,i_UserID INT, i_IsUserForum TINYINT(1)) 
  BEGIN
  
  SELECT
@@ -3556,6 +3589,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forum_moderatelist(i_BoardID IN
             JOIN {databaseName}.{objectQualifier}ActiveAccess c ON c.ForumID=b.ForumID
             WHERE
         a.BoardID=i_BoardID AND
+		b.IsUserForum = i_IsUserForum AND
         c.ModeratorAccess> 0
         AND
         c.UserID=i_UserID
@@ -4118,13 +4152,21 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forumaccess_group(i_GroupID INT
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseName}.{objectQualifier}forumaccess_list(
-                i_ForumID INT)
+                i_ForumID INT, i_UserID INT, i_IncludeUserMasks TINYINT(1))
 BEGIN
+IF i_IncludeUserMasks = 1 THEN
         SELECT a.*,
                b.Name AS GroupName
         FROM   {databaseName}.{objectQualifier}ForumAccess a
                INNER JOIN {databaseName}.{objectQualifier}Group b ON b.GroupID=a.GroupID
-        WHERE  a.ForumID = i_ForumID;      
+        WHERE  a.ForumID = i_ForumID AND (b.IsUserGroup = 0 OR (b.IsUserGroup = 1 AND b.CreatedByUserID = i_UserID)); 
+		ELSE
+		 SELECT a.*,
+               b.Name AS GroupName
+        FROM   {databaseName}.{objectQualifier}ForumAccess a
+               INNER JOIN {databaseName}.{objectQualifier}Group b ON b.GroupID=a.GroupID
+        WHERE  a.ForumID = i_ForumID AND b.IsUserGroup = 0; 
+		END IF;     
 END;
 --GO
 
@@ -4171,6 +4213,27 @@ BEGIN
         SELECT *
         FROM   {databaseName}.{objectQualifier}Group
         WHERE  BoardID = i_BoardID
+        AND GroupID = i_GroupID LIMIT 1;
+        END IF;
+        END;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+        CREATE  PROCEDURE {databaseName}.{objectQualifier}group_byuserlist(
+        i_BoardID INT,
+        i_GroupID INT,
+		i_UserID INT,
+		i_IsUserGroup TINYINT(1))
+        BEGIN
+
+        IF i_GroupID IS NULL THEN
+        SELECT *
+        FROM   {databaseName}.{objectQualifier}Group
+        WHERE  BoardID = i_BoardID and CreatedByUserID = i_UserID  order by SortOrder;
+        ELSE
+        SELECT *
+        FROM   {databaseName}.{objectQualifier}Group
+        WHERE  BoardID = i_BoardID and CreatedByUserID = i_UserID 
         AND GroupID = i_GroupID LIMIT 1;
         END IF;
         END;
@@ -11083,19 +11146,64 @@ END;
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseName}.{objectQualifier}accessmask_list(
-i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT)
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
 BEGIN
 IF i_AccessMaskID IS NULL THEN
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
+				and (i_IsUserMask = 0 or IsUserMask = 1)
+			and (i_IsAdminMask = 0 or IsAdminMask = 1)
+			and (i_PageUserID is null  or CreatedByUserID = i_PageUserID)
 ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
 AND a.AccessMaskID = i_AccessMaskID
+ORDER BY a.SortOrder;
+END IF;
+END;
+--GO
+
+CREATE  PROCEDURE {databaseName}.{objectQualifier}accessmask_pforumlist(
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
+BEGIN
+IF i_AccessMaskID IS NULL THEN
+SELECT   a.*
+FROM     {databaseName}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID and
+            (a.Flags & i_ExcludeFlags) = 0
+			and ((not a.IsAdminMask  and not a.IsUserMask)
+			or a. CreatedByUserID = i_PageUserID) 				
+ORDER BY a.SortOrder;
+ELSE
+SELECT   a.*
+FROM     {databaseName}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID
+AND a.AccessMaskID = i_AccessMaskID and ((not a.IsAdminMask  and not a.IsUserMask)
+			or a. CreatedByUserID = i_PageUserID) 
+ORDER BY a.SortOrder;
+END IF;
+END;
+--GO
+
+CREATE  PROCEDURE {databaseName}.{objectQualifier}accessmask_aforumlist(
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
+BEGIN
+IF i_AccessMaskID IS NULL THEN
+SELECT   a.*
+FROM     {databaseName}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID and
+            (a.Flags & i_ExcludeFlags) = 0
+			and not a.IsUserMask				
+ORDER BY a.SortOrder;
+ELSE
+SELECT   a.*
+FROM     {databaseName}.{objectQualifier}AccessMask a
+WHERE    a.BoardID = i_BoardID
+AND a.AccessMaskID = i_AccessMaskID and not a.IsUserMask 
 ORDER BY a.SortOrder;
 END IF;
 END;
@@ -11141,6 +11249,7 @@ IN i_UserForumAccess TINYINT(1),
 IN i_SortOrder       INT,
 IN i_UserID          INT,
 IN i_IsUserMask      TINYINT(1),
+IN i_IsAdminMask    TINYINT(1),
 IN i_UTCTIMESTAMP    DATETIME)
 BEGIN
 DECLARE ici_UserName  VARCHAR(255);
@@ -11184,15 +11293,17 @@ END IF;
 IF i_UserForumAccess <> 0 THEN
 SET l_Flags = l_Flags | 32768;
 END IF;
-
+IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+END IF;
 IF i_AccessMaskID IS NULL THEN
 INSERT INTO {databaseName}.{objectQualifier}AccessMask
 (`Name`,
 `BoardID`,
-`Flags`,`SortOrder`,`IsUserMask`)
+`Flags`,`SortOrder`,`IsUserMask`,`IsAdminMask`,`CreatedByUserID`,`CreatedByUserName`,`CreatedByUserDisplayName`,`CreatedDate`)
 VALUES     (i_Name,
 i_BoardID,
-l_Flags,i_SortOrder,i_IsUserMask);
+l_Flags,i_SortOrder,i_IsUserMask,i_IsAdminMask,i_UserId,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
 ELSE
 UPDATE {databaseName}.{objectQualifier}AccessMask
 SET    `Name` = i_Name,

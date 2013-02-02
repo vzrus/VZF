@@ -59,7 +59,7 @@ namespace VZF.Kernel
         }
         public static string GetAllCommonAdminTree()
         {
-            using (DataSet ds = CommonDb.ds_forumadmin(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID))
+            using (DataSet ds = CommonDb.ds_forumadmin(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.PageUserID, false))
             {
                 var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
                 if (dd != null && dd.Rows.Count > 0)

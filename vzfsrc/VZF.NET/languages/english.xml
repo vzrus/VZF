@@ -2137,6 +2137,9 @@ Spoiler Content
       <Resource tag="CHANGE_PASSWORD">Change Password</Resource>
       <Resource tag="CONTROL_PANEL">Control Panel</Resource>
       <Resource tag="EDIT_AVATAR">Modify Avatar</Resource>
+      <Resource tag="EDIT_PERSONALFORUMS">Edit personal forums</Resource>
+      <Resource tag="EDIT_PERSONALGROUPS">Edit personal groups</Resource>
+      <Resource tag="EDIT_PERSONALACCESSMASKS">Edit personal access masks</Resource>
       <Resource tag="EDIT_PROFILE">Edit Profile</Resource>
       <Resource tag="VIEW_PROFILE">View Profile</Resource>
       <Resource tag="EDIT_SIGNATURE">Edit Signature</Resource>
@@ -2146,6 +2149,7 @@ Spoiler Content
       <Resource tag="MESSENGER">Messenger:</Resource>
       <Resource tag="NEW_MESSAGE">New Message</Resource>
       <Resource tag="NUMPOSTS">Number of posts:</Resource>
+      <Resource tag="PERSONAL_FORUMS">Personal Forums:</Resource>
       <Resource tag="PERSONAL_PROFILE">Personal Profile:</Resource>
       <Resource tag="SENTITEMS">Sent Items</Resource>
       <Resource tag="SIGNATURE">Signature</Resource>
@@ -3492,6 +3496,13 @@ Visit {forumname} at {forumlink}
       <Resource tag="ORIGINALMESSAGE">Original edition</Resource>
       <Resource tag="HISTORYSTART">History editions</Resource>
    </page>
+  <page name="PERSONALFORUM">
+      <Resource tag="TITLE">Personal Forums</Resource>
+      <Resource tag="PERSONALGROUPS">My Groups</Resource>
+      <Resource tag="PERSONALMASKS">My Access Masks</Resource>
+      <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
+      <Resource tag="OK">OK</Resource>
+   </page>
    <page name="TEAM">
       <Resource tag="TITLE">Council Members</Resource>
       <Resource tag="ADMINS">Administrators</Resource>
@@ -3976,6 +3987,7 @@ Visit {forumname} at {forumlink}
       <Resource tag="FORUM_SELECTEDADDNODE_MSG">You should select a node to add the new forum.</Resource>
       <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
       <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
+      <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
       <Resource tag="FORUM_SELECTPARENTNODE_MSG">You should select a parent node to attach selected node.</Resource>
       <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
       <Resource tag="FORUM_SELECTBEFORENODE_MSG">You should select a node to attach selected node before it.</Resource>
@@ -4282,6 +4294,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="DOWNLOAD_ACCESS_HELP">Allows Users to Download Attachments in Posts.</Resource>
       <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
       <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
+      <Resource tag="ISADMINMASK">Admin mask</Resource>
+      <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
     </page>
   <page name="ADMIN_GROUPS">
      <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
@@ -4829,6 +4843,12 @@ Visit {forumname} at {forumlink}
        <Resource tag="ALLOW_EMAIL_CHANGE_HELP">Allow users to change their email address.</Resource>
      <Resource tag="ALLOW_PASS_CHANGE">Allow Password Change:</Resource>
        <Resource tag="ALLOW_PASS_CHANGE_HELP">Allow users to change their passwords.</Resource>
+     <Resource tag="ALLOW_PERSONALFORUMS">Allow User Personal Forums(Blogs):</Resource>
+       <Resource tag="ALLOW_PERSONALFORUMS_HELP">Allow users to create Personal Forums.</Resource>
+     <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
+       <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
+     <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
+       <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
      <Resource tag="ALLOW_MOD_VIEWIP">Allow Moderators View IPs:</Resource>
        <Resource tag="ALLOW_MOD_VIEWIP_HELP">Allow to view IPs to moderators.</Resource>
      <Resource tag="ALLOW_NOTIFICATION_ONALL">Allow Notification of All Posts on All topics:</Resource>

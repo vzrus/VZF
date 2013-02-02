@@ -195,12 +195,12 @@ namespace YAF.Controls
                     string targetUrl = YafBuildLink.GetLinkNotEscaped(
                         ForumPages.topicsbytags, "tagid={0}&{1}".FormatWith(tag["TagID"], addQweryParams));
                     tagItem = "<a class=\"{0}\" href=\"{1}\">{2}{3}</a>&nbsp;&nbsp;".FormatWith(
-                        tagClass, targetUrl, tag["Tag"], numberOfTags);
+                        tagClass, targetUrl, this.HtmlEncode(tag["Tag"]), numberOfTags);
                 }
                 else
                 {
                     tagItem = "<span class=\"{0}\">{1}{2}</span>&nbsp;&nbsp;".FormatWith(
-                        tagClass, tag["Tag"], numberOfTags);
+                        tagClass, this.HtmlEncode(tag["Tag"]), numberOfTags);
                 }
 
                 tagCloudString.Append(tagItem);
@@ -238,7 +238,7 @@ namespace YAF.Controls
 
             if (percentageFrequency >= 90)
             {
-                return "tag90";
+                return "tag{0}".FormatWith(90);
             }
 
             if (percentageFrequency >= 80)

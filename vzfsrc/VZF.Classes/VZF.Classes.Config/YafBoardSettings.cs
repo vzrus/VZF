@@ -307,6 +307,8 @@ namespace YAF.Classes
             }
         }
 
+
+
         /// <summary>
         /// Gets or sets Jquery UI Theme.
         /// </summary>
@@ -529,6 +531,7 @@ namespace YAF.Classes
                 this._reg.SetValue("LogUserSuspendedUnsuspended", value);
             }
         }
+
         /// <summary>
         /// Gets or sets LogSqlError.
         /// </summary>
@@ -590,6 +593,38 @@ namespace YAF.Classes
             set
             {
                 this._regBoard.SetValue("NotificationOnUserRegisterEmailList", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets PersonalAccessMasksNumber.
+        /// </summary>
+        public int PersonalAccessMasksNumber
+        {
+            get
+            {
+                return this._regBoard.GetValue("PersonalAccessMasksNumber", 0);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("PersonalAccessMasksNumber", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets PersonalAccessMasksNumber.
+        /// </summary>
+        public int PersonalGroupsNumber
+        {
+            get
+            {
+                return this._regBoard.GetValue("PersonalGroupsNumber", 0);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("PersonalGroupsNumber", value);
             }
         }
 
@@ -2529,6 +2564,22 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("AllowPasswordChange", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether AllowPersonalForums.
+        /// </summary>
+        public bool AllowPersonalForums
+        {
+            get
+            {
+                return this._reg.GetValue("AllowPersonalForums", false);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowPersonalForums", value);
             }
         }
 

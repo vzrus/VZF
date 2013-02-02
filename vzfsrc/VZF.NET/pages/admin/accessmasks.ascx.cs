@@ -216,7 +216,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       // list all access masks for this boeard
-        this.List.DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+        this.List.DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
       this.DataBind();
     }
 

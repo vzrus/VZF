@@ -249,14 +249,16 @@ SUSPEND;
 --GO 
 
 
-CREATE PROCEDURE  objQual_ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER) 
+CREATE PROCEDURE  objQual_ACCESSMASK_LIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
 RETURNS
 (
 "AccessMaskID" INTEGER,
 "BoardID" INTEGER,
 "Name" VARCHAR(128) CHARACTER SET UTF8,
 "Flags" INTEGER,
-"SortOrder" INTEGER
+"SortOrder" INTEGER,
+"IsUserMask" BOOL,
+"IsAdminMask" BOOL
 )
 as
 begin
@@ -266,12 +268,15 @@ begin
             a.BOARDID,
             a.NAME,
             a.FLAGS,
-            a.SORTORDER 
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
+			AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) AND (:I_PAGEUSERID IS NOT NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
         order by 
             a.SORTORDER ASC
             INTO
@@ -279,15 +284,19 @@ begin
             :"BoardID",
             :"Name",
             :"Flags",
-            :"SortOrder"
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
              DO SUSPEND;
     else
-        FOR select 
+        FOR select FIRST 1
             a.ACCESSMASKID,
             a.BOARDID,
             a.NAME,
             a.FLAGS,
-            a.SORTORDER  
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
@@ -300,10 +309,150 @@ begin
             :"BoardID",
             :"Name",
             :"Flags",
-            :"SortOrder"
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
             DO SUSPEND;
 end
 --GO
+
+CREATE PROCEDURE  objQual_ACCESSMASK_PFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+RETURNS
+(
+"AccessMaskID" INTEGER,
+"BoardID" INTEGER,
+"Name" VARCHAR(128) CHARACTER SET UTF8,
+"Flags" INTEGER,
+"SortOrder" INTEGER,
+"IsUserMask" BOOL,
+"IsAdminMask" BOOL
+)
+as
+begin
+    if (I_ACCESSMASKID is null) THEN
+        FOR select 
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
+        from 
+            objQual_ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
+			AND (:I_PAGEUSERID IS NOT NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID OR a.ISADMINMASK = :I_ISADMINMASK )
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID" ,
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
+             DO SUSPEND;
+    else
+        FOR select FIRST 1
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
+        from 
+            objQual_ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            a.ACCESSMASKID = :I_ACCESSMASKID
+			AND (:I_PAGEUSERID IS NOT NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID OR a.ISADMINMASK = :I_ISADMINMASK )
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
+            DO SUSPEND;
+end
+--GO
+
+
+CREATE PROCEDURE  objQual_ACCESSMASK_AFORUMLIST(I_BOARDID INTEGER,I_ACCESSMASKID INTEGER,I_EXCLUDEFLAGS INTEGER, I_PAGEUSERID INTEGER, I_ISUSERMASK BOOL, I_ISADMINMASK BOOL) 
+RETURNS
+(
+"AccessMaskID" INTEGER,
+"BoardID" INTEGER,
+"Name" VARCHAR(128) CHARACTER SET UTF8,
+"Flags" INTEGER,
+"SortOrder" INTEGER,
+"IsUserMask" BOOL,
+"IsAdminMask" BOOL
+)
+as
+begin
+    if (I_ACCESSMASKID is null) THEN
+        FOR select 
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
+        from 
+            objQual_ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
+			and not a.ISUSERMASK	
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID" ,
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
+             DO SUSPEND;
+    else
+        FOR select FIRST 1
+            a.ACCESSMASKID,
+            a.BOARDID,
+            a.NAME,
+            a.FLAGS,
+            a.SORTORDER,
+			a.ISUSERMASK,
+			a.ISADMINMASK 
+        from 
+            objQual_ACCESSMASK a 
+        where
+            a.BOARDID = :I_BOARDID and
+            a.ACCESSMASKID = :I_ACCESSMASKID
+			and not a.ISUSERMASK
+        order by 
+            a.SORTORDER ASC
+            INTO
+            :"AccessMaskID",
+            :"BoardID",
+            :"Name",
+            :"Flags",
+            :"SortOrder",
+			:"IsUserMask",
+            :"IsAdminMask"
+            DO SUSPEND;
+end
+--GO
+
 
 CREATE PROCEDURE  objQual_ACCESSMASK_SAVE(
     I_ACCESSMASKID		INTEGER,
@@ -324,6 +473,7 @@ CREATE PROCEDURE  objQual_ACCESSMASK_SAVE(
     I_SORTORDER         INTEGER,
     I_USERID            INTEGER,
     I_ISUSERMASK        BOOL,
+	I_ISADMINMASK      BOOL,
     I_UTCTIMESTAMP      TIMESTAMP 
 ) 
 as
@@ -346,10 +496,17 @@ begin
     if (I_UPLOADACCESS<>0) then I_FLAGS = BIN_OR(:I_FLAGS, 512);
     if (I_DOWNLOADACCESS<>0) then I_FLAGS = BIN_OR(I_FLAGS, 1024);
     if (I_USERFORUMACCESS<>0) then I_FLAGS = BIN_OR(I_FLAGS, 32768);
+	
+	if (:I_USERID is not null) THEN
+    begin
+    SELECT FIRST 1 NAME, DISPLAYNAME 
+    FROM objQual_USER where USERID = :I_USERID
+    INTO :ICI_USERNAME, :ICI_USERDISPLAYNAME;
+    end
 
-    if (I_ACCESSMASKID is null) THEN
-        insert INTO objQual_ACCESSMASK(ACCESSMASKID,NAME,BOARDID,FLAGS,SORTORDER,ISUSERMASK)
-        values((SELECT NEXT VALUE FOR SEQ_objQual_ACCESSMASK_ACCESSMASKID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_FLAGS,:I_SORTORDER,:I_ISUSERMASK)
+    if (:I_ACCESSMASKID is null) THEN
+        insert INTO objQual_ACCESSMASK(ACCESSMASKID,NAME,BOARDID,FLAGS,SORTORDER,ISUSERMASK,ISADMINMASK,CREATEDBYUSERID,CREATEDBYUSERNAME,CREATEDBYUSERDISPLAYNAME,CREATEDDATE)
+        values((SELECT NEXT VALUE FOR SEQ_objQual_ACCESSMASK_ACCESSMASKID FROM RDB$DATABASE),:I_NAME,:I_BOARDID,:I_FLAGS,:I_SORTORDER,:I_ISUSERMASK,:I_ISADMINMASK,:I_USERID,:ICI_USERNAME, :ICI_USERDISPLAYNAME,:I_UTCTIMESTAMP)
         RETURNING ACCESSMASKID INTO :I_ACCESSMASKID;
     else
         update objQual_ACCESSMASK set
@@ -358,13 +515,7 @@ begin
             SORTORDER       = :I_SORTORDER,
             ISUSERMASK      = :I_ISUSERMASK
         where ACCESSMASKID=:I_ACCESSMASKID;
-if (:I_USERID is not null) THEN
-    begin
-    SELECT FIRST 1 NAME, DISPLAYNAME 
-    FROM objQual_USER where USERID = :I_USERID
-    INTO :ICI_USERNAME, :ICI_USERDISPLAYNAME;
-    end
-    else
+if (:I_USERID is null) THEN
     begin 
     SELECT FIRST 1 NAME, DISPLAYNAME 
     FROM objQual_USER where BoardID = :I_BOARDID and (FLAGS & 4) = 4 ORDER BY JOINED 
@@ -2115,7 +2266,7 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
 
 
 
- CREATE PROCEDURE  objQual_FORUM_LISTALL_FROMCAT(I_BOARDID INTEGER,I_CATEGORYID INTEGER) 
+ CREATE PROCEDURE  objQual_FORUM_LISTALL_FROMCAT(I_BOARDID INTEGER,I_CATEGORYID INTEGER,I_ALLOWUSEFORUMSONLY BOOL) 
  RETURNS
  (
 "CategoryID" integer,
@@ -2137,6 +2288,7 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
         WHERE
             b.CATEGORYID=:I_CATEGORYID and
             b.BOARDID=:I_BOARDID
+			AND (:I_ALLOWUSEFORUMSONLY = 0 OR ISUSERFORUM = 1)
         ORDER BY
             b.SORTORDER,
             a.SORTORDER
@@ -2317,7 +2469,7 @@ DO SUSPEND;
 END;
 --GO
 
-CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER) 
+CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER, I_ISUSERFORUM BOOL) 
  RETURNS
  (
 "ForumID" integer,
@@ -2400,6 +2552,7 @@ CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER)
             ON c.FORUMID=b.FORUMID 
             WHERE
         a.BOARDID=:I_BOARDID AND
+		b.ISUSERFORUM =:I_ISUSERFORUM AND
         c.MODERATORACCESS>0 AND
         c.USERID=:I_USERID
             ORDER BY
@@ -2619,7 +2772,7 @@ AS
 
 
 CREATE  PROCEDURE objQual_FORUMACCESS_LIST(
-                I_FORUMID INTEGER)
+                I_FORUMID INTEGER, I_USERID INTEGER, I_INCLUDEUSERMASKS BOOL)
  RETURNS
   (
 "GroupID" integer,
@@ -2629,6 +2782,7 @@ CREATE  PROCEDURE objQual_FORUMACCESS_LIST(
   )
 AS                
 BEGIN
+     IF (:I_INCLUDEUSERMASKS = 1) THEN
       FOR  SELECT a.GROUPID,
                   a.FORUMID,
                   a.ACCESSMASKID,
@@ -2636,13 +2790,29 @@ BEGIN
         FROM   objQual_FORUMACCESS a
                INNER JOIN objQual_GROUP b 
                ON b.GROUPID=a.GROUPID
-        WHERE  a.FORUMID = :I_FORUMID
+        WHERE  a.FORUMID = :I_FORUMID AND (b.ISUSERGROUP = 0 OR (b.ISUSERGROUP = 1 AND b.CREATEDBYUSERID = :I_USERID))
         INTO 
         :"GroupID",
         :"ForumID",
         :"AccessMaskID",
         :"GroupName"
-        DO SUSPEND;     
+        DO SUSPEND; 
+		ELSE
+		     FOR  SELECT a.GROUPID,
+                  a.FORUMID,
+                  a.ACCESSMASKID,
+               b.NAME AS "GroupName"
+        FROM   objQual_FORUMACCESS a
+               INNER JOIN objQual_GROUP b 
+               ON b.GROUPID=a.GROUPID
+        WHERE  a.FORUMID = :I_FORUMID AND b.ISUSERGROUP = 0
+        INTO 
+        :"GroupID",
+        :"ForumID",
+        :"AccessMaskID",
+        :"GroupName"
+        DO SUSPEND; 
+		    
 END;
 --GO
 
@@ -2764,6 +2934,101 @@ BEGIN
         DO SUSPEND;
         END;
 --GO
+
+CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
+        I_BOARDID INTEGER,
+        I_GROUPID INTEGER,
+		I_USERID INTEGER,
+		I_ISUSERGROUP BOOL        
+        )
+        RETURNS
+        (
+"GroupID" integer,
+"BoardID" integer,
+"Name" VARCHAR(128),
+"Flags" integer,
+"PMLimit" integer,
+"Style" varchar(255),
+"SortOrder" integer,
+"Description" varchar(128),
+"UsrSigChars" integer,
+"UsrSigBBCodes"  varchar(255),
+"UsrSigHTMLTags" varchar(255),
+"UsrAlbums" integer,
+"UsrAlbumImages"  integer                 
+)
+        AS
+        BEGIN
+
+        IF (I_GROUPID IS NULL) THEN
+        FOR SELECT GROUPID,
+                   BOARDID,
+                   NAME,
+                   FLAGS,
+                   PMLIMIT,
+                   STYLE,
+                   SORTORDER,
+                   DESCRIPTION,
+                   USRSIGCHARS,
+                   USRSIGBBCODES,
+                   USRSIGHTMLTAGS,
+                   USRALBUMS,
+                   USRALBUMIMAGES
+        FROM   objQual_GROUP
+        WHERE  BOARDID = :I_BOARDID 
+		AND CREATEDBYUSERID = :USERID 
+		ORDER BY SORTORDER
+        INTO
+        :"GroupID",
+        :"BoardID",
+        :"Name",
+        :"Flags",
+        :"PMLimit",
+        :"Style",
+        :"SortOrder",
+        :"Description",
+        :"UsrSigChars",
+        :"UsrSigBBCodes",
+        :"UsrSigHTMLTags",
+        :"UsrAlbums",
+        :"UsrAlbumImages"     
+        DO SUSPEND;
+        ELSE
+        FOR SELECT GROUPID,
+                   BOARDID,
+                   NAME,
+                   FLAGS,
+                   PMLIMIT,
+                   STYLE,
+                   SORTORDER,
+                   DESCRIPTION,
+                   USRSIGCHARS,
+                   USRSIGBBCODES,
+                   USRSIGHTMLTAGS,
+                   USRALBUMS,
+                   USRALBUMIMAGES
+        FROM   objQual_GROUP
+        WHERE  BOARDID = :I_BOARDID
+        AND GROUPID = :I_GROUPID
+		AND CREATEDBYUSERID = :USERID 
+        INTO
+        :"GroupID",
+        :"BoardID",
+        :"Name",
+        :"Flags",
+        :"PMLimit",
+        :"Style",
+        :"SortOrder",
+        :"Description",
+        :"UsrSigChars",
+        :"UsrSigBBCodes",
+        :"UsrSigHTMLTags",
+        :"UsrAlbums",
+        :"UsrAlbumImages"   
+        DO SUSPEND;
+        END;
+--GO
+
 CREATE PROCEDURE 
  objQual_GROUP_MEDAL_DELETE
     (I_GROUPID INTEGER,

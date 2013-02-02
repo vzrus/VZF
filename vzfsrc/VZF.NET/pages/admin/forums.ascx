@@ -18,11 +18,7 @@
             <YAF:ThemeButton ID="DeleteForumBtn" CssClass="yaflittlebutton" TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON"  OnClick="DeleteForumBtn_Click"  runat="server"/>
             <YAF:ThemeButton ID="CopyForumBtn" CssClass="yaflittlebutton"  TitleLocalizedTag="COPY" ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" OnClick="CopyForumBtn_Click"  runat="server"/>
             <YAF:ThemeButton ID="EditForumBtn" CssClass="yaflittlebutton" TitleLocalizedTag="EDIT"  ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" OnClick="EditForumBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="AddForumBtn" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_ADDTO" ImageThemePage="ICONS" ImageThemeTag="FORUM_ADD"  OnClick="AddForumBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="MoveForumBeforeBtn" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_MOVEBEFORE" ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_BEFORE_SMALL_ICON" OnClick="MoveForumBeforeBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="MoveForumAfterBtn" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_MOVEAFTER" ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_AFTER_SMALL_ICON" OnClick="MoveForumAfterBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="AddChildrenTo" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_ADDASCHILD" ImageThemePage="ICONS" ImageThemeTag="FORUM_ADDCHILDENTO_SMALL_ICON" OnClick="AddChildrenToBtn_Click"  runat="server"/>
-                                                          </div></div>
+            </div></div>
              <br />
         
     <div id="tree">

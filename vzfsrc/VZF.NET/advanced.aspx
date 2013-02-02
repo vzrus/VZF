@@ -9,8 +9,8 @@
         name="scriptlanguage" content="text/javascript" />
     <meta id="YafMetaStyles" http-equiv="Content-Style-Type" runat="server" name="styles"
         content="text/css" />
-    <meta id="YafMetaDescription" runat="server" name="description" content="Yet Another Forum.NET -- A bulletin board system written in ASP.NET" />
-    <meta id="YafMetaKeywords" runat="server" name="keywords" content="Yet Another Forum.net, Forum, ASP.NET, BB, Bulletin Board, opensource" />
+    <meta id="YafMetaDescription" runat="server" name="description" content="VZF.NET -- A bulletin board system written in ASP.NET" />
+    <meta id="YafMetaKeywords" runat="server" name="keywords" content="vzf.net, Forum, ASP.NET, BB, Bulletin Board, opensource" />
     <meta name="HandheldFriendly" content="true"/>
     <meta name="viewport" content="width=device-width,user-scalable=yes"/>
     <title></title>
@@ -30,7 +30,6 @@
                     &nbsp;
                 </td>
                 <td width="200" valign="top">
-                    
                     <YAF:MostActiveUsers ID="MostActiveList" runat="server" DisplayNumber="10" />
                 </td>
             </tr>

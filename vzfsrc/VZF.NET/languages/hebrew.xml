@@ -408,6 +408,8 @@
     <Resource tag="DOWNLOAD_ACCESS_HELP">Allows Users to Download Attachments in Posts.</Resource>
     <Resource tag="EDIT_ACCESS">Edit Access</Resource>
     <Resource tag="EDIT_ACCESS_HELP">Allows Users to Edit their own Posts.</Resource>
+    <Resource tag="ISADMINMASK">Admin mask</Resource>
+    <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
     <Resource tag="MASK_NAME">Name:</Resource>
     <Resource tag="MASK_NAME_HELP">Name of this access mask.</Resource>
     <Resource tag="MASK_ORDER">Order:</Resource>
@@ -852,6 +854,8 @@
     <Resource tag="TITLE">Import Extensions</Resource>
   </page>
   <page name="ADMIN_FORUMS">
+    <Resource tag="CATEGORY_CANTADDASCHILD_MSG">You can't add a category as a child of other category.</Resource>
+    <Resource tag="CATEGORY_CANTADDFORUMBEFORE_MSG">You can't add a forum directly before a category, select a category to add after or a forum.</Resource>
     <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
@@ -860,6 +864,7 @@
     <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
     <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
     <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
     <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
     <Resource tag="FORUM_SELECTAFTERNODE_MSG">You should select a node to attach selected node after it.</Resource>
@@ -944,6 +949,8 @@
     <Resource tag="ALLOW_NOTIFICATION_ONALL_HELP">Allow users to get individual email notifications on all emails -- tons of email traffic.</Resource>
     <Resource tag="ALLOW_PASS_CHANGE">Allow Password Change:</Resource>
     <Resource tag="ALLOW_PASS_CHANGE_HELP">Allow users to change their passwords.</Resource>
+    <Resource tag="ALLOW_PERSONALFORUMS">Allow User Personal Forums(Blogs):</Resource>
+    <Resource tag="ALLOW_PERSONALFORUMS_HELP">Allow users to create Personal Forums.</Resource>
     <Resource tag="ALLOW_PM_NOTIFICATION">Allow Private Message Notifications:</Resource>
     <Resource tag="ALLOW_PM_NOTIFICATION_HELP">Allow users email notifications when new private messages arrive.</Resource>
     <Resource tag="ALLOW_PMS">Allow Private Messages:</Resource>
@@ -1207,6 +1214,10 @@
     <Resource tag="NOTIFICATION_MOBILE_HELP">Option to Show Native Notifcation Dialogs on Mobile Devices.</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT">Online User Status Cache Timeout:</Resource>
     <Resource tag="ONLINE_STATUS_TIMEOUT_HELP">You can fine-tune it depending on your site activity (in milliseconds)</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE">Poll Image File size:</Resource>
     <Resource tag="POLL_IMAGE_FILESIZE_HELP">Max. file size for poll images in KB.</Resource>
     <Resource tag="POLLVOTING_PERIP">Poll Votes Dependent on IP:</Resource>
@@ -2463,6 +2474,9 @@
     <Resource tag="CHANGE_PASSWORD">החלף/י סיסמא</Resource>
     <Resource tag="CONTROL_PANEL">לוח הבקרה</Resource>
     <Resource tag="EDIT_AVATAR">החלפת דמות</Resource>
+    <Resource tag="EDIT_PERSONALACCESSMASKS">Edit personal access masks</Resource>
+    <Resource tag="EDIT_PERSONALFORUMS">Edit personal forums</Resource>
+    <Resource tag="EDIT_PERSONALGROUPS">Edit personal groups</Resource>
     <Resource tag="EDIT_PROFILE">עריכת פרופיל</Resource>
     <Resource tag="EDIT_SIGNATURE">עריכת חתימה</Resource>
     <Resource tag="GROUPS">א/תה חבר/ה בקבוצות הבאות:</Resource>
@@ -2471,6 +2485,7 @@
     <Resource tag="MESSENGER">תוכנת מסרים מיידיים:</Resource>
     <Resource tag="NEW_MESSAGE">הודעה חדשה</Resource>
     <Resource tag="NUMPOSTS">מס' הודעות:</Resource>
+    <Resource tag="PERSONAL_FORUMS">Personal Forums:</Resource>
     <Resource tag="PERSONAL_PROFILE">פרופיל אישי:</Resource>
     <Resource tag="SENTITEMS">פריטים שנשלחו</Resource>
     <Resource tag="SIGNATURE">חתימה</Resource>
@@ -4260,6 +4275,13 @@ Spoiler Content
     <Resource tag="UNANSWEREDTOPICS">Unanswered Topics</Resource>
     <Resource tag="UNREADTOPICS">Unread Topics</Resource>
     <Resource tag="VIEWS">Views</Resource>
+  </page>
+  <page name="PERSONALFORUM">
+    <Resource tag="OK">OK</Resource>
+    <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
+    <Resource tag="PERSONALGROUPS">My Groups</Resource>
+    <Resource tag="PERSONALMASKS">My Access Masks</Resource>
+    <Resource tag="TITLE">Personal Forums</Resource>
   </page>
   <page name="PMESSAGE">
     <Resource tag="ALLBUDDIES">All Friends</Resource>

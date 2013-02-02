@@ -17,7 +17,7 @@ CREATE TABLE databaseSchema.objectQualifier_accessmask
 			 boardid                   integer NOT NULL,
 			 name                      varchar(128) NOT NULL CHECK (name <> ''),
 			 flags                     integer DEFAULT 0 NOT NULL,
-			 sortorder                 smallint DEFAULT 0 NOT NULL,
+			 sortorder                 integer DEFAULT 0 NOT NULL,
 			 createdbyuserid           integer,
 			 createdbyusername         varchar(255),
 			 createdbyuserdisplayname  varchar(255),
@@ -266,7 +266,7 @@ CREATE TABLE databaseSchema.objectQualifier_forum
 			 parentid                  integer,
 			 name                      varchar(128) NOT NULL CHECK (name <> ''),
 			 description               varchar(255) NOT NULL,
-			 sortorder                 smallint NOT NULL CHECK (sortorder >= 0),
+			 sortorder                 integer NOT NULL CHECK (sortorder >= 0),
 			 lastposted                timestampTZ ,
 			 lasttopicid               integer,
 			 lastmessageid             integer,
@@ -327,7 +327,7 @@ CREATE TABLE databaseSchema.objectQualifier_group
 			 flags                     integer DEFAULT 0 NOT NULL CHECK (flags >= 0),
 			 pmlimit                   integer DEFAULT 0 NOT NULL,
 			 style                     varchar(255),
-			 sortorder                 smallint DEFAULT 0 NOT NULL,
+			 sortorder                 integer DEFAULT 0 NOT NULL,
 			 description               varchar(128),
 			 usrsigchars               integer  DEFAULT 0 NOT NULL,
 			 usrsigbbcodes	           varchar(255),
@@ -1217,6 +1217,21 @@ BEGIN
 		IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_messagereportedaudit'::regclass and attname='userid' and attnotnull ='FALSE')) THEN
 	 ALTER TABLE databaseSchema.objectQualifier_messagereportedaudit ALTER COLUMN userid SET NOT NULL;
 	END IF;	
+
+
+	IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_accessmask'::regclass and attname='sortorder')) THEN
+	 ALTER TABLE databaseSchema.objectQualifier_accessmask ALTER COLUMN sortorder TYPE integer;
+	END IF;	
+
+		IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_forum'::regclass and attname='sortorder')) THEN
+	 ALTER TABLE databaseSchema.objectQualifier_forum ALTER COLUMN sortorder TYPE integer;
+	END IF;	
+
+		IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_group'::regclass and attname='sortorder')) THEN
+	 ALTER TABLE databaseSchema.objectQualifier_group ALTER COLUMN sortorder TYPE integer;
+	END IF;	
+
+
 	 IF (EXISTS (SELECT 1 FROM pg_attribute where  attrelid = 'databaseSchema.objectQualifier_messagereportedaudit'::regclass and attname='reported' and not attnotnull)) THEN
 	 ALTER TABLE databaseSchema.objectQualifier_messagereportedaudit ALTER COLUMN reported SET NOT NULL;
 	END IF;

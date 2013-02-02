@@ -112,6 +112,13 @@
             <td class="post">
                 <asp:CheckBox runat="server" ID="UserForumAccess" /></td>
         </tr>
+         <tr>
+            <td class="postheader">
+                <YAF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="ISADMINMASK" LocalizedPage="ADMIN_EDITACCESSMASKS" Suffix=":" />
+            </td>
+            <td class="post">
+                <asp:CheckBox runat="server" ID="IsAdminMaskChk" /></td>
+        </tr>
         <tr class="footer1">
             <td align="center" colspan="2">
                 <asp:Button ID="Save" runat="server" OnClick="Save_Click" CssClass="pbutton" />

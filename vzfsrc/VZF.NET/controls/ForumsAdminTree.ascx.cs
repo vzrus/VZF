@@ -190,7 +190,7 @@
         /// </summary>
         private void BindData()
         {
-            using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID))
+            using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, PageContext.PageUserID, false))
             {
                 var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
                 this.CategoryList.DataSource = dd;

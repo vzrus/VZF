@@ -94,10 +94,29 @@ namespace VZF.Data.Common
         /// <param name="accessMaskID">
         /// ID of access mask
         /// </param>
-        /// <returns></returns>
-        public static DataTable accessmask_list(int? mid, object boardId, object accessMaskID)
+        /// <returns> A <see cref="T:System.Data.DataTable"/> of Access Masks. </returns>
+        public static DataTable accessmask_list(int? mid, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
-            return accessmask_list(mid, boardId, accessMaskID, 0);
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "oracle": orPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "db2": db2Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "other": otherPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
         }
 
         /// <summary>
@@ -113,7 +132,7 @@ namespace VZF.Data.Common
         /// ID of access mask
         /// </param>
         /// <returns> A <see cref="T:System.Data.DataTable"/> of Access Masks. </returns>
-        public static DataTable accessmask_list(int? mid, object boardId, object accessMaskID, object excludeFlags)
+        public static DataTable accessmask_pforumlist(int? mid, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             string dataEngine;
             string connectionString;
@@ -122,13 +141,69 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
+                    return VZF.Data.MsSql.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
+                    return VZF.Data.Postgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
+                    return VZF.Data.Mysql.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 case "FirebirdSql.Data.FirebirdClient":
-                    return VZF.Data.Firebird.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags);
+                    return VZF.Data.Firebird.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "oracle": orPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "db2": db2Postgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "other": otherPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
+        /// <summary>
+        /// The accessmask_aforumlist.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="accessMaskID">
+        /// The access mask id.
+        /// </param>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static DataTable accessmask_aforumlist(int? mid, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            string dataEngine;
+            string connectionString;
+            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "oracle": orPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "db2": db2Postgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case "other": otherPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -204,7 +279,8 @@ namespace VZF.Data.Common
             object userForumAccess,
             object sortOrder,
             object userId,
-            object isUserMask)
+            object isUserMask,
+            object isAdminMask)
         {
             string dataEngine;
             string connectionString;
@@ -232,7 +308,8 @@ namespace VZF.Data.Common
                         userForumAccess,
                         sortOrder,
                         userId,
-                        isUserMask);
+                        isUserMask,
+                        isAdminMask);
                     break;
                 case "Npgsql":
                     VZF.Data.Postgre.Db.accessmask_save(
@@ -254,7 +331,8 @@ namespace VZF.Data.Common
                         userForumAccess,
                         sortOrder,
                         userId,
-                        isUserMask);
+                        isUserMask,
+                        isAdminMask);
                     break;
                 case "MySql.Data.MySqlClient":
                     VZF.Data.Mysql.Db.accessmask_save(
@@ -276,7 +354,8 @@ namespace VZF.Data.Common
                         userForumAccess,
                         sortOrder,
                         userId,
-                        isUserMask);
+                        isUserMask,
+                        isAdminMask);
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     VZF.Data.Firebird.Db.accessmask_save(
@@ -298,11 +377,12 @@ namespace VZF.Data.Common
                         userForumAccess,
                         sortOrder,
                         userId,
-                        isUserMask);
+                        isUserMask,
+                        isAdminMask);
                     break;
-                // case "oracle": orPostgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask);break;
-                // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask);break;
-                // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask);break;
+                // case "oracle": orPostgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask,isAdminMask);break;
+                // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
+                // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2630,9 +2710,9 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.category_list(connectionString, boardId, categoryID);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.category_list(connectionString, boardId, categoryID);
-                    // case "oracle":  return orPostgre.Db.category_list(connectionString,  boardId, categoryID);
-                    // case "db2":  return db2Postgre.Db.category_list(connectionString,  boardId, categoryID);
-                    // case "other":  return othPostgre.Db.category_list(connectionString,  boardId, categoryID); 
+                // case "oracle":  return orPostgre.Db.category_list(connectionString,  boardId, categoryID);
+                // case "db2":  return db2Postgre.Db.category_list(connectionString,  boardId, categoryID);
+                // case "other":  return othPostgre.Db.category_list(connectionString,  boardId, categoryID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3348,7 +3428,8 @@ namespace VZF.Data.Common
             }
         }
 
-        public static DataSet ds_forumadmin(int? mid, object boardId)
+
+        public static DataTable forum_byuserlist(int? mid, object boardId, object forumID, object userId, object isUserForum)
         {
             string dataEngine;
             string connectionString;
@@ -3358,16 +3439,41 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.ds_forumadmin(connectionString, boardId);
+                    return VZF.Data.MsSql.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.ds_forumadmin(connectionString, boardId);
+                    return VZF.Data.Postgre.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.ds_forumadmin(connectionString, boardId);
+                    return VZF.Data.Mysql.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
                 case "FirebirdSql.Data.FirebirdClient":
-                    return VZF.Data.Firebird.Db.ds_forumadmin(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.ds_forumadmin(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.ds_forumadmin(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.ds_forumadmin(connectionString, boardId); 
+                    return VZF.Data.Firebird.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
+                // case "oracle":  return orPostgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
+                // case "db2":  return db2Postgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
+                // case "other":  return othPostgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
+        public static DataSet ds_forumadmin(int? mid, object boardId, object pageUserID, object  isUserForum)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                // case "oracle":  return orPostgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                // case "db2":  return db2Postgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                // case "other":  return othPostgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3937,12 +4043,12 @@ namespace VZF.Data.Common
         /// <param name="boardId">BoardID</param>
         /// <param name="categoryID">The category ID. </param>
         /// <returns>DataTable with list</returns>
-        public static DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID)
+        public static DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID, bool allowUserForumsOnly)
         {
-            return forum_listall_fromCat(mid, boardId, categoryID, true);
+            return forum_listall_fromCat(mid, boardId, categoryID, true, allowUserForumsOnly);
         }
 
-        public static DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID, bool emptyFirstRow)
+        public static DataTable forum_listall_fromCat(int? mid, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             string dataEngine;
             string connectionString;
@@ -3952,18 +4058,18 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
+                    return VZF.Data.MsSql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.forum_listall_fromCat(
-                        connectionString, boardId, categoryID, emptyFirstRow);
+                        connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
+                    return VZF.Data.Mysql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.forum_listall_fromCat(
-                        connectionString, boardId, categoryID, emptyFirstRow);
-                    // case "oracle":  return orPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
-                    // case "db2":  return db2Postgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow);
-                    // case "other":  return othPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow); 
+                        connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
+                // case "oracle":  return orPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
+                // case "db2":  return db2Postgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
+                // case "other":  return othPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -4438,9 +4544,9 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.forum_moderatelist(connectionString, userId, boardId);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.forum_moderatelist(connectionString, userId, boardId);
-                    // case "oracle":  return orPostgre.Db.forum_moderatelist(connectionString, userId, boardId);
-                    // case "db2":  return db2Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
-                    // case "other":  return othPostgre.Db.forum_moderatelist(connectionString, userId, boardId); 
+                // case "oracle":  return orPostgre.Db.forum_moderatelist(connectionString, userId, boardId);
+                // case "db2":  return db2Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
+                // case "other":  return othPostgre.Db.forum_moderatelist(connectionString, userId, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4707,7 +4813,7 @@ namespace VZF.Data.Common
             }
         }
 
-        public static DataTable forumaccess_list(int? mid, object forumID)
+        public static DataTable forumaccess_list(int? mid, object forumID, object userId, bool includeUserGroups)
         {
             string dataEngine;
             string connectionString;
@@ -4717,16 +4823,16 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.forumaccess_list(connectionString, forumID);
+                    return VZF.Data.MsSql.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.forumaccess_list(connectionString, forumID);
+                    return VZF.Data.Postgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.forumaccess_list(connectionString, forumID);
+                    return VZF.Data.Mysql.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
                 case "FirebirdSql.Data.FirebirdClient":
-                    return VZF.Data.Firebird.Db.forumaccess_list(connectionString, forumID);
-                    // case "oracle":  return orPostgre.Db.forumaccess_list(connectionString, forumID);
-                    // case "db2":  return db2Postgre.Db.forumaccess_list(connectionString, forumID);
-                    // case "other":  return othPostgre.Db.forumaccess_list(connectionString, forumID); 
+                    return VZF.Data.Firebird.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
+                // case "oracle":  return orPostgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
+                // case "db2":  return db2Postgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
+                // case "other":  return othPostgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5031,6 +5137,31 @@ namespace VZF.Data.Common
                     // case "oracle":  return orPostgre.Db.group_list(connectionString, boardId, groupID);
                     // case "db2":  return db2Postgre.Db.group_list(connectionString, boardId, groupID);
                     // case "other":  return othPostgre.Db.group_list(connectionString, boardId, groupID); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
+        public static DataTable group_byuserlist(int? mid, object boardId, object groupID, object userId, object isUserGroup)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                // case "oracle":  return orPostgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                // case "db2":  return db2Postgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                // case "other":  return othPostgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14560,5 +14691,6 @@ namespace VZF.Data.Common
 
             return dataEngine;
         }
+   
     }
 }

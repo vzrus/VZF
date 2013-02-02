@@ -112,42 +112,6 @@ namespace YAF.Pages.Admin {
         protected global::YAF.Controls.ThemeButton EditForumBtn;
         
         /// <summary>
-        /// AddForumBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ThemeButton AddForumBtn;
-        
-        /// <summary>
-        /// MoveForumBeforeBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ThemeButton MoveForumBeforeBtn;
-        
-        /// <summary>
-        /// MoveForumAfterBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ThemeButton MoveForumAfterBtn;
-        
-        /// <summary>
-        /// AddChildrenTo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.ThemeButton AddChildrenTo;
-        
-        /// <summary>
         /// CategoryList control.
         /// </summary>
         /// <remarks>

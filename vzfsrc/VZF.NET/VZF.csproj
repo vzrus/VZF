@@ -619,12 +619,47 @@
     <Compile Include="pages\boardtags.ascx.designer.cs">
       <DependentUpon>boardtags.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\personalaccessmask.ascx.cs">
+      <DependentUpon>personalaccessmask.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalaccessmask.ascx.designer.cs">
+      <DependentUpon>personalaccessmask.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\personalgroup.ascx.cs">
+      <DependentUpon>personalgroup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalgroup.ascx.designer.cs">
+      <DependentUpon>personalgroup.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\editaccessmask.ascx.cs">
+      <DependentUpon>editaccessmask.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\editaccessmask.ascx.designer.cs">
+      <DependentUpon>editaccessmask.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\editforum.ascx.cs">
       <DependentUpon>editforum.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="pages\editforum.ascx.designer.cs">
       <DependentUpon>editforum.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\editgroup.ascx.cs">
+      <DependentUpon>editgroup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\editgroup.ascx.designer.cs">
+      <DependentUpon>editgroup.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\personalforum.ascx.cs">
+      <DependentUpon>personalforum.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalforum.ascx.designer.cs">
+      <DependentUpon>personalforum.ascx</DependentUpon>
     </Compile>
     <Compile Include="pages\topicsbytags.ascx.cs">
       <DependentUpon>topicsbytags.ascx</DependentUpon>
@@ -3549,7 +3584,12 @@
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
     <Content Include="pages\boardtags.ascx" />
+    <Content Include="pages\personalaccessmask.ascx" />
+    <Content Include="pages\personalgroup.ascx" />
+    <Content Include="pages\editaccessmask.ascx" />
     <Content Include="pages\editforum.ascx" />
+    <Content Include="pages\editgroup.ascx" />
+    <Content Include="pages\personalforum.ascx" />
     <Content Include="pages\topicsbytags.ascx" />
     <Content Include="pages\mostactiveusers.ascx" />
     <Content Include="ReadMe.htm" />

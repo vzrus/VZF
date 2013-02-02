@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="boardtags.ascx.cs" Inherits="YAF.Pages.boardtags" %>
+<%@ Import Namespace="YAF.Types.Constants" %>
 <YAF:PageLinks ID="PageLinksTop" runat="server"></YAF:PageLinks>
 <a id="top" name="top"></a>
 <table class="command" width="100%">
@@ -16,18 +17,23 @@
     </tr>
     <tr>
         <td style="text-align:left">
-            <YAF:AlphaSort ID="AlphaSort1" runat="server" />
-            <YAF:Pager ID="PagerTop"  UsePostBack="False" runat="server"/>
-        </td>
-    </tr>
-    <tr>
-        <td> 
-         <YAF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> 
+            <YAF:AlphaSort ID="AlphaSort1" PagerPage="boardtags"  runat="server" />
+            <YAF:Pager ID="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
         </td>
     </tr>
     <tr>
         <td>
-            <YAF:Pager ID="PagerBottom" LinkedPager="PagerTop"  UsePostBack="False" runat="server"/>
+   <asp:Repeater ID="TagList" OnItemDataBound="TagList_OnItemDataBound" runat="server">
+        <ItemTemplate>
+            <a id="TagLink" class="tagcloud tag30" runat="server" ><%# this.HtmlEncode(Eval("Tag")) %></a>&nbsp;&nbsp;
+        </ItemTemplate>
+    </asp:Repeater>
+      <!-- <YAF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> -->
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <YAF:Pager ID="PagerBottom" LinkedPager="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
         </td>
     </tr>
     <tr>

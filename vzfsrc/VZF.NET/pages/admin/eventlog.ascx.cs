@@ -361,7 +361,9 @@ namespace YAF.Pages.Admin
             }
 
             // list event for this board
-            DataTable dt = CommonDb.eventlog_list(PageContext.PageModuleID, this.PageContext.PageBoardID,
+            DataTable dt = CommonDb.eventlog_list(
+                PageContext.PageModuleID,
+                this.PageContext.PageBoardID,
                 this.PageContext.PageUserID,
                 this.Get<YafBoardSettings>().EventLogMaxMessages,
                 this.Get<YafBoardSettings>().EventLogMaxDays,
@@ -369,9 +371,7 @@ namespace YAF.Pages.Admin
                 baseSize,
                 sinceDate,
                 toDate,
-                this.Types.SelectedValue.Equals("-1")
-                    ? null
-                    : this.Types.SelectedValue);
+                this.Types.SelectedValue.Equals("-1") ? null : this.Types.SelectedValue);
 
             this.List.DataSource = dt;
 
@@ -415,22 +415,22 @@ namespace YAF.Pages.Admin
         {
             // Language and culture
             string languageFile = this.Get<YafBoardSettings>().Language;
-            string culture4tag = this.Get<YafBoardSettings>().Culture;
+            string culture4Tag = this.Get<YafBoardSettings>().Culture;
 
             if (!string.IsNullOrEmpty(this.PageContext.LanguageFile))
             {
                 languageFile = this.PageContext.LanguageFile;
             }
 
-            if (!string.IsNullOrEmpty(this.PageContext.CultureUser))
+            if (!string.IsNullOrEmpty(this.PageContext.CurrentUserData.CultureUser))
             {
-                culture4tag = this.PageContext.CultureUser;
+                culture4Tag = this.PageContext.CurrentUserData.CultureUser;
             }
 
             // Get first default full culture from a language file tag.
             string langFileCulture = StaticDataHelper.CultureDefaultFromFile(languageFile);
-            return langFileCulture.Substring(0, 2) == culture4tag.Substring(0, 2)
-                                          ? culture4tag
+            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2)
+                                          ? culture4Tag
                                           : langFileCulture;
         }
 

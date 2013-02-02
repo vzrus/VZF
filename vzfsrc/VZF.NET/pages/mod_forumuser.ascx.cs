@@ -25,6 +25,7 @@ namespace YAF.Pages
 
     using System;
     using System.Data;
+    using System.Web;
 
     using VZF.Data.Common;
 
@@ -66,6 +67,31 @@ namespace YAF.Pages
         {
             // load data
             DataTable dt;
+            bool isPersonalForum = false;
+            if (!this.PageContext.ForumModeratorAccess)
+            {
+                var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
+                if (forumId != null)
+                {
+                    using (
+                        var dt1 = CommonDb.forum_byuserlist(
+                            PageContext.PageModuleID, PageContext.PageBoardID, forumId, PageContext.PageUserID, true))
+                    {
+                        if (dt1 != null && dt1.Rows.Count > 0)
+                        {
+                            isPersonalForum = true;
+                        }
+                        else
+                        {
+                            YafBuildLink.AccessDenied();
+                        }
+                    }
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
+            }
 
             // only admin can assign all access masks
             if (!this.PageContext.IsAdmin)
@@ -74,11 +100,25 @@ namespace YAF.Pages
                 const int flags = (int)AccessFlags.Flags.ModeratorAccess;
 
                 // non-admins cannot assign moderation access masks
-                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags);
+                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
             }
             else
             {
-                dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+                if (isPersonalForum)
+                {
+                    dt = CommonDb.accessmask_pforumlist(
+                        mid: PageContext.PageModuleID, 
+                        boardId: this.PageContext.PageBoardID, 
+                        accessMaskID: null, 
+                        excludeFlags: 0, 
+                        pageUserID: this.PageContext.PageUserID, 
+                        isUserMask: false, 
+                        isAdminMask: true);
+                }
+                else
+                {
+                    dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+                }
             }
 
             // setup datasource for access masks dropdown
@@ -180,10 +220,29 @@ namespace YAF.Pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            // only moderators/admins are allowed in
+            // only moderators/admins or personal forum owners are allowed in
             if (!this.PageContext.ForumModeratorAccess)
             {
-                YafBuildLink.AccessDenied();
+                var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
+                if (forumId != null)
+                {
+                    using (
+                        var dt = CommonDb.forum_byuserlist(
+                            PageContext.PageModuleID, PageContext.PageBoardID, forumId, PageContext.PageUserID, true))
+                    {
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                        }
+                        else
+                        {
+                            YafBuildLink.AccessDenied();
+                        }
+                    }
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
             }
 
             // do not repeat on postbact

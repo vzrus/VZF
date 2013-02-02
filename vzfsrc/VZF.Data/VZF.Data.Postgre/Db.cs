@@ -1299,7 +1299,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin(string connectionString, object boardId)
+        public static DataSet ds_forumadmin(string connectionString, object boardId, object pageUserID, object isUserForum)
         {
             using (var conn = PostgreDbConnectionManager.OpenDBConnection(connectionString))
             {
@@ -1317,12 +1317,18 @@ namespace VZF.Data.Postgre
 
                             da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer))
                               .Value = boardId;
-                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_CategoryID", NpgsqlDbType.Integer))
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer))
                               .Value = DBNull.Value;
 
                             da.SelectCommand.CommandType = CommandType.StoredProcedure;
                             da.Fill(ds, PostgreDbAccess.GetObjectName("Category"));
+                            da.SelectCommand.Parameters.Clear();
                             da.SelectCommand.CommandText = PostgreDbAccess.GetObjectName("forum_list");
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer))
+                            .Value = boardId;
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = DBNull.Value;
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = pageUserID;
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value = isUserForum;
                             da.Fill(ds, PostgreDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted =
                                 ds.Tables[PostgreDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -1359,7 +1365,7 @@ namespace VZF.Data.Postgre
         /// <param name="accessMaskID">ID of access mask</param>
         /// <returns></returns>
         public static DataTable accessmask_list(
-            string connectionString, object boardId, object accessMaskID, object excludeFlags)
+            string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_list"))
             {
@@ -1368,6 +1374,47 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskID;
                 cmd.Parameters.Add(new NpgsqlParameter("i_excludeflags", NpgsqlDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isusermask", NpgsqlDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isadminmask", NpgsqlDbType.Boolean)).Value = isAdminMask;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_pforumlist(
+           string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("accessmask_pforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_excludeflags", NpgsqlDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isusermask", NpgsqlDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isadminmask", NpgsqlDbType.Boolean)).Value = isAdminMask;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_aforumlist(
+           string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("accessmask_aforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_board", NpgsqlDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_excludeflags", NpgsqlDbType.Integer)).Value = excludeFlags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageuserid", NpgsqlDbType.Integer)).Value = pageUserID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isusermask", NpgsqlDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isadminmask", NpgsqlDbType.Boolean)).Value = isAdminMask;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
 
@@ -1426,8 +1473,8 @@ namespace VZF.Data.Postgre
             object downloadAccess,
             [NotNull] object userForumAccess,
             object sortOrder, 
-            [CanBeNull] object userId, 
-            [NotNull] object isUserMask)
+            [CanBeNull] object userId,
+            [NotNull] object isUserMask, [NotNull] object isAdminMask)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_save"))
             {
@@ -1452,6 +1499,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlDbType.Smallint)).Value = sortOrder;
                 cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isusermask", NpgsqlDbType.Boolean)).Value = isUserMask;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isadminmask", NpgsqlDbType.Boolean)).Value = isAdminMask;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                            DateTime.UtcNow;
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -2114,7 +2162,7 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
-
+                
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -2929,6 +2977,28 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = null;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value = false;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable forum_byuserlist(string connectionString, object boardId, object forumID, object userId, object isUserForum)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("forum_byuserlist"))
+            {
+                if (forumID == null)
+                {
+                    forumID = DBNull.Value;
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value = isUserForum;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }
@@ -3148,7 +3218,7 @@ namespace VZF.Data.Postgre
         /// <param name="EmptyFirstRow">EmptyFirstRow</param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            string connectionString, object boardId, object categoryID, bool emptyFirstRow)
+            string connectionString, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -3156,8 +3226,8 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
-
-
+                cmd.Parameters.Add(new NpgsqlParameter("i_allowuseforumsonly", NpgsqlDbType.Boolean)).Value = allowUserForumsOnly;
+                
                 int intCategoryId = Convert.ToInt32(categoryID.ToString());
 
                 using (DataTable dt = PostgreDbAccess.GetData(cmd, connectionString))
@@ -3342,7 +3412,6 @@ namespace VZF.Data.Postgre
                               .Value = boardId;
                             da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value
                                 = userId;
-
                             da.Fill(ds, PostgreDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted =
                                 ds.Tables[PostgreDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -3561,14 +3630,15 @@ namespace VZF.Data.Postgre
 
         #region yaf_ForumAccess
 
-        public static DataTable forumaccess_list(string connectionString, object forumID)
+        public static DataTable forumaccess_list(string connectionString, object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_ForumID", NpgsqlDbType.Integer)).Value = forumID;
-
+                cmd.Parameters.Add(new NpgsqlParameter("i_UserID", NpgsqlDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_IncludeUserGroups", NpgsqlDbType.Boolean)).Value = includeUserGroups;
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -3612,6 +3682,21 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable group_byuserlist(string connectionString, object boardId, object groupID, object userId, object isUserGroup)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("group_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isusergroup", NpgsqlDbType.Boolean)).Value = isUserGroup;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }

@@ -1381,7 +1381,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin(string connectionString, object boardId)
+        public static DataSet ds_forumadmin(string connectionString, object boardId, object pageUserID, object isUserForum)
         {
             using (var connMan = new MySqlDbConnectionManager(connectionString))
             {
@@ -1403,6 +1403,8 @@ namespace VZF.Data.Mysql
                             da.SelectCommand.Parameters.RemoveAt("i_CategoryID");
                             da.SelectCommand.CommandText = MySqlDbAccess.GetObjectName("forum_list");
                             da.SelectCommand.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = DBNull.Value;
+                            da.SelectCommand.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = pageUserID;
+                            da.SelectCommand.Parameters.Add("i_IsUserForum", MySqlDbType.Byte).Value = isUserForum;
                             da.Fill(ds, MySqlDbAccess.GetObjectName("ForumUnsorted"));
 
                             DataTable dtForumListSorted =
@@ -1441,14 +1443,57 @@ namespace VZF.Data.Mysql
         ///<param name="excludeFlags">Flags to exclude from edititing by certain roles</param>
         /// <returns></returns>
         public static DataTable accessmask_list(
-            string connectionString, object boardId, object accessMaskID, object excludeFlags)
+            string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
+
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
+                cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_pforumlist(
+     string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("accessmask_pforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
+                cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
+                cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+
+            }
+        }
+
+        public static DataTable accessmask_aforumlist(
+    string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("accessmask_aforumlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
+                cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
+                cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
+
                 return MySqlDbAccess.GetData(cmd, connectionString);
 
             }
@@ -1505,7 +1550,7 @@ namespace VZF.Data.Mysql
             [NotNull] object userForumAccess,
             object sortOrder,
             [CanBeNull] object userId,
-            [NotNull] object isUserMask)
+            [NotNull] object isUserMask, [NotNull] object isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_save"))
             {
@@ -1529,6 +1574,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int32).Value = sortOrder;
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
+                cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -2212,6 +2258,7 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID ?? DBNull.Value;
+              
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
@@ -3081,6 +3128,27 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = DBNull.Value;
+                cmd.Parameters.Add("i_IsUserForum", MySqlDbType.Byte).Value = false;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable forum_byuserlist(string connectionString, object boardId, object forumID, object userId, object isUserForum)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("forum_byuserlist"))
+            {
+                if (forumID == null)
+                {
+                    forumID = DBNull.Value;
+                }
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_IsUserForum", MySqlDbType.Byte).Value = isUserForum;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
@@ -3260,7 +3328,7 @@ namespace VZF.Data.Mysql
         /// <param name="EmptyFirstRow">EmptyFirstRow</param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            string connectionString, object boardId, object categoryID, bool emptyFirstRow)
+            string connectionString, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -3268,6 +3336,7 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID;
+                cmd.Parameters.Add("i_AllowUserForumsOnly", MySqlDbType.Byte).Value = allowUserForumsOnly;
 
                 int intCategoryID = Convert.ToInt32(categoryID.ToString());
 
@@ -3416,6 +3485,8 @@ namespace VZF.Data.Mysql
                             da.SelectCommand.Parameters.RemoveAt("i_CategoryID");
                             da.SelectCommand.CommandText = MySqlDbAccess.GetObjectName("forum_moderatelist");
                             da.SelectCommand.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
+                            da.SelectCommand.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                           
                             da.Fill(ds, MySqlDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted =
                                 ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -3738,13 +3809,15 @@ namespace VZF.Data.Mysql
 
         #region yaf_ForumAccess
 
-        public static DataTable forumaccess_list(string connectionString, object forumID)
+        public static DataTable forumaccess_list(string connectionString, object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_IncludeUserGroups", MySqlDbType.Byte).Value = includeUserGroups;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
@@ -3789,6 +3862,19 @@ namespace VZF.Data.Mysql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupID;
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable group_byuserlist(string connectionString, object boardId, object groupID, object userId, object isUserGroup)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("group_byuserlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_IsUserGroup", MySqlDbType.Byte).Value = isUserGroup;
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
         }

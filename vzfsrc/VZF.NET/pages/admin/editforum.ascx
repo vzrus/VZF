@@ -22,6 +22,20 @@
                 <asp:DropDownList Width="250" ID="CategoryList" runat="server" OnSelectedIndexChanged="Category_Change"
                     DataValueField="CategoryID" DataTextField="Name">
                 </asp:DropDownList>
+                     <div class="container" ID="tviewcontainer" runat="server">
+            <asp:Label ID="ActionTipLbl" runat="server"></asp:Label>
+            <asp:Label ID="ActionTipLbl2" runat="server"></asp:Label>
+            <YAF:PageLinks runat="server" ID="PageLinks1" />
+                  <div id="divactive" class="active" Visible="false" runat="server">
+            <YAF:LocalizedLabel ID="ActiveNodeLbl" runat="server" LocalizedTag="FORUM_SELECTEDNODE_MSG" LocalizedPage="FORUMS_ADMIN" /><b><span id="echoActive">-</span></b><div id="treebuttons">
+            <YAF:ThemeButton ID="MoveForumAfterBtn" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_MOVEAFTER" ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_AFTER_SMALL_ICON" OnClick="MoveForumAfterBtn_Click"  runat="server"/>
+            <YAF:ThemeButton ID="AddChildrenTo" CssClass="yaflittlebutton" TitleLocalizedTag="FORUM_ADDASCHILD" ImageThemePage="ICONS" ImageThemeTag="FORUM_ADDCHILDENTO_SMALL_ICON" OnClick="AddChildrenTo_Click"  runat="server"/>
+                                                          </div></div>
+             <br />
+        
+    <div id="tree">
+    </div>
+    </div>
             </td>
         </tr>
         <tr>

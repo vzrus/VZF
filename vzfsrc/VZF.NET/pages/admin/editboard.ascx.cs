@@ -84,7 +84,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+        ((DropDownList)sender).DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }

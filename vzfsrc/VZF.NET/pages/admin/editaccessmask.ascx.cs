@@ -158,7 +158,8 @@ namespace YAF.Pages.Admin
                 this.UserForumAccess.Checked,
                 sortOrder,
                 PageContext.PageUserID,
-                false);
+                false,
+                this.IsAdminMaskChk.Checked);
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
@@ -181,7 +182,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i")))
+                    var dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];
@@ -189,6 +190,7 @@ namespace YAF.Pages.Admin
                     // get access mask properties
                     this.Name.Text = (string)row["Name"];
                     this.SortOrder.Text = row["SortOrder"].ToString();
+                    this.IsAdminMaskChk.Checked = row["IsAdminMask"].ToType<bool>();
 
                     // get flags
                     var flags = new AccessFlags(row["Flags"]);

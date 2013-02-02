@@ -98,7 +98,7 @@ namespace YAF.Editors
         {
             YafContext.Current.PageElements.RegisterJsBlock(
         "teditorlang",
-        @"var editorLanguage = ""{0}"";".FormatWith(YafContext.Current.CultureUser.IsSet() ? YafContext.Current.CultureUser.Substring(0, 2) : this.Get<YafBoardSettings>().Culture.Substring(0, 2)));
+        @"var editorLanguage = ""{0}"";".FormatWith(YafContext.Current.CurrentUserData.CultureUser.IsSet() ? YafContext.Current.CurrentUserData.CultureUser.Substring(0, 2) : this.Get<YafBoardSettings>().Culture.Substring(0, 2)));
 
             YafContext.Current.PageElements.RegisterJsInclude("ckeditorinit", this.ResolveUrl("ckeditor/ckeditor_init.js"));
         }

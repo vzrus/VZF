@@ -79,7 +79,7 @@ namespace YAF.Pages.Admin
     /// </param>
     protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
     {
-      ((DropDownList)sender).DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+      ((DropDownList)sender).DataSource = CommonDb.accessmask_aforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
       ((DropDownList)sender).DataValueField = "AccessMaskID";
       ((DropDownList)sender).DataTextField = "Name";
     }
@@ -312,7 +312,7 @@ namespace YAF.Pages.Admin
 
       if (forumId.HasValue)
       {
-        this.AccessList.DataSource = CommonDb.forumaccess_list(PageContext.PageModuleID, forumId.Value);
+        this.AccessList.DataSource = CommonDb.forumaccess_list(this.PageContext.PageModuleID, forumId.Value, null, false);
         this.AccessList.DataBind();
       }
 
@@ -336,7 +336,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindParentList()
     {
-      this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue);
+      this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
       this.ParentList.DataValueField = "ForumID";
       this.ParentList.DataTextField = "Title";
       this.ParentList.DataBind();
@@ -680,6 +680,289 @@ namespace YAF.Pages.Admin
           return null;
       }
 
+      /// <summary>
+      /// The split node to objects.
+      /// </summary>
+      /// <param name="mode">
+      /// The mode.
+      /// </param>
+      private void SplitNodeToObjects(string mode)
+      {
+          var nodeIds = this.Get<IYafSession>().ForumTreeChangerActiveNode;
+          string targetIds = this.Get<IYafSession>().ForumTreeChangerActiveTargetNode;
+
+          if (nodeIds.IsNotSet())
+          {
+              this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
+          }
+
+          int boardId;
+          int categoryId;
+          int forumId;
+
+          int boardIdTarget;
+          int categoryIdTarget;
+          int forumIdTarget;
+
+          string addnew = null;
+          if (this.Get<IYafSession>().ForumAdminTreeAddForum == 1)
+          {
+              addnew = "&new=1";
+              targetIds = nodeIds;
+          }
+
+          TreeViewUtils.TreeNodeIdParser(nodeIds, out forumId, out categoryId, out boardId);
+          TreeViewUtils.TreeNodeIdParser(targetIds, out forumIdTarget, out categoryIdTarget, out boardIdTarget);
+
+
+          switch (mode)
+          {
+              case "delete":
+                  if (forumId > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_deleteforum, "f={0}", forumId);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      if (CommonDb.category_delete(PageContext.PageModuleID, categoryId))
+                      {
+                          this.ResetSession();
+                          this.BindData();
+                          this.ClearCaches();
+                      }
+                      else
+                      {
+                          this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MSG_NOT_DELETE"));
+                      }
+                      return;
+                  }
+
+                  if (boardId > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_boards);
+                  }
+
+                  break;
+              case "add":
+                  if (forumId > 0)
+                  {
+                      this.Get<IYafSession>().ForumAdminTreeAddForum = 1;
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      this.Get<IYafSession>().ForumAdminTreeAddForum = 1;
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (boardId > 0)
+                  {
+                      this.PageContext.AddLoadMessage(this.GetText("ADMIN_FORUMS", "MESSAGE_CANTADDTOBOARD"));
+                  }
+
+                  break;
+
+              case "copy":
+                  if (forumId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_editforum, "{0}={1}", mode, forumId);
+                  }
+
+                  if (categoryId > 0 || boardId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums);
+                  }
+
+                  break;
+              case "edit":
+                  if (forumId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_editforum, "f={0}", forumId);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_editcategory, "c={0}", categoryId);
+                  }
+
+                  if (boardId > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  break;
+              case "movebefore":
+                  if (forumIdTarget > 0)
+                  {
+                      // move forumId before a forum with path targetIds
+                      this.ResetSession();
+                      YafBuildLink.Redirect(
+                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, targetIds, mode, addnew);
+                  }
+
+                  // a category was selected as a destination
+                  if (categoryIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      if (forumId > 0)
+                      {
+                          // we can't move forum before a category, return back
+                          YafBuildLink.Redirect(ForumPages.admin_forums);
+                      }
+                      else
+                      {
+                          // a category was selected as a target and a category as a destination 
+                          // we change a category sort order here
+                          YafBuildLink.Redirect(
+                          ForumPages.admin_editcategory, "c={0}&{1}={2}", categoryIdTarget, mode, nodeIds);
+                      }
+                  }
+
+                  if (boardIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  if (forumId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (boardId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  break;
+              case "moveafter":
+                  if (forumIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(
+                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
+                  }
+
+                  if (categoryIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      if (forumId > 0)
+                      {
+                          YafBuildLink.Redirect(
+                             ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
+                      }
+                      else
+                      {
+                          // a category was selected as a target and a category as a destination 
+                          // we change a category sort order here
+                          YafBuildLink.Redirect(
+                          ForumPages.admin_editcategory, "c={0}&{1}={2}", categoryIdTarget, mode, nodeIds);
+                      }
+                  }
+
+                  if (boardIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  if (forumId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (boardId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  break;
+
+              case "addchildren":
+                  if (forumIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(
+                          ForumPages.admin_editforum, "f={0}&{1}={2}{3}", forumId, mode, targetIds, addnew);
+                  }
+
+                  if (categoryIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      if (forumId > 0)
+                      {
+                          YafBuildLink.Redirect(
+                             ForumPages.admin_editforum, "c={0}&{1}={2}&child=1", forumId, mode, targetIds);
+                      }
+                      else
+                      {
+                          // we can't add a category as a child of other category
+                          YafBuildLink.Redirect(ForumPages.admin_forums);
+                      }
+                  }
+
+                  if (boardIdTarget > 0)
+                  {
+                      this.ResetSession();
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  if (forumId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (categoryId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_forums, "node={0}&action={1}", nodeIds, mode);
+                  }
+
+                  if (boardId > 0)
+                  {
+                      YafBuildLink.Redirect(ForumPages.admin_editboard);
+                  }
+
+                  break;
+          }
+
+      }
+
+      /// <summary>
+      /// The reset session.
+      /// </summary>
+      private void ResetSession()
+      {
+          this.Get<IYafSession>().ForumTreeChangerActiveNode = null;
+          this.Get<IYafSession>().ForumTreeChangerActiveTargetNode = null;
+          this.Get<IYafSession>().ForumAdminTreeAddForum = null;
+      }
+
     #endregion
+
+      protected void MoveForumAfterBtn_Click(object sender, EventArgs e)
+      {
+          throw new NotImplementedException();
+      }
+
+      protected void AddChildrenTo_Click(object sender, EventArgs e)
+      {
+          throw new NotImplementedException();
+      }
   }
 }

@@ -67,6 +67,78 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.DropDownList CategoryList;
         
         /// <summary>
+        /// tviewcontainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tviewcontainer;
+        
+        /// <summary>
+        /// ActionTipLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ActionTipLbl;
+        
+        /// <summary>
+        /// ActionTipLbl2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ActionTipLbl2;
+        
+        /// <summary>
+        /// PageLinks1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.PageLinks PageLinks1;
+        
+        /// <summary>
+        /// divactive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divactive;
+        
+        /// <summary>
+        /// ActiveNodeLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.LocalizedLabel ActiveNodeLbl;
+        
+        /// <summary>
+        /// MoveForumAfterBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.ThemeButton MoveForumAfterBtn;
+        
+        /// <summary>
+        /// AddChildrenTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.ThemeButton AddChildrenTo;
+        
+        /// <summary>
         /// HelpLabel2 control.
         /// </summary>
         /// <remarks>

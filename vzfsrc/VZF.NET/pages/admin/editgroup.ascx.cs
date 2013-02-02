@@ -392,10 +392,9 @@ namespace YAF.Pages.Admin
             {
                 this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
             }
-            this.AccessMasksList = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null);
+            this.AccessMasksList = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true);
             // bind data to controls
             this.DataBind();
-
         }
 
         #endregion

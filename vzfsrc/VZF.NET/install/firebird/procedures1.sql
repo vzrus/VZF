@@ -2746,7 +2746,151 @@ begin
 end;
 --GO
 
-create procedure objQual_FORUM_LIST(I_BOARDID INTEGER,I_FORUMID INTEGER) 
+create procedure objQual_FORUM_LIST(I_BOARDID INTEGER,I_FORUMID INTEGER, I_USERID INTEGER, I_ISUSERFORUM BOOL) 
+RETURNS (
+"ForumID" INTEGER,
+"CategoryID" INTEGER,
+"ParentID" INTEGER,
+"Name" varchar(128),
+"Description" varchar(255),
+"ImageUrl" varchar(128),
+"Styles" varchar(255),
+"SortOrder" INTEGER,
+"LastPosted" timestamp,
+"LastTopicID" INTEGER,
+"LastMessageID" INTEGER,
+"LastUserID" INTEGER,
+"LastUserName" varchar(128),
+"NumTopics" INTEGER,
+"NumPosts" INTEGER,
+"RemoteURL" varchar(128),
+"Flags" INTEGER,
+"ThemeURL" varchar(128),
+"PollGroupID" INTEGER,
+"UserID" INTEGER,
+"IsLocked" BOOL,
+"IsHidden" BOOL,
+"IsNoCount" BOOL,
+"IsModerated" BOOL
+)		
+as
+begin
+	if (I_FORUMID = 0) THEN  I_FORUMID = null;
+	if (I_FORUMID is null) THEN
+		for select a.FORUMID,
+				   a.CATEGORYID,
+				   a.PARENTID,
+				   a.NAME,
+				   a.DESCRIPTION,
+				   a.IMAGEURL,
+				   a.STYLES,
+				   a.SORTORDER,
+				   a.LASTPOSTED,
+				   a.LASTTOPICID, 
+				   a.LASTMESSAGEID,
+				   a.LASTUSERID,
+				   a.LASTUSERNAME,
+				   a.NUMTOPICS,
+				   a.NUMPOSTS,
+				   a.REMOTEURL,
+				   a.FLAGS,
+				   a.THEMEURL,
+				   a.POLLGROUPID,
+				   a.USERID,
+				   a.ISLOCKED,
+				   a.ISHIDDEN,
+				   a.ISNOCOUNT,
+				   a.ISMODERATED 
+		from objQual_FORUM a 
+		join objQual_CATEGORY b 
+		on b.CATEGORYID=a.CATEGORYID 
+		where b.BOARDID=:I_BOARDID 		
+		order by a.SORTORDER
+		INTO
+		:"ForumID",
+		:"CategoryID",
+		:"ParentID",
+		:"Name",
+		:"Description",
+		:"ImageUrl",
+		:"Styles",
+		:"SortOrder",
+		:"LastPosted",
+		:"LastTopicID",
+		:"LastMessageID",
+		:"LastUserID",
+		:"LastUserName",
+		:"NumTopics",
+		:"NumPosts",
+		:"RemoteURL",
+		:"Flags",
+		:"ThemeURL",
+		:"PollGroupID",
+		:"UserID",		
+		:"IsLocked",
+		:"IsHidden",
+		:"IsNoCount",
+		:"IsModerated"
+DO SUSPEND;
+	else
+		for select first 1 a.FORUMID,
+				   a.CATEGORYID,
+				   a.PARENTID,
+				   a.NAME,
+				   a.DESCRIPTION,
+				   a.IMAGEURL,
+				   a.STYLES,
+				   a.SORTORDER,
+				   a.LASTPOSTED,
+				   a.LASTTOPICID, 
+				   a.LASTMESSAGEID,
+				   a.LASTUSERID,
+				   a.LASTUSERNAME,
+				   a.NUMTOPICS,
+				   a.NUMPOSTS,
+				   a.REMOTEURL,
+				   a.FLAGS,
+				   a.THEMEURL,
+				   a.POLLGROUPID,
+				   a.USERID,
+				   a.ISLOCKED,
+				   a.ISHIDDEN,
+				   a.ISNOCOUNT,
+				   a.ISMODERATED  from objQual_FORUM a 
+		join objQual_CATEGORY b 
+		on b.CATEGORYID=a.CATEGORYID 
+		where b.BOARDID=:I_BOARDID 
+		and a.FORUMID = :I_FORUMID		
+				INTO
+		:"ForumID",
+		:"CategoryID",
+		:"ParentID",
+		:"Name",
+		:"Description",
+		:"ImageUrl",
+		:"Styles",
+		:"SortOrder",
+		:"LastPosted",
+		:"LastTopicID",
+		:"LastMessageID",
+		:"LastUserID",
+		:"LastUserName",
+		:"NumTopics",
+		:"NumPosts",
+		:"RemoteURL",
+		:"Flags",
+		:"ThemeURL",
+		:"PollGroupID",
+		:"UserID",		
+		:"IsLocked",
+		:"IsHidden",
+		:"IsNoCount",
+		:"IsModerated"
+DO SUSPEND;
+end;
+--GO
+
+create procedure objQual_FORUM_BYUSERLIST(I_BOARDID INTEGER,I_FORUMID INTEGER, I_USERID INTEGER, I_ISUSERFORUM BOOL) 
 RETURNS (
 "ForumID" INTEGER,
 "CategoryID" INTEGER,
@@ -2805,6 +2949,8 @@ begin
 		join objQual_CATEGORY b 
 		on b.CATEGORYID=a.CATEGORYID 
 		where b.BOARDID=:I_BOARDID 
+		AND a.ISUSERFORUM = :I_ISUSERFORUM
+		AND (:I_USERID IS NULL OR a.CREATEDBYUSERID = :I_USERID)
 		order by a.SORTORDER
 		INTO
 		:"ForumID",
@@ -2833,7 +2979,7 @@ begin
 		:"IsModerated"
 DO SUSPEND;
 	else
-		for select a.FORUMID,
+		for select first 1 a.FORUMID,
 				   a.CATEGORYID,
 				   a.PARENTID,
 				   a.NAME,
@@ -2861,6 +3007,8 @@ DO SUSPEND;
 		on b.CATEGORYID=a.CATEGORYID 
 		where b.BOARDID=:I_BOARDID 
 		and a.FORUMID = :I_FORUMID
+		AND a.ISUSERFORUM = :I_ISUSERFORUM
+		AND (:I_USERID IS NULL OR a.USERID = :I_USERID)
 				INTO
 		:"ForumID",
 		:"CategoryID",
@@ -2889,8 +3037,6 @@ DO SUSPEND;
 DO SUSPEND;
 end;
 --GO
-
-
 
 CREATE PROCEDURE objQual_FORUM_LISTALL (I_BOARDID INTEGER,I_USERID INTEGER, I_ROOT INTEGER, I_RETURNALL BOOL)
 RETURNS 

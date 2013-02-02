@@ -310,6 +310,36 @@ namespace YAF.Types.Constants
     rsstopic,
 
     /// <summary>
+    /// The personalforum.
+    /// </summary>
+    personalforum,
+
+    /// <summary>
+    /// The personalgroup.
+    /// </summary>
+    personalgroup,
+
+    /// <summary>
+    /// The personalaccessmask.
+    /// </summary>
+    personalaccessmask,
+
+    /// <summary>
+    /// The editforum.
+    /// </summary>
+    editforum,
+
+    /// <summary>
+    /// The editaccessmask.
+    /// </summary>
+    editaccessmask,
+
+    /// <summary>
+    /// The editgroup.
+    /// </summary>
+    editgroup, 
+
+    /// <summary>
     /// The rsstopic.
     /// </summary>
     polledit, 
