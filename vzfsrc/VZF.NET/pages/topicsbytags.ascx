@@ -62,7 +62,7 @@
         </td>
     </tr>
      <tr>
-        <td align="left" colspan="2">
+        <td align="center" colspan="5">
             <asp:Button ID="OKButon"  Text='<%# this.GetText("COMMON","OK") %>' CausesValidation="False" CommandName="Action" CommandArgument='<%# this.retBtnArgs %>' OnClick="okBtn_click"  runat="server"/>
         </td>
     </tr>

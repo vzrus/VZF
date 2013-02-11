@@ -4651,13 +4651,37 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forumaccess_group(string connectionString, [NotNull] object groupID)
+        public static DataTable forumaccess_group(string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_group"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("GroupID", groupID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IncludeUserForums", includeUserForums);
+
                 return userforumaccess_sort_list(connectionString,MsSqlDbAccess.GetData(cmd, connectionString), 0, 0, 0);
+            }
+        }
+
+        /// <summary>
+        /// The forumaccess_group.
+        /// </summary>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static DataTable forumaccess_personalgroup(string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_personalgroup"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("GroupID", groupID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("IncludeUserForums", includeUserForums);
+
+                return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
 
@@ -4676,7 +4700,7 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("ForumID", forumID);
                 cmd.Parameters.AddWithValue("UserID", userId);
-                cmd.Parameters.AddWithValue("IncludeUserGroups", includeUserGroups);
+                cmd.Parameters.AddWithValue("IncludeUserForums", includeUserGroups);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -9615,6 +9639,67 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("GroupID", groupID);
                 cmd.Parameters.AddWithValue("RankID", rankID);
                 cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
+                cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
+
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// The user_pagedlist.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="approved">
+        /// The approved.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="rankID">
+        /// The rank id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable user_pagedlist(
+            string connectionString,
+            [NotNull] object boardID,
+            [NotNull] object userID,
+            [NotNull] object approved,
+            [NotNull] object groupID,
+            [NotNull] object rankID,
+            [CanBeNull] object useStyledNicks,
+            [NotNull]object pageIndex,
+            [NotNull]object pageSize)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("user_pagedlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("UserID", userID);
+                cmd.Parameters.AddWithValue("Approved", approved);
+                cmd.Parameters.AddWithValue("GroupID", groupID);
+                cmd.Parameters.AddWithValue("RankID", rankID);
+                cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
+                cmd.Parameters.AddWithValue("PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("PageSize", pageSize);
                 cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
 
                 return MsSqlDbAccess.GetData(cmd, connectionString);

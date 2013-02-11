@@ -3658,15 +3658,33 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable forumaccess_group(string connectionString, object groupID)
+        public static DataTable forumaccess_group(string connectionString, object groupID, object userId, bool includeUserForums)
         {
+            // this needs to be rewritten as a separate sp
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_group"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_UserID", NpgsqlDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_IncludeUserForums", NpgsqlDbType.Boolean)).Value = includeUserForums;
+                DataTable dt = PostgreDbAccess.GetData(cmd, connectionString);
+                if (includeUserForums) return dt;
+                return userforumaccess_sort_list(dt, 0, 0, 0);
+            }
+        }
+        public static DataTable forumaccess_personalgroup(string connectionString, object groupID, object userId, bool includeUserForums)
+        {
+            // this needs to be rewritten as a separate sp
+            using (var cmd = PostgreDbAccess.GetCommand("forumaccess_personalgroup"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                return userforumaccess_sort_list(PostgreDbAccess.GetData(cmd, connectionString), 0, 0, 0);
+                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_UserID", NpgsqlDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_IncludeUserForums", NpgsqlDbType.Boolean)).Value = includeUserForums;
+               
+                return PostgreDbAccess.GetData(cmd, connectionString);
             }
         }
 
@@ -7760,6 +7778,39 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID ?? DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks
                                                                                                        ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
+                    DateTime.UtcNow;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable user_pagedlist(
+            string connectionString,
+            object boardId,
+            object userId,
+            object approved,
+            object groupID,
+            object rankID,
+            object useStyledNicks,
+            object pageIndex,
+            object pageSize)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("user_pagedlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId
+                                                                                                   ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_approved", NpgsqlDbType.Boolean)).Value = approved
+                                                                                                    ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_groupid", NpgsqlDbType.Integer)).Value = groupID
+                                                                                                   ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_rankid", NpgsqlDbType.Integer)).Value = rankID ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_stylednicks", NpgsqlDbType.Boolean)).Value = useStyledNicks ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize; 
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                     DateTime.UtcNow;
 

@@ -320,6 +320,16 @@ namespace YAF.Types.Constants
     personalgroup,
 
     /// <summary>
+    /// The personalgroup_users.
+    /// </summary>
+    personalgroup_users,
+
+    /// <summary>
+    /// The personalgroup_edituser.
+    /// </summary>
+    personalgroup_edituser,
+
+    /// <summary>
     /// The personalaccessmask.
     /// </summary>
     personalaccessmask,

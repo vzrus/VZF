@@ -33,12 +33,15 @@
 						(<%# GetLinkedStatus( (DataRowView) Container.DataItem )%>)&nbsp;&nbsp;                        
 					</td>
                     <td class="header2" align="right">
+                        <asp:LinkButton ID="LinkButtonGroupMembers" runat="server" Visible="true"
+							CommandName="users" CommandArgument='<%# Eval( "GroupID") %>'>
+                            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="MEMBERS" LocalizedTag="TITLE" />
+                         </asp:LinkButton> |
 						<asp:LinkButton ID="LinkButtonEdit" runat="server" Visible="true"
 							CommandName="edit" CommandArgument='<%# Eval( "GroupID") %>'>
                             <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="EDIT" />
-                         </asp:LinkButton>
-						|
-						<asp:LinkButton  ID="LinkButtonDelete" runat="server" OnLoad="DeleteRole_Load" Visible='<%#(this.Eval( "Flags" ).BinaryAnd(2) ? false : true)%>'
+                         </asp:LinkButton>|
+						<asp:LinkButton  ID="LinkButtonDelete" runat="server" OnLoad="DeleteRole_Load" Visible='<%#(!this.Eval( "Flags" ).BinaryAnd(2))%>'
 							CommandName="delete" CommandArgument='<%# Eval( "GroupID") %>'>
                             <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="DELETE" />
                         </asp:LinkButton>

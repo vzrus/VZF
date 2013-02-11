@@ -259,7 +259,13 @@ namespace YAF.Controls
 
                     try
                     {
-                        if (flags.IsLocked)
+                        if (this.Get<YafBoardSettings>().AllowPersonalForums && row.Table.Columns.Contains("IsUserForum") && row["IsUserForum"].ToType<bool>())
+                        {
+                            forumIcon.ThemeTag = "PFORUM_LIST_ICON";
+                            forumIcon.LocalizedTitlePage = "PERSONALFORUM";
+                            forumIcon.LocalizedTitleTag = "TITLE";
+                        }
+                        else if (flags.IsLocked)
                         {
                             forumIcon.ThemeTag = "FORUM_LOCKED";
                             forumIcon.LocalizedTitlePage = "ICONLEGEND";

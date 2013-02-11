@@ -4128,7 +4128,7 @@ BEGIN
 END;
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}forumaccess_group(i_GroupID INT) 
+CREATE PROCEDURE {databaseName}.{objectQualifier}forumaccess_group(i_GroupID INT, i_UserID INT, i_IncludeUserForums TINYINT(1)) 
  BEGIN
     SELECT 
          a.*,
@@ -4143,7 +4143,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forumaccess_group(i_GroupID INT
         INNER JOIN {databaseName}.{objectQualifier}Category c on c.CategoryID=b.CategoryID
         INNER JOIN {databaseName}.{objectQualifier}Board brd on brd.BoardID=c.BoardID	
     WHERE 
-        a.GroupID = i_GroupID
+        a.GroupID = i_GroupID and (i_IncludeUserForums <> 1 or (b.IsUserForum = 1 and b.CreatedByUserID = i_UserID))
     ORDER BY 
         brd.Name,
         c.SortOrder,
@@ -4382,6 +4382,14 @@ END;
         SET iciFlags = iciFlags | 4; END IF;
         IF i_IsModerator <> 0 THEN
         SET iciFlags = iciFlags | 8; END IF;
+
+		 IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+       -- guests should not create forums
+    ELSE    
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+
         IF i_GroupID > 0 THEN        
             UPDATE {databaseName}.{objectQualifier}Group
             SET `Name` = i_Name,
@@ -4395,7 +4403,7 @@ END;
                  UsrSigHTMLTags = i_UsrSigHTMLTags,
                  UsrAlbums = i_UsrAlbums,
                  UsrAlbumImages = i_UsrAlbumImages,
-                 IsUserGroup =  i_IsUserGroup
+                 IsUserGroup =  i_IsUserGroup				
             WHERE  GroupID = i_GroupID;        
         ELSE        
             INSERT INTO {databaseName}.{objectQualifier}Group
@@ -4411,7 +4419,11 @@ END;
                         UsrSigHTMLTags,
                         UsrAlbums,
                         UsrAlbumImages,
-                        IsUserGroup)
+                        IsUserGroup,
+						CreatedByUserID,
+						CreatedByUserName,
+						CreatedByUserDisplayName,
+						CreatedDate)
             VALUES     (i_Name,
                         i_BoardID,
                         iciFlags,
@@ -4424,7 +4436,11 @@ END;
                         i_UsrSigHTMLTags,
                         i_UsrAlbums,
                         i_UsrAlbumImages,
-                        i_IsUserGroup);
+                        i_IsUserGroup,
+						i_UserID,
+						ici_UserName,
+						ici_UserDisplayName,
+						i_UTCTIMESTAMP);
             SET i_GroupID = LAST_INSERT_ID();
             INSERT INTO {databaseName}.{objectQualifier}ForumAccess
                        (GroupID,
@@ -4438,13 +4454,10 @@ END;
                      ON b.CategoryID = a.CategoryID
             WHERE  b.BoardID = i_BoardID;
          END IF; 
-        CALL {databaseName}.{objectQualifier}user_savestyle(null, i_GroupID);
-        IF i_UserID IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
-       -- guests should not create forums
-    ELSE    
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
-    END IF;
+		 IF (i_Style is not null and char_length(i_Style > 2)) THEN 		
+        CALL {databaseName}.{objectQualifier}user_savestyle(i_GroupID, null);
+		END IF;
+       
     if exists (select 1 from {databaseName}.{objectQualifier}GroupHistory where GroupID = i_GroupID and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
     update {databaseName}.{objectQualifier}GroupHistory set 
            ChangedUserID = i_UserID,	
@@ -7241,7 +7254,10 @@ BEGIN
         VALUES(i_BoardID,i_Name,ici_Flags,i_MinPosts,i_RankImage,i_PMLimit,i_Style,i_SortOrder,i_Description,i_UsrSigChars,i_UsrSigBBCodes,i_UsrSigHTMLTags,i_UsrAlbums,i_UsrAlbumImages);
         SET i_RankID = LAST_INSERT_ID();
     END IF;
-    CALL {databaseName}.{objectQualifier}user_savestyle(null, i_RankID);
+	 IF (i_Style is not null and char_length(i_Style > 2)) THEN 		
+        CALL {databaseName}.{objectQualifier}user_savestyle(null, i_RankID);
+		END IF;
+   
 END;
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */

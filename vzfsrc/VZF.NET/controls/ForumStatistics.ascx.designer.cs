@@ -238,6 +238,15 @@ namespace YAF.Controls {
         protected global::System.Web.UI.WebControls.Label StatsTodaysBirthdays;
         
         /// <summary>
+        /// ThemeImage2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.ThemeImage ThemeImage2;
+        
+        /// <summary>
         /// BoardTagsLink control.
         /// </summary>
         /// <remarks>
@@ -245,6 +254,15 @@ namespace YAF.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton BoardTagsLink;
+        
+        /// <summary>
+        /// ThemeImage3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Controls.ThemeImage ThemeImage3;
         
         /// <summary>
         /// MosActiveForLink control.

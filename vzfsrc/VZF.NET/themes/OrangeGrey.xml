@@ -25,6 +25,9 @@
     <Resource tag="EDIT_SMALL_ICON">~/edit_small_icon.gif</Resource>
     <Resource tag="DELETE_SMALL_ICON">~/delete_small_icon.gif</Resource>
     <Resource tag="MULTIPAGES_SMALL">~/multipages_small.gif</Resource>
+    <Resource tag="MENU3ICON">~/lifebuoy-small.png</Resource>
+    <Resource tag="PFORUM_LIST_ICON">~/blog.png</Resource>
+    <Resource tag="PFORUM_LISTNEW_ICON">~/blog--exclamation.png</Resource>
     <Resource tag="MSN">~/icon_msn.png</Resource>
     <Resource tag="AIM">~/icon_aim.png</Resource>
     <Resource tag="YIM">~/icon_yahoo.png</Resource>

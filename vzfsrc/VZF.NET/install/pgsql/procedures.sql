@@ -3544,7 +3544,8 @@ FOR _rec IN
         b.name AS Forum, 
         b.description, 		
         b.imageurl,		
-        b.pollgroupid, 		
+        b.pollgroupid, 
+		b.isuserforum,		
         databaseSchema.objectQualifier_forum_topics(b.forumid) AS Topics,
         databaseSchema.objectQualifier_forum_posts(b.forumid) AS Posts, 	
         b.lasttopicid,
@@ -3680,7 +3681,8 @@ FOR _rec IN
         b.name AS Forum, 
         b.description, 		
         b.imageurl,		
-        b.pollgroupid, 		
+        b.pollgroupid, 
+		b.isuserforum,		
         databaseSchema.objectQualifier_forum_topics(b.forumid) AS Topics,
         databaseSchema.objectQualifier_forum_posts(b.forumid) AS Posts,
         b.lasttopicid,
@@ -4792,7 +4794,7 @@ END;$BODY$
 -- DROP FUNCTION databaseSchema.objectQualifier_forumaccess_group(integer);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forumaccess_group(
-                           i_groupid integer)
+                           i_groupid integer, i_userid integer, i_includeuserforums boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_forumaccess_group_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_forumaccess_group_return_type%ROWTYPE;
@@ -4814,7 +4816,7 @@ FOR _rec IN
             INNER JOIN databaseSchema.objectQualifier_board brd on brd.boardid=c.boardid
     
 WHERE 
-        a.groupid = i_groupid
+        a.groupid = i_groupid and (not i_includeuserforums  or (b.isuserforum and b.CreatedByUserID = i_userid))
     ORDER BY 
         brd.Name,
         c.sortorder,
@@ -4937,7 +4939,9 @@ BEGIN
              usrsigbbcodes,
              usrsightmltags,
              usralbums,
-             usralbumimages
+             usralbumimages,
+			 isusergroup,
+			 createdbyuserid
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
          LOOP
@@ -4958,7 +4962,9 @@ END LOOP;
              usrsigbbcodes,
              usrsightmltags,
              usralbums,
-             usralbumimages
+             usralbumimages,
+			 isusergroup,
+			 createdbyuserid
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
         AND groupid = i_groupid LIMIT 1
@@ -4998,7 +5004,9 @@ BEGIN
              usrsigbbcodes,
              usrsightmltags,
              usralbums,
-             usralbumimages
+             usralbumimages,
+			 isusergroup,
+			 createdbyuserid
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
          LOOP
@@ -5019,7 +5027,9 @@ END LOOP;
              usrsigbbcodes,
              usrsightmltags,
              usralbums,
-             usralbumimages
+             usralbumimages,
+			 isusergroup,
+			 createdbyuserid
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
         AND groupid = i_groupid LIMIT 1
@@ -5233,6 +5243,13 @@ BEGIN
         IF i_ismoderator IS NOT FALSE THEN
         iciFlags := iciFlags | 8; END IF;
         
+		SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
+				  IF i_UserID IS NOT NULL THEN   
+    SELECT name,displayname INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where userid = i_userid LIMIT  1;
+       -- guests should not create forums
+    ELSE    
+    SELECT name,displayname INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
         IF i_groupid > 0 THEN        
             UPDATE databaseSchema.objectQualifier_group
             SET    name = i_name,
@@ -5263,7 +5280,11 @@ BEGIN
                         usrsightmltags,
                         usralbums,
                         usralbumimages,
-                        isusergroup)
+                        isusergroup,
+				        createdbyuserid,
+				        createdbyusername,
+						createdbyuserdisplayname,
+						createddate)
             VALUES     (i_name,
                         i_boardid,
                         iciFlags,
@@ -5276,7 +5297,11 @@ BEGIN
                         i_usrsightmltags,
                         i_usralbums,
                         i_usralbumimages,
-                        i_isusergroup)
+                        i_isusergroup,
+						i_userid,
+						ici_UserName,
+						ici_UserDisplayName,
+						i_utctimestamp)
                         RETURNING groupid INTO ici_groupid;            
             
             INSERT INTO databaseSchema.objectQualifier_forumaccess
@@ -5292,8 +5317,22 @@ BEGIN
             WHERE  b.boardid = i_boardid;
         --    SELECT ici_groupid INTO _rec; 
          END IF;
-      PERFORM databaseSchema.objectQualifier_user_savestyle(
+
+	/* if exists (select 1 from databaseSchema.objectQualifier_grouphistory where groupid = ici_groupid and changeddate = i_utctimestamp  LIMIT 1) THEN
+    update databaseSchema.objectQualifier_grouphistory set 
+           ChangedUserID = i_UserID,	
+           ChangedUserName = ici_UserName,
+           ChangedDisplayName = ici_UserDisplayName
+     where  groupid = ici_groupid  and changeddate = i_utctimestamp; 
+    else    
+    INSERT INTO databaseSchema.objectQualifier_grouphistory(GroupID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
+    VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    end IF; */
+	-- group styles override user styles, don't sync if style is not present here
+    IF (i_style is not null and char_length(i_style) > 2) THEN
+	        PERFORM databaseSchema.objectQualifier_user_savestyle(
                            ici_groupid, null);
+      END IF;
                            return ici_groupid;
     END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -8584,8 +8623,12 @@ BEGIN
             i_usralbums,
             i_usralbumimages) RETURNING rankid INTO _rankid;
     END IF;
-      PERFORM databaseSchema.objectQualifier_user_savestyle(
+-- group styles override user styles, don't sync if style is not present here
+    IF (i_style is not null and char_length(i_style) > 2) THEN
+	         PERFORM databaseSchema.objectQualifier_user_savestyle(
                            null, i_rankid);
+      END IF;
+    
 END;
 
 $BODY$

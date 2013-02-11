@@ -390,7 +390,7 @@ namespace YAF.Pages.Admin
             // set datasource of access list (list of forums and role's access masks) if we are editing existing mask
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
+                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, false);
             }
             this.AccessMasksList = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true);
             // bind data to controls

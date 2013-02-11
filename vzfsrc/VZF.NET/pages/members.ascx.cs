@@ -24,6 +24,7 @@ namespace YAF.Pages
     #region
 
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
     using System.Web.UI.WebControls;
@@ -35,6 +36,7 @@ namespace YAF.Pages
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
+    using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Utils;
 
@@ -246,26 +248,31 @@ namespace YAF.Pages
        
             using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
-                // add empty item for no filtering
-                DataRow newRow = dt.NewRow();
-                newRow["Name"] = this.GetText("ALL");
-                newRow["GroupID"] = DBNull.Value;
-                dt.Rows.InsertAt(newRow, 0);
-
-                DataRow[] guestRows = dt.Select("Name='Guests'");
-
-                if (guestRows.Length > 0)
+                List<DataRow> rows = null;
+                var dtt = dt.Clone();
+                foreach (DataRow row in dt.Rows)
                 {
-                    foreach (DataRow row in guestRows)
+                    // get role flags
+                    if (new GroupFlags(row["Flags"]).IsGuest)
                     {
-                        row.Delete();
+                        continue;
                     }
+
+                    var drows = dtt.NewRow();
+                    drows.ItemArray = row.ItemArray;
+                    dtt.Rows.Add(drows);
                 }
 
-                // commits the deletes to the table
-                dt.AcceptChanges();
+                // add empty item for no filtering
+                DataRow newRow = dtt.NewRow();
+                newRow["Name"] = this.GetText("ALL");
+                newRow["GroupID"] = DBNull.Value;
+                dtt.Rows.InsertAt(newRow, 0);
 
-                this.Group.DataSource = dt;
+                // commits the deletes to the table
+                dtt.AcceptChanges();
+
+                this.Group.DataSource = dtt;
                 this.Group.DataTextField = "Name";
                 this.Group.DataValueField = "GroupID";
                 this.Group.DataBind();

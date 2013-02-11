@@ -159,8 +159,6 @@ namespace YAF.Controls
               continue;
           }
 
-         
-
           // get user's name
           string userName = UserMembershipHelper.GetUserNameFromID(this.CurrentUserID);
 

@@ -3838,16 +3838,32 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable forumaccess_group(string connectionString, object groupID)
+        public static DataTable forumaccess_group(string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_IncludeUserForums", MySqlDbType.Byte).Value = includeUserForums;
 
                 return userforumaccess_sort_list(
                     connectionString, MySqlDbAccess.GetData(cmd, connectionString), 0, 0, 0);
+            }
+        }
+
+        public static DataTable forumaccess_personalgroup(string connectionString, object groupID, object userId, bool includeUserForums)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupID;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_IncludeUserForums", MySqlDbType.Byte).Value = includeUserForums;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
             }
         }
 
@@ -8385,6 +8401,34 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupId ?? DBNull.Value;
                 cmd.Parameters.Add("i_RankID", MySqlDbType.Int32).Value = rankId ?? DBNull.Value;
                 cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+
+                return MySqlDbAccess.GetData(cmd, false, connectionString);
+            }
+        }
+
+        public static DataTable user_pagedlist(
+            string connectionString,
+            object boardId,
+            object userId,
+            object approved,
+            object groupId,
+            object rankId,
+            object useStyledNicks,
+            object pageIndex,
+            object pageSize)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("user_pagedlist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add("i_Approved", MySqlDbType.Byte).Value = approved ?? DBNull.Value;
+                cmd.Parameters.Add("i_GroupID", MySqlDbType.Int32).Value = groupId ?? DBNull.Value;
+                cmd.Parameters.Add("i_RankID", MySqlDbType.Int32).Value = rankId ?? DBNull.Value;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_PageIndex", MySqlDbType.Int32).Value = pageIndex;
+                cmd.Parameters.Add("i_PageSize", MySqlDbType.Int32).Value = pageSize;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 return MySqlDbAccess.GetData(cmd, false, connectionString);

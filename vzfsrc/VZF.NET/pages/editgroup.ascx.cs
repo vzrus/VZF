@@ -62,8 +62,7 @@ namespace YAF.Pages
         protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
         {
             // We don't change access masks if it's a guest
-            if (!this.IsGuestX.Checked)
-            {
+        
                 // get sender object as dropdown list
                 var c = (DropDownList) sender;
 
@@ -72,7 +71,6 @@ namespace YAF.Pages
                 // set value and text field names
                 c.DataValueField = "AccessMaskID";
                 c.DataTextField = "Name";
-            }
         }
 
         /// <summary>
@@ -149,7 +147,7 @@ namespace YAF.Pages
 
             // get data about edited role
             using (
-                DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i")))
+                DataTable dt = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"),PageContext.PageUserID, true))
             {
                 // get it as row
                 DataRow row = dt.Rows[0];
@@ -159,49 +157,9 @@ namespace YAF.Pages
 
                 // set controls to role values
                 this.Name.Text = (string)row["Name"];
-
-                this.IsAdminX.Checked = flags.IsAdmin;
-                this.IsAdminX.Enabled = !flags.IsGuest;
-
-                this.IsStartX.Checked = flags.IsStart;
-                this.IsStartX.Enabled = !flags.IsGuest;
-
-                this.IsModeratorX.Checked = flags.IsModerator;
-                this.IsModeratorX.Enabled = !flags.IsGuest;
-
-                this.PMLimit.Text = row["PMLimit"].ToString();
-                this.PMLimit.Enabled = !flags.IsGuest;
-
                 this.StyleTextBox.Text = row["Style"].ToString();
-
                 this.Priority.Text = row["SortOrder"].ToString();
-
-                this.UsrAlbums.Text = row["UsrAlbums"].ToString();
-                this.UsrAlbums.Enabled = !flags.IsGuest;
-
-                this.UsrAlbumImages.Text = row["UsrAlbumImages"].ToString();
-                this.UsrAlbumImages.Enabled = !flags.IsGuest;
-
-                this.UsrSigChars.Text = row["UsrSigChars"].ToString();
-                this.UsrSigChars.Enabled = !flags.IsGuest;
-
-                this.UsrSigBBCodes.Text = row["UsrSigBBCodes"].ToString();
-                this.UsrSigBBCodes.Enabled = !flags.IsGuest;
-
-                this.UsrSigHTMLTags.Text = row["UsrSigHTMLTags"].ToString();
-                this.UsrSigHTMLTags.Enabled = !flags.IsGuest;
-
                 this.Description.Text = row["Description"].ToString();
-
-                this.IsGuestX.Checked = flags.IsGuest;
-
-                // IsGuest flag can be set for only one role. if it isn't for this, disable that row
-                if (flags.IsGuest)
-                {
-                    this.IsGuestTR.Visible = true;
-                    this.IsGuestX.Enabled = !flags.IsGuest;
-                    this.AccessList.Visible = false;
-                }
             }
         }
 
@@ -216,33 +174,11 @@ namespace YAF.Pages
         /// </param>
         protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (!ValidationHelper.IsValidInt(this.PMLimit.Text.Trim()))
-            {
-                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_VALID_NUMBER"));
-                return;
-            }
+         
 
             if (!ValidationHelper.IsValidInt(this.Priority.Text.Trim()))
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_INTEGER"));
-                return;
-            }
-
-            if (!ValidationHelper.IsValidInt(this.UsrAlbums.Text.Trim()))
-            {
-                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_ALBUM_NUMBER"));
-                return;
-            }
-
-            if (!ValidationHelper.IsValidInt(this.UsrSigChars.Text.Trim()))
-            {
-                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_SIG_NUMBER"));
-                return;
-            }
-
-            if (!ValidationHelper.IsValidInt(this.UsrAlbumImages.Text.Trim()))
-            {
-                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_TOTAL_NUMBER"));
                 return;
             }
 
@@ -263,7 +199,7 @@ namespace YAF.Pages
             if (roleID != 0)
             {
                 // get the current role name in the DB
-                using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, roleID))
+                using (DataTable dt = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, true))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -276,20 +212,20 @@ namespace YAF.Pages
             roleID = CommonDb.group_save(PageContext.PageModuleID, roleID,
               this.PageContext.PageBoardID,
               roleName,
-              this.IsAdminX.Checked,
-              this.IsGuestX.Checked,
-              this.IsStartX.Checked,
-              this.IsModeratorX.Checked,
+              false,
+              false,
+              false,
+              false,
               AccessMaskID.SelectedValue,
-              this.PMLimit.Text.Trim(),
+              0,
               this.StyleTextBox.Text.Trim(),
               this.Priority.Text.Trim(),
               this.Description.Text,
-              this.UsrSigChars.Text,
-              this.UsrSigBBCodes.Text,
-              this.UsrSigHTMLTags.Text,
-              this.UsrAlbums.Text.Trim(),
-              this.UsrAlbumImages.Text.Trim(),
+              0,
+              null,
+              null,
+              0,
+              0,
               PageContext.PageUserID,
               true);
 
@@ -297,7 +233,7 @@ namespace YAF.Pages
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
             // see if need to rename an existing role...
-            if (oldRoleName.IsSet() && roleName != oldRoleName && RoleMembershipHelper.RoleExists(oldRoleName) && !RoleMembershipHelper.RoleExists(roleName) && !this.IsGuestX.Checked)
+            if (oldRoleName.IsSet() && roleName != oldRoleName && RoleMembershipHelper.RoleExists(oldRoleName) && !RoleMembershipHelper.RoleExists(roleName))
             {
                 // transfer users in addition to changing the name of the role...
                 var users = this.Get<RoleProvider>().GetUsersInRole(oldRoleName);
@@ -314,7 +250,7 @@ namespace YAF.Pages
                     this.Get<RoleProvider>().AddUsersToRoles(users, new[] { roleName });
                 }
             }
-            else if (!RoleMembershipHelper.RoleExists(roleName) && !this.IsGuestX.Checked)
+            else if (!RoleMembershipHelper.RoleExists(roleName))
             {
                 // if role doesn't exist in provider's data source, create it
 
@@ -384,7 +320,7 @@ namespace YAF.Pages
             // set datasource of access list (list of forums and role's access masks) if we are editing existing mask
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"));
+                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"),PageContext.PageUserID,true);
             }
 
             this.AccessMasksList = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);

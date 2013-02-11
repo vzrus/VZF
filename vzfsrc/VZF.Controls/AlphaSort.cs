@@ -70,6 +70,11 @@ namespace YAF.Controls
     /// </summary>
     public ForumPages PagerPage { get; set; }
 
+    /// <summary>
+    ///   Gets GroupID.
+    /// </summary>
+    public int? GroupID { get; set; }
+
     #endregion
 
     #region Methods
@@ -119,7 +124,7 @@ namespace YAF.Controls
                       ToolTip = this.GetTextFormatted("ALPHABET_FILTER_BY", letter.ToString()),
                       Text = letter.ToString(),
                       NavigateUrl =
-                          YafBuildLink.GetLinkNotEscaped(this.PagerPage, "letter={0}", letter == '#' ? '_' : letter)
+                          YafBuildLink.GetLinkNotEscaped(this.PagerPage, "letter={0}{1}", letter == '#' ? '_' : letter, GroupID !=null ? "&gr={0}".FormatWith(this.GroupID): string.Empty)
                   };
 
               alphaListItem.Controls.Add(link);

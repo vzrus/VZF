@@ -28,6 +28,9 @@
     <Resource tag="EDIT_SMALL_ICON">~/images/edit_small_icon.gif</Resource>
     <Resource tag="DELETE_SMALL_ICON">~/images/delete_small_icon.gif</Resource>
     <Resource tag="MULTIPAGES_SMALL">~/images/multipages_small.gif</Resource>
+    <Resource tag="MENU3ICON">~/images/lifebuoy-small.png</Resource>
+    <Resource tag="PFORUM_LIST_ICON">~/images/blog.png</Resource>
+    <Resource tag="PFORUM_LISTNEW_ICON">~/images/blog--exclamation.png</Resource>
     <Resource tag="MSN">~/images/icon_msn.png</Resource>
     <Resource tag="AIM">~/images/icon_aim.png</Resource>
     <Resource tag="YIM">~/images/icon_yahoo.png</Resource>

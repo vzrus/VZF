@@ -2,7 +2,7 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <YAF:PageLinks ID="PageLinksTop" runat="server"></YAF:PageLinks>
 <a id="top" name="top"></a>
-<table class="command" width="100%">
+<table class="content" width="100%">
     <tr>
         <td class="header1" colspan="1"> 
             <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="TAGSBOARD" LocalizedTag="TITLE" />
@@ -21,11 +21,11 @@
             <YAF:Pager ID="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
         </td>
     </tr>
-    <tr>
+    <tr class="footer1">
         <td>
    <asp:Repeater ID="TagList" OnItemDataBound="TagList_OnItemDataBound" runat="server">
         <ItemTemplate>
-            <a id="TagLink" class="tagcloud tag30" runat="server" ><%# this.HtmlEncode(Eval("Tag")) %></a>&nbsp;&nbsp;
+            <a id="TagLink"  class="tag90" runat="server"  ><%# this.HtmlEncode(Eval("Tag")) %></a>&nbsp;&nbsp;
         </ItemTemplate>
     </asp:Repeater>
       <!-- <YAF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> -->

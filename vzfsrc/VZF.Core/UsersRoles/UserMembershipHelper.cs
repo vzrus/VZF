@@ -634,7 +634,7 @@ namespace YAF.Core
         /// </returns>
         public static bool IsGuestUser(object userID)
         {
-            return userID == null || userID is DBNull || IsGuestUser((int)userID);
+            return userID == null || userID is DBNull || IsGuestUser(userID.ToType<int>());
         }
 
         /// <summary>

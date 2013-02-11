@@ -3735,15 +3735,31 @@ namespace VZF.Data.Firebird
             }
         }
 
-        public static DataTable forumaccess_group(string connectionString, object groupID)
+        public static DataTable forumaccess_group(string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = FbDbAccess.GetCommand("forumaccess_group"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_INCLUDEUSERFORUMS", FbDbType.Boolean)).Value = includeUserForums;
 
                 return userforumaccess_sort_list(connectionString, FbDbAccess.GetData(cmd, connectionString), 0, 0, 0);
+            }
+        }
+
+        public static DataTable forumaccess_personalgroup(string connectionString, object groupID, object userId, bool includeUserForums)
+        {
+            using (var cmd = FbDbAccess.GetCommand("forumaccess_personalgroup"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
+                cmd.Parameters.Add(new FbParameter("@I_INCLUDEUSERFORUMS", FbDbType.Boolean)).Value = includeUserForums;
+
+                return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
@@ -7838,6 +7854,51 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
                 cmd.Parameters.Add(new FbParameter("@I_RANKID", FbDbType.Integer)).Value = rankID;
                 cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
+                cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static DataTable user_pagedlist(
+            string connectionString,
+            object boardID,
+            object userID,
+            object approved,
+            object groupID,
+            object rankID,
+            object useStyledNicks,
+            object pageIndex,
+            object pageSize)
+        {
+            using (var cmd = FbDbAccess.GetCommand("user_pagedlist"))
+            {
+                if (userID == null)
+                {
+                    userID = DBNull.Value;
+                }
+                // if (approved == null) { approved = DBNull.Value; }               
+                // if (approved.ToString().ToLower().Contains("true")) { approved = 1; }
+                // else { approved = 0; }
+                if (groupID == null)
+                {
+                    groupID = DBNull.Value;
+                }
+                if (rankID == null)
+                {
+                    rankID = DBNull.Value;
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_APPROVED", FbDbType.Boolean)).Value = approved;
+                cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new FbParameter("@I_RANKID", FbDbType.Integer)).Value = rankID;
+                cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
+                cmd.Parameters.Add(new FbParameter("@I_PAGEINDEX", FbDbType.Integer)).Value = pageIndex;
+                cmd.Parameters.Add(new FbParameter("@I_PAGESIZE", FbDbType.Integer)).Value = pageSize;
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
                 return FbDbAccess.GetData(cmd, connectionString);

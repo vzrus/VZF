@@ -4788,7 +4788,7 @@ namespace VZF.Data.Common
             }
         }
 
-        public static DataTable forumaccess_group(int? mid, object groupID)
+        public static DataTable forumaccess_group(int? mid, object groupID, object userId, bool includeUserForums)
         {
             string dataEngine;
             string connectionString;
@@ -4798,20 +4798,45 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case "System.Data.SqlClient":
-                    return VZF.Data.MsSql.Db.forumaccess_group(connectionString, groupID);
+                    return VZF.Data.MsSql.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
                 case "Npgsql":
-                    return VZF.Data.Postgre.Db.forumaccess_group(connectionString, groupID);
+                    return VZF.Data.Postgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.forumaccess_group(connectionString, groupID);
+                    return VZF.Data.Mysql.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
                 case "FirebirdSql.Data.FirebirdClient":
-                    return VZF.Data.Firebird.Db.forumaccess_group(connectionString, groupID);
-                    // case "oracle":  return orPostgre.Db.forumaccess_group(connectionString, groupID);
-                    // case "db2":  return db2Postgre.Db.forumaccess_group(connectionString, groupID);
-                    // case "other":  return othPostgre.Db.forumaccess_group(connectionString, groupID); 
+                    return VZF.Data.Firebird.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
+                // case "oracle":  return orPostgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
+                // case "db2":  return db2Postgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
+                // case "other":  return othPostgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
+        public static DataTable forumaccess_personalgroup(int? mid, object groupID, object userId, bool includeUserForums)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                // case "oracle":  return orPostgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                // case "db2":  return db2Postgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                // case "other":  return othPostgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
 
         public static DataTable forumaccess_list(int? mid, object forumID, object userId, bool includeUserGroups)
         {
@@ -11335,6 +11360,45 @@ namespace VZF.Data.Common
                     // case "oracle":  return orPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                     // case "db2":  return db2Postgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
                     // case "other":  return othPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+        }
+
+        public static DataTable user_pagedlist(
+           int? mid,
+           object boardId,
+           object userId,
+           object approved,
+           object groupID,
+           object rankID,
+           object useStyledNicks,
+           object pageIndex,
+           object pageSize)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.user_pagedlist(
+                        connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.user_pagedlist(
+                        connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.user_pagedlist(
+                        connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.user_pagedlist(
+                        connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                // case "oracle":  return orPostgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                // case "db2":  return db2Postgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                // case "other":  return othPostgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

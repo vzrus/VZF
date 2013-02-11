@@ -4271,6 +4271,28 @@ Spoiler Content
     <Resource tag="PERSONALMASKS">My Access Masks</Resource>
     <Resource tag="TITLE">Personal Forums</Resource>
   </page>
+  <page name="PERSONALGROUP">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="TITLE">Personal groups</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
+  <page name="PERSONALGROUP_EDITUSER">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="FIND">Find</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="SEARCH">Search</Resource>
+    <Resource tag="TITLE">Add user to group {0}</Resource>
+  </page>
+  <page name="PERSONALGROUP_USERS">
+    <Resource tag="ADD">Add user</Resource>
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="CLEAR">Clear</Resource>
+    <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="RANK">Rank</Resource>
+    <Resource tag="SEARCH">Search</Resource>
+    <Resource tag="TITLE">Users in group {0}</Resource>
+    <Resource tag="USERNAME">User name</Resource>
+  </page>
   <page name="PMESSAGE">
     <Resource tag="ALLBUDDIES">All Friends</Resource>
     <Resource tag="ALLUSERS">Wszyscy użytkownicy</Resource>

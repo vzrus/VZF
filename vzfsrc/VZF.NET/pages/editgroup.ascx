@@ -20,46 +20,6 @@
             </td>
         </tr>
         <tr>
-            <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="IS_START" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
-            </td>
-            <td class="post">
-                <asp:CheckBox ID="IsStartX" runat="server"></asp:CheckBox>
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="FORUM_MOD" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
-            </td>
-            <td class="post">
-                <asp:CheckBox ID="IsModeratorX" runat="server"></asp:CheckBox>
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel4" runat="server" LocalizedTag="IS_ADMIN" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
-            </td>
-            <td class="post">
-                <asp:CheckBox ID="IsAdminX" runat="server"></asp:CheckBox>
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel5" runat="server" LocalizedTag="PMMESSAGES" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="PMLimit" Text="0" runat="server" />
-            </td>
-        </tr>
-        <tr>
             <td class="postheader" width="50%">
                 <YAF:HelpLabel ID="HelpLabel6" runat="server" LocalizedTag="DESCRIPTION" LocalizedPage="ADMIN_EDITGROUP" />
                 
@@ -67,48 +27,6 @@
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="Description" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="SIGNATURE_LENGTH" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="UsrSigChars" runat="server"  Text="128" />
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel8" runat="server" LocalizedTag="SIG_BBCODES" LocalizedPage="ADMIN_EDITGROUP" />
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="UsrSigBBCodes" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel9" runat="server" LocalizedTag="SIG_HTML" LocalizedPage="ADMIN_EDITGROUP" />                
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="UsrSigHTMLTags" runat="server" />
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel10" runat="server" LocalizedTag="ALBUM_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="UsrAlbums" runat="server" Text="0" />
-            </td>
-        </tr>
-        <tr>
-            <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="IMAGES_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
-            </td>
-            <td class="post" width="50%">
-                <asp:TextBox Style="width: 350px" ID="UsrAlbumImages" runat="server" Text="0" />
             </td>
         </tr>
         <tr>
@@ -125,14 +43,6 @@
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="StyleTextBox" TextMode="MultiLine" runat="server" />
-            </td>
-        </tr>
-        <tr runat="server" visible="false" id="IsGuestTR">
-            <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel14" runat="server" LocalizedTag="IS_GUEST" LocalizedPage="ADMIN_EDITGROUP" />
-            </td>
-            <td class="post">
-                <asp:CheckBox ID="IsGuestX" runat="server"></asp:CheckBox>
             </td>
         </tr>
         <tr runat="server" id="NewGroupRow">

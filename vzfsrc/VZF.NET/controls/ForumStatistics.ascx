@@ -77,7 +77,7 @@
 				</tr>
 				<tr class="post">
 						<td colspan="2" align="right">
-						>>&nbsp;<asp:LinkButton runat="server" OnClick="BoardTagsLink_Click" ID="BoardTagsLink" Text='<%# this.GetText("TAGSBOARD","TAGS_BOARD_LNK") %>' />&nbsp;>><asp:LinkButton runat="server" OnClick="MosActiveForLink_Click" ID="MosActiveForLink" Text='<%# this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK",7) %>' />
+						<YAF:ThemeImage ID="ThemeImage2" runat="server" ThemePage="ICONS" ThemeTag="MENU3ICON" />&nbsp;<asp:LinkButton runat="server" OnClick="BoardTagsLink_Click" ID="BoardTagsLink" Text='<%# this.GetText("TAGSBOARD","TAGS_BOARD_LNK") %>' />&nbsp;<YAF:ThemeImage ID="ThemeImage3" runat="server" ThemePage="ICONS" ThemeTag="MENU3ICON" /><asp:LinkButton runat="server" OnClick="MosActiveForLink_Click" ID="MosActiveForLink" Text='<%# this.GetTextFormatted("MOSTACTIVEUSERS_FOR_LINK",7) %>' />
 						</td>
 				</tr>
 			</asp:PlaceHolder>

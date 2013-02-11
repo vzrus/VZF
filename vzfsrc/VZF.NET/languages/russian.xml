@@ -1168,7 +1168,7 @@
     <Resource tag="MODAL_DIALOG">Всплывающее окно</Resource>
     <Resource tag="MODAL_LOGIN">Использовать модальное всплывающее окно для входа:</Resource>
     <Resource tag="MODAL_LOGIN_HELP">Если отключено, то для входа будет использоватьс яотдельная страница.</Resource>
-    <Resource tag="MOSTACTIVEUSER_DAYS">Наиболее активгые пользователи за дней:</Resource>
+    <Resource tag="MOSTACTIVEUSER_DAYS">Наиболее активные пользователи за дней:</Resource>
     <Resource tag="MOSTACTIVEUSER_DAYS_HELP">Число дней за которые собирается данная статистика.</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE">Размер страницы Мои Темы:</Resource>
     <Resource tag="MYTOPICSLIST_PAGE_SIZE_HELP">Количество тем на одной странице  на странице Мои Темы. </Resource>
@@ -4219,6 +4219,28 @@ Spoiler Content
     <Resource tag="PERSONALGROUPS">My Groups</Resource>
     <Resource tag="PERSONALMASKS">My Access Masks</Resource>
     <Resource tag="TITLE">Personal Forums</Resource>
+  </page>
+  <page name="PERSONALGROUP">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="TITLE">Personal groups</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
+  <page name="PERSONALGROUP_EDITUSER">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="FIND">Find</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="SEARCH">Search</Resource>
+    <Resource tag="TITLE">Add user to group {0}</Resource>
+  </page>
+  <page name="PERSONALGROUP_USERS">
+    <Resource tag="ADD">Add user</Resource>
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="CLEAR">Clear</Resource>
+    <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="RANK">Rank</Resource>
+    <Resource tag="SEARCH">Search</Resource>
+    <Resource tag="TITLE">Users in group {0}</Resource>
+    <Resource tag="USERNAME">User name</Resource>
   </page>
   <page name="PMESSAGE">
     <Resource tag="ALLBUDDIES">Все друзья</Resource>

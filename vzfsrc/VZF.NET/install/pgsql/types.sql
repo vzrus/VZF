@@ -526,6 +526,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listread_return_type AS
 "Description" varchar(255),
 "ImageUrl"  varchar(128),
 "PollGroupID" integer,
+"IsUserForum" boolean,
 /*"LastTopicID" integer,*/
 "Topics" integer,
 "Posts" integer,
@@ -696,7 +697,9 @@ CREATE TYPE databaseSchema.objectQualifier_group_list_return_type AS
 "UsrSigBBCodes" varchar(255),
 "UsrSigHTMLTags"  varchar(255),
 "UsrAlbums" integer,
-"UsrAlbumImages" integer
+"UsrAlbumImages" integer,
+"IsUserGroup" boolean,
+"CreatedByUserID" integer
 );
 --GO
 

@@ -2720,7 +2720,7 @@ RETURNS
      END;
  --GO
  
-CREATE PROCEDURE  objQual_FORUMACCESS_GROUP(I_GROUPID INTEGER) 
+CREATE PROCEDURE  objQual_FORUMACCESS_GROUP(I_GROUPID INTEGER, I_USERID INTEGER, I_INCLUDEUSERFORUMS BOOL) 
 RETURNS
 (
 "GroupID" integer,
@@ -2752,7 +2752,7 @@ AS
         INNER JOIN objQual_BOARD brd 
         on brd.BOARDID=c.BOARDID
     WHERE 
-        a.GROUPID = :I_GROUPID
+        a.GROUPID = :I_GROUPID and (:I_INCLUDEUSERFORUMS <> 1 or (b.ISUSERFORUM and b.CREATEDBYUSERID = :I_USERID))
     ORDER BY 
         brd.NAME,
         c.SORTORDER,
@@ -2864,7 +2864,8 @@ BEGIN
 "UsrSigBBCodes"  varchar(255),
 "UsrSigHTMLTags" varchar(255),
 "UsrAlbums" integer,
-"UsrAlbumImages"  integer                 
+"UsrAlbumImages"  integer,
+"IsUserGroup" bool                    
 )
         AS
         BEGIN
@@ -2882,7 +2883,8 @@ BEGIN
                    USRSIGBBCODES,
                    USRSIGHTMLTAGS,
                    USRALBUMS,
-                   USRALBUMIMAGES
+                   USRALBUMIMAGES,
+				   ISUSERGROUP
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID ORDER BY SORTORDER
         INTO
@@ -2898,7 +2900,8 @@ BEGIN
         :"UsrSigBBCodes",
         :"UsrSigHTMLTags",
         :"UsrAlbums",
-        :"UsrAlbumImages"     
+        :"UsrAlbumImages",
+		:"IsUserGroup"        
         DO SUSPEND;
         ELSE
         FOR SELECT GROUPID,
@@ -2913,7 +2916,8 @@ BEGIN
                    USRSIGBBCODES,
                    USRSIGHTMLTAGS,
                    USRALBUMS,
-                   USRALBUMIMAGES
+                   USRALBUMIMAGES,
+				   ISUSERGROUP
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
@@ -2930,7 +2934,8 @@ BEGIN
         :"UsrSigBBCodes",
         :"UsrSigHTMLTags",
         :"UsrAlbums",
-        :"UsrAlbumImages"   
+        :"UsrAlbumImages",
+		:"IsUserGroup"   
         DO SUSPEND;
         END;
 --GO
@@ -2955,7 +2960,9 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
 "UsrSigBBCodes"  varchar(255),
 "UsrSigHTMLTags" varchar(255),
 "UsrAlbums" integer,
-"UsrAlbumImages"  integer                 
+"UsrAlbumImages"  integer,
+"IsUserGroup" bool,
+"CreatedByUserID" integer                     
 )
         AS
         BEGIN
@@ -2973,7 +2980,9 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRSIGBBCODES,
                    USRSIGHTMLTAGS,
                    USRALBUMS,
-                   USRALBUMIMAGES
+                   USRALBUMIMAGES,
+				   ISUSERGROUP,
+				   CREATEDBYUSERID
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID 
 		AND CREATEDBYUSERID = :USERID 
@@ -2991,7 +3000,9 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
         :"UsrSigBBCodes",
         :"UsrSigHTMLTags",
         :"UsrAlbums",
-        :"UsrAlbumImages"     
+        :"UsrAlbumImages",
+		:"IsUserGroup",
+		:"CreatedByUserID"
         DO SUSPEND;
         ELSE
         FOR SELECT GROUPID,
@@ -3006,7 +3017,9 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRSIGBBCODES,
                    USRSIGHTMLTAGS,
                    USRALBUMS,
-                   USRALBUMIMAGES
+                   USRALBUMIMAGES,
+				   ISUSERGROUP,
+				   CREATEDBYUSERID
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
@@ -3024,7 +3037,9 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
         :"UsrSigBBCodes",
         :"UsrSigHTMLTags",
         :"UsrAlbums",
-        :"UsrAlbumImages"   
+        :"UsrAlbumImages",
+		:"IsUserGroup",
+		:"CreatedByUserID"     
         DO SUSPEND;
         END;
 --GO
@@ -3228,6 +3243,19 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         iciFlags = BIN_OR(iciFlags, 4); 
         IF (:I_ISMODERATOR <> 0) THEN
         iciFlags = BIN_OR(iciFlags, 8); 
+	
+          IF (:I_USERID IS NOT NULL) THEN
+    BEGIN	
+    SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
+    INTO :l_UserName, :l_UserDisplayName;
+    END
+    -- guests should not create forums?
+    ELSE
+    BEGIN    
+    SELECT FIRST 1 Name, DisplayName FROM objQual_USER where BOARDID = :I_BOARDID and (Flags & 4) = 4  ORDER BY Joined DESC
+    INTO :l_UserName, :l_UserDisplayName;
+    END
+
         IF (:I_GROUPID > 0 AND :I_GROUPID IS NOT NULL) THEN        
             UPDATE objQual_GROUP
             SET    NAME = :I_NAME,
@@ -3261,7 +3289,11 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         USRSIGHTMLTAGS,
                         USRALBUMS,
                         USRALBUMIMAGES,
-                        ISUSERGROUP)
+                        ISUSERGROUP,
+						CREATEDBYUSERID,
+						CREATEDBYUSERNAME,
+						CREATEDBYUSERDISPLAYNAME,
+						CREATEDDATE)
             VALUES     (:I_GROUPID,
                         :I_NAME,
                         :I_BOARDID,
@@ -3275,7 +3307,11 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         :I_USRSIGHTMLTAGS,
                         :I_USRALBUMS,
                         :I_USRALBUMIMAGES,
-                        :I_ISUSERGROUP) RETURNING GROUPID INTO :I_GROUPID;            
+                        :I_ISUSERGROUP,
+						:I_USERID,
+						:l_UserName,
+						:l_UserDisplayName,
+						:I_UTCTIMESTAMP) RETURNING GROUPID INTO :I_GROUPID;            
             INSERT INTO objQual_FORUMACCESS
                        (GROUPID,
                         FORUMID,
@@ -3289,19 +3325,9 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
             WHERE  b.BOARDID = :I_BOARDID;
          END
           -- save new user style    
-      EXECUTE PROCEDURE objQual_USER_SAVESTYLE :I_GROUPID, NULL ;	
+		  IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE > 2) THEN
+		        EXECUTE PROCEDURE objQual_USER_SAVESTYLE :I_GROUPID, NULL ;	
       
-          IF (:I_USERID IS NOT NULL) THEN
-    BEGIN	
-    SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
-    INTO :l_UserName, :l_UserDisplayName;
-    END
-    -- guests should not create forums?
-    ELSE
-    BEGIN    
-    SELECT FIRST 1 Name, DisplayName FROM objQual_USER where BOARDID = :I_BOARDID and (Flags & 4) = 4  ORDER BY Joined DESC
-    INTO :l_UserName, :l_UserDisplayName;
-    END
     if (exists (select first 1 1 from objQual_GROUPHISTORY where GROUPID = :I_GROUPID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
     begin
     update objQual_GROUPHISTORY set 
@@ -6865,7 +6891,8 @@ BEGIN
                         :I_USRSIGHTMLTAGS,
                         :I_USRALBUMS,
                         :I_USRALBUMIMAGES);
-                        END    
+                        END  
+	IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE > 2) THEN					  
     EXECUTE PROCEDURE objQual_USER_SAVESTYLE NULL, :ICI_RANKID ;					        
           
 END;

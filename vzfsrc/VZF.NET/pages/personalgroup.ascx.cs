@@ -101,39 +101,6 @@ namespace YAF.pages
             ControlHelper.AddOnClickConfirmDialog(sender, this.GetText("ADMIN_GROUPS", "CONFIRM_DELETE"));
         }
 
-
-        /// <summary>
-        /// The delete forum_ load.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            ((ThemeButton)sender).Attributes["onclick"] =
-                "return (confirm('{0}') && confirm('{1}'))".FormatWith(
-                    this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
-                    this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
-        }
-
-
-        /// <summary>
-        /// The new forum_ click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void NewForum_Click([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            YafBuildLink.Redirect(ForumPages.editforum);
-        }
-
         /// <summary>
         /// Get status of provider role vs YAF roles.
         /// </summary>
@@ -232,36 +199,8 @@ namespace YAF.pages
                     // re-bind data
                     this.BindData();
                     break;
-            }
-        }
-
-        /// <summary>
-        /// The forum list_ item command.
-        /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void ForumList_ItemCommand([NotNull] object source, [NotNull] RepeaterCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "f={0}", e.CommandArgument);
-                    break;
-                case "delete":
-                    var errorMessage = string.Empty;
-
-                    // Simply Delete the Forum with all of its Content
-                    var forumId = this.GetQueryStringAsInt("f");
-
-                    // schedule...
-                    ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, forumId.Value, out errorMessage);
-                    break;
-                case "moderate":
-                  YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
+                case "users":
+                    YafBuildLink.Redirect(ForumPages.personalgroup_users, "gr={0}", e.CommandArgument);
                     break;
             }
         }

@@ -129,9 +129,7 @@ namespace YAF.Pages
         /// </param>
         protected override void OnInit([NotNull] EventArgs e)
         {
-            this.Unload += this.Topics_Unload;
             this.Pager.PageChange += this.Pager_PageChange;
-           
 
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
             base.OnInit(e);
@@ -257,20 +255,7 @@ namespace YAF.Pages
             this.BindData();
         }
 
-        /// <summary>
-        /// The Topics unload.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void Topics_Unload([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            if (this.Get<IYafSession>().UnreadTopics == 0)
-            {
-                this.Get<IReadTrackCurrentUser>().SetForumRead(this.PageContext.PageForumID);
-            }
-        }
-
-        /// <summary>
+       /// <summary>
         /// The ok btn_ click.
         /// </summary>
         /// <param name="sender">

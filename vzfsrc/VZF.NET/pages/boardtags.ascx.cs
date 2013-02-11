@@ -83,6 +83,7 @@
                 "tagid={0}&{1}".FormatWith(currentRow["TagID"], "b={0}".FormatWith(PageContext.PageBoardID)));
             tagLink.Attributes["alt"] = this.HtmlEncode(currentRow["Tag"]);
             tagLink.Title = this.HtmlEncode(currentRow["Tag"]);
+            tagLink.Attributes["class"] = "tag90";
         }
         
         #region Public Methods
@@ -177,5 +178,7 @@
                 
             }
         }
+
+
     }
 }

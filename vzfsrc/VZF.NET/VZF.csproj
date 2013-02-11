@@ -619,6 +619,20 @@
     <Compile Include="pages\boardtags.ascx.designer.cs">
       <DependentUpon>boardtags.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\personalgroup_edituser.ascx.cs">
+      <DependentUpon>personalgroup_edituser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalgroup_edituser.ascx.designer.cs">
+      <DependentUpon>personalgroup_edituser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\personalgroup_users.ascx.cs">
+      <DependentUpon>personalgroup_users.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalgroup_users.ascx.designer.cs">
+      <DependentUpon>personalgroup_users.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\personalaccessmask.ascx.cs">
       <DependentUpon>personalaccessmask.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3584,6 +3598,8 @@
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
     <Content Include="pages\boardtags.ascx" />
+    <Content Include="pages\personalgroup_edituser.ascx" />
+    <Content Include="pages\personalgroup_users.ascx" />
     <Content Include="pages\personalaccessmask.ascx" />
     <Content Include="pages\personalgroup.ascx" />
     <Content Include="pages\editaccessmask.ascx" />
@@ -5049,7 +5065,10 @@
     <Content Include="themes\BlackGrey\arrow-branch-270.png" />
     <Content Include="themes\BlackGrey\arrow-branch.png" />
     <Content Include="themes\BlackGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\BlackGrey\blog--exclamation.png" />
+    <Content Include="themes\BlackGrey\blog.png" />
     <Content Include="themes\BlackGrey\frog3.gif" />
+    <Content Include="themes\BlackGrey\lifebuoy-small.png" />
     <Content Include="themes\BlackGrey\minus-circle.png" />
     <Content Include="themes\BlackGrey\odnoklassniki.png" />
     <Content Include="themes\BlackGrey\pin--plus.png" />
@@ -5060,7 +5079,10 @@
     <Content Include="themes\BlueGrey\arrow-branch-270.png" />
     <Content Include="themes\BlueGrey\arrow-branch.png" />
     <Content Include="themes\BlueGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\BlueGrey\blog--exclamation.png" />
+    <Content Include="themes\BlueGrey\blog.png" />
     <Content Include="themes\BlueGrey\frog3.gif" />
+    <Content Include="themes\BlueGrey\lifebuoy-small.png" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
     <Content Include="themes\BlueGrey\pin--plus.png" />
     <Content Include="themes\BlueGrey\plus-circle.png" />
@@ -5070,7 +5092,10 @@
     <Content Include="themes\cleanSlate\arrow-branch-270.png" />
     <Content Include="themes\cleanSlate\arrow-branch.png" />
     <Content Include="themes\cleanSlate\balloon-twitter-retweet.png" />
+    <Content Include="themes\cleanSlate\blog--exclamation.png" />
+    <Content Include="themes\cleanSlate\blog.png" />
     <Content Include="themes\cleanSlate\frog3.gif" />
+    <Content Include="themes\cleanSlate\lifebuoy-small.png" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
     <Content Include="themes\cleanSlate\pin--plus.png" />
     <Content Include="themes\cleanSlate\plus-circle.png" />
@@ -5079,8 +5104,11 @@
     <Content Include="themes\Fancy\images\arrow-branch-090-left.png" />
     <Content Include="themes\Fancy\images\arrow-branch-270.png" />
     <Content Include="themes\Fancy\images\arrow-branch.png" />
+    <Content Include="themes\Fancy\images\blog--exclamation.png" />
+    <Content Include="themes\Fancy\images\blog.png" />
     <Content Include="themes\Fancy\images\frog3.gif" />
     <Content Include="themes\Fancy\images\balloon-twitter-retweet.png" />
+    <Content Include="themes\Fancy\images\lifebuoy-small.png" />
     <Content Include="themes\Fancy\images\minus-circle.png" />
     <Content Include="themes\Fancy\images\pin--plus.png" />
     <Content Include="themes\Fancy\images\plus-circle.png" />
@@ -5090,7 +5118,10 @@
     <Content Include="themes\GreenGrey\arrow-branch-270.png" />
     <Content Include="themes\GreenGrey\arrow-branch.png" />
     <Content Include="themes\GreenGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\GreenGrey\blog--exclamation.png" />
+    <Content Include="themes\GreenGrey\blog.png" />
     <Content Include="themes\GreenGrey\frog3.gif" />
+    <Content Include="themes\GreenGrey\lifebuoy-small.png" />
     <Content Include="themes\GreenGrey\minus-circle.png" />
     <Content Include="themes\GreenGrey\pin--plus.png" />
     <Content Include="themes\GreenGrey\plus-circle.png" />
@@ -5100,7 +5131,10 @@
     <Content Include="themes\GreyGrey\arrow-branch-270.png" />
     <Content Include="themes\GreyGrey\arrow-branch.png" />
     <Content Include="themes\GreyGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\GreyGrey\blog--exclamation.png" />
+    <Content Include="themes\GreyGrey\blog.png" />
     <Content Include="themes\GreyGrey\frog3.gif" />
+    <Content Include="themes\GreyGrey\lifebuoy-small.png" />
     <Content Include="themes\GreyGrey\minus-circle.png" />
     <Content Include="themes\GreyGrey\pin--plus.png" />
     <Content Include="themes\GreyGrey\plus-circle.png" />
@@ -5110,7 +5144,10 @@
     <Content Include="themes\OrangeGrey\arrow-branch-270.png" />
     <Content Include="themes\OrangeGrey\arrow-branch.png" />
     <Content Include="themes\OrangeGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\OrangeGrey\blog--exclamation.png" />
+    <Content Include="themes\OrangeGrey\blog.png" />
     <Content Include="themes\OrangeGrey\frog3.gif" />
+    <Content Include="themes\OrangeGrey\lifebuoy-small.png" />
     <Content Include="themes\OrangeGrey\minus-circle.png" />
     <Content Include="themes\OrangeGrey\pin--plus.png" />
     <Content Include="themes\OrangeGrey\plus-circle.png" />
@@ -5120,7 +5157,10 @@
     <Content Include="themes\RedGrey\arrow-branch-270.png" />
     <Content Include="themes\RedGrey\arrow-branch.png" />
     <Content Include="themes\RedGrey\balloon-twitter-retweet.png" />
+    <Content Include="themes\RedGrey\blog--exclamation.png" />
+    <Content Include="themes\RedGrey\blog.png" />
     <Content Include="themes\RedGrey\frog3.gif" />
+    <Content Include="themes\RedGrey\lifebuoy-small.png" />
     <Content Include="themes\RedGrey\minus-circle.png" />
     <Content Include="themes\RedGrey\pin--plus.png" />
     <Content Include="themes\RedGrey\plus-circle.png" />
@@ -5130,7 +5170,10 @@
     <Content Include="themes\soclean\arrow-branch-270.png" />
     <Content Include="themes\soclean\arrow-branch.png" />
     <Content Include="themes\soclean\balloon-twitter-retweet.png" />
+    <Content Include="themes\soclean\blog--exclamation.png" />
+    <Content Include="themes\soclean\blog.png" />
     <Content Include="themes\soclean\frog3.gif" />
+    <Content Include="themes\soclean\lifebuoy-small.png" />
     <Content Include="themes\soclean\minus-circle.png" />
     <Content Include="themes\soclean\pin--plus.png" />
     <Content Include="themes\soclean\plus-circle.png" />
@@ -5140,7 +5183,10 @@
     <Content Include="themes\Yafmobile\arrow-branch-270.png" />
     <Content Include="themes\Yafmobile\arrow-branch.png" />
     <Content Include="themes\Yafmobile\balloon-twitter-retweet.png" />
+    <Content Include="themes\Yafmobile\blog--exclamation.png" />
+    <Content Include="themes\Yafmobile\blog.png" />
     <Content Include="themes\Yafmobile\frog3.gif" />
+    <Content Include="themes\Yafmobile\lifebuoy-small.png" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
     <Content Include="themes\Yafmobile\pin--plus.png" />
     <Content Include="themes\Yafmobile\plus-circle.png" />
@@ -5150,7 +5196,10 @@
     <Content Include="themes\yafpro\arrow-branch-270.png" />
     <Content Include="themes\yafpro\arrow-branch.png" />
     <Content Include="themes\yafpro\balloon-twitter-retweet.png" />
+    <Content Include="themes\yafpro\blog--exclamation.png" />
+    <Content Include="themes\yafpro\blog.png" />
     <Content Include="themes\yafpro\frog3.gif" />
+    <Content Include="themes\yafpro\lifebuoy-small.png" />
     <Content Include="themes\yafpro\minus-circle.png" />
     <Content Include="themes\yafpro\pin--plus.png" />
     <Content Include="themes\yafpro\plus-circle.png" />
@@ -5160,7 +5209,10 @@
     <Content Include="themes\yafvision\arrow-branch-270.png" />
     <Content Include="themes\yafvision\arrow-branch.png" />
     <Content Include="themes\yafvision\balloon-twitter-retweet.png" />
+    <Content Include="themes\yafvision\blog--exclamation.png" />
+    <Content Include="themes\yafvision\blog.png" />
     <Content Include="themes\yafvision\frog3.gif" />
+    <Content Include="themes\yafvision\lifebuoy-small.png" />
     <Content Include="themes\yafvision\minus-circle.png" />
     <Content Include="themes\yafvision\pin--plus.png" />
     <Content Include="themes\yafvision\plus-circle.png" />
@@ -6901,7 +6953,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4508</DevelopmentServerPort>
+          <DevelopmentServerPort>26217</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
