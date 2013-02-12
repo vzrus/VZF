@@ -1,24 +1,24 @@
 <%@ Control Language="c#" AutoEventWireup="True"
 	Inherits="YAF.Pages.personalgroup_users" Codebehind="personalgroup_users.ascx.cs" %>
-<%@ Register TagPrefix="YAF" Namespace="YAF.Controls" %>
+<%@ Register TagPrefix="YAF" Namespace="VZF.Controls" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <table cellspacing="0" cellpadding="0" class="content" width="100%">
     <tr>
         <td class="header1" colspan="4">
-            <YAF:LocalizedLabel ID="SearchMembersLocalizedLabel" runat="server" LocalizedTag="Search_Members" />
+            <VZF:LocalizedLabel ID="SearchMembersLocalizedLabel" runat="server" LocalizedTag="Search_Members" />
         </td>
     </tr>
     <tr class="header2">
         <td>
-            <YAF:LocalizedLabel ID="SearchRolesLocalizedLabel" runat="server" LocalizedTag="Search_Role" />
+            <VZF:LocalizedLabel ID="SearchRolesLocalizedLabel" runat="server" LocalizedTag="Search_Role" />
         </td>
         <td>
-            <YAF:LocalizedLabel ID="SearchRankLocalizedLabel" runat="server" LocalizedTag="Search_Rank" />
+            <VZF:LocalizedLabel ID="SearchRankLocalizedLabel" runat="server" LocalizedTag="Search_Rank" />
         </td>
         <td>
-            <YAF:LocalizedLabel ID="SearchMemberLocalizedLabel" runat="server" LocalizedTag="Search_Member" />
+            <VZF:LocalizedLabel ID="SearchMemberLocalizedLabel" runat="server" LocalizedTag="Search_Member" />
         </td>
     </tr>
     <tr class="post">
@@ -32,7 +32,7 @@
     </tr>
     <tr class="post">
         <td colspan="3">
-            <YAF:LocalizedLabel ID="NumPostsLabel" runat="server" LocalizedTag="NUMPOSTS" />
+            <VZF:LocalizedLabel ID="NumPostsLabel" runat="server" LocalizedTag="NUMPOSTS" />
             &nbsp;
             <asp:DropDownList ID="NumPostDDL" runat="server" Width="200px">
             </asp:DropDownList>
@@ -51,17 +51,17 @@
     </tr>
 </table>
 <br />
-<YAF:AlphaSort ID="AlphaSort1" runat="server" />
-<YAF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
+<VZF:AlphaSort ID="AlphaSort1" runat="server" />
+<VZF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td class="header1" colspan="6">
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="title" />
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="title" />
         </td>
     </tr>
     <tr>
         <td class="header2">
-            <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="Avatar" />
+            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="Avatar" />
         </td>
         <td class="header2">
             <img runat="server" id="SortUserName" alt="Sort User Name" style="vertical-align: middle" />
@@ -92,7 +92,7 @@
                         title="<%# this.HtmlEncode(this.Get<YafBoardSettings>().EnableDisplayName ? this.Eval("DisplayName").ToString() : this.Eval("Name").ToString()) %>" class="avatarimage" />
                 </td>
                 <td class="post">
-                    <YAF:UserLink ID="UserProfileLink" runat="server" IsGuest="False" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? this.Eval("DisplayName").ToString() : this.Eval("Name").ToString() %>'  UserID='<%# this.Eval("UserID").ToType<int>() %>'
+                    <VZF:UserLink ID="UserProfileLink" runat="server" IsGuest="False" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? this.Eval("DisplayName").ToString() : this.Eval("Name").ToString() %>'  UserID='<%# this.Eval("UserID").ToType<int>() %>'
                         Style='<%# Eval("Style") %>' />
                 </td>
                 <td class="post">
@@ -107,7 +107,7 @@
                 <td class="post">
                     <asp:LinkButton runat="server" OnLoad="Delete_Load" CommandName="delete"
                         CommandArgument='<%# Eval("UserID") %>' ID="DeleteUserFRomGroupBtn">
-                        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="DELETE" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="DELETE" />
                     </asp:LinkButton>
                 </td>
             </tr>
@@ -120,7 +120,7 @@
         </td>
     </tr>
 </table>
-<YAF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
+<VZF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

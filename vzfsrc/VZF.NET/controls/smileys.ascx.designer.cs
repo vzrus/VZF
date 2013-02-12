@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class smileys {
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// LoadingText control.

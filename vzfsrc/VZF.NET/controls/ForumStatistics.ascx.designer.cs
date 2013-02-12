@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ForumStatistics {
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.CollapsibleImage CollapsibleImage;
+        protected global::VZF.Controls.CollapsibleImage CollapsibleImage;
         
         /// <summary>
         /// InformationHeader control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel InformationHeader;
+        protected global::VZF.Controls.LocalizedLabel InformationHeader;
         
         /// <summary>
         /// InformationPlaceHolder control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ActiveUsersLabel;
+        protected global::VZF.Controls.LocalizedLabel ActiveUsersLabel;
         
         /// <summary>
         /// ForumUsersImage control.
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ForumUsersImage;
+        protected global::VZF.Controls.ThemeImage ForumUsersImage;
         
         /// <summary>
         /// ActiveUserCount control.
@@ -91,7 +91,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ActiveUsers ActiveUsers1;
+        protected global::VZF.Controls.ActiveUsers ActiveUsers1;
         
         /// <summary>
         /// RecentUsersPlaceHolder control.
@@ -109,7 +109,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel RecentUsersLabel;
+        protected global::VZF.Controls.LocalizedLabel RecentUsersLabel;
         
         /// <summary>
         /// ThemeImage1 control.
@@ -118,7 +118,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ThemeImage1;
+        protected global::VZF.Controls.ThemeImage ThemeImage1;
         
         /// <summary>
         /// RecentUsersCount control.
@@ -136,7 +136,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ActiveUsers RecentUsers;
+        protected global::VZF.Controls.ActiveUsers RecentUsers;
         
         /// <summary>
         /// StatsHeader control.
@@ -145,7 +145,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel StatsHeader;
+        protected global::VZF.Controls.LocalizedLabel StatsHeader;
         
         /// <summary>
         /// ForumStatsImage control.
@@ -154,7 +154,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton ForumStatsImage;
+        protected global::VZF.Controls.ThemeButton ForumStatsImage;
         
         /// <summary>
         /// StatsPostsTopicCount control.
@@ -190,7 +190,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.UserLink LastPostUserLink;
+        protected global::VZF.Controls.UserLink LastPostUserLink;
         
         /// <summary>
         /// StatsMembersCount control.
@@ -217,7 +217,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.UserLink NewestMemberUserLink;
+        protected global::VZF.Controls.UserLink NewestMemberUserLink;
         
         /// <summary>
         /// BirthdayUsers control.
@@ -244,7 +244,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ThemeImage2;
+        protected global::VZF.Controls.ThemeImage ThemeImage2;
         
         /// <summary>
         /// BoardTagsLink control.
@@ -262,7 +262,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ThemeImage3;
+        protected global::VZF.Controls.ThemeImage ThemeImage3;
         
         /// <summary>
         /// MosActiveForLink control.

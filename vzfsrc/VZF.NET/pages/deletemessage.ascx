@@ -4,7 +4,7 @@
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Register TagPrefix="uc1" TagName="smileys" Src="../controls/smileys.ascx" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <table class="content" cellspacing="1" cellpadding="4" width="100%" align="center">
     <tr>
         <td class="header1" align="center" colspan="2">
@@ -13,7 +13,7 @@
     </tr>
     <tr id="SubjectRow" runat="server">
         <td class="postformheader" width="20%">
-            <YAF:LocalizedLabel runat="server" LocalizedTag="subject" />
+            <VZF:LocalizedLabel runat="server" LocalizedTag="subject" />
         </td>
         <td class="post" width="80%">
             <asp:Label runat="server" ID="Subject" />
@@ -21,11 +21,11 @@
     </tr>
     <tr id="PreviewRow" runat="server" visible="false">
         <td class="postformheader" valign="top">
-            <YAF:LocalizedLabel runat="server" LocalizedTag="previewtitle" />
+            <VZF:LocalizedLabel runat="server" LocalizedTag="previewtitle" />
         </td>
         <td class="post" valign="top">
-            <YAF:MessagePost ID="MessagePreview" runat="server">
-            </YAF:MessagePost>
+            <VZF:MessagePost ID="MessagePreview" runat="server">
+            </VZF:MessagePost>
         </td>
     </tr>
     <tr id="DeleteReasonRow" runat="server">
@@ -40,7 +40,7 @@
         <td class="postformheader" width="20%">
         </td>
         <td class="post" width="80%">
-            <asp:CheckBox ID="EraseMessage" runat="server" Checked="false" /><YAF:LocalizedLabel
+            <asp:CheckBox ID="EraseMessage" runat="server" Checked="false" /><VZF:LocalizedLabel
                 runat="server" LocalizedTag="erasemessage" />
         </td>
     </tr>
@@ -78,7 +78,7 @@
             </td>
             <td width="80%" class="small" align="left">
                 <strong>
-                    <YAF:LocalizedLabel runat="server" LocalizedTag="posted" />
+                    <VZF:LocalizedLabel runat="server" LocalizedTag="posted" />
                 </strong>
                 <%# this.Get<IDateTime>().FormatDateTime( ( DateTime ) ( ( System.Data.DataRowView ) Container.DataItem ) ["Posted"] )%>
             </td>
@@ -88,9 +88,9 @@
                 &nbsp;
             </td>
             <td valign="top" class="message">
-                <YAF:MessagePostData ID="MessagePost1" runat="server" DataRow="<%# ((System.Data.DataRowView )Container.DataItem).Row %>"
+                <VZF:MessagePostData ID="MessagePost1" runat="server" DataRow="<%# ((System.Data.DataRowView )Container.DataItem).Row %>"
                     ShowAttachments="false" ShowSignature="false">
-                </YAF:MessagePostData>
+                </VZF:MessagePostData>
             </td>
         </tr>
     </ItemTemplate>
@@ -102,7 +102,7 @@
             </td>
             <td width="80%" class="small" align="left">
                 <strong>
-                    <YAF:LocalizedLabel runat="server" LocalizedTag="posted" />
+                    <VZF:LocalizedLabel runat="server" LocalizedTag="posted" />
                 </strong>
                 <%# this.Get<IDateTime>().FormatDateTime((DateTime) ((System.Data.DataRowView ) Container.DataItem ) ["Posted"] )%>
             </td>
@@ -112,9 +112,9 @@
                 &nbsp;
             </td>
             <td valign="top" class="message">
-                <YAF:MessagePostData ID="MessagePostAlt" runat="server" DataRow="<%#((System.Data.DataRowView )Container.DataItem).Row %>"
+                <VZF:MessagePostData ID="MessagePostAlt" runat="server" DataRow="<%#((System.Data.DataRowView )Container.DataItem).Row %>"
                     ShowAttachments="false" ShowSignature="false">
-                </YAF:MessagePostData>
+                </VZF:MessagePostData>
             </td>
         </tr>
     </AlternatingItemTemplate>
@@ -123,5 +123,5 @@
 <iframe runat="server" Visible="false" id="LastPostsIFrame" name="lastposts" width="100%" height="300" frameborder="0" marginheight="2" marginwidth="2" scrolling="yes"></iframe>
 -->
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

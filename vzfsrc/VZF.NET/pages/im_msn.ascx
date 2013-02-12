@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.im_msn" Codebehind="im_msn.ascx.cs" %>
 
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 
 <div align="center">
     <asp:HyperLink runat="server" ID="Msg">
@@ -8,5 +8,5 @@
 </div>
 
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

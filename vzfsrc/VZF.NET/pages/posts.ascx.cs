@@ -35,7 +35,7 @@ namespace YAF.Pages
     using VZF.Data.Common;
 
     using YAF.Classes;
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Core.Services.Twitter;
@@ -723,6 +723,7 @@ namespace YAF.Pages
                     this.UnlockTopic2.Visible = !this.LockTopic2.Visible;
                 }
             }
+
             this.Stc1.TopicId = this.PageContext.PageTopicID;
             #endregion
 

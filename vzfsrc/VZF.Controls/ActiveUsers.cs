@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
   #region Using
 

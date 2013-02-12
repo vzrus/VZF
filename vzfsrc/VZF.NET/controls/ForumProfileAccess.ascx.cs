@@ -28,7 +28,7 @@ using YAF.Types.Interfaces;
 using YAF.Utilities;
 using YAF.Utils.Helpers;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 

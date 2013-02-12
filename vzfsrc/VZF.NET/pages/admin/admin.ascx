@@ -3,8 +3,9 @@
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils.Helpers" %>
-<YAF:PageLinks ID="PageLinks" runat="server" />
-<YAF:AdminMenu ID="Adminmenu1" runat="server">
+<%@ Import Namespace="YAF.Classes" %>
+<VZF:PageLinks ID="PageLinks" runat="server" />
+<VZF:AdminMenu ID="Adminmenu1" runat="server">
     <asp:PlaceHolder ID="UpdateHightlight" runat="server" Visible="false">
         <div class="ui-widget">
             <div class="ui-state-highlight ui-corner-all" style="margin-bottom: 20px; padding: 0 .7em;">
@@ -26,23 +27,23 @@
             <HeaderTemplate>
                 <tr>
                     <td class="header1" colspan="5">
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER2" LocalizedPage="ADMIN_ADMIN" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER2" LocalizedPage="ADMIN_ADMIN" />
                     </td>
                 </tr>
                 <tr>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ADMIN_NAME"
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ADMIN_NAME"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="ADMIN_EMAIL"
+                        <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="ADMIN_EMAIL"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="LOCATION" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="LOCATION" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="ADMIN_JOINED"
+                        <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="ADMIN_JOINED"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                     <td class="header2">
@@ -53,7 +54,7 @@
             <ItemTemplate>
                 <tr>
                     <td class="post">
-                        <YAF:UserLink ID="UnverifiedUserLink" UserID='<%# Eval("UserID") %>' Style='<%# Eval("Style") %>'
+                        <VZF:UserLink ID="UnverifiedUserLink" UserID='<%# Eval("UserID") %>' Style='<%# Eval("Style") %>'
                             runat="server" />
                     </td>
                     <td class="post">
@@ -67,13 +68,13 @@
                     </td>
                     <td class="post">
                         <asp:LinkButton OnLoad="Approve_Load" runat="server" CommandName="approve" CommandArgument='<%# Eval("UserID") %>'>
-                            <YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="ADMIN_APPROVE"
+                            <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="ADMIN_APPROVE"
                                 LocalizedPage="ADMIN_ADMIN">
-                            </YAF:LocalizedLabel>
+                            </VZF:LocalizedLabel>
                         </asp:LinkButton>
                         |
                         <asp:LinkButton OnLoad="Delete_Load" runat="server" CommandName="delete" CommandArgument='<%# Eval("UserID") %>'>
-                            <YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="ADMIN_DELETE"
+                            <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="ADMIN_DELETE"
                                 LocalizedPage="ADMIN_ADMIN" />
                         </asp:LinkButton>
                     </td>
@@ -95,7 +96,7 @@
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="4">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER3" LocalizedPage="ADMIN_ADMIN" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER3" LocalizedPage="ADMIN_ADMIN" />
                 <span runat="server" id="boardSelector" visible='<%# this.PageContext.IsHostAdmin %>'>
                     <asp:DropDownList ID="BoardStatsSelect" runat="server" DataTextField="Name" DataValueField="BoardID"
                         OnSelectedIndexChanged="BoardStatsSelect_Changed" AutoPostBack="true" />
@@ -104,14 +105,14 @@
         </tr>
         <tr>
             <td class="postheader" width="25%">
-                <YAF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedTag="NUM_POSTS"
+                <VZF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedTag="NUM_POSTS"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post" width="25%">
                 <asp:Label ID="NumPosts" runat="server"></asp:Label>
             </td>
             <td class="postheader" width="25%">
-                <YAF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="POSTS_DAY"
+                <VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="POSTS_DAY"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post" width="25%">
@@ -120,14 +121,14 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="NUM_TOPICS"
+                <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="NUM_TOPICS"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
                 <asp:Label ID="NumTopics" runat="server"></asp:Label>
             </td>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="TOPICS_DAY"
+                <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="TOPICS_DAY"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
@@ -136,14 +137,14 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="NUM_USERS"
+                <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="NUM_USERS"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
                 <asp:Label ID="NumUsers" runat="server"></asp:Label>
             </td>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="USERS_DAY"
+                <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="USERS_DAY"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
@@ -152,14 +153,14 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="BOARD_STARTED"
+                <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="BOARD_STARTED"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
                 <asp:Label ID="BoardStart" runat="server"></asp:Label>
             </td>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="SIZE_DATABASE"
+                <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="SIZE_DATABASE"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
             <td class="post">
@@ -168,39 +169,39 @@
         </tr>
         <tr>
             <td class="postfooter" colspan="4">
-                <YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="STATS_DONTCOUNT"
+                <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="STATS_DONTCOUNT"
                     LocalizedPage="ADMIN_ADMIN" />
             </td>
         </tr>
     </table>
     <p id="UpgradeNotice" runat="server" visible="false">
-        <YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="ADMIN_UPGRADE"
+        <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="ADMIN_UPGRADE"
             LocalizedPage="ADMIN_ADMIN" />
     </p>
     &nbsp;<br />
-    <YAF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
+    <VZF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
     <table width="100%" cellspacing="1" cellpadding="0" class="content">
         <asp:Repeater ID="ActiveList" runat="server">
             <HeaderTemplate>
                 <tr>
                     <td class="header1" colspan="4">
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER1" LocalizedPage="ADMIN_ADMIN" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER1" LocalizedPage="ADMIN_ADMIN" />
                     </td>
                 </tr>
                 <tr>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ADMIN_NAME"
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ADMIN_NAME"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="ADMIN_IPADRESS"
+                        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="ADMIN_IPADRESS"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="LOCATION" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="LOCATION" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="BOARD_LOCATION"
+                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="BOARD_LOCATION"
                             LocalizedPage="ADMIN_ADMIN" />
                     </td>
                 </tr>
@@ -208,7 +209,7 @@
             <ItemTemplate>
                 <tr>
                     <td class="post">
-                        <YAF:UserLink ID="ActiveUserLink" UserID='<%# Eval("UserID") %>' CrawlerName='<%# this.Eval("IsCrawler").ToType<int>() > 0 ? Eval("Browser").ToString() : String.Empty %>'
+                        <VZF:UserLink ID="ActiveUserLink" UserID='<%# Eval("UserID") %>' CrawlerName='<%# this.Eval("IsCrawler").ToType<int>() > 0 ? Eval("Browser").ToString() : String.Empty %>'
                             Style='<%# Eval("Style") %>' runat="server" />
                     </td>
                     <td class="post">
@@ -220,11 +221,11 @@
                         <%# this.SetLocation(Eval("UserName").ToString())%>
                     </td>
                     <td class="post">
-                        <YAF:ActiveLocation ID="ActiveLocation2" UserID='<%# ((this.Eval("UserID") == DBNull.Value)? 0 : this.Eval("UserID")).ToType<int>() %>'
+                        <VZF:ActiveLocation ID="ActiveLocation2" UserID='<%# ((this.Eval("UserID") == DBNull.Value)? 0 : this.Eval("UserID")).ToType<int>() %>'
                             UserName='<%# Eval("UserName") %>' ForumPage='<%# Eval("ForumPage") %>' ForumID='<%# ((this.Eval("ForumID") == DBNull.Value)? 0 : this.Eval("ForumID")).ToType<int>() %>'
                             ForumName='<%# Eval("ForumName") %>' TopicID='<%# ((this.Eval("TopicID") == DBNull.Value)? 0 : this.Eval("TopicID")).ToType<int>() %>'
                             TopicName='<%# Eval("TopicName") %>' LastLinkOnly="false" runat="server">
-                        </YAF:ActiveLocation>
+                        </VZF:ActiveLocation>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -232,6 +233,6 @@
             </FooterTemplate>
         </asp:Repeater>
     </table>
-    <YAF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

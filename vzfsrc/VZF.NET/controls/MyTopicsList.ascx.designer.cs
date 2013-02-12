@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class MyTopicsList {
@@ -19,7 +19,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel SinceLabel;
+        protected global::VZF.Controls.LocalizedLabel SinceLabel;
         
         /// <summary>
         /// Since control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.Pager PagerTop;
+        protected global::VZF.Controls.Pager PagerTop;
         
         /// <summary>
         /// LocalizedLabel6 control.
@@ -46,7 +46,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel6;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel6;
         
         /// <summary>
         /// LocalizedLabel8 control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel8;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel8;
         
         /// <summary>
         /// LocalizedLabel9 control.
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel9;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel9;
         
         /// <summary>
         /// LocalizedLabel10 control.
@@ -73,7 +73,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel10;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel10;
         
         /// <summary>
         /// TopicList control.
@@ -100,7 +100,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.RssFeedLink RssFeed;
+        protected global::VZF.Controls.RssFeedLink RssFeed;
         
         /// <summary>
         /// AtomFeed control.
@@ -109,7 +109,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.RssFeedLink AtomFeed;
+        protected global::VZF.Controls.RssFeedLink AtomFeed;
         
         /// <summary>
         /// PagerBottom control.
@@ -118,6 +118,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.Pager PagerBottom;
+        protected global::VZF.Controls.Pager PagerBottom;
     }
 }

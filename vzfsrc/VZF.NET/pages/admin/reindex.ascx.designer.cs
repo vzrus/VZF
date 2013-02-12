@@ -19,7 +19,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// AdminMenu1 control.
@@ -28,7 +28,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.AdminMenu AdminMenu1;
+        protected global::VZF.Controls.AdminMenu AdminMenu1;
         
         /// <summary>
         /// LocalizedLabel1 control.
@@ -37,7 +37,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// txtIndexStatistics control.
@@ -73,7 +73,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel2;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel2;
         
         /// <summary>
         /// PanelRecoveryMode control.
@@ -127,7 +127,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel4;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel4;
         
         /// <summary>
         /// PanelShrink control.
@@ -154,6 +154,6 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel3;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel3;
     }
 }

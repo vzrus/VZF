@@ -22,7 +22,7 @@ using YAF.Classes;
 using YAF.Types.Constants;
 using YAF.Types.Objects;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 
@@ -164,7 +164,7 @@ namespace YAF.Controls
                 CommonDb.UserList(PageContext.PageModuleID, this.PageContext.PageBoardID,  (int?) this.CurrentUserID, null, null, null, false).ToList();
             if (usr.Any())
             {
-                this.Get<ILogger>().UserUnsuspended(this.PageContext.PageUserID, "YAF.Controls.EditUsersSuspend", "User {0} was unsuspended by {1}.".FormatWith(this.Get<YafBoardSettings>().EnableDisplayName ? usr.First().DisplayName : usr.First().Name, this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.CurrentUserData.UserName), EventLogTypes.UserUnsuspended);
+                this.Get<ILogger>().UserUnsuspended(this.PageContext.PageUserID, "VZF.Controls.EditUsersSuspend", "User {0} was unsuspended by {1}.".FormatWith(this.Get<YafBoardSettings>().EnableDisplayName ? usr.First().DisplayName : usr.First().Name, this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.CurrentUserData.UserName), EventLogTypes.UserUnsuspended);
             }
            
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this.CurrentUserID.ToType<int>()));
@@ -255,7 +255,7 @@ namespace YAF.Controls
 
             if (usr.Any())
             {
-                this.Get<ILogger>().UserSuspended(this.PageContext.PageUserID, "YAF.Controls.EditUsersSuspend", "User {0} was suspended by {1} until: {2} (UTC)".FormatWith(this.Get<YafBoardSettings>().EnableDisplayName ? usr.First().DisplayName : usr.First().Name, this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.CurrentUserData.UserName, suspend), EventLogTypes.UserSuspended);
+                this.Get<ILogger>().UserSuspended(this.PageContext.PageUserID, "VZF.Controls.EditUsersSuspend", "User {0} was suspended by {1} until: {2} (UTC)".FormatWith(this.Get<YafBoardSettings>().EnableDisplayName ? usr.First().DisplayName : usr.First().Name, this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.CurrentUserData.UserName, suspend), EventLogTypes.UserSuspended);
             }
             
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this.CurrentUserID.ToType<int>()));

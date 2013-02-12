@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="c#" Inherits="YAF.Pages.cp_changepassword" Codebehind="cp_changepassword.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
 <div align="center">
@@ -9,13 +9,13 @@
                 width="700">
                 <tr>
                     <td colspan="2" class="header1">
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
                     </td>
                 </tr>
                 <tr>
                     <td align="right" class="postheader">
                         <asp:Label ID="CurrentPasswordLabel" runat="server" AssociatedControlID="CurrentPassword">
-                            <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="OLD_PASSWORD" />
+                            <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="OLD_PASSWORD" />
                         </asp:Label>
                     </td>
                     <td class="post">
@@ -27,7 +27,7 @@
                 <tr>
                     <td align="right" class="postheader">
                         <asp:Label ID="NewPasswordLabel" runat="server" AssociatedControlID="NewPassword">
-                            <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="NEW_PASSWORD" />
+                            <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="NEW_PASSWORD" />
                         </asp:Label>
                     </td>
                     <td class="post">
@@ -40,7 +40,7 @@
                 <tr>
                     <td align="right" class="postheader">
                         <asp:Label ID="ConfirmNewPasswordLabel" runat="server" AssociatedControlID="ConfirmNewPassword">
-                            <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="CONFIRM_PASSWORD" />
+                            <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="CONFIRM_PASSWORD" />
                         </asp:Label>
                     </td>
                     <td class="post">
@@ -75,12 +75,12 @@
                 width="700">
                 <tr>
                     <td colspan="2" class="header1">
-                        <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="TITLE" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="TITLE" />
                     </td>
                 </tr>
                 <tr>
                     <td class="post">
-                        <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="CHANGE_SUCCESS" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="CHANGE_SUCCESS" />
                 </tr>
                 <tr>
                     <td colspan="2" class="footer1" align="center">
@@ -95,5 +95,5 @@
         ValidationGroup="ctl00$ChangePassword1" ShowSummary="False" />
 </div>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

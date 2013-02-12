@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="YAF" TagName="ForumList" Src="ForumList.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="TopicLine" Src="TopicLine.ascx" %>
 <%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
 <asp:PlaceHolder runat="server" ID="SubForums" Visible="false">
@@ -19,33 +19,33 @@
                 
             </th>
             <th align="left" class="header2 headerForum">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
             </th>
 <%--            <th id="Th1" width="15%" runat="server" class="header2 headerModerators" visible="<%# PageContext.BoardSettings.ShowModeratorList && PageContext.BoardSettings.ShowModeratorListAsColumn %>">
-                <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="moderators" />
+                <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="moderators" />
             </th>
             <th width="4%" class="header2 headerTopics">
-                <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="topics" />
+                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="topics" />
             </th>
             <th width="4%" class="header2 headerPosts">
-                <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="posts" />
+                <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="posts" />
             </th>
             <th width="25%" class="header2 headerLastPost">
-                <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="lastpost" />
+                <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="lastpost" />
             </th>--%>
         </tr>
-        <YAF:ForumList AltLastPost="<%# this.LastPostImageTT %>" runat="server" ID="ForumList" />
+        <VZF:ForumList AltLastPost="<%# this.LastPostImageTT %>" runat="server" ID="ForumList" />
     </table>
 </asp:PlaceHolder>
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
-            <YAF:Pager runat="server" ID="Pager" UsePostBack="False" />
+            <VZF:Pager runat="server" ID="Pager" UsePostBack="False" />
         </td>
         <td>
-            <YAF:ThemeButton ID="moderate1" runat="server" CssClass="yafcssbigbutton rightItem"
+            <VZF:ThemeButton ID="moderate1" runat="server" CssClass="yafcssbigbutton rightItem"
                 TextLocalizedTag="BUTTON_MODERATE" TitleLocalizedTag="BUTTON_MODERATE_TT" />
-            <YAF:ThemeButton ID="NewTopic1" runat="server" CssClass="yafcssbigbutton rightItem"
+            <VZF:ThemeButton ID="NewTopic1" runat="server" CssClass="yafcssbigbutton rightItem"
                 TextLocalizedTag="BUTTON_NEWTOPIC" TitleLocalizedTag="BUTTON_NEWTOPIC_TT" OnClick="NewTopic_Click" />
         </td>
     </tr>
@@ -61,46 +61,46 @@
             
         </th>
         <th class="header2 headerTopic" align="left">
-            <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
+            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
         </th>
 <%--        <th class="header2 headerReplies" align="right" width="7%">
-            <YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
+            <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
         </th>
         <th class="header2 headerViews" align="right" width="7%">
-            <YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="views" />
+            <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="views" />
         </th>
         <th class="header2 headerLastPost" align="left" width="15%">
-            <YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
+            <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
         </th>--%>
     </tr>
     <asp:Repeater ID="Announcements" runat="server">
         <ItemTemplate>
-            <YAF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+            <VZF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </ItemTemplate>
     </asp:Repeater>
     <asp:Repeater ID="TopicList" runat="server">
         <ItemTemplate>
-            <YAF:TopicLine ID="TopicLine2" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+            <VZF:TopicLine ID="TopicLine2" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </ItemTemplate>
         <AlternatingItemTemplate>
-            <YAF:TopicLine ID="TopicLine3" runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+            <VZF:TopicLine ID="TopicLine3" runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </AlternatingItemTemplate>
     </asp:Repeater>
-    <YAF:ForumUsers ID="ForumUsers1" runat="server" />
+    <VZF:ForumUsers ID="ForumUsers1" runat="server" />
     <tr>
         <td align="center" colspan="6" class="footer1">
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                     <td id="showListTd">
-                        <YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="showtopics" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="showtopics" />
                         <asp:DropDownList ID="ShowList" runat="server" AutoPostBack="True" />
                     <br/><br/>
                         <asp:LinkButton ID="WatchForum" runat="server" /><span id="WatchForumID" runat="server"
                             visible="false" /><span id="delimiter1" runat="server" visible="<%# this.WatchForum.Text.Length > 0 %>"> | </span>
                         <asp:LinkButton runat="server" ID="MarkRead" />
-                        <YAF:RssFeedLink ID="RssFeed" runat="server" FeedType="Topics" 
+                        <VZF:RssFeedLink ID="RssFeed" runat="server" FeedType="Topics" 
                             Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" TitleLocalizedTag="RSSICONTOOLTIPFORUM" />  
-                          <YAF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />                            
+                          <VZF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />                            
                     </td>
                 </tr>
             </table>
@@ -110,36 +110,36 @@
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td align="left">
-            <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="Pager" UsePostBack="False" />
+            <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="Pager" UsePostBack="False" />
         </td>
         <td>
-            <YAF:ThemeButton ID="moderate2" runat="server" CssClass="yafcssbigbutton rightItem"
+            <VZF:ThemeButton ID="moderate2" runat="server" CssClass="yafcssbigbutton rightItem"
                 TextLocalizedTag="BUTTON_MODERATE" TitleLocalizedTag="BUTTON_MODERATE_TT" />
-            <YAF:ThemeButton ID="NewTopic2" runat="server" CssClass="yafcssbigbutton rightItem"
+            <VZF:ThemeButton ID="NewTopic2" runat="server" CssClass="yafcssbigbutton rightItem"
                 TextLocalizedTag="BUTTON_NEWTOPIC" TitleLocalizedTag="BUTTON_NEWTOPIC_TT" OnClick="NewTopic_Click" />
         </td>
     </tr>
 </table>
 <asp:PlaceHolder ID="ForumSearchHolder" runat="server" Visible="false">
 <div id="ForumSearchDiv">
-        <YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SEARCH_FORUM" />
+        <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SEARCH_FORUM" />
         &nbsp;<asp:TextBox id="forumSearch" runat="server"></asp:TextBox>
-        &nbsp;<YAF:ThemeButton ID="forumSearchOK" runat="server" CssClass="yaflittlebutton"
+        &nbsp;<VZF:ThemeButton ID="forumSearchOK" runat="server" CssClass="yaflittlebutton"
                 TextLocalizedTag="OK" TitleLocalizedTag="OK_TT" OnClick="ForumSearch_Click" />
     </div>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump" runat="server" visible="false">
-        &nbsp;<div id="Div2"><YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper></div>
+        &nbsp;<div id="Div2"><VZF:ForumJumper  ID="fj1" runat="server"></VZF:ForumJumper></div>
     </div>
 </asp:PlaceHolder>
 <div id="DivIconLegend">
-    <YAF:IconLegend ID="IconLegend1" runat="server" />
+    <VZF:IconLegend ID="IconLegend1" runat="server" />
 </div>
 <div id="DivPageAccess" class="smallfont" runat="server" visible="false">
-    <YAF:PageAccess ID="PageAccess1" runat="server" />
+    <VZF:PageAccess ID="PageAccess1" runat="server" />
 </div>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>
 

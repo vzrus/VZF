@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 
@@ -724,7 +724,7 @@ namespace YAF.Controls
         /// The pop menu 1_ item click.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="YAF.Controls.PopEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="VZF.Controls.PopEventArgs"/> instance containing the event data.</param>
         private void PopMenu1_ItemClick([NotNull] object sender, [NotNull] PopEventArgs e)
         {
             switch (e.Item)

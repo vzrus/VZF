@@ -19,7 +19,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ShoutBox ShoutBox1;
+        protected global::VZF.Controls.ShoutBox ShoutBox1;
         
         /// <summary>
         /// MustBeLoggedIn control.
@@ -28,6 +28,6 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel MustBeLoggedIn;
+        protected global::VZF.Controls.LocalizedLabel MustBeLoggedIn;
     }
 }

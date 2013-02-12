@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
+<%@ Register TagPrefix="VZF" Namespace="YAF" Assembly="VZF, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66" %>
 <script runat="server">
     
 </script>

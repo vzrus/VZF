@@ -19,7 +19,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 

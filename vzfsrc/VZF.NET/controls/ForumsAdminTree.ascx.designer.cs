@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ForumsAdminTree {
@@ -19,7 +19,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// divactive control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton DeleteForumBtn;
+        protected global::VZF.Controls.ThemeButton DeleteForumBtn;
         
         /// <summary>
         /// CopyForumBtn control.
@@ -46,7 +46,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton CopyForumBtn;
+        protected global::VZF.Controls.ThemeButton CopyForumBtn;
         
         /// <summary>
         /// EditForumBtn control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton EditForumBtn;
+        protected global::VZF.Controls.ThemeButton EditForumBtn;
         
         /// <summary>
         /// MoveForumBeforeBtn control.
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton MoveForumBeforeBtn;
+        protected global::VZF.Controls.ThemeButton MoveForumBeforeBtn;
         
         /// <summary>
         /// MoveForumAfterBtn control.
@@ -73,7 +73,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton MoveForumAfterBtn;
+        protected global::VZF.Controls.ThemeButton MoveForumAfterBtn;
         
         /// <summary>
         /// AddChildrenTo control.
@@ -82,7 +82,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton AddChildrenTo;
+        protected global::VZF.Controls.ThemeButton AddChildrenTo;
         
         /// <summary>
         /// CategoryList control.

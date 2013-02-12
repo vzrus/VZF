@@ -21,7 +21,7 @@ namespace YAF.Modules.BBCode
     using System.Text;
     using System.Web.UI;
 
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Utils;
 
     /// <summary>

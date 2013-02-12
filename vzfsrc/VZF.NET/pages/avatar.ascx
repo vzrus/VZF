@@ -1,11 +1,11 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.avatar" Codebehind="avatar.ascx.cs" %>
 
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator"></div>
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td class="header1" colspan="2">
-            <YAF:LocalizedLabel ID="TitleLabel" LocalizedTag="TITLE" runat="server" />
+            <VZF:LocalizedLabel ID="TitleLabel" LocalizedTag="TITLE" runat="server" />
         </td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@
     </tr>
     <tr class="footer1">
         <td style="text-align:center">
-          <YAF:ThemeButton ID="btnCancel" runat="server" CssClass="yafcssbigbutton"
+          <VZF:ThemeButton ID="btnCancel" runat="server" CssClass="yafcssbigbutton"
                 TextLocalizedTag="CANCEL" TitleLocalizedTag="CANCEL_TITLE" OnClick="BtnCancel_Click" />
         </td>
     </tr>
@@ -43,5 +43,5 @@
 
 </div>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

@@ -19,7 +19,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// AdminMenu control.
@@ -28,7 +28,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.AdminMenu AdminMenu;
+        protected global::VZF.Controls.AdminMenu AdminMenu;
         
         /// <summary>
         /// RoleListNet control.
@@ -64,6 +64,6 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.SmartScroller SmartScroller1;
+        protected global::VZF.Controls.SmartScroller SmartScroller1;
     }
 }

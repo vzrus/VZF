@@ -22,7 +22,7 @@ using YAF.Classes;
 
 using YAF.Utils;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 

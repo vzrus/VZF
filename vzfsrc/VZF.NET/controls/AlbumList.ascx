@@ -1,11 +1,11 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Controls.AlbumList"
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.AlbumList"
     CodeBehind="AlbumList.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <div class="imgtitle">
-    <YAF:LocalizedLabel ID="AlbumHeaderLabel" runat="server" LocalizedTag="ALBUMS_HEADER_TEXT"
+    <VZF:LocalizedLabel ID="AlbumHeaderLabel" runat="server" LocalizedTag="ALBUMS_HEADER_TEXT"
         Param0="" />
 </div>
 <br />
@@ -18,7 +18,7 @@
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
-            <YAF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
+            <VZF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>
@@ -60,10 +60,10 @@
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <YAF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
+            <VZF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

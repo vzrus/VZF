@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="emaildigest.ascx.cs"
-    Inherits="YAF.Controls.emaildigest" %>
+    Inherits="VZF.Controls.emaildigest" %>
 <%@ Import Namespace="System.Linq" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>

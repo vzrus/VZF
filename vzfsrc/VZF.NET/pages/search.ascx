@@ -3,8 +3,9 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="YAF.Classes" %>
 <%@ Register Namespace="nStuff.UpdateControls" Assembly="nStuff.UpdateControls" TagPrefix="nStuff" %>
-<YAF:PageLinks ID="PageLinks" runat="server" />
+<VZF:PageLinks ID="PageLinks" runat="server" />
 <script type="text/javascript">
     function EndRequestHandler(sender, args) {
         jQuery().YafModalDialog.Close({ Dialog: '#<%=LoadingModal.ClientID%>' });
@@ -18,7 +19,7 @@
 <table cellpadding="0" cellspacing="1" class="content searchContent" style="width: 100%" >
     <tr>
         <td class="header1" colspan="3">
-            <YAF:LocalizedLabel runat="server" LocalizedTag="title" />
+            <VZF:LocalizedLabel runat="server" LocalizedTag="title" />
         </td>
     </tr>
 </table>
@@ -40,7 +41,7 @@
 <table cellpadding="0" cellspacing="1" class="content searchContent" style="width: 100%" >
     <tr>
         <td align="right" class="postheader" width="35%">
-            <YAF:LocalizedLabel runat="server" LocalizedTag="postedby" />
+            <VZF:LocalizedLabel runat="server" LocalizedTag="postedby" />
         </td>
         <td align="left" class="postheader">
             <asp:TextBox ID="txtSearchStringFromWho" runat="server" Width="350px" />
@@ -49,7 +50,7 @@
     </tr>
     <tr>
         <td align="right" class="postheader" width="35%">
-            <YAF:LocalizedLabel runat="server" LocalizedTag="posts" />
+            <VZF:LocalizedLabel runat="server" LocalizedTag="posts" />
         </td>
         <td align="left" class="postheader">
             <asp:TextBox ID="txtSearchStringWhat" runat="server" Width="350px" />
@@ -73,13 +74,13 @@
         <asp:AsyncPostBackTrigger ControlID="btnSearch" />
     </Triggers>
     <ContentTemplate>
-        <YAF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
+        <VZF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
         <asp:Repeater ID="SearchRes" runat="server" OnItemDataBound="SearchRes_ItemDataBound">
             <HeaderTemplate>
                 <table class="content" cellspacing="1" cellpadding="0" width="100%">
                     <tr>
                         <td class="header1" colspan="2">
-                            <YAF:LocalizedLabel runat="server" LocalizedTag="RESULTS" />
+                            <VZF:LocalizedLabel runat="server" LocalizedTag="RESULTS" />
                         </td>
                     </tr>
             </HeaderTemplate>
@@ -87,7 +88,7 @@
                 <tr class="header2">           
                     <td colspan="2">
                         <strong>
-                            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="topic" />
+                            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="topic" />
                         </strong><a title='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' href="<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}", Container.DataItemToField<int>("TopicID")) %>">
                             <%# HtmlEncode(Container.DataItemToField<string>("Topic")) %>
                         </a>
@@ -99,23 +100,23 @@
                 <tr class="postheader">
                     <td width="140px" id="NameCell" valign="top">
                         <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><strong>
-                            <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
+                            <VZF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                         </strong>
-                        <YAF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
+                        <VZF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                             Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                     </td>
                     <td width="80%" class="postheader">
                         <strong>
-                            <YAF:LocalizedLabel runat="server" LocalizedTag="POSTED" />
+                            <VZF:LocalizedLabel runat="server" LocalizedTag="POSTED" />
                         </strong>
-                        <YAF:DisplayDateTime id="LastVisitDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></YAF:DisplayDateTime>
+                        <VZF:DisplayDateTime id="LastVisitDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></VZF:DisplayDateTime>
                     </td>
                 </tr>
                 <tr class="post">
                     <td colspan="2">
-                        <YAF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
+                        <VZF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
                             ShowSignature="false" HighlightWords="<%# this.HighlightSearchWords %>" DataRow='<%# (DataRow)Container.DataItem %>'>
-                        </YAF:MessagePostData>
+                        </VZF:MessagePostData>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -123,7 +124,7 @@
                 <tr class="header2">
                     <td colspan="2">
                         <strong>
-                            <YAF:LocalizedLabel runat="server" LocalizedTag="topic" />
+                            <VZF:LocalizedLabel runat="server" LocalizedTag="topic" />
                         </strong><a title='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' alt='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' href="<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}", Container.DataItemToField<int>("TopicID")) %>">
                             <%# HtmlEncode(Container.DataItemToField<string>("Topic"))%>
                         </a>
@@ -135,23 +136,23 @@
                 <tr class="postheader">
                     <td width="140px" id="NameCell" valign="top">
                         <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><strong>
-                            <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
+                            <VZF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                         </strong>
-                        <YAF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
+                        <VZF:OnlineStatusImage ID="onlineStatusImage1" runat="server" Visible='<%# this.Get<YafBoardSettings>().ShowUserOnlineStatus && !YAF.Core.UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                             Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
                     </td>
                     <td width="80%" class="postheader">
                         <strong>
-                            <YAF:LocalizedLabel runat="server" LocalizedTag="POSTED" />
+                            <VZF:LocalizedLabel runat="server" LocalizedTag="POSTED" />
                         </strong>
-                        <YAF:DisplayDateTime id="LastVisitDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></YAF:DisplayDateTime>
+                        <VZF:DisplayDateTime id="LastVisitDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></VZF:DisplayDateTime>
                     </td>
                 </tr>
                 <tr class="post_alt">
                     <td colspan="2">
-                        <YAF:MessagePostData ID="MessagePostAlt" runat="server" ShowAttachments="false" ShowSignature="false"
+                        <VZF:MessagePostData ID="MessagePostAlt" runat="server" ShowAttachments="false" ShowSignature="false"
                             HighlightWords="<%# this.HighlightSearchWords %>" DataRow="<%# (DataRow)Container.DataItem %>">
-                        </YAF:MessagePostData>
+                        </VZF:MessagePostData>
                     </td>
                 </tr>
             </AlternatingItemTemplate>
@@ -167,13 +168,13 @@
             <table class="content" cellspacing="1" cellpadding="0" width="100%">
                 <tr>
                     <td class="header1" colspan="2">
-                        <YAF:LocalizedLabel runat="server" LocalizedTag="RESULTS" />
+                        <VZF:LocalizedLabel runat="server" LocalizedTag="RESULTS" />
                     </td>
                 </tr>
                 <tr>
                     <td class="postheader" colspan="2" align="center">
                         <br />
-                        <YAF:LocalizedLabel runat="server" LocalizedTag="NO_SEARCH_RESULTS" />
+                        <VZF:LocalizedLabel runat="server" LocalizedTag="NO_SEARCH_RESULTS" />
                         <br />
                     </td>
                 </tr>
@@ -183,12 +184,12 @@
                 </tr>
             </table>
         </asp:PlaceHolder>
-        <YAF:Pager ID="Pager1" runat="server" LinkedPager="Pager" />
+        <VZF:Pager ID="Pager1" runat="server" LinkedPager="Pager" />
     </ContentTemplate>
 </asp:UpdatePanel>
 
-<YAF:MessageBox ID="LoadingModal" runat="server"></YAF:MessageBox>
+<VZF:MessageBox ID="LoadingModal" runat="server"></VZF:MessageBox>
 
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

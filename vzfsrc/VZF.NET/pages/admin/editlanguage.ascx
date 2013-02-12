@@ -1,16 +1,16 @@
 ﻿<%@ Control language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.editlanguage" Codebehind="editlanguage.ascx.cs" %>
-<YAF:PageLinks runat="server" id="PageLinks" />
-<YAF:AdminMenu runat="server" id="Adminmenu1">
+<VZF:PageLinks runat="server" id="PageLinks" />
+<VZF:AdminMenu runat="server" id="Adminmenu1">
   <table class="content" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td class="header1" colspan="3">
-        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_EDITLANGUAGE" />
+        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_EDITLANGUAGE" />
 	    <asp:Label runat="server" id="lblPageName"></asp:Label>
       </td>
     </tr>
     <tr>
       <td class="header2" style="text-align:center">
-      <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="SELECT_PAGE" LocalizedPage="ADMIN_EDITLANGUAGE" />
+      <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="SELECT_PAGE" LocalizedPage="ADMIN_EDITLANGUAGE" />
 	    <asp:DropDownList runat="server" id="dDLPages" ></asp:DropDownList>
 	    <asp:Button runat="server" id="btnLoadPageLocalization"/>
       </td>
@@ -27,7 +27,7 @@
 		    <asp:TemplateColumn>
 			  <HeaderStyle HorizontalAlign="Center" CssClass="header2"></HeaderStyle>
               <HeaderTemplate>
-                <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="RESOURCE_NAME" LocalizedPage="ADMIN_EDITLANGUAGE" />
+                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="RESOURCE_NAME" LocalizedPage="ADMIN_EDITLANGUAGE" />
               </HeaderTemplate>
 			  <ItemStyle HorizontalAlign="Center" CssClass="post"></ItemStyle>
 			  <ItemTemplate>
@@ -37,7 +37,7 @@
 			<asp:TemplateColumn>
 			  <HeaderStyle HorizontalAlign="Center" CssClass="header2"></HeaderStyle>
                <HeaderTemplate>
-               <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="ORIGINAL_RESOURCE" LocalizedPage="ADMIN_EDITLANGUAGE" />
+               <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="ORIGINAL_RESOURCE" LocalizedPage="ADMIN_EDITLANGUAGE" />
               </HeaderTemplate>
 			  <ItemStyle HorizontalAlign="Center" CssClass="post"></ItemStyle>
 			  <ItemTemplate>
@@ -48,7 +48,7 @@
 		    <asp:TemplateColumn>
 			  <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="header2"></HeaderStyle>
                <HeaderTemplate>
-                 <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="LOCALIZED_RESOURCE" LocalizedPage="ADMIN_EDITLANGUAGE" />
+                 <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="LOCALIZED_RESOURCE" LocalizedPage="ADMIN_EDITLANGUAGE" />
               </HeaderTemplate>
 			  <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="post"></ItemStyle>
 			  <ItemTemplate>
@@ -68,5 +68,5 @@
       </td>
     </tr>
   </table>
-</YAF:AdminMenu>
-<YAF:SmartScroller id="SmartScroller1" runat = "server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller id="SmartScroller1" runat = "server" />

@@ -1,15 +1,15 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.Album" Codebehind="album.ascx.cs" %>
-<%@ Register TagPrefix="YAF" TagName="AlbumImageList" Src="../controls/AlbumImageList.ascx" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<%@ Register TagPrefix="VZF" TagName="AlbumImageList" Src="../controls/AlbumImageList.ascx" %>
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <table class="content" width="100%" cellpadding="0">
     <tr>
         <td class="header1">
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="Albums_Title" />
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="Albums_Title" />
         </td>
     </tr>
     <tr>
         <td class="post">
-            <YAF:AlbumImageList ID="AlbumImageList1" runat="server"></YAF:AlbumImageList>
+            <VZF:AlbumImageList ID="AlbumImageList1" runat="server"></VZF:AlbumImageList>
         </td>
     </tr>
 </table>

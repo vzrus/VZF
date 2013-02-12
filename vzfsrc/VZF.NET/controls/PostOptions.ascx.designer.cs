@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class PostOptions {
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel NewPostOptionsLabel;
+        protected global::VZF.Controls.LocalizedLabel NewPostOptionsLabel;
         
         /// <summary>
         /// liAddPoll control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel AddPollLabel;
+        protected global::VZF.Controls.LocalizedLabel AddPollLabel;
         
         /// <summary>
         /// liQuestion control.
@@ -82,7 +82,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel IsQuestionLael;
+        protected global::VZF.Controls.LocalizedLabel IsQuestionLael;
         
         /// <summary>
         /// liPersistency control.
@@ -109,7 +109,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel PersistencyLabel;
+        protected global::VZF.Controls.LocalizedLabel PersistencyLabel;
         
         /// <summary>
         /// PersistencyLabel2 control.
@@ -118,7 +118,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel PersistencyLabel2;
+        protected global::VZF.Controls.LocalizedLabel PersistencyLabel2;
         
         /// <summary>
         /// liTopicWatch control.
@@ -145,7 +145,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel TopicWatchLabel;
+        protected global::VZF.Controls.LocalizedLabel TopicWatchLabel;
         
         /// <summary>
         /// liTopicAttach control.
@@ -172,6 +172,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel TopicAttachLabel;
+        protected global::VZF.Controls.LocalizedLabel TopicAttachLabel;
     }
 }

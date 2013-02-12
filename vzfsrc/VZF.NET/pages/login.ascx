@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.login" CodeBehind="login.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <asp:UpdatePanel ID="UpdateLoginPanel" runat="server" UpdateMode="Conditional">
     <ContentTemplate>
         <div align="center">
@@ -12,13 +12,13 @@
                                 <table border="0" cellpadding="0" class="content" width="400">
                                     <tr>
                                         <td align="center" colspan="2" class="header1">
-                                            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="title" />
+                                            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="title" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align="right" class="postheader">
                                             <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">
-                                                <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="username" />
+                                                <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="username" />
                                             </asp:Label>
                                         </td>
                                         <td class="post">
@@ -28,7 +28,7 @@
                                     <tr>
                                         <td align="right" class="postheader" style="height: 24px">
                                             <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">
-                                                <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="PASSWORD" />
+                                                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="PASSWORD" />
                                             </asp:Label>
                                         </td>
                                         <td class="post" style="height: 24px">
@@ -53,7 +53,7 @@
                                          <asp:PlaceHolder id="FacebookHolder" runat="server" Visible="false">
                                            <div class="fb-login-button" data-onlogin="LoginUser()" 
                                                 data-scope="email,user_birthday,status_update,publish_stream,user_hometown,user_location">
-                                                <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FACEBOOK_LOGIN" />
+                                                <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FACEBOOK_LOGIN" />
                                            </div>
                                            <div id="fb-root"></div>
                                          </asp:PlaceHolder>
@@ -73,5 +73,5 @@
     </ContentTemplate>
 </asp:UpdatePanel>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.test_data"
 	TargetSchema="http://schemas.microsoft.com/intellisense/ie5" Codebehind="test_data.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server" ID="Adminmenu1">
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server" ID="Adminmenu1">
 	<asp:Panel id="TestDataTabs" runat="server">
                <ul>
                  <li><a href="#View1">Users</a></li>
@@ -718,5 +718,5 @@
 			</td>
 		</tr>
 	</table>
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

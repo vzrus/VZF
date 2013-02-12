@@ -1,7 +1,8 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="YAF.Controls.ShoutBox" CodeBehind="ShoutBox.ascx.cs" EnableViewState="false" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="VZF.Controls.ShoutBox" CodeBehind="ShoutBox.ascx.cs" EnableViewState="false" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
+<%@ Import Namespace="YAF.Classes" %>
 <script type="text/javascript">
     var lastMessageId = 0;
     var clearOnEndRequest = false;
@@ -78,20 +79,20 @@
             <table border="0" class="content" cellspacing="1" cellpadding="0" width="100%">
                 <tr style="height:30px">
                     <td class="header1" colspan="2">
-                        <YAF:CollapsibleImage ID="CollapsibleImageShoutBox" runat="server" BorderWidth="0"
+                        <VZF:CollapsibleImage ID="CollapsibleImageShoutBox" runat="server" BorderWidth="0"
                             Style="vertical-align: middle" DefaultState="Collapsed" PanelID='ShoutBoxPanel'
                             AttachedControlID="shoutBoxPlaceHolder" OnClick="CollapsibleImageShoutBox_Click" />&nbsp;&nbsp;
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="SHOUTBOX"
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="SHOUTBOX"
                             LocalizedTag="TITLE">
-                        </YAF:LocalizedLabel>
+                        </VZF:LocalizedLabel>
                     </td>
                 </tr>
                 <asp:PlaceHolder ID="shoutBoxPlaceHolder" runat="server">
                     <tr style="height:30px">
                         <td class="header2" colspan="2">
                             <span>
-                                <YAF:LocalizedLabel ID="lblMemberchat" runat="server" LocalizedPage="SHOUTBOX" LocalizedTag="HEADING">
-                                </YAF:LocalizedLabel>
+                                <VZF:LocalizedLabel ID="lblMemberchat" runat="server" LocalizedPage="SHOUTBOX" LocalizedTag="HEADING">
+                                </VZF:LocalizedLabel>
                             </span>
                         </td>    
                     </tr>
@@ -109,12 +110,12 @@
                                             <ItemTemplate>
                                                 <div style="padding: 0; margin: 0" class="shoutBoxChatLine">
                                                     <strong>
-                                                        <YAF:UserLink ID="UserLink1" runat="server" BlankTarget="true" UserID='<%# ((System.Data.DataRow)Container.DataItem)["UserID"].ToType<int>() %>'
+                                                        <VZF:UserLink ID="UserLink1" runat="server" BlankTarget="true" UserID='<%# ((System.Data.DataRow)Container.DataItem)["UserID"].ToType<int>() %>'
                                                             Style='<%# ((System.Data.DataRow)Container.DataItem)["Style"] %>'>
-                                                        </YAF:UserLink>
-                                                    </strong>(<em><YAF:DisplayDateTime ID="PostedDateTime" runat="server" Format="BothTopic"
+                                                        </VZF:UserLink>
+                                                    </strong>(<em><VZF:DisplayDateTime ID="PostedDateTime" runat="server" Format="BothTopic"
                                                         DateTime='<%#((System.Data.DataRow)Container.DataItem)["Date"]%>'>
-                                                    </YAF:DisplayDateTime>
+                                                    </VZF:DisplayDateTime>
                                                     </em>):
                                                     <asp:Label ID="messageLabel" runat="server" Text='<%# ((System.Data.DataRow)Container.DataItem)["Message"] %>' />
                                                 </div>

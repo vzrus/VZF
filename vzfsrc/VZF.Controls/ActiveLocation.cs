@@ -19,7 +19,7 @@
 
 using System.Text;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
   #region Using
 

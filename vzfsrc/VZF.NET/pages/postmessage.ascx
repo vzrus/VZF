@@ -1,11 +1,11 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.postmessage" Codebehind="postmessage.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
-<%@ Register TagPrefix="YAF" TagName="smileys" Src="../controls/smileys.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="LastPosts" Src="../controls/LastPosts.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="PostOptions" Src="../controls/PostOptions.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="PollList" Src="../controls/PollList.ascx" %>
-<YAF:PageLinks ID="PageLinks" runat="server" />
-<YAF:PollList ID="PollList"  ShowButtons="true" PollGroupId='<%# GetPollGroupID() %>'  runat="server"/>
+<%@ Register TagPrefix="VZF" TagName="smileys" Src="../controls/smileys.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="LastPosts" Src="../controls/LastPosts.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="PostOptions" Src="../controls/PostOptions.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="PollList" Src="../controls/PollList.ascx" %>
+<VZF:PageLinks ID="PageLinks" runat="server" />
+<VZF:PollList ID="PollList"  ShowButtons="true" PollGroupId='<%# GetPollGroupID() %>'  runat="server"/>
 <table align="center" cellpadding="4" cellspacing="1" class="content" width="100%">
 	<tr>
 		<td align="center" class="header1" colspan="2">
@@ -15,15 +15,15 @@
 		  
 	<tr id="PreviewRow" runat="server" visible="false">
 		<td class="postformheader" valign="top">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="previewtitle" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="previewtitle" />
 		</td>
 		<td id="PreviewCell" runat="server" class="post previewPostContent" valign="top">
-			<YAF:MessagePost ID="PreviewMessagePost" runat="server" />
+			<VZF:MessagePost ID="PreviewMessagePost" runat="server" />
 		</td>
 	</tr>
 	<tr id="SubjectRow" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel ID="TopicSubjectLabel" runat="server" LocalizedTag="subject" />
+			<VZF:LocalizedLabel ID="TopicSubjectLabel" runat="server" LocalizedTag="subject" />
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox ID="TopicSubjectTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400" AutoCompleteType="Disabled"/>
@@ -31,7 +31,7 @@
 	</tr>
 	<tr id="DescriptionRow" visible="false" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel ID="TopicDescriptionLabel" runat="server" LocalizedTag="description" />
+			<VZF:LocalizedLabel ID="TopicDescriptionLabel" runat="server" LocalizedTag="description" />
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox ID="TopicDescriptionTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400" autocomplete="off" />
@@ -39,19 +39,19 @@
 	</tr>
 	<tr id="BlogRow" runat="server" visible="false">
 		<td class="postformheader" width="20%">
-		    <YAF:LocalizedLabel ID="PostToBlogLbl" runat="server" LocalizedTag="POSTTOBLOG" />
+		    <VZF:LocalizedLabel ID="PostToBlogLbl" runat="server" LocalizedTag="POSTTOBLOG" />
 		</td>
 		<td class="post" width="80%">
 			<asp:CheckBox ID="PostToBlog" runat="server" />
-			 <YAF:LocalizedLabel ID="PostToBlogPassLbl" runat="server" LocalizedTag="POSTTOBLOG_PASS" />
+			 <VZF:LocalizedLabel ID="PostToBlogPassLbl" runat="server" LocalizedTag="POSTTOBLOG_PASS" />
 			<asp:TextBox ID="BlogPassword" runat="server" TextMode="Password" Width="400" />
 			<asp:HiddenField ID="BlogPostID" runat="server" />
 		</td>
 	</tr>
 	<tr id="TagsRow" runat="server" visible="false">
 		<td class="postformheader" width="20%">
-		<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
-		<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
+		<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
+		<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
 		</td>
 		<td class="post" width="80%"> 
 			<asp:TextBox ID="Tags" runat="server" AutoCompleteType="Disabled" TextMode="SingleLine" Width="400" />
@@ -60,7 +60,7 @@
 	</tr>
 	<tr id="FromRow" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="from" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="from" />
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox ID="From" runat="server" CssClass="edit" Width="400" />
@@ -68,7 +68,7 @@
 	</tr>
 	<tr id="StatusRow" visible="false" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="Status" />
+			<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="Status" />
 		</td>
 		<td class="post" width="80%">
 			<asp:DropDownList ID="TopicStatus" runat="server" CssClass="edit" Width="400">
@@ -77,7 +77,7 @@
 	</tr>	
 	<tr id="PriorityRow" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="priority" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="priority" />
 		</td>
 		<td class="post" width="80%">
 			<asp:DropDownList ID="Priority" runat="server" CssClass="edit" Width="400" />
@@ -85,7 +85,7 @@
 	</tr>
 	<tr id="StyleRow" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="STYLES" />
+			<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="STYLES" />
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox id="TopicStylesTextBox" runat="server" CssClass="edit" Width="400" />
@@ -93,23 +93,23 @@
 	</tr>	
 	<tr>
 		<td class="postformheader" valign="top" width="20%">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="message" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="message" />
 			<br />
-			<YAF:smileys runat="server" OnClick="insertsmiley" />
+			<VZF:smileys runat="server" OnClick="insertsmiley" />
 			<br />
-			<YAF:LocalizedLabel ID="LocalizedLblMaxNumberOfPost" runat="server" LocalizedTag="MAXNUMBEROF" />
+			<VZF:LocalizedLabel ID="LocalizedLblMaxNumberOfPost" runat="server" LocalizedTag="MAXNUMBEROF" />
 		</td>
 		<td id="EditorLine" runat="server" class="post" width="80%">
 			<!-- editor goes here -->
 		</td>
 	</tr>
 
-	<YAF:PostOptions id="PostOptions1" runat="server">
-	</YAF:PostOptions>
+	<VZF:PostOptions id="PostOptions1" runat="server">
+	</VZF:PostOptions>
 
 	<tr id="tr_captcha1" runat="server" visible="false">
 		<td class="postformheader" valign="top">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="Captcha_Image" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="Captcha_Image" />
 		</td>
 		<td class="post">
 			<asp:Image ID="imgCaptcha" runat="server" />
@@ -117,7 +117,7 @@
 	</tr>
 	<tr id="tr_captcha2" runat="server" visible="false">
 		<td class="postformheader" valign="top">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="Captcha_Enter" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="Captcha_Enter" />
 		</td>
 		<td class="post">
 			<asp:TextBox ID="tbCaptcha" runat="server" />
@@ -125,7 +125,7 @@
 	</tr>
 	<tr id="EditReasonRow" runat="server">
 		<td class="postformheader" width="20%">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="EditReason" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="EditReason" />
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox ID="ReasonEditor" runat="server" CssClass="edit" Width="400" />
@@ -136,11 +136,11 @@
 			&nbsp;
 		</td>
 		<td class="footer1">
-			<YAF:ThemeButton ID="Preview" runat="server" CssClass="yafcssbigbutton leftItem"
+			<VZF:ThemeButton ID="Preview" runat="server" CssClass="yafcssbigbutton leftItem"
 				OnClick="Preview_Click" TitleLocalizedTag="PREVIEW_TITLE"  TextLocalizedTag="PREVIEW" />
-			<YAF:ThemeButton ID="PostReply" TitleLocalizedTag="SAVE_TITLE"  runat="server" CssClass="yafcssbigbutton leftItem"
+			<VZF:ThemeButton ID="PostReply" TitleLocalizedTag="SAVE_TITLE"  runat="server" CssClass="yafcssbigbutton leftItem"
 				OnClick="PostReply_Click" TextLocalizedTag="SAVE" />
-			<YAF:ThemeButton ID="Cancel" TitleLocalizedTag="CANCEL_TITLE"  runat="server" CssClass="yafcssbigbutton leftItem" OnClick="Cancel_Click"
+			<VZF:ThemeButton ID="Cancel" TitleLocalizedTag="CANCEL_TITLE"  runat="server" CssClass="yafcssbigbutton leftItem" OnClick="Cancel_Click"
 				TextLocalizedTag="CANCEL" />
 		</td>
 	</tr>
@@ -159,7 +159,7 @@
 
 </script>
 
-<YAF:LastPosts ID="LastPosts1" runat="server" Visible="false" />
+<VZF:LastPosts ID="LastPosts1" runat="server" Visible="false" />
 <div id="DivSmartScroller">
-	<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+	<VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

@@ -1,6 +1,8 @@
 <%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
-<%@ Register TagPrefix="YAF" Assembly="YAF.Controls" Namespace="VZF" %>
+<%@ Register TagPrefix="VZF" Assembly="VZF.Controls" Namespace="VZF" %>
+<%@ Register TagPrefix="VZF" Namespace="VZF.Controls.Statistics" Assembly="VZF.Controls, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66" %>
+<%@ Register TagPrefix="VZF" Namespace="YAF" Assembly="VZF, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,13 +26,13 @@
         <table border="0" width="100%" cellpadding="0" cellspacing="0">
             <tr>
                 <td valign="top">
-                    <YAF:Forum runat="server" ModuleID="0"  ID="yafForum" />
+                    <VZF:Forum runat="server" ModuleID="0"  ID="yafForum" />
                 </td>
                 <td width="10">
                     &nbsp;
                 </td>
                 <td width="200" valign="top">
-                    <YAF:MostActiveUsers ID="MostActiveList" runat="server" DisplayNumber="10" />
+                    <VZF:MostActiveUsers ID="MostActiveList" runat="server" DisplayNumber="10" />
                 </td>
             </tr>
         </table>

@@ -1,45 +1,45 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.mytopics" Codebehind="mytopics.ascx.cs" %>
-<%@ Register TagPrefix="YAF" TagName="MyTopicsList" Src="../controls/MyTopicsList.ascx" %>
-<%@ Register tagPrefix="YAF" namespace="YAF.Controls" %>
-<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="../controls/ForumJumper.ascx" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<%@ Register TagPrefix="VZF" TagName="MyTopicsList" Src="../controls/MyTopicsList.ascx" %>
+<%@ Register tagPrefix="VZF" namespace="VZF.Controls" %>
+<%@ Register TagPrefix="VZF" TagName="ForumJumper" Src="../controls/ForumJumper.ascx" %>
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator"> 
 </div> 
 
 <br style="clear: both" />
        <asp:Panel id="TopicsTabs" runat="server">
                <ul>
-                 <li><a href="#ActiveTopicsTab"><YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ActiveTopics" LocalizedPage="MyTopics" /></a></li>
+                 <li><a href="#ActiveTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="ActiveTopics" LocalizedPage="MyTopics" /></a></li>
                  <asp:PlaceHolder ID="UnansweredTopicsTabTitle" runat="server">
-                     <li><a href="#UnansweredTopicsTab"><YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="UnansweredTopics" LocalizedPage="MyTopics" /></a></li>
+                     <li><a href="#UnansweredTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="UnansweredTopics" LocalizedPage="MyTopics" /></a></li>
                  </asp:PlaceHolder>
                  <asp:PlaceHolder ID="UnreadTopicsTabTitle" runat="server">
-                   <li><a href="#UnreadTopicsTab"><YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="UnreadTopics" LocalizedPage="MyTopics" /></a></li>
+                   <li><a href="#UnreadTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="UnreadTopics" LocalizedPage="MyTopics" /></a></li>
                  </asp:PlaceHolder>
                  <asp:PlaceHolder ID="UserTopicsTabTitle" runat="server">
-                   <li><a href="#MyTopicsTab"><YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="MyTopics" LocalizedPage="MyTopics" /></a></li>
-		           <li><a href="#FavoriteTopicsTab"><YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FavoriteTopics" LocalizedPage="MyTopics" /></a></li>
+                   <li><a href="#MyTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="MyTopics" LocalizedPage="MyTopics" /></a></li>
+		           <li><a href="#FavoriteTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FavoriteTopics" LocalizedPage="MyTopics" /></a></li>
                  </asp:PlaceHolder>		        
                </ul>
                 <div id="ActiveTopicsTab">
-                   <YAF:MyTopicsList runat="server" ID="ActiveTopics" CurrentMode="Active" AutoDatabind="True"/>
+                   <VZF:MyTopicsList runat="server" ID="ActiveTopics" CurrentMode="Active" AutoDatabind="True"/>
                 </div>
                 <asp:PlaceHolder ID="UnansweredTopicsTabContent" runat="server">
                 <div id="UnansweredTopicsTab">
-                   <YAF:MyTopicsList runat="server" ID="UnansweredTopics" CurrentMode="Unanswered" AutoDatabind="False"/>
+                   <VZF:MyTopicsList runat="server" ID="UnansweredTopics" CurrentMode="Unanswered" AutoDatabind="False"/>
                 </div>
                 </asp:PlaceHolder>
                 <asp:PlaceHolder ID="UnreadTopicsTabContent" runat="server">
                 <div id="UnreadTopicsTab">
-                   <YAF:MyTopicsList runat="server" ID="UnreadTopics" CurrentMode="Unread" AutoDatabind="False" />
+                   <VZF:MyTopicsList runat="server" ID="UnreadTopics" CurrentMode="Unread" AutoDatabind="False" />
                 </div>
                 </asp:PlaceHolder>
                  <asp:PlaceHolder ID="UserTopicsTabContent" runat="server">
                 <div id="MyTopicsTab">
-                   <YAF:MyTopicsList runat="server" ID="MyTopics" CurrentMode="User" />
+                   <VZF:MyTopicsList runat="server" ID="MyTopics" CurrentMode="User" />
                 </div>
                 <div id="FavoriteTopicsTab">
-                   <YAF:MyTopicsList runat="server" ID="FavoriteTopics" CurrentMode="Favorite" AutoDatabind="False" />
+                   <VZF:MyTopicsList runat="server" ID="FavoriteTopics" CurrentMode="Favorite" AutoDatabind="False" />
                 </div>
                 </asp:PlaceHolder>
              </asp:Panel>
@@ -47,12 +47,12 @@
         <asp:Button id="ChangeTab" OnClick="ChangeTabClick" runat="server" style="display:none" />
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
-        <YAF:ForumJumper  ID="fj1" runat="server"></YAF:ForumJumper>
+        <VZF:ForumJumper  ID="fj1" runat="server"></VZF:ForumJumper>
     </div>
 </asp:PlaceHolder>
 <div id="DivIconLegend">
-    <YAF:IconLegend ID="IconLegend1" runat="server" />
+    <VZF:IconLegend ID="IconLegend1" runat="server" />
 </div>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

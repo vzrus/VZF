@@ -19,7 +19,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// AdminMenu1 control.
@@ -28,7 +28,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.AdminMenu AdminMenu1;
+        protected global::VZF.Controls.AdminMenu AdminMenu1;
         
         /// <summary>
         /// LocalizedLabel1 control.
@@ -37,7 +37,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// HelpLabel1 control.
@@ -46,7 +46,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel1;
+        protected global::VZF.Controls.HelpLabel HelpLabel1;
         
         /// <summary>
         /// Name control.
@@ -64,7 +64,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel2;
+        protected global::VZF.Controls.HelpLabel HelpLabel2;
         
         /// <summary>
         /// Description control.
@@ -82,7 +82,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel3;
+        protected global::VZF.Controls.HelpLabel HelpLabel3;
         
         /// <summary>
         /// Message control.
@@ -100,7 +100,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel4;
+        protected global::VZF.Controls.HelpLabel HelpLabel4;
         
         /// <summary>
         /// Category control.
@@ -118,7 +118,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel5;
+        protected global::VZF.Controls.HelpLabel HelpLabel5;
         
         /// <summary>
         /// MedalImage control.
@@ -145,7 +145,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel6;
+        protected global::VZF.Controls.HelpLabel HelpLabel6;
         
         /// <summary>
         /// RibbonImage control.
@@ -172,7 +172,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel7;
+        protected global::VZF.Controls.HelpLabel HelpLabel7;
         
         /// <summary>
         /// SmallMedalImage control.
@@ -199,7 +199,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel8;
+        protected global::VZF.Controls.HelpLabel HelpLabel8;
         
         /// <summary>
         /// SmallRibbonImage control.
@@ -226,7 +226,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel9;
+        protected global::VZF.Controls.HelpLabel HelpLabel9;
         
         /// <summary>
         /// SortOrder control.
@@ -244,7 +244,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel10;
+        protected global::VZF.Controls.HelpLabel HelpLabel10;
         
         /// <summary>
         /// ShowMessage control.
@@ -262,7 +262,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel11;
+        protected global::VZF.Controls.HelpLabel HelpLabel11;
         
         /// <summary>
         /// AllowRibbon control.
@@ -280,7 +280,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel12;
+        protected global::VZF.Controls.HelpLabel HelpLabel12;
         
         /// <summary>
         /// AllowHiding control.
@@ -298,7 +298,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel13;
+        protected global::VZF.Controls.HelpLabel HelpLabel13;
         
         /// <summary>
         /// AllowReOrdering control.
@@ -379,7 +379,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel14;
+        protected global::VZF.Controls.HelpLabel HelpLabel14;
         
         /// <summary>
         /// AvailableGroupList control.
@@ -397,7 +397,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel15;
+        protected global::VZF.Controls.HelpLabel HelpLabel15;
         
         /// <summary>
         /// GroupMessage control.
@@ -415,7 +415,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel16;
+        protected global::VZF.Controls.HelpLabel HelpLabel16;
         
         /// <summary>
         /// GroupSortOrder control.
@@ -433,7 +433,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel17;
+        protected global::VZF.Controls.HelpLabel HelpLabel17;
         
         /// <summary>
         /// GroupOnlyRibbon control.
@@ -451,7 +451,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel18;
+        protected global::VZF.Controls.HelpLabel HelpLabel18;
         
         /// <summary>
         /// GroupHide control.
@@ -532,7 +532,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel23;
+        protected global::VZF.Controls.HelpLabel HelpLabel23;
         
         /// <summary>
         /// UserName control.
@@ -586,7 +586,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel19;
+        protected global::VZF.Controls.HelpLabel HelpLabel19;
         
         /// <summary>
         /// UserMessage control.
@@ -604,7 +604,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel20;
+        protected global::VZF.Controls.HelpLabel HelpLabel20;
         
         /// <summary>
         /// UserSortOrder control.
@@ -622,7 +622,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel21;
+        protected global::VZF.Controls.HelpLabel HelpLabel21;
         
         /// <summary>
         /// UserOnlyRibbon control.
@@ -640,7 +640,7 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.HelpLabel HelpLabel22;
+        protected global::VZF.Controls.HelpLabel HelpLabel22;
         
         /// <summary>
         /// UserHide control.
@@ -676,6 +676,6 @@ namespace YAF.Pages.Admin {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.SmartScroller SmartScroller1;
+        protected global::VZF.Controls.SmartScroller SmartScroller1;
     }
 }

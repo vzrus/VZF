@@ -29,7 +29,7 @@ namespace YAF.Pages.help
     using System.Xml.Serialization;
 
     using YAF.Classes;
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;

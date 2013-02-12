@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="True" EnableViewState="false" CodeBehind="PollChoiceList.ascx.cs"
-    Inherits="YAF.Controls.PollChoiceList" %>
+    Inherits="VZF.Controls.PollChoiceList" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
             <asp:Repeater ID="Poll" runat="server" OnItemDataBound="Poll_OnItemDataBound" OnItemCommand="Poll_ItemCommand"
@@ -19,7 +19,7 @@
                          <img id="YourChoice" visible="false" runat="server" alt='<%# this.GetText("POLLEDIT", "POLL_VOTED") %>'
                                    title='<%# this.GetText("POLLEDIT", "POLL_VOTED") %>'
                                    width="16" height="16" src='<%# GetThemeContents("VOTE","POLL_VOTED") %>' />&nbsp; 
-                          <YAF:MyLinkButton ID="MyLinkButton1"   CssClass="pollvote a" Enabled="false" runat="server" CommandName="vote"
+                          <VZF:MyLinkButton ID="MyLinkButton1"   CssClass="pollvote a" Enabled="false" runat="server" CommandName="vote"
                                 CommandArgument='<%# DataBinder.Eval(Container.DataItem, "ChoiceID") %>' Text='<%# this.HtmlEncode(this.Get<IBadWordReplace>().Replace(Convert.ToString(DataBinder.Eval(Container.DataItem, "Choice")))) %>' />
                                 
                         </td>

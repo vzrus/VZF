@@ -2,26 +2,26 @@
     CodeBehind="users.ascx.cs" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server" ID="Adminmenu1">
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server" ID="Adminmenu1">
     <table cellspacing="0" cellpadding="0" class="content" width="100%">
         <tr>
             <td class="header1" colspan="4">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_USERS" />
             </td>
         </tr>
         <tr class="header2">
             <td>
-                <YAF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="ROLE" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="ROLE" LocalizedPage="ADMIN_USERS" />
             </td>
             <td>
-                <YAF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="RANK" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="RANK" LocalizedPage="ADMIN_USERS" />
             </td>
             <td>
-                <YAF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="NAME_CONTAINS" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="NAME_CONTAINS" LocalizedPage="ADMIN_USERS" />
             </td>
             <td>
-                <YAF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="EMAIL_CONTAINS" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="EMAIL_CONTAINS" LocalizedPage="ADMIN_USERS" />
             </td>
         </tr>
         <tr class="post">
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td class="post" colspan="3" align="right">
-                <YAF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="FILTER" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="FILTER" LocalizedPage="ADMIN_USERS" />
             </td>
             <td>
                 <asp:DropDownList ID="Since" runat="server" Width="95%" AutoPostBack="True" OnSelectedIndexChanged="Since_SelectedIndexChanged" />
@@ -55,17 +55,17 @@
         </tr>
     </table>
     <br />
-    <YAF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" UsePostBack="True" />
+    <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" UsePostBack="True" />
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="4">
-                <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_USERS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_USERS" />
             </td>
         </tr>
         <tr>
             <td class="header2" colspan="4">
-                <YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="USER_NAME" LocalizedPage="ADMIN_USERS" />&nbsp;
-                (<YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="DISPLAY_NAME" LocalizedPage="ADMIN_USERS" />)
+                <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="USER_NAME" LocalizedPage="ADMIN_USERS" />&nbsp;
+                (<VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="DISPLAY_NAME" LocalizedPage="ADMIN_USERS" />)
             </td>
         </tr>
         <asp:Repeater ID="UserList" runat="server" OnItemCommand="UserList_ItemCommand">
@@ -80,17 +80,17 @@
                     </td>
 
                     <td class="post">
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="EMAIL" LocalizedPage="ADMIN_USERS" /> :</span> <%# DataBinder.Eval(Container.DataItem,"Email") %>&nbsp;|&nbsp;
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="RANK" /> :</span> <%# Eval("RankName") %>
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="POSTS" LocalizedPage="ADMIN_USERS" /> :</span> <%# Eval( "NumPosts") %>&nbsp;|&nbsp;
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="APPROVED" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", BitSet(Eval("Flags"), 2) ? "YES" : "NO")%>&nbsp;|&nbsp;
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="LAST_VISIT" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.Get<IDateTime>().FormatDateTime((DateTime)((System.Data.DataRowView)Container.DataItem)["LastVisit"]) %>&nbsp;|&nbsp;
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="FACEBOOK_USER" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", Eval("IsFacebookUser").ToType<bool>() ?  "YES" : "NO") %>&nbsp;|&nbsp;
-                     <span style="font-weight:bold"><YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TWITTER_USER" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", Eval("IsTwitterUser").ToType<bool>() ? "YES" : "NO")%>
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="EMAIL" LocalizedPage="ADMIN_USERS" /> :</span> <%# DataBinder.Eval(Container.DataItem,"Email") %>&nbsp;|&nbsp;
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="RANK" /> :</span> <%# Eval("RankName") %>
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="POSTS" LocalizedPage="ADMIN_USERS" /> :</span> <%# Eval( "NumPosts") %>&nbsp;|&nbsp;
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="APPROVED" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", BitSet(Eval("Flags"), 2) ? "YES" : "NO")%>&nbsp;|&nbsp;
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="LAST_VISIT" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.Get<IDateTime>().FormatDateTime((DateTime)((System.Data.DataRowView)Container.DataItem)["LastVisit"]) %>&nbsp;|&nbsp;
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="FACEBOOK_USER" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", Eval("IsFacebookUser").ToType<bool>() ?  "YES" : "NO") %>&nbsp;|&nbsp;
+                     <span style="font-weight:bold"><VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TWITTER_USER" LocalizedPage="ADMIN_USERS" /> :</span> <%# this.GetText("COMMON", Eval("IsTwitterUser").ToType<bool>() ? "YES" : "NO")%>
                     </td>
                     <td class="post" align="center">
-                       <YAF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "UserID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></YAF:ThemeButton>
-                       <YAF:ThemeButton ID="ThemeButtonDelete" OnLoad="Delete_Load" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "UserID") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" Visible='<%# DataBinder.Eval(Container.DataItem, "IsGuest").ToType<bool>() == false %>' runat="server"></YAF:ThemeButton>
+                       <VZF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "UserID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>
+                       <VZF:ThemeButton ID="ThemeButtonDelete" OnLoad="Delete_Load" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# DataBinder.Eval(Container.DataItem, "UserID") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" Visible='<%# DataBinder.Eval(Container.DataItem, "IsGuest").ToType<bool>() == false %>' runat="server"></VZF:ThemeButton>
                     </td>
                 </tr>
             </ItemTemplate>
@@ -110,8 +110,8 @@
             </td>
         </tr>
     </table>
-    <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" UsePostBack="True" />
-</YAF:AdminMenu>
+    <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" UsePostBack="True" />
+</VZF:AdminMenu>
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
         <asp:Timer ID="UpdateStatusTimer" runat="server" Enabled="false" Interval="4000"
@@ -132,4 +132,4 @@
         </div>
     </div>
 </div>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

@@ -16,23 +16,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Controls
+namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Data;
-  using System.Web.UI;
+    using System;
+    using System.Data;
+    using System.Web.UI;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
 
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  
-  using YAF.Utils;
-  using YAF.Types;
-  using YAF.Types.Constants;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Summary description for PageLinks.

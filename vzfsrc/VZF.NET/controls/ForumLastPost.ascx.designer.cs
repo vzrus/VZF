@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ForumLastPost {
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage Icon;
+        protected global::VZF.Controls.ThemeImage Icon;
         
         /// <summary>
         /// ImageLastUnreadMessageLink control.
@@ -82,7 +82,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage LastUnreadImage;
+        protected global::VZF.Controls.ThemeImage LastUnreadImage;
         
         /// <summary>
         /// ByLabel control.
@@ -91,7 +91,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ByLabel;
+        protected global::VZF.Controls.LocalizedLabel ByLabel;
         
         /// <summary>
         /// ProfileUserLink control.
@@ -100,7 +100,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.UserLink ProfileUserLink;
+        protected global::VZF.Controls.UserLink ProfileUserLink;
         
         /// <summary>
         /// LastPostDate control.
@@ -109,7 +109,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.DisplayDateTime LastPostDate;
+        protected global::VZF.Controls.DisplayDateTime LastPostDate;
         
         /// <summary>
         /// NoPostsLabel control.
@@ -118,6 +118,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel NoPostsLabel;
+        protected global::VZF.Controls.LocalizedLabel NoPostsLabel;
     }
 }

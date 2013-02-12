@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.moderate.index" Codebehind="index.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <table class="content" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td class="header1" colspan="3">
-			<YAF:LocalizedLabel runat="server" LocalizedTag="MODERATEINDEX_TITLE" />
+			<VZF:LocalizedLabel runat="server" LocalizedTag="MODERATEINDEX_TITLE" />
 		</td>
 	</tr>
 	<asp:Repeater ID="CategoryList" runat="server">
@@ -13,10 +13,10 @@
 					<%# Eval( "Name") %>
 				</td>
 				<td class="header2" width="15%" align="center">
-					<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="UNAPPROVED" />
+					<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="UNAPPROVED" />
 				</td>			
 				<td class="header2" width="15%" align="center">
-				<YAF:LocalizedLabel ID="ReportedCountLabel" runat="server" LocalizedTag="REPORTED" />
+				<VZF:LocalizedLabel ID="ReportedCountLabel" runat="server" LocalizedTag="REPORTED" />
 				</td>
 			</tr>
 			<asp:Repeater ID="ForumList" runat="server" OnItemCommand="ForumList_ItemCommand"
@@ -48,7 +48,7 @@
     <asp:PlaceHolder id="InfoPlaceHolder" runat="server" Visible="false">
       <tr class="post">
         <td style="text-align:center">
-          <em><YAF:LocalizedLabel ID="NoCountInfo" LocalizedTag="NOMODERATION" LocalizedPage="MODERATE" runat="server"></YAF:LocalizedLabel></em>
+          <em><VZF:LocalizedLabel ID="NoCountInfo" LocalizedTag="NOMODERATION" LocalizedPage="MODERATE" runat="server"></VZF:LocalizedLabel></em>
         </td>
       </tr>
     </asp:PlaceHolder>
@@ -58,5 +58,5 @@
 	  </tr>
 </table>
 <div id="DivSmartScroller">
-	<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+	<VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

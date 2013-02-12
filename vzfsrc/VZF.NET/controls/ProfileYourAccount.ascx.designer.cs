@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ProfileYourAccount {
@@ -19,7 +19,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel YourAccountLocalized;
+        protected global::VZF.Controls.LocalizedLabel YourAccountLocalized;
         
         /// <summary>
         /// YourUsernameLocalized control.
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel YourUsernameLocalized;
+        protected global::VZF.Controls.LocalizedLabel YourUsernameLocalized;
         
         /// <summary>
         /// Name control.
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// DisplayName control.
@@ -82,7 +82,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel YourEmailLocalized;
+        protected global::VZF.Controls.LocalizedLabel YourEmailLocalized;
         
         /// <summary>
         /// AccountEmail control.
@@ -100,7 +100,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel NumPostsLocalized;
+        protected global::VZF.Controls.LocalizedLabel NumPostsLocalized;
         
         /// <summary>
         /// NumPosts control.
@@ -118,7 +118,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel GroupsLocalized;
+        protected global::VZF.Controls.LocalizedLabel GroupsLocalized;
         
         /// <summary>
         /// Groups control.
@@ -136,7 +136,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel JoinedLocalized;
+        protected global::VZF.Controls.LocalizedLabel JoinedLocalized;
         
         /// <summary>
         /// Joined control.

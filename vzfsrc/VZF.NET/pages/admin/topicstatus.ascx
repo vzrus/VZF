@@ -1,23 +1,23 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.Admin.topicstatus" Codebehind="topicstatus.ascx.cs" %>
-<YAF:PageLinks ID="PageLinks" runat="server" />
-<YAF:AdminMenu ID="Adminmenu1" runat="server">
+<VZF:PageLinks ID="PageLinks" runat="server" />
+<VZF:AdminMenu ID="Adminmenu1" runat="server">
 	  <asp:Repeater ID="list" runat="server">
         <HeaderTemplate>
       	<table class="content" cellspacing="1" cellpadding="0" width="100%">
      
                 <tr>
                     <td class="header1" colspan="4">
-                          <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_TOPICSTATUS" />
+                          <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_TOPICSTATUS" />
                      </td>
                 </tr>
                 <tr>
                     <td class="header2" style="width:16px">
                         &nbsp;</td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="TOPICSTATUS_NAME" LocalizedPage="ADMIN_TOPICSTATUS" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="TOPICSTATUS_NAME" LocalizedPage="ADMIN_TOPICSTATUS" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="DEFAULT_DESCRIPTION" LocalizedPage="ADMIN_TOPICSTATUS" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="DEFAULT_DESCRIPTION" LocalizedPage="ADMIN_TOPICSTATUS" />
                      </td>
                      <td class="header2">
                         &nbsp;</td>
@@ -26,7 +26,7 @@
         <ItemTemplate>
             <tr>
                 <td class="post">
-                        <YAF:ThemeImage runat="server" ID="TopicStatusIcon" ThemePage="TOPIC_STATUS" ThemeTag='<%# HtmlEncode(Eval("TopicStatusName")) %>'></YAF:ThemeImage>
+                        <VZF:ThemeImage runat="server" ID="TopicStatusIcon" ThemePage="TOPIC_STATUS" ThemeTag='<%# HtmlEncode(Eval("TopicStatusName")) %>'></VZF:ThemeImage>
                         
                 </td>
                 <td class="post">
@@ -36,8 +36,8 @@
 						<%# HtmlEncode(Eval("DefaultDescription"))%>
 				</td>
                 <td class="post" style="text-align:right">
-                    <YAF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval("TopicStatusId") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></YAF:ThemeButton>
-                    <YAF:ThemeButton ID="ThemeButtonDelete" CssClass="yaflittlebutton" OnLoad="Delete_Load"  CommandName='delete' CommandArgument='<%# Eval("TopicStatusId") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></YAF:ThemeButton>
+                    <VZF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval("TopicStatusId") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>
+                    <VZF:ThemeButton ID="ThemeButtonDelete" CssClass="yaflittlebutton" OnLoad="Delete_Load"  CommandName='delete' CommandArgument='<%# Eval("TopicStatusId") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></VZF:ThemeButton>
                 </td>
             </tr>
         	 </ItemTemplate>
@@ -55,5 +55,5 @@
         	 </FooterTemplate>
     	 </asp:Repeater>
 
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

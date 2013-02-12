@@ -23,7 +23,7 @@ namespace YAF.Modules.BBCode
     using System.Linq;
     using System.Web.UI;
 
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Utils;
 

@@ -2,11 +2,12 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<%@ Import Namespace="YAF.Classes" %>
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
 		<td class="header1" colspan="2">
-			<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="Admins" LocalizedPage="TEAM" />
+			<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="Admins" LocalizedPage="TEAM" />
 		</td>
 	</tr>
     <tr>
@@ -24,27 +25,27 @@
              		 	    <HeaderStyle HorizontalAlign="Center" CssClass="header2"></HeaderStyle>
 			  			    <ItemStyle CssClass="post" Width="150px"></ItemStyle>
 			  				    <ItemTemplate>
-               				        <YAF:UserLink ID="AdminLink" runat="server" IsGuest="False" UserID='<%# this.Eval("UserID").ToType<int>() %>' Style='<%# Eval("Style") %>'  />
+               				        <VZF:UserLink ID="AdminLink" runat="server" IsGuest="False" UserID='<%# this.Eval("UserID").ToType<int>() %>' Style='<%# Eval("Style") %>'  />
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
              		 	<asp:TemplateColumn HeaderText="Forums">
 			  			    <HeaderStyle CssClass="header2"></HeaderStyle>
 			  			    <ItemStyle CssClass="post" Width="350px"></ItemStyle>
 			  				    <ItemTemplate>
-               				        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="FORUMS_ALL" LocalizedPage="TEAM" />
+               				        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="FORUMS_ALL" LocalizedPage="TEAM" />
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
                          <asp:TemplateColumn>
 			  			    <HeaderStyle CssClass="header2"></HeaderStyle>
 			  			    <ItemStyle CssClass="post" HorizontalAlign="Left"></ItemStyle>
 			  				    <ItemTemplate>
-               				        <YAF:ThemeButton ID="PM" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="PM" ImageThemeTag="PM" 
+               				        <VZF:ThemeButton ID="PM" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="PM" ImageThemeTag="PM" 
                                      TitleLocalizedPage="POSTS" TitleLocalizedTag="PM_TITLE" />
-			                        <YAF:ThemeButton ID="Email" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="EMAIL" ImageThemeTag="EMAIL" 
+			                        <VZF:ThemeButton ID="Email" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="EMAIL" ImageThemeTag="EMAIL" 
                                      TitleLocalizedPage="POSTS" TitleLocalizedTag="EMAIL_TITLE" />
-			                        <YAF:ThemeButton ID="AdminUserButton" runat="server" TitleLocalizedPage="PROFILE" TitleLocalizedTag="ADMIN_USER" CssClass="yaflittlebutton" Visible="false"
+			                        <VZF:ThemeButton ID="AdminUserButton" runat="server" TitleLocalizedPage="PROFILE" TitleLocalizedTag="ADMIN_USER" CssClass="yaflittlebutton" Visible="false"
 				                     TextLocalizedTag="ADMIN_USER" NavigateUrl='<%# YafBuildLink.GetLinkNotEscaped( ForumPages.admin_edituser,"u={0}", this.Eval("UserID").ToType<int>() ) %>'>
-			                        </YAF:ThemeButton>
+			                        </VZF:ThemeButton>
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
     		         </Columns>
@@ -55,7 +56,7 @@
 <table id="ModsTable" runat="server" class="content" width="100%" cellspacing="1" cellpadding="0">
 	<tr>
 		<td class="header1" colspan="2">
-			<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="MODS" LocalizedPage="TEAM" />
+			<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="MODS" LocalizedPage="TEAM" />
 		</td>
 	</tr>
     <tr>
@@ -73,7 +74,7 @@
              		 	    <HeaderStyle HorizontalAlign="Center" CssClass="header2"></HeaderStyle>
 			  			    <ItemStyle CssClass="post" Width="150px"></ItemStyle>
 			  				    <ItemTemplate>
-               				        <YAF:UserLink ID="ModLink" runat="server" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? Eval("DisplayName").ToString() : Eval("Name").ToString() %>' UserID='<%# this.Eval("ModeratorID").ToType<int>() %>' IsGuest="False" Style='<%# Eval("Style") %>'  />
+               				        <VZF:UserLink ID="ModLink" runat="server" ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? Eval("DisplayName").ToString() : Eval("Name").ToString() %>' UserID='<%# this.Eval("ModeratorID").ToType<int>() %>' IsGuest="False" Style='<%# Eval("Style") %>'  />
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
              		 	<asp:TemplateColumn HeaderText="Forums">
@@ -82,20 +83,20 @@
 			  				    <ItemTemplate>
                				        <asp:DropDownList ID="ModForums" runat="server">
                				        </asp:DropDownList>
-                                     <YAF:ThemeButton ID="GoToForumButton" runat="server" CssClass="yaflittlebutton" TextLocalizedTag="GO" OnClick="GoToForum"></YAF:ThemeButton>
+                                     <VZF:ThemeButton ID="GoToForumButton" runat="server" CssClass="yaflittlebutton" TextLocalizedTag="GO" OnClick="GoToForum"></VZF:ThemeButton>
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
                         <asp:TemplateColumn>
 			  			    <HeaderStyle CssClass="header2"></HeaderStyle>
 			  			    <ItemStyle CssClass="post" HorizontalAlign="Left"></ItemStyle>
 			  				    <ItemTemplate>
-               				        <YAF:ThemeButton ID="PM" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="PM" ImageThemeTag="PM"
+               				        <VZF:ThemeButton ID="PM" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="PM" ImageThemeTag="PM"
                                      TitleLocalizedPage="POSTS" TitleLocalizedTag="PM_TITLE" />
-			                        <YAF:ThemeButton ID="Email" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="EMAIL" ImageThemeTag="EMAIL"
+			                        <VZF:ThemeButton ID="Email" runat="server" CssClass="yafcssimagebutton" Visible="false" TextLocalizedPage="POSTS" TextLocalizedTag="EMAIL" ImageThemeTag="EMAIL"
                                      TitleLocalizedPage="POSTS" TitleLocalizedTag="EMAIL_TITLE" />
-			                        <YAF:ThemeButton ID="AdminUserButton" runat="server" CssClass="yaflittlebutton" TitleLocalizedPage="PROFILE" TitleLocalizedTag="ADMIN_USER" Visible="false"
+			                        <VZF:ThemeButton ID="AdminUserButton" runat="server" CssClass="yaflittlebutton" TitleLocalizedPage="PROFILE" TitleLocalizedTag="ADMIN_USER" Visible="false"
 				                     TextLocalizedTag="ADMIN_USER" NavigateUrl='<%# YafBuildLink.GetLinkNotEscaped( ForumPages.admin_edituser,"u={0}", this.Eval("ModeratorID").ToType<int>() ) %>'>
-			                        </YAF:ThemeButton>
+			                        </VZF:ThemeButton>
 			  				    </ItemTemplate>
              		 	</asp:TemplateColumn>
     		         </Columns>
@@ -104,5 +105,5 @@
     </tr>
 </table>
 <div id="DivSmartScroller">
-	<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+	<VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

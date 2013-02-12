@@ -19,7 +19,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// ReportPostLabel control.
@@ -28,7 +28,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ReportPostLabel;
+        protected global::VZF.Controls.LocalizedLabel ReportPostLabel;
         
         /// <summary>
         /// MessageList control.
@@ -46,7 +46,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel EnterReportTextLabel;
+        protected global::VZF.Controls.LocalizedLabel EnterReportTextLabel;
         
         /// <summary>
         /// EditorLine control.
@@ -73,7 +73,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton btnCancel;
+        protected global::VZF.Controls.ThemeButton btnCancel;
         
         /// <summary>
         /// btnReport control.
@@ -82,6 +82,6 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton btnReport;
+        protected global::VZF.Controls.ThemeButton btnReport;
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 <%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="YAF.Controls.ReportedPosts" Codebehind="ReportedPosts.ascx.cs" %>
+    Inherits="VZF.Controls.ReportedPosts" Codebehind="ReportedPosts.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="System.Data" %>
@@ -12,11 +12,11 @@
         <tr>
             <td class="header2" colspan="2">
                 <span class="YafReported_Complainer">
-                    <YAF:LocalizedLabel ID="ReportedByLabel" runat="server" LocalizedTag="REPORTEDBY">
-                    </YAF:LocalizedLabel>
-                    <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>'>
-                    </YAF:UserLink>
-		            <YAF:ThemeButton ID="PM" runat="server" CssClass="yaflittlebutton"            
+                    <VZF:LocalizedLabel ID="ReportedByLabel" runat="server" LocalizedTag="REPORTEDBY">
+                    </VZF:LocalizedLabel>
+                    <VZF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>'>
+                    </VZF:UserLink>
+		            <VZF:ThemeButton ID="PM" runat="server" CssClass="yaflittlebutton"            
 				    TextLocalizedTag="PM"  ImageThemeTag="PM" 
 				    NavigateUrl='<%# YafBuildLink.GetLinkNotEscaped(ForumPages.pmessage, "u={0}", Container.DataItemToField<int>("UserID"))%>' />
                 </span>

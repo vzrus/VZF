@@ -30,7 +30,7 @@ namespace YAF.Pages.Admin
 
   using YAF.Classes;
   
-  using YAF.Controls;
+  using VZF.Controls;
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Constants;

@@ -1,14 +1,14 @@
-<%@ Control Language="C#" AutoEventWireup="true" EnableViewState="true" Inherits="YAF.Controls.ProfileYourAccount"
+<%@ Control Language="C#" AutoEventWireup="true" EnableViewState="true" Inherits="VZF.Controls.ProfileYourAccount"
     CodeBehind="ProfileYourAccount.ascx.cs" %>
 <table align="center" cellspacing="0" cellpadding="0" class="content" id="yafprofilecontent">
     <tr>
         <td colspan="3" class="header2">
-            <YAF:LocalizedLabel ID="YourAccountLocalized" runat="server" LocalizedTag="YOUR_ACCOUNT" />
+            <VZF:LocalizedLabel ID="YourAccountLocalized" runat="server" LocalizedTag="YOUR_ACCOUNT" />
         </td>
     </tr>
     <tr>
         <td width="33%" class="postheader">
-            <YAF:LocalizedLabel ID="YourUsernameLocalized" runat="server" LocalizedTag="YOUR_USERNAME" />
+            <VZF:LocalizedLabel ID="YourUsernameLocalized" runat="server" LocalizedTag="YOUR_USERNAME" />
         </td>
         <td class="post">
             <asp:Label ID="Name" runat="server" />
@@ -20,7 +20,7 @@
     <asp:PlaceHolder ID="DisplayNameHolder" runat="server">
         <tr>
             <td width="33%" class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="YOUR_USERDISPLAYNAME" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="YOUR_USERDISPLAYNAME" />
             </td>
             <td class="post">
                 <asp:Label ID="DisplayName" runat="server" />
@@ -29,7 +29,7 @@
     </asp:PlaceHolder>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="YourEmailLocalized" runat="server" LocalizedTag="YOUR_EMAIL" />
+            <VZF:LocalizedLabel ID="YourEmailLocalized" runat="server" LocalizedTag="YOUR_EMAIL" />
         </td>
         <td class="post">
             <asp:Label ID="AccountEmail" runat="server" />
@@ -37,7 +37,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="NumPostsLocalized" runat="server" LocalizedTag="NUMPOSTS" />
+            <VZF:LocalizedLabel ID="NumPostsLocalized" runat="server" LocalizedTag="NUMPOSTS" />
         </td>
         <td class="post">
             <asp:Label ID="NumPosts" runat="server" />
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="GroupsLocalized" runat="server" LocalizedTag="GROUPS" />
+            <VZF:LocalizedLabel ID="GroupsLocalized" runat="server" LocalizedTag="GROUPS" />
         </td>
         <td class="post">
             <asp:Repeater ID="Groups" runat="server">
@@ -61,7 +61,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="JoinedLocalized" runat="server" LocalizedTag="JOINED" />
+            <VZF:LocalizedLabel ID="JoinedLocalized" runat="server" LocalizedTag="JOINED" />
         </td>
         <td class="post">
             <asp:Label ID="Joined" runat="server" />

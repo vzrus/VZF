@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.register" Codebehind="register.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div align="center">
 	<asp:CreateUserWizard ID="CreateUserWizard1" runat="server" StartNextButtonText="Agree"
 		StartNextButtonType="Link" OnPreviousButtonClick="CreateUserWizard1_PreviousButtonClick"
@@ -12,7 +12,7 @@
 					<table class="content" cellspacing="1" cellpadding="0" border="0" width="700">
 						<tr>
 							<td align="center" class="header1" colspan="2">
-								<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TITLE" />
+								<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TITLE" />
 							</td>
 						</tr>
 						<tr>
@@ -20,16 +20,16 @@
 								<asp:CompareValidator ID="PasswordCompare" runat="server" ControlToCompare="Password"
 									ControlToValidate="ConfirmPassword" Display="Dynamic" ErrorMessage="The Password and Confirmation Password must match."
 									ValidationGroup="CreateUserWizard1"></asp:CompareValidator>
-									<YAF:LocalizedLabel ID="LocalizedLabelRequirementsTitle" runat="server" LocalizedTag="PASSWORD_REQUIREMENTS_TITLE"></YAF:LocalizedLabel>:
-									<YAF:LocalizedLabel ID="LocalizedLabelRequirementsText" runat="server" LocalizedTag="PASSWORD_REQUIREMENTS_WARN"></YAF:LocalizedLabel>
+									<VZF:LocalizedLabel ID="LocalizedLabelRequirementsTitle" runat="server" LocalizedTag="PASSWORD_REQUIREMENTS_TITLE"></VZF:LocalizedLabel>:
+									<VZF:LocalizedLabel ID="LocalizedLabelRequirementsText" runat="server" LocalizedTag="PASSWORD_REQUIREMENTS_WARN"></VZF:LocalizedLabel>
 							</br>
-							<YAF:LocalizedLabel ID="LocalizedLabelLohgUserNameWarnText" runat="server" LocalizedTag="USERNAME_LENGTH_WARN"></YAF:LocalizedLabel>
+							<VZF:LocalizedLabel ID="LocalizedLabelLohgUserNameWarnText" runat="server" LocalizedTag="USERNAME_LENGTH_WARN"></VZF:LocalizedLabel>
 							</td>
 						</tr>
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">
-									<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="USERNAME" />
+									<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="USERNAME" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="UserName" runat="server"></asp:TextBox>
@@ -40,18 +40,18 @@
 						<asp:PlaceHolder runat="server" ID="DisplayNamePlaceHolder" Visible="false"><tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="DisplayNameLabel" runat="server" AssociatedControlID="DisplayName">
-									<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="DISPLAYNAME" />
+									<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="DISPLAYNAME" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="DisplayName" runat="server"></asp:TextBox>
-								<YAF:LocalizedRequiredFieldValidator ID="DisplayNameRequired" runat="server" Enabled="false" ControlToValidate="DisplayName" LocalizedTag="NEED_DISPLAYNAME" ValidationGroup="CreateUserWizard1">*</YAF:LocalizedRequiredFieldValidator>
+								<VZF:LocalizedRequiredFieldValidator ID="DisplayNameRequired" runat="server" Enabled="false" ControlToValidate="DisplayName" LocalizedTag="NEED_DISPLAYNAME" ValidationGroup="CreateUserWizard1">*</VZF:LocalizedRequiredFieldValidator>
 							</td>
 						</tr>
 						</asp:PlaceHolder>
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">
-									<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="PASSWORD" />
+									<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="PASSWORD" />
 									:</asp:Label>
 									<br />
 
@@ -65,7 +65,7 @@
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="ConfirmPasswordLabel" runat="server" AssociatedControlID="ConfirmPassword">
-									<YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="CONFIRM_PASSWORD" />
+									<VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="CONFIRM_PASSWORD" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="ConfirmPassword" runat="server" TextMode="Password"></asp:TextBox>
@@ -77,7 +77,7 @@
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="EmailLabel" runat="server" AssociatedControlID="Email">
-									<YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="EMAIL" />
+									<VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="EMAIL" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="Email" runat="server"></asp:TextBox>
@@ -91,7 +91,7 @@
 						<asp:PlaceHolder runat="server" ID="QuestionAnswerPlaceHolder"><tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="QuestionLabel" runat="server" AssociatedControlID="Question">
-									<YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SECURITY_QUESTION" />
+									<VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SECURITY_QUESTION" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="Question" runat="server"></asp:TextBox>
@@ -103,7 +103,7 @@
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="AnswerLabel" runat="server" AssociatedControlID="Answer">
-									<YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="SECURITY_ANSWER" />
+									<VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="SECURITY_ANSWER" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="Answer" runat="server"></asp:TextBox>
@@ -114,7 +114,7 @@
 						</tr></asp:PlaceHolder>
 						<asp:PlaceHolder runat="server" ID="YafCaptchaHolder" Visible="false"><tr>
 							<td align="right" class="postheader" valign="top">
-								<YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="Captcha_Image" />
+								<VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="Captcha_Image" />
 							</td>
 							<td class="post">
 								<asp:Image ID="imgCaptcha" runat="server" />
@@ -124,7 +124,7 @@
 						</tr>
 						<tr>
 							<td align="right" class="postheader" valign="top">
-								<YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="Captcha_Enter" />
+								<VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="Captcha_Enter" />
 							</td>
 							<td class="post">
 								<asp:TextBox ID="tbCaptcha" runat="server" />
@@ -135,7 +135,7 @@
 
 						<tr>
 							<td align="right" class="postheader" valign="top">
-							<YAF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="Captcha_Image" />
+							<VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="Captcha_Image" />
 							</td>
 							<td class="post">
 						    <asp:PlaceHolder runat="server" ID="RecaptchaControl" Visible="false"/>
@@ -161,20 +161,20 @@
 					<table class="content" cellspacing="1" cellpadding="0" border="0" width="700">
 						<tr>
 							<td align="center" class="header1" colspan="2">
-								<YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="TITLE" />
+								<VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="TITLE" />
 							</td>
 						</tr>
                         <tr>
 							<td align="right" class="postheader">
-								<YAF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedTag="COUNTRY" />
+								<VZF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedTag="COUNTRY" />
 								:</td>
 							<td class="post">
-								<YAF:CountryListBox ID="Country" runat="server" DataTextField="Name" DataValueField="Value" /></td>
+								<VZF:CountryListBox ID="Country" runat="server" DataTextField="Name" DataValueField="Value" /></td>
 						</tr>
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="LocationLabel" runat="server" AssociatedControlID="Location">
-									<YAF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="LOCATION" />
+									<VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="LOCATION" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="Location" runat="server"></asp:TextBox>
@@ -183,7 +183,7 @@
 						<tr>
 							<td align="right" class="postheader">
 								<asp:Label ID="HomepageLabel" runat="server" AssociatedControlID="Homepage">
-									<YAF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="HOMEPAGE" />
+									<VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="HOMEPAGE" />
 									:</asp:Label></td>
 							<td class="post">
 								<asp:TextBox ID="Homepage" runat="server"></asp:TextBox>
@@ -191,19 +191,19 @@
 						</tr>
 						<tr>
 							<td class="header2" colspan="2" align="center">
-								<YAF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="PREFERENCES" />
+								<VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="PREFERENCES" />
 							</td>
 						</tr>
 						<tr>
 							<td class="postheader">
-								<YAF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="TIMEZONE" />
+								<VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="TIMEZONE" />
 								:</td>
 							<td class="post">
 								<asp:DropDownList ID="TimeZones" runat="server" DataTextField="Name" DataValueField="Value" /></td>
 						</tr>
                         <tr>
                             <td class="postheader">
-                                <YAF:LocalizedLabel ID="DSTLocalizedLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
+                                <VZF:LocalizedLabel ID="DSTLocalizedLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
                                   LocalizedTag="DST" />
                            </td>
                            <td class="post">
@@ -226,7 +226,7 @@
 					<table class="content" cellspacing="1" cellpadding="0" border="0" width="700">
 						<tr>
 							<td align="center" class="header1" colspan="2">
-								<YAF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="PROFILE" />
+								<VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="PROFILE" />
 							</td>
 						</tr>
 						<tr>
@@ -246,5 +246,5 @@
 	</asp:CreateUserWizard>
 </div>
 <div id="DivSmartScroller">
-	<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+	<VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

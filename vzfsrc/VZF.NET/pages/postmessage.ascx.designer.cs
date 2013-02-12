@@ -19,7 +19,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// PollList control.
@@ -28,7 +28,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PollList PollList;
+        protected global::VZF.Controls.PollList PollList;
         
         /// <summary>
         /// Title control.
@@ -64,7 +64,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.MessagePost PreviewMessagePost;
+        protected global::VZF.Controls.MessagePost PreviewMessagePost;
         
         /// <summary>
         /// SubjectRow control.
@@ -82,7 +82,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel TopicSubjectLabel;
+        protected global::VZF.Controls.LocalizedLabel TopicSubjectLabel;
         
         /// <summary>
         /// TopicSubjectTextBox control.
@@ -109,7 +109,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel TopicDescriptionLabel;
+        protected global::VZF.Controls.LocalizedLabel TopicDescriptionLabel;
         
         /// <summary>
         /// TopicDescriptionTextBox control.
@@ -136,7 +136,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel PostToBlogLbl;
+        protected global::VZF.Controls.LocalizedLabel PostToBlogLbl;
         
         /// <summary>
         /// PostToBlog control.
@@ -154,7 +154,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel PostToBlogPassLbl;
+        protected global::VZF.Controls.LocalizedLabel PostToBlogPassLbl;
         
         /// <summary>
         /// BlogPassword control.
@@ -190,7 +190,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel3;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel3;
         
         /// <summary>
         /// LocalizedLabel4 control.
@@ -199,7 +199,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel4;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel4;
         
         /// <summary>
         /// Tags control.
@@ -253,7 +253,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// TopicStatus control.
@@ -298,7 +298,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel2;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel2;
         
         /// <summary>
         /// TopicStylesTextBox control.
@@ -316,7 +316,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLblMaxNumberOfPost;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLblMaxNumberOfPost;
         
         /// <summary>
         /// EditorLine control.
@@ -334,7 +334,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PostOptions PostOptions1;
+        protected global::VZF.Controls.PostOptions PostOptions1;
         
         /// <summary>
         /// tr_captcha1 control.
@@ -397,7 +397,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Preview;
+        protected global::VZF.Controls.ThemeButton Preview;
         
         /// <summary>
         /// PostReply control.
@@ -406,7 +406,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton PostReply;
+        protected global::VZF.Controls.ThemeButton PostReply;
         
         /// <summary>
         /// Cancel control.
@@ -415,7 +415,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Cancel;
+        protected global::VZF.Controls.ThemeButton Cancel;
         
         /// <summary>
         /// LastPosts1 control.
@@ -424,7 +424,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LastPosts LastPosts1;
+        protected global::VZF.Controls.LastPosts LastPosts1;
         
         /// <summary>
         /// SmartScroller1 control.
@@ -433,6 +433,6 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.SmartScroller SmartScroller1;
+        protected global::VZF.Controls.SmartScroller SmartScroller1;
     }
 }

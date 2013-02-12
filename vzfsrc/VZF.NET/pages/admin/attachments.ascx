@@ -3,38 +3,38 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server">
-     <YAF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server">
+     <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
 	<table class="content" width="100%" cellspacing="1" cellpadding="0">
 		<tr>
 			<td class="header1" colspan="8">
-				<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_ATTACHMENTS" />
+				<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_ATTACHMENTS" />
 			</td>
 		</tr>
 		<asp:Repeater runat="server" ID="List">
 			<HeaderTemplate>
 				<tr class="header2">
 					<td>
-						<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
+						<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
 					</td>
 					<td>
-						<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TOPIC" />
+						<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TOPIC" />
 					</td>
 					<td>
-						<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" LocalizedPage="ADMIN_ATTACHMENTS" />
+						<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" LocalizedPage="ADMIN_ATTACHMENTS" />
 					</td>
 					<td>
-						<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FILENAME" />
+						<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FILENAME" />
 					</td>
 					<td align="right">
-						<YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="DOWNLOADS" />
+						<VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="DOWNLOADS" />
 					</td>
 					<td>
-						<YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="CONTENT_TYPE" />
+						<VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="CONTENT_TYPE" />
 					</td>
 					<td align="right">
-						<YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SIZE" />
+						<VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SIZE" />
 					</td>
 					<td>
 						&nbsp;
@@ -75,6 +75,6 @@
 			</ItemTemplate>
 		</asp:Repeater>
 	</table>
-     <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+     <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

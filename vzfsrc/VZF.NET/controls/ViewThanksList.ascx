@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Controls.ViewThanksList"
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.ViewThanksList"
     CodeBehind="ViewThanksList.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
@@ -7,7 +7,7 @@
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
-             <YAF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
+             <VZF:Pager runat="server" ID="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>
@@ -19,7 +19,7 @@
         <tr class="header2">
             <td colspan="2">
                  <strong>
-                      <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="topic" />
+                      <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="topic" />
                         </strong><a title='<%# this.GetText("COMMON", "VIEW_TOPIC") %>' href="<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}", Container.DataItemToField<int>("TopicID")) %>">
                             <%# this.HtmlEncode(Container.DataItemToField<string>("Topic")) %>
                         </a>
@@ -34,23 +34,23 @@
             </td>
             <td width="140px" id="NameCell" valign="top" runat="server">
                 <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><b>
-                    <YAF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %> ' />
+                    <VZF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %> ' />
                 </b>
-                <YAF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# PageContext.BoardSettings.ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
+                <VZF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# PageContext.BoardSettings.ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                     Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
             </td>
             <td width="80%" class="postheader">
                 <strong>
-                    <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" />
                 </strong>
-                <YAF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></YAF:DisplayDateTime>
+                <VZF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Posted") %>'></VZF:DisplayDateTime>
             </td>
         </tr>
         <tr class="<%# this.IsOdd() ? "post_alt" : "post" %>">
             <td colspan="2">
-                <YAF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
+                <VZF:MessagePostData ID="MessagePostPrimary" runat="server" ShowAttachments="false"
                     ShowSignature="false" DataRow='<%# Container.DataItem %>'>
-                </YAF:MessagePostData>
+                </VZF:MessagePostData>
             </td>
         </tr>
     </ItemTemplate>
@@ -67,7 +67,7 @@
         <tr>
             <td class="postheader" colspan="2" align="center">
                 <br />
-                <YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="NO_THANKS" />
+                <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="NO_THANKS" />
                 <br />
             </td>
         </tr>
@@ -80,7 +80,7 @@
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td>
- <YAF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
+ <VZF:Pager runat="server" ID="PagerBottom" LinkedPager="PagerTop" OnPageChange="Pager_PageChange" />
         </td>
     </tr>
 </table>

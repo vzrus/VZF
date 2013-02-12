@@ -19,7 +19,7 @@ namespace YAF.Pages.help {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PageLinks PageLinks;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
         /// Title control.
@@ -28,7 +28,7 @@ namespace YAF.Pages.help {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel Title;
+        protected global::VZF.Controls.LocalizedLabel Title;
         
         /// <summary>
         /// HelpList control.
@@ -73,7 +73,7 @@ namespace YAF.Pages.help {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel SearchHelpTitle;
+        protected global::VZF.Controls.LocalizedLabel SearchHelpTitle;
         
         /// <summary>
         /// SearchFor control.
@@ -82,7 +82,7 @@ namespace YAF.Pages.help {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel SearchFor;
+        protected global::VZF.Controls.LocalizedLabel SearchFor;
         
         /// <summary>
         /// search control.
@@ -109,6 +109,6 @@ namespace YAF.Pages.help {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.SmartScroller SmartScroller1;
+        protected global::VZF.Controls.SmartScroller SmartScroller1;
     }
 }

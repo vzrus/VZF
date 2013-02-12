@@ -1,11 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="boardtags.ascx.cs" Inherits="YAF.Pages.boardtags" %>
-<%@ Import Namespace="YAF.Types.Constants" %>
-<YAF:PageLinks ID="PageLinksTop" runat="server"></YAF:PageLinks>
+<VZF:PageLinks ID="PageLinksTop" runat="server"></VZF:PageLinks>
 <a id="top" name="top"></a>
-<table class="content" width="100%">
+<table class="command" width="100%">
     <tr>
         <td class="header1" colspan="1"> 
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="TAGSBOARD" LocalizedTag="TITLE" />
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="TAGSBOARD" LocalizedTag="TITLE" />
         </td>
     </tr>
      <tr>
@@ -17,28 +16,24 @@
     </tr>
     <tr>
         <td style="text-align:left">
-            <YAF:AlphaSort ID="AlphaSort1" PagerPage="boardtags"  runat="server" />
-            <YAF:Pager ID="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
-        </td>
-    </tr>
-    <tr class="footer1">
-        <td>
-   <asp:Repeater ID="TagList" OnItemDataBound="TagList_OnItemDataBound" runat="server">
-        <ItemTemplate>
-            <a id="TagLink"  class="tag90" runat="server"  ><%# this.HtmlEncode(Eval("Tag")) %></a>&nbsp;&nbsp;
-        </ItemTemplate>
-    </asp:Repeater>
-      <!-- <YAF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> -->
+            <VZF:AlphaSort ID="AlphaSort1" PagerPage="boardtags"  runat="server" />
+            <VZF:Pager ID="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
         </td>
     </tr>
     <tr>
         <td>
-            <YAF:Pager ID="PagerBottom" LinkedPager="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
+         <div ID="TagLinks" runat="server"></div>   
+      <!-- <VZF:SimpleTagCloud ID="TagCloudBoard" BoardId='<%# PageContext.PageBoardID %>' runat="server"/> -->
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <VZF:Pager ID="PagerBottom" LinkedPager="PagerTop"  OnPageChange="Pager_PageChange" runat="server"/>
         </td>
     </tr>
     <tr>
         <td style="text-align:center">
-            <asp:Button ID="OKButton" OnClick="OKButton_Click" runat="server"/>
+            <asp:Button ID="OKButton" OnClick="OkButtonClick" runat="server"/>
         </td>
     </tr>
  </table>

@@ -19,7 +19,7 @@
 
 using YAF.Utils.Helpers;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
   #region Using
 

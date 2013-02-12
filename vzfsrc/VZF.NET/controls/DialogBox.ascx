@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Controls.DialogBox" CodeBehind="DialogBox.ascx.cs" %>
+<%@ Control Language="c#" AutoEventWireup="True" Inherits="VZF.Controls.DialogBox" CodeBehind="DialogBox.ascx.cs" %>
 
 <asp:Panel ID="YafForumPageErrorPopup" runat="server" CssClass="MessageBox" style="display:none">
     <div class="modalHeader">

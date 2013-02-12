@@ -1,18 +1,18 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.cp_subscriptions"CodeBehind="cp_subscriptions.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Utils" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <asp:UpdatePanel ID="PreferencesUpdatePanel" runat="server">
     <ContentTemplate>
         <table class="content" cellspacing="1" cellpadding="0" width="100%">
             <tr>
                 <td class="header1" colspan="2">
-                    <YAF:LocalizedLabel ID="LocalizedLabel100" runat="server" LocalizedTag="TITLE" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel100" runat="server" LocalizedTag="TITLE" />
                 </td>
             </tr>
             <tr>
                 <td class="postheader">
-                    <YAF:LocalizedLabel ID="LocalizedLabel200" runat="server" LocalizedTag="NOTIFICATIONSELECTION" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel200" runat="server" LocalizedTag="NOTIFICATIONSELECTION" />
                 </td>
                 <td class="post">
                     <asp:RadioButtonList ID="rblNotificationType" runat="server" AutoPostBack="true"
@@ -22,7 +22,7 @@
             </tr>
             <tr runat="server" id="DailyDigestRow">
                 <td class="postheader">
-                    <YAF:LocalizedLabel ID="LocalizedLabel199" runat="server" LocalizedTag="DAILY_DIGEST" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel199" runat="server" LocalizedTag="DAILY_DIGEST" />
                 </td>
                 <td class="post">
                     <asp:CheckBox ID="DailyDigestEnabled" runat="server" />
@@ -30,7 +30,7 @@
             </tr>
             <tr runat="server" id="PMNotificationRow">
                 <td class="postheader">
-                    <YAF:LocalizedLabel ID="LocalizedLabel19" runat="server" LocalizedPage="CP_EDITPROFILE"
+                    <VZF:LocalizedLabel ID="LocalizedLabel19" runat="server" LocalizedPage="CP_EDITPROFILE"
                         LocalizedTag="PM_EMAIL_NOTIFICATION" />
                 </td>
                 <td class="post">
@@ -52,21 +52,21 @@
             <table class="content" cellspacing="1" cellpadding="0" width="100%">
                 <tr>
                     <td class="header1" colspan="5">
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="forums" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="forums" />
                     </td>
                 </tr>
                 <tr>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="forum" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="forum" />
                     </td>
                     <td class="header2" align="center">
-                        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="topics" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="topics" />
                     </td>
                     <td class="header2" align="center">
-                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="replies" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="replies" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="lastpost" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="lastpost" />
                     </td>
                     <td class="header2">
                         &nbsp;
@@ -103,26 +103,26 @@
                 </tr>
             </table>
             <br />
-            <YAF:Pager ID="PagerTop" runat="server" PageSize="25" OnPageChange="PagerTop_PageChange"
+            <VZF:Pager ID="PagerTop" runat="server" PageSize="25" OnPageChange="PagerTop_PageChange"
                 UsePostBack="True" />
             <table class="content" cellspacing="1" cellpadding="0" width="100%">
                 <tr>
                     <td class="header1" colspan="5">
-                        <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
                     </td>
                 </tr>
                 <tr>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="topic" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="topic" />
                     </td>
                     <td class="header2" align="center">
-                        <YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
                     </td>
                     <td class="header2" align="center">
-                        <YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="views" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="views" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
                     </td>
                     <td class="header2">
                         &nbsp;
@@ -158,10 +158,10 @@
                     </td>
                 </tr>
             </table>
-            <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" UsePostBack="True" />
+            <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" UsePostBack="True" />
         </asp:PlaceHolder>
     </ContentTemplate>
 </asp:UpdatePanel>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

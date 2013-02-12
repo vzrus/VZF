@@ -1,5 +1,5 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.im_aim" Codebehind="im_aim.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div align="center">
     <table cellspacing="0" cellpadding="0" border="0" align="center">
         <tr>
@@ -18,5 +18,5 @@
     </table>
 </div>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

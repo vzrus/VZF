@@ -3412,6 +3412,8 @@ namespace VZF.Data.Postgre
                               .Value = boardId;
                             da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value
                                 = userId;
+                            da.SelectCommand.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value
+                               = false;
                             da.Fill(ds, PostgreDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted =
                                 ds.Tables[PostgreDbAccess.GetObjectName("ForumUnsorted")].Clone();

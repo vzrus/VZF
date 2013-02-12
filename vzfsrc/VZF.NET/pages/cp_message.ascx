@@ -4,7 +4,7 @@
 <%@ Import Namespace="YAF.Types.Flags" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <asp:Repeater ID="Inbox" runat="server" OnItemCommand="Inbox_ItemCommand">
     <HeaderTemplate>
         <table class="content" width="100%">
@@ -27,24 +27,24 @@
         <tr>
             <td class="postheader">
                 <b>
-                    <YAF:UserLink ID="FromUserLink" runat="server" UserID='<%# Convert.ToInt32(Eval( "FromUserID" )) %>' />
+                    <VZF:UserLink ID="FromUserLink" runat="server" UserID='<%# Convert.ToInt32(Eval( "FromUserID" )) %>' />
                 </b>
             </td>
             <td class="postheader" width="80%">
                 <div class="leftItem postedLeft">
                     <b>
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="posted" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="posted" />
                     </b>
-                    <YAF:DisplayDateTime ID="CreatedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></YAF:DisplayDateTime>
+                    <VZF:DisplayDateTime ID="CreatedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></VZF:DisplayDateTime>
                 </div>
                 <div class="rightItem postedRight">
-                    <YAF:ThemeButton ID="DeleteMessage" runat="server" CssClass="yaflittlebutton" CommandName="delete"
+                    <VZF:ThemeButton ID="DeleteMessage" runat="server" CssClass="yaflittlebutton" CommandName="delete"
                         CommandArgument='<%# Eval("UserPMessageID") %>' TextLocalizedTag="BUTTON_DELETE"
                         TitleLocalizedTag="BUTTON_DELETE_TT" OnLoad="ThemeButtonDelete_Load" />
-                    <YAF:ThemeButton ID="ReplyMessage" runat="server" CssClass="yaflittlebutton" CommandName="reply"
+                    <VZF:ThemeButton ID="ReplyMessage" runat="server" CssClass="yaflittlebutton" CommandName="reply"
                         CommandArgument='<%# Eval("UserPMessageID") %>' TextLocalizedTag="BUTTON_REPLY"
                         TitleLocalizedTag="BUTTON_REPLY_TT" />
-                    <YAF:ThemeButton ID="QuoteMessage" runat="server" CssClass="yaflittlebutton" CommandName="quote"
+                    <VZF:ThemeButton ID="QuoteMessage" runat="server" CssClass="yaflittlebutton" CommandName="quote"
                         CommandArgument='<%# Eval("UserPMessageID") %>' TextLocalizedTag="BUTTON_QUOTE"
                         TitleLocalizedTag="BUTTON_QUOTE_TT" />
                 </div>
@@ -61,12 +61,12 @@
         <tr class="postfooter">
             <td class="small postTop" colspan='2'>
                 <a onclick="ScrollToTop();" class="postTopLink" href="javascript: void(0)">            
-                  <YAF:ThemeImage ID="ThemeImage1" LocalizedTitlePage="POSTS" LocalizedTitleTag="TOP"  runat="server" ThemeTag="TOTOPPOST" />
+                  <VZF:ThemeImage ID="ThemeImage1" LocalizedTitlePage="POSTS" LocalizedTitleTag="TOP"  runat="server" ThemeTag="TOTOPPOST" />
                 </a>
             </td>
         </tr>
     </ItemTemplate>
 </asp:Repeater>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

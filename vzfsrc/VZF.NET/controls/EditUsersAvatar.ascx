@@ -1,18 +1,18 @@
 <%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="YAF.Controls.EditUsersAvatar" Codebehind="EditUsersAvatar.ascx.cs" %>
+    Inherits="VZF.Controls.EditUsersAvatar" Codebehind="EditUsersAvatar.ascx.cs" %>
 <table width="100%" class="content" cellspacing="1" cellpadding="4">
     <tr>
         <td class="header1" colspan="4">
-            <YAF:LocalizedLabel runat="server" LocalizedPage="CP_EDITAVATAR" LocalizedTag="title" />
+            <VZF:LocalizedLabel runat="server" LocalizedPage="CP_EDITAVATAR" LocalizedTag="title" />
         </td>
     </tr>
     <tr runat="server" id="AvatarCurrentText">
         <td class="header2">
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="CP_EDITAVATAR"
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="CP_EDITAVATAR"
                 LocalizedTag="AvatarCurrent" />
         </td>
         <td class="header2" colspan="3">
-            <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="CP_EDITAVATAR"
+            <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="CP_EDITAVATAR"
                 LocalizedTag="AvatarNew" />
         </td>
     </tr>
@@ -26,7 +26,7 @@
     </tr>
     <tr runat="server" id="AvatarOurs">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="CP_EDITAVATAR"
+            <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="CP_EDITAVATAR"
                 LocalizedTag="ouravatar" />
         </td>
         <td class="post" colspan="2">
@@ -36,7 +36,7 @@
     </tr>
     <tr runat="server" id="AvatarRemoteRow">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="CP_EDITAVATAR"
+            <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="CP_EDITAVATAR"
                 LocalizedTag="avatarremote" />
         </td>
         <td class="post">
@@ -47,7 +47,7 @@
     </tr>
     <tr runat="server" id="AvatarUploadRow">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedPage="CP_EDITAVATAR"
+            <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedPage="CP_EDITAVATAR"
                 LocalizedTag="avatarupload" />
         </td>
         <td class="post">

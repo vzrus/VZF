@@ -28,7 +28,7 @@ namespace YAF.Pages
   using System;
   using System.Data;
   
-  using YAF.Controls;
+  using VZF.Controls;
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Constants;

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class DisplayAd {
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel SponserName;
+        protected global::VZF.Controls.LocalizedLabel SponserName;
         
         /// <summary>
         /// AdMessage control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.MessagePost AdMessage;
+        protected global::VZF.Controls.MessagePost AdMessage;
         
         /// <summary>
         /// ThemeImage1 control.
@@ -46,6 +46,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ThemeImage1;
+        protected global::VZF.Controls.ThemeImage ThemeImage1;
     }
 }

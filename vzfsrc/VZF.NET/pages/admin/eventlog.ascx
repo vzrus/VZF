@@ -2,7 +2,7 @@
     CodeBehind="eventlog.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
    
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 
 <script type="text/javascript">
 function toggleItem(detailId)
@@ -19,31 +19,31 @@ function toggleItem(detailId)
 }
 </script>
 
-<YAF:AdminMenu runat="server" ID="AdminMenu1">
-    <YAF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
+<VZF:AdminMenu runat="server" ID="AdminMenu1">
+    <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
     <table class="content" width="100%" cellspacing="0" cellpadding="0">
         <tr>
             <td class="header1" colspan="3">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EVENTLOG" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EVENTLOG" />
             </td>
         </tr>
         <tr class="header2">
             <td>
-                <YAF:HelpLabel ID="SinceDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" LocalizedTag="SINCEDATE" Suffix=":" />&nbsp;
+                <VZF:HelpLabel ID="SinceDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" LocalizedTag="SINCEDATE" Suffix=":" />&nbsp;
                 <asp:TextBox ID="SinceDate" runat="server" CssClass="edit"></asp:TextBox>
             </td>
             <td>
-                <YAF:HelpLabel ID="ToDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TODATE" />&nbsp;
+                <VZF:HelpLabel ID="ToDateLabel" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TODATE" />&nbsp;
                 <asp:TextBox ID="ToDate" runat="server" CssClass="edit"></asp:TextBox>
             </td>
             <td>
-                <YAF:HelpLabel ID="HelpLabel1" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TYPES" />&nbsp;
+                <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedPage="ADMIN_EVENTLOG" Suffix=":" LocalizedTag="TYPES" />&nbsp;
                 <asp:DropDownList ID="Types" runat="server" CssClass="edit"></asp:DropDownList>
             </td>
         </tr>
         <tr>
             <td colspan="3" class="footer1" style="text-align:center">
-                <YAF:ThemeButton ID="ApplyButton" CssClass="yaflittlebutton" OnClick="ApplyButton_Click" TextLocalizedPage="ADMIN_EVENTLOG" TextLocalizedTag="APPLY" runat="server"></YAF:ThemeButton>
+                <VZF:ThemeButton ID="ApplyButton" CssClass="yaflittlebutton" OnClick="ApplyButton_Click" TextLocalizedPage="ADMIN_EVENTLOG" TextLocalizedTag="APPLY" runat="server"></VZF:ThemeButton>
             </td>
         </tr>
     </table>
@@ -51,23 +51,23 @@ function toggleItem(detailId)
     <table class="content" width="100%" cellspacing="0" cellpadding="0">
         <tr>
             <td class="header1" colspan="8">
-                <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EVENTLOG" />
+                <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EVENTLOG" />
             </td>
         </tr>
         <asp:Repeater runat="server" ID="List">
             <HeaderTemplate>
                 <tr class="header2" id="headerSize">
                     <td width="1%">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TYPE" LocalizedPage="ADMIN_EVENTLOG" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TYPE" LocalizedPage="ADMIN_EVENTLOG" />
                     </td>
                     <td width="5%">
-                        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="USER" LocalizedPage="ADMIN_EVENTLOG" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="USER" LocalizedPage="ADMIN_EVENTLOG" />
                     </td>
                     <td width="8%">
-                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="TIME" LocalizedPage="ADMIN_EVENTLOG" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="TIME" LocalizedPage="ADMIN_EVENTLOG" />
                     </td>
                     <td>
-                        <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="SOURCE" LocalizedPage="ADMIN_EVENTLOG" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="SOURCE" LocalizedPage="ADMIN_EVENTLOG" />
                     </td>
                     <td>&nbsp;
                         
@@ -95,8 +95,8 @@ function toggleItem(detailId)
                               <%# HtmlEncode(Eval( "Source")) %>
                             </td>
                             <td class="rightItem">
-                              <a class="showEventItem" href="#event<%# Eval("EventLogID")%>" id="Show<%# Eval("EventLogID") %>" onclick="javascript:toggleItem(<%# Eval("EventLogID") %>);"><YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="SHOW" LocalizedPage="ADMIN_EVENTLOG" /></a>&nbsp;|&nbsp;<asp:LinkButton runat="server" OnLoad="Delete_Load" CssClass="deleteEventItem" CommandName="delete" CommandArgument='<%# Eval( "EventLogID") %>'>
-                                  <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="DELETE" />
+                              <a class="showEventItem" href="#event<%# Eval("EventLogID")%>" id="Show<%# Eval("EventLogID") %>" onclick="javascript:toggleItem(<%# Eval("EventLogID") %>);"><VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="SHOW" LocalizedPage="ADMIN_EVENTLOG" /></a>&nbsp;|&nbsp;<asp:LinkButton runat="server" OnLoad="Delete_Load" CssClass="deleteEventItem" CommandName="delete" CommandArgument='<%# Eval( "EventLogID") %>'>
+                                  <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="DELETE" />
                                 </asp:LinkButton>
                             </td>
                           </tr>
@@ -111,13 +111,13 @@ function toggleItem(detailId)
             <FooterTemplate>
                 <tr class="footer1">
                     <td colspan="5" align="center">
-                        <YAF:ThemeButton runat="server" Visible="<%# this.List.Items.Count > 0 %>" OnLoad="DeleteAll_Load" CssClass="yaflittlebutton" OnClick="DeleteAll_Click" TextLocalizedPage="ADMIN_EVENTLOG" TextLocalizedTag="DELETE_ALLOWED">
-                        </YAF:ThemeButton>
+                        <VZF:ThemeButton runat="server" Visible="<%# this.List.Items.Count > 0 %>" OnLoad="DeleteAll_Load" CssClass="yaflittlebutton" OnClick="DeleteAll_Click" TextLocalizedPage="ADMIN_EVENTLOG" TextLocalizedTag="DELETE_ALLOWED">
+                        </VZF:ThemeButton>
                     </td>
                 </tr>
             </FooterTemplate>
         </asp:Repeater>
     </table>
-    <YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

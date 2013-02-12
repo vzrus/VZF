@@ -3,7 +3,7 @@
 src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 </script>
 
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 
 <div align="center">
     <asp:HyperLink runat="server" ID="Msg">
@@ -11,5 +11,5 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 </div>
 
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

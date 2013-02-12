@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ForumIconLegend {
@@ -19,7 +19,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ForumNewImage;
+        protected global::VZF.Controls.ThemeImage ForumNewImage;
         
         /// <summary>
         /// NewPostsLabel control.
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel NewPostsLabel;
+        protected global::VZF.Controls.LocalizedLabel NewPostsLabel;
         
         /// <summary>
         /// ForumRegularImage control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ForumRegularImage;
+        protected global::VZF.Controls.ThemeImage ForumRegularImage;
         
         /// <summary>
         /// NoNewPostsLabel control.
@@ -46,7 +46,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel NoNewPostsLabel;
+        protected global::VZF.Controls.LocalizedLabel NoNewPostsLabel;
         
         /// <summary>
         /// ForumLockedImage control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ForumLockedImage;
+        protected global::VZF.Controls.ThemeImage ForumLockedImage;
         
         /// <summary>
         /// ForumLockedLabel control.
@@ -64,6 +64,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ForumLockedLabel;
+        protected global::VZF.Controls.LocalizedLabel ForumLockedLabel;
     }
 }

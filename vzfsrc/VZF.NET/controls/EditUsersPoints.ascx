@@ -1,8 +1,8 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Controls.EditUsersPoints" Codebehind="EditUsersPoints.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.EditUsersPoints" Codebehind="EditUsersPoints.ascx.cs" %>
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td class="header1" colspan="2">
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="USER_REPUTATION" LocalizedPage="ADMIN_EDITUSER" />
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="USER_REPUTATION" LocalizedPage="ADMIN_EDITUSER" />
         </td>
     </tr>
     <tr>
@@ -12,14 +12,14 @@
 	<tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="CURRENT_POINTS" LocalizedPage="ADMIN_EDITUSER" />
+            <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="CURRENT_POINTS" LocalizedPage="ADMIN_EDITUSER" />
         </td>
         <td class="post">
             <asp:Literal ID="ltrCurrentPoints" runat="server" /></td>
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="SET_POINTS" LocalizedPage="ADMIN_EDITUSER" />
+            <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="SET_POINTS" LocalizedPage="ADMIN_EDITUSER" />
         </td>
         <td class="post">
             <asp:TextBox runat="server" ID="txtUserPoints" ValidationGroup="UserPoints" />
@@ -31,7 +31,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="ADD_POINTS" LocalizedPage="ADMIN_EDITUSER" />
+            <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="ADD_POINTS" LocalizedPage="ADMIN_EDITUSER" />
         </td>
         <td class="post">
             <asp:TextBox runat="server" ID="txtAddPoints" ValidationGroup="Add" />
@@ -43,7 +43,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="REMOVE_POINTS" LocalizedPage="ADMIN_EDITUSER" />
+            <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="REMOVE_POINTS" LocalizedPage="ADMIN_EDITUSER" />
         </td>
         <td class="post">
             <asp:TextBox runat="server" ID="txtRemovePoints" ValidationGroup="Remove" />

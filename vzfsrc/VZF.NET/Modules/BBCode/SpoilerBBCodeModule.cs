@@ -23,7 +23,7 @@ namespace YAF.Modules
 
   using YAF.Core; 
   using YAF.Types.Interfaces; 
-  using YAF.Controls;
+  using VZF.Controls;
   using YAF.Types.Constants;
 
   /// <summary>

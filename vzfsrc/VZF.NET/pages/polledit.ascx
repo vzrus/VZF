@@ -1,16 +1,16 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="polledit.ascx.cs" Inherits="YAF.Pages.polledit" %>
-<YAF:PageLinks ID="PageLinks" runat="server" />
+<VZF:PageLinks ID="PageLinks" runat="server" />
 <table align="center" cellpadding="4" cellspacing="1" class="content" 
     width="100%" style="height: 223px" >
     <tr>
         <td class="header1" colspan="2">
-            <YAF:LocalizedLabel ID="PollNameLabel" runat="server" LocalizedPage="POLLEDIT" LocalizedTag="POLLHEADER" />
+            <VZF:LocalizedLabel ID="PollNameLabel" runat="server" LocalizedPage="POLLEDIT" LocalizedTag="POLLHEADER" />
         </td>
     </tr>
 <tr id="PollRow1" runat="server" visible="true">
 		<td class="postformheader" width="20%">
 			<em>
-				<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="pollquestion" />
+				<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="pollquestion" />
               
 			</em>
 		</td>
@@ -21,7 +21,7 @@
 <tr id="PollObjectRow1" runat="server" visible="<%# (PageContext.IsAdmin || PageContext.BoardSettings.AllowUsersImagedPoll) && PageContext.ForumPollAccess %>" >
 		<td class="header2" width="20%">
 			<em>				
-               <YAF:LocalizedLabel ID="PollQuestionObjectLabel"  runat="server" LocalizedTag="POLLIMAGE_TEXT" />
+               <VZF:LocalizedLabel ID="PollQuestionObjectLabel"  runat="server" LocalizedTag="POLLIMAGE_TEXT" />
 			</em>
 		</td>
 		<td class="post" width="80%">			
@@ -38,7 +38,7 @@
                     <tr>
                         <td class="postformheader" width="20%">
                                    <em>
-                                   <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="choice" Param0='<%# DataBinder.Eval(Container.DataItem, "ChoiceOrderID") %>' />
+                                   <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="choice" Param0='<%# DataBinder.Eval(Container.DataItem, "ChoiceOrderID") %>' />
                                    </em>
                         </td>
                         <td class="post" width="80%">
@@ -49,7 +49,7 @@
                    <tr id="ChoiceRow1" visible="<%# (PageContext.IsAdmin || PageContext.BoardSettings.AllowUsersImagedPoll) && PageContext.ForumPollAccess %>" runat="server" >
                      <td class="header2" width="20%">
                           <em>
-                          <YAF:LocalizedLabel ID="PollChoiceObjectLabel"  runat="server" LocalizedTag="POLLIMAGE_TEXT" />
+                          <VZF:LocalizedLabel ID="PollChoiceObjectLabel"  runat="server" LocalizedTag="POLLIMAGE_TEXT" />
                           </em>
                      </td>
                      <td class="post" width="80%">
@@ -66,7 +66,7 @@
     <tr id="tr_AllowMultipleChoices" runat="server" visible="<%# PageContext.BoardSettings.AllowMultipleChoices %>">	
        	<td class="postformheader" width="20%">
 			<em>
-				 <YAF:LocalizedLabel ID="AllowMultipleChoicesLabel" runat="server" LocalizedTag="POLL_MULTIPLECHOICES" />
+				 <VZF:LocalizedLabel ID="AllowMultipleChoicesLabel" runat="server" LocalizedTag="POLL_MULTIPLECHOICES" />
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -76,7 +76,7 @@
     <tr id="tr_AllowSkipVote" runat="server" visible="<%# PageContext.BoardSettings.AllowMultipleChoices %>">	
        	<td class="postformheader" width="20%">
 			<em>
-				 <YAF:LocalizedLabel ID="AllowSkipVoteLocalizedLabel" runat="server" LocalizedTag="POLL_MULTIPLECHOICES" />
+				 <VZF:LocalizedLabel ID="AllowSkipVoteLocalizedLabel" runat="server" LocalizedTag="POLL_MULTIPLECHOICES" />
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -86,7 +86,7 @@
     <tr id="tr_ShowVoters" runat="server" visible="true">	
        	<td class="postformheader" width="20%">
 			<em>
-				 <YAF:LocalizedLabel ID="ShowVotersLocalizedLabel" runat="server" LocalizedTag="POLL_SHOWVOTERS" />
+				 <VZF:LocalizedLabel ID="ShowVotersLocalizedLabel" runat="server" LocalizedTag="POLL_SHOWVOTERS" />
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -96,18 +96,18 @@
      <tr id="PollRowExpire" runat="server" visible="false">
 		<td class="postformheader" width="20%">
 			<em>
-				<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="poll_expire" />
+				<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="poll_expire" />
 			</em>
 		</td>
 		<td class="post" width="80%">
 			<asp:TextBox ID="PollExpire" runat="server" CssClass="edit" MaxLength="10" Width="400" />
-			<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="poll_expire_explain" />
+			<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="poll_expire_explain" />
 		</td>
 	</tr> 
      <tr id="IsBound" runat="server" visible="false">	
         	<td class="postformheader" width="20%">
 			<em>
-				 <YAF:LocalizedLabel ID="IsBoundLabel" runat="server" LocalizedTag="POLLGROUP_BOUNDWARN" />
+				 <VZF:LocalizedLabel ID="IsBoundLabel" runat="server" LocalizedTag="POLLGROUP_BOUNDWARN" />
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -117,8 +117,8 @@
     <tr id="IsClosedBound" runat="server" visible="false">
     	<td class="postformheader" width="20%">
 			<em>
-				 <YAF:LocalizedLabel ID="IsClosedBoundLabel" runat="server" LocalizedTag="pollgroup_closedbound" />&nbsp;:&nbsp;
-                 <YAF:LocalizedLabel ID="IsClosedBoundExplainLabel" runat="server" LocalizedTag="POLLGROUP_CLOSEDBOUND_WARN" /> 
+				 <VZF:LocalizedLabel ID="IsClosedBoundLabel" runat="server" LocalizedTag="pollgroup_closedbound" />&nbsp;:&nbsp;
+                 <VZF:LocalizedLabel ID="IsClosedBoundExplainLabel" runat="server" LocalizedTag="POLLGROUP_CLOSEDBOUND_WARN" /> 
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -128,7 +128,7 @@
     <tr id="PollGroupList" runat="server" visible="false">
 		<td class="postformheader" width="20%">
 			<em>
-				<YAF:LocalizedLabel ID="PollGroupListLabel" runat="server" LocalizedTag="pollgroup_list" />
+				<VZF:LocalizedLabel ID="PollGroupListLabel" runat="server" LocalizedTag="pollgroup_list" />
 			</em>
 		</td>
 		<td class="post" width="80%">
@@ -137,9 +137,9 @@
 	</tr>
     <tr>
     <td class="postformheader" colspan="2" width="100%">
-           <YAF:ThemeButton ID="SavePoll" runat="server" CssClass="yafcssbigbutton leftItem"
+           <VZF:ThemeButton ID="SavePoll" runat="server" CssClass="yafcssbigbutton leftItem"
 			 OnClick="SavePoll_Click"  TextLocalizedTag="POLLSAVE" />
-            <YAF:ThemeButton ID="Cancel" runat="server" CssClass="yafcssbigbutton leftItem"
+            <VZF:ThemeButton ID="Cancel" runat="server" CssClass="yafcssbigbutton leftItem"
 			 OnClick="Cancel_Click" TextLocalizedTag="CANCEL" />
               </td>
 </tr>

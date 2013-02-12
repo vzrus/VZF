@@ -229,73 +229,73 @@ namespace YAF.Types.Constants
             /// <summary>
             ///   The avatar.
             /// </summary>
-            public const string Avatar = @"<yaf:avatar\s*/>";
+            public const string Avatar = @"<vzf:avatar\s*/>";
 
             /// <summary>
             ///   The display template default.
             /// </summary>
             public const string DisplayTemplateDefault =
-              @"<yaf:avatar /><div class=""section""><yaf:rankimage /><yaf:rank /></div><br /><yaf:reputation /><yaf:medals /><div class=""section""><yaf:groups /><yaf:joindate /><yaf:posts /><yaf:gender /><yaf:countryimage /><yaf:location /></div><br/ ><div class=""section""><yaf:thanksfrom /><yaf:thanksto /></div>";
+              @"<vzf:avatar /><div class=""section""><vzf:rankimage /><vzf:rank /></div><br /><vzf:reputation /><vzf:medals /><div class=""section""><vzf:groups /><vzf:joindate /><vzf:posts /><vzf:gender /><vzf:countryimage /><vzf:location /></div><br/ ><div class=""section""><vzf:thanksfrom /><vzf:thanksto /></div>";
 
             /// <summary>
             ///   The gender.
             /// </summary>
-            public const string Gender = @"<yaf:gender\s*/>";
+            public const string Gender = @"<vzf:gender\s*/>";
 
             /// <summary>
             ///   The groups.
             /// </summary>
-            public const string Groups = @"<yaf:groups\s*/>";
+            public const string Groups = @"<vzf:groups\s*/>";
 
             /// <summary>
             ///   The join date.
             /// </summary>
-            public const string JoinDate = @"<yaf:joindate\s*/>";
+            public const string JoinDate = @"<vzf:joindate\s*/>";
 
             /// <summary>
             ///   The location.
             /// </summary>
-            public const string Location = @"<yaf:location\s*/>";
+            public const string Location = @"<vzf:location\s*/>";
 
             /// <summary>
             ///   The rank image.
             /// </summary>
-            public const string CountryImage = @"<yaf:countryimage\s*/>";
+            public const string CountryImage = @"<vzf:countryimage\s*/>";
 
             /// <summary>
             ///   The medals.
             /// </summary>
-            public const string Medals = @"<yaf:medals\s*/>";
+            public const string Medals = @"<vzf:medals\s*/>";
 
             /// <summary>
             ///   The Reputation (points).
             /// </summary>
-            public const string Reputation = @"<yaf:reputation\s*/>";
+            public const string Reputation = @"<vzf:reputation\s*/>";
 
             /// <summary>
             ///   The posts.
             /// </summary>
-            public const string Posts = @"<yaf:posts\s*/>";
+            public const string Posts = @"<vzf:posts\s*/>";
 
             /// <summary>
             ///   The rank.
             /// </summary>
-            public const string Rank = @"<yaf:rank\s*/>";
+            public const string Rank = @"<vzf:rank\s*/>";
 
             /// <summary>
             ///   The rank image.
             /// </summary>
-            public const string RankImage = @"<yaf:rankimage\s*/>";
+            public const string RankImage = @"<vzf:rankimage\s*/>";
 
             /// <summary>
             ///   The thanks from.
             /// </summary>
-            public const string ThanksFrom = @"<yaf:thanksfrom\s*/>";
+            public const string ThanksFrom = @"<vzf:thanksfrom\s*/>";
 
             /// <summary>
             ///   The thanks to.
             /// </summary>
-            public const string ThanksTo = @"<yaf:thanksto\s*/>";
+            public const string ThanksTo = @"<vzf:thanksto\s*/>";
 
             #endregion
         }

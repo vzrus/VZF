@@ -1,9 +1,9 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Controls.BuddyList" Codebehind="BuddyList.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.BuddyList" Codebehind="BuddyList.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:Pager runat="server" ID="Pager" OnPageChange="Pager_PageChange" />
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td class="header2">
@@ -33,8 +33,8 @@
         <ItemTemplate>
             <tr>
                 <td class="post">
-                    <YAF:UserLink ID="UserProfileLink" runat="server" UserID='<%# CurrentUserID == Convert.ToInt32(Eval("UserID")) ? Eval("FromUserID") : Eval("UserID") %>' />
-                    <YAF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# PageContext.BoardSettings.ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Eval("UserID") )%>'
+                    <VZF:UserLink ID="UserProfileLink" runat="server" UserID='<%# CurrentUserID == Convert.ToInt32(Eval("UserID")) ? Eval("FromUserID") : Eval("UserID") %>' />
+                    <VZF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# PageContext.BoardSettings.ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Eval("UserID") )%>'
                         Style="vertical-align: bottom" UserID='<%# Eval("UserID") %>' />
                 </td>
                 <td class="post">
@@ -85,7 +85,7 @@
         </FooterTemplate>
     </asp:Repeater>
 </table>
-<YAF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
+<VZF:Pager ID="Pager1" runat="server" LinkedPager="Pager" OnPageChange="Pager_PageChange" />
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

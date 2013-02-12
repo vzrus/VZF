@@ -23,7 +23,7 @@
 </head>
 <body class="PopupBody">
     <form id="form1" runat="server" enctype="multipart/form-data">
-    <YAF:Forum runat="server" ID="forum" Popup="true">
+    <VZF:Forum runat="server" ID="forum" Popup="true">
     </YAF:Forum>
     </form>
 </body>

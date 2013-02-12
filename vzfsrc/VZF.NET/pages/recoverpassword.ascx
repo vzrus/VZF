@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
 	Inherits="YAF.Pages.recoverpassword" Codebehind="recoverpassword.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div align="center">
 	<asp:PasswordRecovery ID="PasswordRecovery1" runat="server" OnSendingMail="PasswordRecovery1_SendingMail" OnVerifyingUser="PasswordRecovery1_VerifyingUser" OnSendMailError="PasswordRecovery1_SendMailError" OnVerifyingAnswer="PasswordRecovery1_VerifyingAnswer" OnAnswerLookupError="PasswordRecovery1_AnswerLookupError">
 		<UserNameTemplate>
@@ -10,18 +10,18 @@
 						<table class="content" cellspacing="1" cellpadding="0" border="0" width="600">
 							<tr>
 								<td colspan="2" align="center" class="header1">
-									<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
+									<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
 								</td>
 							</tr>
 							<tr>
 								<td align="center" colspan="2" class="post">
-									<YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="PAGE1_INSTRUCTIONS" />
+									<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="PAGE1_INSTRUCTIONS" />
 								</td>
 							</tr>
 							<tr>
 								<td align="right" class="postheader">
 									<asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">
-										<YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="LOGIN" LocalizedTag="USERNAME" />
+										<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="LOGIN" LocalizedTag="USERNAME" />
 									</asp:Label></td>
 								<td class="post">
 									<asp:TextBox ID="UserName" runat="server"></asp:TextBox>
@@ -53,17 +53,17 @@
 						<table class="content" cellspacing="1" cellpadding="0" border="0" width="600">
 							<tr>
 								<td colspan="2" align="center" class="header1">
-									<YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="IDENTITY_CONFIRMATION_TITLE" />
+									<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="IDENTITY_CONFIRMATION_TITLE" />
 								</td>
 							</tr>
 							<tr>
 								<td align="center" colspan="2" class="post">
-									<YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="PAGE2_INSTRUCTIONS" />
+									<VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="PAGE2_INSTRUCTIONS" />
 								</td>
 							</tr>
 							<tr>
 								<td align="right" class="postheader">
-									<YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedPage="LOGIN" LocalizedTag="USERNAME" />
+									<VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedPage="LOGIN" LocalizedTag="USERNAME" />
 								</td>
 								<td class="post">
 									<asp:Literal ID="UserName" runat="server"></asp:Literal>
@@ -71,7 +71,7 @@
 							</tr>
 							<tr>
 								<td align="right" class="postheader">
-									<YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedPage="REGISTER"
+									<VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedPage="REGISTER"
 										LocalizedTag="SECURITY_QUESTION" />
 								</td>
 								<td class="post">
@@ -81,7 +81,7 @@
 							<tr>
 								<td align="right" class="postheader">
 									<asp:Label ID="AnswerLabel" runat="server" AssociatedControlID="Answer">
-										<YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedPage="REGISTER"
+										<VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedPage="REGISTER"
 											LocalizedTag="SECURITY_ANSWER" />
 									</asp:Label></td>
 								<td class="post">
@@ -113,12 +113,12 @@
 						<table class="content" cellspacing="1" cellpadding="0" border="0" width="600">
 							<tr>
 								<td colspan="2" align="center" class="header1">
-									<YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="TITLE" />
+									<VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="TITLE" />
 								</td>
 							</tr>
 							<tr>
 								<td class="post">
-									<YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="PASSWORD_SENT" />
+									<VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="PASSWORD_SENT" />
 								</td>
 							</tr>
 							<tr>
@@ -135,5 +135,5 @@
 	</asp:PasswordRecovery>
 </div>
 <div id="DivSmartScroller">
-	<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+	<VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class DisplayPost {
@@ -22,22 +22,13 @@ namespace YAF.Controls {
         protected global::System.Web.UI.HtmlControls.HtmlTableCell NameCell;
         
         /// <summary>
-        /// UserProfileLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Controls.UserLink UserProfileLink;
-        
-        /// <summary>
         /// OnlineStatusImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.OnlineStatusImage OnlineStatusImage;
+        protected global::VZF.Controls.OnlineStatusImage OnlineStatusImage;
         
         /// <summary>
         /// ThemeImgSuspended control.
@@ -46,7 +37,16 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeImage ThemeImgSuspended;
+        protected global::VZF.Controls.ThemeImage ThemeImgSuspended;
+        
+        /// <summary>
+        /// UserProfileLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.UserLink UserProfileLink;
         
         /// <summary>
         /// AddReputation control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton AddReputation;
+        protected global::VZF.Controls.ThemeButton AddReputation;
         
         /// <summary>
         /// RemoveReputation control.
@@ -64,7 +64,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton RemoveReputation;
+        protected global::VZF.Controls.ThemeButton RemoveReputation;
         
         /// <summary>
         /// LocalizedLabel1 control.
@@ -73,7 +73,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LocalizedLabel1;
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
         
         /// <summary>
         /// DisplayDateTime control.
@@ -82,7 +82,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.DisplayDateTime DisplayDateTime;
+        protected global::VZF.Controls.DisplayDateTime DisplayDateTime;
         
         /// <summary>
         /// Retweet control.
@@ -91,7 +91,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Retweet;
+        protected global::VZF.Controls.ThemeButton Retweet;
         
         /// <summary>
         /// Thank control.
@@ -100,7 +100,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Thank;
+        protected global::VZF.Controls.ThemeButton Thank;
         
         /// <summary>
         /// Attach control.
@@ -109,7 +109,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Attach;
+        protected global::VZF.Controls.ThemeButton Attach;
         
         /// <summary>
         /// Edit control.
@@ -118,7 +118,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Edit;
+        protected global::VZF.Controls.ThemeButton Edit;
         
         /// <summary>
         /// MovePost control.
@@ -127,7 +127,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton MovePost;
+        protected global::VZF.Controls.ThemeButton MovePost;
         
         /// <summary>
         /// Delete control.
@@ -136,7 +136,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Delete;
+        protected global::VZF.Controls.ThemeButton Delete;
         
         /// <summary>
         /// UnDelete control.
@@ -145,7 +145,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton UnDelete;
+        protected global::VZF.Controls.ThemeButton UnDelete;
         
         /// <summary>
         /// Quote control.
@@ -154,7 +154,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.ThemeButton Quote;
+        protected global::VZF.Controls.ThemeButton Quote;
         
         /// <summary>
         /// MultiQuote control.
@@ -172,7 +172,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.UserBox UserBox1;
+        protected global::VZF.Controls.UserBox UserBox1;
         
         /// <summary>
         /// panMessage control.
@@ -190,7 +190,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.MessagePostData MessagePost1;
+        protected global::VZF.Controls.MessagePostData MessagePost1;
         
         /// <summary>
         /// IPSpan1 control.
@@ -217,7 +217,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.DisplayPostFooter PostFooter;
+        protected global::VZF.Controls.DisplayPostFooter PostFooter;
         
         /// <summary>
         /// ThanksDataLiteral control.
@@ -244,6 +244,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.PopMenu PopMenu1;
+        protected global::VZF.Controls.PopMenu PopMenu1;
     }
 }

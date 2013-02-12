@@ -2,5 +2,5 @@
 
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
 <%@ Register TagPrefix="YAF" TagName="Digest" Src="controls/emaildigest.ascx" %>
-<YAF:Digest id="ViewDigest" runat="server">
+<VZF:Digest id="ViewDigest" runat="server">
 </YAF:Digest>

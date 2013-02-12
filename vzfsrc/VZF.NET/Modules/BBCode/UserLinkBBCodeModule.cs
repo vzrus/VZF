@@ -23,7 +23,7 @@ namespace YAF.Modules
     using System.Web.UI;
 
     using YAF.Classes;
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Types.Interfaces;
     using YAF.Utils;

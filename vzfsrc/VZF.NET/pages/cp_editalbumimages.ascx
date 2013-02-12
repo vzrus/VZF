@@ -1,18 +1,18 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
     Inherits="YAF.Pages.cp_editalbumimages" Codebehind="cp_editalbumimages.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
+<VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
     <tr>
         <td class="header1" colspan="3">
-            <YAF:LocalizedLabel ID="Title" LocalizedTag="TITLE" runat="server" />
+            <VZF:LocalizedLabel ID="Title" LocalizedTag="TITLE" runat="server" />
         </td>
     </tr>
     <tr id="TitleRow" runat="server">
         <td class="postformheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="ALBUM_TITLE" />
+            <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="ALBUM_TITLE" />
         </td>
         <td class="post">
             <asp:TextBox ID="txtTitle" runat="server" CssClass="edit" MaxLength="255" Width="400" />
@@ -27,10 +27,10 @@
         <HeaderTemplate>
             <tr>
                 <td class="header2">
-                    <YAF:LocalizedLabel ID="Filename" LocalizedTag="FILENAME" runat="server" />
+                    <VZF:LocalizedLabel ID="Filename" LocalizedTag="FILENAME" runat="server" />
                 </td>
                 <td class="header2" align="right">
-                    <YAF:LocalizedLabel ID="Size" LocalizedTag="SIZE" runat="server" />
+                    <VZF:LocalizedLabel ID="Size" LocalizedTag="SIZE" runat="server" />
                 </td>
                 <td class="header2">
                     &nbsp;
@@ -54,12 +54,12 @@
     </asp:Repeater>
     <tr id="uploadtitletr" runat="server">
         <td class="header2" colspan="3">
-            <YAF:LocalizedLabel ID="UploadTitle" LocalizedTag="UPLOAD_TITLE" runat="server" />
+            <VZF:LocalizedLabel ID="UploadTitle" LocalizedTag="UPLOAD_TITLE" runat="server" />
         </td>
     </tr>
     <tr id="selectfiletr" runat="server">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="SelectFile" LocalizedTag="SELECT_FILE" runat="server" />
+            <VZF:LocalizedLabel ID="SelectFile" LocalizedTag="SELECT_FILE" runat="server" />
         </td>
         <td class="post">
             <input type="file" id="File" class="pbutton" runat="server" />
@@ -80,5 +80,5 @@
     </tr>
 </table>
 <div id="DivSmartScroller">
-    <YAF:SmartScroller ID="SmartScroller1" runat="server" />
+    <VZF:SmartScroller ID="SmartScroller1" runat="server" />
 </div>

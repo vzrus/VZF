@@ -1,4 +1,4 @@
-﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Controls.LoginBox" CodeBehind="LoginBox.ascx.cs" %>
+﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="VZF.Controls.LoginBox" CodeBehind="LoginBox.ascx.cs" %>
 
 <div id="LoginBox">  
 <asp:UpdatePanel ID="UpdateLoginPanel" runat="server" UpdateMode="Conditional">
@@ -11,17 +11,17 @@
                         <tr>
                             <td align="left">
                               <div class="header">
-                                <h3><YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="LOGIN" LocalizedTag="title" /></h3>
+                                <h3><VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="LOGIN" LocalizedTag="title" /></h3>
                               </div>
                               <div>
                                 <asp:Label ID="UserNameLabel" runat="server" AssociatedControlID="UserName">
-                                                <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="LOGIN" LocalizedTag="username" />
+                                                <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="LOGIN" LocalizedTag="username" />
                                 </asp:Label>
                                 <asp:TextBox ID="UserName" runat="server"></asp:TextBox>
                               </div>
                               <div>
                                 <asp:Label ID="PasswordLabel" runat="server" AssociatedControlID="Password">
-                                                <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="password" />
+                                                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="password" />
                                             </asp:Label>
                                 <asp:TextBox ID="Password" runat="server" TextMode="Password"></asp:TextBox>
                               </div>
@@ -36,7 +36,7 @@
                                  <asp:PlaceHolder ID="FaceBookHolder" runat="server" Visible="false">
                                     <div class="fb-login-button" data-onlogin="LoginUser()" 
                                          data-scope="email,user_birthday,status_update,publish_stream,user_hometown,user_location">
-                                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FACEBOOK_LOGIN" />
+                                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FACEBOOK_LOGIN" />
                                     </div>
                                     <div id="fb-root"></div>
                                  </asp:PlaceHolder>

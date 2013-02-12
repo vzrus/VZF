@@ -1,21 +1,21 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumsAdminTree.ascx.cs" Inherits="YAF.Controls.ForumsAdminTree" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumsAdminTree.ascx.cs" Inherits="VZF.Controls.ForumsAdminTree" %>
 <%@ Import namespace="System.Web.UI.WebControls"  %>
  <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="3">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUMS" LocalizedPage="TEAM" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUMS" LocalizedPage="TEAM" />
             </td>
         </tr>
         <tr>
         <td colspan="3">
                   <div id="divactive" class="active" Visible="false" runat="server">
         Active node: <b><span id="echoActive">-</span></b><div id="treebuttons">
-            <YAF:ThemeButton ID="DeleteForumBtn" CssClass="yaflittlebutton" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON"  OnClick="DeleteForumBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="CopyForumBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" OnClick="CopyForumBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="EditForumBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" OnClick="EditForumBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="MoveForumBeforeBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_BEFORE_SMALL_ICON" OnClick="MoveForumBeforeBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="MoveForumAfterBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_AFTER_SMALL_ICON" OnClick="MoveForumAfterBtn_Click"  runat="server"/>
-            <YAF:ThemeButton ID="AddChildrenTo" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="FORUM_ADDCHILDENTO_SMALL_ICON" OnClick="AddChildrenToBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="DeleteForumBtn" CssClass="yaflittlebutton" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON"  OnClick="DeleteForumBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="CopyForumBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" OnClick="CopyForumBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="EditForumBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" OnClick="EditForumBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="MoveForumBeforeBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_BEFORE_SMALL_ICON" OnClick="MoveForumBeforeBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="MoveForumAfterBtn" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="MOVE_FORUMORCAT_AFTER_SMALL_ICON" OnClick="MoveForumAfterBtn_Click"  runat="server"/>
+            <VZF:ThemeButton ID="AddChildrenTo" CssClass="yaflittlebutton"  ImageThemePage="ICONS" ImageThemeTag="FORUM_ADDCHILDENTO_SMALL_ICON" OnClick="AddChildrenToBtn_Click"  runat="server"/>
                                                           </div></div>
         <div class="container">
     <div id="tree">
@@ -34,8 +34,8 @@
                         <%# Eval( "SortOrder") %>
                     </td>
                     <td class="header2" width="17%" style="font-weight: normal">
-                    <YAF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton"  CommandName='edit' CommandArgument='<%# Eval( "CategoryID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></YAF:ThemeButton>
-                    <YAF:ThemeButton ID="ThemeButtonDelete" CssClass="yaflittlebutton" OnLoad="DeleteCategory_Load"  CommandName='delete' CommandArgument='<%# Eval( "CategoryID") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></YAF:ThemeButton>
+                    <VZF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton"  CommandName='edit' CommandArgument='<%# Eval( "CategoryID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>
+                    <VZF:ThemeButton ID="ThemeButtonDelete" CssClass="yaflittlebutton" OnLoad="DeleteCategory_Load"  CommandName='delete' CommandArgument='<%# Eval( "CategoryID") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></VZF:ThemeButton>
                     </td>
                 </tr>
                 <asp:Repeater ID="ForumList" OnItemCommand="ForumList_ItemCommand" runat="server"
@@ -51,9 +51,9 @@
                                 <%# DataBinder.Eval(Container.DataItem, "[\"SortOrder\"]") %>
                             </td>
                             <td>
-                             <YAF:ThemeButton ID="btnEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></YAF:ThemeButton>								
-                             <YAF:ThemeButton ID="btnDuplicate" CssClass="yaflittlebutton" CommandName='copy' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="COPY" ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" runat="server"></YAF:ThemeButton>
-                             <YAF:ThemeButton ID="btnDelete" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></YAF:ThemeButton>
+                             <VZF:ThemeButton ID="btnEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>								
+                             <VZF:ThemeButton ID="btnDuplicate" CssClass="yaflittlebutton" CommandName='copy' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="COPY" ImageThemePage="ICONS" ImageThemeTag="COPY_SMALL_ICON" runat="server"></VZF:ThemeButton>
+                             <VZF:ThemeButton ID="btnDelete" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></VZF:ThemeButton>
                             </td>
                         </tr>
                     </ItemTemplate>

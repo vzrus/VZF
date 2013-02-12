@@ -41,7 +41,7 @@ namespace YAF
 
     using YAF.Classes;
     
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;

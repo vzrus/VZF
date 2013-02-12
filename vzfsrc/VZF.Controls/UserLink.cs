@@ -20,7 +20,7 @@
 
 using System.Web;
 
-namespace YAF.Controls
+namespace VZF.Controls
 {
     #region Using
 

@@ -1,16 +1,17 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="YAF.Controls.EditUsersProfile" Codebehind="EditUsersProfile.ascx.cs" %>
+    Inherits="VZF.Controls.EditUsersProfile" Codebehind="EditUsersProfile.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Classes" %>
 <table width="100%" class="content EditUserProfileTable" cellspacing="1" cellpadding="4">
     <tr>
         <td class="header1" colspan="2">
-            <YAF:LocalizedLabel runat="server"  LocalizedPage="CP_EDITPROFILE" LocalizedTag="TITLE" />
+            <VZF:LocalizedLabel runat="server"  LocalizedPage="CP_EDITPROFILE" LocalizedTag="TITLE" />
         </td>
     </tr>
     <tr>
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="aboutyou" />
             </b>
         </td>
@@ -18,7 +19,7 @@
     <asp:PlaceHolder ID="DisplayNamePlaceholder" runat="server" Visible="false">
         <tr>
             <td class="postheader" style="width:50%">
-                <YAF:LocalizedLabel ID="LocalizedLabel34" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel34" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="DISPLAYNAME" />
             </td>
             <td class="post">
@@ -28,7 +29,7 @@
     </asp:PlaceHolder>
     <tr>
         <td class="postheader" style="width:50%">
-            <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="REALNAME2" />
         </td>
         <td class="post">
@@ -37,7 +38,7 @@
      </tr>
      <tr id="HideTr" visible="<%# this.Get<YafBoardSettings>().AllowUserHideHimself || this.PageContext.IsAdmin %>" runat="server">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel35" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel35" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="HIDEME" />
         </td>
         <td class="post">
@@ -46,7 +47,7 @@
     </tr>    
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="BirthdayLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="BirthdayLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="BIRTHDAY" />
         </td>
         <td class="post">
@@ -55,7 +56,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="OCCUPATION" />
         </td>
         <td class="post">
@@ -64,7 +65,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="INTERESTS" />
         </td>
         <td class="post">
@@ -73,7 +74,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="GENDER" />
         </td>
         <td class="post">
@@ -83,23 +84,23 @@
     <tr>
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="LOCATION" />
             </b>
         </td>
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel40" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel40" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="COUNTRY" />
         </td>
         <td class="post">
-            <YAF:CountryListBox ID="Country" AutoPostBack="true" OnTextChanged="LookForNewRegions" runat="server" CssClass="edit" />
+            <VZF:CountryListBox ID="Country" AutoPostBack="true" OnTextChanged="LookForNewRegions" runat="server" CssClass="edit" />
         </td>
     </tr>
      <tr id="RegionTr" visible="false" runat="server">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel41" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel41" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="REGION" />
         </td>
         <td class="post">
@@ -108,7 +109,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel42" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel42" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="CITY" />
         </td>
         <td class="post">
@@ -117,7 +118,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="where" />
         </td>
         <td class="post">
@@ -127,14 +128,14 @@
     <tr>
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="homepage" />
             </b>
         </td>
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="homepage2" />
         </td>
         <td class="post">
@@ -143,7 +144,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="weblog2" />
         </td>
         <td class="post">
@@ -154,14 +155,14 @@
         <tr>
             <td colspan="2" class="header2">
                 <b>
-                    <YAF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedPage="CP_EDITPROFILE"
+                    <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedPage="CP_EDITPROFILE"
                         LocalizedTag="METAWEBLOG_TITLE" />
                 </b>
             </td>
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="METAWEBLOG_API_URL" />
             </td>
             <td class="post">
@@ -170,10 +171,10 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="METAWEBLOG_API_ID" />
                 <br />
-                <YAF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="METAWEBLOG_API_ID_INSTRUCTIONS" />
             </td>
             <td class="post">
@@ -182,7 +183,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="METAWEBLOG_API_USERNAME" />
             </td>
             <td class="post">
@@ -193,14 +194,14 @@
     <tr>
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="messenger" />
             </b>
         </td>
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel29" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel29" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="MSN" />
         </td>
         <td class="post">
@@ -209,7 +210,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel28" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel28" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="YIM" />
         </td>
         <td class="post">
@@ -218,7 +219,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel27" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel27" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="AIM" />
         </td>
         <td class="post">
@@ -227,7 +228,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel26" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel26" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="ICQ" />
         </td>
         <td class="post">
@@ -236,7 +237,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel31" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel31" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="Facebook" />
         </td>
         <td class="post">
@@ -245,7 +246,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel33" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel33" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="Twitter" />
         </td>
         <td class="post">
@@ -254,7 +255,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel37" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel37" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="TWITTER_ID" />
         </td>
         <td class="post">
@@ -263,7 +264,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel32" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel32" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="xmpp" />
         </td>
         <td class="post">
@@ -272,7 +273,7 @@
     </tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel30" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel30" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="SKYPE" />
         </td>
         <td class="post">
@@ -282,14 +283,14 @@
     <tr>
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel25" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel25" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="TIMEZONE" />
             </b>
         </td>
     </tr>
     <tr>
 		<td class="postheader">
-			<YAF:LocalizedLabel ID="DSTLocalizedLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
+			<VZF:LocalizedLabel ID="DSTLocalizedLabel" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="DST" />
 		</td>
 		<td class="post">
@@ -298,7 +299,7 @@
 	</tr>
     <tr>
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel24" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel24" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="TIMEZONE2" />
         </td>
         <td class="post">
@@ -308,14 +309,14 @@
     <tr runat="server" id="ForumSettingsRows">
         <td colspan="2" class="header2">
             <b>
-                <YAF:LocalizedLabel ID="LocalizedLabel23" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel23" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="FORUM_SETTINGS" />
             </b>
         </td>
     </tr>
     <tr runat="server" id="UserThemeRow">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel22" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel22" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="SELECT_THEME" />
         </td>
         <td class="post">
@@ -324,7 +325,7 @@
     </tr>
     <tr runat="server" id="TrTextEditors">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel19" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel19" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="SELECT_TEXTEDITOR" />
         </td> 
         <td class="post">
@@ -334,7 +335,7 @@
     </tr>
     <tr runat="server" id="UseMobileThemeRow" visible="false">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel21" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel21" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="USE_MOBILE_THEME" />
         </td>
         <td class="post">
@@ -343,7 +344,7 @@
     </tr>
     <tr runat="server" id="UserLanguageRow">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel20" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel20" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="SELECT_LANGUAGE" />
         </td>
         <td class="post">
@@ -352,7 +353,7 @@
     </tr>
     <tr runat="server" id="UserLoginRow">
         <td class="postheader">
-            <YAF:LocalizedLabel ID="LocalizedLabel36" runat="server" LocalizedPage="CP_EDITPROFILE"
+            <VZF:LocalizedLabel ID="LocalizedLabel36" runat="server" LocalizedPage="CP_EDITPROFILE"
                 LocalizedTag="USE_SINGLESIGNON" />
         </td>
         <td class="post">
@@ -362,13 +363,13 @@
     <asp:PlaceHolder runat="server" ID="LoginInfo" Visible="false">
         <tr>
             <td colspan="2" class="header2">
-                <YAF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel18" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="CHANGE_EMAIL" />
             </td>
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedPage="CP_EDITPROFILE"
+                <VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedPage="CP_EDITPROFILE"
                     LocalizedTag="EMAIL" />
             </td>
             <td class="post">

@@ -1,11 +1,11 @@
 <%@ Control Language="c#" AutoEventWireup="True"
 	Inherits="YAF.Pages.Admin.editnntpserver" Codebehind="editnntpserver.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server">
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server">
 	<table class="content" cellspacing="1" cellpadding="0" width="100%">
 		<tr>
 			<td class="header1" colspan="11">
-				<YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+				<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITNNTPSERVER" />
              </td>
 		</tr>
         <tr>
@@ -13,35 +13,35 @@
 		</tr>
         <tr>
 			<td class="postheader" colspan="4">
-                <YAF:HelpLabel ID="LocalizedLabel2" runat="server" LocalizedTag="NNTP_NAME" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+                <VZF:HelpLabel ID="LocalizedLabel2" runat="server" LocalizedTag="NNTP_NAME" LocalizedPage="ADMIN_EDITNNTPSERVER" />
             </td>
 			<td class="post" colspan="7">
 				<asp:TextBox Width="250" ID="Name" runat="server" /></td>
 		</tr>
 		<tr>
 			<td class="postheader" colspan="4">
-				<YAF:HelpLabel ID="LocalizedLabel3" runat="server" LocalizedTag="NNTP_ADRESS" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+				<VZF:HelpLabel ID="LocalizedLabel3" runat="server" LocalizedTag="NNTP_ADRESS" LocalizedPage="ADMIN_EDITNNTPSERVER" />
             </td>
 			<td class="post" colspan="7">
 				<asp:TextBox Width="250" ID="Address" runat="server" /></td>
 		</tr>
 		<tr>
 			<td class="postheader" colspan="4">
-				<YAF:HelpLabel ID="LocalizedLabel4" runat="server" LocalizedTag="NNTP_PORT" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+				<VZF:HelpLabel ID="LocalizedLabel4" runat="server" LocalizedTag="NNTP_PORT" LocalizedPage="ADMIN_EDITNNTPSERVER" />
             </td>
 			<td class="post" colspan="7">
 				<asp:TextBox Width="250" ID="Port" runat="server" /></td>
 		</tr>
 		<tr>
 			<td class="postheader" colspan="4">
-				<YAF:HelpLabel ID="LocalizedLabel5" runat="server" LocalizedTag="NNTP_USERNAME" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+				<VZF:HelpLabel ID="LocalizedLabel5" runat="server" LocalizedTag="NNTP_USERNAME" LocalizedPage="ADMIN_EDITNNTPSERVER" />
             </td>
 			<td class="post" colspan="7">
 				<asp:TextBox Width="250" ID="UserName" runat="server" Enabled="true" /></td>
 		</tr>
 		<tr>
 			<td class="postheader" colspan="4">
-				<YAF:HelpLabel ID="LocalizedLabel6" runat="server" LocalizedTag="NNTP_PASSWORD" LocalizedPage="ADMIN_EDITNNTPSERVER" />
+				<VZF:HelpLabel ID="LocalizedLabel6" runat="server" LocalizedTag="NNTP_PASSWORD" LocalizedPage="ADMIN_EDITNNTPSERVER" />
             </td>
 			<td class="post" colspan="7">
 				<asp:TextBox Width="250" ID="UserPass" runat="server" Enabled="true" /></td>
@@ -52,5 +52,5 @@
 				<asp:Button ID="Cancel" runat="server" CssClass="pbutton" OnClick="Cancel_Click"></asp:Button></td>
 		</tr>
 	</table>
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

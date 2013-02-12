@@ -19,17 +19,17 @@
         <table cellpadding="0" cellspacing="1" class="content" width="100%">
             <tr>
                 <td class="header1" colspan="3" align="center">
-                    <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" />
             </tr>
             <tr>
                 <td class="header2">
-                    <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="HEADER_CODE" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="HEADER_CODE" />
                 </td>
                 <td class="header2" align="center">
-                    <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="HEADER_SMILE" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="HEADER_SMILE" />
                 </td>
                 <td class="header2">
-                    <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="HEADER_MEANING" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="HEADER_MEANING" />
             </tr>
     </HeaderTemplate>
     <ItemTemplate>
@@ -50,7 +50,7 @@
         <tr>
             <td class="footer1" colspan="3" align="center">
                 <a href="javascript:window.close();">
-                    <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="CLOSE_WINDOW" />
+                    <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="CLOSE_WINDOW" />
                 </a>
             </td>
         </tr>

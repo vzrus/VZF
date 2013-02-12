@@ -1,4 +1,4 @@
-﻿namespace YAF.Controls
+﻿namespace VZF.Controls
 {
     using System;
     using System.Data;

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YAF.Controls {
+namespace VZF.Controls {
     
     
     public partial class ForumActiveDiscussion {
@@ -28,7 +28,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.CollapsibleImage CollapsibleImage;
+        protected global::VZF.Controls.CollapsibleImage CollapsibleImage;
         
         /// <summary>
         /// ActiveDiscussionHeader control.
@@ -37,7 +37,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel ActiveDiscussionHeader;
+        protected global::VZF.Controls.LocalizedLabel ActiveDiscussionHeader;
         
         /// <summary>
         /// ActiveDiscussionPlaceHolder control.
@@ -55,7 +55,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.LocalizedLabel LatestPostsHeader;
+        protected global::VZF.Controls.LocalizedLabel LatestPostsHeader;
         
         /// <summary>
         /// LatestPosts control.
@@ -73,7 +73,7 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.RssFeedLink RssFeed;
+        protected global::VZF.Controls.RssFeedLink RssFeed;
         
         /// <summary>
         /// AtomFeed control.
@@ -82,6 +82,6 @@ namespace YAF.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Controls.RssFeedLink AtomFeed;
+        protected global::VZF.Controls.RssFeedLink AtomFeed;
     }
 }

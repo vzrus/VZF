@@ -1,11 +1,11 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.editgroup"
     CodeBehind="editgroup.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server">
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server">
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="11">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
         </tr>
         <tr>
@@ -13,7 +13,7 @@
 		</tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="ROLE_NAME" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="ROLE_NAME" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="Name" runat="server" />
@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="IS_START" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="IS_START" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="FORUM_MOD" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="FORUM_MOD" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel4" runat="server" LocalizedTag="IS_ADMIN" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel4" runat="server" LocalizedTag="IS_ADMIN" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -52,7 +52,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel5" runat="server" LocalizedTag="PMMESSAGES" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel5" runat="server" LocalizedTag="PMMESSAGES" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -62,7 +62,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel6" runat="server" LocalizedTag="DESCRIPTION" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel6" runat="server" LocalizedTag="DESCRIPTION" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="SIGNATURE_LENGTH" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="SIGNATURE_LENGTH" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -82,7 +82,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel8" runat="server" LocalizedTag="SIG_BBCODES" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel8" runat="server" LocalizedTag="SIG_BBCODES" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="UsrSigBBCodes" runat="server" />
@@ -90,7 +90,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel9" runat="server" LocalizedTag="SIG_HTML" LocalizedPage="ADMIN_EDITGROUP" />                
+                <VZF:HelpLabel ID="HelpLabel9" runat="server" LocalizedTag="SIG_HTML" LocalizedPage="ADMIN_EDITGROUP" />                
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="UsrSigHTMLTags" runat="server" />
@@ -98,7 +98,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel10" runat="server" LocalizedTag="ALBUM_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel10" runat="server" LocalizedTag="ALBUM_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="UsrAlbums" runat="server" Text="0" />
@@ -106,7 +106,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="IMAGES_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="IMAGES_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="UsrAlbumImages" runat="server" Text="0" />
@@ -114,7 +114,7 @@
         </tr>
         <tr>
             <td class="postheader" style="width: 50%">
-                <YAF:HelpLabel ID="HelpLabel12" runat="server" LocalizedTag="PRIORITY" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel12" runat="server" LocalizedTag="PRIORITY" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post" style="width: 50%">
                 <asp:TextBox Style="width: 350px" ID="Priority" MaxLength="5" Text="0" runat="server" />
@@ -122,7 +122,7 @@
         </tr>
         <tr>
             <td class="postheader" width="50%">
-                <YAF:HelpLabel ID="HelpLabel13" runat="server" LocalizedTag="STYLE" LocalizedPage="ADMIN_EDITGROUP" />            
+                <VZF:HelpLabel ID="HelpLabel13" runat="server" LocalizedTag="STYLE" LocalizedPage="ADMIN_EDITGROUP" />            
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="StyleTextBox" TextMode="MultiLine" runat="server" />
@@ -130,7 +130,7 @@
         </tr>
         <tr runat="server" visible="false" id="IsGuestTR">
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel14" runat="server" LocalizedTag="IS_GUEST" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel14" runat="server" LocalizedTag="IS_GUEST" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post">
                 <asp:CheckBox ID="IsGuestX" runat="server"></asp:CheckBox>
@@ -138,7 +138,7 @@
         </tr>
         <tr runat="server" id="NewGroupRow">
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="INITIAL_MASK" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="INITIAL_MASK" LocalizedPage="ADMIN_EDITGROUP" />
             </td>
             <td class="post">
                 <asp:DropDownList Style="width: 350px" runat="server" ID="AccessMaskID" OnDataBinding="BindData_AccessMaskID" />
@@ -148,15 +148,15 @@
             <HeaderTemplate>
                 <tr>
                     <td class="header1" colspan="11">
-                        <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_EDITGROUP" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER" LocalizedPage="ADMIN_EDITGROUP" />
                     </td>
                 </tr>
                 <tr>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="FORUM"  LocalizedPage="ADMIN_EDITGROUP" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="FORUM"  LocalizedPage="ADMIN_EDITGROUP" />
                     </td>
                     <td class="header2">
-                        <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="ACCESS_MASK" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="ACCESS_MASK" />
                     </td>
                 </tr>
             </HeaderTemplate>
@@ -169,10 +169,10 @@
                         </strong>
                         <br />
                         <em>
-                        <YAF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="BOARD"  LocalizedPage="ADMIN_EDITGROUP" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="BOARD"  LocalizedPage="ADMIN_EDITGROUP" />
                         <%# Eval( "BoardName") %>
                         <br />
-                        <YAF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="CATEGORY"  LocalizedPage="ADMIN_EDITGROUP" />
+                        <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="CATEGORY"  LocalizedPage="ADMIN_EDITGROUP" />
                         <%# Eval( "CategoryName") %>
                         </em>
                     </td>
@@ -191,5 +191,5 @@
             </td>
         </tr>
     </table>
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

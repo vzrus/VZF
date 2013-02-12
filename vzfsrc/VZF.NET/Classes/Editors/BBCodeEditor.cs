@@ -29,7 +29,7 @@ namespace YAF.Editors
     using VZF.Data.Common;
 
     using YAF.Classes;
-    using YAF.Controls;
+    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.BBCode;
     using YAF.Types;

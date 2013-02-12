@@ -19,7 +19,7 @@
 
 using System.Globalization;
 
-namespace YAF.Controls.Statistics
+namespace VZF.Controls.Statistics
 {
   #region Using
 

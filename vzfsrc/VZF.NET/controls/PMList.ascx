@@ -1,8 +1,8 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Controls.PMList" EnableTheming="true" Codebehind="PMList.ascx.cs" EnableViewState="true" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.PMList" EnableTheming="true" Codebehind="PMList.ascx.cs" EnableViewState="true" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Core" %>
 
-<YAF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
+<VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
 
 <asp:GridView ID="MessagesView" runat="server" OnRowCreated="MessagesView_RowCreated"
 	DataKeyNames="UserPMessageID" Width="99%" GridLines="None" CellSpacing="1" ShowFooter="true"
@@ -21,19 +21,19 @@
 			<FooterTemplate>
 				<asp:UpdatePanel ID="upPanExport" runat="server">
 				<ContentTemplate>
-				  <YAF:ThemeButton runat="server" ID="MarkAsRead" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="MarkAsRead" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="MARK_ALL_ASREAD" OnClick="MarkAsRead_Click" Visible="<%#this.View != PMView.Outbox %>" />
-				  <YAF:ThemeButton runat="server" ID="ArchiveSelected" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="ArchiveSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="ARCHIVESELECTED" OnClick="ArchiveSelected_Click" Visible="<%#this.View == PMView.Inbox %>" />
-					 <YAF:ThemeButton runat="server" ID="ExportSelected" CssClass="yafcssbigbutton leftItem"
+					 <VZF:ThemeButton runat="server" ID="ExportSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="EXPORTSELECTED" OnClick="ExportSelected_Click" OnLoad="ExportAll_Load" />
-				  <YAF:ThemeButton runat="server" ID="DeleteSelected" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="DeleteSelected" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="DELETESELECTED" OnLoad="DeleteSelected_Load" OnClick="DeleteSelected_Click" />
-				  <YAF:ThemeButton runat="server" ID="ArchiveAll" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="ArchiveAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="ARCHIVEALL" OnLoad="ArchiveAll_Load" OnClick="ArchiveAll_Click" Visible="<%#this.View == PMView.Inbox %>" />
-				  <YAF:ThemeButton runat="server" ID="ExportAll" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="ExportAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="EXPORTALL" OnClick="ExportAll_Click" OnLoad="ExportAll_Load" />
-				  <YAF:ThemeButton runat="server" ID="DeleteAll" CssClass="yafcssbigbutton leftItem"
+				  <VZF:ThemeButton runat="server" ID="DeleteAll" CssClass="yafcssbigbutton leftItem"
 					TextLocalizedTag="DELETEALL" OnLoad="DeleteAll_Load" OnClick="DeleteAll_Click" />
 				</ContentTemplate> 
 				<Triggers>
@@ -62,7 +62,7 @@
 			</HeaderTemplate>
 			<HeaderStyle Width="7%" />
 			<ItemTemplate>
-				<YAF:UserLink ID="UserLink1" runat="server" UserID='<%# (( this.View == PMView.Outbox ) ? this.Eval("ToUserID") : this.Eval("FromUserID" )).ToType<int>() %>' />
+				<VZF:UserLink ID="UserLink1" runat="server" UserID='<%# (( this.View == PMView.Outbox ) ? this.Eval("ToUserID") : this.Eval("FromUserID" )).ToType<int>() %>' />
 			</ItemTemplate>
 			<ItemStyle Width="7%" HorizontalAlign="Center" />
 		</asp:TemplateField>
@@ -86,7 +86,7 @@
 			</HeaderTemplate>
 			<HeaderStyle HorizontalAlign="Left" />
 			<ItemTemplate>
-				<YAF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></YAF:DisplayDateTime>
+				<VZF:DisplayDateTime ID="PostedDateTime" runat="server" DateTime='<%# Container.DataItemToField<DateTime>("Created") %>'></VZF:DisplayDateTime>
 			</ItemTemplate>
 			<ItemStyle HorizontalAlign="Left" />
 		</asp:TemplateField>
@@ -111,4 +111,4 @@
 			</tr>
   </table>
   
-<YAF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+<VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />

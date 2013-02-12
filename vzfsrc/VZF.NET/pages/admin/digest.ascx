@@ -1,16 +1,16 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.digest"
     CodeBehind="digest.ascx.cs" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu ID="AdminMenu1" runat="server">
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu ID="AdminMenu1" runat="server">
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="2">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_DIGEST" />
             </td>
         </tr>
         <tr>
             <td class="postheader" width="25%">
-                <YAF:HelpLabel ID="LocalizedLabel4" runat="server" LocalizedTag="DIGEST_ENABLED"
+                <VZF:HelpLabel ID="LocalizedLabel4" runat="server" LocalizedTag="DIGEST_ENABLED"
                     LocalizedPage="ADMIN_DIGEST" />
             </td>
             <td class="post" width="75%">
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td class="postheader" width="25%">
-                <YAF:HelpLabel ID="LocalizedLabel5" runat="server" LocalizedTag="DIGEST_LAST" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:HelpLabel ID="LocalizedLabel5" runat="server" LocalizedTag="DIGEST_LAST" LocalizedPage="ADMIN_DIGEST" />
             </td>
             <td class="post" width="75%">
                 <b>
@@ -38,13 +38,13 @@
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="2">
-                <YAF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="HEADER2" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="HEADER2" LocalizedPage="ADMIN_DIGEST" />
             </td>
         </tr>
         <asp:PlaceHolder ID="DigestHtmlPlaceHolder" runat="server" Visible="false">
             <tr>
                 <td class="postheader" width="25%">
-                    <YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="DIGEST_GENERATE"
+                    <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="DIGEST_GENERATE"
                         LocalizedPage="ADMIN_DIGEST" />
                 </td>
                 <td class="post" width="75%">
@@ -63,12 +63,12 @@
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="2">
-                <YAF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="HEADER3" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="HEADER3" LocalizedPage="ADMIN_DIGEST" />
             </td>
         </tr>
         <tr>
             <td class="postheader" width="25%">
-                <YAF:HelpLabel ID="LocalizedLabel7" runat="server" LocalizedTag="DIGEST_EMAIL" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:HelpLabel ID="LocalizedLabel7" runat="server" LocalizedTag="DIGEST_EMAIL" LocalizedPage="ADMIN_DIGEST" />
             </td>
             <td class="post" width="75%">
                 <asp:TextBox ID="TextSendEmail" runat="server" Style="width: 250px"></asp:TextBox>
@@ -76,7 +76,7 @@
         </tr>
         <tr>
             <td class="postheader" width="25%">
-                <YAF:HelpLabel ID="LocalizedLabel8" runat="server" LocalizedTag="DIGEST_METHOD" LocalizedPage="ADMIN_DIGEST" />
+                <VZF:HelpLabel ID="LocalizedLabel8" runat="server" LocalizedTag="DIGEST_METHOD" LocalizedPage="ADMIN_DIGEST" />
             </td>
             <td class="post" width="75%">
                 <asp:DropDownList ID="SendMethod" runat="server" Style="width: 250px">
@@ -92,5 +92,5 @@
             </td>
         </tr>
     </table>
-</YAF:AdminMenu>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

@@ -17,30 +17,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes;
-
-namespace YAF.Controls
+namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Collections.Generic;
-  using System.Data;
-  using System.Linq;
-  using System.Web.Security;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Web.Security;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
 
-  
-  using YAF.Core;
-  using YAF.Core.Services;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Helpers;
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Core.Services;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using YAF.Utils;
+    using YAF.Utils.Helpers;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// The edit users kill.

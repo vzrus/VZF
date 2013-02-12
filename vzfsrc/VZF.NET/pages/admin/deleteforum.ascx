@@ -1,12 +1,12 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.deleteforum"
     CodeBehind="deleteforum.ascx.cs" %>
-<%@ Register TagPrefix="YAF" Namespace="YAF.Controls" %>
-<YAF:PageLinks runat="server" ID="PageLinks" />
-<YAF:AdminMenu runat="server" ID="Adminmenu1">
+<%@ Register TagPrefix="YAF" Namespace="VZF.Controls" %>
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server" ID="Adminmenu1">
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="2">
-                <YAF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER1" LocalizedPage="ADMIN_DELETEFORUM" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="HEADER1" LocalizedPage="ADMIN_DELETEFORUM" />
                 <asp:Label ID="ForumNameTitle" runat="server"></asp:Label>
             </td>
         </tr>
@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="MOVE_TOPICS" LocalizedPage="ADMIN_DELETEFORUM" />
+                <VZF:HelpLabel ID="HelpLabel11" runat="server" LocalizedTag="MOVE_TOPICS" LocalizedPage="ADMIN_DELETEFORUM" />
             </td>
             <td class="post">
                 <asp:CheckBox ID="MoveTopics" runat="server" AutoPostBack="true"></asp:CheckBox>
@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td class="postheader">
-                <YAF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="NEW_FORUM" LocalizedPage="ADMIN_DELETEFORUM" />
+                <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="NEW_FORUM" LocalizedPage="ADMIN_DELETEFORUM" />
                 <strong></strong>
                 <br />
             </td>
@@ -40,7 +40,7 @@
             </td>
         </tr>
     </table>
-</YAF:AdminMenu>
+</VZF:AdminMenu>
 
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
 	<ContentTemplate>
@@ -52,8 +52,8 @@
 <div>
 	<div id="DeleteForumMessage" style="display:none" class="ui-overlay">
 		<div class="ui-widget ui-widget-content ui-corner-all">
-		<h2><YAF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="DELETE_TITLE" LocalizedPage="ADMIN_DELETEFORUM" /></h2>
-		<p><YAF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="DELETE_MSG" LocalizedPage="ADMIN_DELETEFORUM" /></p>
+		<h2><VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="DELETE_TITLE" LocalizedPage="ADMIN_DELETEFORUM" /></h2>
+		<p><VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="DELETE_MSG" LocalizedPage="ADMIN_DELETEFORUM" /></p>
 		<div align="center">
 			<asp:Image ID="LoadingImage" runat="server" alt="Processing..." />
 		</div>
@@ -62,4 +62,4 @@
 	</div>
 </div>
 
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />

@@ -1,10 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="personalforum.ascx.cs" Inherits="YAF.pages.personalforum" %>
-<YAF:PageLinks ID="PageLinks" runat="server"></YAF:PageLinks>
+<VZF:PageLinks ID="PageLinks" runat="server"></VZF:PageLinks>
 <a id="top" name="top"></a>
  <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="3">
-                <YAF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="FORUMS" LocalizedPage="TEAM" />
+                <VZF:LocalizedLabel ID="LocalizedLabel17" runat="server" LocalizedTag="FORUMS" LocalizedPage="TEAM" />
             </td>
         </tr>
         <tr>
@@ -23,9 +23,9 @@
                                 <%# DataBinder.Eval(Container.DataItem, "[\"SortOrder\"]") %>
                             </td>
                             <td>
-                             <YAF:ThemeButton ID="moderate1" CssClass="yaflittlebutton" CommandName='moderate' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TextLocalizedTag="BUTTON_MODERATE"  ImageThemePage="VOTE" ImageThemeTag="POLL_VOTED" runat="server" /> 
-                             <YAF:ThemeButton ID="btnEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></YAF:ThemeButton>								
-                             <YAF:ThemeButton ID="btnDelete" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></YAF:ThemeButton>
+                             <VZF:ThemeButton ID="moderate1" CssClass="yaflittlebutton" CommandName='moderate' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TextLocalizedTag="BUTTON_MODERATE"  ImageThemePage="VOTE" ImageThemeTag="POLL_VOTED" runat="server" /> 
+                             <VZF:ThemeButton ID="btnEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>								
+                             <VZF:ThemeButton ID="btnDelete" CssClass="yaflittlebutton" CommandName='delete' CommandArgument='<%# Eval( "[\"ForumID\"]") %>' TitleLocalizedTag="DELETE" ImageThemePage="ICONS" ImageThemeTag="DELETE_SMALL_ICON" runat="server"></VZF:ThemeButton>
                             </td>
                         </tr>
                     </ItemTemplate>
@@ -36,4 +36,4 @@
             </td>
         </tr>
     </table>
-<YAF:SmartScroller ID="SmartScroller1" runat="server" />
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />
