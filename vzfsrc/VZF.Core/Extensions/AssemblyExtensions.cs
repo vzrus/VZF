@@ -24,6 +24,7 @@ namespace YAF.Core
   using System.Collections.Generic;
   using System.Linq;
   using System.Reflection;
+  using System.Security;
 
   using YAF.Types;
   using YAF.Types.Attributes;
@@ -33,11 +34,13 @@ namespace YAF.Core
   /// <summary>
   /// The assembly extensions.
   /// </summary>
+  [SecuritySafeCritical]
   public static class AssemblyExtensions
   {
     #region Public Methods
 
     [NotNull]
+
     public static IEnumerable<Type> FindModules<T>([NotNull] this IEnumerable<Assembly> assemblies)
     {
       CodeContracts.ArgumentNotNull(assemblies, "assemblies");

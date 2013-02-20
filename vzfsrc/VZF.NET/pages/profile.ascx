@@ -5,6 +5,7 @@
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Register TagPrefix="VZF" TagName="SignatureEdit" Src="../controls/EditUsersSignature.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="SuspendUser" Src="../controls/EditUsersSuspend.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="ForumAccess" Src="../controls/ForumProfileAccess.ascx" %>
@@ -83,14 +84,7 @@
 									<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="groups" />
 								</td>
 								<td class="post">
-									<asp:Repeater ID="Groups" runat="server">
-										<ItemTemplate>
-											<%# Container.DataItem %>
-										</ItemTemplate>
-										<SeparatorTemplate>
-											,
-										</SeparatorTemplate>
-									</asp:Repeater>
+								    <asp:Literal ID="Groups" runat="server"></asp:Literal>
 								</td>
 							</tr>
 							<tr runat="server" id="RankTR" visible="false">
@@ -328,7 +322,7 @@
 									</tr>
 									<tr class="post">
 										<td valign="top" class="message" colspan="2">
-											<VZF:MessagePostData ID="MessagePost" runat="server" ShowAttachments="false" DataRow="<%# Container.DataItem %>">
+											<VZF:MessagePostData ID="MessagePost" runat="server" ShowAttachments="false" DataRow="<%# (DataRow)Container.DataItem %>">
 											</VZF:MessagePostData>
 										</td>
 									</tr>

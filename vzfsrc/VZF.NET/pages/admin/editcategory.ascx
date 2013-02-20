@@ -20,6 +20,14 @@
 			<asp:TextBox ID="Name" runat="server" MaxLength="50" Width="250"></asp:TextBox></td>
 		</tr>
 		<tr>
+		<tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="CanHavePersForumsLbl" runat="server" LocalizedTag="CANHAVEUSERFORUMS" LocalizedPage="ADMIN_EDITFORUM" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="CanHavePersForums" runat="server"></asp:CheckBox>
+            </td>
+        </tr>   
 			<td class="postheader">
 			  <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="CATEGORY_IMAGE" LocalizedPage="ADMIN_EDITCATEGORY" />
 			</td>

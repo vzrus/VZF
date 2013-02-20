@@ -2361,7 +2361,8 @@ namespace VZF.Data.Mysql
             object categoryId,
             object name,
             object categoryImage,
-            object sortOrder)
+            object sortOrder, 
+            object canHavePersForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_save"))
             {
@@ -2375,8 +2376,9 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
                 cmd.Parameters.Add("i_Name", MySqlDbType.VarChar).Value = name;
-                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int16).Value = sortOrder;
+                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int32).Value = sortOrder;
                 cmd.Parameters.Add("i_CategoryImage", MySqlDbType.VarChar).Value = categoryImage;
+                cmd.Parameters.Add("i_CanHavePersForums", MySqlDbType.Byte).Value = canHavePersForums;
 
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -3286,12 +3288,14 @@ namespace VZF.Data.Mysql
             listDestination.TableName = "forum_sort_list";
             listDestination.Columns.Add("ForumID", typeof(String));
             listDestination.Columns.Add("Title", typeof(String));
+            listDestination.Columns.Add("CanHavePersForums", typeof(bool));
 
             if (emptyFirstRow)
             {
                 DataRow blankRow = listDestination.NewRow();
-                blankRow["ForumID"] = string.Empty;
+                blankRow["ForumID"] = 0;
                 blankRow["Title"] = string.Empty;
+                blankRow["CanHavePersForums"] = false;
                 listDestination.Rows.Add(blankRow);
             }
             // filter the forum list -- not sure if this code actually works
@@ -3701,7 +3705,8 @@ namespace VZF.Data.Mysql
             object styles,
             bool dummy,
             object userId,
-            bool isUserForum)
+            bool isUserForum,
+            bool canhavepersforums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_save"))
             {
@@ -3724,6 +3729,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId ?? DBNull.Value;
                 cmd.Parameters.Add("i_IsUserForum", MySqlDbType.Byte).Value = isUserForum;
+                cmd.Parameters.Add("i_CanHavePersForums", MySqlDbType.Byte).Value = canhavepersforums;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                 return long.Parse(MySqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
             }
@@ -3776,7 +3782,8 @@ namespace VZF.Data.Mysql
 
                         newRow = listDestination.NewRow();
                         newRow["ForumID"] = -categoryID; // Ederon : 9/4/2007
-                        newRow["Title"] = string.Format("{0}", row["Category"].ToString());
+                        newRow["Title"] = string.Format("{0}", row["Category"]);
+                        newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
                         listDestination.Rows.Add(newRow);
                     }
 
@@ -3789,6 +3796,7 @@ namespace VZF.Data.Mysql
 
                     newRow["ForumID"] = row["ForumID"];
                     newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+                    newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
 
                     listDestination.Rows.Add(newRow);
 
@@ -3965,7 +3973,8 @@ namespace VZF.Data.Mysql
             object isAdmin,
             object isGuest,
             object isStart,
-            object isModerator,
+            object isModerator, 
+            [NotNull] object isHidden,
             object accessMaskId,
             object pmlimit,
             object style,
@@ -3977,7 +3986,10 @@ namespace VZF.Data.Mysql
             object usrAlbums,
             object usrAlbumImages,
             [CanBeNull] object userId,
-            [NotNull] object isUserGroup)
+            [NotNull] object isUserGroup,
+            object personalForumsNumber,
+            object personalAccessMasksNumber,
+            object personalGroupsNumber)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_save"))
             {
@@ -3990,10 +4002,11 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_IsGuest", MySqlDbType.Byte).Value = isGuest;
                 cmd.Parameters.Add("i_IsStart", MySqlDbType.Byte).Value = isStart;
                 cmd.Parameters.Add("i_IsModerator", MySqlDbType.Byte).Value = isModerator;
+                cmd.Parameters.Add("i_IsHidden", MySqlDbType.Byte).Value = isHidden;
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_PMLimit", MySqlDbType.Int32).Value = pmlimit;
                 cmd.Parameters.Add("i_Style", MySqlDbType.VarChar).Value = style;
-                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int16).Value = sortOrder;
+                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int32).Value = sortOrder;
                 cmd.Parameters.Add("i_Description", MySqlDbType.VarChar).Value = description;
                 cmd.Parameters.Add("i_UsrSigChars", MySqlDbType.Int32).Value = usrSigChars;
                 cmd.Parameters.Add("i_UsrSigBBCodes", MySqlDbType.VarChar).Value = usrSigBBCodes;
@@ -4002,6 +4015,9 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_UsrAlbumImages", MySqlDbType.Int32).Value = usrAlbumImages;
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("i_IsUserGroup", MySqlDbType.Byte).Value = isUserGroup;
+                cmd.Parameters.Add("i_PersonalAccessMasksNumber", MySqlDbType.Int32).Value = personalAccessMasksNumber;
+                cmd.Parameters.Add("i_PersonalGroupsNumber", MySqlDbType.Int32).Value = personalGroupsNumber;
+                cmd.Parameters.Add("i_PersonalForumsNumber", MySqlDbType.Int32).Value = personalForumsNumber;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 return long.Parse(MySqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
@@ -11135,9 +11151,10 @@ namespace VZF.Data.Mysql
                 // use transactions...
                 if (useTransactions)
                 {
+                    var con = connMan.OpenDBConnection(connectionString);
                     using (
                         var trans =
-                            connMan.OpenDBConnection(connectionString).BeginTransaction(MySqlDbAccess.IsolationLevel))
+                            con.BeginTransaction(MySqlDbAccess.IsolationLevel))
                     {
                         foreach (string sql0 in statements)
                         {
@@ -11158,7 +11175,7 @@ namespace VZF.Data.Mysql
                                 using (var cmd = new MySqlCommand())
                                 {
                                     cmd.Transaction = trans;
-                                    cmd.Connection = new MySqlConnection(connectionString);
+                                    cmd.Connection = con;
                                     cmd.CommandType = CommandType.Text;
                                     cmd.CommandText = sql.Trim();
 

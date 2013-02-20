@@ -195,7 +195,8 @@ CREATE TABLE databaseSchema.objectQualifier_category
 			 name                      varchar(128) NOT NULL CHECK (name <> ''),
 			 categoryimage             varchar(255),
 			 sortorder                 smallint NOT NULL,
-			 pollgroupid               int
+			 pollgroupid               int,
+			 canhavepersforums         boolean  DEFAULT false NOT NULL
 			 ) 			 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -285,7 +286,8 @@ CREATE TABLE databaseSchema.objectQualifier_forum
 			 createdbyusername         varchar(255),
 			 createdbyuserdisplayname  varchar(255),
 			 createddate               timestampTZ,
-			 isuserforum  boolean  DEFAULT false NOT NULL
+			 isuserforum               boolean DEFAULT false NOT NULL,
+			 canhavepersforums         boolean DEFAULT false NOT NULL
 			 ) 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -339,7 +341,10 @@ CREATE TABLE databaseSchema.objectQualifier_group
 			 createdbyuserdisplayname  varchar(255),
 			 createddate               timestampTZ,			
 			 isusergroup               boolean  DEFAULT false NOT NULL,
-			 ishidden                  boolean  DEFAULT false NOT NULL
+			 ishidden                  boolean  DEFAULT false NOT NULL,
+			 usrpersonalforums         integer  DEFAULT 0 NOT NULL,
+			 usrpersonalmasks          integer  DEFAULT 0 NOT NULL,
+			 usrpersonalgroups         integer  DEFAULT 0 NOT NULL
 			 ) 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -726,7 +731,7 @@ CREATE TABLE databaseSchema.objectQualifier_user
 			 overridedefaultthemes     boolean DEFAULT false NOT NULL,
 			 pmnotification            boolean DEFAULT true NOT NULL,
 			 flags                     integer DEFAULT 0 NOT NULL,
-			 points                    integer DEFAULT 0 NOT NULL,
+			 points                    integer DEFAULT 1 NOT NULL,
 			 autowatchtopics           boolean NOT NULL DEFAULT FALSE,
 			 displayname               varchar(128) NOT NULL,
 			 culture                   varchar(10),
@@ -1146,6 +1151,10 @@ BEGIN
 		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN isuserforum  boolean  DEFAULT false NOT NULL ;
 	 END IF;
 
+	 	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','canhavepersforums')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
+	 END IF;			 
+
 	  IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserid')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyuserid  integer;
 	 END IF;
@@ -1168,6 +1177,18 @@ BEGIN
 
 	 IF (NOT column_exists('databaseSchema.objectQualifier_group','ishidden')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN ishidden  boolean  DEFAULT false NOT NULL;
+	 END IF;
+	 
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','usrpersonalforums')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN  usrpersonalforums  integer  DEFAULT 0 NOT NULL;
+	 END IF;	
+	 
+	IF (NOT column_exists('databaseSchema.objectQualifier_group','usrpersonalmasks')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN  usrpersonalmasks  integer  DEFAULT 0 NOT NULL;
+	 END IF; 
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','usrpersonalgroups')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN  usrpersonalgroups  integer  DEFAULT 0 NOT NULL;
 	 END IF;
 
 	 	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createdbyuserid')) THEN
@@ -1193,6 +1214,10 @@ BEGIN
 	 IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','isadminmask')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN isadminmask  boolean  DEFAULT false NOT NULL ;
 	 END IF;
+
+	  IF (NOT column_exists('databaseSchema.objectQualifier_category','canhavepersforums')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_category ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
+	 END IF;		
 
 	 /* IF (EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='objectQualifier_forumreadtracking' 
 											   AND indexname='ix_objectQualifier_forumreadtracking_userid_forumid')) THEN

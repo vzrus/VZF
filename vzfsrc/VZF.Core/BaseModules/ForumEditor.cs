@@ -99,7 +99,7 @@ namespace YAF.Core
 
       set
       {
-        ;
+          ;
       }
     }
 

@@ -2874,7 +2874,7 @@ namespace VZF.Data.Common
         /// <exception cref="ArgumentOutOfRangeException">
         /// </exception>
         public static void category_save(
-            int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder)
+            int? mid, object boardId, object categoryId, object name, object categoryImage, object sortOrder, object canHavePersForums)
         {
             string dataEngine;
             string connectionString;
@@ -2885,23 +2885,23 @@ namespace VZF.Data.Common
             {
                 case "System.Data.SqlClient":
                     VZF.Data.MsSql.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder);
+                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
                 case "Npgsql":
                     VZF.Data.Postgre.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder);
+                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
                 case "MySql.Data.MySqlClient":
                     VZF.Data.Mysql.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder);
+                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     VZF.Data.Firebird.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder);
+                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
-                    // case "oracle":  orPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
-                    // case "db2": db2Postgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
-                    // case "other": othPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder); break;
+                // case "oracle":  orPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
+                // case "db2": db2Postgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
+                // case "other": othPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4636,7 +4636,8 @@ namespace VZF.Data.Common
             object styles,
             bool dummy,
             object userId,
-            bool isUserForum)
+            bool isUserForum, 
+            bool canhavepersforums)
         {
             string dataEngine;
             string connectionString;
@@ -4665,7 +4666,8 @@ namespace VZF.Data.Common
                         styles,
                         dummy,
                         userId,
-                        isUserForum);
+                        isUserForum,
+                        canhavepersforums);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.forum_save(
                         connectionString,
@@ -4686,7 +4688,8 @@ namespace VZF.Data.Common
                         styles,
                         dummy,
                         userId,
-                        isUserForum);
+                        isUserForum,
+                        canhavepersforums);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.forum_save(
                         connectionString,
@@ -4707,7 +4710,8 @@ namespace VZF.Data.Common
                         styles,
                         dummy,
                         userId,
-                        isUserForum);
+                        isUserForum,
+                        canhavepersforums);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.forum_save(
                         connectionString,
@@ -4728,11 +4732,12 @@ namespace VZF.Data.Common
                         styles,
                         dummy,
                         userId,
-                        isUserForum);
-                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
-                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
-                // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
-                // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum);
+                        isUserForum,
+                        canhavepersforums);
+                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5340,6 +5345,7 @@ namespace VZF.Data.Common
             object isGuest,
             object isStart,
             object isModerator,
+            object isHidden,
             object accessMaskId,
             object pmLimit,
             object style,
@@ -5351,7 +5357,10 @@ namespace VZF.Data.Common
             object usrAlbums,
             object usrAlbumImages,
             object userId,
-            object isUserGroup)
+            object isUserGroup,
+            object personalForumsNumber,
+            object personalAccessMasksNumber,
+            object personalGroupsNumber)
         {
             string dataEngine;
             string connectionString;
@@ -5370,6 +5379,7 @@ namespace VZF.Data.Common
                         isGuest,
                         isStart,
                         isModerator,
+                        isHidden,
                         accessMaskId,
                         pmLimit,
                         style,
@@ -5381,7 +5391,10 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages,
                         userId,
-                        isUserGroup);
+                        isUserGroup,
+                        personalForumsNumber,
+                        personalAccessMasksNumber,
+                        personalGroupsNumber);
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.group_save(
                         connectionString,
@@ -5392,6 +5405,7 @@ namespace VZF.Data.Common
                         isGuest,
                         isStart,
                         isModerator,
+                        isHidden,
                         accessMaskId,
                         pmLimit,
                         style,
@@ -5403,7 +5417,10 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages,
                         userId,
-                        isUserGroup);
+                        isUserGroup,
+                        personalForumsNumber,
+                        personalAccessMasksNumber,
+                        personalGroupsNumber);
                 case "MySql.Data.MySqlClient":
                     return VZF.Data.Mysql.Db.group_save(
                         connectionString,
@@ -5414,6 +5431,7 @@ namespace VZF.Data.Common
                         isGuest,
                         isStart,
                         isModerator,
+                        isHidden,
                         accessMaskId,
                         pmLimit,
                         style,
@@ -5425,7 +5443,10 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages, 
                         userId,
-                        isUserGroup);
+                        isUserGroup,
+                        personalForumsNumber,
+                        personalAccessMasksNumber,
+                        personalGroupsNumber);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.group_save(
                         connectionString,
@@ -5436,6 +5457,7 @@ namespace VZF.Data.Common
                         isGuest,
                         isStart,
                         isModerator,
+                        isHidden,
                         accessMaskId,
                         pmLimit,
                         style,
@@ -5447,10 +5469,13 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages,
                         userId,
-                        isUserGroup);
-                    // case "oracle":  return orPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup);
-                    // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup);
-                    // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup); 
+                        isUserGroup,
+                        personalForumsNumber,
+                        personalAccessMasksNumber,
+                        personalGroupsNumber);
+                // case "oracle":  return orPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
+                // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
+                // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

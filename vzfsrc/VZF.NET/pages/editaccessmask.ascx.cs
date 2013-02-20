@@ -1,4 +1,27 @@
-﻿namespace YAF.pages
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="editaccessmask.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The edit access masks.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
+namespace YAF.pages
 {
     using System;
     using System.Data;
@@ -27,7 +50,7 @@
         protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // get back to access masks administration
-            YafBuildLink.Redirect(ForumPages.editaccessmask,"u={0}".FormatWith(PageContext.PageUserID));
+            YafBuildLink.Redirect(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /// <summary>
@@ -38,19 +61,17 @@
             // beard index
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
-            // administration index
-            this.PageLinks.AddLink(
-                this.GetText("ADMIN_ADMIN", "Administration"), YafBuildLink.GetLink(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID)));
-
-            this.PageLinks.AddLink(
-                this.GetText("ADMIN_ACCESSMASKS", "TITLE"), YafBuildLink.GetLink(ForumPages.editaccessmask, "u={0}".FormatWith(PageContext.PageUserID)));
+           // user profile
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
 
             // current page label (no link)
             this.PageLinks.AddLink(this.GetText("ADMIN_EDITACCESSMASKS", "TITLE"), string.Empty);
 
             this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-                this.GetText("ADMIN_ADMIN", "Administration"),
-                this.GetText("ADMIN_ACCESSMASKS", "TITLE"),
+                this.Get<YafBoardSettings>().Name,
+                this.Get<YafBoardSettings>().EnableDisplayName
+                    ? this.PageContext.CurrentUserData.DisplayName
+                    : this.PageContext.PageUserName,
                 this.GetText("ADMIN_EDITACCESSMASKS", "TITLE"));
         }
 
@@ -65,10 +86,41 @@
             {
                 return;
             }
-
-            if (this.Get<YafBoardSettings>().PersonalAccessMasksNumber <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+             
+            // A new mask case
+            if (PageContext.PersonalAccessMasksNumber >= PageContext.UsrPersonalMasks && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i") == null)
             {
                 YafBuildLink.AccessDenied();
+            }
+
+            // the calling user is not the owner
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i") != null)
+            {
+                if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i")))
+                {
+                    YafBuildLink.AccessDenied();
+                }
+
+                DataTable dt = CommonDb.accessmask_list(
+                    PageContext.PageModuleID,
+                    PageContext.PageBoardID,
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i").ToType<int>(),
+                    0,
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
+                    true,
+                    false);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
             }
 
             this.Save.Text = this.GetText("COMMON", "SAVE");
@@ -144,7 +196,7 @@
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
 
             // get back to access masks administration
-            YafBuildLink.Redirect(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID));
+            YafBuildLink.Redirect(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /* Methods */

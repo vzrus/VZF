@@ -49,13 +49,13 @@ namespace YAF.pages {
         protected global::System.Web.UI.WebControls.Repeater List;
         
         /// <summary>
-        /// New control.
+        /// NewAccessMaskBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button New;
+        protected global::System.Web.UI.WebControls.Button NewAccessMaskBtn;
         
         /// <summary>
         /// SmartScroller1 control.

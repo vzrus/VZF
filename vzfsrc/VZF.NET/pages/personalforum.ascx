@@ -32,7 +32,7 @@
                 </asp:Repeater>
         <tr>
             <td class="footer1" colspan="3" align="center">
-                <asp:Button ID="NewForum" runat="server" OnClick="NewForum_Click" CssClass="pbutton"></asp:Button>
+                <asp:Button ID="NewForum" runat="server" OnClick="NewForum_Click" Visible="False" CssClass="pbutton"></asp:Button>
             </td>
         </tr>
     </table>

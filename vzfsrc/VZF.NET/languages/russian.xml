@@ -454,6 +454,8 @@
     <Resource tag="VERIFY_PASS_HELP">Проверить пароль.</Resource>
   </page>
   <page name="ADMIN_EDITCATEGORY">
+    <Resource tag="CANHAVEUSERFORUMS">Category can have user forums:</Resource>
+    <Resource tag="CANHAVEUSERFORUMS_HELP">The category can contain user forums.</Resource>
     <Resource tag="CATEGORY_IMAGE">Иконка категории:</Resource>
     <Resource tag="CATEGORY_IMAGE_HELP">Это изображение будет отображаться рядом с названием категории</Resource>
     <Resource tag="CATEGORY_NAME">Категория:</Resource>
@@ -468,6 +470,8 @@
   </page>
   <page name="ADMIN_EDITFORUM">
     <Resource tag="ACCESS_MASK">Маска доступа</Resource>
+    <Resource tag="CANHAVEUSERFORUMS">Forum can have user forums:</Resource>
+    <Resource tag="CANHAVEUSERFORUMS_HELP">The forum can have user forums.</Resource>
     <Resource tag="CATEGORY">Категория:</Resource>
     <Resource tag="CATEGORY_HELP">В какой категории находится форум.</Resource>
     <Resource tag="CHOOSE_THEME">Используемая тема:</Resource>
@@ -482,6 +486,8 @@
     <Resource tag="HIDE_NOACESS_HELP">Если пользователь не имеет разрешение на чтение форума, то он не будет отображаться в списке форумов.</Resource>
     <Resource tag="INITAL_MASK">Начальная маска доступа:</Resource>
     <Resource tag="INITAL_MASK_HELP">Начальная маска доступа для всех групп.</Resource>
+    <Resource tag="ISUSERFORUM">Is User Forum:</Resource>
+    <Resource tag="ISUSERFORUM_HELP">The forum is a user forum(blog).</Resource>
     <Resource tag="LOCKED">Закрыт:</Resource>
     <Resource tag="LOCKED_HELP">Если форум закрыт никто не может оставлять посты или ответы на этом форуме.</Resource>
     <Resource tag="MSG_CATEGORY">Вы должны выбрать категорию для этого форума.</Resource>
@@ -492,6 +498,9 @@
     <Resource tag="MSG_INVALID_URL">Вы ввели неверный адрес Url.</Resource>
     <Resource tag="MSG_NAME_FORUM">Вы должны ввести название для форума.</Resource>
     <Resource tag="MSG_PARENT_SELF">Форум не может быть подчинённым форумом самого себя.</Resource>
+    <Resource tag="MSG_PFORUMS_MASKSNUMBER">You should enter max allowed access masks number.</Resource>
+    <Resource tag="MSG_PFORUMS_NUMBER">You should enter max allowed personal forums number.</Resource>
+    <Resource tag="MSG_PFORUMS_PGROUPSNUMBER">You should enter max allowed personal groups number.</Resource>
     <Resource tag="MSG_POSITIVE_VALUE">Порядок сортировки должин быть целым числом в диапазоне от 0 до 32767.</Resource>
     <Resource tag="MSG_VALUE">Вы должны вести значение для порядка сортировки.</Resource>
     <Resource tag="NAME">Название:</Resource>
@@ -500,6 +509,12 @@
     <Resource tag="NO_POSTSCOUNT_HELP">Если это включено, то посты на этом форуме не будут считаться в статистике.</Resource>
     <Resource tag="PARENT_FORUM">Родительский форум:</Resource>
     <Resource tag="PARENT_FORUM_HELP">Если значение выбрано, то тот форум будет подфорумом одного из форумов.</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
+    <Resource tag="PERSONALFORUMS_NUMBER">Разрешить личные форумы(Блоги), кол-во:</Resource>
+    <Resource tag="PERSONALFORUMS_NUMBER_HELP">Количество разрешённых персональных форумов или блогов для одного пользователя.</Resource>
     <Resource tag="PRE_MODERATED">Пре-модерируемый:</Resource>
     <Resource tag="PRE_MODERATED_HELP">Если этот форум пре-модерируемый, то сообщение должны быть одобрены модератором перед публикацией.</Resource>
     <Resource tag="REMOTE_URL">Удалённый URL:</Resource>
@@ -531,6 +546,8 @@
     <Resource tag="IS_ADMIN_HELP">Все кто в этой роли являются администраторами YAF.</Resource>
     <Resource tag="IS_GUEST">Гость::</Resource>
     <Resource tag="IS_GUEST_HELP">Это значение для внутреннего использования и делает роль недоступной для .NET membership. Никогда не назначайте этот флаг никаким пользователям кроме роли гостя или в комбинации с другими значениями ролей. </Resource>
+    <Resource tag="IS_HIDDEN">Is Hidden:</Resource>
+    <Resource tag="IS_HIDDEN_HELP">If this is checked, The group will not be displayed to anyone but to admins.</Resource>
     <Resource tag="IS_START">Стартовая:</Resource>
     <Resource tag="IS_START_HELP">Если это значение выбрано, то все новые пользовтели будут в этой роли. Только одна роль должна быть стартовой.</Resource>
     <Resource tag="MSG_ALBUM_NUMBER">Вы должны ввести целое положительное число для максимвльного количества изображений в каждом альбоме.</Resource>
@@ -920,8 +937,6 @@
     <Resource tag="ALLOW_NOTIFICATION_ONALL_HELP">Разрешить пользователям получать индивидуальные отчёты по электронной почте(внимание: много трафика).</Resource>
     <Resource tag="ALLOW_PASS_CHANGE">Разрешить изменение пароля:</Resource>
     <Resource tag="ALLOW_PASS_CHANGE_HELP">Разрешить пользователям изменять их пароли.</Resource>
-    <Resource tag="ALLOW_PERSONALFORUMS">Разрешить личные форумы(Блоги):</Resource>
-    <Resource tag="ALLOW_PERSONALFORUMS_HELP">Разрешить пользователям создавать личные форумы или блоги.</Resource>
     <Resource tag="ALLOW_PM_NOTIFICATION">Разрешить уведомления о личных сообщениях:</Resource>
     <Resource tag="ALLOW_PM_NOTIFICATION_HELP">Разрешить пользователям получать сообщения по электронной почте при появлении нового ЛС.</Resource>
     <Resource tag="ALLOW_PMS">Разрешить ЛС:</Resource>
@@ -3644,7 +3659,7 @@ Spoiler Content
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Approve&lt;/strong&gt; - You Become Friend of the User who requests it &lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Deny&lt;/strong&gt; - Reject the request&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Body in your List.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Friend in your List.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Remove Friend&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;To remove a Friend from Your List go to your 'My Friends' page. On the Tab 'Friend List' Click on the Button 'Remove Friend' of the User you want to remove&lt;/p&gt;

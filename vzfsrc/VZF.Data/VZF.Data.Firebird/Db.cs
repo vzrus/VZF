@@ -43,10 +43,12 @@ namespace VZF.Data.Firebird
     using YAF.Types.Objects;
     using YAF.Utils;
     using YAF.Utils.Helpers;
+    using System.Security;
 
     /// <summary>
     /// All the Database functions for VZF
     /// </summary>
+     [SecuritySafeCritical]
     public static class Db
     {
         // added by vzrus
@@ -1165,11 +1167,11 @@ namespace VZF.Data.Firebird
                 {
                     using (
                         FbTransaction trans =
-                            connMan.OpenDBConnection(connectionString).BeginTransaction(FbDbAccess.IsolationLevel))
+                             connMan.OpenDBConnection(connectionString).BeginTransaction(FbDbAccess.IsolationLevel))
                     {
                         using (
-                            FbDataAdapter da = new FbDataAdapter(
-                                FbDbAccess.GetObjectName("category_list"), connMan.DBConnection(connectionString)))
+                            var da = new FbDataAdapter(
+                                  FbDbAccess.GetObjectName("category_list"), connMan.DBConnection(connectionString)))
                         {
                             da.SelectCommand.Transaction = trans;
 
@@ -2101,7 +2103,8 @@ namespace VZF.Data.Firebird
             object categoryId,
             object name,
             object categoryImage,
-            object sortOrder)
+            object sortOrder, 
+            object canHavePersForums)
         {
             int sortOrderChecked = 0;
             bool result = Int32.TryParse(sortOrder.ToString(), out sortOrderChecked);
@@ -2121,6 +2124,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_NAME", FbDbType.VarChar)).Value = name;
                 cmd.Parameters.Add(new FbParameter("@I_SORTORDER", FbDbType.SmallInt)).Value = sortOrderChecked;
                 cmd.Parameters.Add(new FbParameter("@I_CATEGORYIMAGE", FbDbType.VarChar)).Value = categoryImage;
+                cmd.Parameters.Add(new FbParameter("@I_CANHAVEPERSFORUMS", FbDbType.Boolean)).Value = canHavePersForums;
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -3158,7 +3162,7 @@ namespace VZF.Data.Firebird
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
-                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID ?? DBNull.Value;
                 cmd.Parameters.Add(new FbParameter("@I_ALLOWUSERFORUMSONLY", FbDbType.Boolean)).Value = allowUserForumsOnly;
    
                 using (DataTable dt = FbDbAccess.GetData(cmd, connectionString))
@@ -3282,7 +3286,7 @@ namespace VZF.Data.Firebird
                 {
                     using (
                         var da = new FbDataAdapter(
-                            FbDbAccess.GetObjectName("category_list"), connMan.OpenDBConnection(connectionString)))
+                           FbDbAccess.GetObjectName("category_list"), connMan.OpenDBConnection(connectionString)))
                     {
                         using (
                             var trans = da.SelectCommand.Connection.BeginTransaction(
@@ -3444,7 +3448,8 @@ namespace VZF.Data.Firebird
             [NotNull] object styles,
             [NotNull] bool dummy,
             [NotNull] object userId,
-            [NotNull] bool isUserForum)
+            [NotNull] bool isUserForum,
+            bool canhavepersforums)
         {
             using (var cmd = FbDbAccess.GetCommand("forum_save"))
             {
@@ -3501,6 +3506,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
                 cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
                 cmd.Parameters.Add("@I_ISUSERFORUM", FbDbType.Boolean).Value = isUserForum;
+                cmd.Parameters.Add("@I_CANHAVEPERSFORUMS", FbDbType.Boolean).Value = canhavepersforums;
                 cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 String resultop = FbDbAccess.ExecuteScalar(cmd, connectionString).ToString();
@@ -3561,12 +3567,14 @@ namespace VZF.Data.Firebird
 
             listDestination.Columns.Add("ForumID", typeof(String));
             listDestination.Columns.Add("Title", typeof(String));
+            listDestination.Columns.Add("CanHavePersForums", typeof(bool));
 
             if (emptyFirstRow)
             {
                 DataRow blankRow = listDestination.NewRow();
                 blankRow["ForumID"] = string.Empty;
                 blankRow["Title"] = string.Empty;
+                blankRow["CanHavePersForums"] = false;
                 listDestination.Rows.Add(blankRow);
             }
             // filter the forum list
@@ -3672,9 +3680,11 @@ namespace VZF.Data.Firebird
 
                         newRow = listDestination.NewRow();
                         newRow["ForumID"] = -categoryID; // Ederon : 9/4/2007
-                        newRow["Title"] = string.Format("{0}", row["Category"].ToString());
+                        newRow["Title"] = string.Format("{0}", row["Category"]);
+                        newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
                         listDestination.Rows.Add(newRow);
                     }
+
 
                     string sIndent = string.Empty;
 
@@ -3685,6 +3695,7 @@ namespace VZF.Data.Firebird
 
                     newRow["ForumID"] = row["ForumID"];
                     newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+                    newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
 
                     listDestination.Rows.Add(newRow);
 
@@ -3828,7 +3839,8 @@ namespace VZF.Data.Firebird
             [NotNull] object isAdmin,
             [NotNull] object isGuest,
             [NotNull] object isStart,
-            [NotNull] object isModerator,
+            [NotNull] object isModerator, 
+            [NotNull] object isHidden,
             [NotNull] object accessMaskID,
             [NotNull] object pmLimit,
             [NotNull] object style,
@@ -3840,7 +3852,10 @@ namespace VZF.Data.Firebird
             [NotNull] object usrAlbums,
             [NotNull] object usrAlbumImages,
             [CanBeNull] object userId,
-            [NotNull] object isUserGroup)
+            [NotNull] object isUserGroup,
+            object personalForumsNumber,
+            object personalAccessMasksNumber,
+            object personalGroupsNumber)
         {
             using (var cmd = FbDbAccess.GetCommand("group_save"))
             {
@@ -3859,6 +3874,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_ISGUEST", FbDbType.Boolean)).Value = isGuest;
                 cmd.Parameters.Add(new FbParameter("@I_ISSTART", FbDbType.Boolean)).Value = isStart;
                 cmd.Parameters.Add(new FbParameter("@I_ISMODERATOR", FbDbType.Boolean)).Value = isModerator;
+                cmd.Parameters.Add(new FbParameter("@I_ISHIDDEN", FbDbType.Boolean)).Value = isHidden;
                 cmd.Parameters.Add(new FbParameter("@I_ACCESSMASKID", FbDbType.Integer)).Value = accessMaskID;
                 cmd.Parameters.Add(new FbParameter("@I_PMLIMIT", FbDbType.Integer)).Value = pmLimit;
                 cmd.Parameters.Add(new FbParameter("@I_STYLE", FbDbType.VarChar)).Value = style;
@@ -3870,7 +3886,10 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_USRALBUMS", FbDbType.Integer)).Value = usrAlbums;
                 cmd.Parameters.Add(new FbParameter("@I_USRALBUMIMAGES", FbDbType.Integer)).Value = usrAlbumImages;
                 cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new FbParameter("@I_ISUSERGROUP", FbDbType.Boolean)).Value = isUserGroup;
+                cmd.Parameters.Add("@I_ISUSERGROUP", FbDbType.Boolean).Value = isUserGroup;
+                cmd.Parameters.Add("@I_PERSONALACCESSMASKSNUMBER", FbDbType.Integer).Value = personalAccessMasksNumber;
+                cmd.Parameters.Add("@I_PERSONALGROUPSNUMBER", FbDbType.Integer).Value = personalGroupsNumber;
+                cmd.Parameters.Add("@I_PERSONALFORUMSNUMBER", FbDbType.Integer).Value = personalForumsNumber;
                 cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
 
                 return long.Parse(FbDbAccess.ExecuteScalar(cmd, connectionString).ToString());
@@ -9465,7 +9484,6 @@ namespace VZF.Data.Firebird
                             cmd1.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
                             // run it...
                             FbDbAccess.ExecuteNonQuery(cmd1, false, connectionString);
-
                         }
                     }
 
@@ -9494,7 +9512,7 @@ namespace VZF.Data.Firebird
             getStatsMessage += "\r\n{0}".FormatWith(e.Message);
         }
 
-        public static void db_getstats(string connectionString, FbDbConnectionManager conn)
+        /* public static void db_getstats(string connectionString, FbDbConnectionManager conn)
         {
             DataTable indexList = Db.db_index_simplelist(connectionString);
             foreach (DataRow indexName in indexList.Rows)
@@ -9508,7 +9526,7 @@ namespace VZF.Data.Firebird
                     FbDbAccess.ExecuteNonQuery(cmd1, false, connectionString);
                 }
             }
-        }
+        } */
 
         public static string db_getstats_warning()
         {
@@ -9715,6 +9733,7 @@ namespace VZF.Data.Firebird
                     // just attempt to open the connection to test if a DB is available.           
                     FbConnection getConn = connMan.OpenDBConnection(connectionString);
                 }
+
                 return true;
             }
 
@@ -10008,10 +10027,9 @@ namespace VZF.Data.Firebird
             using (var cmd = FbDbAccess.GetCommand("SYSTEM_UPDATEVERSION"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-
                 cmd.Parameters.Add(new FbParameter("@I_VERSION", FbDbType.Integer)).Value = version;
                 cmd.Parameters.Add(new FbParameter("@I_VERSIONNAME", FbDbType.VarChar)).Value = name;
-
+              
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }

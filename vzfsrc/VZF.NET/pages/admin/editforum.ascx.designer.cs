@@ -319,6 +319,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox Moderated;
         
         /// <summary>
+        /// CanHavePersForumsLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel CanHavePersForumsLbl;
+        
+        /// <summary>
+        /// CanHavePersForums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CanHavePersForums;
+        
+        /// <summary>
         /// HelpLabel7 control.
         /// </summary>
         /// <remarks>

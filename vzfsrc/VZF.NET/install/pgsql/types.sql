@@ -336,7 +336,9 @@ CREATE TYPE databaseSchema.objectQualifier_category_list_return_type AS
 "BoardID" integer,
 "Name" varchar(128),
 "CategoryImage" varchar(255),
-"SortOrder" smallint
+"SortOrder" smallint,
+"PollGroupID" integer,
+"CanHavePersForums" boolean
 );
 
 --GO
@@ -439,7 +441,9 @@ CREATE TYPE databaseSchema.objectQualifier_forum_list_return_type AS
 "Flags" integer,
 "ThemeURL" varchar(100),
 "ImageURL" varchar(128),
-"Styles" varchar(255)
+"Styles" varchar(255),
+"CreatedByUserID" integer,
+"CanHavePersForums" bool
 );
 
 --GO
@@ -699,7 +703,10 @@ CREATE TYPE databaseSchema.objectQualifier_group_list_return_type AS
 "UsrAlbums" integer,
 "UsrAlbumImages" integer,
 "IsUserGroup" boolean,
-"CreatedByUserID" integer
+"CreatedByUserID" integer,
+"UsrPersonalMasks" integer,
+"UsrPersonalGroups" integer,
+"UsrPersonalForums" integer
 );
 --GO
 
@@ -756,6 +763,8 @@ CREATE TYPE databaseSchema.objectQualifier_group_member_return_type AS
 (
 "GroupID" integer,
 "Name" varchar(128),
+"IsHidden" boolean,
+"Style" varchar(1024),
 "Member" integer
 );
 --GO
@@ -1138,7 +1147,8 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 		"ForumID" integer,
 		"RankName" varchar(128),
 		"RankImage" varchar(100),
-		"Style"  varchar(255),
+		"RankStyle"  varchar(1024),
+		"Style"  varchar(1024),
 		"Edited" timestampTZ,
 		"HasAttachments" integer,
 		"HasAvatarImage" integer,
@@ -2216,7 +2226,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_lazydata_return_type AS
 "LanguageFile" varchar(128),
 "UseSingleSignOn" bool,
 "IsDirty" bool,
-"TextEditor" varchar(3),
+"TextEditor" varchar(15),
 "TimeZoneUser" integer,
 "CultureUser" varchar(10),
 "IsFacebookUser" boolean,
@@ -2232,7 +2242,13 @@ CREATE TYPE databaseSchema.objectQualifier_user_lazydata_return_type AS
 "UsrAlbums"  integer,
 "UserHasBuddies" boolean,
 "BoardVoteAccess" boolean,
-"Reputation" integer
+"Reputation" integer,
+"PersonalForumsNumber" integer,
+"PersonalAccessMasksNumber" integer,
+"PersonalGroupsNumber" integer,
+"UsrPersonalGroups" integer,
+"UsrPersonalMasks" integer,
+"UsrPersonalForums" integer
 );
 --GO
 

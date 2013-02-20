@@ -52,7 +52,7 @@ c.Flags & 128 AS EditAccess,
 c.Flags & 256 AS DeleteAccess,
 c.Flags & 512 AS UploadAccess,
 c.Flags & 1024 AS DownloadAccess,
-c.Flags & 32768 AS UserForumAccess
+c.Flags & 32768 AS UserForumAccess,
 0 AS AdminGroup                                 
 FROM          {databaseName}.{objectQualifier}UserForum AS b
 INNER JOIN    {databaseName}.{objectQualifier}AccessMask AS c
@@ -341,8 +341,8 @@ MAX(x_1.ModeratorAccess) AS ModeratorAccess,
 MAX(x_1.EditAccess) AS EditAccess,
 MAX(x_1.DeleteAccess) AS DeleteAccess,
 MAX(x_1.UploadAccess) AS UploadAccess,
+MAX(x_1.DownloadAccess) AS DownloadAccess,
 MAX(x_1.UserForumAccess) AS UserForumAccess
-UserForumAccess
 FROM     {databaseName}.{objectQualifier}vaccessfull x_1
 INNER JOIN  {databaseName}.{objectQualifier}UserGroup AS a
 ON a.UserID = x_1.UserID

@@ -20,6 +20,7 @@
 namespace VZF.Data.Firebird
 {
     using System.IO;
+    using System.Security;
 
     using YAF.Classes;
     using YAF.Types;
@@ -33,6 +34,7 @@ namespace VZF.Data.Firebird
     /// <summary>
   /// Provides open/close management for DB Connections
   /// </summary>
+[SecuritySafeCritical]
   public class FbDbConnectionManager : IDisposable
   {
     

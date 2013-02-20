@@ -1,4 +1,28 @@
-﻿namespace YAF.pages
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="editforum.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The edit forum.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace YAF.pages
 {
     using System;
     using System.Data;
@@ -6,6 +30,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Web;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
@@ -152,14 +177,57 @@
                 return;
             }
 
+            // A new forum case
+            if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") == null)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            // the calling user is not the owner
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || !ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u")) || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            string ftitle = null;
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") != null)
+            {
+                if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f")))
+                {
+                    YafBuildLink.AccessDenied();
+                }
+
+                DataTable dt = CommonDb.forum_byuserlist(
+                    PageContext.PageModuleID,
+                    PageContext.PageBoardID,
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f").ToType<int>(),
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
+                    true);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    ftitle = dt.Rows[0]["Name"].ToString();
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
+            }
+
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
-            this.PageLinks.AddLink(this.GetText("TEAM", "FORUMS"), YafBuildLink.GetLink(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID)));
-            this.PageLinks.AddLink(this.GetText("ADMIN_EDITFORUM", "TITLE"), string.Empty);
+            
+            // user profile
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
+
+            // personalforum page
+            this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), YafBuildLink.GetLink(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID)));
+
+            // this page link
+            this.PageLinks.AddLink(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") == null ? this.GetText("ADMIN_FORUMS", "NEW_FORUM") : this.HtmlEncode(ftitle), string.Empty);
 
             this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-              this.GetText("ADMIN_ADMIN", "Administration"),
-              this.GetText("TEAM", "FORUMS"),
-              this.GetText("ADMIN_EDITFORUM", "TITLE"));
+                this.Get<YafBoardSettings>().Name,
+                this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
+                ftitle.IsSet() ? this.HtmlEncode(ftitle) : this.GetText("PERSONALFORUM", "TITLE"));
 
             this.Save.Text = this.GetText("SAVE");
             this.Cancel.Text = this.GetText("CANCEL");
@@ -214,7 +282,7 @@
                 this.ForumNameTitle.Text = this.Name.Text;
                 this.Moderated.Checked = flags.IsModerated;
                 this.Styles.Text = row["Styles"].ToString();
-
+                this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
                 this.CategoryList.SelectedValue = row["CategoryID"].ToString();
 
                 this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
@@ -274,7 +342,20 @@
         {
             var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
-            this.CategoryList.DataSource = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            DataTable dataCat = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            DataTable dataCatNew = dataCat.Clone();
+            foreach (DataRow row in dataCat.Rows)
+            {
+                if (row["CanHavePersForums"].ToType<bool>())
+                {
+                    DataRow newRow = dataCatNew.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    dataCatNew.Rows.Add(newRow);
+                }
+            }
+
+            dataCatNew.AcceptChanges();
+            this.CategoryList.DataSource = dataCatNew;
             this.CategoryList.DataBind();
 
             if (forumId.HasValue)
@@ -303,7 +384,20 @@
         /// </summary>
         private void BindParentList()
         {
-            this.ParentList.DataSource = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
+            DataTable dataCat = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.CategoryList.SelectedValue, false);
+            DataTable dataCatNew = dataCat.Clone();
+            foreach (DataRow row in dataCat.Rows)
+            {
+                if (row["CanHavePersForums"].ToType<bool>() || row["ForumID"].ToString() == string.Empty)
+                {
+                    DataRow newRow = dataCatNew.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    dataCatNew.Rows.Add(newRow);
+                }
+            }
+
+            dataCatNew.AcceptChanges();
+            this.ParentList.DataSource = dataCatNew;
             this.ParentList.DataValueField = "ForumID";
             this.ParentList.DataTextField = "Title";
             this.ParentList.DataBind();
@@ -477,7 +571,8 @@
               this.Styles.Text,
               false,
               PageContext.PageUserID,
-              true);
+              true,
+              this.CanHavePersForums.Checked);
 
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
 

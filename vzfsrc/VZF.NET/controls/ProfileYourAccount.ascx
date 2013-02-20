@@ -50,7 +50,7 @@
         <td class="post">
             <asp:Repeater ID="Groups" runat="server">
                 <ItemTemplate>
-                    <span runat="server" style='<%# DataBinder.Eval(Container.DataItem,"Style") %>'>
+                    <span ID="GroupEntry" runat="server" style='<%# this.StyleTransformDataRow(DataBinder.Eval(Container.DataItem,"Style")) %>'>
                         <%# DataBinder.Eval(Container.DataItem,"Name") %></span>
                 </ItemTemplate>
                 <SeparatorTemplate>

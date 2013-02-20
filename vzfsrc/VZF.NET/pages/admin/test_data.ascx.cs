@@ -653,7 +653,7 @@ namespace YAF.Pages.Admin
                         string catName = this.CategoryPrefixTB.Text.Trim() + Guid.NewGuid();
 
                         // TODO: should return number of categories created 
-                        CommonDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100);
+                        CommonDb.category_save(PageContext.PageModuleID, boardID, 0, catName, null, 100,true);
                         DataTable dt = CommonDb.category_simplelist(PageContext.PageModuleID, 0, 10000);
 
                         foreach (DataRow dr in dt.Rows.Cast<DataRow>().Where(dr => dr["Name"].ToString() == catName))
@@ -789,7 +789,8 @@ namespace YAF.Pages.Admin
                     null,
                     false,
                     PageContext.PageUserID,
-                    false);
+                    false,
+                    true);
 
                 if (_forumID <= 0)
                 {

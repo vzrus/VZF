@@ -132,6 +132,26 @@ namespace YAF.Core.Tasks
           }
       }
 
+
+      private object _canHavePersonalForums;
+
+      /// <summary>
+      /// Gets or sets CanHavePersonalForums.
+      /// </summary>
+      public object CanHavePersonalForums
+      {
+          get
+          {
+              return this._canHavePersonalForums;
+              ;
+          }
+
+          set
+          {
+              this._canHavePersonalForums = value;
+          }
+      }
+
       private  static long _categoryOut;
       /// <summary>
       /// Gets or sets CategoryOut.
@@ -192,7 +212,7 @@ namespace YAF.Core.Tasks
       /// <returns>
       ///  The start.
       ///  </returns>
-      public static void Start(object boardId, object categoryId, object categoryName, object categoryImage, object sortOrder, out string failureMessage)
+    public static void Start(object boardId, object categoryId, object categoryName, object categoryImage, object sortOrder, out string failureMessage, object canHavePersonalForums)
       {
 
       failureMessage = String.Empty;
@@ -210,7 +230,8 @@ namespace YAF.Core.Tasks
                                       CategoryId = categoryId,
                                       CategoryName = categoryName,
                                       CategoryImage = categoryImage,
-                                      SortOrder = sortOrder
+                                      SortOrder = sortOrder,
+                                      CanHavePersonalForums = canHavePersonalForums
                                   });
       }
       else
@@ -228,7 +249,7 @@ namespace YAF.Core.Tasks
         try
         {
             this.Logger.Info("Starting Category Save Task for CategoryID {0}.",this.CategoryId);
-            CommonDb.category_save(YafContext.Current.PageModuleID, this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder); 
+            CommonDb.category_save(YafContext.Current.PageModuleID, this.BoardIdToSave, this.CategoryId, this.CategoryName, this.CategoryImage, this.SortOrder, this.CanHavePersonalForums); 
             this.Logger.Info("Category Save Task for CategoryID {0} is completed.", CategoryId);
         }
         catch (Exception x)

@@ -896,6 +896,10 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Content Include="advanced.aspx" />
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.LDF">
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
     <Content Include="auth.aspx" />
     <Content Include="Bin\Autofac.Configuration.dll" />
     <Content Include="Bin\Autofac.dll" />
@@ -5067,6 +5071,7 @@
     <Content Include="themes\BlackGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlackGrey\blog--exclamation.png" />
     <Content Include="themes\BlackGrey\blog.png" />
+    <Content Include="themes\BlackGrey\blog1.png" />
     <Content Include="themes\BlackGrey\frog3.gif" />
     <Content Include="themes\BlackGrey\lifebuoy-small.png" />
     <Content Include="themes\BlackGrey\minus-circle.png" />
@@ -5081,6 +5086,7 @@
     <Content Include="themes\BlueGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\BlueGrey\blog--exclamation.png" />
     <Content Include="themes\BlueGrey\blog.png" />
+    <Content Include="themes\BlueGrey\blog1.png" />
     <Content Include="themes\BlueGrey\frog3.gif" />
     <Content Include="themes\BlueGrey\lifebuoy-small.png" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
@@ -5094,6 +5100,7 @@
     <Content Include="themes\cleanSlate\balloon-twitter-retweet.png" />
     <Content Include="themes\cleanSlate\blog--exclamation.png" />
     <Content Include="themes\cleanSlate\blog.png" />
+    <Content Include="themes\cleanSlate\blog1.png" />
     <Content Include="themes\cleanSlate\frog3.gif" />
     <Content Include="themes\cleanSlate\lifebuoy-small.png" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
@@ -5106,6 +5113,7 @@
     <Content Include="themes\Fancy\images\arrow-branch.png" />
     <Content Include="themes\Fancy\images\blog--exclamation.png" />
     <Content Include="themes\Fancy\images\blog.png" />
+    <Content Include="themes\Fancy\images\blog1.png" />
     <Content Include="themes\Fancy\images\frog3.gif" />
     <Content Include="themes\Fancy\images\balloon-twitter-retweet.png" />
     <Content Include="themes\Fancy\images\lifebuoy-small.png" />
@@ -5120,6 +5128,7 @@
     <Content Include="themes\GreenGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreenGrey\blog--exclamation.png" />
     <Content Include="themes\GreenGrey\blog.png" />
+    <Content Include="themes\GreenGrey\blog1.png" />
     <Content Include="themes\GreenGrey\frog3.gif" />
     <Content Include="themes\GreenGrey\lifebuoy-small.png" />
     <Content Include="themes\GreenGrey\minus-circle.png" />
@@ -5133,6 +5142,7 @@
     <Content Include="themes\GreyGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\GreyGrey\blog--exclamation.png" />
     <Content Include="themes\GreyGrey\blog.png" />
+    <Content Include="themes\GreyGrey\blog1.png" />
     <Content Include="themes\GreyGrey\frog3.gif" />
     <Content Include="themes\GreyGrey\lifebuoy-small.png" />
     <Content Include="themes\GreyGrey\minus-circle.png" />
@@ -5146,6 +5156,7 @@
     <Content Include="themes\OrangeGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\OrangeGrey\blog--exclamation.png" />
     <Content Include="themes\OrangeGrey\blog.png" />
+    <Content Include="themes\OrangeGrey\blog1.png" />
     <Content Include="themes\OrangeGrey\frog3.gif" />
     <Content Include="themes\OrangeGrey\lifebuoy-small.png" />
     <Content Include="themes\OrangeGrey\minus-circle.png" />
@@ -5159,6 +5170,7 @@
     <Content Include="themes\RedGrey\balloon-twitter-retweet.png" />
     <Content Include="themes\RedGrey\blog--exclamation.png" />
     <Content Include="themes\RedGrey\blog.png" />
+    <Content Include="themes\RedGrey\blog1.png" />
     <Content Include="themes\RedGrey\frog3.gif" />
     <Content Include="themes\RedGrey\lifebuoy-small.png" />
     <Content Include="themes\RedGrey\minus-circle.png" />
@@ -5172,6 +5184,7 @@
     <Content Include="themes\soclean\balloon-twitter-retweet.png" />
     <Content Include="themes\soclean\blog--exclamation.png" />
     <Content Include="themes\soclean\blog.png" />
+    <Content Include="themes\soclean\blog1.png" />
     <Content Include="themes\soclean\frog3.gif" />
     <Content Include="themes\soclean\lifebuoy-small.png" />
     <Content Include="themes\soclean\minus-circle.png" />
@@ -5185,6 +5198,7 @@
     <Content Include="themes\Yafmobile\balloon-twitter-retweet.png" />
     <Content Include="themes\Yafmobile\blog--exclamation.png" />
     <Content Include="themes\Yafmobile\blog.png" />
+    <Content Include="themes\Yafmobile\blog1.png" />
     <Content Include="themes\Yafmobile\frog3.gif" />
     <Content Include="themes\Yafmobile\lifebuoy-small.png" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
@@ -5198,6 +5212,7 @@
     <Content Include="themes\yafpro\balloon-twitter-retweet.png" />
     <Content Include="themes\yafpro\blog--exclamation.png" />
     <Content Include="themes\yafpro\blog.png" />
+    <Content Include="themes\yafpro\blog1.png" />
     <Content Include="themes\yafpro\frog3.gif" />
     <Content Include="themes\yafpro\lifebuoy-small.png" />
     <Content Include="themes\yafpro\minus-circle.png" />
@@ -5211,6 +5226,7 @@
     <Content Include="themes\yafvision\balloon-twitter-retweet.png" />
     <Content Include="themes\yafvision\blog--exclamation.png" />
     <Content Include="themes\yafvision\blog.png" />
+    <Content Include="themes\yafvision\blog1.png" />
     <Content Include="themes\yafvision\frog3.gif" />
     <Content Include="themes\yafvision\lifebuoy-small.png" />
     <Content Include="themes\yafvision\minus-circle.png" />
@@ -5218,7 +5234,7 @@
     <Content Include="themes\yafvision\plus-circle.png" />
     <Content Include="themes\yafvision\plus-shield.png" />
     <Content Include="themes\yafvision\tag-label.png" />
-    <Content Include="web_fb.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="web_ms.config">
@@ -5237,10 +5253,10 @@
     <Content Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
     <Content Include="BuildScripts\VZF.Package.targets" />
     <Content Include="pages\app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web.config">
+    <Content Include="web_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="install\mssql\procedures.sql.orig.orig" />
@@ -6873,6 +6889,7 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
+    <Content Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">
@@ -6917,7 +6934,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
     <Folder Include="uploads\" />
   </ItemGroup>
@@ -6938,6 +6954,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
@@ -6953,7 +6972,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>26217</DevelopmentServerPort>
+          <DevelopmentServerPort>25759</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

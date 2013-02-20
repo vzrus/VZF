@@ -23,6 +23,10 @@ using System.Security;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("aaa149ae-6a91-469c-823b-88f9882497eb")]
 
+#if (!COMPACT_FRAMEWORK)
+[assembly: AllowPartiallyTrustedCallers]
+#endif
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

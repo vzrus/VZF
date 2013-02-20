@@ -2800,7 +2800,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// The sort Order.
         /// </param>
-        public static void category_save(string connectionString, [NotNull] object boardID, [NotNull] object categoryId, [NotNull] object name, [NotNull] object categoryImage, [NotNull] object sortOrder)
+        public static void category_save(string connectionString, [NotNull] object boardID, [NotNull] object categoryId, [NotNull] object name, [NotNull] object categoryImage, [NotNull] object sortOrder, [NotNull] object canHavePersForums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_save"))
             {
@@ -2810,6 +2810,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("Name", name);
                 cmd.Parameters.AddWithValue("CategoryImage", categoryImage);
                 cmd.Parameters.AddWithValue("SortOrder", sortOrder);
+                cmd.Parameters.AddWithValue("CanHavePersForums", canHavePersForums);
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
@@ -4569,7 +4570,7 @@ namespace VZF.Data.MsSql
         /// The forum_save.
         /// </returns>
         public static long forum_save(string connectionString, [NotNull] object forumID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object name, [NotNull] object description, [NotNull] object sortOrder, [NotNull] object locked, [NotNull] object hidden, [NotNull] object isTest, [NotNull] object moderated, [NotNull] object accessMaskID, [NotNull] object remoteURL, [NotNull] object themeURL, [NotNull] object imageURL, [NotNull] object styles,
-          bool dummy, object userId, bool isUserForum)
+          bool dummy, object userId, bool isUserForum, bool canhavepersforums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_save"))
             {
@@ -4591,6 +4592,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
                 cmd.Parameters.AddWithValue("UserID", userId);
                 cmd.Parameters.AddWithValue("IsUserForum", isUserForum);
+                cmd.Parameters.AddWithValue("CanHavePersForums", canhavepersforums);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 
                 return long.Parse(MsSqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
@@ -5030,7 +5032,31 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The group_save.
         /// </returns>
-        public static long group_save(string connectionString, [NotNull] object groupID, [NotNull] object boardID, [NotNull] object name, [NotNull] object isAdmin, [NotNull] object isGuest, [NotNull] object isStart, [NotNull] object isModerator, [NotNull] object accessMaskID, [NotNull] object pmLimit, [NotNull] object style, [NotNull] object sortOrder, [NotNull] object description, [NotNull] object usrSigChars, [NotNull] object usrSigBBCodes, [NotNull] object usrSigHTMLTags, [NotNull] object usrAlbums, [NotNull] object usrAlbumImages, [NotNull] object userId, [NotNull] object isUserGroup)
+        public static long group_save(
+            string connectionString,
+            [NotNull] object groupID,
+            [NotNull] object boardID,
+            [NotNull] object name,
+            [NotNull] object isAdmin,
+            [NotNull] object isGuest,
+            [NotNull] object isStart,
+            [NotNull] object isModerator,
+            [NotNull] object isHidden,
+            [NotNull] object accessMaskID,
+            [NotNull] object pmLimit,
+            [NotNull] object style,
+            [NotNull] object sortOrder,
+            [NotNull] object description,
+            [NotNull] object usrSigChars,
+            [NotNull] object usrSigBBCodes,
+            [NotNull] object usrSigHTMLTags,
+            [NotNull] object usrAlbums,
+            [NotNull] object usrAlbumImages,
+            [NotNull] object userId,
+            [NotNull] object isUserGroup,
+            object personalForumsNumber,
+            object personalAccessMasksNumber,
+            object personalGroupsNumber)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_save"))
             {
@@ -5042,6 +5068,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("IsGuest", isGuest);
                 cmd.Parameters.AddWithValue("IsStart", isStart);
                 cmd.Parameters.AddWithValue("IsModerator", isModerator);
+                cmd.Parameters.AddWithValue("IsHidden", isHidden);
                 cmd.Parameters.AddWithValue("AccessMaskID", accessMaskID);
                 cmd.Parameters.AddWithValue("PMLimit", pmLimit);
                 cmd.Parameters.AddWithValue("Style", style);
@@ -5054,6 +5081,9 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("UsrAlbumImages", usrAlbumImages);
                 cmd.Parameters.AddWithValue("UserID", userId);
                 cmd.Parameters.AddWithValue("IsUserGroup", isUserGroup);
+                cmd.Parameters.AddWithValue("PersonalAccessMasksNumber", personalAccessMasksNumber);
+                cmd.Parameters.AddWithValue("PersonalGroupsNumber", personalGroupsNumber);
+                cmd.Parameters.AddWithValue("PersonalForumsNumber", personalForumsNumber);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 
                 return long.Parse(MsSqlDbAccess.ExecuteScalar(cmd, connectionString).ToString());
@@ -11669,12 +11699,14 @@ namespace VZF.Data.MsSql
 
             listDestination.Columns.Add("ForumID", typeof(int));
             listDestination.Columns.Add("Title", typeof(string));
+            listDestination.Columns.Add("CanHavePersForums", typeof(bool));
 
             if (emptyFirstRow)
             {
                 DataRow blankRow = listDestination.NewRow();
                 blankRow["ForumID"] = 0;
                 blankRow["Title"] = string.Empty;
+                blankRow["CanHavePersForums"] = false;
                 listDestination.Rows.Add(blankRow);
             }
 
@@ -11731,6 +11763,7 @@ namespace VZF.Data.MsSql
                         newRow = listDestination.NewRow();
                         newRow["ForumID"] = -categoryID; // Ederon : 9/4/2007
                         newRow["Title"] = string.Format("{0}", row["Category"]);
+                        newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
                         listDestination.Rows.Add(newRow);
                     }
 
@@ -11746,6 +11779,7 @@ namespace VZF.Data.MsSql
 
                     newRow["ForumID"] = row["ForumID"];
                     newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+                    newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
 
                     listDestination.Rows.Add(newRow);
 

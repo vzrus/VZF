@@ -259,7 +259,7 @@ namespace VZF.Controls
 
                     try
                     {
-                        if (this.Get<YafBoardSettings>().AllowPersonalForums && row.Table.Columns.Contains("IsUserForum") && row["IsUserForum"].ToType<bool>())
+                        if (row.Table.Columns.Contains("IsUserForum") && row["IsUserForum"].ToType<bool>())
                         {
                             forumIcon.ThemeTag = "PFORUM_LIST_ICON";
                             forumIcon.LocalizedTitlePage = "PERSONALFORUM";

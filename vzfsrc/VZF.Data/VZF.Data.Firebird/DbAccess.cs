@@ -19,7 +19,13 @@
 
 namespace VZF.Data.Firebird
 {
+    using System;
+    using System.Configuration;
+    using System.Data;
     using System.Diagnostics;
+    using System.Security;
+
+    using FirebirdSql.Data.FirebirdClient;
 
     using VZF.Data.Utils;
 
@@ -29,15 +35,10 @@ namespace VZF.Data.Firebird
     using YAF.Utils;
     using YAF.Utils.Helpers;
 
-    using System;
-    using System.Configuration;
-    using System.Data;
-
-    using FirebirdSql.Data.FirebirdClient;
-
     /// <summary>
   /// The yaf db access for SQL Server.
   /// </summary>
+[SecuritySafeCritical]
     public static class FbDbAccess 
   {
       #region Constants and Fields
@@ -159,11 +160,10 @@ namespace VZF.Data.Firebird
           return String.Format(
                           "{0}{1}",
                           ObjectQualifier,
-                          name
-                          );
+              name);
       }
-     
-      public static string GetConnectionString(
+
+        public static string GetConnectionString(
           string parm1,
           string parm2,
           string parm3,
@@ -186,7 +186,7 @@ namespace VZF.Data.Firebird
           string userId,
           string userPassword)
       {
-          String st = parm1.Replace(@"\\", @"\");
+          string st = parm1.Replace(@"\\", @"\");
 
           var connBuilder =
               new FbConnectionStringBuilder("Database=" + st + ";Port=" +
@@ -226,7 +226,6 @@ namespace VZF.Data.Firebird
 
 
           return connBuilder.ConnectionString;
-
       }
 
       /// <summary>
@@ -262,6 +261,7 @@ namespace VZF.Data.Firebird
 
           return success;
       }
+
       /// <summary>
       /// The get dataset.
       /// </summary>
@@ -278,6 +278,7 @@ namespace VZF.Data.Firebird
       {
           throw new Exception("Not in use for the data layer.");
       }
+
       /// <summary>
       /// Creates new FbCommand based on command text applying all qualifiers to the name.
       /// </summary>
@@ -286,7 +287,6 @@ namespace VZF.Data.Firebird
       /// <returns>New FbCommand</returns>
       static public FbCommand GetCommand(string commandText, bool isText)
       {
-
           return GetCommand(commandText, isText, null);
       }
      
@@ -325,6 +325,7 @@ namespace VZF.Data.Firebird
       {
           return GetCommand(storedProcedure, null);
       }
+
       /// <summary>
       /// Creates new FbCommand calling stored procedure applying all qualifiers to the name.
       /// </summary>
@@ -368,6 +369,7 @@ namespace VZF.Data.Firebird
       {
           return GetDataTableFromReader(cmd, false, true, connectionString);
       }
+
       public static DataTable GetData(IDbCommand cmd, bool transaction, string connectionString)
       {
           return GetDataTableFromReader(cmd, transaction, true, connectionString);
@@ -392,6 +394,7 @@ namespace VZF.Data.Firebird
       {
           return GetData(commandText, false, connectionString);
       }
+
       public static DataTable GetData(string commandText, bool transaction, string connectionString)
       {
           QueryCounter qc = new QueryCounter(commandText);
@@ -421,6 +424,7 @@ namespace VZF.Data.Firebird
           // defaults to using a transaction for non-queries
           ExecuteNonQuery(cmd, true, connectionString);
       }
+
       public static void ExecuteNonQuery(IDbCommand cmd, bool transaction, string connectionString)
       {
           var qc = new QueryCounter(cmd.CommandText);
@@ -453,6 +457,7 @@ namespace VZF.Data.Firebird
               qc.Dispose();
           }
       }
+
       /* public int ExecuteNonQueryInt(FbCommand cmd)
        {
            // defaults to using a transaction for non-queries
@@ -497,6 +502,7 @@ namespace VZF.Data.Firebird
           // default to using a transaction for scaler commands
           return ExecuteScalar(cmd, true, connectionString);
       }
+
       /// <summary>
       /// The execute scalar.
       /// </summary>
@@ -545,9 +551,9 @@ namespace VZF.Data.Firebird
       {
           return AddValuesToDataTableFromReader(cmd, dt, transaction, acceptChanges, firstColumnIndex, 0, connectionString);
       }
+
       public static DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges, int firstColumnIndex, int currentRow, string connectionString)
       {
-
          using (var qc = new QueryCounter(cmd.CommandText))
           {
               using (var connectionManager = new FbDbConnectionManager(connectionString))
@@ -562,24 +568,22 @@ namespace VZF.Data.Firebird
                       // get scalar using a transaction
                       using (var trans = connectionManager.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                       {
-
                           cmd.Transaction = trans;
                           IDataReader reader = cmd.ExecuteReader();
                           if (currentRow == 0)
                           {
                               firstColumnIndex = dt.Columns.Count;
+
                               // Retrieve column schema into a DataTable.                               
                               dt = GetTableColumns(dt, reader);
                           }
 
                           if (reader.FieldCount > 0)
                           {
-
                               while (reader.Read())
                               {
                                   //  for (int rc = 0; rc <= dt.Rows.Count - 1; rc++)
                                   // {
-
                                   foreach (DataColumn column in dt.Columns)
                                   {
                                       int dd = column.Ordinal;
@@ -589,12 +593,9 @@ namespace VZF.Data.Firebird
                                           dt.Rows[currentRow][column] = TypeChecker(column, reader[column.Ordinal - firstColumnIndex]);
                                       }
                                   }
-
-
                                   // }
 
                               }
-
                           }
                           reader.Close();
                           trans.Commit();
@@ -602,16 +603,15 @@ namespace VZF.Data.Firebird
                           return dt;
                       }
                   }
-
                   else
                   {
                       // get DataReader
                       IDataReader reader = cmd.ExecuteReader();
 
-
                       if (currentRow == 0)
                       {
                           firstColumnIndex = dt.Columns.Count;
+
                           // Retrieve column schema into a DataTable.                         
                           dt = GetTableColumns(dt, reader);
                       }
@@ -631,21 +631,18 @@ namespace VZF.Data.Firebird
                                   }
                               }
                           }
-
                       }
+
                       reader.Close();
-                      if (acceptChanges) dt.AcceptChanges();
+                      if (acceptChanges)
+                      {
+                          dt.AcceptChanges();
+                      }
+
                       return dt;
                   }
-
-
               }
           }
-
-
-        
-
-
       }
 
       /// <summary>
@@ -666,7 +663,6 @@ namespace VZF.Data.Firebird
       public static DataTable GetDataTableFromReader(IDbCommand cmd,
          bool transaction, bool acceptChanges, string connectionString)
       {
-
           QueryCounter qc = new QueryCounter(cmd.CommandText);
           try
           {
@@ -679,15 +675,13 @@ namespace VZF.Data.Firebird
 
                   Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
 
-
                   if (transaction)
                   {
-
                       using (IDbTransaction trans = connectionManager.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                       {
-
                           cmd.Transaction = trans;
                           IDataReader reader = cmd.ExecuteReader();
+
                           // Retrieve column schema into our DataTable.                          
                           // dt = TableSchemaReader(dt, reader);
                           dt = GetTableColumns(dt, reader);
@@ -700,15 +694,20 @@ namespace VZF.Data.Firebird
                                   foreach (DataColumn column in dt.Columns)
                                   {
                                       dr[column] = TypeChecker(column, reader[column.Ordinal]);
+                                     
                                       //dr[column] = reader[column.Ordinal];                                                                                 
                                   }
 
                                   dt.Rows.Add(dr);
                               }
                           }
+
                           reader.Close();
                           trans.Commit();
-                          if (acceptChanges) dt.AcceptChanges();
+                          if (acceptChanges)
+                          {
+                              dt.AcceptChanges();
+                          }
                           return dt;
                       }
                   }
@@ -717,13 +716,13 @@ namespace VZF.Data.Firebird
                   {
                       // get scalar regular
                       IDataReader reader = cmd.ExecuteReader();
+
                       // Retrieve column schema into our DataTable.                        
                       dt = GetTableColumns(dt, reader);
                       if (reader.FieldCount > 0)
                       {
                           while (reader.Read())
                           {
-
                               DataRow dr = dt.NewRow();
 
                               foreach (DataColumn column in dt.Columns)
@@ -734,8 +733,13 @@ namespace VZF.Data.Firebird
                               dt.Rows.Add(dr);
                           }
                       }
+
                       reader.Close();
-                      if (acceptChanges) dt.AcceptChanges();
+                      if (acceptChanges)
+                      {
+                          dt.AcceptChanges();
+                      }
+
                       return dt;
                   }
 

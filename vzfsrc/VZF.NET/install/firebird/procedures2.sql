@@ -1805,17 +1805,14 @@ RETURNS
   "Tag" VARCHAR(255),
   "TagCount" INTEGER,
   "MaxTagCount" INTEGER,
-  "TotalRows" INTEGER)
+  "TotalCount" INTEGER)
 AS
  DECLARE ICI_ALLCOUNT INTEGER;
- DECLARE VARIABLE ici_RowTotalCount INTEGER DEFAULT 0; 
- DECLARE VARIABLE cnt INTEGER DEFAULT 1;
  DECLARE VARIABLE ICI_TAGS_TOTALROWSNUMBER INTEGER; 
  DECLARE VARIABLE ici_firstselectrownum INTEGER DEFAULT 0;  
- DECLARE VARIABLE ICI_FIRSTSELECTEDTAG varchar(255); 
- DECLARE VARIABLE ici_retcount INTEGER DEFAULT 0; 
- DECLARE VARIABLE ici_counter INTEGER DEFAULT 0;
+ DECLARE VARIABLE ici_lastselectrownum INTEGER DEFAULT 0; 
 begin
+IF (I_FORUMID = 0 ) THEN I_FORUMID = NULL;
 SELECT 
            MAX(tg.TAGCOUNT)  
            FROM objQual_TAGS tg 
@@ -1823,42 +1820,28 @@ SELECT
            JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
            JOIN objQual_ACTIVEACCESS aa ON (aa.FORUMID = t.FORUMID AND aa.USERID = :I_PAGEUSERID)
            WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) 
-           AND (LOWER(tg.TAG) LIKE CASE 
-            WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
-            WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                
-            ELSE '%' END)  INTO :ICI_ALLCOUNT;
+           AND (LOWER(tg.TAG) LIKE (CASE 
+            WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN ('%' || LOWER(:I_SEARCHTEXT) || '%')   
+            WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN (LOWER(:I_SEARCHTEXT) || '%')                
+            ELSE '%' END))  INTO :ICI_ALLCOUNT;
 
 SELECT 		
+
         COUNT(DISTINCT(tg.TAGID)) 
          FROM objQual_TAGS tg 
            JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
            JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
            JOIN objQual_ACTIVEACCESS aa ON (aa.FORUMID = t.ForumID AND aa.USERID = :I_PAGEUSERID)
-           WHERE aa.BOARDID=:I_BOARDID and (:I_FORUMID <= 0 OR t.FORUMID=:I_FORUMID)  
-             AND (LOWER(tg.TAG) LIKE CASE 
-            WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
-            WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                       
-        into :ICI_TAGS_TOTALROWSNUMBER; 
+           WHERE aa.BOARDID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID)  
+             AND (LOWER(tg.TAG) LIKE (CASE 
+            WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN ('%' || LOWER(:I_SEARCHTEXT) || '%')   
+            WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN (LOWER(:I_SEARCHTEXT) || '%') 
+			ELSE '%' END))               
+        INTO :ICI_TAGS_TOTALROWSNUMBER; 
 
       I_PAGEINDEX = :I_PAGEINDEX+1;   
-      ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;	
-                    
-   SELECT FIRST 1			
-           tg.TAG
-           FROM objQual_TAGS tg 
-           JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
-           JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
-           JOIN objQual_ACTIVEACCESS aa ON (aa.FORUMID = t.ForumID AND aa.USERID = :I_PAGEUSERID)
-           WHERE aa.BoardID=:I_BOARDID and (:I_FORUMID IS NULL OR t.FORUMID=:I_FORUMID) 
-         AND (LOWER(tg.TAG) LIKE CASE 
-            WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
-            WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                        
-            ELSE '%' END)
-    ORDER BY tg.TAG
-        into :ICI_FIRSTSELECTEDTAG;
-            
-    SELECT :ICI_FIRSTSELECTEDTAG from RDB$DATABASE
-    INTO :ICI_FIRSTSELECTEDTAG;
+      ici_firstselectrownum = ((:I_PAGEINDEX-1)*:I_PAGESIZE) + 1;	           
+	  ici_lastselectrownum = (:I_PAGESIZE + :ici_firstselectrownum - 1); 
     
 FOR	SELECT 
            DISTINCT(tg.tagid),
@@ -1874,25 +1857,14 @@ FOR	SELECT
            AND (LOWER(tg.TAG) LIKE CASE 
             WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
             WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                        
-            ELSE '%' END) and tg.TAG<= :ICI_FIRSTSELECTEDTAG  
-           ORDER BY tg.TAG
+            ELSE '%' END) 
+           ORDER BY tg.TAG ROWS :ici_firstselectrownum TO :ici_lastselectrownum
            INTO
            :"TagID",
            :"Tag",
            :"TagCount",
            :"MaxTagCount",
-           :"TotalRows"
-          DO	
-    
-  BEGIN
-   ici_retcount = :ici_retcount +1;
-   if (:ici_retcount between  :ici_firstselectrownum  and :ici_firstselectrownum + :I_PAGESIZE) then
-    begin
-    SUSPEND;
-    ici_counter = :ici_counter + 1; 
-    end 
-if (:ici_counter >= :I_PAGESIZE) then
-LEAVE;						
-  END
+           :"TotalCount"
+          DO SUSPEND;  
 end;
 --GO

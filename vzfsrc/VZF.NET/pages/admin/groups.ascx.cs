@@ -219,7 +219,8 @@ namespace YAF.Pages.Admin
             false, 
             false, 
             false, 
-            false, 
+            false,
+            false,
             1, 
             _initialPMessages, 
             null, 
@@ -231,7 +232,10 @@ namespace YAF.Pages.Admin
             0, 
             0,
             PageContext.PageUserID,
-            false);
+            false,
+            0,
+            0,
+            0);
 
           // redirect to newly created role
           YafBuildLink.Redirect(ForumPages.admin_editgroup, "i={0}", groupID);

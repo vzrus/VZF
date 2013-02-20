@@ -221,7 +221,7 @@ namespace YAF.Pages.Admin
               {
                   DataRow highestRow = dt.Rows[dt.Rows.Count - 1];
 
-                  sortOrder = (short)highestRow["SortOrder"] + sortOrder;
+                  sortOrder = highestRow["SortOrder"].ToType<int>() + sortOrder;
               }
               catch
               {
@@ -247,7 +247,7 @@ namespace YAF.Pages.Admin
         this.ForumNameTitle.Text = this.Name.Text;
         this.Moderated.Checked = flags.IsModerated;
         this.Styles.Text = row["Styles"].ToString();
-
+        this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
         this.CategoryList.SelectedValue = row["CategoryID"].ToString();
 
         this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
@@ -510,7 +510,8 @@ namespace YAF.Pages.Admin
         this.Styles.Text, 
         false,
         PageContext.PageUserID,
-        false);
+        false,
+        this.CanHavePersForums.Checked);
 
       CommonDb.activeaccess_reset(PageContext.PageModuleID);
 

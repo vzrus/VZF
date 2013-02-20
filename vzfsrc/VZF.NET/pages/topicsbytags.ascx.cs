@@ -17,7 +17,7 @@
 //   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
 // </copyright>
 // <summary>
-//   The common db.
+//   The topics by a specific tag.
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------

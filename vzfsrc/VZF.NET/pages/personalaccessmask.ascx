@@ -80,7 +80,7 @@
         </asp:Repeater>
         <tr class="footer1" align="center">
             <td colspan="13">
-                <asp:Button ID="New" runat="server" OnClick="NewAccessMask_Click" CssClass="pbutton" />
+                <asp:Button ID="NewAccessMaskBtn" runat="server" OnClick="NewAccessMask_Click" Visible="False" CssClass="pbutton" />
             </td>
         </tr>
     </table>

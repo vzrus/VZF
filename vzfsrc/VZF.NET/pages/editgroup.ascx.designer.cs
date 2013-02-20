@@ -112,6 +112,24 @@ namespace YAF.Pages {
         protected global::System.Web.UI.WebControls.TextBox StyleTextBox;
         
         /// <summary>
+        /// HelpLabel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel3;
+        
+        /// <summary>
+        /// IsHiddenX control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox IsHiddenX;
+        
+        /// <summary>
         /// NewGroupRow control.
         /// </summary>
         /// <remarks>

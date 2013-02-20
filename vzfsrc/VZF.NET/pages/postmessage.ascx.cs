@@ -554,7 +554,7 @@ namespace YAF.Pages
                 {
                     this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
                 }
-            }
+            } 
 
             if (this.Get<YafBoardSettings>().AllowTopicTags)
             {

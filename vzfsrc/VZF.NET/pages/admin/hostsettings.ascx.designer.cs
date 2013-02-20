@@ -3235,60 +3235,6 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowPasswordChange;
         
         /// <summary>
-        /// HelpLabel225 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.HelpLabel HelpLabel225;
-        
-        /// <summary>
-        /// AllowPersonalForums control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox AllowPersonalForums;
-        
-        /// <summary>
-        /// HelpLabel226 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.HelpLabel HelpLabel226;
-        
-        /// <summary>
-        /// PersonalAccessMasksNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonalAccessMasksNumber;
-        
-        /// <summary>
-        /// HelpLabel227 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.HelpLabel HelpLabel227;
-        
-        /// <summary>
-        /// PersonalGroupsNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PersonalGroupsNumber;
-        
-        /// <summary>
         /// HelpLabel78 control.
         /// </summary>
         /// <remarks>

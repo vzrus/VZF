@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}AccessMaskHistory
        `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
-       PRIMARY KEY (`AccessMaskID`)
+       PRIMARY KEY (`AccessMaskID`,`ChangedDate`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -170,6 +170,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Category
        `CategoryImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `SortOrder` SMALLINT(5) NOT NULL,
        `PollGroupID` int,
+	   `CanHavePersForums` TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`CategoryID`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -250,6 +251,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Forum
        `CreatedByUserDisplayName`   VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `CreatedDate` DATETIME,
        `IsUserForum`  TINYINT(1) NOT NULL DEFAULT 0,
+	   `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0,
        PRIMARY KEY (`ForumID`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -262,7 +264,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}ForumHistory
        `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
-       PRIMARY KEY (`ForumID`)
+       PRIMARY KEY (`ForumID`,`ChangedDate`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -298,6 +300,9 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Group
        `CreatedDate` DATETIME,   
        `IsHidden` TINYINT(1) NOT NULL DEFAULT 0,
        `IsUserGroup` TINYINT(1) NOT NULL DEFAULT 0,
+	   `UsrPersonalForums`  INT NOT NULL DEFAULT 0,
+	   `UsrPersonalMasks`  INT NOT NULL DEFAULT 0,
+	   `UsrPersonalGroups`  INT NOT NULL DEFAULT 0,
        PRIMARY KEY (`GroupID`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -310,7 +315,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
        `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
        `ChangedDate`         DATETIME  NOT NULL,    
-       PRIMARY KEY (`ForumID`)
+       PRIMARY KEY (`GroupID`,`ChangedDate`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -322,7 +327,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}GroupHistory
        `ChangedUserName`	VARCHAR (255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `ChangedDisplayName`	VARCHAR (255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation}  NOT NULL,
        `ChangedDate`        DATETIME  NOT NULL,    
-       PRIMARY KEY (`GroupID`)
+       PRIMARY KEY (`GroupID`,`ChangedDate`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
 --GO
@@ -347,7 +352,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Mail
        `ToUser` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `ToUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `Created` DATETIME NOT NULL,
-       `Subject` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `BodyHtml` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `SendTries` INT NOT NULL DEFAULT 0,
@@ -490,7 +495,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}PMessage
        `PMessageID` INT NOT NULL AUTO_INCREMENT,
        `FromUserID` INT NOT NULL,
        `Created` DATETIME NOT NULL,
-       `Subject` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
+       `Subject` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Body` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Flags` INT NOT NULL,
        `ReplyTo` INT,
@@ -678,7 +683,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}User
        `AutoWatchTopics` TINYINT(1) NOT NULL DEFAULT 0,
        `Culture` VARCHAR(10) NULL,
        `Flags` INT NOT NULL DEFAULT 0,
-       `Points` INT NOT NULL DEFAULT 0,
+       `Points` INT NOT NULL DEFAULT 1,
        `IsFacebookUser` TINYINT(1) NOT NULL DEFAULT 0,
        `IsTwitterUser` TINYINT(1) NOT NULL DEFAULT 0,
        `UserStyle` VARCHAR(510) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
@@ -1394,7 +1399,14 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Category')
   AND COLUMN_NAME='PollGroupID' LIMIT 1) THEN
   ALTER TABLE  {databaseName}.{objectQualifier}Category ADD `PollGroupID`  INT NULL;
-  END IF;   
+  END IF;    
+   
+  IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Category')
+  AND COLUMN_NAME='CanHavePersForums' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Category ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
+  END IF;
   
   IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
@@ -1645,6 +1657,8 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
  ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `LinkDate`  DATETIME;
   END IF;
 
+  -- Group Table
+
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
@@ -1678,7 +1692,7 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
   AND COLUMN_NAME='IsUserGroup' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}Group ADD `IsUserGroup` TINYINT(1) NOT NULL DEFAULT 0;
-  END IF;
+  END IF;  
  
    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
@@ -1686,6 +1700,28 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='IsHidden' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}Group ADD `IsHidden` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
+
+      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
+  AND COLUMN_NAME='UsrPersonalForums' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalForums`  INT NOT NULL DEFAULT 0;
+  END IF;  
+
+     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
+  AND COLUMN_NAME='UsrPersonalMasks' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalMasks`  INT NOT NULL DEFAULT 0;
+  END IF; 
+
+      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
+  AND COLUMN_NAME='UsrPersonalGroups' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Group ADD  `UsrPersonalGroups`  INT NOT NULL DEFAULT 0;
+  END IF; 
+  -- Forum Table
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
@@ -1722,6 +1758,12 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
  ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `IsUserForum`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
 
+         IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
+  AND COLUMN_NAME='CanHavePersForums' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
+  END IF;
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND

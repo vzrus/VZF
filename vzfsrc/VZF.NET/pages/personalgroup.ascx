@@ -88,7 +88,7 @@
 		</asp:Repeater>
 		<tr>
 			<td class="footer1" colspan="2" align="center">
-				<asp:Button ID="NewGroup" runat="server" OnClick="NewGroup_Click" CssClass="pbutton"></asp:Button>
+				<asp:Button ID="NewGroup" runat="server" OnClick="NewGroup_Click" Visible="False" CssClass="pbutton"></asp:Button>
 			</td>
 		</tr>
 	</table>

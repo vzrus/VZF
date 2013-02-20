@@ -33,8 +33,9 @@ namespace YAF.Pages
     using VZF.Data.Common;
 
     using YAF.Classes;
-    
+
     using VZF.Controls;
+
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -50,6 +51,19 @@ namespace YAF.Pages
     /// </summary>
     public partial class profile : ForumPage
     {
+        private IStyleTransform _styleTransforum;
+
+        /// <summary>
+        ///   Gets Refines style string from other skins info
+        /// </summary>
+        private IStyleTransform TransformStyle
+        {
+            get
+            {
+                return this._styleTransforum ?? (this._styleTransforum = this.Get<IStyleTransform>());
+            }
+        }
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -121,7 +135,8 @@ namespace YAF.Pages
                 {
                     // Check if a user have permissions to have albums, even if he has no albums at all.
                     var usrAlbums =
-                        CommonDb.user_getalbumsdata(PageContext.PageModuleID, albumUser, YafContext.Current.PageBoardID).GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
+                        CommonDb.user_getalbumsdata(PageContext.PageModuleID, albumUser, YafContext.Current.PageBoardID)
+                                .GetFirstRowColumnAsValue<int?>("UsrAlbums", null);
 
                     if (usrAlbums.HasValue && usrAlbums > 0)
                     {
@@ -201,7 +216,7 @@ namespace YAF.Pages
 
             if (this.UserId == 0)
             {
-                YafBuildLink.AccessDenied(/*No such user exists*/);
+                YafBuildLink.AccessDenied( /*No such user exists*/);
             }
 
             this.AlbumListTab.Visible = this.AlbumsTabIsVisible();
@@ -344,8 +359,9 @@ namespace YAF.Pages
                 this.AlbumList1.Dispose();
             }
 
-            var userNameOrDisplayName =
-                    this.Get<YafBoardSettings>().EnableDisplayName ? userData.DisplayName : userData.UserName;
+            var userNameOrDisplayName = this.Get<YafBoardSettings>().EnableDisplayName
+                                            ? userData.DisplayName
+                                            : userData.UserName;
 
             this.SetupUserProfileInfo(this.UserId, user, userData, userNameOrDisplayName);
 
@@ -357,7 +373,50 @@ namespace YAF.Pages
 
             this.SetupAvatar(this.UserId, userData);
 
-            this.Groups.DataSource = RoleMembershipHelper.GetRolesForUser(userData.UserName);
+            bool bFirst = true;
+
+            const string StyledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
+
+            string groupsText = null;
+            foreach (
+                DataRow role in
+                    CommonDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.UserId).Rows)
+            {
+                // CommonDb.eventlog_create(PageContext.PageModuleID,this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
+                if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0
+                    || role["IsHidden"].ToType<bool>())
+                {
+                    continue;
+                }
+
+                if (bFirst)
+                {
+                    groupsText = this.Get<YafBoardSettings>().UseStyledNicks
+                                     ? StyledNick.FormatWith(
+                                         role["Name"].ToString(),
+                                         this.TransformStyle.DecodeStyleByString(role["Style"].ToString(), true))
+                                     : role["Name"].ToString();
+
+                    bFirst = false;
+                }
+                else
+                {
+                    if (this.Get<YafBoardSettings>().UseStyledNicks)
+                    {
+                        groupsText = groupsText
+                                     + (@", " + StyledNick).FormatWith(
+                                         role["Name"],
+                                         this.TransformStyle.DecodeStyleByString(role["Style"].ToString(), true));
+                    }
+                    else
+                    {
+                        groupsText = groupsText + ", {0}".FormatWith(role["Name"]);
+                    }
+                }
+            }
+
+            this.Groups.Text = groupsText;
+            // this.Groups.DataSource = RoleMembershipHelper.GetRolesForUser(userData.UserName);
 
             // EmailRow.Visible = PageContext.IsAdmin;
             this.ModerateTab.Visible = this.PageContext.IsAdmin || this.PageContext.IsForumModerator;
@@ -368,10 +427,12 @@ namespace YAF.Pages
             if (this.LastPosts.Visible)
             {
                 this.LastPosts.DataSource =
-                    CommonDb.post_alluser(PageContext.PageModuleID, this.PageContext.PageBoardID, 
-                    this.UserId, 
-                    this.PageContext.PageUserID, 
-                    10).AsEnumerable();
+                    CommonDb.post_alluser(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
+                        this.UserId,
+                        this.PageContext.PageUserID,
+                        10).AsEnumerable();
 
                 this.SearchUser.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
                     ForumPages.search,
@@ -599,10 +660,13 @@ namespace YAF.Pages
                     this.HtmlEncode(
                         this.Get<IBadWordReplace>().Replace(this.GetText("COUNTRY", userData.Profile.Country.Trim())));
 
-                this.CountryFlagImage.Src = this.Get<ITheme>().GetItem(
-                    "FLAGS",
-                    "{0}_MEDIUM".FormatWith(userData.Profile.Country.Trim()),
-                    YafForumInfo.GetURLToResource("images/flags/{0}.png".FormatWith(userData.Profile.Country.Trim())));
+                this.CountryFlagImage.Src = this.Get<ITheme>()
+                                                .GetItem(
+                                                    "FLAGS",
+                                                    "{0}_MEDIUM".FormatWith(userData.Profile.Country.Trim()),
+                                                    YafForumInfo.GetURLToResource(
+                                                        "images/flags/{0}.png".FormatWith(
+                                                            userData.Profile.Country.Trim())));
 
                 this.CountryFlagImage.Alt = userData.Profile.Country.Trim();
                 this.CountryFlagImage.Attributes.Add("title", this.CountryLabel.Text);
@@ -685,8 +749,10 @@ namespace YAF.Pages
             }
 
             this.ThanksFrom.Text =
-                CommonDb.user_getthanks_from(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
-            int[] thanksToArray = CommonDb.user_getthanks_to(PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
+                CommonDb.user_getthanks_from(
+                    PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
+            int[] thanksToArray = CommonDb.user_getthanks_to(
+                PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
             this.ThanksToTimes.Text = thanksToArray[0].ToString();
             this.ThanksToPosts.Text = thanksToArray[1].ToString();
             this.ReputationReceived.Text = userData.Points.ToString();
@@ -795,7 +861,9 @@ namespace YAF.Pages
             {
                 this.BirthdayTR.Visible = true;
                 // time offset for the page user is already included,userData.Profile.Birthday Date is stored in the userData timezone.
-                this.Birthday.Text = this.Get<IDateTime>().FormatDateLong(userData.Profile.Birthday.AddMinutes((double)(-userData.TimeZone))); 
+                this.Birthday.Text =
+                    this.Get<IDateTime>()
+                        .FormatDateLong(userData.Profile.Birthday.AddMinutes((double)(-userData.TimeZone)));
             }
             else
             {

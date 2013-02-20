@@ -1,4 +1,27 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="personalaccessmask.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The personal access masks list.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace YAF.pages
 {
     using System;
@@ -119,21 +142,6 @@ namespace YAF.pages
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
         }
 
-
-        /// <summary>
-        /// The new forum_ click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void NewForum_Click([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            YafBuildLink.Redirect(ForumPages.editforum);
-        }
-
         /// <summary>
         /// Get status of provider role vs YAF roles.
         /// </summary>
@@ -150,20 +158,6 @@ namespace YAF.pages
             return currentRow["Flags"].BinaryAnd(2) ? this.GetText("ADMIN_GROUPS", "UNLINKABLE") : this.GetText("ADMIN_GROUPS", "LINKED");
         }
 
-        /// <summary>
-        /// Handles click on new role button
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void NewGroup_Click([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            // redirect to new role page
-            YafBuildLink.Redirect(ForumPages.editgroup);
-        }
 
         /// <summary>
         /// Handles page load event.
@@ -176,7 +170,7 @@ namespace YAF.pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.Get<YafBoardSettings>().PersonalAccessMasksNumber <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            if (PageContext.UsrPersonalMasks <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
             {
                 YafBuildLink.AccessDenied();
             }
@@ -185,6 +179,11 @@ namespace YAF.pages
             if (this.IsPostBack)
             {
                 return;
+            }
+
+            if (PageContext.PersonalAccessMasksNumber < PageContext.UsrPersonalMasks)
+            {
+                this.NewAccessMaskBtn.Visible = true;
             }
 
             // create page links
@@ -208,7 +207,7 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "f={0}", e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&f={0}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     var errorMessage = string.Empty;
@@ -252,14 +251,14 @@ namespace YAF.pages
         /// </summary>
         private void BindData()
         {
-            // Hide the New Forum Button if there are no Categories.
+            // Hide the NewAccessMaskBtn Forum Button if there are no Categories.
             // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
             // bind data to controls
 
             // list all access masks for this boeard
             this.List.DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);
            
-            this.New.Text = this.GetText("ADMIN_ACCESSMASKS", "NEW_MASK");
+            this.NewAccessMaskBtn.Text = this.GetText("ADMIN_ACCESSMASKS", "NEW_MASK");
 
             this.DataBind();
         }

@@ -470,7 +470,7 @@ namespace YAF.Pages
                 this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy("1");
             }
             // Quick Reply Modification Begin
-            this._quickReplyEditor = new BasicBBCodeEditor();
+            // this._quickReplyEditor = new BasicBBCodeEditor();
             this.QuickReplyLine.Controls.Add(this._quickReplyEditor);
             this.QuickReply.Click += this.QuickReply_Click;
             this.Pager.PageChange += this.Pager_PageChange;

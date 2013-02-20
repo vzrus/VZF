@@ -233,7 +233,7 @@
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Approve&lt;/strong&gt; - You Become Friend of the User who requests it &lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Deny&lt;/strong&gt; - Reject the request&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Body in your List.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt; Approve and Add - &lt;/strong&gt;You become Friend of the User who requests it, and also the User becomes a Friend in your List.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Remove Friend&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;To remove a Friend from Your List go to your &#39;My Friends&#39; page. On the Tab &#39;Friend List&#39; Click on the Button &#39;Remove Friend&#39; of the User you want to remove&lt;/p&gt;
@@ -4029,6 +4029,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="MSG_POSITIVE_VALUE">The Sort Order value should be a positive integer from 0 to 32767.</Resource>
       <Resource tag="MSG_VALUE">Must enter a value for the category name field.</Resource>
       <Resource tag="MSG_NUMBER">Invalid value entered for sort order: must enter a number.</Resource>
+      <Resource tag="CANHAVEUSERFORUMS">Category can have user forums:</Resource>
+      <Resource tag="CANHAVEUSERFORUMS_HELP">The category can contain user forums.</Resource>
       <Resource tag="CATEGORY_NAME">Category Name:</Resource>
       <Resource tag="CATEGORY_IMAGE">Category Image:</Resource>
       <Resource tag="SORT_ORDER">Sort Order:</Resource>
@@ -4046,6 +4048,9 @@ Visit {forumname} at {forumlink}
       <Resource tag="MSG_CATEGORY">You must select a category for the forum.</Resource>
       <Resource tag="MSG_NAME_FORUM">You must enter a name for the forum.</Resource>
       <Resource tag="MSG_DESCRIPTION">You must enter a description for the forum.</Resource>
+      <Resource tag="MSG_PFORUMS_NUMBER">You should enter max allowed personal forums number.</Resource>
+      <Resource tag="MSG_PFORUMS_MASKSNUMBER">You should enter max allowed access masks number.</Resource>
+      <Resource tag="MSG_PFORUMS_PGROUPSNUMBER">You should enter max allowed personal groups number.</Resource>
       <Resource tag="MSG_VALUE">You must enter a value for sort order.</Resource>
       <Resource tag="MSG_POSITIVE_VALUE">The sort order value should be a positive integer from 0 to 32767.</Resource>
       <Resource tag="MSG_CATEGORY">You must enter an number value from 0 to 32767 for sort order.</Resource>
@@ -4074,8 +4079,18 @@ Visit {forumname} at {forumlink}
       <Resource tag="LOCKED_HELP">If the forum is locked, no one can post or reply in this forum.</Resource>
       <Resource tag="NO_POSTSCOUNT">No posts count:</Resource>
       <Resource tag="NO_POSTSCOUNT_HELP">If this is checked, posts in this forum will not count in the ladder system/forum statistics.</Resource>
+      <Resource tag="PERSONALFORUMS_NUMBER">User Personal Forums(Blogs) number:</Resource>
+      <Resource tag="PERSONALFORUMS_NUMBER_HELP">Number of personal forums a user can create.</Resource>
+      <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
+      <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
+      <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
+      <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
       <Resource tag="PRE_MODERATED">Pre-moderated:</Resource>
       <Resource tag="PRE_MODERATED_HELP">If the forum is moderated, posts have to be approved by a moderator.</Resource>
+      <Resource tag="ISUSERFORUM">Is User Forum:</Resource>
+      <Resource tag="ISUSERFORUM_HELP">The forum is a user forum(blog).</Resource>
+      <Resource tag="CANHAVEUSERFORUMS">Forum can have user forums:</Resource>
+      <Resource tag="CANHAVEUSERFORUMS_HELP">The forum can have user forums.</Resource>
       <Resource tag="FORUM_IMAGE">Forum Image:</Resource>
       <Resource tag="FORUM_IMAGE_HELP">This image will be shown next to this forum, if empty default image for the forum is used.</Resource>
       <Resource tag="STYLES">Styles:</Resource>
@@ -4355,6 +4370,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="ROLE_NAME_HELP">Name of this role.</Resource>
      <Resource tag="IS_START">Is Start:</Resource>
        <Resource tag="IS_START_HELP">If this is checked, all new users will be a member of this role. &lt;br /&gt;&lt;span style=&quot;color:red&quot;&gt;[b]Warning:[/b] at least one Group need to have this Check box enabled or new users wont be able to register.[/b]&lt;/span&gt;</Resource>
+     <Resource tag="IS_HIDDEN">Is Hidden:</Resource>
+       <Resource tag="IS_HIDDEN_HELP">If this is checked, The group will not be displayed to anyone but to admins.</Resource>
      <Resource tag="FORUM_MOD">Is Forum Moderator:</Resource>
        <Resource tag="FORUM_MOD_HELP">When this is checked, members of this role will have some admin access rights in YAF.</Resource>
      <Resource tag="IS_ADMIN">Is Admin:</Resource>
@@ -4865,12 +4882,6 @@ Visit {forumname} at {forumlink}
        <Resource tag="ALLOW_EMAIL_CHANGE_HELP">Allow users to change their email address.</Resource>
      <Resource tag="ALLOW_PASS_CHANGE">Allow Password Change:</Resource>
        <Resource tag="ALLOW_PASS_CHANGE_HELP">Allow users to change their passwords.</Resource>
-     <Resource tag="ALLOW_PERSONALFORUMS">Allow User Personal Forums(Blogs):</Resource>
-       <Resource tag="ALLOW_PERSONALFORUMS_HELP">Allow users to create Personal Forums.</Resource>
-     <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
-       <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
-     <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
-       <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
      <Resource tag="ALLOW_MOD_VIEWIP">Allow Moderators View IPs:</Resource>
        <Resource tag="ALLOW_MOD_VIEWIP_HELP">Allow to view IPs to moderators.</Resource>
      <Resource tag="ALLOW_NOTIFICATION_ONALL">Allow Notification of All Posts on All topics:</Resource>

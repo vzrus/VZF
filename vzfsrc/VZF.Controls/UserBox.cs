@@ -140,10 +140,11 @@ namespace VZF.Controls
                 object cache = this.PageCache[Constants.Cache.UserBoxes];
 
                 // is it hashtable?
-                if (cache != null && cache is Hashtable)
+                var hashtable = cache as Hashtable;
+                if (hashtable != null)
                 {
                     // save userbox for user of this id to cache
-                    ((Hashtable)cache)[this.UserId] = value;
+                    hashtable[this.UserId] = value;
                 }
                 else
                 {
@@ -206,7 +207,7 @@ namespace VZF.Controls
         }
 
         /// <summary>
-        ///   Gets Refines style string from other skins info
+        ///   Gets refined style string from other skins info
         /// </summary>
         private IStyleTransform TransformStyle
         {
@@ -231,13 +232,6 @@ namespace VZF.Controls
         {
             string userBox = this.Get<YafBoardSettings>().UserBox;
 
-            // Get styles table for user 
-            // this should be called once for groups and for rank for each user/post.
-            DataTable roleRankStyleTable = this.Get<IDataCache>().GetOrSet(
-                Constants.Cache.GroupRankStyles,
-                () => CommonDb.group_rank_style(PageContext.PageModuleID, YafContext.Current.PageBoardID),
-                TimeSpan.FromMinutes(this.Get<YafBoardSettings>().ForumStatisticsCacheTimeout));
-
             // Avatar
             userBox = this.MatchUserBoxAvatar(userBox);
 
@@ -248,10 +242,10 @@ namespace VZF.Controls
             userBox = this.MatchUserBoxRankImages(userBox);
 
             // Rank     
-            userBox = this.MatchUserBoxRank(userBox, roleRankStyleTable);
+            userBox = this.MatchUserBoxRank(userBox);
 
             // Groups
-            userBox = this.MatchUserBoxGroups(userBox, roleRankStyleTable);
+            userBox = this.MatchUserBoxGroups(userBox);
 
             // ThanksFrom
             userBox = this.MatchUserBoxThanksFrom(userBox);
@@ -460,14 +454,11 @@ namespace VZF.Controls
         /// <param name="userBox">
         /// The user box.
         /// </param>
-        /// <param name="roleStyleTable">
-        /// The role Style Table.
-        /// </param>
         /// <returns>
         /// Returns the Groups Userbox string.
         /// </returns>
         [NotNull]
-        private string MatchUserBoxGroups([NotNull] string userBox, [NotNull] DataTable roleStyleTable)
+        private string MatchUserBoxGroups([NotNull] string userBox)
         {
             const string styledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
 
@@ -480,7 +471,6 @@ namespace VZF.Controls
                 var groupsText = new StringBuilder();
 
                 bool bFirst = true;
-                string roleStyle = null;
 
                /* var userName = this.DataRow["IsGuest"].ToType<bool>()
                                    ? UserMembershipHelper.GuestUserName
@@ -488,30 +478,21 @@ namespace VZF.Controls
              
                 if (!this.DataRow["IsGuest"].ToType<bool>())
                 {
-
                     // DataTable dtt = CommonDb.group_member(PageContext.PageBoardID, this.DataRow["UserID"]).Rows;
                     foreach (DataRow role in CommonDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
                         // CommonDb.eventlog_create(PageContext.PageModuleID,this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
-                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0) continue;
-
-                        string role1 = role["Name"].ToString();
-
-                        foreach (DataRow drow in
-                            roleStyleTable.Rows)
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || !role["IsHidden"].ToType<bool>())
                         {
-                            if (drow["LegendID"].ToType<int>() != 1 || drow["Style"].IsNullOrEmptyDBField() ||
-                                drow["Name"].ToString() != role1) continue;
-                            roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
-                            break;
+                            continue;
                         }
 
                         if (bFirst)
                         {
                             groupsText.AppendLine(
                                 this.Get<YafBoardSettings>().UseStyledNicks
-                                    ? styledNick.FormatWith(role1, roleStyle)
-                                    : role1);
+                                    ? styledNick.FormatWith(role["Name"].ToString(), this.TransformStyle.DecodeStyleByString(role["Style"].ToString(), true))
+                                    : role["Name"].ToString());
 
                             bFirst = false;
                         }
@@ -519,15 +500,13 @@ namespace VZF.Controls
                         {
                             if (this.Get<YafBoardSettings>().UseStyledNicks)
                             {
-                                groupsText.AppendLine((@", " + styledNick).FormatWith(role1, roleStyle));
+                                groupsText.AppendLine((@", " + styledNick).FormatWith(role["Name"], this.TransformStyle.DecodeStyleByString(role["Style"].ToString(), true)));
                             }
                             else
                             {
-                                groupsText.AppendFormat(", {0}", role1);
+                                groupsText.AppendFormat(", {0}", role["Name"]);
                             }
                         }
-
-                        roleStyle = null;
                     }
                 }
                 else
@@ -538,26 +517,19 @@ namespace VZF.Controls
                         () => CommonDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]),
                         TimeSpan.FromMinutes(60));
 
-                    foreach (string guestRole in
-                        dt.Rows.Cast<DataRow>().Where(role => role["Member"].ToType<int>() > 0).Select(
-                            role => role["Name"].ToString()))
+                    foreach (DataRow role in dt.Rows)
                     {
-                        foreach (DataRow drow in
-                            roleStyleTable.Rows.Cast<DataRow>().Where(
-                                drow =>
-                                drow["LegendID"].ToType<int>() == 1 && !drow["Style"].IsNullOrEmptyDBField() &&
-                                drow["Name"].ToString() == guestRole))
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || !role["IsHidden"].ToType<bool>())
                         {
-                            roleStyle = this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true);
+                            continue;
                         }
 
                         groupsText.AppendLine(
                             this.Get<YafBoardSettings>().UseStyledNicks
-                                ? styledNick.FormatWith(guestRole, roleStyle)
-                                : guestRole);
+                                ? styledNick.FormatWith(role["Name"], this.TransformStyle.DecodeStyleByString(role["Style"].ToString(), true))
+                                : role["Name"].ToString());
                         break;
                     }
-
                 }
 
                 filler = this.Get<YafBoardSettings>().UserBoxGroups.FormatWith(this.GetText("groups"), groupsText);
@@ -900,19 +872,13 @@ namespace VZF.Controls
         /// Returns the Rank Userbox string.
         /// </returns>
         [NotNull]
-        private string MatchUserBoxRank([NotNull] string userBox, [NotNull] DataTable roleStyleTable)
+        private string MatchUserBoxRank([NotNull] string userBox)
         {
-            string rankStyle = (from DataRow drow in roleStyleTable.Rows
-                                where
-                                    drow["LegendID"].ToType<int>() == 2 && drow["Style"] != null &&
-                                    drow["Name"].ToString() == this.DataRow["RankName"].ToString()
-                                select this.TransformStyle.DecodeStyleByString(drow["Style"].ToString(), true)).FirstOrDefault();
-
-            var rx = this.GetRegex(Constants.UserBox.Rank);
+           var rx = this.GetRegex(Constants.UserBox.Rank);
 
             string filler = this.Get<YafBoardSettings>().UserBoxRank.FormatWith(
                 this.GetText("rank"),
-                this.Get<YafBoardSettings>().UseStyledNicks ? @"<span class=""YafRank_{0}"" style=""{1}"">{0}</span>".FormatWith(this.DataRow["RankName"], rankStyle) : this.DataRow["RankName"]);
+                this.Get<YafBoardSettings>().UseStyledNicks ? @"<span class=""YafRank_{0}"" style=""{1}"">{0}</span>".FormatWith(this.DataRow["RankName"], this.TransformStyle.DecodeStyleByString(this.DataRow["RankStyle"].ToString(),true)) : this.DataRow["RankName"]);
 
             // replaces template placeholder with actual rank
             userBox = rx.Replace(userBox, filler);

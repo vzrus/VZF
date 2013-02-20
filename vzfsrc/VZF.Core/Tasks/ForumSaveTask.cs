@@ -346,6 +346,41 @@ namespace YAF.Core.Tasks
           }
       }
 
+      private bool _canHavePersonalForum;
+     
+      /// <summary>
+      /// Gets or sets CanHavePersonalForum.
+      /// </summary>
+      public bool CanHavePersonalForum
+      {
+        get
+          {
+              return this._canHavePersonalForum;
+          }
+
+          set
+          {
+              this._canHavePersonalForum = value; 
+          }
+      }
+
+      private bool _isUserForum;
+     
+      /// <summary>
+      /// Gets or sets IsUserForum.
+      /// </summary>
+      public bool IsUserForum
+      {
+        get
+          {
+              return this._isUserForum;
+          }
+
+          set
+          {
+              this._isUserForum = value; 
+          }
+      }
     /// <summary>
     /// The _task name.
     /// </summary>
@@ -395,7 +430,7 @@ namespace YAF.Core.Tasks
       /// The start.
       /// </returns>
     public static long Start(object forumId, object categoryId, object parentId, object name, object description, object sortOrder, object locked, object hidden, object isTest, object moderated, object accessMaskID, object remoteURL, object themeURL, object imageURL, object styles,
-          bool dummy, out string failureMessage)
+          bool dummy, bool isUserForum, bool canHavePersonalForum, out string failureMessage)
       {
 
       failureMessage = String.Empty;
@@ -424,7 +459,9 @@ namespace YAF.Core.Tasks
                                       ThemeURL = themeURL,
                                       ImageURL = imageURL,
                                       Styles = styles,
-                                      Dummy = dummy
+                                      Dummy = dummy,
+                                      IsUserForum = isUserForum,
+                                      CanHavePersonalForum = canHavePersonalForum
                                   });
       }
       else
@@ -467,7 +504,8 @@ namespace YAF.Core.Tasks
                     this.Styles,
                     this.Dummy,
                     YafContext.Current.PageUserID,
-                    false);
+                    this.IsUserForum,
+                    this.CanHavePersonalForum);
                 this.Logger.Info("Forum Update||Add Task is completed. Handled forum {0}.", _forumOut);
             }
             catch (Exception x)

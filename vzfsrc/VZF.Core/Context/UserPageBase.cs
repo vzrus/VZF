@@ -601,6 +601,72 @@ namespace YAF.Core
         }
 
         /// <summary>
+        ///   Gets the number of user's Personal Forums
+        /// </summary>
+        public int PersonalForumsNumber
+        {
+            get
+            {
+                return this.Page["PersonalForumsNumber"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of user's Personal Access Masks
+        /// </summary>
+        public int PersonalAccessMasksNumber
+        {
+            get
+            {
+                return this.Page["PersonalAccessMasksNumber"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of user's Personal Groups
+        /// </summary>
+        public int PersonalGroupsNumber
+        {
+            get
+            {
+                return this.Page["PersonalGroupsNumber"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of allowed user's Personal Groups
+        /// </summary>
+        public int UsrPersonalGroups
+        {
+            get
+            {
+                return this.Page["UsrPersonalGroups"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of allowed user's Personal Masks
+        /// </summary>
+        public int UsrPersonalMasks
+        {
+            get
+            {
+                return this.Page["UsrPersonalMasks"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of allowed user's Personal Forums
+        /// </summary>
+        public int UsrPersonalForums
+        {
+            get
+            {
+                return this.Page["UsrPersonalForums"].ToType<int>();
+            }
+        }
+
+        /// <summary>
         ///   Gets a value indicating whether a user has buddies
         /// </summary>
         public bool UserHasBuddies

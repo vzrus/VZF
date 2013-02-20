@@ -1,4 +1,26 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="personalforum.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The personal forum list.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 namespace YAF.pages
 {
     using System;
@@ -76,10 +98,10 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // user profile
-            this.PageLinks.AddLink(this.GetText("CP_PROFILE", "VIEW_PROFILE"), YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
 
             // title
-            this.PageLinks.AddLink(this.GetText("ADMIN_FORUMS", "TITLE"), string.Empty);
+            this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), string.Empty); 
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(
                this.GetText("CP_PROFILE", "VIEW_PROFILE"),
@@ -115,10 +137,10 @@ namespace YAF.pages
         /// </param>
         protected void NewForum_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(ForumPages.editforum);
+            YafBuildLink.Redirect(ForumPages.editforum, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
-        /// <summary>
+        /// <summary>ag
         /// Handles page load event.
         /// </summary>
         /// <param name="sender">
@@ -129,7 +151,7 @@ namespace YAF.pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            if (PageContext.UsrPersonalForums <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
             {
                 YafBuildLink.AccessDenied();
             }
@@ -145,7 +167,12 @@ namespace YAF.pages
             
             // sync roles just in case...
             RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
-
+            if (PageContext.PersonalForumsNumber < PageContext.UsrPersonalForums)
+            {
+                this.NewForum.Visible = true;
+                this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM");
+            }
+            
             // bind data
             this.BindData();
         }
@@ -164,7 +191,7 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "f={0}", e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&f={1}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     var errorMessage = string.Empty;
@@ -217,7 +244,7 @@ namespace YAF.pages
             // Hide the New Forum Button if there are no Categories.
             // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
             // bind data to controls
-            this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM");
+           
         
 
             this.DataBind();

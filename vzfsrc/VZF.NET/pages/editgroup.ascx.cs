@@ -1,22 +1,26 @@
-/* Yet Another Forum.NET
- * Copyright (C) 2003-2005 Bjørnar Henden
- * Copyright (C) 2006-2012 Jaben Cargman
- * http://www.yetanotherforum.net/
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="editgroup.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The edit group.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace YAF.Pages
 {
@@ -25,6 +29,7 @@ namespace YAF.Pages
     using System;
     using System.Data;
     using System.Linq;
+    using System.Web;
     using System.Web.Security;
     using System.Web.UI.WebControls;
 
@@ -50,6 +55,10 @@ namespace YAF.Pages
         #region Methods
 
         public DataTable AccessMasksList { get; set; }
+        public int PersonalGroupsNumber { get; set; }
+        public int PersonalForumsNumber { get; set; }
+        public int PersonalAccessMasksNumber { get; set; }
+        
         /// <summary>
         /// Handles databinding event of initial access maks dropdown control.
         /// </summary>
@@ -127,6 +136,41 @@ namespace YAF.Pages
                 return;
             }
 
+            // A new group case
+            if (PageContext.PersonalGroupsNumber >= PageContext.UsrPersonalGroups && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("gr") == null)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            // the calling user is not the owner
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            {
+                YafBuildLink.AccessDenied();
+            }
+
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i") != null)
+            {
+                if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i")))
+                {
+                    YafBuildLink.AccessDenied();
+                }
+
+                DataTable dt = CommonDb.group_byuserlist(
+                    PageContext.PageModuleID,
+                    PageContext.PageBoardID,
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i").ToType<int>(),
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
+                    true);
+                
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                }
+                else
+                {
+                    YafBuildLink.AccessDenied();
+                }
+            }
+
             // create page links
             this.CreatePageLinks();
 
@@ -136,6 +180,7 @@ namespace YAF.Pages
 
             // bind data
             this.BindData();
+
             // is this editing of existing role or creation of new one?
             if (this.Request.QueryString.GetFirstOrDefault("i") == null)
             {
@@ -147,19 +192,24 @@ namespace YAF.Pages
 
             // get data about edited role
             using (
-                DataTable dt = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"),PageContext.PageUserID, true))
+                DataTable dt = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, true))
             {
                 // get it as row
                 DataRow row = dt.Rows[0];
 
                 // get role flags
                 var flags = new GroupFlags(row["Flags"]);
+                this.IsHiddenX.Checked = flags.IsHidden;
 
+                // this.IsHiddenX.Enabled = !flags.IsGuest;
                 // set controls to role values
                 this.Name.Text = (string)row["Name"];
                 this.StyleTextBox.Text = row["Style"].ToString();
                 this.Priority.Text = row["SortOrder"].ToString();
                 this.Description.Text = row["Description"].ToString();
+                this.PersonalGroupsNumber = row["UsrPersonalGroups"].ToType<int>();
+                this.PersonalForumsNumber = row["UsrPersonalForums"].ToType<int>();
+                this.PersonalAccessMasksNumber = row["UsrPersonalMasks"].ToType<int>();
             }
         }
 
@@ -207,16 +257,19 @@ namespace YAF.Pages
                     }
                 }
             }
-
+           
             // save role and get its ID if it's new (if it's old role, we get it anyway)
-            roleID = CommonDb.group_save(PageContext.PageModuleID, roleID,
-              this.PageContext.PageBoardID,
-              roleName,
+            roleID = CommonDb.group_save(
+                PageContext.PageModuleID,
+                roleID,
+                this.PageContext.PageBoardID,
+                roleName,
               false,
               false,
               false,
               false,
-              AccessMaskID.SelectedValue,
+              this.IsHiddenX.Checked,
+              this.AccessMaskID.SelectedValue,
               0,
               this.StyleTextBox.Text.Trim(),
               this.Priority.Text.Trim(),
@@ -227,7 +280,10 @@ namespace YAF.Pages
               0,
               0,
               PageContext.PageUserID,
-              true);
+              true,
+              this.PersonalForumsNumber > 0 ? this.PersonalForumsNumber : 0,
+              this.PersonalAccessMasksNumber > 0 ? this.PersonalAccessMasksNumber : 0,
+              this.PersonalGroupsNumber > 0 ? this.PersonalGroupsNumber  : 0);
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);

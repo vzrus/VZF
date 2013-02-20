@@ -173,6 +173,9 @@ namespace YAF.Pages.Admin
                 this.IsModeratorX.Checked = flags.IsModerator;
                 this.IsModeratorX.Enabled = !flags.IsGuest;
 
+                this.IsHiddenX.Checked = flags.IsHidden;
+                // this.IsHiddenX.Enabled = !flags.IsGuest;
+
                 this.PMLimit.Text = row["PMLimit"].ToString();
                 this.PMLimit.Enabled = !flags.IsGuest;
 
@@ -194,6 +197,15 @@ namespace YAF.Pages.Admin
 
                 this.UsrSigHTMLTags.Text = row["UsrSigHTMLTags"].ToString();
                 this.UsrSigHTMLTags.Enabled = !flags.IsGuest;
+
+                this.PersonalGroupsNumber.Text = row["UsrPersonalGroups"].ToString();
+                this.PersonalGroupsNumber.Enabled = !flags.IsGuest;
+
+                this.PersonalForumsNumber.Text = row["UsrPersonalForums"].ToString();
+                this.PersonalForumsNumber.Enabled = !flags.IsGuest;
+
+                this.PersonalAccessMasksNumber.Text = row["UsrPersonalMasks"].ToString();
+                this.PersonalAccessMasksNumber.Enabled = !flags.IsGuest;
 
                 this.Description.Text = row["Description"].ToString();
 
@@ -245,6 +257,25 @@ namespace YAF.Pages.Admin
                 return;
             }
 
+            if (!ValidationHelper.IsValidInt(this.PersonalForumsNumber.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_PFORUMS_NUMBER"));
+                return;
+            }
+
+            if (!ValidationHelper.IsValidInt(this.PersonalAccessMasksNumber.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_PFORUMS_MASKSNUMBER"));
+                return;
+            }
+
+            if (!ValidationHelper.IsValidInt(this.PersonalGroupsNumber.Text.Trim()))
+            {
+                this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_PFORUMS_PGROUPSNUMBER"));
+                return;
+            }
+
+
             if (!ValidationHelper.IsValidInt(this.UsrAlbumImages.Text.Trim()))
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_TOTAL_NUMBER"));
@@ -285,6 +316,7 @@ namespace YAF.Pages.Admin
               this.IsGuestX.Checked,
               this.IsStartX.Checked,
               this.IsModeratorX.Checked,
+              this.IsHiddenX.Checked,
               AccessMaskID.SelectedValue,
               this.PMLimit.Text.Trim(),
               this.StyleTextBox.Text.Trim(),
@@ -296,7 +328,10 @@ namespace YAF.Pages.Admin
               this.UsrAlbums.Text.Trim(),
               this.UsrAlbumImages.Text.Trim(),
               PageContext.PageUserID,
-              false);
+              false,
+              this.PersonalForumsNumber.Text.Trim(),
+              this.PersonalAccessMasksNumber.Text.Trim(),
+              this.PersonalGroupsNumber.Text.Trim());
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
@@ -327,6 +362,9 @@ namespace YAF.Pages.Admin
                 RoleMembershipHelper.CreateRole(roleName);
             }
 
+            // Clearing cache with old user lazy data...
+            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(String.Empty)));
+            
             // Access masks for a newly created or an existing role
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
@@ -339,7 +377,7 @@ namespace YAF.Pages.Admin
                         // get forum ID
                         int forumID = int.Parse(((Label)item.FindControl("ForumID")).Text);
 
-                        // save forum access maks for this role
+                        // save forum access masks for this role
                         CommonDb.forumaccess_save(PageContext.PageModuleID, forumID, roleID,
                                                   ((DropDownList)item.FindControl("AccessmaskID")).SelectedValue);
                     }
@@ -349,9 +387,6 @@ namespace YAF.Pages.Admin
 
             // remove caching in case something got updated...
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
-
-            // Clearing cache with old permissions data...
-            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(String.Empty)));
 
             // Done, redirect to role editing page
             YafBuildLink.Redirect(ForumPages.admin_editgroup, "i={0}", roleID);

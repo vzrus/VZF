@@ -104,6 +104,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}board_stats;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_delete;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_getadjacentforum;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_list;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_listread;
@@ -2460,7 +2462,7 @@ ORDER BY a.SortOrder;
 END;
 --GO
 
-create procedure {databaseName}.{objectQualifier}category_getadjacentforum(i_BoardID int,i_CategoryID int,i_PageUserID int, i_IsAfter tinyint(1)) as
+create procedure {databaseName}.{objectQualifier}category_getadjacentforum(i_BoardID int,i_CategoryID int,i_PageUserID int, i_IsAfter tinyint(1)) 
 begin
 declare ici_ForumID int default 0;
 declare ici_SortOrder int default 0;
@@ -2491,7 +2493,8 @@ i_BoardID    INT,
 i_CategoryID INT,
 i_Name       VARCHAR(128),
 i_SortOrder  SMALLINT,
-i_CategoryImage VARCHAR(255)
+i_CategoryImage VARCHAR(255),
+i_CanHavePersForums TINYINT(1)
 )
 MODIFIES SQL DATA
 BEGIN
@@ -2500,7 +2503,7 @@ IF i_CategoryID > 0 THEN
 UPDATE {databaseName}.{objectQualifier}Category
 SET    `Name` = CONVERT(i_Name USING {databaseEncoding}),
 CategoryImage = i_CategoryImage,
-SortOrder = i_SortOrder
+SortOrder = i_SortOrder,CanHavePersForums = i_CanHavePersForums
 WHERE  CategoryID = i_CategoryID;
 SELECT  i_CategoryID AS CategoryID;
 ELSE
@@ -2508,11 +2511,11 @@ INSERT INTO {databaseName}.{objectQualifier}Category
 (BoardID,
 `Name`,
 `CategoryImage`,
-SortOrder)
+SortOrder,CanHavePersForums)
 VALUES     (i_BoardID,
 i_Name,
 i_CategoryImage,
-i_SortOrder);
+i_SortOrder,i_CanHavePersForums);
 SELECT LAST_INSERT_ID()AS CategoryID;
 END IF;
 END;
@@ -3209,7 +3212,8 @@ END;
            a.ForumID, 
            a.Name AS Forum, 
            a.ParentID, 
-           a.PollGroupID 
+           a.PollGroupID,
+		   a.CanHavePersForums 
     FROM   {databaseName}.{objectQualifier}Forum a 
            INNER JOIN
            {databaseName}.{objectQualifier}Category b 
@@ -3395,7 +3399,8 @@ select
         b.ImageURL AS ImageUrl,
         b.Styles, 
         b.ParentID,
-        b.PollGroupID,          
+        b.PollGroupID,  
+		b.IsUserForum,        
         b.Flags,
     (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseName}.{objectQualifier}Active a1 
     JOIN {databaseName}.{objectQualifier}User usr 
@@ -3797,6 +3802,7 @@ END;
     i_AccessMaskID	INT,
     i_UserID        INT,
     i_IsUserForum   TINYINT(1),
+	i_CanHavePersForums   TINYINT(1),
     i_UTCTIMESTAMP  datetime  
  )
 BEGIN
@@ -3812,14 +3818,14 @@ BEGIN
     IF i_Hidden<>0 THEN SET l_Flags = l_Flags | 2;END IF;
     IF i_IsTest<>0 THEN SET l_Flags = l_Flags | 4;END IF;
     IF i_Moderated<>0 THEN SET l_Flags = l_Flags | 8;END IF;
+	  IF i_UserID IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
+       -- guests should not create forums
+    ELSE  
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+  IF i_ForumID IS NOT NULL AND i_ForumID > 0 THEN 
 
-  IF i_ForumID IS NOT NULL AND i_ForumID>0 THEN
-  
-  IF i_ForumID IS NOT NULL AND i_ParentID>0 THEN
-  SET l_HasDependency = {databaseName}.{objectQualifier}forum_save_parentschecker(i_ForumID,i_ParentID);
-  END IF;
- 
-  IF  (l_HasDependency <=0 OR l_HasDependency IS NULL)  THEN
   UPDATE {databaseName}.{objectQualifier}Forum
   SET
   ParentID=(CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),
@@ -3832,36 +3838,31 @@ BEGIN
   ImageURL = i_ImageURL,
   Styles = i_Styles,
   Flags = l_Flags,
-  IsUserForum = i_IsUserForum
+  IsUserForum = i_IsUserForum,
+  CanHavePersForums = i_CanHavePersForums
   WHERE ForumID=i_ForumID;
-  END IF;
   ELSE
-  INSERT INTO {databaseName}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags,IsUserForum)
-  VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags,i_IsUserForum);
+  INSERT INTO {databaseName}.{objectQualifier}Forum(ParentID,`Name`,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,ImageURL,Styles,Flags,IsUserForum,CreatedByUserID,CreatedByUserName,CreatedByUserDisplayName,CreatedDate,CanHavePersForums)
+  VALUES((CASE WHEN(i_ParentID = 0) THEN NULL ELSE i_ParentID END),CONVERT(i_Name USING {databaseEncoding}),CONVERT(i_Description USING {databaseEncoding}),i_SortOrder,i_CategoryID,0,0,i_RemoteURL,i_ThemeURL,i_ImageURL,i_Styles,l_Flags,i_IsUserForum
+  ,i_UserID,ici_UserName, ici_UserDisplayName,i_UTCTIMESTAMP,i_CanHavePersForums);
   SET i_ForumID = LAST_INSERT_ID();
   SET l_BoardID = (SELECT BoardID  
   from {databaseName}.{objectQualifier}Category
   WHERE CategoryID=i_CategoryID LIMIT 1);
+  
   INSERT INTO {databaseName}.{objectQualifier}ForumAccess(GroupID,ForumID,AccessMaskID)
   SELECT GroupID,i_ForumID,i_AccessMaskID
   FROM {databaseName}.{objectQualifier}Group
   WHERE BoardID = l_BoardID;
   END IF;
 
-  IF i_UserID IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
-       -- guests should not create forums
-    ELSE
-   
-   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
-    END IF;
-    if exists (select 1 from {databaseName}.{objectQualifier}ForumHistory where ForumID = i_ForumID and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+
+    if exists (select 1 from {databaseName}.{objectQualifier}ForumHistory where ForumID = i_ForumID and ChangedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
     update {databaseName}.{objectQualifier}ForumHistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
            ChangedDisplayName = ici_UserDisplayName
-     where ForumID = i_ForumID and CreatedDate = i_UTCTIMESTAMP; 
+     where ForumID = i_ForumID and ChangedDate = i_UTCTIMESTAMP; 
     else    
     INSERT INTO {databaseName}.{objectQualifier}ForumHistory(ForumID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
     VALUES (i_ForumID,i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
@@ -4152,9 +4153,9 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forumaccess_group(i_GroupID INT
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseName}.{objectQualifier}forumaccess_list(
-                i_ForumID INT, i_UserID INT, i_IncludeUserMasks TINYINT(1))
+                i_ForumID INT, i_UserID INT, i_IncludeUserGroups TINYINT(1))
 BEGIN
-IF i_IncludeUserMasks = 1 THEN
+IF i_IncludeUserGroups = 1 THEN
         SELECT a.*,
                b.Name AS GroupName
         FROM   {databaseName}.{objectQualifier}ForumAccess a
@@ -4336,6 +4337,8 @@ END;
         BEGIN
         SELECT   a.GroupID,
         a.Name,
+		(a.Flags & 16 = 16) as IsHidden,
+		a.Style, 
         (SELECT COUNT(1)
         FROM   {databaseName}.{objectQualifier}UserGroup x
         WHERE  x.UserID = i_UserID
@@ -4356,10 +4359,11 @@ END;
         i_IsGuest      TINYINT(1),
         i_IsStart      TINYINT(1),
         i_IsModerator  TINYINT(1),
+		i_IsHidden  TINYINT(1),
         i_AccessMaskID INT,
         i_PMLimit INT,
         i_Style VARCHAR(255),
-        i_SortOrder SMALLINT,        
+        i_SortOrder INT,        
         i_Description VARCHAR(255),
         i_UsrSigChars INT,
         i_UsrSigBBCodes	VARCHAR(255),
@@ -4368,6 +4372,9 @@ END;
         i_UsrAlbumImages INT,
      IN i_UserID          INT,
      IN i_IsUserGroup      TINYINT(1),
+	 i_PersonalAccessMasksNumber INT,
+	 i_PersonalGroupsNumber INT,
+	 i_PersonalForumsNumber INT,
      IN i_UTCTIMESTAMP    DATETIME)
         BEGIN
         DECLARE ici_UserName  VARCHAR(255);
@@ -4382,6 +4389,8 @@ END;
         SET iciFlags = iciFlags | 4; END IF;
         IF i_IsModerator <> 0 THEN
         SET iciFlags = iciFlags | 8; END IF;
+		IF i_IsHidden <> 0 THEN
+        SET iciFlags = iciFlags | 16; END IF;
 
 		 IF i_UserID IS NOT NULL THEN   
     SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
@@ -4403,7 +4412,10 @@ END;
                  UsrSigHTMLTags = i_UsrSigHTMLTags,
                  UsrAlbums = i_UsrAlbums,
                  UsrAlbumImages = i_UsrAlbumImages,
-                 IsUserGroup =  i_IsUserGroup				
+                 IsUserGroup =  i_IsUserGroup,
+			     UsrPersonalMasks = i_PersonalAccessMasksNumber,
+			     UsrPersonalGroups = i_PersonalGroupsNumber,
+			     UsrPersonalForums = i_PersonalForumsNumber				
             WHERE  GroupID = i_GroupID;        
         ELSE        
             INSERT INTO {databaseName}.{objectQualifier}Group
@@ -4423,7 +4435,10 @@ END;
 						CreatedByUserID,
 						CreatedByUserName,
 						CreatedByUserDisplayName,
-						CreatedDate)
+						CreatedDate,
+			            UsrPersonalMasks,
+			            UsrPersonalGroups,
+			            UsrPersonalForums)
             VALUES     (i_Name,
                         i_BoardID,
                         iciFlags,
@@ -4440,7 +4455,10 @@ END;
 						i_UserID,
 						ici_UserName,
 						ici_UserDisplayName,
-						i_UTCTIMESTAMP);
+						i_UTCTIMESTAMP,
+			            i_PersonalAccessMasksNumber,
+			            i_PersonalGroupsNumber,
+			            i_PersonalForumsNumber);
             SET i_GroupID = LAST_INSERT_ID();
             INSERT INTO {databaseName}.{objectQualifier}ForumAccess
                        (GroupID,
@@ -4458,12 +4476,12 @@ END;
         CALL {databaseName}.{objectQualifier}user_savestyle(i_GroupID, null);
 		END IF;
        
-    if exists (select 1 from {databaseName}.{objectQualifier}GroupHistory where GroupID = i_GroupID and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+    if exists (select 1 from {databaseName}.{objectQualifier}GroupHistory where GroupID = i_GroupID and ChangedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
     update {databaseName}.{objectQualifier}GroupHistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
            ChangedDisplayName = ici_UserDisplayName
-     where  GroupID = i_GroupID  and CreatedDate = i_UTCTIMESTAMP; 
+     where  GroupID = i_GroupID  and ChangedDate = i_UTCTIMESTAMP; 
     else    
     INSERT INTO {databaseName}.{objectQualifier}GroupHistory(GroupID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
     VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
@@ -4511,14 +4529,22 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}mail_create
     i_TopicID   INT,
     i_FROM      VARCHAR(128),
     i_FROMName  VARCHAR(128),
-    i_Subject   VARCHAR(128),
+    i_Subject   VARCHAR(255),
     i_Body      TEXT,
     i_BodyHtml  TEXT,
     i_UserID    INT,
     i_UTCTIMESTAMP DATETIME
  )
  BEGIN
-    INSERT INTO {databaseName}.{objectQualifier}Mail(FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml)
+    INSERT INTO {databaseName}.{objectQualifier}Mail(
+	     FromUser,
+		 FromUserName,
+		 ToUser,
+		 ToUserName,
+		 Created,
+		 `Subject`,
+		 Body,
+		 BodyHtml)
     SELECT
         i_FROM,
         i_FROMName,
@@ -4537,7 +4563,15 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}mail_create
         a.TopicID = i_TopicID AND
         (a.LastMail IS NULL OR UNIX_TIMESTAMP(a.LastMail) < UNIX_TIMESTAMP(b.LastVisit));
     
-    INSERT INTO {databaseName}.{objectQualifier}Mail(FromUser,FromUserName,ToUser,ToUserName,Created,Subject,Body,BodyHtml)
+    INSERT INTO {databaseName}.{objectQualifier}Mail(
+	FromUser,
+	FromUserName,
+	ToUser,
+	ToUserName,
+	Created,
+	`Subject`,
+	Body,
+	BodyHtml)
     SELECT
         i_From,
         i_FromName,
@@ -7066,7 +7100,8 @@ INTO  	@PostTotalRowsNumber,
         d.Views,
         d.ForumID,
         c.Name AS RankName,		
-        c.RankImage,		
+        c.RankImage,	
+		c.Style as RankStyle,	
         (case(',i_StyledNicks,')
             when 1 then  
             b.UserStyle 
@@ -8205,7 +8240,7 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_info
  (
     i_TopicID INT,
-    i_ShowDeleted TINYINT(1).
+    i_ShowDeleted TINYINT(1),
     i_GetTags TINYINT(1)
  )
  BEGIN
@@ -8213,17 +8248,18 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_info
  
     IF i_TopicID IS NULL THEN    
       IF i_ShowDeleted = 1 THEN
-        SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
         FROM {databaseName}.{objectQualifier}Topic t;
         ELSE
-        SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
         FROM {databaseName}.{objectQualifier}Topic t WHERE (Flags & 8) = 0;
       END IF;
     ELSE 	
         IF i_ShowDeleted = 1 THEN
-            SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+			FROM {databaseName}.{objectQualifier}Topic t;
         ELSE
-            SELECT t.*,(CASE WHEN i_TopicTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags 
+            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags 
             FROM {databaseName}.{objectQualifier}Topic t WHERE TopicID = i_TopicID AND (Flags & 8) = 0;		
         END IF;
    END IF; 
@@ -8544,11 +8580,11 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
             (case(',i_FindLastRead,')
              when 1 then
                (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else '''' end ) AS LastForumAccess,
+             else null end ) AS LastForumAccess,
             (case(',i_FindLastRead,')
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else ''''	 end) AS LastTopicAccess,	
+             else null end) AS LastTopicAccess,	
            (case(',i_GetTags,')
              when 1 then
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
@@ -8663,11 +8699,11 @@ BEGIN
             (case(',0,')
              when 1 then
             (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else '''' end ) AS LastForumAccess,
+             else null end ) AS LastForumAccess,
             (case(',0,')
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else ''''	 end) AS LastTopicAccess,		
+             else null	 end) AS LastTopicAccess,		
              m.Message,
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
@@ -8680,7 +8716,7 @@ BEGIN
            JOIN {databaseName}.{objectQualifier}Message m ON (m.TopicID = c.TopicID and m.Position = 0)
            JOIN {databaseName}.{objectQualifier}User b ON b.UserID=c.UserID
            JOIN {databaseName}.{objectQualifier}Forum d on d.ForumID=c.ForumID
-           where  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,')  and c.Posted <= ''',COALESCE(@i_FirstSelectPosted,UTC_TIMESTAMP()),''' AND  (c.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and c.Posted > ''',i_SinceDate,'''	
+           where  (',i_ForumID,' <= 0 OR c.ForumID = ',i_ForumID,')  and c.Posted <= ''',COALESCE(@i_FirstSelectPosted,UTC_TIMESTAMP()),''' AND  (c.Flags & 8) <> 8 and tt.TagID  IN (SELECT CAST(',i_Tags,' AS UNSIGNED)) and c.Posted > ''',i_SinceDate,'''	
     order by
          c.Posted DESC LIMIT ',i_PageSize,' ;'); 
          PREPARE ttlist1 FROM @ttlist1_str;
@@ -11169,16 +11205,15 @@ SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
-				and (i_IsUserMask = 0 or IsUserMask = 1)
-			and (i_IsAdminMask = 0 or IsAdminMask = 1)
+				and (i_IsUserMask = 0 or a.IsUserMask = 1)
+			-- and (i_IsAdminMask = 0 or IsAdminMask = 1)
 			and (i_PageUserID is null  or CreatedByUserID = i_PageUserID)
 ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
-AND a.AccessMaskID = i_AccessMaskID
-ORDER BY a.SortOrder;
+AND a.AccessMaskID = i_AccessMaskID LIMIT 1;
 END IF;
 END;
 --GO
@@ -11320,11 +11355,12 @@ INSERT INTO {databaseName}.{objectQualifier}AccessMask
 VALUES     (i_Name,
 i_BoardID,
 l_Flags,i_SortOrder,i_IsUserMask,i_IsAdminMask,i_UserId,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+SET i_AccessMaskID =  LAST_INSERT_ID();
 ELSE
 UPDATE {databaseName}.{objectQualifier}AccessMask
 SET    `Name` = i_Name,
 `Flags` = l_Flags,`SortOrder` = i_SortOrder
-WHERE  AccessMaskID = i_AccessMaskID, IsUserMask = i_IsUserMask;
+WHERE  AccessMaskID = i_AccessMaskID AND IsUserMask = i_IsUserMask;
 END IF;
 
  IF i_UserID IS NOT NULL THEN   
@@ -11333,15 +11369,15 @@ END IF;
     ELSE    
     SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where BoardID = i_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
     END IF;
-    if exists (select 1 from {databaseName}.{objectQualifier}AccessMaskHistory where AccessMaskID = i_AccessMask and CreatedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
+    if exists (select 1 from {databaseName}.{objectQualifier}AccessMaskHistory where AccessMaskID = i_AccessMaskID and ChangedDate = i_UTCTIMESTAMP  LIMIT 1) THEN
     update {databaseName}.{objectQualifier}AccessMaskHistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
            ChangedDisplayName = ici_UserDisplayName
-     where AccessMaskID = i_AccessMaskID and CreatedDate = i_UTCTIMESTAMP; 
+     where AccessMaskID = i_AccessMaskID and ChangedDate = i_UTCTIMESTAMP; 
     else    
     INSERT INTO {databaseName}.{objectQualifier}AccessMaskHistory(AccessMaskID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
-    VALUES (i_AccessMask, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
+    VALUES (i_AccessMaskID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
     end IF;
 
 END;
@@ -12819,24 +12855,29 @@ READS SQL DATA
 begin 
     declare G_UsrAlbums int default 0;
     declare R_UsrAlbums int default 0;
-    declare R_Style varchar(255);
-    declare G_Style varchar(255);	
-    IF (I_ShowUserStyle > 0) THEN	
-    SELECT r.Style INTO R_Style
-    FROM {databaseName}.{objectQualifier}User u 
-        INNER JOIN  {databaseName}.{objectQualifier}Rank r 
-        ON  r.RankID = u.RankID
-        WHERE u.UserID = I_UserID AND u.BoardID = I_BoardID LIMIT 1;
-        
-    SELECT c.Style INTO  G_Style
+	declare ici_UsrPersonalGroups int default 0;
+	declare ici_UsrPersonalMasks int default 0;
+	declare ici_UsrPersonalForums int default 0;
+							   
+   SELECT IFNULL(MAX(c.UsrPersonalGroups),0)
+   INTO  ici_UsrPersonalGroups
     FROM {databaseName}.{objectQualifier}User a 
                         JOIN {databaseName}.{objectQualifier}UserGroup b
                           ON a.UserID = b.UserID
                             JOIN {databaseName}.{objectQualifier}Group c                         
                               ON b.GroupID = c.GroupID 
                               WHERE a.UserID = I_UserID AND a.BoardID = I_BoardID 
-                              ORDER BY c.SortOrder ASC LIMIT 1 ;  
-    END IF; 
+                              LIMIT 1;    
+SELECT IFNULL(MAX(c.UsrPersonalMasks),0),IFNULL(MAX(c.UsrPersonalForums),0) 
+   INTO  ici_UsrPersonalMasks,ici_UsrPersonalForums
+    FROM {databaseName}.{objectQualifier}User a 
+                        JOIN {databaseName}.{objectQualifier}UserGroup b
+                          ON a.UserID = b.UserID
+                            JOIN {databaseName}.{objectQualifier}Group c                         
+                              ON b.GroupID = c.GroupID 
+                              WHERE a.UserID = I_UserID AND a.BoardID = I_BoardID 
+                              LIMIT 1;    
+
 
     IF (I_ShowUserAlbums > 0) THEN	
     SELECT IFNULL(MAX(r.UsrAlbums),0) INTO R_UsrAlbums
@@ -12888,14 +12929,20 @@ begin
         ORDER BY pm.Created DESC LIMIT 1) ELSE NULL END) AS LastUnreadPm,
         CASE WHEN i_ShowPendingBuddies > 0 THEN (SELECT COUNT(ID) FROM {databaseName}.{objectQualifier}Buddy WHERE ToUserID = I_UserID AND Approved = 0) ELSE 0 END AS PendingBuddies,
         CASE WHEN i_ShowPendingBuddies > 0 THEN (SELECT Requested FROM {databaseName}.{objectQualifier}Buddy WHERE ToUserID=a.UserID and Approved = 0 ORDER BY Requested DESC  LIMIT 1) ELSE NULL END AS LastPendingBuddies, 			
-        CASE WHEN i_ShowUserStyle > 0 THEN (IFNULL(G_Style, R_Style)) ELSE NULL END AS  UserStyle,		
+        CASE WHEN i_ShowUserStyle > 0 THEN (SELECT UserStyle FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT 1) ELSE NULL END AS  UserStyle,		
         (SELECT COUNT(ua.AlbumID) FROM {databaseName}.{objectQualifier}UserAlbum ua
         WHERE ua.UserID = I_UserID) AS NumAlbums,
         (CASE WHEN G_UsrAlbums > R_UsrAlbums THEN G_UsrAlbums ELSE R_UsrAlbums END) AS UsrAlbums,
-        SIGN(IFNULL((SELECT 1 FROM {databaseName}.{objectQualifier}Buddy WHERE FromUserID = I_UserID OR ToUserID = I_UserID LIMIT 1),0)) AS UserHasBuddies,	    
+        SIGN(IFNULL((SELECT 1 FROM {databaseName}.{objectQualifier}Buddy WHERE FromUserID = i_UserID OR ToUserID = I_UserID LIMIT 1),0)) AS UserHasBuddies,	    
         -- Guest can't vote in polls attached to boards, we need some temporary access check by a criteria 
         (CASE WHEN a.Flags & 4 > 0 THEN 0 ELSE 1 END) AS BoardVoteAccess,
-        a.Points as Reputation	
+        a.Points as Reputation,
+		(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Forum WHERE CreatedByUserID = i_UserID AND IsUserForum = 1) as PersonalForumsNumber,
+		(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}AccessMask WHERE CreatedByUserID = i_UserID AND IsUserMask = 1) as PersonalAccessMasksNumber,
+		(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Group WHERE CreatedByUserID = i_UserID AND IsUserGroup = 1) as PersonalGroupsNumber,
+		ici_UsrPersonalGroups AS UsrPersonalGroups,
+		ici_UsrPersonalMasks AS UsrPersonalMasks,
+		ici_UsrPersonalForums AS UsrPersonalForums
         from
            {databaseName}.{objectQualifier}User a		
         where
@@ -13684,16 +13731,21 @@ end;
 
 create procedure {databaseName}.{objectQualifier}forum_tags(i_BoardID int, i_PageUserID int, i_ForumID int, i_PageIndex int, i_PageSize int, i_SearchText varchar(255), i_BeginsWith tinyint(1)) 
 begin	
-    DECLARE ici_maxcount int;   
+    DECLARE ici_maxcount INT DEFAULT 0;   
     DECLARE ici_tags_totalrowsnumber INT DEFAULT 0;
     DECLARE ici_firstselectrownum INT DEFAULT 0;
  
-    SELECT MAX(tg.TagCount) INTO ici_maxcount
+    SELECT IFNULL(MAX(tg.TagCount),0) INTO ici_maxcount
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID;	
+    WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.ForumID=i_ForumID) AND aa.UserID = i_PageUserID	
+	 AND     
+         LOWER(tg.Tag) LIKE (CASE 
+            WHEN (i_BeginsWith = 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT('%',LOWER(IFNULL(i_SearchText,'')),'%'))) 
+            WHEN (i_BeginsWith <> 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(i_SearchText,'')),'%')))                
+            ELSE ('%') END);
 
     SET i_PageIndex = i_PageIndex + 1;
             
@@ -13703,51 +13755,56 @@ begin
         INTO ici_tags_totalrowsnumber
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID;
+    WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID
     AND     
          LOWER(tg.Tag) LIKE (CASE 
             WHEN (i_BeginsWith = 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT('%',LOWER(IFNULL(i_SearchText,'')),'%'))) 
             WHEN (i_BeginsWith <> 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(i_SearchText,'')),'%')))                
             ELSE ('%') END);
 
-    select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum;
-    
+    select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum; 
+   SET ici_firstselectrownum = (I_PageIndex - 1) * I_PageSize + 1; 
+   SET ici_firstselectrownum = ici_firstselectrownum -1 ;
     SET @i_FirstSelectedTag = NULL; 
     
-    SET @tlist2_str = CONCAT('select
-        DISTINCT(t.Tag) INTO @i_FirstSelectedTag
+ /*   SET @tlist2_str = CONCAT('select
+        DISTINCT(tg.Tag) INTO @i_FirstSelectedTag
         FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
     WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
     AND     
          LOWER(tg.Tag) LIKE (CASE 
-            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(,'i_SearchText,''')),'%')))     
-             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(,'i_SearchText,''')),'%')))                
+            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND ? IS NOT NULL AND  CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(?,'''')),''%'')))     
+             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ? IS NOT NULL AND  CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(?,'''')),''%'')))                
             ELSE (''%'') END) ORDER BY tg.Tag   	    
     LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
+		SET @ii_SearchText = i_SearchText; 
+		-- SET @PI_Literals0 = CONCAT('%',LOWER(IFNULL(I_Literals,'')),'%');   		
         PREPARE tlist2 from @tlist2_str;
-        EXECUTE tlist2;		 
+        EXECUTE tlist2 USING
+         @ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText;	 
         DEALLOCATE PREPARE tlist2;			
-              
+     SET @i_FirstSelectedTag = IFNULL(@i_FirstSelectedTag,'');  */       
     SET @tlist1_str = CONCAT( 
-    'SELECT DISTINCT(tg.TagID),tg.Tag,tg.TagCount,ici_maxcount AS MaxTagCount, ici_tags_totalrowsnumber as TotalRows 
+    'SELECT DISTINCT(tg.TagID),tg.Tag,tg.TagCount,',ici_maxcount,' AS MaxTagCount,', ici_tags_totalrowsnumber,' as TotalCount 
     FROM {databaseName}.{objectQualifier}Tags tg 
-    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
-    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
+    JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
+    JOIN {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
+    JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
          WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
          AND     
          LOWER(tg.Tag) LIKE (CASE 
-            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(,'i_SearchText,''')),'%')))     
-             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND',COALESCE(i_SearchText,0),' <> 0 AND CHAR_LENGTH(,'i_SearchText,') > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(,'i_SearchText,''')),'%')))                
-            ELSE (''%'') END)  AND tg.Tag <= ',COALESCE(@i_FirstSelectedTag,''''),' )) 
-      ORDER BY tg.Tag LIMIT ',i_PageSize,' ;'); 
+            WHEN (',COALESCE(i_BeginsWith,0),' = 0  AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(?,'''')),''%'')))     
+             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(?,'''')),''%'')))                
+            ELSE (''%'') END)  /* AND tg.Tag <= @i_FirstSelectedTag */  
+       ORDER BY tg.Tag LIMIT ',i_PageSize,' ;'); 
          PREPARE tlist1 FROM @tlist1_str;
-         EXECUTE tlist1;		 
+         	  EXECUTE tlist1 USING
+          @ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText;	  	 
         DEALLOCATE PREPARE tlist1;
 end;
 --GO

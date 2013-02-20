@@ -3,14 +3,18 @@
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server">
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
-        <tr>
-            <td class="header1" colspan="11">
-                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITGROUP" />
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <td class="header1" colspan="11">
+                    <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITGROUP" />
+                </td>
+           </tr>
         <tr>
 	      <td class="header2" colspan="11" style="height:30px"></td>
 		</tr>
+        </thead>
+        <!-- TABLE BODY: MAIN CONTENT-->
+        <tbody>
         <tr>
             <td class="postheader" width="50%">
                 <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="ROLE_NAME" LocalizedPage="ADMIN_EDITGROUP" />
@@ -24,7 +28,6 @@
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="IS_START" LocalizedPage="ADMIN_EDITGROUP" />
                 
-                
             </td>
             <td class="post">
                 <asp:CheckBox ID="IsStartX" runat="server"></asp:CheckBox>
@@ -32,7 +35,15 @@
         </tr>
         <tr>
             <td class="postheader">
-                <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="FORUM_MOD" LocalizedPage="ADMIN_EDITGROUP" />
+                <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="IS_HIDDEN" LocalizedPage="ADMIN_EDITGROUP" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="IsHiddenX" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+                <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel16" runat="server" LocalizedTag="FORUM_MOD" LocalizedPage="ADMIN_EDITGROUP" />
                 
                 
             </td>
@@ -53,8 +64,6 @@
         <tr>
             <td class="postheader" width="50%">
                 <VZF:HelpLabel ID="HelpLabel5" runat="server" LocalizedTag="PMMESSAGES" LocalizedPage="ADMIN_EDITGROUP" />
-                
-                
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="PMLimit" Text="0" runat="server" />
@@ -110,6 +119,30 @@
             </td>
             <td class="post" width="50%">
                 <asp:TextBox Style="width: 350px" ID="UsrAlbumImages" runat="server" Text="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader" width="50%">
+                <VZF:HelpLabel ID="HelpLabel17" runat="server" LocalizedTag="PERSONALFORUMS_NUMBER" LocalizedPage="ADMIN_EDITGROUP" />
+            </td>
+            <td class="post" width="50%">
+                <asp:TextBox Style="width: 350px" ID="PersonalForumsNumber" Text="0" runat="server" />
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader" width="50%">
+                <VZF:HelpLabel ID="HelpLabel18" runat="server" LocalizedTag="PERSONALFORUMS_ACCESSMASKSNUMBER" LocalizedPage="ADMIN_EDITGROUP" />
+            </td>
+            <td class="post" width="50%">
+                <asp:TextBox Style="width: 350px" ID="PersonalAccessMasksNumber" Text="0" runat="server" />
+            </td>
+        </tr>
+        <tr>
+            <td class="postheader" width="50%">
+                <VZF:HelpLabel ID="HelpLabel19" runat="server" LocalizedTag="PERSONALFORUMS_GROUPS" LocalizedPage="ADMIN_EDITGROUP" />
+            </td>
+            <td class="post" width="50%">
+                <asp:TextBox Style="width: 350px" ID="PersonalGroupsNumber" Text="0" runat="server" />
             </td>
         </tr>
         <tr>
@@ -184,12 +217,15 @@
                 </tr>
             </ItemTemplate>
         </asp:Repeater>
+        </tbody>
+        <tfoot>
         <tr>
             <td class="footer1" align="center" colspan="11">
                 <asp:Button ID="Save" runat="server" OnClick="Save_Click" CssClass="pbutton"></asp:Button>&nbsp;
                 <asp:Button ID="Cancel" runat="server" OnClick="Cancel_Click" CssClass="pbutton"></asp:Button>
             </td>
         </tr>
+        </tfoot>
     </table>
 </VZF:AdminMenu>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

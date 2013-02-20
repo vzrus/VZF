@@ -2131,7 +2131,8 @@ BEGIN
              name,
              categoryimage,
              sortorder,
-             pollgroupid
+             pollgroupid,	
+			 canhavepersforums
        FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid ORDER BY sortorder
        LOOP
     RETURN NEXT _rec;
@@ -2143,7 +2144,8 @@ END LOOP;
              name,
              categoryimage,
              sortorder,
-             pollgroupid
+             pollgroupid,	
+			 canhavepersforums
         FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid LIMIT 1
          LOOP
     RETURN NEXT _rec;
@@ -2267,7 +2269,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_save(
                            i_categoryid integer, 
                            i_name varchar, 
                            i_sortorder smallint, 
-                           i_categoryimage varchar)
+                           i_categoryimage varchar,
+						   i_canhavepersforums boolean)
                   RETURNS integer AS
 $BODY$DECLARE
              ici_sortorder smallint:=i_sortorder;
@@ -2295,18 +2298,19 @@ IF i_categoryid > 0 THEN
 UPDATE databaseSchema.objectQualifier_category
 SET    name = i_name ,
 categoryimage = i_categoryimage,
-sortorder = ici_sortorder
+sortorder = ici_sortorder, canhavepersforums = i_canhavepersforums
 WHERE  categoryid = i_categoryid ;
 ELSE
 INSERT INTO databaseSchema.objectQualifier_category
 (boardid,
 name,
 categoryimage,
-sortorder)
+sortorder,
+canhavepersforums)
 VALUES     (i_boardid,
 substr(i_name, 1, 128),
 i_categoryimage,
-ici_sortorder);
+ici_sortorder,i_canhavepersforums);
   SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_category','categoryid')) INTO ici_categoryid; 
 END IF;
 RETURN  ici_categoryid;
@@ -2948,7 +2952,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_list
                            i_boardid integer, 
                            i_forumid integer,
 						   i_userid integer,
-						   i_isuserforum boolean
+						   i_isuserforum boolean,
+						   i_canhavepersforums boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_forum_list_return_type  AS
 $BODY$DECLARE
@@ -2974,7 +2979,9 @@ BEGIN
                              a.themeurl,
                              a.imageurl,
                              a.styles,
-                             a.pollgroupid 
+                             a.pollgroupid,
+							 a.createdbyuserid,
+							 a.canhavepersforums 
                     FROM databaseSchema.objectQualifier_forum a 
                                   JOIN databaseSchema.objectQualifier_category b 
                                      ON b.categoryid=a.categoryid 
@@ -3003,7 +3010,9 @@ END LOOP;
                              a.themeurl,
                              a.imageurl,
                              a.styles,
-                             a.pollgroupid 
+                             a.pollgroupid,
+							 a.createdbyuserid,
+							 a.canhavepersforums
         FROM databaseSchema.objectQualifier_forum a 
                    JOIN databaseSchema.objectQualifier_category b 
                     ON b.categoryid=a.categoryid 
@@ -3049,7 +3058,8 @@ BEGIN
                              a.themeurl,
                              a.imageurl,
                              a.styles,
-                             a.pollgroupid 
+                             a.pollgroupid,
+							 a.createdbyuserid  
                     FROM databaseSchema.objectQualifier_forum a 
                                   JOIN databaseSchema.objectQualifier_category b 
                                      ON b.categoryid=a.categoryid 
@@ -3080,7 +3090,8 @@ END LOOP;
                              a.themeurl,
                              a.imageurl,
                              a.styles,
-                             a.pollgroupid 
+                             a.pollgroupid,
+							 a.createdbyuserid  
         FROM databaseSchema.objectQualifier_forum a 
                    JOIN databaseSchema.objectQualifier_category b 
                     ON b.categoryid=a.categoryid 
@@ -4251,12 +4262,13 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_accessmaskid integer,
                            i_userid integer,
                            i_isuserforum boolean,
+						   i_canhaveperforums boolean,
                            i_utctimestamp timestampTZ)
                    RETURNS integer AS
 $BODY$DECLARE 
 ici_ForumID integer:=i_forumid;
 ici_boardid	integer;
-ici_parentid integer;
+ici_parentid integer := i_parentid;
 ici_flags		integer:=0 ;	
 ici_sortorder smallint:=i_sortorder;
 ici_nid		integer;
@@ -4286,7 +4298,17 @@ BEGIN
     IF i_istest IS NOT FALSE THEN  ici_flags := ici_flags | 4;END IF;
     IF i_moderated IS NOT FALSE THEN  ici_flags := ici_flags | 8;END IF;
   SELECT boardid INTO ici_boardid from databaseSchema.objectQualifier_category
-  WHERE categoryid=i_categoryid;
+    WHERE categoryid=i_categoryid;
+
+ IF i_userid IS NOT NULL THEN   
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where userid = i_userid LIMIT  1;
+       -- guests should not create forums
+    ELSE
+    SELECT BoardID INTO ici_BoardID FROM databaseSchema.objectQualifier_category  WHERE categoryid=i_categoryid;
+    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where BoardID = ici_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
+    END IF;
+
+
   IF ici_ForumID > 0 THEN
   UPDATE databaseSchema.objectQualifier_forum
   SET
@@ -4300,15 +4322,15 @@ BEGIN
   flags = ici_flags,
   imageurl = i_imageurl,
   styles = i_styles,
-  isuserforum = i_isuserforum
+  isuserforum = i_isuserforum,
+  canhaveperforums = i_canhaveperforums
   WHERE forumid=ici_ForumID;
   ELSE
   INSERT INTO databaseSchema.objectQualifier_forum(categoryid,parentid,name,description,sortorder,
-  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum)
+  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhaveperforums)
   VALUES(i_categoryid,i_parentid,i_name,i_description,
-  ici_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum);
-  SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_forum','forumid')) INTO ici_ForumID; 
-
+  ici_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_UserDisplayName,i_utctimestamp,i_canhaveperforums) returning forumid INTO ici_ForumID; 
+ 
   INSERT INTO databaseSchema.objectQualifier_forumaccess(groupid,forumid,accessmaskid)
   SELECT groupid,ici_ForumID,i_accessmaskid
   FROM databaseSchema.objectQualifier_group
@@ -4319,17 +4341,9 @@ BEGIN
  -- if (i_accessmaskid > 0) then
 
  -- PERFORM databaseSchema.objectQualifier_fillin_or_check_ns_tables();
- -- end if;  
-
-
-  IF i_userid IS NOT NULL THEN   
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where userid = i_userid LIMIT  1;
-       -- guests should not create forums
-    ELSE
+ -- end if;   
    
-    SELECT BoardID INTO ici_BoardID FROM databaseSchema.objectQualifier_category WHERE CategoryID = i_CategoryID;
-    SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where BoardID = ici_BoardID and (Flags & 4) = 4  ORDER BY Joined LIMIT 1;
-    END IF;
+
     if exists (select 1 from databaseSchema.objectQualifier_forumhistory where forumid = ici_ForumID and changeddate = i_utctimestamp LIMIT 1) THEN
     update databaseSchema.objectQualifier_forumhistory set 
            ChangedUserID = i_UserID,	
@@ -4941,7 +4955,10 @@ BEGIN
              usralbums,
              usralbumimages,
 			 isusergroup,
-			 createdbyuserid
+			 createdbyuserid,
+			 usrpersonalmasks,
+			 usrpersonalgroups,
+			 usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
          LOOP
@@ -4964,7 +4981,10 @@ END LOOP;
              usralbums,
              usralbumimages,
 			 isusergroup,
-			 createdbyuserid
+			 createdbyuserid,
+			 usrpersonalmasks,
+			 usrpersonalgroups,
+			 usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
         AND groupid = i_groupid LIMIT 1
@@ -5006,7 +5026,10 @@ BEGIN
              usralbums,
              usralbumimages,
 			 isusergroup,
-			 createdbyuserid
+			 createdbyuserid,
+			 usrpersonalmasks,
+			 usrpersonalgroups,
+			 usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
          LOOP
@@ -5029,7 +5052,10 @@ END LOOP;
              usralbums,
              usralbumimages,
 			 isusergroup,
-			 createdbyuserid
+			 createdbyuserid,
+			 usrpersonalmasks,
+			 usrpersonalgroups,
+			 usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
         AND groupid = i_groupid LIMIT 1
@@ -5184,6 +5210,8 @@ BEGIN
 FOR _rec IN
         SELECT   a.groupid,
         a.name,
+		(a.flags & 16 = 16),
+		a.style,
         (SELECT COUNT(1)
         FROM   databaseSchema.objectQualifier_usergroup x
         WHERE  x.userid = i_userid
@@ -5213,6 +5241,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_isguest boolean,
                            i_isstart boolean,
                            i_ismoderator boolean,
+						   i_ishidden boolean,
                            i_accessmaskid integer,
                            i_pmlimit integer,
                            i_style varchar(255),
@@ -5225,6 +5254,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_usralbumimages integer,
                            i_userid integer,
                            i_isusergroup boolean,
+						   i_personalaccessmasksnumber integer,
+						   i_personalgroupsnumber integer,
+						   i_personalforumsnumber integer,
                            i_utctimestamp timestampTZ)
                   RETURNS int AS
 $BODY$DECLARE
@@ -5242,6 +5274,8 @@ BEGIN
         iciFlags := iciFlags | 4; END IF;
         IF i_ismoderator IS NOT FALSE THEN
         iciFlags := iciFlags | 8; END IF;
+		 IF i_ishidden IS NOT FALSE THEN
+        iciFlags := iciFlags | 16; END IF;
         
 		SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
 				  IF i_UserID IS NOT NULL THEN   
@@ -5263,7 +5297,10 @@ BEGIN
                    usrsightmltags = i_usrsightmltags,
                    usralbums = i_usralbums,
                    usralbumimages = i_usralbumimages,
-                   isusergroup = i_isusergroup
+                   isusergroup = i_isusergroup,
+				   usrpersonalmasks = i_personalaccessmasksnumber,
+				   usrpersonalgroups = i_personalgroupsnumber,
+				   usrpersonalforums = i_personalforumsnumber
             WHERE  groupid = i_groupid;
            -- SELECT i_groupid INTO ici_groupid;        
         ELSE        
@@ -5284,7 +5321,10 @@ BEGIN
 				        createdbyuserid,
 				        createdbyusername,
 						createdbyuserdisplayname,
-						createddate)
+						createddate,
+				        usrpersonalmasks,
+				        usrpersonalgroups,
+				        usrpersonalforums)
             VALUES     (i_name,
                         i_boardid,
                         iciFlags,
@@ -5301,7 +5341,10 @@ BEGIN
 						i_userid,
 						ici_UserName,
 						ici_UserDisplayName,
-						i_utctimestamp)
+						i_utctimestamp,
+						i_personalaccessmasksnumber,
+						i_personalgroupsnumber,
+						i_personalforumsnumber)
                         RETURNING groupid INTO ici_groupid;            
             
             INSERT INTO databaseSchema.objectQualifier_forumaccess
@@ -8331,8 +8374,9 @@ END IF;
         COALESCE(((b.Flags & 4) = 4),FALSE),
         d.views,
         d.forumid,
-        c.name AS RankName,
-        c.rankimage,       
+        c.name AS RankName,		
+        c.rankimage,
+		c.style AS RankStyle,
         (case(i_stylednicks)
             when true THEN  b.userstyle
             else ''	 end), 
@@ -15385,29 +15429,22 @@ CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_lazydata(
                   RETURNS SETOF databaseSchema.objectQualifier_user_lazydata_return_type AS
 $BODY$DECLARE
              G_UsrAlbums integer :=0;
-             R_UsrAlbums integer :=0;
-             ici_groupstyle varchar(255);	
-             ici_rankstyle varchar(255);
+             R_UsrAlbums integer :=0;         
+			 ici_grouppersonalforums integer :=0;
+			 ici_grouppersonalmasks integer :=0;
+			 ici_grouppersonalgroups integer :=0;
              _rec databaseSchema.objectQualifier_user_lazydata_return_type%ROWTYPE;
 BEGIN 
-    IF (i_showuserstyle is true) THEN
-    
-    SELECT  c.style
-    INTO  ici_groupstyle
+
+    SELECT  COALESCE(MAX(c.usrpersonalgroups),0),COALESCE(MAX(c.usrpersonalmasks),0),COALESCE(MAX(c.usrpersonalforums),0)
+    INTO  ici_grouppersonalgroups,ici_grouppersonalmasks,ici_grouppersonalforums
     FROM databaseSchema.objectQualifier_user a 
                         JOIN databaseSchema.objectQualifier_usergroup b
                           ON a.userid = b.userid
                             JOIN databaseSchema.objectQualifier_group c                         
                               ON c.groupid = b.groupid
                               WHERE a.userid = i_userid AND a.boardid = i_boardid 
-                              ORDER BY c.sortorder ASC LIMIT 1;
-    SELECT  c.style 
-    INTO  ici_rankstyle
-    FROM databaseSchema.objectQualifier_Rank c 
-                                JOIN databaseSchema.objectQualifier_user d
-                                  ON c.rankid = d.rankid WHERE d.userid = i_userid 
-                                  AND d.boardid = i_boardid ORDER BY c.rankid DESC LIMIT 1;
-    END IF;
+                              LIMIT 1;
 
     IF (i_showuseralbums is true) THEN
     SELECT COALESCE(MAX(c.usralbums),0)
@@ -15447,9 +15484,9 @@ BEGIN
         (CASE WHEN i_showunreadpms  is true THEN (select count(1) from databaseSchema.objectQualifier_userpmessage where userid=i_userid and isread is false and isdeleted  is false and isarchived  is false) ELSE 0 END) as UnreadPrivate,
         (CASE WHEN i_showunreadpms  is true THEN (SELECT created FROM databaseSchema.objectQualifier_pmessage pm INNER JOIN databaseSchema.objectQualifier_userpmessage upm ON pm.pmessageid = upm.pmessageid WHERE upm.userid=i_userid and upm.isread is false  and upm.isdeleted  is false and upm.isarchived  is false ORDER BY pm.created DESC LIMIT 1) ELSE NULL END) as LastUnreadPm,		
         (CASE WHEN i_showpendingbuddies  is true THEN (SELECT COUNT(1) FROM databaseSchema.objectQualifier_buddy WHERE touserid = i_userid AND approved is false) ELSE 0 END) as PendingBuddies,
-        (CASE WHEN i_showpendingbuddies  is true THEN (SELECT Requested FROM databaseSchema.objectQualifier_buddy WHERE touserID=i_userid and approved is false ORDER BY requested LIMIT 1) ELSE NULL END) as LastPendingBuddies,
-        (case(i_showuserstyle)
-            when true THEN  coalesce(ici_groupstyle, ici_rankstyle)  
+        (CASE WHEN i_showpendingbuddies  is true THEN (SELECT Requested FROM databaseSchema.objectQualifier_buddy WHERE touserID=i_userid and approved is false ORDER BY requested LIMIT 1) ELSE NULL END) as LastPendingBuddies,       
+	    (case(i_showuserstyle)
+            when true THEN  coalesce((select userstyle from databaseSchema.objectQualifier_user where userid = i_userid),'')  
             else ''	 end) as UserStyle,
        (SELECT COUNT(ua.albumid) FROM databaseSchema.objectQualifier_useralbum ua
        WHERE ua.userid = i_userid) as  NumAlbums,
@@ -15459,8 +15496,14 @@ BEGIN
        WHERE fromuserid = i_userid OR touserid = i_userid LIMIT 1),0))::integer::boolean ELSE false END) AS UserHasBuddies,
            -- Guest can't vote in polls attached to boards, we need some temporary access check by a criteria 
         (CASE WHEN a.Flags & 4 > 0 THEN 0 ELSE 1 END) AS BoardVoteAccess,
-        a.points
-        from
+        a.points,
+		(SELECT COUNT(1) FROM databaseSchema.objectQualifier_forum f   WHERE f.createdbyuserid = i_userid and f.isuserforum),
+		(SELECT COUNT(1) FROM databaseSchema.objectQualifier_accessmask am   WHERE am.createdbyuserid = i_userid and am.isusermask),
+        (SELECT COUNT(1) FROM databaseSchema.objectQualifier_group gr   WHERE gr.createdbyuserid = i_userid and gr.isusergroup),
+		ici_grouppersonalgroups,
+		ici_grouppersonalmasks,
+		ici_grouppersonalforums
+		from
            databaseSchema.objectQualifier_user a		
         where
         a.userid = i_userid LIMIT 1

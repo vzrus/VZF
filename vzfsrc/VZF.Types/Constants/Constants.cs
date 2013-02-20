@@ -19,6 +19,9 @@
 
 namespace YAF.Types.Constants
 {
+    using System.Collections.Concurrent;
+    using System.Data;
+
     /// <summary>
     /// For globally or multiple times used constants
     /// </summary>
@@ -120,7 +123,7 @@ namespace YAF.Types.Constants
             ///   The guest groups cache.
             /// </summary>
             public const string GuestGroupsCache = "GuestGroupsCache";
-            
+
             /// <summary>
             ///   The group rank styles.
             /// </summary>

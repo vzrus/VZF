@@ -124,6 +124,14 @@
                 <asp:CheckBox ID="Moderated" runat="server"></asp:CheckBox>
             </td>
         </tr>
+         <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="CanHavePersForumsLbl" runat="server" LocalizedTag="CANHAVEUSERFORUMS" LocalizedPage="ADMIN_EDITFORUM" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="CanHavePersForums" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
         <tr>
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="FORUM_IMAGE" LocalizedPage="ADMIN_EDITFORUM" />

@@ -25,7 +25,7 @@ namespace VZF.Controls
 
   using VZF.Data.Common;
 
-  
+  using YAF.Classes;
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Interfaces;
@@ -98,6 +98,25 @@ namespace VZF.Controls
       {
         this.AvatarImage.Visible = false;
       }
+    }
+
+      /// <summary>
+      /// The style transform data row.
+      /// </summary>
+      /// <param name="style">
+      /// The style.
+      /// </param>
+      /// <returns>
+      /// The <see cref="string"/>.
+      /// </returns>
+      public string StyleTransformDataRow([NotNull] object style)
+    {
+        if (this.Get<YafBoardSettings>().UseStyledNicks)
+        {
+            return this.Get<IStyleTransform>().DecodeStyleByString(style.ToString(), false);
+        }
+
+        return string.Empty;
     }
 
     #endregion

@@ -56,6 +56,12 @@
     <DocumentationFile>..\VZF.NET\Bin\VZF.Controls.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -215,6 +221,7 @@
     <None Include="YafAdminMenu\YafMenu.xss">
       <DependentUpon>YafMenu.xsd</DependentUpon>
     </None>
+    <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

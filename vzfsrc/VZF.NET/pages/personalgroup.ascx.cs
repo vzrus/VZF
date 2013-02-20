@@ -1,4 +1,26 @@
-﻿
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="personalgroup.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The personal group list.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 namespace YAF.pages
 {
     using System;
@@ -129,7 +151,7 @@ namespace YAF.pages
         protected void NewGroup_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // redirect to new role page
-            YafBuildLink.Redirect(ForumPages.editgroup);
+            YafBuildLink.Redirect(ForumPages.editgroup, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /// <summary>
@@ -143,7 +165,7 @@ namespace YAF.pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            if (PageContext.UsrPersonalGroups <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
             {
                 YafBuildLink.AccessDenied();
             }
@@ -157,7 +179,12 @@ namespace YAF.pages
             // create page links
             this.CreatePageLinks();
 
-            this.NewGroup.Text = this.GetText("ADMIN_GROUPS", "NEW_ROLE");
+            if (PageContext.PersonalGroupsNumber < PageContext.UsrPersonalGroups)
+            {
+                this.NewGroup.Visible = true;
+                this.NewGroup.Text = this.GetText("ADMIN_GROUPS", "NEW_ROLE");
+            }
+            
 
             // sync roles just in case...
             RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);

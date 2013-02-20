@@ -45,6 +45,15 @@
                 <asp:TextBox Style="width: 350px" ID="StyleTextBox" TextMode="MultiLine" runat="server" />
             </td>
         </tr>
+        <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="IS_HIDDEN" LocalizedPage="ADMIN_EDITGROUP" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="IsHiddenX" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+              
         <tr runat="server" id="NewGroupRow">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="INITIAL_MASK" LocalizedPage="ADMIN_EDITGROUP" />

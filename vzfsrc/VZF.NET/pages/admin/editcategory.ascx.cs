@@ -24,6 +24,7 @@ namespace YAF.Pages.Admin
 
   using System;
   using System.Data;
+  using System.Globalization;
   using System.IO;
   using System.Linq;
   using System.Web.UI.WebControls;
@@ -136,7 +137,7 @@ namespace YAF.Pages.Admin
 
         this.Save.Text = this.GetText("SAVE");
         this.Cancel.Text = this.GetText("CANCEL");
-
+        
         // Populate Category Table
         this.CreateImagesDataTable();
 
@@ -195,7 +196,7 @@ namespace YAF.Pages.Admin
       }
 
       // save category
-      CommonDb.category_save(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder);
+      CommonDb.category_save(PageContext.PageModuleID, this.PageContext.PageBoardID, categoryID, name, categoryImage, sortOrder, this.CanHavePersForums.Checked);
 
       // remove category cache...
       this.Get<IDataCache>().Remove(Constants.Cache.ForumCategory);
@@ -230,7 +231,7 @@ namespace YAF.Pages.Admin
                     sortOrder = 1;
                 }
 
-                this.SortOrder.Text = sortOrder.ToString();
+                this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
 
                 return;
             }
@@ -243,7 +244,7 @@ namespace YAF.Pages.Admin
             this.Name.Text = (string)row["Name"];
             this.SortOrder.Text = row["SortOrder"].ToString();
             this.CategoryNameTitle.Text = this.Name.Text;
-
+            this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
             ListItem item = this.CategoryImages.Items.FindByText(row["CategoryImage"].ToString());
 
             if (item == null)
@@ -254,7 +255,7 @@ namespace YAF.Pages.Admin
             item.Selected = true;
             this.Preview.Src = "{0}{2}/{1}".FormatWith(
                 YafForumInfo.ForumClientFileRoot, row["CategoryImage"], YafBoardFolders.Current.Categories);
-              
+            
             // path corrected
         }
     }

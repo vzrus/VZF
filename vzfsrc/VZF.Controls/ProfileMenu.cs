@@ -162,7 +162,7 @@ namespace VZF.Controls
                     ForumPages.cp_changepassword);
             }
 
-            if (this.Get<YafBoardSettings>().AllowPersonalForums)
+            if (PageContext.UsrPersonalForums > 0)
             {
                 // Render Personal Forum Items
                 html.AppendFormat(@"<tr class=""header2""><td>{0}</td></tr>", this.GetText("PERSONAL_FORUMS"));
@@ -176,24 +176,24 @@ namespace VZF.Controls
                     ForumPages.personalforum);
             }
 
-            if (this.Get<YafBoardSettings>().PersonalAccessMasksNumber > 0)
+            if (PageContext.UsrPersonalMasks > 0)
             {
                 // Render Personal Masks Items
                 html.AppendFormat(
-                    @"<li class=""yafforumpersonal_{2}""><a href=""{0}"" title=""{1}"">{1}</a></li>",
+                    @"<li class=""yafmaskpersonal_{2}""><a href=""{0}"" title=""{1}"">{1}</a></li>",
                     YafBuildLink.GetLink(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID)),
                     this.GetText("EDIT_PERSONALACCESSMASKS"),
-                    ForumPages.personalforum);
+                    ForumPages.personalaccessmask);
             }
 
-            if (this.Get<YafBoardSettings>().PersonalGroupsNumber > 0)
+            if (PageContext.UsrPersonalGroups > 0)
             {
                 // Render Personal Masks Items
                 html.AppendFormat(
-                    @"<li class=""yafforumpersonal_{2}""><a href=""{0}"" title=""{1}"">{1}</a></li>",
+                    @"<li class=""yafgrouppersonal_{2}""><a href=""{0}"" title=""{1}"">{1}</a></li>",
                     YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID)),
                     this.GetText("EDIT_PERSONALGROUPS"),
-                    ForumPages.personalforum);
+                    ForumPages.personalgroup);
             }
 
 

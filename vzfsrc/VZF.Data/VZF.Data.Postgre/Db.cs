@@ -2265,7 +2265,8 @@ namespace VZF.Data.Postgre
             object categoryId,
             object name,
             object categoryImage,
-            object sortOrder)
+            object sortOrder, 
+            object canHavePersForums)
         {
 
             int sortOrderChecked = 0;
@@ -2284,8 +2285,9 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_name", NpgsqlDbType.Varchar)).Value = name;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlDbType.Smallint)).Value = sortOrderChecked;
+                cmd.Parameters.Add(new NpgsqlParameter("i_sortorder", NpgsqlDbType.Integer)).Value = sortOrderChecked;
                 cmd.Parameters.Add(new NpgsqlParameter("i_categoryimage", NpgsqlDbType.Varchar)).Value = categoryImage;
+                cmd.Parameters.Add(new NpgsqlParameter("i_canhavepersforums", NpgsqlDbType.Boolean)).Value = canHavePersForums;
 
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
                 forum_ns_recreate(connectionString);
@@ -3144,7 +3146,8 @@ namespace VZF.Data.Postgre
 
                     newRow = listDestination.NewRow();
                     newRow["ForumID"] = -categoryID; // Ederon : 9/4/2007
-                    newRow["Title"] = string.Format("{0}", row["Category"].ToString());
+                    newRow["Title"] = string.Format("{0}", row["Category"]);
+                    newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
                     listDestination.Rows.Add(newRow);
                 }
 
@@ -3157,6 +3160,7 @@ namespace VZF.Data.Postgre
 
                 newRow["ForumID"] = row["ForumID"];
                 newRow["Title"] = string.Format(" -{0} {1}", sIndent, row["Forum"]);
+                newRow["CanHavePersForums"] = row["CanHavePersForums"].ToType<bool>();
 
                 listDestination.Rows.Add(newRow);
 
@@ -3177,12 +3181,14 @@ namespace VZF.Data.Postgre
             var listDestination = new DataTable { TableName = "forum_sort_list" };
             listDestination.Columns.Add("ForumID", typeof(String));
             listDestination.Columns.Add("Title", typeof(String));
+            listDestination.Columns.Add("CanHavePersForums", typeof(bool));
 
             if (emptyFirstRow)
             {
                 DataRow blankRow = listDestination.NewRow();
                 blankRow["ForumID"] = string.Empty;
                 blankRow["Title"] = string.Empty;
+                blankRow["CanHavePersForums"] = false;
                 listDestination.Rows.Add(blankRow);
             }
             // filter the forum list -- not sure if this code actually works
@@ -3227,7 +3233,6 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
                 cmd.Parameters.Add(new NpgsqlParameter("i_allowuseforumsonly", NpgsqlDbType.Boolean)).Value = allowUserForumsOnly;
-                
                 int intCategoryId = Convert.ToInt32(categoryID.ToString());
 
                 using (DataTable dt = PostgreDbAccess.GetData(cmd, connectionString))
@@ -3542,8 +3547,9 @@ namespace VZF.Data.Postgre
             object imageURL,
             object styles,
             bool dummy, 
-            object userId, 
-            bool isUserForum)
+            object userId,
+            bool isUserForum,
+            bool canhavepersforums)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_save"))
             {
@@ -3576,6 +3582,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskID ?? DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value = isUserForum;
+                cmd.Parameters.Add(new NpgsqlParameter("i_canhavepersforums", NpgsqlDbType.Boolean)).Value = canhavepersforums;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                    DateTime.UtcNow;
                 String resultop = PostgreDbAccess.ExecuteScalar(cmd, connectionString).ToString();
@@ -3757,6 +3764,7 @@ namespace VZF.Data.Postgre
             object isGuest,
             object isStart,
             object isModerator,
+            [NotNull] object isHidden,
             object accessMaskId,
             object pmLimit,
             object style,
@@ -3767,8 +3775,11 @@ namespace VZF.Data.Postgre
             object usrSigHTMLTags,
             object usrAlbums,
             object usrAlbumImages,
-            [CanBeNull] object userId, 
-            [NotNull] object isUserGroup)
+            [CanBeNull] object userId,
+            [NotNull] object isUserGroup,
+            object personalForumsNumber,
+            object personalAccessMasksNumber,
+            object personalGroupsNumber)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_save"))
             {
@@ -3786,6 +3797,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_isguest", NpgsqlDbType.Boolean)).Value = isGuest;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isstart", NpgsqlDbType.Boolean)).Value = isStart;
                 cmd.Parameters.Add(new NpgsqlParameter("i_ismoderator", NpgsqlDbType.Boolean)).Value = isModerator;
+                cmd.Parameters.Add(new NpgsqlParameter("i_ishidden", NpgsqlDbType.Boolean)).Value = isHidden;
                 cmd.Parameters.Add(new NpgsqlParameter("i_accessmaskid", NpgsqlDbType.Integer)).Value = accessMaskId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_pmlimit", NpgsqlDbType.Integer)).Value = pmLimit;
                 cmd.Parameters.Add(new NpgsqlParameter("i_style", NpgsqlDbType.Varchar)).Value = style;
@@ -3798,8 +3810,11 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_usralbumimages", NpgsqlDbType.Integer)).Value = usrAlbumImages;
                 cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isusergroup", NpgsqlDbType.Boolean)).Value = isUserGroup;
+                cmd.Parameters.Add(new NpgsqlParameter("i_personalaccessmasksnumber", NpgsqlDbType.Integer)).Value = personalAccessMasksNumber;
+                cmd.Parameters.Add(new NpgsqlParameter("i_personalgroupsnumber", NpgsqlDbType.Integer)).Value = personalGroupsNumber;
+                cmd.Parameters.Add(new NpgsqlParameter("i_personalforumsnumber", NpgsqlDbType.Integer)).Value = personalForumsNumber;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
-                   DateTime.UtcNow;
+                  DateTime.UtcNow;
                 return long.Parse(PostgreDbAccess.ExecuteScalar(cmd, connectionString).ToString());
             }
         }

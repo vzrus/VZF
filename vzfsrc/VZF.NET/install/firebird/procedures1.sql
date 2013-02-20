@@ -322,17 +322,12 @@ CREATE PROCEDURE objQual_BOARD_CREATE(
 CREATE PROCEDURE objQual_SYSTEM_UPDATEVERSION
 (
 	I_VERSION		INTEGER,
-	I_VERSIONNAME	VARCHAR(128)
+	I_VERSIONNAME	VARCHAR(255)
 ) 
 AS
-DECLARE VARIABLE ici_tmpValue VARCHAR (128);
 BEGIN
-
-	
-	ici_tmpValue = CAST(:I_VERSION AS VARCHAR(128));
-	EXECUTE PROCEDURE objQual_REGISTRY_SAVE 'Version',:ici_tmpValue,null;
-	EXECUTE PROCEDURE objQual_REGISTRY_SAVE 'VersionName',:I_VERSIONNAME,null;
-
+	EXECUTE PROCEDURE objQual_REGISTRY_SAVE 'Version',CAST(:I_VERSION AS VARCHAR(128)),null;
+	EXECUTE PROCEDURE objQual_REGISTRY_SAVE 'VersionName',CAST(:I_VERSIONNAME AS BLOB),null;
 END;
 --GO
 
@@ -1683,6 +1678,7 @@ RETURNS
 "Styles" varchar(255),
 "ParentID" INTEGER,
 "PollGroupID" INTEGER,
+"IsUserForum" BOOL,
 "Topics" INTEGER,
 "Posts" INTEGER,
 "Flags" INTEGER,
@@ -1771,6 +1767,7 @@ select
 		b.Styles,
 		b.ParentID,
 		b.PollGroupID,
+		b.IsUserForum,
 		(SELECT I_NUMTOPICS FROM objQual_FORUM_TOPICS(b.FORUMID)),
 		(SELECT I_NUMPOSTS FROM objQual_FORUM_POSTS(b.FORUMID)),			
 		t.LastPosted AS LastPosted,
@@ -1821,6 +1818,7 @@ select
 		 :"Styles",
 		 :"ParentID",
 		 :"PollGroupID",
+		 :"IsUserForum",
 		 :"Topics",
 		 :"Posts", 
 		 :"LastPosted",
@@ -2479,7 +2477,7 @@ BEGIN
 		END
 SUSPEND;
 -- can be put in every place with slow update rate
-DELETE FROM objQual_TOPIC WHERE TOPICMOVEDID IS NOT NULL AND LINKDAYS < current_timestamp;
+DELETE FROM objQual_TOPIC WHERE TOPICMOVEDID IS NOT NULL AND LINKDATE < current_timestamp;
 END;
 --GO
 CREATE  PROCEDURE objQual_USER_ACCESSMASKS(
@@ -2771,7 +2769,9 @@ RETURNS (
 "IsLocked" BOOL,
 "IsHidden" BOOL,
 "IsNoCount" BOOL,
-"IsModerated" BOOL
+"IsModerated" BOOL,
+"CreatedByUserID" INTEGER,
+"CanHavePersForums" BOOL
 )		
 as
 begin
@@ -2800,7 +2800,9 @@ begin
 				   a.ISLOCKED,
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
-				   a.ISMODERATED 
+				   a.ISMODERATED,
+				   a.CREATEDBYUSERID,
+                   a.CANHAVEPERSFORUMS 
 		from objQual_FORUM a 
 		join objQual_CATEGORY b 
 		on b.CATEGORYID=a.CATEGORYID 
@@ -2830,7 +2832,9 @@ begin
 		:"IsLocked",
 		:"IsHidden",
 		:"IsNoCount",
-		:"IsModerated"
+		:"IsModerated",
+		:"CreatedByUserID",
+		:"CanHavePersForums"
 DO SUSPEND;
 	else
 		for select first 1 a.FORUMID,
@@ -2856,7 +2860,10 @@ DO SUSPEND;
 				   a.ISLOCKED,
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
-				   a.ISMODERATED  from objQual_FORUM a 
+				   a.ISMODERATED,
+				   a.CREATEDBYUSERID,
+                   a.CANHAVEPERSFORUMS
+				   from objQual_FORUM a 
 		join objQual_CATEGORY b 
 		on b.CATEGORYID=a.CATEGORYID 
 		where b.BOARDID=:I_BOARDID 
@@ -2885,7 +2892,9 @@ DO SUSPEND;
 		:"IsLocked",
 		:"IsHidden",
 		:"IsNoCount",
-		:"IsModerated"
+		:"IsModerated",
+		:"CreatedByUserID",
+		:"CanHavePersForums"
 DO SUSPEND;
 end;
 --GO
@@ -2915,7 +2924,8 @@ RETURNS (
 "IsLocked" BOOL,
 "IsHidden" BOOL,
 "IsNoCount" BOOL,
-"IsModerated" BOOL
+"IsModerated" BOOL,
+"CreatedByUserID" INTEGER
 )		
 as
 begin
@@ -2944,7 +2954,8 @@ begin
 				   a.ISLOCKED,
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
-				   a.ISMODERATED 
+				   a.ISMODERATED,
+				   a.CREATEDBYUSERID 
 		from objQual_FORUM a 
 		join objQual_CATEGORY b 
 		on b.CATEGORYID=a.CATEGORYID 
@@ -2976,7 +2987,8 @@ begin
 		:"IsLocked",
 		:"IsHidden",
 		:"IsNoCount",
-		:"IsModerated"
+		:"IsModerated",
+		:"CreatedByUserID"
 DO SUSPEND;
 	else
 		for select first 1 a.FORUMID,
@@ -3002,7 +3014,9 @@ DO SUSPEND;
 				   a.ISLOCKED,
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
-				   a.ISMODERATED  from objQual_FORUM a 
+				   a.ISMODERATED,
+				   a.CREATEDBYUSERID
+				     from objQual_FORUM a 
 		join objQual_CATEGORY b 
 		on b.CATEGORYID=a.CATEGORYID 
 		where b.BOARDID=:I_BOARDID 
@@ -3033,7 +3047,8 @@ DO SUSPEND;
 		:"IsLocked",
 		:"IsHidden",
 		:"IsNoCount",
-		:"IsModerated"
+		:"IsModerated",
+		:"CreatedByUserID"
 DO SUSPEND;
 end;
 --GO
@@ -3836,58 +3851,55 @@ returns
 "UsrAlbums" INTEGER,
 "UserHasBuddies" BOOL,
 "BoardVoteAccess" BOOL,
-"Reputation" INTEGER
+"Reputation" INTEGER,
+"PersonalForumsNumber" INTEGER,
+"PersonalAccessMasksNumber" INTEGER,
+"PersonalGroupsNumber" INTEGER,
+"UsrPersonalMasks" INTEGER,
+"UsrPersonalGroups" INTEGER,
+"UsrPersonalForums" INTEGER
 )
  as 
 	DECLARE VARIABLE G_UsrAlbums INTEGER;
 	DECLARE VARIABLE R_UsrAlbums INTEGER;
-	DECLARE VARIABLE G_Style VARCHAR(255);
-	DECLARE VARIABLE R_Style VARCHAR(255);
+	DECLARE VARIABLE ICI_UsrPersonalGroups INTEGER;
+	DECLARE VARIABLE ICI_UsrPersonalMasks INTEGER;
+	DECLARE VARIABLE ICI_UsrPersonalForums INTEGER;
 	DECLARE VARIABLE ICI_UserID INTEGER;
 	DECLARE VARIABLE ICI_UserName VARCHAR(255);	
 		 
 begin 
 		
-	IF (:I_SHOWUSERULBUMS	> 0) THEN
-	BEGIN
-	SELECT FIRST 1 COALESCE(MAX(c.USRALBUMS),0)  
+	
+SELECT COALESCE(MAX(c.USRPERSONALGROUPS),0), COALESCE(MAX(c.USRPERSONALMASKS),0),COALESCE(MAX(c.USRPERSONALFORUMS),0)
 	FROM objQual_USER a 
 						JOIN objQual_USERGROUP b
 						  ON a.USERID = b.USERID
 							JOIN objQual_GROUP c                         
 							  ON b.GROUPID = c.GROUPID 
 							  WHERE a.USERID = :I_USERID AND a.BOARDID = :I_BOARDID
-							  INTO :G_UsrAlbums;
+							  INTO :ICI_UsrPersonalGroups,:ICI_UsrPersonalMasks,:ICI_UsrPersonalForums;
   
-							  
-	SELECT FIRST 1 COALESCE(c.USRALBUMS,0)   
-	FROM objQual_RANK c 
-								JOIN objQual_USER d
-								  ON c.RANKID = d.RANKID WHERE d.USERID = :I_USERID  
-								  AND d.BOARDID = :I_BOARDID -- ORDER BY c.RANKID DESC
-								  INTO :R_UsrAlbums;
-	END	
-	
-	IF (:I_SHOWUSERSTYLE > 0) THEN
+IF (:I_SHOWUSERULBUMS	> 0) THEN
 	BEGIN
-	SELECT FIRST 1 COALESCE(c.STYLE,'')  
-	FROM objQual_USER a 
-						JOIN objQual_USERGROUP b
-						  ON a.USERID = b.USERID
-							JOIN objQual_GROUP c                         
-							  ON b.GROUPID = c.GROUPID 
-							  WHERE a.USERID = :I_USERID AND a.BOARDID = :I_BOARDID 
-							  AND CHAR_LENGTH(c.STYLE) > 2   ORDER BY c.SORTORDER
-							  INTO :G_Style;
+	SELECT FIRST 1 COALESCE(MAX(c.USRALBUMS),0)  
+    FROM objQual_USER a 
+                        JOIN objQual_USERGROUP b
+                          ON a.USERID = b.USERID
+                            JOIN objQual_GROUP c                         
+                              ON b.GROUPID = c.GROUPID 
+                              WHERE a.USERID = :I_USERID AND a.BOARDID = :I_BOARDID
+                              INTO :G_UsrAlbums;
   
-							  
-	SELECT FIRST 1 COALESCE(c.STYLE,'')   
-	FROM objQual_RANK c 
-								JOIN objQual_USER d
-								  ON c.RANKID = d.RANKID WHERE d.USERID = :I_USERID  
-								  AND d.BOARDID = :I_BOARDID ORDER BY c.RANKID DESC
-								  INTO :R_Style;
-	END					                           
+                              
+    SELECT FIRST 1 COALESCE(c.USRALBUMS,0)   
+    FROM objQual_RANK c 
+                                JOIN objQual_USER d
+                                  ON c.RANKID = d.RANKID WHERE d.USERID = :I_USERID  
+                                  AND d.BOARDID = :I_BOARDID 
+                                  INTO :R_UsrAlbums;
+	END	
+	                           
 
 	-- return information
 	for select FIRST 1		
@@ -3916,16 +3928,23 @@ begin
 			
 		(CASE WHEN (:I_SHOWPENDINGBUDDIES > 0) THEN (SELECT COUNT(ID) FROM objQual_BUDDY WHERE TOUSERID = :I_USERID AND APPROVED = 0) ELSE 0 END) AS PendingBuddies,
 		(CASE WHEN (:I_SHOWPENDINGBUDDIES > 0) THEN (SELECT FIRST 1 REQUESTED FROM objQual_BUDDY WHERE TOUSERID=a.USERID and APPROVED = 0 ORDER BY REQUESTED DESC) ELSE NULL END) AS LastPendingBuddies,
-		
-		(CASE WHEN (:I_SHOWUSERSTYLE > 0) THEN 
-		COALESCE(:G_Style, :R_Style) ELSE '' END),
+	    (CASE WHEN (:I_SHOWUSERSTYLE > 0) THEN 
+		(SELECT FIRST 1 COALESCE(USERSTYLE,'')  FROM objQual_USER WHERE USERID = :I_USERID) 
+		ELSE '' END), 
 		(SELECT COUNT(ua.ALBUMID) FROM objQual_USERALBUM ua
 		WHERE ua.UserID = :I_USERID),
 		(CASE WHEN (:G_UsrAlbums > :R_UsrAlbums) THEN :G_UsrAlbums ELSE :R_UsrAlbums END),
-		(SELECT COALESCE((SELECT SIGN(COUNT(1)) FROM objQual_BUDDY WHERE FROMUSERID = :I_USERID OR TOUSERID = :I_USERID),0) FROM RDB$DATABASE),
+		(CASE WHEN (:I_SHOWPENDINGBUDDIES > 0) THEN (SELECT COALESCE((SELECT SIGN(COUNT(1)) FROM objQual_BUDDY WHERE FROMUSERID = :I_USERID OR TOUSERID = :I_USERID),0) FROM RDB$DATABASE) ELSE 0 END) as UserHasBuddies,
 		  -- Guest can't vote in polls attached to boards, we need some temporary access check by a criteria 
 		(CASE WHEN BIN_AND(a.Flags,4) > 0 THEN 0 ELSE 1 END),	
-		a.Points
+		a.Points,	
+
+		(SELECT COUNT(1) FROM objQual_FORUM WHERE CREATEDBYUSERID = :I_USERID AND ISUSERFORUM = 1),
+		(SELECT COUNT(1) FROM objQual_ACCESSMASK WHERE CREATEDBYUSERID = :I_USERID AND ISUSERMASK = 1),
+		(SELECT COUNT(1) FROM objQual_GROUP WHERE CREATEDBYUSERID = :I_USERID AND ISUSERGROUP = 1),
+		(SELECT :ICI_UsrPersonalGroups FROM RDB$DATABASE),
+		(SELECT :ICI_UsrPersonalMasks FROM RDB$DATABASE),
+		(SELECT :ICI_UsrPersonalForums FROM RDB$DATABASE) 
 		from
 		   objQual_USER a		
 		where
@@ -3955,7 +3974,13 @@ begin
 		:"UsrAlbums",
 		:"UserHasBuddies",
 		:"BoardVoteAccess",
-		:"Reputation"
+		:"Reputation",
+		:"PersonalForumsNumber",
+        :"PersonalAccessMasksNumber",
+        :"PersonalGroupsNumber",
+		:"UsrPersonalMasks",
+		:"UsrPersonalGroups",
+		:"UsrPersonalForums"
 do suspend;
 	 end;
 --GO

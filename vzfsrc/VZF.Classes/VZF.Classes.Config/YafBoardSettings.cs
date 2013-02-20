@@ -597,38 +597,6 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets or sets PersonalAccessMasksNumber.
-        /// </summary>
-        public int PersonalAccessMasksNumber
-        {
-            get
-            {
-                return this._regBoard.GetValue("PersonalAccessMasksNumber", 0);
-            }
-
-            set
-            {
-                this._regBoard.SetValue("PersonalAccessMasksNumber", value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets PersonalAccessMasksNumber.
-        /// </summary>
-        public int PersonalGroupsNumber
-        {
-            get
-            {
-                return this._regBoard.GetValue("PersonalGroupsNumber", 0);
-            }
-
-            set
-            {
-                this._regBoard.SetValue("PersonalGroupsNumber", value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets Copyright Removal Domain Key.
         /// </summary>
         public string CopyrightRemovalDomainKey
@@ -2568,22 +2536,6 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether AllowPersonalForums.
-        /// </summary>
-        public bool AllowPersonalForums
-        {
-            get
-            {
-                return this._reg.GetValue("AllowPersonalForums", false);
-            }
-
-            set
-            {
-                this._reg.SetValue("AllowPersonalForums", value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether UseFileTable.
         /// </summary>
         public bool UseFileTable
@@ -3961,7 +3913,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("DeleteTopicTagsIfDisabled", true);
+                return this._reg.GetValue("DeleteTopicTagsIfDisabled", false);
             }
 
             set
