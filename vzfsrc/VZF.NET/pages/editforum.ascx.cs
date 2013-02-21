@@ -342,20 +342,24 @@ namespace YAF.pages
         {
             var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
-            DataTable dataCat = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            DataTable dataCat = CommonDb.category_pfaccesslist(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             DataTable dataCatNew = dataCat.Clone();
             foreach (DataRow row in dataCat.Rows)
             {
-                if (row["CanHavePersForums"].ToType<bool>())
+                if (!row["CanHavePersForums"].ToType<bool>() && !row["HasForumsForPersForums"].ToType<bool>())
                 {
-                    DataRow newRow = dataCatNew.NewRow();
-                    newRow.ItemArray = row.ItemArray;
-                    dataCatNew.Rows.Add(newRow);
+                    continue;
                 }
+
+                DataRow newRow = dataCatNew.NewRow();
+                newRow.ItemArray = row.ItemArray;
+                dataCatNew.Rows.Add(newRow);
             }
 
             dataCatNew.AcceptChanges();
             this.CategoryList.DataSource = dataCatNew;
+            this.CategoryList.DataValueField = "CategoryID";
+            this.CategoryList.DataTextField = "Name";
             this.CategoryList.DataBind();
 
             if (forumId.HasValue)
@@ -397,6 +401,11 @@ namespace YAF.pages
             }
 
             dataCatNew.AcceptChanges();
+            if (dataCatNew.Rows.Count <= 0)
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
+            }
+
             this.ParentList.DataSource = dataCatNew;
             this.ParentList.DataValueField = "ForumID";
             this.ParentList.DataTextField = "Title";

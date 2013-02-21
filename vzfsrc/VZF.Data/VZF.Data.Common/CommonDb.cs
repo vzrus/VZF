@@ -2718,6 +2718,31 @@ namespace VZF.Data.Common
             }
         }
 
+        public static DataTable category_pfaccesslist(int? mid, object boardId, object categoryID)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                    return VZF.Data.MsSql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
+                case "Npgsql":
+                    return VZF.Data.Postgre.Db.category_pfaccesslist(connectionString, boardId, categoryID);
+                case "MySql.Data.MySqlClient":
+                    return VZF.Data.Mysql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return VZF.Data.Firebird.Db.category_pfaccesslist(connectionString, boardId, categoryID);
+                // case "oracle":  return orPostgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
+                // case "db2":  return db2Postgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
+                // case "other":  return othPostgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
         /// <summary>
         /// The category_getadjacentforum.
         /// </summary>

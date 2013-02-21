@@ -701,7 +701,7 @@ namespace VZF.Data.Firebird
                                   dt.Rows.Add(dr);
                               }
                           }
-
+                         
                           reader.Close();
                           trans.Commit();
                           if (acceptChanges)

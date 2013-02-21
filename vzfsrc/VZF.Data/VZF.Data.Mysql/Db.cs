@@ -2265,6 +2265,35 @@ namespace VZF.Data.Mysql
         }
 
         /// <summary>
+        /// Gets a list of forums in a category.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/> of forums in a category.
+        /// </returns>
+        public static DataTable category_pfaccesslist(string connectionString, object boardId, object categoryID)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("category_pfaccesslist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID ?? DBNull.Value;
+
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
         /// The category_getadjacentforum.
         /// </summary>
         /// <param name="connectionString">

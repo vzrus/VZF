@@ -2729,6 +2729,30 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
+        /// Gets a list of forums in a category
+        /// </summary>
+        /// <param name="boardID">
+        /// boardID
+        /// </param>
+        /// <param name="categoryID">
+        /// categotyID
+        /// </param>
+        /// <returns>
+        /// DataTable with a list of forums in a category
+        /// </returns>
+        public static DataTable category_pfaccesslist(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("category_pfaccesslist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("CategoryID", categoryID);
+
+                return MsSqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
         /// The category_getadjacentforum.
         /// </summary>
         /// <param name="connectionString">

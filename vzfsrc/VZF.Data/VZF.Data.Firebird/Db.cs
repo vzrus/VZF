@@ -1992,6 +1992,25 @@ namespace VZF.Data.Firebird
             }
         }
 
+
+        /// <summary>
+        /// Gets a list of forums in a category
+        /// </summary>
+        /// <param name="boardID">boardID</param>
+        /// <param name="categoryID">categotyID</param>
+        /// <returns>DataTable with a list of forums in a category</returns>
+        public static DataTable category_pfaccesslist(string connectionString, object boardID, object categoryID)
+        {
+            using (var cmd = FbDbAccess.GetCommand("category_pfaccesslist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+                cmd.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = categoryID;
+
+                return FbDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
         /// <summary>
         /// The category_getadjacentforum.
         /// </summary>

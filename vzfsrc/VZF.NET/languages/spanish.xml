@@ -4057,6 +4057,7 @@ Spoiler Content
     <Resource tag="EXCEPTION">Estas identificado como</Resource>
     <Resource tag="FAILURE">Ha habido un error de sistema procesando su peticion. Por favor pongase en contacto con el administrador explicandole lo que paso.</Resource>
     <Resource tag="HOSTADMINPERMISSIONSREQUIRED">To access the area your board's Host Admin should set some extra permissions for you.</Resource>
+    <Resource tag="HOSTADMINSETALLOWEDPFORUMS">To access the area your board's Admin should set place were to attach your personal forums for you.</Resource>
     <Resource tag="INVALID">HA enviado un valor erroneo al foro.</Resource>
     <Resource tag="MODERATED">Cómo has puesto tu mensaje en un foro moderado, debes ser aprobado por un moderador antes de que se haga visible.</Resource>
     <Resource tag="REGISTRATION">Se ha enviado un e-mail a la dirección de correo que has suministrado. Por favor, sigue las instrucciones del correo para acceder al foro.</Resource>
@@ -4068,6 +4069,7 @@ Spoiler Content
     <Resource tag="TITLE_EXCEPTION">Informacion</Resource>
     <Resource tag="TITLE_FAILURE">Falla</Resource>
     <Resource tag="TITLE_HOSTADMINPERMISSIONSREQUIRED">Host Admin permissions reqired!</Resource>
+    <Resource tag="TITLE_HOSTADMINSETALLOWEDPFORUMS">Admin should set allowed forums or categories!</Resource>
     <Resource tag="TITLE_INVALID">Invalido</Resource>
     <Resource tag="TITLE_MODERATED">Informacion</Resource>
     <Resource tag="TITLE_REGISTRATION">Gracias</Resource>

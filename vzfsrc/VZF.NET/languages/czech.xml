@@ -4041,6 +4041,7 @@ Spoiler Content
     <Resource tag="EXCEPTION">Ste přihlášený jako</Resource>
     <Resource tag="FAILURE">There's been a system error processing your request. Please contact the forum admin explaining what you were doing when it happened.</Resource>
     <Resource tag="HOSTADMINPERMISSIONSREQUIRED">To access the area your board's Host Admin should set some extra permissions for you.</Resource>
+    <Resource tag="HOSTADMINSETALLOWEDPFORUMS">To access the area your board's Admin should set place were to attach your personal forums for you.</Resource>
     <Resource tag="INVALID">You've passed an invalid value to the forum.</Resource>
     <Resource tag="MODERATED">Zaslal jste zprávu do moderovaného fóra; předtím, než se ve fóru objeví, ji musí moderátor schválit.</Resource>
     <Resource tag="REGISTRATION">E-mail byl zaslán na vámi zadanou adresu. Přečtěte si prosím instrukce jak se přihlásit v tomto mailu.</Resource>
@@ -4052,6 +4053,7 @@ Spoiler Content
     <Resource tag="TITLE_EXCEPTION">Informace</Resource>
     <Resource tag="TITLE_FAILURE">Failure</Resource>
     <Resource tag="TITLE_HOSTADMINPERMISSIONSREQUIRED">Host Admin permissions reqired!</Resource>
+    <Resource tag="TITLE_HOSTADMINSETALLOWEDPFORUMS">Admin should set allowed forums or categories!</Resource>
     <Resource tag="TITLE_INVALID">Invalid</Resource>
     <Resource tag="TITLE_MODERATED">Informace</Resource>
     <Resource tag="TITLE_REGISTRATION">Děkujeme</Resource>

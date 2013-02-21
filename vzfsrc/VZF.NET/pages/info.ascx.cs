@@ -174,6 +174,12 @@ namespace YAF.Pages
                         this.RefreshTime = 10;
                         this.RefreshURL = YafBuildLink.GetLink(ForumPages.forum);
                         break;
+                    case InfoMessage.HostAdminShouldSetAllowedPersonalForums: // some sort of failure
+                        this.Title.Text = this.GetText("TITLE_HOSTADMINSETALLOWEDPFORUMS");
+                        this.Info.Text = this.GetText("HOSTADMINSETALLOWEDPFORUMS");
+                        this.RefreshTime = 10;
+                        this.RefreshURL = YafBuildLink.GetLink(ForumPages.forum);
+                        break;
                 }
             }
             catch (Exception)

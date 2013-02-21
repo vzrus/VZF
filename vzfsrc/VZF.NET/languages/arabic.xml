@@ -3866,6 +3866,7 @@ p&gt;هذا الرابط يجلب لك صفحة التي تطلب منك ادخ�
     <Resource tag="EXCEPTION">تم تسجيل دخول لـ</Resource>
     <Resource tag="FAILURE">لايمكن معالجة طلبك , .يرجى إلاتصال مع مدير المنتدى وشرح ما بمكن عملة وشكرا</Resource>
     <Resource tag="HOSTADMINPERMISSIONSREQUIRED">To access the area your board's Host Admin should set some extra permissions for you.</Resource>
+    <Resource tag="HOSTADMINSETALLOWEDPFORUMS">To access the area your board's Admin should set place were to attach your personal forums for you.</Resource>
     <Resource tag="INVALID">قمت إدخال قيم غير صحيحه بالمنتدى </Resource>
     <Resource tag="MODERATED">تأكد من ان المشاركة قد تم تثبيتها في المنتدى  من قبل مشرف المنتدى .قبل  إلغاء المشاركة .</Resource>
     <Resource tag="REGISTRATION">تم ارسال تعليمات تسجيل الدخول الى عنوان البريد  الإلكتروني يرجو قراءة التعليمات .</Resource>
@@ -3877,6 +3878,7 @@ p&gt;هذا الرابط يجلب لك صفحة التي تطلب منك ادخ�
     <Resource tag="TITLE_EXCEPTION">معلومات </Resource>
     <Resource tag="TITLE_FAILURE">فشل الطلب</Resource>
     <Resource tag="TITLE_HOSTADMINPERMISSIONSREQUIRED">Host Admin permissions reqired!</Resource>
+    <Resource tag="TITLE_HOSTADMINSETALLOWEDPFORUMS">Admin should set allowed forums or categories!</Resource>
     <Resource tag="TITLE_INVALID">غير صحيح</Resource>
     <Resource tag="TITLE_MODERATED">معلومات المشرف</Resource>
     <Resource tag="TITLE_REGISTRATION">الشكر</Resource>

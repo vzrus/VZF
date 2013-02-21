@@ -2168,6 +2168,26 @@ namespace VZF.Data.Postgre
         }
 
         /// <summary>
+        /// Gets a list of forums in a category
+        /// </summary>
+        /// <param name="boardId">boardId</param>
+        /// <param name="categoryID">categotyID</param>
+        /// <returns>DataTable with a list of forums in a category</returns>
+        public static DataTable category_pfaccesslist(string connectionString, object boardId, object categoryID)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("category_pfaccesslist"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
+                cmd.Parameters.Add(new NpgsqlParameter("i_categoryid", NpgsqlDbType.Integer)).Value = categoryID;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+
+        /// <summary>
         /// The category_getadjacentforum.
         /// </summary>
         /// <param name="connectionString">

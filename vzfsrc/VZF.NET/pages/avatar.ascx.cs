@@ -114,13 +114,12 @@ namespace YAF.Pages
     /// </param>
     public void Directories_Bind([NotNull] object sender, [NotNull] DataListItemEventArgs e)
     {
-      var directory = String.Concat(YafForumInfo.ForumClientFileRoot, YafBoardFolders.Current.Avatars, "/");
-
       if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem)
       {
         return;
       }
 
+      var directory = string.Concat(YafForumInfo.ForumClientFileRoot, YafBoardFolders.Current.Avatars, "/");
       var dirName = e.Item.FindControl("dirName") as LinkButton;
       dirName.CommandArgument = directory + Convert.ToString(DataBinder.Eval(e.Item.DataItem, "name"));
       dirName.Text =

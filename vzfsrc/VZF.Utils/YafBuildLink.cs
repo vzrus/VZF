@@ -85,7 +85,12 @@ namespace YAF.Utils
     /// <summary>
     /// The message for admin to ask access for admin pages viewing.
     /// </summary>
-    HostAdminPermissionsAreRequired = 11
+    HostAdminPermissionsAreRequired = 11,
+
+    /// <summary>
+    /// The message for HostAdminShouldSetAllowedPersonalForums.
+    /// </summary>
+    HostAdminShouldSetAllowedPersonalForums  = 12
   }
 
   /// <summary>
