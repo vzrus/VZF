@@ -355,8 +355,13 @@ namespace YAF.pages
                 newRow.ItemArray = row.ItemArray;
                 dataCatNew.Rows.Add(newRow);
             }
-
+           
             dataCatNew.AcceptChanges();
+            if (dataCatNew.Rows.Count <= 0)
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.HostAdminShouldSetAllowedPersonalForums);
+            }
+
             this.CategoryList.DataSource = dataCatNew;
             this.CategoryList.DataValueField = "CategoryID";
             this.CategoryList.DataTextField = "Name";

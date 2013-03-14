@@ -501,6 +501,27 @@ namespace VZF.Controls
             CodeContracts.ArgumentNotNull(imgTitle, "imgTitle");
 
             var row = (DataRowView)o;
+
+            if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
+            {
+                imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
+                return "{0}resource.ashx?ti={1}".FormatWith(
+                    YafForumInfo.ForumClientFileRoot, row["TopicID"].ToType<int>());
+            }
+
+            if (row["TopicImage"].ToString().Length > 0)
+            {
+                // remote
+                imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
+                return 
+                    "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
+                        YafForumInfo.ForumClientFileRoot,
+                         row["TopicID"].ToType<int>(),
+                        this.Server.UrlEncode(row["TopicImage"].ToString()),
+                        this.Get<YafBoardSettings>().TopicImageWidth,
+                        this.Get<YafBoardSettings>().TopicImageHeight);
+            }
+
             DateTime lastPosted = row["LastPosted"] != DBNull.Value
                                       ? (DateTime)row["LastPosted"]
                                       : DateTimeHelper.SqlDbMinTime();

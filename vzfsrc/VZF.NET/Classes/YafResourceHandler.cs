@@ -135,7 +135,20 @@ namespace YAF
                 {
                     this.GetResponseLocalAvatar(context);
                 }
-                else if (context.Request.QueryString.GetFirstOrDefault("url") != null
+                else if (context.Request.QueryString.GetFirstOrDefault("ti") != null)
+                {
+                    if (context.Request.QueryString.GetFirstOrDefault("url") != null
+                        && context.Request.QueryString.GetFirstOrDefault("width") != null
+                        && context.Request.QueryString.GetFirstOrDefault("height") != null)
+                    {
+                        this.GetResponseRemoteTopicImage(context);
+                    }
+                    else
+                    {
+                        this.GetResponseLocalTopicImage(context);
+                    }
+                }
+                else if (context.Request.QueryString.GetFirstOrDefault("ti") == null && context.Request.QueryString.GetFirstOrDefault("url") != null
                          && context.Request.QueryString.GetFirstOrDefault("width") != null
                          && context.Request.QueryString.GetFirstOrDefault("height") != null)
                 {
@@ -807,6 +820,48 @@ namespace YAF
                 }
 
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception x)
+            {
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, EventLogTypes.Information);
+
+                context.Response.Write(
+                    "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
+            }
+        }
+
+        /// <summary>
+        /// The get response local topic image.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        private void GetResponseLocalTopicImage([NotNull] HttpContext context)
+        {
+            try
+            {
+                var row = CommonDb.topic_info(
+                    YafContext.Current.PageModuleID, context.Request.QueryString.GetFirstOrDefault("ti"), false);
+               
+                    if (row != null)
+                    {
+                        var data = (byte[])row["TopicImageBin"];
+                        string contentType = row["TopicImageType"].ToString();
+
+                        context.Response.Clear();
+                        if (contentType.IsNotSet())
+                        {
+                            contentType = "image/jpeg";
+                        }
+
+                        context.Response.ContentType = contentType;
+                        context.Response.Cache.SetCacheability(HttpCacheability.Public);
+                        context.Response.Cache.SetExpires(DateTime.UtcNow.AddHours(2));
+                        context.Response.Cache.SetLastModified(DateTime.UtcNow);
+
+                        // context.Response.Cache.SetETag( eTag );
+                        context.Response.OutputStream.Write(data, 0, data.Length);
+                    }
             }
             catch (Exception x)
             {
@@ -1504,6 +1559,105 @@ namespace YAF
                     null,
                     this.GetType().ToString(),
                     "Remote Avatar is NOT supported on your Hosting Permission Level (must be High)",
+                    EventLogTypes.Error);
+                return;
+            }
+
+            string avatarUrl = context.Request.QueryString.GetFirstOrDefault("url");
+
+            int maxwidth = int.Parse(context.Request.QueryString.GetFirstOrDefault("width"));
+            int maxheight = int.Parse(context.Request.QueryString.GetFirstOrDefault("height"));
+
+            string eTag =
+                @"""{0}""".FormatWith(
+                    (context.Request.QueryString.GetFirstOrDefault("url") + maxheight + maxwidth).GetHashCode());
+
+            if (CheckETag(context, eTag))
+            {
+                // found eTag... no need to download this image...
+                return;
+            }
+
+            var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+
+            try
+            {
+                using (var avatarStream = webClient.OpenRead(avatarUrl))
+                {
+                    if (avatarStream == null)
+                    {
+                        return;
+                    }
+
+                    using (var img = new Bitmap(avatarStream))
+                    {
+                        int width = img.Width;
+                        int height = img.Height;
+
+                        if (width <= maxwidth && height <= maxheight)
+                        {
+                            context.Response.Redirect(avatarUrl);
+                        }
+
+                        if (width > maxwidth)
+                        {
+                            height = (height / (double)width * maxwidth).ToType<int>();
+                            width = maxwidth;
+                        }
+
+                        if (height > maxheight)
+                        {
+                            width = (width / (double)height * maxheight).ToType<int>();
+                            height = maxheight;
+                        }
+
+                        // Create the target bitmap
+                        using (var bmp = new Bitmap(width, height))
+                        {
+                            // Create the graphics object to do the high quality resizing
+                            using (var gfx = Graphics.FromImage(bmp))
+                            {
+                                gfx.CompositingQuality = CompositingQuality.HighQuality;
+                                gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                gfx.SmoothingMode = SmoothingMode.HighQuality;
+
+                                // Draw the source image
+                                gfx.DrawImage(img, new Rectangle(new Point(0, 0), new Size(width, height)));
+                            }
+
+                            // Output the data
+                            context.Response.ContentType = "image/jpeg";
+                            context.Response.Cache.SetCacheability(HttpCacheability.Public);
+                            context.Response.Cache.SetExpires(DateTime.UtcNow.AddHours(2));
+                            context.Response.Cache.SetLastModified(DateTime.UtcNow);
+                            context.Response.Cache.SetETag(eTag);
+                            bmp.Save(context.Response.OutputStream, ImageFormat.Jpeg);
+                        }
+                    }
+                }
+            }
+            catch (WebException)
+            {
+                // issue getting access to the avatar...
+            }
+        }
+
+        /// <summary>
+        /// The get response remote topic.
+        /// </summary>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        private void GetResponseRemoteTopicImage([NotNull] HttpContext context)
+        {
+            if (General.GetCurrentTrustLevel() < AspNetHostingPermissionLevel.Medium)
+            {
+                // don't bother... not supported.
+                CommonDb.eventlog_create(
+                    YafContext.Current.PageModuleID,
+                    null,
+                    this.GetType().ToString(),
+                    "Remote Topic Image is NOT supported on your Hosting Permission Level (must be High)",
                     EventLogTypes.Error);
                 return;
             }

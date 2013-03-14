@@ -7,7 +7,7 @@
         </strong>
     </td>
 </tr>
-<tr class="<%#GetPostClass()%>">
+<tr class="<%# GetPostClass()%>">
     <td valign="top" class="message" >
         <div class="postdiv AdMessage">
             <VZF:MessagePost ID="AdMessage" runat="server"></VZF:MessagePost>

@@ -16,7 +16,7 @@
     <table class="content subForum"  width="100%">
         <tr class="topicTitle">
             <th colspan="6" class="header1">
-                <%=GetSubForumTitle()%>
+                <%= GetSubForumTitle()%>
             </th>
         </tr>
             <tr class="topicSubTitle">

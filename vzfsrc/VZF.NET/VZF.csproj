@@ -194,6 +194,13 @@
     <Compile Include="Classes\YafWebService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="controls\EditObjectImage.ascx.cs">
+      <DependentUpon>EditObjectImage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\EditObjectImage.ascx.designer.cs">
+      <DependentUpon>EditObjectImage.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controls\DialogBox.ascx.cs">
       <DependentUpon>DialogBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -619,6 +626,13 @@
     <Compile Include="pages\boardtags.ascx.designer.cs">
       <DependentUpon>boardtags.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\imageadd.ascx.cs">
+      <DependentUpon>imageadd.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\imageadd.ascx.designer.cs">
+      <DependentUpon>imageadd.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\personalgroup_edituser.ascx.cs">
       <DependentUpon>personalgroup_edituser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -963,6 +977,7 @@
     <Content Include="controls\AlbumImageList.ascx" />
     <Content Include="controls\AlbumList.ascx" />
     <Content Include="controls\BuddyList.ascx" />
+    <Content Include="controls\EditObjectImage.ascx" />
     <Content Include="controls\DialogBox.ascx" />
     <Content Include="controls\ForumJumper.ascx" />
     <Content Include="controls\ForumsAdminTree.ascx" />
@@ -3602,6 +3617,7 @@
     <Content Include="pages\admin\topicstatus_import.ascx" />
     <Content Include="pages\admin\users_import.ascx" />
     <Content Include="pages\boardtags.ascx" />
+    <Content Include="pages\imageadd.ascx" />
     <Content Include="pages\personalgroup_edituser.ascx" />
     <Content Include="pages\personalgroup_users.ascx" />
     <Content Include="pages\personalaccessmask.ascx" />
@@ -5234,10 +5250,10 @@
     <Content Include="themes\yafvision\plus-circle.png" />
     <Content Include="themes\yafvision\plus-shield.png" />
     <Content Include="themes\yafvision\tag-label.png" />
-    <Content Include="web.config">
+    <Content Include="web_fb.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web_ms.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="web_my.config">
@@ -6935,7 +6951,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
-    <Folder Include="uploads\" />
+    <Folder Include="uploads\avatars\" />
+    <Folder Include="uploads\topics\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferenceUrl Include="http://yetanotherforum.net/RegisterV2.asmx">
@@ -6972,7 +6989,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>25759</DevelopmentServerPort>
+          <DevelopmentServerPort>9772</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

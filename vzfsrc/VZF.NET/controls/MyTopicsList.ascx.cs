@@ -224,8 +224,8 @@ namespace VZF.Controls
                         this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     break;
                 case TopicListMode.Unread:
-                    if (!this.Get<YafBoardSettings>().UseReadTrackingByDatabase)
-                    {
+                 /*  if (!this.Get<YafBoardSettings>().UseReadTrackingByDatabase)
+                   {
                         topicList = CommonDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
                             categoryIdObject,
                             this.PageContext.PageUserID,
@@ -237,7 +237,7 @@ namespace VZF.Controls
                             this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     }
                     else
-                    {
+                    { */
                         topicList = CommonDb.topic_unread(PageContext.PageModuleID, this.PageContext.PageBoardID,
                        categoryIdObject,
                        this.PageContext.PageUserID,
@@ -248,7 +248,7 @@ namespace VZF.Controls
                        this.Get<YafBoardSettings>().UseStyledNicks,
                        this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                         
-                    }
+                   // }
                     break;
                 case TopicListMode.User:
                     topicList = CommonDb.Topics_ByUser(PageContext.PageModuleID, this.PageContext.PageBoardID,

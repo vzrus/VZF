@@ -354,8 +354,7 @@ namespace YAF.Pages
             this.Rank.Text = this.GetText("rank");
             this.Joined.Text = this.GetText("joined");
             this.Posts.Text = this.GetText("posts");
-            this.LastVisitLB.Text = this.GetText("members", "lastvisit");
-       
+
             using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 // add empty item for no filtering
@@ -638,24 +637,6 @@ namespace YAF.Pages
                 default:
                     ViewState["SortNumPostsField"] = 0;
                     this.SortPosts.Visible = false;
-                    break;
-            } 
-
-             switch ((int?)ViewState["SortLastVisitField"])
-            {
-                case 1:
-                    this.SortLastVisit.Src = this.GetThemeContents(
-                   "SORT", "ASCENDING");
-                     this.SortLastVisit.Visible = true;
-                    break;
-                case 2:
-                     this.SortLastVisit.Src = this.GetThemeContents(
-                   "SORT", "DESCENDING");
-                     this.SortLastVisit.Visible = true;
-                    break;
-                default:
-                    ViewState["SortLastVisitField"] = 0;
-                    this.SortLastVisit.Visible = false;
                     break;
             } 
         }

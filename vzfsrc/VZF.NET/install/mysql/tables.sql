@@ -640,13 +640,16 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Topic
        `LastPosted` DATETIME NULL,
        `LastMessageID` INT NULL,
        `LastUserID` INT NULL,
-       `LastUserName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
+       `LastUserName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `LastUserDisplayName` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `NumPosts` INT NOT NULL,
        `Flags` INT NOT NULL DEFAULT 0,
        `AnswerMessageId` INT NULL, 
        `LastMessageFlags`	INT NOT NULL DEFAULT 22,
        `LinkDate` DATETIME,
+	   `TopicImage` varchar(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,  
+	   `TopicImageType` varchar(50) NULL,  
+	   `TopicImageBin` LONGBLOB NULL,  
        PRIMARY KEY (`TopicID`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -691,6 +694,9 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}User
        `IsUserStyle` TINYINT(1) NOT NULL DEFAULT 0,
        `IsGroupStyle` TINYINT(1) NOT NULL DEFAULT 0,
        `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0,
+	   `CommonViewType` INT NOT NULL DEFAULT 0,
+	   `PostsPerPage`   INT NOT NULL DEFAULT 10, 
+	   `TopicsPerPage`   INT NOT NULL DEFAULT 20, 
        PRIMARY KEY (`UserID`)
        )
        ENGINE=InnoDB DEFAULT CHARSET={databaseEncoding};
@@ -1325,7 +1331,35 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='IsRankStyle' LIMIT 1) THEN
         ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
-  END IF;    
+  END IF;   
+
+              IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
+  AND COLUMN_NAME='IsRankStyle' LIMIT 1) THEN
+        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `IsRankStyle` TINYINT(1) NOT NULL DEFAULT 0;
+  END IF;  
+
+                IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
+  AND COLUMN_NAME='CommonViewType' LIMIT 1) THEN
+        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `CommonViewType` INT NOT NULL DEFAULT 0;
+  END IF;  
+
+                  IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
+  AND COLUMN_NAME='PostsPerPage' LIMIT 1) THEN
+        ALTER TABLE   {databaseName}.{objectQualifier}User ADD `PostsPerPage`   INT NOT NULL DEFAULT 10;
+  END IF;  
+
+                    IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
+  AND COLUMN_NAME='TopicsPerPage' LIMIT 1) THEN
+        ALTER TABLE   {databaseName}.{objectQualifier}User ADD  `TopicPerPage`   INT NOT NULL DEFAULT 20;
+  END IF;   
 
   -- Message Table
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
@@ -1656,7 +1690,28 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='LinkDate' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `LinkDate`  DATETIME;
   END IF;
+    
+     IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
+  AND COLUMN_NAME='TopicImage' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImage` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL;
+  END IF;
 
+       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
+  AND COLUMN_NAME='TopicImageType' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImageType` varchar(50) NULL;
+  END IF;
+
+      IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Topic')
+  AND COLUMN_NAME='TopicImageBin' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}Topic ADD `TopicImageBin` LONGBLOB NULL;
+  END IF;
+ 
   -- Group Table
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 

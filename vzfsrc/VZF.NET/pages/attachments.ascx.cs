@@ -86,6 +86,11 @@ namespace YAF.Pages
     /// </param>
     protected void Back_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
+        string imageLink = null;
+        if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ti").IsSet())
+        {
+            imageLink = "&ti={0}".FormatWith(this.Request.QueryString.GetFirstOrDefault("ti"));
+        }
       if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ra").IsSet())
       {
         if (Config.IsRainbow)
@@ -96,6 +101,7 @@ namespace YAF.Pages
         // string poll = string.Empty;
         string lnk;
         string fullflnk = string.Empty;
+       
         if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f").IsSet())
         {
           lnk = this.Request.QueryString.GetFirstOrDefault("f");
@@ -113,7 +119,7 @@ namespace YAF.Pages
         if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("t").IsSet())
         {
           url = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("t");
-          YafBuildLink.Redirect(ForumPages.polledit, "{0}t={1}&ra=1", fullflnk, this.Server.UrlEncode(url));
+          YafBuildLink.Redirect(ForumPages.polledit, "{0}t={1}&ra=1{2}", fullflnk, this.Server.UrlEncode(url), imageLink);
         }
         else
         {
@@ -125,11 +131,17 @@ namespace YAF.Pages
       if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("t").IsSet())
       {
         YafBuildLink.Redirect(
-          ForumPages.polledit, "t={0}", this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("t"));
+          ForumPages.polledit, "t={0}{1}", this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("t"), imageLink);
       }
       else
       {
-        YafBuildLink.Redirect(
+          if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ti").IsSet())
+          {
+              YafBuildLink.Redirect(
+         ForumPages.imageadd, "&ti={0}", this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ti"));
+          }
+          
+          YafBuildLink.Redirect(
           ForumPages.posts, "m={0}#{0}", this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"));
       }
     }
@@ -393,13 +405,13 @@ namespace YAF.Pages
     /// <summary>
     /// The save attachment.
     /// </summary>
-    /// <param name="messageID">
+    /// <param name="messageId">
     /// The message id.
     /// </param>
     /// <param name="file">
     /// The file.
     /// </param>
-    private void SaveAttachment([NotNull] object messageID, [NotNull] HtmlInputFile file)
+    private void SaveAttachment([NotNull] object messageId, [NotNull] HtmlInputFile file)
     {
       if (file.PostedFile == null || file.PostedFile.FileName.Trim().Length == 0 || file.PostedFile.ContentLength == 0)
       {
@@ -433,7 +445,7 @@ namespace YAF.Pages
 
       if (this.Get<YafBoardSettings>().UseFileTable)
       {
-        CommonDb.attachment_save(PageContext.PageModuleID, messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, file.PostedFile.InputStream);
+        CommonDb.attachment_save(PageContext.PageModuleID, messageId, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, file.PostedFile.InputStream);
       }
       else
       {
@@ -447,9 +459,9 @@ namespace YAF.Pages
               Directory.CreateDirectory(previousDirectory);
           }
 
-        file.PostedFile.SaveAs("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, messageID, filename));
+        file.PostedFile.SaveAs("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, messageId, filename));
 
-        CommonDb.attachment_save(PageContext.PageModuleID, messageID, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, null);
+        CommonDb.attachment_save(PageContext.PageModuleID, messageId, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, null);
       }
     }
 

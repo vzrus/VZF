@@ -7213,6 +7213,43 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
+        /// The topic_imagesave.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <param name="imageUrl">
+        /// The image url.
+        /// </param>
+        public static void topic_imagesave(string connectionString, object topicId, [NotNull] object imageUrl, Stream stream, object topicImageType)
+        {
+            using (var cmd = FbDbAccess.GetCommand("topic_imagesave"))
+            {
+                byte[] data = null;
+                if (stream != null)
+                {
+                    data = new byte[stream.Length];
+                    stream.Seek(0, System.IO.SeekOrigin.Begin);
+                    stream.Read(data, 0, (int)stream.Length);
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicId;
+                cmd.Parameters.Add(new FbParameter("@I_IMAGEURL", FbDbType.VarChar)).Value = imageUrl ?? DBNull.Value;
+                cmd.Parameters.Add(new FbParameter("@I_STREAM", FbDbType.Binary)).Value = data;
+                cmd.Parameters.Add(new FbParameter("@I_TOPICIMAGETYPE", FbDbType.VarChar)).Value = topicImageType ?? DBNull.Value;
+
+                FbDbAccess.ExecuteNonQuery(cmd, connectionString);
+                int r = 1;
+            }
+        }
+
+
+        /// <summary>
         /// Get the favorite count for a topic...
         /// </summary>
         /// <param name="topicId">
@@ -8662,30 +8699,17 @@ namespace VZF.Data.Firebird
 
                 if (stream != null)
                 {
-                    if (avatar == null)
-                    {
-                        avatar = DBNull.Value;
-                    }
-
                     data = new byte[stream.Length];
                     stream.Seek(0, System.IO.SeekOrigin.Begin);
                     stream.Read(data, 0, (int)stream.Length);
                 }
-                if (avatar == null)
-                {
-                    avatar = DBNull.Value;
-                }
-                //if (data == null) { data = new byte[](); }
-                if (avatarImageType == null)
-                {
-                    avatarImageType = DBNull.Value;
-                }
+
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userID;
-                cmd.Parameters.Add("@I_AVATAR", FbDbType.VarChar).Value = avatar;
+                cmd.Parameters.Add("@I_AVATAR", FbDbType.VarChar).Value = avatar ?? DBNull.Value;
                 cmd.Parameters.Add("@I_AVATARIMAGE", FbDbType.Binary).Value = data;
-                cmd.Parameters.Add("@I_AVATARIMAGETYPE", FbDbType.VarChar).Value = avatarImageType;
+                cmd.Parameters.Add("@I_AVATARIMAGETYPE", FbDbType.VarChar).Value = avatarImageType ?? DBNull.Value;
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }

@@ -4413,6 +4413,7 @@ namespace VZF.Data.MsSql
                             da.Fill(ds, MsSqlDbAccess.GetObjectName("Category"));
                             da.SelectCommand.CommandText = MsSqlDbAccess.GetObjectName("forum_moderatelist");
                             da.SelectCommand.Parameters.AddWithValue("UserID", userID);
+                            da.SelectCommand.Parameters.AddWithValue("IsUserForum", false);
                             da.Fill(ds, MsSqlDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted = ds.Tables[MsSqlDbAccess.GetObjectName("ForumUnsorted")].Clone();
                             dtForumListSorted.TableName = MsSqlDbAccess.GetObjectName("Forum");
@@ -4726,7 +4727,7 @@ namespace VZF.Data.MsSql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("ForumID", forumID);
                 cmd.Parameters.AddWithValue("UserID", userId);
-                cmd.Parameters.AddWithValue("IncludeUserForums", includeUserGroups);
+                cmd.Parameters.AddWithValue("IncludeUserGroups", includeUserGroups);
                 return MsSqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -8389,14 +8390,21 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
-        /// The topic_info.
+        /// The topic_imagesave.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="topicID">
         /// The topic id.
         /// </param>
+        /// <param name="getTags">
+        /// The get tags.
+        /// </param>
         /// <returns>
+        /// The <see cref="DataRow"/>.
         /// </returns>
-        public static DataRow topic_info(string connectionString, [NotNull] object topicID, [NotNull] bool getTags)
+        public static DataRow topic_info(string connectionString, [NotNull] object topicID, [NotNull] object getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_info"))
             {
@@ -8409,6 +8417,39 @@ namespace VZF.Data.MsSql
                 }
             }
         }
+        /// <summary>
+        /// The topic_imagesave.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <param name="imageUrl">
+        /// The image url.
+        /// </param>
+        public static void topic_imagesave(string connectionString, [NotNull] object topicID, [NotNull] object imageUrl, Stream stream, object avatarImageType)
+        {
+            using (var cmd = MsSqlDbAccess.GetCommand("topic_imagesave"))
+            {
+                byte[] data = null;
+                if (stream != null)
+                {
+                    data = new byte[stream.Length];
+                    stream.Seek(0, System.IO.SeekOrigin.Begin);
+                    stream.Read(data, 0, (int)stream.Length);
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("TopicID", topicID);
+                cmd.Parameters.AddWithValue("ImageUrl", imageUrl);
+                cmd.Parameters.AddWithValue("Stream", data);
+                cmd.Parameters.AddWithValue("AvatarImageType", avatarImageType);
+                MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+            }
+        }
+
 
         /// <summary>
         /// Get the Latest Topics

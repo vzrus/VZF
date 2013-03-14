@@ -223,6 +223,7 @@ namespace YAF.Pages.Admin
           Directory.CreateDirectory(Path.Combine(boardFolder, "Images\\Emoticons"));
           Directory.CreateDirectory(Path.Combine(boardFolder, "Images\\Medals"));
           Directory.CreateDirectory(Path.Combine(boardFolder, "Images\\Ranks"));
+          Directory.CreateDirectory(Path.Combine(boardFolder, "Images\\Topics"));
         }
 
         if (!Directory.Exists(Path.Combine(boardFolder, "Themes")))

@@ -108,6 +108,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_getadjacentfor
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_list;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_pfaccesslist;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_listread;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}category_save;
@@ -399,6 +401,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_findprev;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_info;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_findduplicate;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_imagesave;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_latest;
 --GO
@@ -2432,6 +2436,21 @@ BEGIN
         SELECT * FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID ORDER BY SortOrder;
     ELSE
         SELECT * FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID AND CategoryID = i_CategoryID;
+        END IF;
+END;
+--GO
+
+ CREATE PROCEDURE {databaseName}.{objectQualifier}category_pfaccesslist(i_BoardID INT,i_CategoryID INT) 
+READS SQL DATA
+BEGIN
+    IF i_CategoryID IS NULL THEN
+        SELECT *,
+		IFNULL((SELECT SIGN(f.ForumID) FROM {databaseName}.{objectQualifier}Forum f where f.CategoryID = c.CategoryID and f.CanHavePersForums  = 1 LIMIT 1),0) AS HasForumsForPersForums
+		FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID ORDER BY SortOrder;
+    ELSE
+        SELECT *,
+		IFNULL((SELECT SIGN(f.ForumID) FROM {databaseName}.{objectQualifier}Forum f where f.CategoryID = c.CategoryID and f.CanHavePersForums  = 1 LIMIT 1),0)  AS HasForumsForPersForums
+		FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID AND CategoryID = i_CategoryID;
         END IF;
 END;
 --GO
@@ -7794,8 +7813,12 @@ INTO @i_FirstSelectLastPosted,
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else null	 end) AS  LastTopicAccess,
-             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
-            {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
+             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments, 
+			             {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     FROM
         {databaseName}.{objectQualifier}Topic c
@@ -8248,18 +8271,22 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_info
  
     IF i_TopicID IS NULL THEN    
       IF i_ShowDeleted = 1 THEN
-        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
+		(SELECT `Message` FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
         FROM {databaseName}.{objectQualifier}Topic t;
         ELSE
-        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+        SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
+		(SELECT `Message` FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
         FROM {databaseName}.{objectQualifier}Topic t WHERE (Flags & 8) = 0;
       END IF;
     ELSE 	
         IF i_ShowDeleted = 1 THEN
-            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags
+            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
+		(SELECT `Message` FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage
 			FROM {databaseName}.{objectQualifier}Topic t;
         ELSE
-            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags 
+            SELECT t.*,(CASE WHEN i_GetTags = 1 THEN (SELECT GROUP_CONCAT(tg.tag separator ',') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = t.TopicID) ELSE '' END) AS TopicTags,
+		(SELECT `Message` FROM {databaseName}.{objectQualifier}Message mes2 where mes2.TopicID = IFNULL(t.TopicMovedID,t.TopicID) AND mes2.Position = 0) AS FirstMessage 
             FROM {databaseName}.{objectQualifier}Topic t WHERE TopicID = i_TopicID AND (Flags & 8) = 0;		
         END IF;
    END IF; 
@@ -8589,6 +8616,10 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
              when 1 then
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
              else ''''	 end)  AS TopicTags, 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments,
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     from	
@@ -8707,7 +8738,11 @@ BEGIN
              m.Message,
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
-             (SELECT Tag FROM {databaseName}.{objectQualifier}Tags where TagID = CAST(',i_Tags,' AS UNSIGNED) LIMIT 1) AS Tags		
+             (SELECT Tag FROM {databaseName}.{objectQualifier}Tags where TagID = CAST(',i_Tags,' AS UNSIGNED) LIMIT 1) AS Tags			 , 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments
     from		
         {databaseName}.{objectQualifier}Topic c 
            JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TopicID = c.TopicID
@@ -12411,7 +12446,11 @@ INTO @i_FirstSelectLastPosted, @i_FirstSelectPosted
              when 1 then
                (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else null	 end) as LastTopicAccess,
-        (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 	
+        (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments, 	
             {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     from
@@ -13265,7 +13304,11 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
              when 1 then
                (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else null	 end) as LastTopicAccess,	
-              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
+              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments,
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
              {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     from
@@ -13485,7 +13528,12 @@ INTO
         (case(',i_FindLastRead,')
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
-             else null end) AS  LastTopicAccess,	
+             else null end) AS  LastTopicAccess,
+             (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags,  
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments,	
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
              {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     from
@@ -13809,6 +13857,19 @@ begin
 end;
 --GO
 
-
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+CREATE PROCEDURE {databaseName}.{objectQualifier}topic_imagesave(
+    i_TopicID 	INT,
+    i_ImageURL	VARCHAR(255),
+    i_Stream		LONGBLOB,
+    i_TopicImageType	VARCHAR(128)
+ )  BEGIN
+        UPDATE {databaseName}.{objectQualifier}Topic SET
+            TopicImage = i_ImageURL,
+            TopicImageBin = i_Stream,
+            TopicImageType = i_TopicImageType
+        WHERE TopicID = i_TopicID;       
+END;
+--GO
 
 

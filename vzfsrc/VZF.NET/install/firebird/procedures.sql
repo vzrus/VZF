@@ -1878,7 +1878,7 @@ begin
                    c.SORTORDER,
                    c.POLLGROUPID,
 				   c.CANHAVEPERSFORUMS,
-				   COALESCE((SELECT FIRST 1 f.FORUMID FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+				   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
                    from objQual_CATEGORY c 
         where c.BOARDID = :I_BOARDID 
         order by c.SORTORDER
@@ -1900,7 +1900,7 @@ begin
                    c.SORTORDER,
                    c.POLLGROUPID,
 				   c.CANHAVEPERSFORUMS,
-				   COALESCE((SELECT FIRST 1 f.FORUMID FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+				   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
 				   from objQual_CATEGORY c
         where c.BOARDID = :I_BOARDID 
         and c.CATEGORYID = :I_CATEGORYID
@@ -7486,8 +7486,11 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
     "IsQuestion" BOOL,
     "AnswerMessageID" INTEGER,
     "LastMessageFlags" INTEGER,
-    "TopicImage" varchar(128),
-    "TopicTags" varchar(4000)
+    "TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" BLOB SUB_TYPE 0,
+    "TopicTags" varchar(4000),
+	"FirstMessage" BLOB SUB_TYPE 1
     )
  AS
  BEGIN
@@ -7519,7 +7522,11 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END)
+				   t.TOPICIMAGETYPE,
+				   t.TOPICIMAGEBIN,
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t
             INTO
                :"TopicID",
@@ -7545,7 +7552,10 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
                :"AnswerMessageID",
                :"LastMessageFlags",
                :"TopicImage",
-               :"TopicTags"
+               :"TopicImageType",
+	           :"TopicImageBin",
+               :"TopicTags",
+	           :"FirstMessage"
                DO SUSPEND;
         ELSE
 FOR	SELECT t.TOPICID,
@@ -7571,7 +7581,11 @@ FOR	SELECT t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END)
+				   t.TOPICIMAGETYPE,
+				   t.TOPICIMAGEBIN,
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t WHERE BIN_AND(FLAGS,8) = 0
             INTO
                :"TopicID",
@@ -7597,7 +7611,10 @@ FOR	SELECT t.TOPICID,
                :"AnswerMessageID",
                :"LastMessageFlags",
                :"TopicImage",
-               :"TopicTags"
+               :"TopicImageType",
+	           :"TopicImageBin",
+               :"TopicTags",
+	           :"FirstMessage"
                DO SUSPEND; 
     END 		
     ELSE
@@ -7626,7 +7643,11 @@ FOR	SELECT         t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END)
+				   t.TOPICIMAGETYPE,
+				   t.TOPICIMAGEBIN,
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t 
             WHERE TOPICID = :I_TOPICID
             INTO
@@ -7653,7 +7674,10 @@ FOR	SELECT         t.TOPICID,
                :"AnswerMessageID",
                :"LastMessageFlags",
                :"TopicImage",
-               :"TopicTags"
+               :"TopicImageType",
+	           :"TopicImageBin",
+               :"TopicTags",
+			   :"FirstMessage"
                DO SUSPEND;
         ELSE
 FOR	SELECT t.TOPICID,
@@ -7679,7 +7703,11 @@ FOR	SELECT t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END)
+				   t.TOPICIMAGETYPE,
+				   t.TOPICIMAGEBIN,
+                   (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
+				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t
             WHERE TOPICID = :I_TOPICID AND BIN_AND(FLAGS, 8) = 0
             INTO
@@ -7706,7 +7734,10 @@ FOR	SELECT t.TOPICID,
                :"AnswerMessageID",
                :"LastMessageFlags",
                :"TopicImage",
-               :"TopicTags"
+               :"TopicImageType",
+	           :"TopicImageBin",
+               :"TopicTags",
+			   :"FirstMessage"
                DO SUSPEND;		
     END 
         
@@ -7980,6 +8011,22 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      SELECT   :ici_TopicID , :ici_MessageID FROM RDB$DATABASE 
      INTO :"TopicID",:"MessageID";
      SUSPEND;
+     END;
+--GO
+
+CREATE PROCEDURE  objQual_TOPIC_IMAGESAVE(
+     I_TOPICID	INTEGER,
+     I_IMAGEURL	VARCHAR(255),
+     I_STREAM	BLOB SUB_TYPE 0,
+     I_TOPICIMAGETYPE	VARCHAR(255)
+     )    
+     AS    
+     BEGIN 
+     UPDATE objQual_TOPIC 
+	 SET TOPICIMAGE = :I_IMAGEURL, 
+	 TOPICIMAGETYPE = :I_TOPICIMAGETYPE, 
+	 TOPICIMAGEBIN = :I_STREAM 
+	 WHERE TOPICID = :I_TOPICID;      
      END;
 --GO
 
@@ -8765,6 +8812,7 @@ RETURNS
  "Suspended" timestamp,
  "LanguageFile" VARCHAR(128),
  "ThemeFile" VARCHAR(128),
+ "TextEditor" VARCHAR(50),
  "OverrideDefaultThemes" BOOL,
  "PMNotification" BOOL,
  "NotificationType" INTEGER,
@@ -8821,6 +8869,7 @@ a.RANKID,
 a.SUSPENDED,
 a.LANGUAGEFILE,
 a.THEMEFILE,
+a.TEXTEDITOR,
 a.OVERRIDEDEFAULTTHEMES,
 a.PMNOTIFICATION,
 a.NOTIFICATIONTYPE,
@@ -8881,6 +8930,7 @@ INTO
            :"Suspended",
            :"LanguageFile",
            :"ThemeFile",
+		   :"TextEditor",
            :"OverrideDefaultThemes",
            :"PMNotification",
            :"NotificationType",

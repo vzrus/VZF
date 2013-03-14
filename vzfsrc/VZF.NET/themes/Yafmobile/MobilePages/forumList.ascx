@@ -1,7 +1,8 @@
 <%@ Control Language="c#" AutoEventWireup="True" CodeBehind="../../../controls/forumList.ascx.cs"
     Inherits="VZF.Controls.ForumList" EnableViewState="false" %>
-<%@ Register TagPrefix="YAF" TagName="ForumSubForumList" Src="../../../controls/ForumSubForumList.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="ForumLastPost" Src="../../../controls/ForumLastPost.ascx" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Register TagPrefix="VZF" TagName="ForumSubForumList" Src="../../../controls/ForumSubForumList.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="ForumLastPost" Src="../../../controls/ForumLastPost.ascx" %>
 <asp:Repeater ID="ForumList1" runat="server" OnItemCreated="ForumList1_ItemCreated">
     <ItemTemplate>
         <tr class="forumRow post">
@@ -21,7 +22,7 @@
                 </div>
                 <VZF:ForumSubForumList ID="SubForumList" runat="server" DataSource='<%# GetSubforums( (System.Data.DataRow)Container.DataItem ) %>'
                     Visible='<%# HasSubforums( (System.Data.DataRow)Container.DataItem ) %>' />
-                <VZF:ForumLastPost DataRow="<%# Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
+                <VZF:ForumLastPost DataRow="<%# (DataRow)Container.DataItem %>" Visible='<%# (((System.Data.DataRow)Container.DataItem)["RemoteURL"] == DBNull.Value) %>'
                     ID="lastPost" runat="server" />
             </td>
         </tr>

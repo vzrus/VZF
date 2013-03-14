@@ -4,7 +4,8 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Utils" %>
-<%@ Register TagPrefix="YAF" TagName="ForumList" Src="ForumList.ascx" %>
+<%@ Import Namespace="YAF.Classes" %>
+<%@ Register TagPrefix="VZF" TagName="ForumList" Src="ForumList.ascx" %>
 <asp:UpdatePanel ID="UpdatePanelCategory" runat="server" UpdateMode="Conditional">
 	<ContentTemplate>
 	<table class="content" width="100%">

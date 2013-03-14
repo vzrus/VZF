@@ -7811,12 +7811,71 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_GetTags", MySqlDbType.Byte).Value = getTags;
                 using (DataTable dt = MySqlDbAccess.GetData(cmd, connectionString))
                 {
-                    if (dt.Rows.Count > 0) return dt.Rows[0];
-                    else return null;
+                    if (dt.Rows.Count > 0)
+                    {
+                        return dt.Rows[0];
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// The topic_imagesave.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <param name="imageUrl">
+        /// The image url.
+        /// </param>
+        /// <param name="stream">
+        /// The stream.
+        /// </param>
+        /// <param name="topicImageType">
+        /// The topic image type.
+        /// </param>
+        public static void topic_imagesave(string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object topicImageType)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("topic_imagesave"))
+            {
+                byte[] data = null;
+                if (stream != null)
+                {
+                    data = new byte[stream.Length];
+                    stream.Seek(0, System.IO.SeekOrigin.Begin);
+                    stream.Read(data, 0, (int)stream.Length);
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("i_TopicID", MySqlDbType.Int32).Value = topicID;
+                cmd.Parameters.Add("i_ImageUrl", MySqlDbType.VarChar).Value = imageUrl;
+                cmd.Parameters.Add("i_Stream", MySqlDbType.Blob).Value = data;
+                cmd.Parameters.Add("i_TopicImageType", MySqlDbType.VarChar).Value = topicImageType;
+
+                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// The topic_findduplicate.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicName">
+        /// The topic name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int topic_findduplicate(string connectionString, object topicName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_findduplicate"))
@@ -7824,32 +7883,45 @@ namespace VZF.Data.Mysql
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("i_TopicName", MySqlDbType.VarChar).Value = topicName;
                 return Convert.ToInt32(MySqlDbAccess.ExecuteScalar(cmd, connectionString));
-
             }
         }
 
         /// <summary>
-        /// The topic_ favorite_ details.
+        /// The topic_favorite_details.
         /// </summary>
-        /// <param name="boardID">
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="since">
-        /// The since.
-        /// </param>
-        /// <param name="categoryID">
+        /// <param name="categoryId">
         /// The category id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="sinceDate">
+        /// The since date.
+        /// </param>
+        /// <param name="toDate">
+        /// The to date.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
         /// </param>
         /// <param name="useStyledNicks">
         /// Set to true to get color nicks for last user and topic starter.
-        /// </param>    
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
         /// <returns>
-        /// a Data Table containing the current user's favorite topics with details.
+        /// The <see cref="DataTable"/>  containing the current user's favorite topics with details..
         /// </returns>
-
         public static DataTable topic_favorite_details(
             string connectionString,
             [NotNull] object boardId,
@@ -9768,39 +9840,21 @@ namespace VZF.Data.Mysql
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_saveavatar"))
             {
-                byte[] data = null;
+                               byte[] data = null;
 
                 if (stream != null)
                 {
-                    if (avatar == null)
-                    {
-                        avatar = DBNull.Value;
-                    }
-                    if (data == null)
-                    {
-                        data = null;
-                    }
-
-
                     data = new byte[stream.Length];
                     stream.Seek(0, System.IO.SeekOrigin.Begin);
                     stream.Read(data, 0, (int)stream.Length);
                 }
-                if (avatar == null)
-                {
-                    avatar = DBNull.Value;
-                }
-                //if (data == null) { data = new byte[](); }
-                if (avatarImageType == null)
-                {
-                    avatarImageType = DBNull.Value;
-                }
+
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
-                cmd.Parameters.Add("i_Avatar", MySqlDbType.VarChar).Value = avatar;
+                cmd.Parameters.Add("i_Avatar", MySqlDbType.VarChar).Value = avatar ?? DBNull.Value;
                 cmd.Parameters.Add("i_AvatarImage", MySqlDbType.Blob).Value = data;
-                cmd.Parameters.Add("i_AvatarImageType", MySqlDbType.VarChar).Value = avatarImageType;
+                cmd.Parameters.Add("i_AvatarImageType", MySqlDbType.VarChar).Value = avatarImageType ?? DBNull.Value;
 
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }

@@ -80,8 +80,7 @@
             <asp:LinkButton runat="server" ID="Posts"  Enabled="false"  OnClick="Posts_Click" />
         </td>
         <td class="header2">
-            <img runat="server" id="SortLastVisit" alt="Sort Last Visit" style="vertical-align: middle" />
-            <asp:LinkButton runat="server" ID="LastVisitLB" OnClick="LastVisitLB_Click" />
+          &nbsp;
         </td>
     </tr>
     <asp:Repeater ID="MemberList"  OnItemCommand="MemberList_ItemCommand" runat="server">

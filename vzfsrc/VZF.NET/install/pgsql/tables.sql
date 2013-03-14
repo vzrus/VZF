@@ -699,7 +699,10 @@ CREATE TABLE databaseSchema.objectQualifier_topic
 			 isdeleted                 boolean DEFAULT FALSE NOT NULL,
 			 ispersistent              boolean DEFAULT FALSE NOT NULL,
 			 isquestion                boolean DEFAULT FALSE NOT NULL,
-			 linkdate                  timestampTZ
+			 linkdate                  timestampTZ,
+			 topicimage                varchar(255),  
+	         topicimagetype            varchar(50),  
+	         topicimagebin             bytea  
 			 ) 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -752,7 +755,10 @@ CREATE TABLE databaseSchema.objectQualifier_user
 			 styleflags                integer DEFAULT 0 NOT NULL,
 			 isuserstyle               boolean NOT NULL  DEFAULT FALSE, 
 			 isgroupstyle              boolean NOT NULL  DEFAULT FALSE, 
-			 isrankstyle               boolean NOT NULL  DEFAULT FALSE 
+			 isrankstyle               boolean NOT NULL  DEFAULT FALSE, 
+			 commonviewtype            integer NOT NULL DEFAULT 0,
+	         postsperpage              integer NOT NULL DEFAULT 10, 
+	         topicsperpage              integer NOT NULL DEFAULT 20  
 			 ) 
 	   WITH (OIDS=withOIDs);
 END IF;
@@ -1088,9 +1094,6 @@ BEGIN
 	 IF (NOT column_exists('databaseSchema.objectQualifier_topic','lastuserdisplayname')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN lastuserdisplayname   varchar(128);
 	 END IF;
-	 IF (NOT column_exists('databaseSchema.objectQualifier_topic','linkdate')) THEN
-		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN linkdate  timestampTZ;
-	 END IF;
 	 IF (NOT column_exists('databaseSchema.objectQualifier_message','userdisplayname')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_message ADD COLUMN userdisplayname   varchar(128);
 	 END IF;
@@ -1109,12 +1112,31 @@ BEGIN
 	  IF (NOT column_exists('databaseSchema.objectQualifier_user','isrankstyle')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_user ADD COLUMN isrankstyle  boolean DEFAULT FALSE NOT NULL;
 	 END IF;
+	 IF (NOT column_exists('databaseSchema.objectQualifier_user','commonviewtype')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_user ADD COLUMN commonviewtype  integer NOT NULL DEFAULT 0;
+	 END IF;
+	 IF (NOT column_exists('databaseSchema.objectQualifier_user','postsperpage')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_user ADD COLUMN postsperpage integer NOT NULL DEFAULT 10;
+	 END IF;
+	 IF (NOT column_exists('databaseSchema.objectQualifier_user','topicsperpage')) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_user ADD COLUMN topicsperpage integer NOT NULL DEFAULT 20;
+	 END IF;
 	 IF (NOT column_exists('databaseSchema.objectQualifier_shoutboxmessage','userdisplayname')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_shoutboxmessage ADD COLUMN userdisplayname  varchar(128);
 	 END IF;
 	 IF (column_exists('databaseSchema.objectQualifier_topic','linkdate') IS FALSE) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN linkdate  timestampTZ;
 	 END IF;
+	 IF (column_exists('databaseSchema.objectQualifier_topic','topicimage') IS FALSE) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN topicimage varchar(255);
+	 END IF;
+	 IF (column_exists('databaseSchema.objectQualifier_topic','topicimagetype') IS FALSE) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN topicimagetype varchar(50);
+	 END IF;
+	 IF (column_exists('databaseSchema.objectQualifier_topic','topicimagebin') IS FALSE) THEN
+		 ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN  topicimagebin bytea ;
+	 END IF;        
+	         
 	 IF (NOT column_exists('databaseSchema.objectQualifier_message','ts_message')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_message ADD COLUMN ts_message  text;
 	 END IF;

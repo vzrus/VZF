@@ -90,7 +90,12 @@ namespace YAF.Utils
     /// <summary>
     /// The message for HostAdminShouldSetAllowedPersonalForums.
     /// </summary>
-    HostAdminShouldSetAllowedPersonalForums  = 12
+    HostAdminShouldSetAllowedPersonalForums = 12,
+
+    /// <summary>
+    /// The message for HostAdminShouldSetAllowedPersonalForumsCategories.
+    /// </summary>
+    HostAdminShouldSetAllowedPersonalForumsCategories = 13
   }
 
   /// <summary>

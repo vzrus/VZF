@@ -2155,6 +2155,47 @@ END;$BODY$
      LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
 --GO
 
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_pfaccesslist(
+                           i_boardid integer, 
+                           i_categoryid integer)
+                  RETURNS SETOF databaseSchema.objectQualifier_category_pfaccesslist_return_type AS
+$BODY$DECLARE 
+             _rec databaseSchema.objectQualifier_category_pfaccesslist_return_type%ROWTYPE;
+BEGIN
+        
+    IF i_categoryid IS NULL THEN
+    FOR _rec IN
+        SELECT  categoryid,
+             boardid,
+             name,
+             categoryimage,
+             sortorder,
+             pollgroupid,	
+			 canhavepersforums,
+			 COALESCE((SELECT SIGN(f.forumid)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums  = 1 LIMIT 1),false)  AS HasForumsForPersForums
+       FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid ORDER BY sortorder
+       LOOP
+    RETURN NEXT _rec;
+END LOOP; 	
+    ELSE
+    FOR _rec IN 
+        SELECT categoryid,
+             boardid,
+             name,
+             categoryimage,
+             sortorder,
+             pollgroupid,	
+			 canhavepersforums,
+			 COALESCE((SELECT SIGN(f.forumid)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums  = 1 LIMIT 1),false)  AS HasForumsForPersForums
+        FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid LIMIT 1
+         LOOP
+    RETURN NEXT _rec;
+END LOOP; 	
+        END IF;
+END;$BODY$
+     LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000; 
+--GO
+
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_getadjacentforum(i_boardid integer, 
                            i_categoryid integer,i_pageuserid integer, i_isafter boolean) 
                   RETURNS  databaseSchema.objectQualifier_category_getadjacentforum_rt AS
@@ -2952,8 +2993,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_list
                            i_boardid integer, 
                            i_forumid integer,
 						   i_userid integer,
-						   i_isuserforum boolean,
-						   i_canhavepersforums boolean
+						   i_isuserforum boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_forum_list_return_type  AS
 $BODY$DECLARE
@@ -3024,7 +3064,7 @@ END LOOP;
         END IF;
 
 END;$BODY$
-    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100;
+    LANGUAGE 'plpgsql' STABLE SECURITY DEFINER COST 100 ROWS 1000;
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_byuserlist
@@ -3059,7 +3099,8 @@ BEGIN
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.createdbyuserid  
+							 a.createdbyuserid,
+							 a.canhavepersforums  
                     FROM databaseSchema.objectQualifier_forum a 
                                   JOIN databaseSchema.objectQualifier_category b 
                                      ON b.categoryid=a.categoryid 
@@ -3091,7 +3132,8 @@ END LOOP;
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.createdbyuserid  
+							 a.createdbyuserid,
+							 a.canhavepersforums  
         FROM databaseSchema.objectQualifier_forum a 
                    JOIN databaseSchema.objectQualifier_category b 
                     ON b.categoryid=a.categoryid 
@@ -9234,6 +9276,10 @@ BEGIN
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid LIMIT 1), i_utctimestamp)
              else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
+		c.topicimage,
+		c.topicimagetype,
+		c.topicimagebin,
+		0 as HasAttachments,	
         ici_topics_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex	  	     
     FROM
@@ -9752,9 +9798,16 @@ FOR _rec IN
                   t.description,
                   t.status,
                   (CASE WHEN i_gettags THEN
-                  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
+                  (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),				  	  
                   t.styles,
-                  t.islocked,
+				  t.topicimage,
+				  t.topicimagetype,
+				  t.topicimagebin,
+				  (SELECT mes2.message 
+                 FROM databaseSchema.objectQualifier_message mes2 
+                 WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
+                 AND mes2.position = 0 ORDER BY mes2.topicid LIMIT 1),
+				  t.islocked,
                   t.isdeleted,
                   t.ispersistent,
                   t.isquestion 			 
@@ -9785,10 +9838,17 @@ SELECT
                   t.lastmessageflags,
                   t.description,
                   t.status,
+				  t.styles,
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
-                  t.styles,
-                  t.islocked,
+             	  t.topicimage,
+				  t.topicimagetype,
+				  t.topicimagebin,
+				  (SELECT mes2.message 
+                 FROM databaseSchema.objectQualifier_message mes2 
+                 WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
+                 AND mes2.position = 0 LIMIT 1),
+				  t.islocked,
                   t.isdeleted,
                   t.ispersistent,
                   t.isquestion 			 
@@ -9825,6 +9885,13 @@ SELECT
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
                   t.styles,
+				  t.topicimage,
+				  t.topicimagetype,
+				  t.topicimagebin,
+				  (SELECT mes2.message 
+                 FROM databaseSchema.objectQualifier_message mes2 
+                 WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
+                 AND mes2.position = 0 LIMIT 1),
                   t.islocked,
                   t.isdeleted,
                   t.ispersistent,
@@ -9859,6 +9926,13 @@ FOR _rec IN SELECT
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
                   t.styles,
+				  t.topicimage,
+				  t.topicimagetype,
+				  t.topicimagebin,
+				  (SELECT mes2.message 
+                 FROM databaseSchema.objectQualifier_message mes2 
+                 WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
+                 AND mes2.position = 0 LIMIT 1),
                   t.islocked,
                   t.isdeleted,
                   t.ispersistent,
@@ -9926,7 +10000,7 @@ WHERE x.userid = t.lastuserid)) AS LastUserDisplayName,
         (case(i_findlastunread)
              when true THEN
                COALESCE((SELECT LastAccessDate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_pageuserid), i_utctimestamp)
-             else TIMESTAMP '-infinity' end) AS LastTopicAccess 	
+             else TIMESTAMP '-infinity' end) AS LastTopicAccess
     FROM 
         databaseSchema.objectQualifier_topic t
     INNER JOIN
@@ -10080,7 +10154,11 @@ varchar(4000)) AS FirstMessage,
         (case(i_gettags)
              when true THEN
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid)
-         else '' end),		  
+         else '' end),	
+		t.topicimage,
+		t.topicimagetype,
+		t.topicimagebin,
+		0 as HasAttachments, 
         ici_post_priorityrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -10269,6 +10347,10 @@ varchar(4000)) AS FirstMessage,
              when true THEN
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid)
          else '' end),	
+		t.topicimage,
+		t.topicimagetype,
+		t.topicimagebin,
+		0 as HasAttachments,
         ici_post_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -10646,7 +10728,11 @@ varchar(4000)) AS FirstMessage,
              when true THEN
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_pageuserid), current_timestamp)
              else TIMESTAMP '-infinity' end) AS LastTopicAccess,		
-        (SELECT tag FROM databaseSchema.objectQualifier_tags where tagid = i_tags::integer limit 1),	
+        (SELECT tag FROM databaseSchema.objectQualifier_tags where tagid = i_tags::integer limit 1),
+		t.topicimage,
+		t.topicimagebin,
+		t.topicimagetype,
+		0 as HasAttachments, 	
         ici_post_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -14664,6 +14750,11 @@ FOR _rec IN
              when true THEN
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid limit 1), i_utctimestamp)
              else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
+        (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
+		c.topicimage,
+		c.topicimagetype,
+		c.topicimagebin,
+		0 as HasAttachments,	 	
         ici_topics_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex	  	     
     from
@@ -15624,6 +15715,7 @@ $BODY$
               ici_pageindex integer := i_pageindex;
               ici_retcount integer := 0;
               ici_counter integer := 0;
+			  i_gettags boolean :=true;
               _rec databaseSchema.objectQualifier_topics_byuser_return_type%ROWTYPE;
 BEGIN  
         -- find total returned count
@@ -15726,6 +15818,14 @@ BEGIN
              when true THEN
                (SELECT lastaccessdate FROM databaseSchema.objectQualifier_TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = i_pageuserid LIMIT 1 )
              else i_utctimestamp	 end) as LastTopicAccess,
+        (case(i_gettags)
+             when true THEN
+        (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid)
+         else '' end),	
+		c.topicimage,
+		c.topicimagetype,
+		c.topicimagebin,
+		0 as HasAttachments, 
         ici_topics_totalrowsnumber  AS TotalRows,
         ici_pageindex	AS 	PageIndex			 	 
     from
@@ -16018,6 +16118,11 @@ BEGIN
              when true THEN
                (SELECT lastaccessdate FROM databaseSchema.objectQualifier_TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = i_pageuserid LIMIT 1 )
              else i_utctimestamp	 end) as LastTopicAccess,
+        (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
+		c.topicimage,
+		c.topicimagetype,
+		c.topicimagebin,
+		0 as HasAttachments,	
         ici_topics_totalrowsnumber  AS TotalRows,
         ici_pageindex	AS 	PageIndex			 	 
     from
@@ -16174,6 +16279,11 @@ BEGIN
                        (case(i_findlastunread) when true THEN
                        COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid), i_utctimestamp)
                                                else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
+        (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
+		c.topicimage,
+		c.topicimagetype,
+		c.topicimagebin,
+		0 as HasAttachments,	 	
                        ici_topics_totalrowsnumber AS TotalRows,
                        ici_pageindex	AS 	PageIndex	  	     
     FROM
@@ -16617,4 +16727,23 @@ $BODY$
 --GO
 COMMENT ON FUNCTION databaseSchema.objectQualifier_forum_tags(integer,integer,integer,integer,integer,varchar,boolean) IS 'Returns tags list for a forum or board with tags count.';
 --GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_imagesave(
+                           i_topicid integer,
+                           i_imageurl varchar(255),
+                           i_stream bytea,
+						   i_topicimagetype varchar(255))
+                  RETURNS void AS
+$BODY$
+begin
+        update databaseSchema.objectQualifier_topic
+        set topicimage = i_imageurl,
+            topicimagetype = i_topicimagetype,
+			topicimagebin = i_stream
+        where topicid = i_topicid;
+    
+END;$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100;  
+ --GO
 

@@ -1,9 +1,9 @@
 <%@ Control Language="c#" CodeBehind="../../../pages/postmessage.ascx.cs" AutoEventWireup="True"Inherits="YAF.Pages.postmessage" %>
 <%@ Import Namespace="YAF.Core" %>
-<%@ Register TagPrefix="YAF" TagName="PollList" Src="../../../controls/PollList.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="smileys" Src="../../../controls/smileys.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="LastPosts" Src="../../../controls/LastPosts.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="PostOptions" Src="../../../controls/PostOptions.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="PollList" Src="../../../controls/PollList.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="smileys" Src="../../../controls/smileys.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="LastPosts" Src="../../../controls/LastPosts.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="PostOptions" Src="../../../controls/PostOptions.ascx" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:PollList ID="PollList" ShowButtons="true" PollGroupId='<%# GetPollGroupID() %>'
     runat="server" />
@@ -93,7 +93,7 @@
             <!-- editor goes here -->
         </td>
     </tr>
-    <VZF:PostOptions ID="PostOptions1" runat="server"></YAF:PostOptions>
+    <VZF:PostOptions ID="PostOptions1" runat="server"></VZF:PostOptions>
     <tr id="tr_captcha1" runat="server" visible="false">
         <td class="postformheader" valign="top" colspan="2">
             <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="Captcha_Image" />

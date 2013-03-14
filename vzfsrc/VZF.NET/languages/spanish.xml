@@ -293,7 +293,7 @@
   </page>
   <page name="ADMIN_BOARDSETTINGS">
     <Resource tag="BOARD_ALLOW_DIGEST">Allow Digest Email Sending for Users Once Daily:</Resource>
-    <Resource tag="BOARD_ALLOW_DIGEST_HELP">Reqired: board must have "YAF.BaseUrlMask" and "YAF.ForceScriptName" AppSettings defined in your web.config for digest to work.</Resource>
+    <Resource tag="BOARD_ALLOW_DIGEST_HELP">Reqired: board must have "VZF.BaseUrlMask" and "VZF.ForceScriptName" AppSettings defined in your web.config for digest to work.</Resource>
     <Resource tag="BOARD_CDN_HOSTED">Use Google Hosted CDN jQuery UI CSS File?</Resource>
     <Resource tag="BOARD_CDN_HOSTED_HELP">You can use the Google Hosted CSS Files, or instead use internal.</Resource>
     <Resource tag="BOARD_CULTURE">Culture:</Resource>
@@ -328,7 +328,7 @@
     <Resource tag="BOARD_TOPIC_DEFAULT">Show Topic Default:</Resource>
     <Resource tag="BOARD_TOPIC_DEFAULT_HELP">The default board show topic interval selection.</Resource>
     <Resource tag="COPYRIGHT_REMOVAL_KEY">Copyright Removal Key:</Resource>
-    <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">Remove the copyright information and link back to YAF from the footer of your entire forum domain. Available&lt;a href="http://yetanotherforum.net/purchase.aspx"&gt;from YAF.NET site&lt;/a&gt;. </Resource>
+    <Resource tag="COPYRIGHT_REMOVAL_KEY_HELP">Remove the copyright information and link back to VZF from the footer of your entire forum domain. Available&lt;a href="http://yetanotherforum.net/purchase.aspx"&gt;from VZF.NET site&lt;/a&gt;. </Resource>
     <Resource tag="HEADER">Current Board Settings</Resource>
     <Resource tag="TITLE">Board Settings</Resource>
   </page>
@@ -537,14 +537,14 @@
     <Resource tag="DESCRIPTION_HELP">Enter here a role description.</Resource>
     <Resource tag="FORUM">Forum</Resource>
     <Resource tag="FORUM_MOD">Is Forum Moderator:</Resource>
-    <Resource tag="FORUM_MOD_HELP">When this is checked, members of this role will have some admin access rights in YAF.</Resource>
+    <Resource tag="FORUM_MOD_HELP">When this is checked, members of this role will have some admin access rights in VZF.</Resource>
     <Resource tag="HEADER">Access</Resource>
     <Resource tag="IMAGES_NUMBER">Album Images Number:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">Integer value for a user allowed images per album.</Resource>
     <Resource tag="INITIAL_MASK">Initial Access Mask:</Resource>
     <Resource tag="INITIAL_MASK_HELP">The initial access mask for all forums.</Resource>
     <Resource tag="IS_ADMIN">Is Admin:</Resource>
-    <Resource tag="IS_ADMIN_HELP">Means that users in this role are admins in YAF.</Resource>
+    <Resource tag="IS_ADMIN_HELP">Means that users in this role are admins in VZF.</Resource>
     <Resource tag="IS_GUEST">Is Guest::</Resource>
     <Resource tag="IS_GUEST_HELP">This flag is internal and makes the role unavailable to .NET membership. Never assign this role to any users except the (1) guest user. If you do flag this role as IsGuest, the guest user must a member of it. Never use this flag in conjunction with any other flags.</Resource>
     <Resource tag="IS_HIDDEN">Is Hidden:</Resource>
@@ -880,7 +880,7 @@
     <Resource tag="TARGET_INCORRECT_MSG">You tried to make a forbidden operation. Be sure that a node is being moved into a proper place.</Resource>
   </page>
   <page name="ADMIN_GROUPS">
-    <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
+    <Resource tag="ADD_ROLETOYAF">Add to VZF</Resource>
     <Resource tag="COMMAND">Command</Resource>
     <Resource tag="CONFIRM_DELETE">Delete this Role?</Resource>
     <Resource tag="DELETE_ROLEFROMYAF">Delete Role</Resource>
@@ -892,8 +892,8 @@
     <Resource tag="LINKED">Linked</Resource>
     <Resource tag="NAME">Name</Resource>
     <Resource tag="NEW_ROLE">New Role</Resource>
-    <Resource tag="NOTE_DELETE">Note: Deleting a role here removes it completely from the provider. "Add to YAF" to make this role accessible in the forum.</Resource>
-    <Resource tag="NOTE_DELETE_LINKED">Note: Deleting one of these "linked" roles outside of YAF will cause user data loss. If you want to delete the role, first "Delete from YAF" then the role can be managed outside of YAF.</Resource>
+    <Resource tag="NOTE_DELETE">Note: Deleting a role here removes it completely from the provider. "Add to VZF" to make this role accessible in the forum.</Resource>
+    <Resource tag="NOTE_DELETE_LINKED">Note: Deleting one of these "linked" roles outside of VZF will cause user data loss. If you want to delete the role, first "Delete from VZF" then the role can be managed outside of VZF.</Resource>
     <Resource tag="PMS">PMs</Resource>
     <Resource tag="PROVIDER_ROLES">Provider Roles</Resource>
     <Resource tag="TITLE">Roles</Resource>
@@ -964,6 +964,8 @@
     <Resource tag="ALLOW_TOPIC_DESCRIPTION_HELP">If checked, users can add a topic description.</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS">Allow Topic Status Option:</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">If checked, users select a Topic Status Option.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images insteag of standard topic icons in topic line everywhere.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Allow Topics With Same Name:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Duplicate topic names are allowed to:</Resource>
     <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
@@ -1028,7 +1030,7 @@
     <Resource tag="ENABLE_CAPTCHA_FORPOST">Enable CAPTCHA for Post a Message:</Resource>
     <Resource tag="ENABLE_CAPTCHA_FORPOST_HELP">Require users to enter the CAPTCHA when they post or reply to a forum message (including Quick Reply).</Resource>
     <Resource tag="ENABLE_DISPLAY_NAME">Enable Display Name:</Resource>
-    <Resource tag="ENABLE_DISPLAY_NAME_HELP">If checked, YAF uses an alternative "Display Name" instead of the UserName.</Resource>
+    <Resource tag="ENABLE_DISPLAY_NAME_HELP">If checked, VZF uses an alternative "Display Name" instead of the UserName.</Resource>
     <Resource tag="ENABLE_HOVERCARDS">Enable User Info Hover Cards:</Resource>
     <Resource tag="ENABLE_HOVERCARDS_HELP">If enabled it shows an Hover Card (Which shows some quick info about the user) when you hover an user name. This will also show an Hover Card on the Twitter &amp; Facebook Profile Button.</Resource>
     <Resource tag="ENABLE_IRKOO">Use Irkoo Reputation Service:</Resource>
@@ -1038,7 +1040,7 @@
     <Resource tag="ENABLE_RETWEET_MSG">Enable Retweet Message Button:</Resource>
     <Resource tag="ENABLE_RETWEET_MSG_HELP">Enables/disables the Retweet Button, where the User can retweet a topic message.</Resource>
     <Resource tag="ENABLE_SSO">Enable Single Sign On:</Resource>
-    <Resource tag="ENABLE_SSO_HELP">If checked, users will be able to Login to an existing account via Facebook and/or Twitter. To Enable it for Facebook you need to setup YAF.FacebookAPIKey and YAF.FacebookSecretKey Values, and for Twitter YAF.TwitterConsumerKey and YAF.TwitterConsumerSecret Values in the app.config (AppSettings).</Resource>
+    <Resource tag="ENABLE_SSO_HELP">If checked, users will be able to Login to an existing account via Facebook and/or Twitter. To Enable it for Facebook you need to setup VZF.FacebookAPIKey and VZF.FacebookSecretKey Values, and for Twitter VZF.TwitterConsumerKey and VZF.TwitterConsumerSecret Values in the app.config (AppSettings).</Resource>
     <Resource tag="ENABLE_USERREPUTATION">Use Reputation System:</Resource>
     <Resource tag="ENABLE_USERREPUTATION_HELP">Setting to Enable/Disable the Build-In Reputation System to allow Users Give or Remove Reputation.</Resource>
     <Resource tag="EVENTLOG_MAX_DAYS">Max number of days for event log</Resource>
@@ -1403,6 +1405,10 @@
     <Resource tag="TOPIC_FEEDS_ACCESS_HELP">Restrict display of topics feeds.</Resource>
     <Resource tag="TOPICFEED_COUNT">Max. Topics on the Forum Feed:</Resource>
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Topics Per Page:</Resource>
     <Resource tag="TOPICS_PER_PAGE_HELP">Number of topics to show per page.</Resource>
     <Resource tag="TWITTER_USERNAME">Twitter Username for Retweets:</Resource>
@@ -1566,9 +1572,9 @@
   </page>
   <page name="ADMIN_REINDEX">
     <Resource tag="CONFIRM_RECOVERY">Are you sure you want to change your database recovery mode?\nThe operation may make the DB inaccessible and may take a little while.\nDO THIS ONLY IF YOU KNOW WHAT YOU ARE DOING!</Resource>
-    <Resource tag="CONFIRM_REINDEX">Are you sure you want to reindex all YAF tables?\nThe operation may make the DB inaccessible and may take a little while.</Resource>
+    <Resource tag="CONFIRM_REINDEX">Are you sure you want to reindex all VZF tables?\nThe operation may make the DB inaccessible and may take a little while.</Resource>
     <Resource tag="CONFIRM_SHRINK">Are you sure you want to Shrink database?\nThe operation may make the DB inaccessible and may take a little while.</Resource>
-    <Resource tag="HEADER">YAF DB Operation Report:</Resource>
+    <Resource tag="HEADER">VZF DB Operation Report:</Resource>
     <Resource tag="INDEX_SHRINK">Shrink operation was Successful.Your database size is now: {0}MB</Resource>
     <Resource tag="INDEX_STATS">Database recovery mode was successfully set to {0}</Resource>
     <Resource tag="INDEX_STATS_FAIL">Something went wrong with this operation. The reported error is: {0}</Resource>
@@ -1578,7 +1584,7 @@
     <Resource tag="REINDEX">With any data modification operations, table fragmentation can occur. This command can be used to rebuild all the indexes on all the tables in database to boost performance.</Resource>
     <Resource tag="REINDEXTBL_BTN">Reindex tables</Resource>
     <Resource tag="SETRECOVERY_BTN">Set recovery mode</Resource>
-    <Resource tag="SHOW_STATS">Show statistical information about YAF table indexes.</Resource>
+    <Resource tag="SHOW_STATS">Show statistical information about VZF table indexes.</Resource>
     <Resource tag="SHRINK">You can use the Shrink method to reduce the size of the files that make up the database manually. The data is stored more densely and unused pages are removed</Resource>
     <Resource tag="SHRINK_BTN">Shrink database</Resource>
     <Resource tag="TBLINDEXSTATS_BTN">Table index statistics</Resource>
@@ -1728,7 +1734,7 @@
     <Resource tag="USER_NAME">User Name</Resource>
   </page>
   <page name="ADMIN_USERS_IMPORT">
-    <Resource tag="HEADER">Import Users to YAF</Resource>
+    <Resource tag="HEADER">Import Users to VZF</Resource>
     <Resource tag="IMPORT_FAILED">Failed to import: {0}</Resource>
     <Resource tag="IMPORT_FAILED_FORMAT">Input failed, wrong file format!</Resource>
     <Resource tag="IMPORT_FILE">Select Import File:</Resource>
@@ -1739,7 +1745,7 @@
   </page>
   <page name="ADMIN_VERSION">
     <Resource tag="LATEST_VERSION">The latest final version available is &lt;strong&gt;{0}&lt;/strong&gt; released &lt;strong&gt;{1}&lt;/strong&gt;.</Resource>
-    <Resource tag="RUNNING_VERSION">You are running YetAnotherForum.NET version &lt;strong&gt;{0}&lt;/strong&gt; (Date: {1}).</Resource>
+    <Resource tag="RUNNING_VERSION">You are running VZF version &lt;strong&gt;{0}&lt;/strong&gt; (Date: {1}).</Resource>
     <Resource tag="TITLE">Version Check</Resource>
     <Resource tag="UPGRADE_VERSION">You can download the latest version from &lt;a target="_top" href="http://yafnet.codeplex.com/"&gt;
 						here&lt;/a&gt;.</Resource>
@@ -3134,7 +3140,7 @@
 		&lt;/td&gt;
 		&lt;td&gt;
 			[img]{0}forumlogo.jpg[/img]&lt;br /&gt;&lt;br /&gt;
-			[img={0}forumlogo.jpg]YAF Logo[/img]&lt;br /&gt;&lt;br /&gt;
+			[img={0}forumlogo.jpg]VZF Logo[/img]&lt;br /&gt;&lt;br /&gt;
 		[url={0}] [img]{0}forumlogo.jpg[/img] [/url] (Linked)
 	&lt;/td&gt;
 	&lt;/tr&gt;
@@ -3143,9 +3149,9 @@
 			&lt;strong&gt;Output&lt;/strong&gt;
 		&lt;/td&gt;
 		&lt;td&gt;&lt;img src="{0}forumlogo.jpg" alt="" /&gt;&lt;br /&gt;
-		&lt;br /&gt;&lt;img src="{0}forumlogo.jpg" alt="YAF Logo" title="YAF Logo" /&gt;&lt;br /&gt;
+		&lt;br /&gt;&lt;img src="{0}forumlogo.jpg" alt="VZF Logo" title="VZF Logo" /&gt;&lt;br /&gt;
 		&lt;br /&gt;
-		&lt;a href="{0}" target="_blank" title="YAF Logo"&gt;&lt;img class="inlineimg" src="{0}forumlogo.jpg" alt="" /&gt;&lt;/a&gt; (Linked)
+		&lt;a href="{0}" target="_blank" title="VZF Logo"&gt;&lt;img class="inlineimg" src="{0}forumlogo.jpg" alt="" /&gt;&lt;/a&gt; (Linked)
 	&lt;/td&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
@@ -3712,8 +3718,8 @@ Spoiler Content
 
 </Resource>
     <Resource tag="EDITPROFILETITLE">Editing User Profile &amp; Forum Settings</Resource>
-    <Resource tag="FORUMSCONTENT">&lt;p&gt;&lt;strong&gt;What is YAF?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;YetAnotherForum.NET (YAF) is The Open Source Discussion Forum for sites running ASP.NET. 100% written in C#, YAF (pronounced like &amp;quot;laugh&amp;quot;) is a unique combination of Open Source, Microsoft's .NET platform and an international collaboration of the .NET developer community. Growing and changing daily, the YAF project is led by Jaben Cargman of Tiny Gecko. YAF runs on any web server that supports ASP.NET v2.0 (and above) and SQL Server. YAF is licensed under GPL.&lt;/p&gt;
+    <Resource tag="FORUMSCONTENT">&lt;p&gt;&lt;strong&gt;What is VZF?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;VZF (VZF) is The Open Source Discussion Forum for sites running ASP.NET. 100% written in C#, VZF (pronounced like &amp;quot;laugh&amp;quot;) is a unique combination of Open Source, Microsoft's .NET platform and an international collaboration of the .NET developer community. Growing and changing daily, the VZF project is led by Jaben Cargman of Tiny Gecko. VZF runs on any web server that supports ASP.NET v2.0 (and above) and SQL Server. VZF is licensed under GPL.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;How is all of this structured?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;A Forum contains various areas, which themselves contain forums (more specific subject areas) which contain topics  which are made up of individual messages (where a user writes something).&lt;/p&gt;
 &lt;p&gt;The Forums home page has a list of categories and forums, with basic statistics for each, including the number of topics and messages, and which member posted the most recent message.&lt;/p&gt;
@@ -3953,7 +3959,7 @@ Spoiler Content
     <Resource tag="REPLYINGTITLE">Replying to a Message</Resource>
     <Resource tag="RSSCONTENT">&lt;p&gt;The feeds are currently provided in two formats, RSS and Atom.&lt;/p&gt;
 &lt;p&gt;If the administrator has enabled Feed syndication, you can get the Feeds for a forums, topics and active topics.&lt;/p&gt;
-&lt;p&gt;Most modern browsers have facilities for reading RSS feeds and will automatically detect the availability of feeds on YAF forum pages.&lt;/p&gt;</Resource>
+&lt;p&gt;Most modern browsers have facilities for reading RSS feeds and will automatically detect the availability of feeds on VZF forum pages.&lt;/p&gt;</Resource>
     <Resource tag="RSSTITLE">RSS &amp; Atom Feeds</Resource>
     <Resource tag="SEARCHFOR">Enter keywords to search for:</Resource>
     <Resource tag="SEARCHHELP">Search Help</Resource>
@@ -3996,7 +4002,7 @@ Spoiler Content
 &lt;/ul&gt;
 </Resource>
     <Resource tag="THREADOPTTITLE">Topic Options</Resource>
-    <Resource tag="TITLE">YetAnotherForum.NET Help</Resource>
+    <Resource tag="TITLE">VZF Help</Resource>
     <Resource tag="WELCOME">Here you can find answers to questions about how the board works. Use the links on the left or the search box below to find what you are looking for. </Resource>
   </page>
   <page name="ICONLEGEND">
@@ -4046,6 +4052,27 @@ Spoiler Content
   </page>
   <page name="IM_YIM">
     <Resource tag="TITLE">Yahoo! Messenger</Resource>
+  </page>
+  <page name="IMAGEADD">
+    <Resource tag="IMAGE">Image</Resource>
+    <Resource tag="IMAGECURRENT">Current image</Resource>
+    <Resource tag="IMAGEDELETE">Remove image</Resource>
+    <Resource tag="IMAGENEW">Select a new image</Resource>
+    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
+    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
+    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
+    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
+    <Resource tag="NOIMAGE">[ No image  ]</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
+    <Resource tag="TITLE">Change/add image. </Resource>
+    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
+    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
   </page>
   <page name="INFO">
     <Resource tag="ACCESSDENIED">Has entrado a un área a la que no tienes acceso.</Resource>
@@ -4294,6 +4321,7 @@ Spoiler Content
     <Resource tag="CANCEL">Cancel</Resource>
     <Resource tag="CLEAR">Clear</Resource>
     <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="POSTS">Posts</Resource>
     <Resource tag="RANK">Rank</Resource>
     <Resource tag="SEARCH">Search</Resource>
     <Resource tag="TITLE">Users in group {0}</Resource>
@@ -4430,6 +4458,7 @@ Spoiler Content
     <Resource tag="TOPIC_NAME_TOOLONG">Topic name length cannot be more than 255 characters.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Topic name single word length cannot be be more than {0} characters. Suggestion: use abbreviations to shorten.</Resource>
     <Resource tag="TOPICATTACH">¿Añadir archivos a este mensaje?</Resource>
+    <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
     <Resource tag="TOPICNAME_TOOLONG">Maximal tolic name length should not be more than {0} characters. Use abbreviations.</Resource>
     <Resource tag="TOPICWATCH">¿Vigilar este tema y recibir notificaciones de actividad vía e-mail?</Resource>
     <Resource tag="WAIT">No puedes ingresar mensajes en los próximos {0:N0} segundos.</Resource>

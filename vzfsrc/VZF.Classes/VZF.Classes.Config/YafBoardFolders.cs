@@ -155,5 +155,16 @@ namespace YAF.Classes
         return String.Concat(BoardFolder, "Images/Ranks");
       }
     }
+
+    /// <summary>
+    /// Gets Topics.
+    /// </summary>
+    public string Topics
+    {
+        get
+        {
+            return String.Concat(BoardFolder, "Images/Topics");
+        }
+    }
   }
 }

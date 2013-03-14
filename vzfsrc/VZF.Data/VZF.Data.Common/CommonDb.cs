@@ -9944,6 +9944,31 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
+        }
+
+        public static void topic_imagesave(int? mid, object topicID, object imageUrl, Stream stream, object avatarImageType)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+   
+            switch (dataEngine)
+            {
+                case "System.Data.SqlClient":
+                     VZF.Data.MsSql.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                case "Npgsql":
+                     VZF.Data.Postgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                case "MySql.Data.MySqlClient":
+                     VZF.Data.Mysql.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                case "FirebirdSql.Data.FirebirdClient":
+                     VZF.Data.Firebird.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                // case "oracle": orPostgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                // case "db2":   db2Postgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                // case "other":   othPostgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break; 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
 
         }
 

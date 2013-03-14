@@ -893,6 +893,11 @@ namespace YAF.Pages
 
             this.ParamsToSend(out retliterals, out retvalue);
 
+            if (this.PageContext.QueryIDs.ContainsKey("ti"))
+            {
+                YafBuildLink.Redirect(ForumPages.imageadd, "ti={0}", this.PageContext.QueryIDs["ti"].ToType<int>());
+            }
+
             switch (retliterals)
             {
                 case "t":

@@ -957,6 +957,8 @@
     <Resource tag="ALLOW_TOPIC_DESCRIPTION_HELP">Wenn aktiviert kann eine Beschreibung zu ein Thema eingegeben werden.</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS">Themen Status Option aktivieren::</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">Wenn aktiviert können Benutzer einen Topic Status auswählen.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images insteag of standard topic icons in topic line everywhere.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Themen mit gleichem Namen zulassen:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Gleiche Themen Namen sind erlaubt für:</Resource>
     <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
@@ -1396,6 +1398,10 @@
     <Resource tag="TOPIC_FEEDS_ACCESS_HELP">Anzeige Beschränken für den Feed.</Resource>
     <Resource tag="TOPICFEED_COUNT">Max. Themen im  Forum Feed:</Resource>
     <Resource tag="TOPICFEED_COUNT_HELP">Die Maximale Anzahl an Themen die im Atom/Rss Feed gelisted werden sollen.</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Themen pro Seite:</Resource>
     <Resource tag="TOPICS_PER_PAGE_HELP">Anzahl an Themen die pro Seite angezeigt werden.</Resource>
     <Resource tag="TWITTER_USERNAME">Twitter Benutzername für die Retweets:</Resource>
@@ -3980,6 +3986,27 @@ Spoiler Content
   <page name="IM_YIM">
     <Resource tag="TITLE">Yahoo!-Messenger</Resource>
   </page>
+  <page name="IMAGEADD">
+    <Resource tag="IMAGE">Image</Resource>
+    <Resource tag="IMAGECURRENT">Current image</Resource>
+    <Resource tag="IMAGEDELETE">Remove image</Resource>
+    <Resource tag="IMAGENEW">Select a new image</Resource>
+    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
+    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
+    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
+    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
+    <Resource tag="NOIMAGE">[ No image  ]</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
+    <Resource tag="TITLE">Change/add image. </Resource>
+    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
+    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
+  </page>
   <page name="INFO">
     <Resource tag="ACCESSDENIED">Du hast versucht in einem Bereich zu gelangen, für den Du keine Zugriffsberechtigung besitzt.</Resource>
     <Resource tag="CONTINUE">Fortfahren...</Resource>
@@ -4218,6 +4245,7 @@ Spoiler Content
     <Resource tag="CANCEL">Cancel</Resource>
     <Resource tag="CLEAR">Clear</Resource>
     <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="POSTS">Posts</Resource>
     <Resource tag="RANK">Rank</Resource>
     <Resource tag="SEARCH">Search</Resource>
     <Resource tag="TITLE">Users in group {0}</Resource>
@@ -4349,6 +4377,7 @@ Spoiler Content
     <Resource tag="TOPIC_NAME_TOOLONG">Themen Titel darf nicht mehr als {0} Zeichen lang sein.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Ein Wort im Themen Titel darf nicht mehr als {0} Zeichen lang sein. Vorschlag: Abkürzungen benutzen.</Resource>
     <Resource tag="TOPICATTACH">Bilder oder Dateien an diesen Beitrag anhängen?</Resource>
+    <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
     <Resource tag="TOPICWATCH">Möchtest Du per E-Mail informiert werden, wenn es Antworten auf das Thema gibt?</Resource>
     <Resource tag="WAIT">Du kannst in den nächsten {0:N0} Sekunden nicht posten.</Resource>
   </page>

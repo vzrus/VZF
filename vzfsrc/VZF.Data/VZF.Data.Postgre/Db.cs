@@ -2999,7 +2999,7 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = null;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isuserforum", NpgsqlDbType.Boolean)).Value = false;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
@@ -7252,6 +7252,28 @@ namespace VZF.Data.Postgre
             }
         }
 
+        public static void topic_imagesave(string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object avatarImageType)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("topic_imagesave"))
+            {
+                byte[] data = null;
+                if (stream != null)
+                {
+                    data = new byte[stream.Length];
+                    stream.Seek(0, System.IO.SeekOrigin.Begin);
+                    stream.Read(data, 0, (int)stream.Length);
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_imageurl", NpgsqlDbType.Varchar)).Value = imageUrl;
+                cmd.Parameters.Add(new NpgsqlParameter("i_stream", NpgsqlDbType.Bytea)).Value = data;
+                cmd.Parameters.Add(new NpgsqlParameter("i_avatarimagetype", NpgsqlDbType.Varchar)).Value = avatarImageType;
+                PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
+            }
+        }
+      
         public static int topic_findduplicate(string connectionString, object topicName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_findduplicate"))
@@ -9247,36 +9269,18 @@ namespace VZF.Data.Postgre
 
                 if (stream != null)
                 {
-                    if (avatar == null)
-                    {
-                        avatar = DBNull.Value;
-                    }
-                    if (data == null)
-                    {
-                        data = null;
-                    }
-
-
                     data = new byte[stream.Length];
                     stream.Seek(0, System.IO.SeekOrigin.Begin);
                     stream.Read(data, 0, (int)stream.Length);
                 }
-                if (avatar == null)
-                {
-                    avatar = DBNull.Value;
-                }
-                //if (data == null) { data = new byte[](); }
-                if (avatarImageType == null)
-                {
-                    avatarImageType = DBNull.Value;
-                }
+
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_avatar", NpgsqlDbType.Varchar)).Value = avatar;
+                cmd.Parameters.Add(new NpgsqlParameter("i_avatar", NpgsqlDbType.Varchar)).Value = avatar ?? DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_avatarimage", NpgsqlDbType.Bytea)).Value = data;
                 cmd.Parameters.Add(new NpgsqlParameter("i_avatarimagetype", NpgsqlDbType.Varchar)).Value =
-                    avatarImageType;
+                    avatarImageType ?? DBNull.Value;
 
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
             }

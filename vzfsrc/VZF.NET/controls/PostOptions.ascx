@@ -26,6 +26,10 @@
                 <asp:CheckBox ID="TopicAttach" runat="server" />
                 <VZF:LocalizedLabel ID="TopicAttachLabel" runat="server" LocalizedTag="TOPICATTACH" />
             </li>
+            <li id="liTopicImageAttach" runat="server">
+                <asp:CheckBox ID="TopicImageAttach" runat="server" />
+                <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TOPICIMAGEATTACH" />
+            </li>
         </ul>
     </td>
 </tr>

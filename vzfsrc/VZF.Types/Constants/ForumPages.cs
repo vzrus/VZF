@@ -217,7 +217,12 @@ namespace YAF.Types.Constants
     /// <summary>
     /// The search.
     /// </summary>
-    search, 
+    search,
+
+    /// <summary>
+    /// The imageadd.
+    /// </summary>
+    imageadd, 
     
     /// <summary>
     /// The viewthanks

@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="../../../controls/mytopicslist.ascx.cs"
     Inherits="VZF.Controls.MyTopicsList" %>
-<%@ Register TagPrefix="YAF" TagName="TopicLine" Src="TopicLine.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="TopicLine" Src="TopicLine.ascx" %>
 <table class="command" cellspacing="0" cellpadding="0" width="100%" style="padding-bottom: 10px;">
     <tr>
         <td align="right">

@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="c#" CodeBehind="../../../pages/posts.ascx.cs" AutoEventWireup="True" Inherits="YAF.Pages.posts" %>
 <%@ Import Namespace="YAF.Core" %>
+<%@ Import Namespace="System.Data" %>
 <%@ Register TagPrefix="VZF" TagName="DisplayPost" Src="DisplayPost.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="DisplayAd" Src="DisplayAd.ascx" %>
 <%@ Register TagPrefix="VZF" TagName="PollList" Src="../../../controls/PollList.ascx" %>
@@ -90,7 +91,7 @@
     <ItemTemplate>
         <table class="content postContainer" width="100%">
             <%# GetThreadedRow(Container.DataItem) %>
-            <VZF:DisplayPost ID="DisplayPost1" runat="server" DataRow="<%# Container.DataItem %>"
+            <VZF:DisplayPost ID="DisplayPost1" runat="server" DataRow="<%# (DataRow)Container.DataItem %>"
                 Visible="<%#IsCurrentMessage(Container.DataItem)%>" IsThreaded="<%#IsThreaded%>" />
             <VZF:DisplayAd ID="DisplayAd" runat="server" Visible="False" />
         </table>
@@ -98,7 +99,7 @@
     <AlternatingItemTemplate>
         <table class="content postContainer_Alt" width="100%">
             <%# GetThreadedRow(Container.DataItem) %>
-            <VZF:DisplayPost ID="DisplayPostAlt" runat="server" DataRow="<%# Container.DataItem %>"
+            <VZF:DisplayPost ID="DisplayPostAlt" runat="server" DataRow="<%# (DataRow)Container.DataItem %>"
                 IsAlt="True" Visible="<%#IsCurrentMessage(Container.DataItem)%>" IsThreaded="<%#IsThreaded%>" />
             <VZF:DisplayAd ID="DisplayAd" runat="server" Visible="False" />
         </table>
@@ -174,6 +175,7 @@
 
 
 <VZF:PageLinks ID="PageLinksBottom" runat="server" LinkedPageLinkID="PageLinks" />
+<VZF:SimpleTagCloud ID="Stc1" runat="server"/>  
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
         <VZF:ForumJumper  ID="fj1" runat="server"></VZF:ForumJumper>

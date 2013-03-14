@@ -40,7 +40,7 @@ namespace VZF.Controls {
         protected global::VZF.Controls.LocalizedLabel LocalizedLabel2;
         
         /// <summary>
-        /// avatarImageTD control.
+        /// topicImageTD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -58,7 +58,7 @@ namespace VZF.Controls {
         protected global::System.Web.UI.WebControls.Image AvatarImg;
         
         /// <summary>
-        /// NoAvatar control.
+        /// NoImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

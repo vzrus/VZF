@@ -1,9 +1,9 @@
 <%@ Control Language="c#" CodeBehind="../../../controls/topics.ascx.cs" AutoEventWireup="True" Inherits="YAF.Pages.topics" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Register TagPrefix="YAF" TagName="ForumList" Src="ForumList.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="TopicLine" Src="TopicLine.ascx" %>
-<%@ Register TagPrefix="YAF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="ForumList" Src="ForumList.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="TopicLine" Src="TopicLine.ascx" %>
+<%@ Register TagPrefix="VZF" TagName="ForumJumper" Src="~/controls/ForumJumper.ascx" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator">
 </div>
@@ -89,6 +89,7 @@
     <VZF:ForumUsers ID="ForumUsers1" runat="server" />
     <tr>
         <td align="center" colspan="6" class="footer1">
+             <VZF:SimpleTagCloud ID="Stc1" runat="server"/>  
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                     <td id="showListTd">

@@ -47,7 +47,7 @@
         <asp:Button id="ChangeTab" OnClick="ChangeTabClick" runat="server" style="display:none" />
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">
-        <VZF:ForumJumper  ID="fj1" runat="server"></VZF:ForumJumper>
+       <VZF:ForumJumper  ID="fj1" runat="server"></VZF:ForumJumper> 
     </div>
 </asp:PlaceHolder>
 <div id="DivIconLegend">

@@ -7,36 +7,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VZF.Controls {
+namespace YAF.Pages {
     
     
-    public partial class DisplayAd {
+    public partial class imageadd {
         
         /// <summary>
-        /// NameCell control.
+        /// PageLinks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableCell NameCell;
+        protected global::VZF.Controls.PageLinks PageLinks;
         
         /// <summary>
-        /// SponserName control.
+        /// ProfileEditor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::VZF.Controls.LocalizedLabel SponserName;
+        protected global::VZF.Controls.EditObjectImage ProfileEditor;
         
         /// <summary>
-        /// AdMessage control.
+        /// SmartScroller1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::VZF.Controls.MessagePost AdMessage;
+        protected global::VZF.Controls.SmartScroller SmartScroller1;
     }
 }

@@ -1554,6 +1554,27 @@ Spoiler Content
     <Resource tag="CANCEL_TITLE">Go Back to the Modify Avatar Page without selecting an Avatar.</Resource>
     <Resource tag="UP_TITLE">Go to the Parent Folder.</Resource>
    </page>
+  <page name="IMAGEADD">
+    <Resource tag="IMAGE">Image</Resource>
+    <Resource tag="IMAGECURRENT">Current image</Resource>
+    <Resource tag="IMAGEDELETE">Remove image</Resource>
+    <Resource tag="IMAGENEW">Select a new image</Resource>
+    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
+    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
+    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
+    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
+    <Resource tag="NOIMAGE">[ No image  ]</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
+    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
+    <Resource tag="TITLE">Change/add image. </Resource>
+    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
+    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
+  </page>
    <page name="BBCODEMODULE">
       <Resource tag="SPOILERMOD_DESCRIPTION">Put Spoiler Text in here</Resource>
       <Resource tag="SPOILERMOD_HIDE">Hide Spoiler</Resource>
@@ -2540,6 +2561,7 @@ Spoiler Content
       <Resource tag="USERNAME">User name</Resource>
       <Resource tag="RANK">Rank</Resource>
       <Resource tag="JOINED">Joined</Resource>
+     <Resource tag="POSTS">Posts</Resource>
    </page>
    <page name="PERSONALGROUP">
       <Resource tag="TITLE">Personal groups</Resource>
@@ -2660,6 +2682,7 @@ Spoiler Content
       <Resource tag="TAGS_TOADD">Topic Tags:</Resource>
       <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
       <Resource tag="TOPICATTACH">Attach files to this post?</Resource>
+      <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
       <Resource tag="TOPICWATCH">Watch this topic and receive notifications of activity via e-mail?</Resource>
       <Resource tag="ISQUESTION">Is this topic in question and answer format?</Resource>
       <Resource tag="TOPIC_NAME_TOOLONG">Topic name length cannot be more than 255 characters.</Resource>
@@ -4662,6 +4685,8 @@ Visit {forumname} at {forumlink}
      <Resource tag="ALLOW_USERTEXTEDITOR_HELP">Allow users to pick text editor in their profiles.</Resource>
      <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
      <Resource tag="ALLOW_TOPICTAGS_HELP">If enabled users can add tags to topics to simplify search.</Resource>
+     <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
+     <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images insteag of standard topic icons in topic line everywhere.</Resource>
      <Resource tag="SHOW_TOPICTAGSCOUNT">Show tags count.</Resource>
      <Resource tag="SHOW_TOPICTAGSCOUNT_HELP">If enabled tag count is displayd with a tag.</Resource>
      <Resource tag="ALLOW_AUTOTOPICTAGS">Allow add auto tags to topics.</Resource>
@@ -4976,6 +5001,10 @@ Visit {forumname} at {forumlink}
        <Resource tag="TOPICS_PER_PAGE_HELP">Number of topics to show per page.</Resource>
      <Resource tag="SHOW_RELATIVE_TIME">Show Relative Time:</Resource>
        <Resource tag="SHOW_RELATIVE_TIME_HELP">If checked, client-side "Time Ago" library will be used to show "relative times" to users instead of UTC and or imperfect server-side times.</Resource>
+     <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
+       <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
+     <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
+       <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
      <Resource tag="TAG_TOPICMAXCOUNT">Max number of topic tags.</Resource>
        <Resource tag="TAG_TOPICMAXCOUNT_HELP">Max number of topic tags.</Resource>
      <Resource tag="TAG_MAXLENGTH">Tag's max length.</Resource>

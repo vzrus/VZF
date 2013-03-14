@@ -957,6 +957,8 @@
     <Resource tag="ALLOW_TOPIC_DESCRIPTION_HELP">Als deze is aangevinkt, kunnen gebruikers een beschrijving van het topic toevoegen.</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS">Laat Topic statussen toe.</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">Als deze is aangevinkt, kunnen gebruikers een Topic status optie kiezen.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images insteag of standard topic icons in topic line everywhere.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Sta meerdere Topics met dezelfde naam toe:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Dubbele Topicnamen toegestaan voor:</Resource>
     <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
@@ -1397,6 +1399,10 @@
     <Resource tag="TOPIC_FEEDS_ACCESS_HELP">Beperk weergave van topic feeds.</Resource>
     <Resource tag="TOPICFEED_COUNT">Max. Topics on the Forum Feed:</Resource>
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Topics Per Pagina:</Resource>
     <Resource tag="TOPICS_PER_PAGE_HELP">Aantal Topics per Pagina.</Resource>
     <Resource tag="TWITTER_USERNAME">Twitter Gebruikersnaam voor Retweets:</Resource>
@@ -3994,6 +4000,27 @@ Spoiler Inhoud
   <page name="IM_YIM">
     <Resource tag="TITLE">Yahoo! Messenger</Resource>
   </page>
+  <page name="IMAGEADD">
+    <Resource tag="IMAGE">Image</Resource>
+    <Resource tag="IMAGECURRENT">Current image</Resource>
+    <Resource tag="IMAGEDELETE">Remove image</Resource>
+    <Resource tag="IMAGENEW">Select a new image</Resource>
+    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
+    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
+    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
+    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
+    <Resource tag="NOIMAGE">[ No image  ]</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
+    <Resource tag="TITLE">Change/add image. </Resource>
+    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
+    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
+  </page>
   <page name="INFO">
     <Resource tag="ACCESSDENIED">Je hebt hier geen toegang toe.</Resource>
     <Resource tag="CONTINUE">Ga verder...</Resource>
@@ -4232,6 +4259,7 @@ Spoiler Inhoud
     <Resource tag="CANCEL">Cancel</Resource>
     <Resource tag="CLEAR">Clear</Resource>
     <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="POSTS">Posts</Resource>
     <Resource tag="RANK">Rank</Resource>
     <Resource tag="SEARCH">Search</Resource>
     <Resource tag="TITLE">Users in group {0}</Resource>
@@ -4362,6 +4390,7 @@ Spoiler Inhoud
     <Resource tag="TOPIC_NAME_TOOLONG">De maximale lengte voor een topictitel is 255 tekens.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">De maximale lengte voor een enkel woord in de topictitel is {0} tekens. Probeer het woord af te korten.</Resource>
     <Resource tag="TOPICATTACH">Bestanden bijvoegen bij dit bericht?</Resource>
+    <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
     <Resource tag="TOPICWATCH">Abbonneer aan dit topic en ontvang updates via e-mail?</Resource>
     <Resource tag="WAIT">Je kunt niet posten gedurende de volgende {0:N0} seconden.</Resource>
   </page>

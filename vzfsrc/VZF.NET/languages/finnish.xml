@@ -964,6 +964,8 @@
     <Resource tag="ALLOW_TOPIC_DESCRIPTION_HELP">If checked, users can add a topic description.</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS">Allow Topic Status Option:</Resource>
     <Resource tag="ALLOW_TOPIC_STATUS_HELP">If checked, users select a Topic Status Option.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES">Allow users add image to a topic line icon.</Resource>
+    <Resource tag="ALLOW_TOPICIMAGES_HELP">If enabled users can add images insteag of standard topic icons in topic line everywhere.</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME">Allow Topics With Same Name:</Resource>
     <Resource tag="ALLOW_TOPICS_DUPLICATENAME_HELP">Duplicate topic names are allowed to:</Resource>
     <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>
@@ -1403,6 +1405,10 @@
     <Resource tag="TOPIC_FEEDS_ACCESS_HELP">Restrict display of topics feeds.</Resource>
     <Resource tag="TOPICFEED_COUNT">Max. Topics on the Forum Feed:</Resource>
     <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>
+    <Resource tag="TOPICIMAGE_HEIGHT_HELP">The max height of topic images in px.</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
+    <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
     <Resource tag="TOPICS_PER_PAGE">Topics Per Page:</Resource>
     <Resource tag="TOPICS_PER_PAGE_HELP">Number of topics to show per page.</Resource>
     <Resource tag="TWITTER_USERNAME">Twitter Username for Retweets:</Resource>
@@ -2559,7 +2565,7 @@
     <Resource tag="STATS">Tilastotietoa</Resource>
     <Resource tag="STATS_BIRTHDAYS">Today's Birthdays: </Resource>
     <Resource tag="STATS_LASTMEMBER">Uusin jäsen on</Resource>
-    <Resource tag="STATS_LASTPOST">Viimeisin viesti on kirjoitettu {0}, lähettäjänä {1}.</Resource>
+    <Resource tag="STATS_LASTPOST">Viimeisin viesti on kirjoitettu {0}, lähettäjänä </Resource>
     <Resource tag="STATS_MEMBERS">Keskustelualueella on {0:N0} rekisteröitynyttä jäsentä.</Resource>
     <Resource tag="STATS_POSTS">Keskustelualueella on {0:N0} viestiä, {1:N0} aihetta ja {2:N0} aluetta.</Resource>
     <Resource tag="TOPICS">Aiheita</Resource>
@@ -4030,6 +4036,27 @@ Spoiler Content
   <page name="IM_YIM">
     <Resource tag="TITLE">Yahoo! Messenger</Resource>
   </page>
+  <page name="IMAGEADD">
+    <Resource tag="IMAGE">Image</Resource>
+    <Resource tag="IMAGECURRENT">Current image</Resource>
+    <Resource tag="IMAGEDELETE">Remove image</Resource>
+    <Resource tag="IMAGENEW">Select a new image</Resource>
+    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
+    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
+    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
+    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
+    <Resource tag="NOIMAGE">[ No image  ]</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
+    <Resource tag="TITLE">Change/add image. </Resource>
+    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
+    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
+  </page>
   <page name="INFO">
     <Resource tag="ACCESSDENIED">You tried to enter a area where you didn't have access.</Resource>
     <Resource tag="CONTINUE">Jatka...</Resource>
@@ -4277,6 +4304,7 @@ Spoiler Content
     <Resource tag="CANCEL">Cancel</Resource>
     <Resource tag="CLEAR">Clear</Resource>
     <Resource tag="JOINED">Joined</Resource>
+    <Resource tag="POSTS">Posts</Resource>
     <Resource tag="RANK">Rank</Resource>
     <Resource tag="SEARCH">Search</Resource>
     <Resource tag="TITLE">Users in group {0}</Resource>
@@ -4413,6 +4441,7 @@ Spoiler Content
     <Resource tag="TOPIC_NAME_TOOLONG">Topic name length cannot be more than 255 characters.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Topic name single word length cannot be be more than {0} characters. Suggestion: use abbreviations to shorten.</Resource>
     <Resource tag="TOPICATTACH">Attach files to this post?</Resource>
+    <Resource tag="TOPICIMAGEATTACH">Add image to the topic?</Resource>
     <Resource tag="TOPICNAME_TOOLONG">Maximal tolic name length should not be more than {0} characters. Use abbreviations.</Resource>
     <Resource tag="TOPICWATCH">Watch this topic and receive notifications of activity via e-mail?</Resource>
     <Resource tag="WAIT">Et voi kirjoittaa viestiä seuraavaan {0:N0} sekuntiin.</Resource>

@@ -1020,6 +1020,38 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets TopicImageWidth.
+        /// </summary>
+        public int TopicImageWidth
+        {
+            get
+            {
+                return this._reg.GetValue("TopicImageWidth", 32);
+            }
+
+            set
+            {
+                this._reg.SetValue("TopicImageWidth", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets TopicImageHeight.
+        /// </summary>
+        public int TopicImageHeight
+        {
+            get
+            {
+                return this._reg.GetValue("TopicImageHeight", 32);
+            }
+
+            set
+            {
+                this._reg.SetValue("TopicImageHeight", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets AllowCreateTopicsSameName.
         /// </summary>
         public int AllowCreateTopicsSameName
@@ -3887,6 +3919,22 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("AllowTopicTags", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether AllowTopicImages.
+        /// </summary>
+        public bool AllowTopicImages
+        {
+            get
+            {
+                return this._reg.GetValue("AllowTopicImages", false);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowTopicImages", value);
             }
         }
 

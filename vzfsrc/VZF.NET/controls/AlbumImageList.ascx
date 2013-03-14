@@ -3,6 +3,7 @@
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Classes" %>
 <asp:Literal ID="ltrTitleOnly" runat="server"></asp:Literal>
 <span runat="server" id="spnAlbumOwner" visible='<%# UserID == PageContext.PageUserID %>'>
     <span id='<%= "spnTitle0" + AlbumID %>' class="albumtitle" onclick="showTexBox(this.id)"

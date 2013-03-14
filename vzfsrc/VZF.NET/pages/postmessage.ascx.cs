@@ -467,8 +467,24 @@ namespace YAF.Pages
             this.PageContext.QueryIDs = new QueryStringIDHelper(new[] { "m", "t", "q", "page" }, false);
 
             TypedMessageList currentMessage = null;
+
             DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
-          
+            if (PageContext.PageTopicID != 0)
+            {
+                this.ImageRow.Visible = this.Get<YafBoardSettings>().AllowTopicImages
+                                        && (topicInfo["UserID"].ToType<int>() == PageContext.PageUserID
+                                            || PageContext.IsForumModerator);
+
+                if (this.ImageRow.Visible)
+                {
+                    this.TopicImageAncor.HRef = YafBuildLink.GetLink(
+                        ForumPages.imageadd, "ti={0}&u={1}", topicInfo["TopicID"], PageContext.PageUserID);
+                    this.TopicImageAncor.Visible = true;
+                    this.TopicImage.Src = this.Get<ITheme>().GetItem("ICONS", "TOPIC_NEW"); /* "{0}{1}/{2}".FormatWith(
+                       YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, topicInfo["TopicImage"].ToString()); */
+                }
+            }
+
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
@@ -564,7 +580,9 @@ namespace YAF.Pages
                     this.TagsRow.Visible = true;
                 }
             }
-           
+
+            // "{0}{1}/{2}".FormatWith(YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, row["TopicImage"].ToString());
+
             // Message.EnableRTE = PageContext.BoardSettings.AllowRichEdit;
             this._forumEditor.StyleSheet = this.Get<ITheme>().BuildThemePath("theme.css");
             this._forumEditor.BaseDir = "{0}editors".FormatWith(YafForumInfo.ForumClientFileRoot);
@@ -635,6 +653,7 @@ namespace YAF.Pages
                 // Show post to blog option only to a new post
                 this.BlogRow.Visible = this.Get<YafBoardSettings>().AllowPostToBlog && isNewTopic
                                        && !this.PageContext.IsGuest;
+               
 
                 // update options...
                 this.PostOptions1.Visible = !this.PageContext.IsGuest;
@@ -642,7 +661,7 @@ namespace YAF.Pages
                 this.PostOptions1.AttachOptionVisible = this.PageContext.ForumUploadAccess;
                 this.PostOptions1.WatchOptionVisible = !this.PageContext.IsGuest;
                 this.PostOptions1.PollOptionVisible = this.PageContext.ForumPollAccess && isNewTopic;
-
+                this.PostOptions1.TopicImageAttachVisible = this.Get<YafBoardSettings>().AllowTopicImages;
                 ////this.Attachments1.Visible = !this.PageContext.IsGuest;
 
                 // get topic and forum information
@@ -1127,6 +1146,11 @@ namespace YAF.Pages
                 retforum = "&f={0}".FormatWith(this.PageContext.PageForumID);
             }
 
+            if (this.PostOptions1.TopicImageChecked && this.Get<YafBoardSettings>().AllowTopicImages)
+            {
+                attachp += "&ti=1".FormatWith(messageId);
+            }
+
             // Create notification emails
             if (isApproved)
             {
@@ -1162,7 +1186,7 @@ namespace YAF.Pages
                 // Not Approved
                 if (this.Get<YafBoardSettings>().EmailModeratorsOnModeratedPost)
                 {
-                    // not approved, notifiy moderators
+                    // not approved, notify moderators
                     this.Get<ISendNotification>().ToModeratorsThatMessageNeedsApproval(
                         this.PageContext.PageForumID, (int)messageId);
                 }
@@ -1172,7 +1196,7 @@ namespace YAF.Pages
                 {
                     attachp = string.Empty;
                 }
-
+              
                 if (this.PostOptions1.AttachChecked && this.PageContext.ForumUploadAccess)
                 {
                     // redirect to the attachment page...
@@ -1180,6 +1204,9 @@ namespace YAF.Pages
                 }
                 else
                 {
+                    // redirect to the image page...
+                    YafBuildLink.Redirect(ForumPages.imageadd, "m={0}&ra=1{1}{2}", messageId, attachp, retforum);
+
                     // Tell user that his message will have to be approved by a moderator
                     string url = YafBuildLink.GetLink(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
 
@@ -1530,6 +1557,8 @@ namespace YAF.Pages
 
                 // this.Attachments1.Visible = true;
             }
+
+            this.PostOptions1.TopicImageAttachVisible = false;
 
             // show the last posts AJAX frame...
             this.LastPosts1.Visible = true;

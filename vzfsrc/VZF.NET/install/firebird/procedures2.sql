@@ -188,6 +188,10 @@ end;
     "LastForumAccess" TIMESTAMP,
     "LastTopicAccess" timestamp,
     "TopicTags" varchar(4000),
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" blob sub_type 0,
+	"HasAttachments" integer,
     "TotalRows" INTEGER,
     "PageIndex" INTEGER
 )
@@ -308,7 +312,11 @@ FOR
         (case(:I_GETTAGS)
              when 1 then
         (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID))
-             else (SELECT '' FROM RDB$DATABASE) end),	 
+             else (SELECT '' FROM RDB$DATABASE) end),			
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN ,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :I_PAGEINDEX  FROM RDB$DATABASE) AS  "PageIndex" 
     FROM
@@ -358,6 +366,10 @@ FOR
     :"LastForumAccess",
     :"LastTopicAccess",
     :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
 DO	BEGIN
@@ -421,6 +433,10 @@ RETURNS (
     "LastForumAccess" timestamp,
     "LastTopicAccess" timestamp,
     "TopicTags" varchar(4000),
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" blob sub_type 0,
+	"HasAttachments" integer,
     "TotalRows" integer,
     "PageIndex" integer )
 AS
@@ -572,7 +588,11 @@ FOR
         (case(:I_GETTAGS)
              when 1 then
         (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID))
-             else (SELECT '' FROM RDB$DATABASE) end),
+             else (SELECT '' FROM RDB$DATABASE) end),		
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_post_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
     FROM
@@ -623,6 +643,10 @@ FOR
     :"LastForumAccess",
     :"LastTopicAccess",
     :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
 DO	
@@ -685,6 +709,10 @@ END;
                  "LastForumAccess" timestamp,
                  "LastTopicAccess" timestamp,
                  "TopicTags" varchar(4000),
+				 "TopicImage" varchar(255),
+				 "TopicImageType" varchar(50),
+				 "TopicImageBin" blob sub_type 0,
+	             "HasAttachments" integer,
                  "TotalRows" integer,
                  "PageIndex" integer)
         AS
@@ -802,7 +830,11 @@ FOR SELECT
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
-        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TOPICID)),
+        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TOPICID)),				
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
     FROM
@@ -860,6 +892,10 @@ FOR SELECT
     :"LastForumAccess",
     :"LastTopicAccess",
     :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
 DO	
@@ -922,6 +958,11 @@ RETURNS (
 "LastUserStyle" varchar(255),
 "LastForumAccess" timestamp,
 "LastTopicAccess" timestamp,
+"TopicTags" varchar(4000),
+"TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" blob sub_type 0,
+"HasAttachments" integer,
 "TotalRows" integer ,
 "PageIndex" integer)
 AS
@@ -1039,6 +1080,11 @@ FOR SELECT
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID)),			
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN ,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	   
     FROM
@@ -1095,6 +1141,11 @@ FOR SELECT
     :"LastUserStyle",
     :"LastForumAccess",
     :"LastTopicAccess",
+	 :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
 DO	
@@ -1159,6 +1210,11 @@ RETURNS (
         "LastUserStyle" VARCHAR(255),
         "LastForumAccess" TIMESTAMP,
         "LastTopicAccess" TIMESTAMP,
+		"TopicTags" varchar(4000),
+        "TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" blob sub_type 0,
+"HasAttachments" integer,
 "TotalRows" integer ,
 "PageIndex" integer)
 AS
@@ -1270,6 +1326,11 @@ FOR SELECT
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID = c.TOPICID AND y.USERID = :I_PAGEUSERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",
+        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID)),			
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN ,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
     from
@@ -1329,6 +1390,11 @@ FOR SELECT
     :"LastUserStyle",
     :"LastForumAccess",
     :"LastTopicAccess",
+	:"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex"	     
 DO    
@@ -1389,7 +1455,12 @@ RETURNS (
         "StarterStyle" VARCHAR(255),
         "LastUserStyle" VARCHAR(255),
         "LastForumAccess" TIMESTAMP,
-        "LastTopicAccess" TIMESTAMP,	   
+        "LastTopicAccess" TIMESTAMP,
+			"TopicTags" varchar(4000),
+"TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" blob sub_type 0,
+"HasAttachments" integer,   
 "TotalRows" integer ,
 "PageIndex" integer)
 AS
@@ -1501,6 +1572,11 @@ FOR SELECT
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
              else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
+        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID)),			
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN ,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 	 
     from
@@ -1558,6 +1634,11 @@ FOR SELECT
         :"LastUserStyle",
         :"LastForumAccess",
         :"LastTopicAccess",
+		 :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
         :"TotalRows",
         :"PageIndex" 
 DO	
@@ -1620,6 +1701,11 @@ RETURNS (
 "LastUserStyle" varchar(255),
 "LastForumAccess" varchar(255),
 "LastTopicAccess" varchar(255),
+"TopicTags" varchar(4000),
+"TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" blob sub_type 0,
+"HasAttachments" integer,
 "TotalRows" integer,
 "PageIndex" integer)
 AS
@@ -1727,6 +1813,11 @@ FOR SELECT
              when 1 then
                (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = :I_PAGEUSERID)
              else (select dateadd(1 day to current_timestamp) FROM RDB$DATABASE)	 end),
+        (SELECT * FROM objQual_TOPIC_GETTAGS_STR(c.TopicID)),			
+	    c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN ,
+	    (SELECT 0 FROM RDB$DATABASE),
         (SELECT :ici_topics_totalrowsnumber FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex" 
     from
@@ -1781,6 +1872,11 @@ FOR SELECT
         :"LastUserStyle",
         :"LastForumAccess",
         :"LastTopicAccess",
+		 :"TopicTags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
         :"TotalRows",
         :"PageIndex" 
 DO	

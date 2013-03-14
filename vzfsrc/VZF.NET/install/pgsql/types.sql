@@ -102,7 +102,7 @@ CREATE TYPE databaseSchema.objectQualifier_accessmask_list_return_type AS
 "BoardID" integer,
 "Name" varchar,
 "Flags" integer,
-"SortOrder" smallint,
+"SortOrder" integer,
 "IsUserMask" boolean,
 "IsAdminMask" boolean
 );
@@ -336,9 +336,25 @@ CREATE TYPE databaseSchema.objectQualifier_category_list_return_type AS
 "BoardID" integer,
 "Name" varchar(128),
 "CategoryImage" varchar(255),
-"SortOrder" smallint,
+"SortOrder" integer,
 "PollGroupID" integer,
 "CanHavePersForums" boolean
+);
+
+--GO
+
+SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_category_pfaccesslist_return_type');
+--GO
+CREATE TYPE databaseSchema.objectQualifier_category_pfaccesslist_return_type AS
+(
+"CategoryID" integer,
+"BoardID" integer,
+"Name" varchar(128),
+"CategoryImage" varchar(255),
+"SortOrder" integer,
+"PollGroupID" integer,
+"CanHavePersForums" boolean,
+"HasForumsForPersForums" boolean
 );
 
 --GO
@@ -429,7 +445,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_list_return_type AS
 "ParentID" integer,
 "Name" varchar(128),
 "Description" varchar(255),
-"SortOrder" smallint,
+"SortOrder" integer,
 "LastPosted" timestampTZ,
 "LastTopicID" integer,
 "LastMessageID" integer,
@@ -442,8 +458,9 @@ CREATE TYPE databaseSchema.objectQualifier_forum_list_return_type AS
 "ThemeURL" varchar(100),
 "ImageURL" varchar(128),
 "Styles" varchar(255),
+"PollGroupID" integer,
 "CreatedByUserID" integer,
-"CanHavePersForums" bool
+"CanHavePersForums" boolean
 );
 
 --GO
@@ -595,7 +612,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_moderatelist_return_type AS
 "ParentID" integer,
 "Name" varchar(128),
 "Description" varchar(255),
-"SortOrder" smallint,
+"SortOrder" integer,
 "LastPosted" timestampTZ,
 "LastTopicID" integer,
 "LastMessageID" integer,
@@ -745,7 +762,7 @@ CREATE TYPE databaseSchema.objectQualifier_group_medal_list_return_type AS
 "SmallMedalHeight" integer,
 "SmallRibbonWidth" integer,
 "SmallRibbonHeight" integer,
-"SortOrder" smallint,
+"SortOrder" integer,
 "Flags" integer,
 "GroupName" varchar(128),
 "GroupID" integer,
@@ -805,7 +822,7 @@ CREATE TYPE databaseSchema.objectQualifier_medal_list_return_type AS
 "SmallMedalHeight" smallint,
 "SmallRibbonWidth" smallint,
 "SmallRibbonHeight" smallint,
-"SortOrder" smallint,
+"SortOrder" integer,
 "Flags" integer
 );
 --GO
@@ -1273,7 +1290,11 @@ CREATE TYPE databaseSchema.objectQualifier_topic_active_return_type AS
 "LastUserStyle"  varchar(255),
 "LastForumAccess"  timestampTZ,
 "LastTopicAccess"  timestampTZ,
-"TopicTags" text,
+"TopicTags" text,  
+"TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" bytea,
+"HasAttachments" integer,
 "TotalRows" integer,
 "PageIndex" integer	  	     
 );
@@ -1316,6 +1337,11 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unread_return_type AS
 "LastUserStyle"  varchar(255),
 "LastForumAccess"  timestampTZ,
 "LastTopicAccess"  timestampTZ,
+"TopicTags" text,  
+"TopicImage" varchar(255),
+"TopicImageType" varchar(50),
+"TopicImageBin" bytea,
+"HasAttachments" integer,
 "TotalRows" integer,
 "PageIndex" integer	  	     
 );
@@ -1381,8 +1407,12 @@ CREATE TYPE databaseSchema.objectQualifier_topic_info_return_type AS (
 	"LastMessageFlags" integer,
 	"Description" varchar(255),
 	"Status" varchar(255),
-	"TopicTags" text,
 	"Styles" varchar(255),
+	"TopicTags" text,	
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" bytea,
+	"FirstMessage" text,
 	"IsLocked" boolean,
 	"IsDeleted" boolean,
 	"IsPersistent" boolean,
@@ -1480,7 +1510,11 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 	"LastUserStyle"  varchar(255),
 	"LastForumAccess"  timestampTZ,
 	"LastTopicAccess"  timestampTZ,
-	"TopicTags" text,
+	"TopicTags" text,  
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" bytea,
+	"HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer
 );
@@ -1522,6 +1556,10 @@ CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (
 	"LastForumAccess"  timestampTZ,
 	"LastTopicAccess"  timestampTZ,
 	"Tags" text,
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" bytea,
+	"HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer
 );
@@ -1563,6 +1601,11 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
 	"LastUserStyle" varchar(255),
 	"LastForumAccess"  timestampTZ,
 	"LastTopicAccess"   timestampTZ,
+    "TopicTags" text,  
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" bytea,
+	"HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer	  	     
 );
@@ -1603,7 +1646,12 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 	"StarterStyle" varchar(255),
 	"LastUserStyle" varchar(255),
 	"LastForumAccess"  timestampTZ,
-	"LastTopicAccess"   timestampTZ,
+	"LastTopicAccess"   timestampTZ,  
+	"TopicTags" text,
+	"TopicImage" varchar(255),
+	"TopicImageType" varchar(50),
+	"TopicImageBin" bytea,
+	"HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer	  	     
 );
@@ -1979,7 +2027,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_listmedals_return_type AS
 "SmallMedalHeight" integer,
 "SmallRibbonWidth" integer,
 "SmallRibbonHeight" integer,
-"SortOrder" smallint,
+"SortOrder" integer,
 "Hide" boolean,
 "OnlyRibbon" boolean,
 "Flags" integer,
@@ -2430,6 +2478,11 @@ CREATE TYPE databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 	"LastUserStyle"   varchar(255),
 	"LastForumAccess"   timestampTZ,
 	"LastTopicAccess"   timestampTZ,
+    "TopicTags" text,  
+    "TopicImage" varchar(255),
+    "TopicImageType" varchar(50),
+    "TopicImageBin" bytea,
+    "HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer		
 );

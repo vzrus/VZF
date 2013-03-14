@@ -31,7 +31,7 @@
             <ItemTemplate>
                 <tr>
                     <td class="header2">
-                        <%# HttpUtility.HtmlEncode("Name") %>
+                        <%# HttpUtility.HtmlEncode(Eval("Name")) %>
                     </td>
                     <td align="center" class="header2" width="8%">
                         <%# Eval( "SortOrder") %>

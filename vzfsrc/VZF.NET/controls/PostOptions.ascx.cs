@@ -67,6 +67,38 @@ namespace VZF.Controls
     }
 
     /// <summary>
+    ///   Gets or sets a value indicating whether TopicImageAttach.
+    /// </summary>
+    public bool TopicImageChecked
+    {
+        get
+        {
+            return this.TopicImageAttach.Checked;
+        }
+
+        set
+        {
+            this.TopicImageAttach.Checked = value;
+        }
+    }
+
+    /// <summary>
+    ///   Gets or sets a value indicating whether TopicImageAttachVisible.
+    /// </summary>
+    public bool TopicImageAttachVisible
+    {
+        get
+        {
+            return this.liTopicImageAttach.Visible;
+        }
+
+        set
+        {
+            this.liTopicImageAttach.Visible = value;
+        }
+    }
+
+    /// <summary>
     ///   Gets or sets a value indicating whether IsQuestionChecked.
     /// </summary>
     public bool IsQuestionChecked

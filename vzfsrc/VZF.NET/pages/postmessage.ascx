@@ -48,16 +48,6 @@
 			<asp:HiddenField ID="BlogPostID" runat="server" />
 		</td>
 	</tr>
-	<tr id="TagsRow" runat="server" visible="false">
-		<td class="postformheader" width="20%">
-		<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
-		<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
-		</td>
-		<td class="post" width="80%"> 
-			<asp:TextBox ID="Tags" runat="server" AutoCompleteType="Disabled" TextMode="SingleLine" Width="400" />
-			<asp:HiddenField ID="TagsIds" runat="server" />
-		</td>
-	</tr>
 	<tr id="FromRow" runat="server">
 		<td class="postformheader" width="20%">
 			<VZF:LocalizedLabel runat="server" LocalizedTag="from" />
@@ -90,7 +80,26 @@
 		<td class="post" width="80%">
 			<asp:TextBox id="TopicStylesTextBox" runat="server" CssClass="edit" Width="400" />
 		</td>
-	</tr>	
+	</tr>
+    	<tr id="TagsRow" runat="server" visible="false">
+		<td class="postformheader" width="20%">
+		<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
+		<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
+		</td>
+		<td class="post" width="80%"> 
+			<asp:TextBox ID="Tags" runat="server" AutoCompleteType="Disabled" TextMode="SingleLine" Width="400" />
+			<asp:HiddenField ID="TagsIds" runat="server" />
+		</td>
+	</tr>
+    <tr id="ImageRow" runat="server" visible="false">
+		<td class="postformheader" width="20%">
+		<a id="TopicImageAncor" href="" title="" runat="server" Visible="False">
+		<img id="TopicImage" class="" src="" alt="image" runat="server" style="border-width:0px;" />
+		</a>
+        </td>
+		<td class="post" width="80%"> 
+		</td>
+	</tr>
 	<tr>
 		<td class="postformheader" valign="top" width="20%">
 			<VZF:LocalizedLabel runat="server" LocalizedTag="message" />
