@@ -2,6 +2,7 @@
     CodeBehind="editgroup.ascx.cs" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
+        <thead>
         <tr>
             <td class="header1" colspan="11">
                 <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITGROUP" />
@@ -62,6 +63,8 @@
                 <asp:DropDownList Style="width: 350px" runat="server" ID="AccessMaskID" OnDataBinding="BindData_AccessMaskID" />
             </td>
         </tr>
+        </thead>
+        <tbody>
         <asp:Repeater ID="AccessList" runat="server">
             <HeaderTemplate>
                 <tr>
@@ -102,11 +105,14 @@
                 </tr>
             </ItemTemplate>
         </asp:Repeater>
+        </tbody>
+        <tfoot>
         <tr>
             <td class="footer1" align="center" colspan="11">
-                <asp:Button ID="Save" runat="server" OnClick="Save_Click" CssClass="pbutton"></asp:Button>&nbsp;
-                <asp:Button ID="Cancel" runat="server" OnClick="Cancel_Click" CssClass="pbutton"></asp:Button>
+                <VZF:ThemeButton ID="Save" OnClick="Save_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="COMMON" TextLocalizedTag="SAVE" TitleLocalizedPage="COMMON" TitleLocalizedTag="SAVE" runat="server"/>&nbsp;
+                <VZF:ThemeButton ID="Cancel" OnClick="Cancel_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="COMMON" TextLocalizedTag="CANCEL" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" runat="server"/>
             </td>
         </tr>
+        </tfoot>
     </table>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

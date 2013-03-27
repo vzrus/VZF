@@ -3939,6 +3939,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether AllowRemoteTopicImages.
+        /// </summary>
+        public bool AllowRemoteTopicImages
+        {
+            get
+            {
+                return this._reg.GetValue("AllowRemoteTopicImages", false);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowRemoteTopicImages", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether show number of tags.
         /// </summary>
         public bool ShowNumberOfTags

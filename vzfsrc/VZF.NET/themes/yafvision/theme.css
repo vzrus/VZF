@@ -280,6 +280,20 @@ padding-right: 5px !important;
     background-color: #D1DCEB;
     font-weight:bold;
 }
+.yafnet span.wordyes
+{
+	color: #06fe02;
+	font-weight: bold;
+	font-size: 7pt;
+	text-decoration:none;
+}
+.yafnet span.wordnow
+{
+	color: #ff0101;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
 /* file attachment css */
 .yafnet .fileattach {
     padding: 5px;

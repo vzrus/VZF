@@ -1,6 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.accessmasks" Codebehind="accessmasks.ascx.cs" %>
 <%@ Import Namespace="YAF.Types.Flags" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Utils.Helpers" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server">
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
@@ -37,49 +38,40 @@
                 </tr>
                 <tr class="post">
                     <td align="center" colspan = 2>
-                        <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="READ"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label1" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.ReadAccess)) %>'><%# GetItemName(BitSet(Eval("Flags"),(int)AccessFlags.Flags.ReadAccess)) %></asp:Label>&nbsp;|&nbsp; 
-                       
+                       <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="READ"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ReadAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label1" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ReadAccess)) %></asp:Label></span>&nbsp;|&nbsp;
                         <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="POST"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label2" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.PostAccess)) %>'><%# GetItemName(BitSet(Eval("Flags"),(int)AccessFlags.Flags.PostAccess)) %></asp:Label>&nbsp;|&nbsp;
-                        
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PostAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label2" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PostAccess)) %></asp:Label></span>&nbsp;|&nbsp;
                         <VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="REPLY"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label3" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.ReplyAccess)) %>'><%# GetItemName(BitSet(Eval("Flags"),(int)AccessFlags.Flags.ReplyAccess)) %></asp:Label>&nbsp;|&nbsp;
-                        
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ReplyAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label13" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ReplyAccess)) %></asp:Label></span>&nbsp;|&nbsp;
                         <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="PRIORITY"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label4" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.PriorityAccess)) %>'><%# GetItemName(BitSet(Eval("Flags"),(int)AccessFlags.Flags.PriorityAccess)) %></asp:Label>&nbsp;|&nbsp;
-                   <br />
-                
-                    <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="POLL"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                    <asp:Label ID="Label5" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.PollAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.PollAccess)) %></asp:Label>&nbsp;|&nbsp;
-                
-                    <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="VOTE"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label6" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.VoteAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.VoteAccess)) %></asp:Label>&nbsp;|&nbsp;
-                    
-                <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="MODERATOR"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label7" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.ModeratorAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.ModeratorAccess)) %></asp:Label>&nbsp;|&nbsp;
-                
-                    <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="EDIT"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label8" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.EditAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.EditAccess)) %></asp:Label>&nbsp;|&nbsp;
-                 <br />	
-                <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="DELETE"  LocalizedPage="ADMIN_ACCESSMASKS"/>&nbsp;
-                        <asp:Label ID="Label9" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.DeleteAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.DeleteAccess)) %></asp:Label>&nbsp;|&nbsp;
-                
-                <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="UPLOAD"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label10" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.UploadAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.UploadAccess)) %></asp:Label>&nbsp;|&nbsp;
-                    
-                <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="DOWNLOAD"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label11" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.DownloadAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.DownloadAccess)) %></asp:Label>
-                
-                <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="CREATEUSERFORUM"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
-                        <asp:Label ID="Label12" runat="server" ForeColor='<%# GetItemColor(BitSet(Eval("Flags"),(int)AccessFlags.Flags.UserForumAccess)) %>'><%# GetItemName(BitSet(Eval( "Flags"),(int)AccessFlags.Flags.UserForumAccess)) %></asp:Label>
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PriorityAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label14" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PriorityAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <br />
+                        <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="POLL"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PollAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label15" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.PollAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="VOTE"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.VoteAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label16" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.VoteAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="MODERATOR"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ModeratorAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label17" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.ModeratorAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="EDIT"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.EditAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label18" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.EditAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <br />
+                        <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="DELETE"  LocalizedPage="ADMIN_ACCESSMASKS"/>&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.DeleteAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label19" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.DeleteAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="UPLOAD"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.UploadAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label20" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.UploadAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="DOWNLOAD"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.DownloadAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label21" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.DownloadAccess)) %></asp:Label></span>&nbsp;|&nbsp;
+                        <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="CREATEUSERFORUM"  LocalizedPage="ADMIN_ACCESSMASKS" />&nbsp;
+                        <span class='<%# BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.UserForumAccess) ? "wordyes" : "wordnow" %>'><asp:Label ID="Label22" runat="server" ><%# GetItemName(BitConversionHelper.IsBitSet(Eval("Flags"),(int)AccessFlags.Flags.UserForumAccess)) %></asp:Label></span>
                     </td>
                 </tr>
             </ItemTemplate>
         </asp:Repeater>
         <tr class="footer1" align="center">
             <td colspan="13">
-                <asp:Button ID="New" runat="server" OnClick="New_Click" CssClass="pbutton" />
+                <VZF:ThemeButton ID="New" CssClass="yafcssbigbutton centerItem" OnClick="New_Click" Visible="True"  TextLocalizedPage="ADMIN_ACCESSMASKS" TextLocalizedTag="NEW_MASK" TitleLocalizedPage="ADMIN_ACCESSMASKS" TitleLocalizedTag="NEW_MASK" runat="server"/>&nbsp;
+                <VZF:ThemeButton ID="Cancel" CssClass="yafcssbigbutton centerItem"  OnClick="Cancel_Click"  TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" runat="server"/>
             </td>
         </tr>
     </table>

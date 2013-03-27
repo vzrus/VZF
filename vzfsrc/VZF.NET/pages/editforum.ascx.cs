@@ -224,14 +224,10 @@ namespace YAF.pages
             // this page link
             this.PageLinks.AddLink(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") == null ? this.GetText("ADMIN_FORUMS", "NEW_FORUM") : this.HtmlEncode(ftitle), string.Empty);
 
-            this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-                this.Get<YafBoardSettings>().Name,
+            this.Page.Header.Title = "{0} - {1}".FormatWith(
                 this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
                 ftitle.IsSet() ? this.HtmlEncode(ftitle) : this.GetText("PERSONALFORUM", "TITLE"));
-
-            this.Save.Text = this.GetText("SAVE");
-            this.Cancel.Text = this.GetText("CANCEL");
-
+         
             // Populate Forum Images Table
             this.CreateImagesDataTable();
 
@@ -605,11 +601,11 @@ namespace YAF.pages
 
             if (forumId.HasValue)
             {
-                YafBuildLink.Redirect(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID));
+                YafBuildLink.Redirect(ForumPages.personalforum, "f={0}&u={1}".FormatWith(forumId, this.PageContext.PageUserID));
             }
             else
             {
-                YafBuildLink.Redirect(ForumPages.editforum, "f={0}", newForumId);
+                YafBuildLink.Redirect(ForumPages.editforum, "f={0}&u={1}", newForumId, this.PageContext.PageUserID);
             }
         }
 

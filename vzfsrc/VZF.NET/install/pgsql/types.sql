@@ -491,7 +491,8 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listall_fromcat_return_type AS
 "ForumID" integer,
 "Forum" varchar(100),
 "ParentID" integer,
-"PollGroupID" integer
+"PollGroupID" integer,
+"CanHavePersForums" boolean
 );
 --GO
 
@@ -1557,8 +1558,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (
 	"LastTopicAccess"  timestampTZ,
 	"Tags" text,
 	"TopicImage" varchar(255),
-	"TopicImageType" varchar(50),
 	"TopicImageBin" bytea,
+	"TopicImageType" varchar(50),	
 	"HasAttachments" integer,
 	"TotalRows" integer,
 	"PageIndex" integer

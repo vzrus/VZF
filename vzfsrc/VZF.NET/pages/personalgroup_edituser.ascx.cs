@@ -127,14 +127,10 @@ namespace YAF.Pages
               this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
            // profile
-           this.PageLinks.AddLink(
-                  this.PageContext.CurrentUserData.DisplayName,
-                  YafBuildLink.GetLink(ForumPages.profile, "u={0}", this.PageContext.PageUserID));
+              this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID))); ;
            
            // personal groups
-           this.PageLinks.AddLink(
-                             this.PageContext.PageCategoryName,
-                             YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}", this.PageContext.PageUserID));
+              this.PageLinks.AddLink(this.GetText("PERSONALGROUP", "TITLE"), YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID)));
            string groupName = null;
 
            DataTable dtGroup = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("gr"), PageContext.PageUserID, true);
@@ -145,6 +141,13 @@ namespace YAF.Pages
 
             // currect page
             this.PageLinks.AddLink(this.GetTextFormatted("TITLE", groupName), string.Empty);
+
+            this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
+              this.Get<YafBoardSettings>().EnableDisplayName
+                  ? this.PageContext.CurrentUserData.DisplayName
+                  : this.PageContext.PageUserName,
+              this.GetText("PERSONALGROUP", "TITLE"),
+              this.GetText("PERSONALGROUP_EDIT", "TITLE"));
         }
 
         /// <summary>
@@ -233,11 +236,6 @@ namespace YAF.Pages
             // create page links
             this.CreatePageLinks();
 
-            // load localized texts for buttons
-            this.FindUsers.Text = this.GetText("FIND");
-            this.Save.Text = this.Get<ILocalization>().GetText("SAVE");
-            this.Cancel.Text = this.GetText("CANCEL");
-
             // bind data
             this.DataBind();
 
@@ -307,7 +305,6 @@ namespace YAF.Pages
             {
                 // get user's name
                 string userName = UserMembershipHelper.GetUserNameFromID((long)userId);
-
 
                 // get role name
                 string roleName = string.Empty;

@@ -1300,6 +1300,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox AllowTopicImages;
         
         /// <summary>
+        /// HelpLabel228 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel228;
+        
+        /// <summary>
+        /// AlowRemoteTopicImages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox AlowRemoteTopicImages;
+        
+        /// <summary>
         /// HelpLabel226 control.
         /// </summary>
         /// <remarks>

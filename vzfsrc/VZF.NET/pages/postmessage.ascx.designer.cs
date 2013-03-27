@@ -319,6 +319,15 @@ namespace YAF.Pages {
         protected global::System.Web.UI.HtmlControls.HtmlTableRow ImageRow;
         
         /// <summary>
+        /// LocalizedLabel5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel5;
+        
+        /// <summary>
         /// TopicImageAncor control.
         /// </summary>
         /// <remarks>

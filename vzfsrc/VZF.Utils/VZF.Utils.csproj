@@ -74,6 +74,7 @@
     <Compile Include="Extensions\DbFunctionExtensions.cs" />
     <Compile Include="Extensions\JsonExtension.cs" />
     <Compile Include="Extensions\LanguageExtensions.cs" />
+    <Compile Include="Helpers\BitConversionHelper.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\ImageUtils\CaptchaImage.cs" />

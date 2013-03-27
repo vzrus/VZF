@@ -31,6 +31,24 @@ namespace YAF.pages {
         protected global::VZF.Controls.LocalizedLabel LocalizedLabel17;
         
         /// <summary>
+        /// LocalizedLabel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel1;
+        
+        /// <summary>
+        /// LocalizedLabel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel2;
+        
+        /// <summary>
         /// ForumList control.
         /// </summary>
         /// <remarks>
@@ -46,7 +64,16 @@ namespace YAF.pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button NewForum;
+        protected global::VZF.Controls.ThemeButton NewForum;
+        
+        /// <summary>
+        /// Cancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton Cancel;
         
         /// <summary>
         /// SmartScroller1 control.

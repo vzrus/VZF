@@ -20,7 +20,6 @@ namespace VZF.Data.MsSql.Search
 {
     using System.Collections.Generic;
     using System.Text;
-
     using YAF.Types;
     using YAF.Utils;
 

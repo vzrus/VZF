@@ -827,7 +827,7 @@ namespace YAF.Classes
             }
         }
 
-        #endregion
+        #endregion 
 
         #region Public Methods and Operators
 

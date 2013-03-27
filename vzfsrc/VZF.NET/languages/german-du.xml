@@ -4221,16 +4221,44 @@ Spoiler Content
     <Resource tag="UNREADTOPICS">Ungelesene Themen</Resource>
     <Resource tag="VIEWS">Ansichten</Resource>
   </page>
+  <page name="PERSONALACCESSMASK">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="NEW_MASK">New Mask</Resource>
+    <Resource tag="TITLE">Personal Access Masks</Resource>
+  </page>
+  <page name="PERSONALACCESSMASK_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Access Mask</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Access Mask</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALFORUM">
+    <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
     <Resource tag="PERSONALGROUPS">My Groups</Resource>
     <Resource tag="PERSONALMASKS">My Access Masks</Resource>
     <Resource tag="TITLE">Personal Forums</Resource>
   </page>
+  <page name="PERSONALFORUM_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALGROUP">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="NEW_GROUP">New Group</Resource>
     <Resource tag="TITLE">Personal groups</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
+  <page name="PERSONALGROUP_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Group</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Group</Resource>
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALGROUP_EDITUSER">
@@ -4374,6 +4402,7 @@ Spoiler Content
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Themen Beschreibung darf nicht mehr als {0} Zeichen lang sein.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Themen Beschreibung Wortlänge eines Wortes kann nicht länger als {0} Zeichen sein. Vorschlag: Verwenden Sie Abkürzungen.</Resource>
+    <Resource tag="TOPIC_IMAGE">Topic Image (clickable)</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Themen Titel darf nicht mehr als {0} Zeichen lang sein.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Ein Wort im Themen Titel darf nicht mehr als {0} Zeichen lang sein. Vorschlag: Abkürzungen benutzen.</Resource>
     <Resource tag="TOPICATTACH">Bilder oder Dateien an diesen Beitrag anhängen?</Resource>

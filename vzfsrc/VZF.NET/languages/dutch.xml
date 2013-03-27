@@ -4235,16 +4235,44 @@ Spoiler Inhoud
     <Resource tag="UNREADTOPICS">Ongelezen Topics</Resource>
     <Resource tag="VIEWS">Bekeken</Resource>
   </page>
+  <page name="PERSONALACCESSMASK">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="NEW_MASK">New Mask</Resource>
+    <Resource tag="TITLE">Personal Access Masks</Resource>
+  </page>
+  <page name="PERSONALACCESSMASK_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Access Mask</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Access Mask</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALFORUM">
+    <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
     <Resource tag="PERSONALGROUPS">My Groups</Resource>
     <Resource tag="PERSONALMASKS">My Access Masks</Resource>
     <Resource tag="TITLE">Personal Forums</Resource>
   </page>
+  <page name="PERSONALFORUM_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALGROUP">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="NEW_GROUP">New Group</Resource>
     <Resource tag="TITLE">Personal groups</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
+  <page name="PERSONALGROUP_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Group</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Group</Resource>
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALGROUP_EDITUSER">
@@ -4387,6 +4415,7 @@ Spoiler Inhoud
     <Resource tag="TAGS_TOADD_DESC">Add tags to the topic.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">De maximale lengte van een Topic-beschrijving is 255 tekens.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">De maximale lengte voor een enkel woord in de topicbeschrijving is {0} tekens. Probeer het woord af te korten.</Resource>
+    <Resource tag="TOPIC_IMAGE">Topic Image (clickable)</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">De maximale lengte voor een topictitel is 255 tekens.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">De maximale lengte voor een enkel woord in de topictitel is {0} tekens. Probeer het woord af te korten.</Resource>
     <Resource tag="TOPICATTACH">Bestanden bijvoegen bij dit bericht?</Resource>

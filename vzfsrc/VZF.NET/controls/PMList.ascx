@@ -6,7 +6,7 @@
 
 <asp:GridView ID="MessagesView" runat="server" OnRowCreated="MessagesView_RowCreated"
 	DataKeyNames="UserPMessageID" Width="99%" GridLines="None" CellSpacing="1" ShowFooter="true"
-	AutoGenerateColumns="false" CssClass="content" EmptyDataText='<%#GetLocalizedText("NO_MESSAGES", null) %>'
+	AutoGenerateColumns="false" CssClass="content" EmptyDataText='<%# GetLocalizedText("NO_MESSAGES", null) %>'
 	EmptyDataRowStyle-CssClass="post">
 	<HeaderStyle CssClass="header2" />
 	<RowStyle CssClass="post" />

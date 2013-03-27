@@ -2165,29 +2165,29 @@ BEGIN
         
     IF i_categoryid IS NULL THEN
     FOR _rec IN
-        SELECT  categoryid,
-             boardid,
-             name,
-             categoryimage,
-             sortorder,
-             pollgroupid,	
-			 canhavepersforums,
-			 COALESCE((SELECT SIGN(f.forumid)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums  = 1 LIMIT 1),false)  AS HasForumsForPersForums
-       FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid ORDER BY sortorder
+        SELECT  c.categoryid,
+             c.boardid,
+             c.name,
+             c.categoryimage,
+             c.sortorder,
+             c.pollgroupid,	
+			 c.canhavepersforums,
+			 COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
+       FROM databaseSchema.objectQualifier_category c WHERE boardid = i_boardid ORDER BY c.sortorder
        LOOP
     RETURN NEXT _rec;
 END LOOP; 	
     ELSE
     FOR _rec IN 
-        SELECT categoryid,
-             boardid,
-             name,
-             categoryimage,
-             sortorder,
-             pollgroupid,	
-			 canhavepersforums,
-			 COALESCE((SELECT SIGN(f.forumid)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums  = 1 LIMIT 1),false)  AS HasForumsForPersForums
-        FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid LIMIT 1
+        SELECT c.categoryid,
+             c.boardid,
+             c.name,
+             c.categoryimage,
+             c.sortorder,
+             c.pollgroupid,	
+			 c.canhavepersforums,
+			 COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
+        FROM databaseSchema.objectQualifier_category c WHERE boardid = i_boardid AND c.categoryid = i_categoryid LIMIT 1
          LOOP
     RETURN NEXT _rec;
 END LOOP; 	
@@ -2309,7 +2309,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_save(
                            i_boardid integer, 
                            i_categoryid integer, 
                            i_name varchar, 
-                           i_sortorder smallint, 
+                           i_sortorder integer, 
                            i_categoryimage varchar,
 						   i_canhavepersforums boolean)
                   RETURNS integer AS
@@ -3283,7 +3283,8 @@ FOR _rec IN
                a.forumid, 
                a.name AS Forum, 
                a.parentid,
-               a.pollgroupid                  
+               a.pollgroupid,
+			   a.canhavepersforums                  
     FROM       databaseSchema.objectQualifier_forum a 
         INNER JOIN
              databaseSchema.objectQualifier_category b ON b.categoryid = a.categoryid
@@ -3954,7 +3955,7 @@ BEGIN
         b.sortorder
 LOOP
     -- IF _rec."MessageCount" > 0 OR _rec."ReportCount" > 0  OR _rec."SpamCount" >0 THEN
-    IF COALESCE((SELECT "ModeratorAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1),0) > 0 OR (_rec."Flags" & 2) = 0 THEN
+    IF COALESCE((SELECT "ModeratorAccess" FROM databaseSchema.objectQualifier_vaccess_combo(i_userid, _rec."ForumID") LIMIT 1),0) > 0  THEN
     RETURN NEXT _rec;	
     END IF;
 END LOOP;
@@ -4304,7 +4305,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_accessmaskid integer,
                            i_userid integer,
                            i_isuserforum boolean,
-						   i_canhaveperforums boolean,
+						   i_canhavepersforums boolean,
                            i_utctimestamp timestampTZ)
                    RETURNS integer AS
 $BODY$DECLARE 
@@ -4365,13 +4366,13 @@ BEGIN
   imageurl = i_imageurl,
   styles = i_styles,
   isuserforum = i_isuserforum,
-  canhaveperforums = i_canhaveperforums
+  canhavepersforums = i_canhavepersforums
   WHERE forumid=ici_ForumID;
   ELSE
   INSERT INTO databaseSchema.objectQualifier_forum(categoryid,parentid,name,description,sortorder,
-  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhaveperforums)
+  numtopics,numposts,remoteurl,themeurl,flags,imageurl,styles,isuserforum,createdbyuserid,createdbyusername,createdbyuserdisplayname,createddate,canhavepersforums)
   VALUES(i_categoryid,i_parentid,i_name,i_description,
-  ici_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_UserDisplayName,i_utctimestamp,i_canhaveperforums) returning forumid INTO ici_ForumID; 
+  ici_sortorder,0,0,i_remoteurl,i_themeurl,ici_flags,i_imageurl,i_styles,i_isuserforum,i_userid, ici_UserName, ici_UserDisplayName,i_utctimestamp,i_canhavepersforums) returning forumid INTO ici_ForumID; 
  
   INSERT INTO databaseSchema.objectQualifier_forumaccess(groupid,forumid,accessmaskid)
   SELECT groupid,ici_ForumID,i_accessmaskid

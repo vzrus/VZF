@@ -51,11 +51,7 @@ namespace YAF.pages
     public partial class personalaccessmask : ForumPage
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   Temporary storage of un-linked provider roles.
-        /// </summary>
-        private readonly StringCollection _availableRoles = new StringCollection();
+       
 
         #endregion
         #region Methods
@@ -99,48 +95,17 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // user profile
-            this.PageLinks.AddLink(this.GetText("CP_PROFILE", "VIEW_PROFILE"), YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
 
             // title
-            this.PageLinks.AddLink(this.GetText("ADMIN_ACCESSMASKS", "TITLE"), string.Empty);
+            this.PageLinks.AddLink(this.GetText("PERSONALACCESSMASK", "TITLE"), string.Empty);
 
-            this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-               this.Get<YafBoardSettings>().Name,
-               this.GetText("CP_PROFILE", "VIEW_PROFILE"),
-               this.GetText("ADMIN_ACCESSMASKS", "TITLE"));
+            this.Page.Header.Title = "{0} - {1}".FormatWith(
+               this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
+               this.GetText("PERSONALACCESSMASK", "TITLE"));
+
         }
 
-        /// <summary>
-        /// Handles load event for delete button, adds confirmation dialog.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void DeleteRole_Load([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            ControlHelper.AddOnClickConfirmDialog(sender, this.GetText("ADMIN_GROUPS", "CONFIRM_DELETE"));
-        }
-
-
-        /// <summary>
-        /// The delete forum_ load.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
-        {
-            ((ThemeButton)sender).Attributes["onclick"] =
-                "return (confirm('{0}') && confirm('{1}'))".FormatWith(
-                    this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
-                    this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
-        }
 
         /// <summary>
         /// Get status of provider role vs YAF roles.
@@ -245,56 +210,18 @@ namespace YAF.pages
 
             return null;
         }
-
-        /// <summary>
-        /// Bind data for this control.
-        /// </summary>
-        private void BindData()
-        {
-            // Hide the NewAccessMaskBtn Forum Button if there are no Categories.
-            // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
-            // bind data to controls
-
-            // list all access masks for this boeard
-            this.List.DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);
-           
-            this.NewAccessMaskBtn.Text = this.GetText("ADMIN_ACCESSMASKS", "NEW_MASK");
-
-            this.DataBind();
-        }
-
-        /// <summary>
-        /// The bit set.
-        /// </summary>
-        /// <param name="_o">
-        /// The _o.
-        /// </param>
-        /// <param name="bitmask">
-        /// The bitmask.
-        /// </param>
-        /// <returns>
-        /// The bit set.
-        /// </returns>
-        protected bool BitSet([NotNull] object _o, int bitmask)
-        {
-            var i = (int)_o;
-            return (i & bitmask) != 0;
-        }
-
         #endregion
 
         /// <summary>
-        /// The ok button_ click.
+        /// The on init.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
         /// <param name="e">
         /// The e.
         /// </param>
-        protected void OKButton_Click(object sender, EventArgs e)
+        protected override void OnInit([NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(ForumPages.forum);
+            this.Cancel.Click += this.Cancel_Click;
+            base.OnInit(e);
         }
 
         /// <summary>
@@ -308,24 +235,14 @@ namespace YAF.pages
         /// </param>
         protected void DeleteAccessMask_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            // number of current access masks changed
+            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
+
             // add on click confirm dialog
-            ControlHelper.AddOnClickConfirmDialog(sender, this.GetText("ADMIN_ACCESSMASKS", "CONFIRM_DELETE"));
+            ((ThemeButton)sender).Attributes["onclick"] =
+                "return confirm('{0}')".FormatWith(this.GetText("ADMIN_ACCESSMASKS", "CONFIRM_DELETE"));
         }
 
-        /// <summary>
-        /// Format access mask setting color formatting.
-        /// </summary>
-        /// <param name="enabled">
-        /// The enabled.
-        /// </param>
-        /// <returns>
-        /// Set access mask flags are rendered green if true, and if not red
-        /// </returns>
-        protected Color GetItemColor(bool enabled)
-        {
-            // show enabled flag red
-            return enabled ? Color.Green : Color.Red;
-        }
 
         /// <summary>
         /// The list_ item command.
@@ -378,6 +295,36 @@ namespace YAF.pages
         {
             // redirect to page for access mask creation
             YafBuildLink.Redirect(ForumPages.editaccessmask, "u={0}".FormatWith(PageContext.PageUserID));
+        }
+
+        /// <summary>
+        /// Handles click on cancel button.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            // go back to personal group selection
+            YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
+        }
+
+        /// <summary>
+        /// Bind data for this control.
+        /// </summary>
+        private void BindData()
+        {
+            // Hide the NewAccessMaskBtn Forum Button if there are no Categories.
+            // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
+            // bind data to controls
+
+            // list all access masks for this boeard
+            this.List.DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);
+
+            this.DataBind();
         }
     }
 }

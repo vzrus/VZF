@@ -12925,6 +12925,10 @@ RETURNS
     "LastForumAccess" timestamp,
     "LastTopicAccess" timestamp,
     "Tags" varchar(4000),
+	"TopicImage" varchar(255),
+    "TopicImageType" varchar(50),
+    "TopicImageBin" blob sub_type 0,
+    "HasAttachments" integer,
     "TotalRows" integer,
     "PageIndex" integer)
 AS
@@ -12946,12 +12950,12 @@ select count(1)
         ICI_TOROW = :ICI_FIRSTSELECTROWNUMBER + :I_PAGESIZE - 1;
 
    SELECT FIRST 1
-        t.POSTED
+        t.LASTPOSTED
         FROM   objQual_TOPIC t 
         JOIN  objQual_TOPICTAGS tt ON tt.TOPICID = t.TOPICID 
         JOIN  objQual_ACTIVEACCESS aa ON aa.FORUMID = t.FORUMID		
         WHERE  BOARDID = :I_BOARDID AND t.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID AND (:I_FORIMID <= 0 OR t.FORUMID = :I_FORIMID)  AND tt.TAGID = CAST(:I_TAGS AS INTEGER) AND t.POSTED > :I_SINCEDATE 
-        ORDER BY t.POSTED DESC
+        ORDER BY t.LASTPOSTED DESC 
         into :ici_firstselectposted;
 
 FOR SELECT		c.FORUMID,
@@ -13008,7 +13012,11 @@ FOR SELECT		c.FORUMID,
              when 1 then
                (SELECT FIRST 1 y.LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=c.TOPICID AND y.USERID = c.USERID)
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
-        (SELECT FIRST 1 TAG FROM objQual_TAGS where TagID = CAST(:I_TAGS AS INTEGER)),		
+        (SELECT FIRST 1 TAG FROM objQual_TAGS where TagID = CAST(:I_TAGS AS INTEGER)),
+        c.TOPICIMAGE,
+	    c.TOPICIMAGETYPE,
+	    c.TOPICIMAGEBIN,
+	    (SELECT 0 FROM RDB$DATABASE),		
         (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex"
 FROM   objQual_TOPIC c 
@@ -13020,7 +13028,7 @@ FROM   objQual_TOPIC c
         JOIN  objQual_FORUM d on d.ForumID=c.ForumID
         WHERE  aa.BOARDID = :I_BOARDID AND c.ISDELETED = 0 AND aa.USERID = :I_PAGEUSERID  AND (:I_FORIMID <= 0 OR c.FORUMID = :I_FORIMID) AND c.LASTPOSTED <= :ici_firstselectposted
         AND tt.TAGID IN (SELECT CAST(:I_TAGS AS INTEGER) FROM RDB$DATABASE) AND c.POSTED > :I_SINCEDATE
-        ORDER BY c.POSTED DESC
+        ORDER BY c.LASTPOSTED DESC ROWS :ICI_FIRSTSELECTROWNUMBER TO :ICI_TOROW
 INTO
 :"ForumID",
     :"TopicID",
@@ -13055,6 +13063,10 @@ INTO
     :"LastForumAccess",
     :"LastTopicAccess",
     :"Tags",
+	:"TopicImage",
+	:"TopicImageType",
+	:"TopicImageBin",
+	:"HasAttachments",
     :"TotalRows",
     :"PageIndex"
 DO SUSPEND;

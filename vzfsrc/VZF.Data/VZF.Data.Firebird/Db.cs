@@ -29,6 +29,7 @@ namespace VZF.Data.Firebird
     using System.Data;
     using System.IO;
     using System.Linq;
+    using System.Security;
     using System.Text;
     using System.Web;
     using System.Web.Hosting;
@@ -43,16 +44,14 @@ namespace VZF.Data.Firebird
     using YAF.Types.Objects;
     using YAF.Utils;
     using YAF.Utils.Helpers;
-    using System.Security;
 
     /// <summary>
     /// All the Database functions for VZF
     /// </summary>
-     [SecuritySafeCritical]
+    [SecuritySafeCritical]
     public static class Db
     {
         // added by vzrus
-
         #region ConnectionStringOptions
 
         /// <summary>
@@ -2467,9 +2466,7 @@ namespace VZF.Data.Firebird
 
 
         #endregion yaf_EventLog
-
-        // Admin control of file extensions - MJ Hufford
-
+        
         #region yaf_Extensions
 
         public static void extension_delete(string connectionString, object extensionId)
@@ -7095,7 +7092,39 @@ namespace VZF.Data.Firebird
                 }
             }
         }
+        private static void topic_deleteimages(string connectionString, int topicID)
+        {
 
+            string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
+
+            try
+            {
+                string topicImage = string.Empty;
+                var dt = topic_info(
+                 connectionString, topicID, false);
+                if (dt != null)
+                {
+                    topicImage = dt["TopicImage"].ToString();
+                }
+
+                string fileName = string.Format("{0}/{1}.{2}.yafupload", uploadDir, topicID, topicImage);
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                string fileNameThumb = string.Format("{0}/{1}.thumb.{2}.yafupload", uploadDir, topicID, topicImage);
+                if (System.IO.File.Exists(fileNameThumb))
+                {
+                    System.IO.File.Delete(fileNameThumb);
+                }
+
+            }
+            catch
+            {
+                // error deleting that file... 
+            }
+        }
         public static void topic_delete(string connectionString, object topicId)
         {
             topic_delete(connectionString, topicId, false);
@@ -7103,7 +7132,18 @@ namespace VZF.Data.Firebird
 
         public static void topic_delete(string connectionString, object topicId, object eraseTopic)
         {
-            topic_deleteAttachments(connectionString, topicId);
+            if (eraseTopic == null)
+            {
+                eraseTopic = false;
+            }
+
+
+            if (eraseTopic.ToType<bool>())
+            {
+                topic_deleteAttachments(connectionString, topicId);
+
+                topic_deleteimages(connectionString, (int)topicId);
+            }
 
             using (var cmd = FbDbAccess.GetCommand("topic_delete"))
             {
@@ -10191,7 +10231,7 @@ namespace VZF.Data.Firebird
         public static string db_shrink_new(string connectionString)
         {
             /* String ShrinkSql = "DBCC SHRINKDATABASE(N'" + DBName.DBConnection.Database + "')";
-            FbConnection ShrinkConn = new FbConnection(YAF.Classes.Config.ConnectionString);
+            FbConnection ShrinkConn = new FbConnection(VZF.Classes.Config.ConnectionString);
             SqlCommand ShrinkCmd = new SqlCommand(ShrinkSql, ShrinkConn);
             ShrinkConn.Open();
             ShrinkCmd.ExecuteNonQuery();
@@ -10214,7 +10254,7 @@ namespace VZF.Data.Firebird
         public static string db_recovery_mode_new(string connectionString, string dbRecoveryMode)
         {
             /* String RecoveryMode = "ALTER DATABASE " + DBName.DBConnection.Database + " SET RECOVERY " + dbRecoveryMode;
-             FbConnection RecoveryModeConn = new FbConnection(YAF.Classes.Config.ConnectionString);
+             FbConnection RecoveryModeConn = new FbConnection(VZF.Classes.Config.ConnectionString);
              SqlCommand RecoveryModeCmd = new SqlCommand(RecoveryMode, RecoveryModeConn);
              RecoveryModeConn.Open();
              RecoveryModeCmd.ExecuteNonQuery();

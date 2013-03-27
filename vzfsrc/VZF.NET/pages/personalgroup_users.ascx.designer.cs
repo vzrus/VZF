@@ -109,7 +109,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchByUserName;
+        protected global::VZF.Controls.ThemeButton SearchByUserName;
         
         /// <summary>
         /// ResetUserSearch control.
@@ -118,7 +118,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ResetUserSearch;
+        protected global::VZF.Controls.ThemeButton ResetUserSearch;
         
         /// <summary>
         /// AlphaSort1 control.
@@ -244,7 +244,16 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddUserToGroupBtn;
+        protected global::VZF.Controls.ThemeButton AddUserToGroupBtn;
+        
+        /// <summary>
+        /// Cancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.ThemeButton Cancel;
         
         /// <summary>
         /// Pager1 control.

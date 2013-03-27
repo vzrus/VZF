@@ -541,13 +541,20 @@
                         <td class="post">
                             <asp:CheckBox ID="EnableUserInfoHoverCards" runat="server"></asp:CheckBox>
                         </td>
-                    </tr>
-                               <tr>
+                    </tr><tr>
                         <td class="postheader" style="width:50%">
                             <VZF:HelpLabel ID="HelpLabel225" runat="server" LocalizedTag="ALLOW_TOPICIMAGES" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="AllowTopicImages" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                               <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel228" runat="server" LocalizedTag="ALLOW_REMOTETOPICIMAGES" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="AlowRemoteTopicImages" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
                      <tr>

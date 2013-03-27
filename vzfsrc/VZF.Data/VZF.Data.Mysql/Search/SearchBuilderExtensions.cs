@@ -21,8 +21,8 @@ namespace VZF.Data.Mysql.Search
     using System.Collections.Generic;
     using System.Text;
 
-    using YAF.Utils;
     using YAF.Types;
+    using YAF.Utils;
 
     /// <summary>
   /// The search builder extensions.

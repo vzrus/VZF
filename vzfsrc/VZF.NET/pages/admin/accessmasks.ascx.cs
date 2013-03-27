@@ -26,6 +26,7 @@ namespace YAF.Pages.Admin
   using System.Drawing;
   using System.Web.UI.WebControls;
 
+  using VZF.Controls;
   using VZF.Data.Common;
 
   
@@ -46,24 +47,6 @@ namespace YAF.Pages.Admin
   {
     /* Construction */
     #region Methods
-
-    /// <summary>
-    /// The bit set.
-    /// </summary>
-    /// <param name="_o">
-    /// The _o.
-    /// </param>
-    /// <param name="bitmask">
-    /// The bitmask.
-    /// </param>
-    /// <returns>
-    /// The bit set.
-    /// </returns>
-    protected bool BitSet([NotNull] object _o, int bitmask)
-    {
-      var i = (int)_o;
-      return (i & bitmask) != 0;
-    }
 
     /// <summary>
     /// Creates navigation page links on top of forum (breadcrumbs).
@@ -98,22 +81,9 @@ namespace YAF.Pages.Admin
     protected void Delete_Load([NotNull] object sender, [NotNull] EventArgs e)
     {
       // add on click confirm dialog
-      ControlHelper.AddOnClickConfirmDialog(sender, this.GetText("ADMIN_ACCESSMASKS", "CONFIRM_DELETE"));
-    }
-
-    /// <summary>
-    /// Format access mask setting color formatting.
-    /// </summary>
-    /// <param name="enabled">
-    /// The enabled.
-    /// </param>
-    /// <returns>
-    /// Set access mask flags are rendered green if true, and if not red
-    /// </returns>
-    protected Color GetItemColor(bool enabled)
-    {
-        // show enabled flag red
-        return enabled ? Color.Green : Color.Red;
+        ((LinkButton)sender).Attributes["onclick"] =
+              "return (confirm('{0}'))".FormatWith(
+                  this.GetText("ADMIN_ACCESSMASKS", "CONFIRM_DELETE"));
     }
 
     /// <summary>
@@ -184,6 +154,21 @@ namespace YAF.Pages.Admin
     }
 
     /// <summary>
+    /// Handles click on cancel button.
+    /// </summary>
+    /// <param name="sender">
+    /// The sender.
+    /// </param>
+    /// <param name="e">
+    /// The e.
+    /// </param>
+    protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
+    {
+        // go back to personal group selection
+        YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
+    }
+
+    /// <summary>
     /// The page_ load.
     /// </summary>
     /// <param name="sender">
@@ -199,7 +184,7 @@ namespace YAF.Pages.Admin
             return;
         }
 
-        this.New.Text = this.GetText("ADMIN_ACCESSMASKS", "NEW_MASK");
+       
 
         // create links
         this.CreatePageLinks();
@@ -216,7 +201,7 @@ namespace YAF.Pages.Admin
     private void BindData()
     {
       // list all access masks for this boeard
-        this.List.DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+        this.List.DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true);
       this.DataBind();
     }
 

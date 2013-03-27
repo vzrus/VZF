@@ -75,6 +75,7 @@
     <Compile Include="BasePages\ModerateForumPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="BBCode\ReplaceRules\QuoteRegexReplaceRule.cs" />
     <Compile Include="Context\LoadPageFromDatabase.cs" />
     <Compile Include="Context\LoadPageLazyUserData.cs" />
     <Compile Include="Context\LoadPageLogBadAgent.cs" />

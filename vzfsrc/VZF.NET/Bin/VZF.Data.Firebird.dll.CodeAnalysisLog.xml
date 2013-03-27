@@ -12,63 +12,63 @@
          <Members>
           <Member Name="#db_getstats_new(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9523">The query string passed to 'FbCommand.FbCommand(string)' in 'Db.db_getstats_new(string)' could contain the following variables 'indexName[0]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9563">The query string passed to 'FbCommand.FbCommand(string)' in 'Db.db_getstats_new(string)' could contain the following variables 'indexName[0]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#db_reindex_new(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9594">The query string passed to 'FbCommand.FbCommand(string)' in 'Db.db_reindex_new(string)' could contain the following variables 'indexName[0]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9634">The query string passed to 'FbCommand.FbCommand(string)' in 'Db.db_reindex_new(string)' could contain the following variables 'indexName[0]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#db_runsql_new(System.String,System.String,System.Boolean)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9738">Object 'reader' can be disposed more than once in method 'Db.db_runsql_new(string, string, bool)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 9738</Issue>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9778">Object 'reader' can be disposed more than once in method 'Db.db_runsql_new(string, string, bool)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 9778</Issue>
             </Message>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9662">The query string passed to 'FbCommand.FbCommand(string, FbConnection)' in 'Db.db_runsql_new(string, string, bool)' could contain the following variables 'sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9702">The query string passed to 'FbCommand.FbCommand(string, FbConnection)' in 'Db.db_runsql_new(string, string, bool)' could contain the following variables 'sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#ds_forumadmin(System.String,System.Object,System.Object,System.Object)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="1184">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.ds_forumadmin(string, object, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("forum_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="1173">The query string passed to 'FbDataAdapter.FbDataAdapter(string, FbConnection)' in 'Db.ds_forumadmin(string, object, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("category_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="1183">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.ds_forumadmin(string, object, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("forum_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="1172">The query string passed to 'FbDataAdapter.FbDataAdapter(string, FbConnection)' in 'Db.ds_forumadmin(string, object, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("category_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#forum_moderatelist(System.String,System.Object,System.Object)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="3322">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.forum_moderatelist(string, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("forum_moderatelist")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="3307">The query string passed to 'FbDataAdapter.FbDataAdapter(string, FbConnection)' in 'Db.forum_moderatelist(string, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("category_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="3319">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.forum_moderatelist(string, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("forum_moderatelist")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="3304">The query string passed to 'FbDataAdapter.FbDataAdapter(string, FbConnection)' in 'Db.forum_moderatelist(string, object, object)' could contain the following variables 'FbDbAccess.GetObjectName("category_list")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#poll_save(System.String,System.Collections.Generic.List`1&lt;YAF.Types.Objects.PollSaveList&gt;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="6019">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.poll_save(string, List&lt;PollSaveList&gt;)' could contain the following variables 'paramSb', 'sb'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="6016">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.poll_save(string, List&lt;PollSaveList&gt;)' could contain the following variables 'paramSb', 'sb'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#SetProfileProperties(System.String,System.Int32,System.Object,System.Int32,System.String,System.Configuration.SettingsPropertyValueCollection,System.Collections.Generic.List`1&lt;VZF.Data.Firebird.SettingsPropertyColumn&gt;,System.Boolean)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="10737">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.SetProfileProperties(string, int, object, int, string, SettingsPropertyValueCollection, List&lt;SettingsPropertyColumn&gt;, bool)' could contain the following variables 'sqlCommand'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="10777">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.SetProfileProperties(string, int, object, int, string, SettingsPropertyValueCollection, List&lt;SettingsPropertyColumn&gt;, bool)' could contain the following variables 'sqlCommand'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#system_initialize_executescripts(System.String,System.String,System.String,System.Boolean)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="9970">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.system_initialize_executescripts(string, string, string, bool)' could contain the following variables 'statements[...]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
-             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="10003">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.system_initialize_executescripts(string, string, string, bool)' could contain the following variables 'statements[...]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="10010">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.system_initialize_executescripts(string, string, string, bool)' could contain the following variables 'statements[...]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="Db.cs" Line="10043">The query string passed to 'FbCommand.CommandText.set(string)' in 'Db.system_initialize_executescripts(string, string, string, bool)' could contain the following variables 'statements[...]'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
@@ -78,21 +78,21 @@
          <Members>
           <Member Name="#GetCommand(System.String,FirebirdSql.Data.FirebirdClient.FbConnection)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
              <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="DbAccess.cs" Line="340">The query string passed to 'FbCommand.CommandText.set(string)' in 'FbDbAccess.GetCommand(string, FbConnection)' could contain the following variables 'FbDbAccess.GetObjectName(storedProcedure)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#GetCommand(System.String,System.Boolean,FirebirdSql.Data.FirebirdClient.FbConnection)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
              <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="DbAccess.cs" Line="308">The query string passed to 'FbCommand.CommandText.set(string)' in 'FbDbAccess.GetCommand(string, bool, FbConnection)' could contain the following variables 'FbDbAccess.GetCommandTextReplaced(commandText)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#GetData(System.String,System.Boolean,System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="DependsOnFix">
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="DependsOnFix">
              <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="DbAccess.cs" Line="406">The query string passed to 'FbCommand.CommandText.set(string)' in 'FbDbAccess.GetData(string, bool, string)' could contain the following variables 'commandText'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
             </Message>
            </Messages>
@@ -101,14 +101,14 @@
         </Type>
         <Type Name="FbDbConnectionManager" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="Breaking">
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="Breaking">
            <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">Provide an overridable implementation of Dispose(bool) on 'FbDbConnectionManager' or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Issue>
           </Message>
          </Messages>
          <Members>
           <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2013-03-13 11:22:57Z" FixCategory="Breaking">
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2013-03-27 10:32:27Z" FixCategory="Breaking">
              <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="DbConnManager.cs" Line="116">Modify 'FbDbConnectionManager.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
              <Issue Name="DisposeSignature" Certainty="95" Level="Error" Path="g:\Projects\vzf\vzfsrc\VZF.Data\VZF.Data.Firebird" File="DbConnManager.cs" Line="116">Ensure that 'FbDbConnectionManager.Dispose()' is declared as public and sealed.</Issue>
             </Message>
@@ -127,7 +127,7 @@
   <Rule TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202">
    <Name>Do not dispose objects multiple times</Name>
    <Description>A correctly implemented Dispose method can be called multiple times without throwing an exception. However, this is not guaranteed and to avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.</Description>
-   <Resolution Name="Default">Object {0} can be disposed more than once in method {1}. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 9738</Resolution>
+   <Resolution Name="Default">Object {0} can be disposed more than once in method {1}. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 9778</Resolution>
    <Owner>RuleOwner</Owner>
    <Url>http://msdn.microsoft.com/library/ms182334(VS.100).aspx</Url>
    <Email />

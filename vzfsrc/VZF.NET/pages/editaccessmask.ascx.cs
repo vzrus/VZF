@@ -62,16 +62,19 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
            // user profile
-            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
+
+            // personalaccessmask page
+            this.PageLinks.AddLink(this.GetText("PERSONALACCESSMASK", "TITLE"), YafBuildLink.GetLink(ForumPages.personalaccessmask, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // current page label (no link)
             this.PageLinks.AddLink(this.GetText("ADMIN_EDITACCESSMASKS", "TITLE"), string.Empty);
 
             this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-                this.Get<YafBoardSettings>().Name,
                 this.Get<YafBoardSettings>().EnableDisplayName
                     ? this.PageContext.CurrentUserData.DisplayName
                     : this.PageContext.PageUserName,
+                this.GetText("PERSONALACCESSMASK", "TITLE"),
                 this.GetText("ADMIN_EDITACCESSMASKS", "TITLE"));
         }
 
@@ -122,9 +125,6 @@ namespace YAF.pages
                     YafBuildLink.AccessDenied();
                 }
             }
-
-            this.Save.Text = this.GetText("COMMON", "SAVE");
-            this.Cancel.Text = this.GetText("COMMON", "CANCEL");
 
             // create page links
             this.CreatePageLinks();
@@ -191,6 +191,9 @@ namespace YAF.pages
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
+
+            // number of current masks changed
+            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
 
             // clear cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);

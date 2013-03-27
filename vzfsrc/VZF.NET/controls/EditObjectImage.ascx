@@ -19,10 +19,15 @@
     <tr>
         <td class="post" align="center" rowspan="4" runat="server" id="topicImageTD">
             <asp:Image ID="TopicImg" runat="server" Visible="true" AlternateText="Image" />
+            <div class="fileattach smallfont ceebox">
+                <div class="attachedimg">
+                    <img id="TopicImg1" src="" runat="server" Visible="False" title="" alt=""/>
+                </div>
+                </div>
             <br />
             <br />
             <asp:Label runat="server" ID="NoImage" Visible="false" />
-            <asp:Button runat="server" ID="DeleteImage" CssClass="pbutton" Visible="false" OnClick="DeleteAvatar_Click" /></td>
+            <asp:Button runat="server" ID="DeleteImage" CssClass="pbutton" Visible="false" OnClick="DeleteImage_Click" /></td>
     </tr>
     <tr runat="server" id="ImageOurs">
         <td class="postheader">
@@ -34,7 +39,7 @@
             <asp:HyperLink ID="OurImage" runat="server" />
             ]</td>
     </tr>
-    <tr runat="server" id="ImageRemoteRow">
+    <tr runat="server" id="ImageRemoteRow" Visible="False">
         <td class="postheader">
             <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="IMAGEADD"
                 LocalizedTag="IMAGEREMOTE" />

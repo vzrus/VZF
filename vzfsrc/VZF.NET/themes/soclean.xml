@@ -4,6 +4,14 @@
     <Resource tag="CREDIT"></Resource>
   </page>
   <page name="ICONS">
+    <Resource tag="SAVE_ICON">~/disk-black.png</Resource>
+    <Resource tag="FORUMS_ICON">~/tables.png</Resource>
+    <Resource tag="TICK_YES_ICON">~/tick.png</Resource>
+    <Resource tag="USERS_ICON">~/users.png</Resource>
+    <Resource tag="HOT_T_ICON">~/fire-big.png</Resource>
+    <Resource tag="ANOUNCEMENT_T_SICON">~/bell.png</Resource>
+    <Resource tag="STICKY_T_SICON">~/pin-small.png</Resource>
+    <Resource tag="POLL_T_SICON">~/chart-medium.png</Resource>
     <Resource tag="ARROWUP_16">~/navigation-090-button.png</Resource>
     <Resource tag="ARROWDOWN_16">~/navigation-270-button.png</Resource>
     <Resource tag="ALBUMS">~/albums.png</Resource>

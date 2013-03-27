@@ -32,6 +32,8 @@ namespace VZF.Controls
     using System.Security.Cryptography;
     using System.Text;
     using System.Web;
+    using System.Web.Hosting;
+    using System.Web.UI.HtmlControls;
 
     using VZF.Data.Common;
 
@@ -42,6 +44,7 @@ namespace VZF.Controls
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
+    using YAF.Utilities;
     using YAF.Utils;
     using YAF.Utils.Helpers;
 
@@ -115,18 +118,64 @@ namespace VZF.Controls
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void DeleteAvatar_Click([NotNull] object sender, [NotNull] EventArgs e)
+        protected void DeleteImage_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            this.DeleteFiles();
+            
+            CommonDb.topic_imagesave(
+                PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
+
+            this.BindData();
+        }
+
+        /// <summary>
+        /// The delete files.
+        /// </summary>
+        private void DeleteFiles()
         {
             var ti = this.Request.QueryString.GetFirstOrDefault("ti");
             int tii;
 
-            if (ti != null && int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
+            if (ti == null || !int.TryParse(this.Request.QueryString.GetFirstOrDefault("ti"), out tii))
             {
-                CommonDb.topic_imagesave(
-                    PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
+                return;
             }
 
-            this.BindData();
+            DataRow row = CommonDb.topic_info(
+                this.PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false);
+            if (row != null)
+            {
+                string topicImageName = row["TopicImage"].ToString();
+                string uploadDir =
+                    HostingEnvironment.MapPath(
+                        string.Concat(
+                            BaseUrlBuilder.ServerFileRoot,
+                            YafBoardFolders.Current.Uploads,
+                            "/",
+                            YafBoardFolders.Current.Topics));
+
+                string fileName = string.Format(
+                    "{0}/{1}.{2}.yafupload",
+                    uploadDir,
+                    this.PageContext.QueryIDs["ti"].ToType<int>(),
+                    topicImageName);
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                string fileNameThumb = string.Format(
+                    "{0}/{1}.thumb.{2}.yafupload",
+                    uploadDir,
+                    this.PageContext.QueryIDs["ti"].ToType<int>(),
+                    topicImageName);
+                if (System.IO.File.Exists(fileNameThumb))
+                {
+                    System.IO.File.Delete(fileNameThumb);
+                }
+            }
+
+            this.TopicImg1.Src = null;
         }
 
         /// <summary>
@@ -136,6 +185,11 @@ namespace VZF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            // Setup Ceebox js
+            YafContext.Current.PageElements.RegisterJsResourceInclude("ceeboxjs", "js/jquery.ceebox-min.js");
+            YafContext.Current.PageElements.RegisterCssIncludeResource("css/jquery.ceebox.css");
+            YafContext.Current.PageElements.RegisterJsBlock("ceeboxloadjs", JavaScriptBlocks.CeeBoxLoadJs);
+
             this.PageContext.QueryIDs = new QueryStringIDHelper(new[] { "mi", "ti", "fi", "ci", "u" }, false);
 
             if (this._adminEditMode && this.PageContext.IsAdmin && this.PageContext.QueryIDs.ContainsKey("u"))
@@ -150,18 +204,17 @@ namespace VZF.Controls
             var ti = this.Request.QueryString.GetFirstOrDefault("ti");
 
             // check if it's a link from topic edit
-             if (ti != null)
-             {
-                 int.TryParse(ti, out this._currentTopicId);
-             }
+            if (ti != null)
+            {
+                int.TryParse(ti, out this._currentTopicId);
+            }
 
-               if (this.IsPostBack)
-               {
-                   return;
-               }
+            if (this.IsPostBack)
+            {
+                return;
+            }
 
-
-               // check if it's a link from topic edit
+            // check if it's a link from topic edit
             /*   if (ti != null && int.TryParse(ti, out tii))
                {
                    // save the image right now...
@@ -194,16 +247,19 @@ namespace VZF.Controls
 
             this.OurImage.NavigateUrl = YafBuildLink.GetLinkNotEscaped(ForumPages.imageadd, addAdminParam);
             this.OurImage.Text = this.GetText("IMAGEADD", "OURIMAGE_SELECT");
-
-            this.noteRemote.Text = this.GetTextFormatted(
-                "NOTE_IMG_REMOTE",
-                this.Get<YafBoardSettings>().TopicImageWidth.ToString(),
-                this.Get<YafBoardSettings>().TopicImageHeight.ToString());
-            this.noteLocal.Text = this.GetTextFormatted(
-                "NOTE_IMG_LOCAL",
-                this.Get<YafBoardSettings>().TopicImageWidth.ToString(),
-                this.Get<YafBoardSettings>().TopicImageHeight,
-                (this.Get<YafBoardSettings>().AvatarSize / 1024).ToString());
+            if (this.Get<YafBoardSettings>().AllowRemoteTopicImages)
+            {
+                this.ImageRemoteRow.Visible = true;
+                this.noteRemote.Text = this.GetTextFormatted(
+                    "NOTE_IMG_REMOTE",
+                    this.Get<YafBoardSettings>().TopicImageWidth.ToString(),
+                    this.Get<YafBoardSettings>().TopicImageHeight.ToString());
+                this.noteLocal.Text = this.GetTextFormatted(
+                    "NOTE_IMG_LOCAL",
+                    this.Get<YafBoardSettings>().TopicImageWidth.ToString(),
+                    this.Get<YafBoardSettings>().TopicImageHeight,
+                    (this.Get<YafBoardSettings>().AvatarSize / 1024).ToString());
+            }
 
             this.BindData();
         }
@@ -229,10 +285,13 @@ namespace VZF.Controls
             }
 
             // update
-            CommonDb.topic_imagesave(PageContext.PageModuleID, this._currentTopicId, this.TopicImage.Text.Trim(), null, null);
+            CommonDb.topic_imagesave(
+                PageContext.PageModuleID, this._currentTopicId, this.TopicImage.Text.Trim(), null, null);
 
             // clear the URL out...
             this.TopicImage.Text = string.Empty;
+
+            this.DeleteFiles();
 
             this.BindData();
         }
@@ -250,16 +309,18 @@ namespace VZF.Controls
                 return;
             }
 
-            long x = this.Get<YafBoardSettings>().TopicImageWidth;
-            long y = this.Get<YafBoardSettings>().TopicImageHeight;
             int nImageSize = this.Get<YafBoardSettings>().AvatarSize;
 
             Stream resized = null;
-
+            Stream resizedLarge = null;
+            Image imgThumb = null;
+            Image imgLarge = null;
             try
             {
                 using (Image img = Image.FromStream(this.File.PostedFile.InputStream))
                 {
+                    long x = this.Get<YafBoardSettings>().TopicImageWidth;
+                    long y = this.Get<YafBoardSettings>().TopicImageHeight;
                     if (img.Width > x || img.Height > y)
                     {
                         this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
@@ -268,21 +329,56 @@ namespace VZF.Controls
                         this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED"));
 
                         resized = ImageHelper.GetResizedImageStreamFromImage(img, x, y);
+
+                        // Convert resized to Image. Resized is meant as a thimbnail  here
+                        if (resized != null)
+                        {
+                            imgThumb = Image.FromStream(resized);
+                        }
+                    }
+
+                    x = this.Get<YafBoardSettings>().ImageAttachmentResizeWidth;
+                    y = this.Get<YafBoardSettings>().ImageAttachmentResizeHeight;
+                    if (img.Width > x || img.Height > y)
+                    {
+                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
+                        this.PageContext.AddLoadMessage(
+                            this.GetText("IMAGEADD", "WARN_IMG_SIZE").FormatWith(img.Width, img.Height));
+                        this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_RESIZED"));
+
+                        resizedLarge = ImageHelper.GetResizedImageStreamFromImage(img, x, y);
+
+                        // Convert resized to Image. Resized is meant as a thimbnail  here
+                        if (resizedLarge != null)
+                        {
+                            imgLarge = Image.FromStream(resizedLarge);
+                        }
                     }
                 }
+            
+
 
                 // here we save an uploaded image
                 if (this.PageContext.QueryIDs["ti"] != null)
                 {
+                    if (this.CheckValidFile(this.File))
+                    {
+                        this.SaveAttachment(
+                            this.PageContext.QueryIDs["ti"].ToType<int>(),
+                            this.File,
+                            imgThumb ?? Image.FromStream(this.File.PostedFile.InputStream), imgLarge);
+                    }
+
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
 
                     CommonDb.topic_imagesave(
                         PageContext.PageModuleID,
                         this.PageContext.QueryIDs["ti"].ToType<int>(),
-                        null,
+                        this.File.PostedFile.FileName.Trim(),
                         resized ?? this.File.PostedFile.InputStream,
                         this.File.PostedFile.ContentType);
+
                 }
 
                 // clear the cache for this user...
@@ -290,8 +386,7 @@ namespace VZF.Controls
 
                 if (nImageSize > 0 && this.File.PostedFile.ContentLength >= nImageSize && resized == null)
                 {
-                    this.PageContext.AddLoadMessage(
-                        this.GetText("IMAGEADD", "WARN_IMG_BIGFILE").FormatWith(nImageSize));
+                    this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_BIGFILE").FormatWith(nImageSize));
                     this.PageContext.AddLoadMessage(
                         this.GetText("IMAGEADD", "WARN_IMG_FILESIZE").FormatWith(this.File.PostedFile.ContentLength));
                 }
@@ -306,7 +401,9 @@ namespace VZF.Controls
                     {
                         this.TopicImg.ImageUrl =
                             "{0}resource.ashx?ti={1}&upd={2}".FormatWith(
-                                YafForumInfo.ForumClientFileRoot, this.PageContext.QueryIDs["ti"].ToType<int>(), DateTime.Now.Ticks);
+                                YafForumInfo.ForumClientFileRoot,
+                                this.PageContext.QueryIDs["ti"].ToType<int>(),
+                                DateTime.Now.Ticks);
                     }
                 }
 
@@ -321,7 +418,7 @@ namespace VZF.Controls
                 this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "INVALID_IMG_FILE"));
             }
 
-            // this.BindData();
+            this.BindData();
         }
 
         /// <summary>
@@ -330,7 +427,7 @@ namespace VZF.Controls
         private void BindData()
         {
             DataRow row = null;
-            int t;
+            int topicId;
 
             if (this.PageContext.QueryIDs["ti"] != null)
             {
@@ -338,32 +435,52 @@ namespace VZF.Controls
                     PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), false);
                 if (row != null)
                 {
-                    t = row["TopicID"].ToType<int>();
-                    this.TopicImg.ImageUrl = "{0}resource.ashx?ti={1}".FormatWith(YafForumInfo.ForumClientFileRoot, t);
+                    topicId = row["TopicID"].ToType<int>();
+
                     this.TopicImg.Visible = true;
+                    this.TopicImg1.Visible = true;
                     this.TopicImage.Text = string.Empty;
                     this.DeleteImage.Visible = false;
                     this.NoImage.Visible = false;
 
-                    if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
+                    if (this.Get<YafBoardSettings>().UseFileTable && row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
                     {
+                        // database image
+                        this.TopicImg1.Visible = true;
+                        this.TopicImg1.Src = "data:" + row["TopicImageType"].ToString().Replace("/jpeg", "/jpg") + ";base64," + Convert.ToBase64String((byte[])row["TopicImageBin"]);
                         this.TopicImg.ImageUrl = "{0}resource.ashx?ti={1}".FormatWith(
-                            YafForumInfo.ForumClientFileRoot, t);
+                            YafForumInfo.ForumClientFileRoot, topicId);
                         this.TopicImage.Text = string.Empty;
                         this.DeleteImage.Visible = true;
                     }
                     else if (row["TopicImage"].ToString().Length > 0)
                     {
                         // remote
-                        this.TopicImg.ImageUrl =
-                            "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
-                                YafForumInfo.ForumClientFileRoot,
-                                t,
-                                this.Server.UrlEncode(row["TopicImage"].ToString()),
-                                this.Get<YafBoardSettings>().TopicImageWidth,
-                                this.Get<YafBoardSettings>().TopicImageHeight);
-                        this.TopicImage.Text = row["TopicImage"].ToString();
-                        this.DeleteImage.Visible = true;
+                        if (row["TopicImage"].ToString().TrimStart().IndexOf("ttp", System.StringComparison.Ordinal) > 0)
+                        {
+                            this.TopicImg.ImageUrl =
+                                "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}&remote=1".FormatWith(
+                                    YafForumInfo.ForumClientFileRoot,
+                                    topicId,
+                                    this.Server.UrlEncode(row["TopicImage"].ToString()),
+                                    this.Get<YafBoardSettings>().TopicImageWidth,
+                                    this.Get<YafBoardSettings>().TopicImageHeight);
+                            this.TopicImage.Text = row["TopicImage"].ToString();
+                            this.DeleteImage.Visible = true;
+                        }
+                        else
+                        {
+                            // image in folder
+                            this.TopicImg.ImageUrl =
+                                "{0}resource.ashx?ti={1}&width={3}&height={4}".FormatWith(
+                                    YafForumInfo.ForumClientFileRoot,
+                                    topicId,
+                                    this.Server.UrlEncode(row["TopicImage"].ToString()),
+                                    this.Get<YafBoardSettings>().TopicImageWidth,
+                                    this.Get<YafBoardSettings>().TopicImageHeight);
+                            this.TopicImage.Text = row["TopicImage"].ToString();
+                            this.DeleteImage.Visible = true;
+                        }
                     }
                     else
                     {
@@ -374,24 +491,156 @@ namespace VZF.Controls
                     int rowSpan = 2;
 
                     this.ImageUploadRow.Visible = this._adminEditMode || this.Get<YafBoardSettings>().AllowTopicImages;
-                    this.ImageRemoteRow.Visible = this._adminEditMode || this.Get<YafBoardSettings>().AllowTopicImages;
+                    this.ImageRemoteRow.Visible = this._adminEditMode
+                                                  || this.Get<YafBoardSettings>().AllowRemoteTopicImages;
                     this.ImageOurs.Visible = this._adminEditMode || this.Get<YafBoardSettings>().AvatarGallery;
                     this.ImageOurs.Visible = false;
-                  //  if (this._adminEditMode || this.Get<YafBoardSettings>().TopicImage)
-                 //   {
-                       // rowSpan++;
-                  //  }
+
+                    //  if (this._adminEditMode || this.Get<YafBoardSettings>().TopicImage)
+                    //   {
+                    // rowSpan++;
+                    //  }
 
                     //    if (this._adminEditMode || this.Get<YafBoardSettings>().TopicImage)
-                //    {
+                    //    {
+                    // rowSpan++;
+                    //   }
+                    if (this.Get<YafBoardSettings>().AllowRemoteTopicImages)
+                    {
                         rowSpan++;
-                 //   }
-
-                    this.topicImageTD.RowSpan = rowSpan;
+                    }
+                    
+                        this.topicImageTD.RowSpan = rowSpan;
+                    
                 }
             }
+
+            #endregion
         }
 
-        #endregion
+        /// <summary>
+        /// The save attachment.
+        /// </summary>
+        /// <param name="topicId">
+        /// The message id.
+        /// </param>
+        /// <param name="file">
+        /// The file.
+        /// </param>
+        private void SaveAttachment([NotNull] object topicId, [NotNull] HtmlInputFile file, [CanBeNull] Image resized, [CanBeNull] Image lImage)
+        {
+            string filename = file.PostedFile.FileName;
+
+            int pos = filename.LastIndexOfAny(new[] { '/', '\\' });
+            if (pos >= 0)
+            {
+                filename = filename.Substring(pos + 1);
+            }
+
+            // filename can be only 255 characters long (due to table column)
+            if (filename.Length > 255)
+            {
+                filename = filename.Substring(filename.Length - 255);
+            }
+
+            string previousDirectory =
+                this.Get<HttpRequestBase>()
+                    .MapPath(
+                        string.Concat(
+                            BaseUrlBuilder.ServerFileRoot,
+                            YafBoardFolders.Current.Uploads,
+                            "/",
+                            YafBoardFolders.Current.Topics));
+
+            // check if Uploads folder exists
+            if (!Directory.Exists(previousDirectory))
+            {
+                Directory.CreateDirectory(previousDirectory);
+            }
+
+            // save large image
+            resized.Save("{0}/{1}.thumb.{2}.yafupload".FormatWith(previousDirectory, topicId, filename));
+
+            // save thumbnail
+            lImage.Save("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, topicId, filename));
+        }
+
+        /// <summary>
+        /// The check valid file.
+        /// </summary>
+        /// <param name="uploadedFile">
+        /// The uploaded file.
+        /// </param>
+        /// <returns>
+        /// Returns if the File Is Valid
+        /// </returns>
+        private bool CheckValidFile([NotNull] HtmlInputFile uploadedFile)
+        {
+            string filePath = uploadedFile.PostedFile.FileName.Trim();
+
+            if (filePath.IsNotSet() || uploadedFile.PostedFile.ContentLength == 0)
+            {
+                return false;
+            }
+
+            if (uploadedFile.PostedFile == null || uploadedFile.PostedFile.FileName.Trim().Length == 0
+                || uploadedFile.PostedFile.ContentLength == 0)
+            {
+                return false;
+            }
+
+            // verify the size of the attachment
+            if (this.Get<YafBoardSettings>().MaxFileSize > 0
+                && uploadedFile.PostedFile.ContentLength > this.Get<YafBoardSettings>().MaxFileSize)
+            {
+                this.PageContext.AddLoadMessage(
+                    this.GetTextFormatted(
+                        "UPLOAD_TOOBIG",
+                        uploadedFile.PostedFile.ContentLength / 1024,
+                        this.Get<YafBoardSettings>().MaxFileSize / 1024));
+
+                return false;
+            }
+
+
+            string extension = Path.GetExtension(filePath).ToLower();
+
+            // remove the "period"
+            extension = extension.Replace(".", string.Empty);
+
+            // If we don't get a match from the db, then the extension is not allowed
+            DataTable dt = CommonDb.extension_list(PageContext.PageModuleID, this.PageContext.PageBoardID, extension);
+
+            bool bInList = dt.Rows.Count > 0;
+            bool bError = false;
+
+            if (this.Get<YafBoardSettings>().FileExtensionAreAllowed && !bInList)
+            {
+                // since it's not in the list -- it's invalid
+                bError = true;
+            }
+            else if (!this.Get<YafBoardSettings>().FileExtensionAreAllowed && bInList)
+            {
+                // since it's on the list -- it's invalid
+                bError = true;
+            }
+
+            if (filePath.Contains(";."))
+            {
+                // IIS semicolon valnerabilty fix
+                bError = true;
+            }
+
+            if (bError)
+            {
+                // just throw an error that this file is invalid...
+                this.PageContext.AddLoadMessage(this.GetTextFormatted("FILEERROR", extension));
+                return false;
+            }
+
+
+
+            return true;
+        }
     }
 }

@@ -59,7 +59,7 @@
     <Compile Include="Db.cs" />
     <Compile Include="SettingsPropertyColumn.cs" />
     <Compile Include="PostgreDbAccess.cs" />
-    <Compile Include="DbConnManager.cs" />
+    <Compile Include="PostgreDbConnectionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

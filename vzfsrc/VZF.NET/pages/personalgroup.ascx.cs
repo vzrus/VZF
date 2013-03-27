@@ -98,15 +98,14 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // user profile
-            this.PageLinks.AddLink(this.GetText("CP_PROFILE", "VIEW_PROFILE"), YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // roles
-            this.PageLinks.AddLink(this.GetText("ADMIN_GROUPS", "TITLE"), string.Empty);
+            this.PageLinks.AddLink(this.GetText("PERSONALGROUP", "TITLE"), string.Empty);
 
-            this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-               this.Get<YafBoardSettings>().Name,
-               this.GetText("CP_PROFILE", "VIEW_PROFILE"),
-               this.GetText("ADMIN_GROUPS", "TITLE"));
+            this.Page.Header.Title = "{0} - {1}".FormatWith(
+               this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
+               this.GetText("PERSONALGROUP", "TITLE"));
         }
 
         /// <summary>
@@ -120,23 +119,13 @@ namespace YAF.pages
         /// </param>
         protected void DeleteRole_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            ControlHelper.AddOnClickConfirmDialog(sender, this.GetText("ADMIN_GROUPS", "CONFIRM_DELETE"));
-        }
+            // number of current groups changed
+            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
 
-        /// <summary>
-        /// Get status of provider role vs YAF roles.
-        /// </summary>
-        /// <param name="currentRow">
-        /// Data row which contains data about role.
-        /// </param>
-        /// <returns>
-        /// String "Linked" when role is linked to YAF roles, "Unlinkable" otherwise.
-        /// </returns>
-        [NotNull]
-        protected string GetLinkedStatus([NotNull] DataRowView currentRow)
-        {
-            // check whether role is Guests role, which can't be linked
-            return currentRow["Flags"].BinaryAnd(2) ? this.GetText("ADMIN_GROUPS", "UNLINKABLE") : this.GetText("ADMIN_GROUPS", "LINKED");
+            // add on click confirm dialog
+            ((ThemeButton)sender).Attributes["onclick"] =
+                  "return (confirm('{0}'))".FormatWith(
+                      this.GetText("ADMIN_GROUPS", "CONFIRM_DELETE"));
         }
 
         /// <summary>
@@ -152,6 +141,21 @@ namespace YAF.pages
         {
             // redirect to new role page
             YafBuildLink.Redirect(ForumPages.editgroup, "u={0}".FormatWith(PageContext.PageUserID));
+        }
+
+        /// <summary>
+        /// Handles click on cancel button.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            // go back to personal group selection
+            YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
         }
 
         /// <summary>
@@ -182,9 +186,7 @@ namespace YAF.pages
             if (PageContext.PersonalGroupsNumber < PageContext.UsrPersonalGroups)
             {
                 this.NewGroup.Visible = true;
-                this.NewGroup.Text = this.GetText("ADMIN_GROUPS", "NEW_ROLE");
             }
-            
 
             // sync roles just in case...
             RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);

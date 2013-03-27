@@ -17,9 +17,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes;
-using YAF.Utils;
-
 namespace YAF.Types.Objects
 {
     #region Using
@@ -27,7 +24,8 @@ namespace YAF.Types.Objects
     using System;
     using System.Data;
 
-
+    using YAF.Classes;
+    using YAF.Utils;
 
     #endregion
 

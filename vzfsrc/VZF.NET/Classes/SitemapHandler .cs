@@ -1,4 +1,4 @@
-﻿namespace YAF
+﻿namespace VZF
 {
     using System;
     using System.Data;

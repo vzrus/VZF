@@ -197,7 +197,20 @@
     padding: 10px 15px 10px 15px;
     margin: 0;
 }
-
+.yafnet span.wordyes
+{
+	color: #06fe02;
+	font-weight: bold;
+	font-size: 9pt;
+	text-decoration:none;
+}
+.yafnet span.wordnow
+{
+	color: #ff0101;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
 .yafnet div.postedLeft
 {
     line-height: 30px;
@@ -799,7 +812,8 @@
   Tag Cloud
 ------------------------------
 */
-.tagcloud
+.tagcloud
+
 {
     font-family:Tahoma,Helvetica,Arial,Verdana;
 }

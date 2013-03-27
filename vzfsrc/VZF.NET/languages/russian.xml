@@ -4258,17 +4258,45 @@ Spoiler Content
     <Resource tag="UNREADTOPICS">Непрочитанные темы</Resource>
     <Resource tag="VIEWS">Просмотры</Resource>
   </page>
+  <page name="PERSONALACCESSMASK">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="NEW_MASK">New Mask</Resource>
+    <Resource tag="TITLE">Personal Access Masks</Resource>
+  </page>
+  <page name="PERSONALACCESSMASK_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Access Mask</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Access Mask</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALFORUM">
+    <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">Мои личные форумы (Блоги)</Resource>
     <Resource tag="PERSONALGROUPS">Мои группы</Resource>
     <Resource tag="PERSONALMASKS">Мои маски доступа</Resource>
     <Resource tag="TITLE">Личные форумы</Resource>
   </page>
+  <page name="PERSONALFORUM_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
+    <Resource tag="UPDATE">Update</Resource>
+  </page>
   <page name="PERSONALGROUP">
     <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="NEW_GROUP">New Group</Resource>
     <Resource tag="TITLE">Личные группы</Resource>
     <Resource tag="UPDATE">Обновить</Resource>
+  </page>
+  <page name="PERSONALGROUP_EDIT">
+    <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="SAVE">Save</Resource>
+    <Resource tag="TITLE_CREATE">Create Personal Group</Resource>
+    <Resource tag="TITLE_EDIT">Edit Personal Group</Resource>
+    <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALGROUP_EDITUSER">
     <Resource tag="CANCEL">Отмена</Resource>
@@ -4411,6 +4439,7 @@ Spoiler Content
     <Resource tag="TAGS_TOADD_DESC">Добавить теги к теме.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Описание темы не может превышать 255 символов.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Длина одного слова в описании темы не может быть больше {0} символов. Используйте сокращения.</Resource>
+    <Resource tag="TOPIC_IMAGE">Topic Image (clickable)</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Название темы не может превышать 255 символов.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Длина одного слова в названии темы не может быть больше {0} символов. Используйте сокращения.</Resource>
     <Resource tag="TOPICATTACH">Прикрепить файлы к этому сообщению?</Resource>

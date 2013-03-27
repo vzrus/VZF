@@ -98,13 +98,13 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // user profile
-            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // title
             this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), string.Empty); 
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(
-               this.GetText("CP_PROFILE", "VIEW_PROFILE"),
+               this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
                this.GetText("ADMINMENU", "FORUMS"));
         }
 
@@ -119,6 +119,9 @@ namespace YAF.pages
         /// </param>
         protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
+            // number of current forums changed
+            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
+
             ((ThemeButton)sender).Attributes["onclick"] =
                 "return (confirm('{0}') && confirm('{1}'))".FormatWith(
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
@@ -170,7 +173,6 @@ namespace YAF.pages
             if (PageContext.PersonalForumsNumber < PageContext.UsrPersonalForums)
             {
                 this.NewForum.Visible = true;
-                this.NewForum.Text = this.GetText("ADMIN_FORUMS", "NEW_FORUM");
             }
             
             // bind data
@@ -196,11 +198,8 @@ namespace YAF.pages
                 case "delete":
                     var errorMessage = string.Empty;
 
-                    // Simply Delete the Forum with all of its Content
-                    var forumId = this.GetQueryStringAsInt("f");
-
                     // schedule...
-                    ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, forumId.Value, out errorMessage);
+                    ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument.ToType<int>(), out errorMessage);
                     break;
                 case "moderate":
                   YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
@@ -271,7 +270,7 @@ namespace YAF.pages
         #endregion
 
         /// <summary>
-        /// The ok button_ click.
+        /// Handles click on cancel button.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -279,24 +278,10 @@ namespace YAF.pages
         /// <param name="e">
         /// The e.
         /// </param>
-        protected void OKButton_Click(object sender, EventArgs e)
+        protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            YafBuildLink.Redirect(ForumPages.forum);
-        }
-
-        /// <summary>
-        /// Format access mask setting color formatting.
-        /// </summary>
-        /// <param name="enabled">
-        /// The enabled.
-        /// </param>
-        /// <returns>
-        /// Set access mask flags are rendered green if true, and if not red
-        /// </returns>
-        protected Color GetItemColor(bool enabled)
-        {
-            // show enabled flag red
-            return enabled ? Color.Green : Color.Red;
+            // go back to personal group selection
+            YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
         }
     }
 }

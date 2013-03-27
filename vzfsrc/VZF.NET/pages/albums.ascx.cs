@@ -36,7 +36,7 @@ namespace YAF.Pages
     #endregion
 
   /// <summary>
-  /// the Albums Page.
+  /// the Albums Page. 
   /// </summary>
   public partial class Albums : ForumPage
   {

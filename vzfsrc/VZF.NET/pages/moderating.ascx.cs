@@ -182,8 +182,6 @@ namespace YAF.Pages
 
             if (!this.IsPostBack)
             {
-                this.AddUser.Text = this.GetText("MODERATE", "INVITE");
-
                 if (this.PageContext.Settings.LockedForum == 0)
                 {
                     this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));

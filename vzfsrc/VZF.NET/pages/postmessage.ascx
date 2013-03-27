@@ -81,7 +81,7 @@
 			<asp:TextBox id="TopicStylesTextBox" runat="server" CssClass="edit" Width="400" />
 		</td>
 	</tr>
-    	<tr id="TagsRow" runat="server" visible="false">
+    <tr id="TagsRow" runat="server" visible="false">
 		<td class="postformheader" width="20%">
 		<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD" />
 		<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TAGS_TOADD_DESC" />
@@ -93,12 +93,15 @@
 	</tr>
     <tr id="ImageRow" runat="server" visible="false">
 		<td class="postformheader" width="20%">
-		<a id="TopicImageAncor" href="" title="" runat="server" Visible="False">
-		<img id="TopicImage" class="" src="" alt="image" runat="server" style="border-width:0px;" />
-		</a>
+		 <VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedPage="POSTMESSAGE" LocalizedTag="TOPIC_IMAGE" />  
         </td>
-		<td class="post" width="80%"> 
+                <td class="post" width="80%">
+               <a id="TopicImageAncor" href="" title="" runat="server" Visible="False">
+		<img id="TopicImage" class="" src="" alt="image" runat="server" style="border-width:0px;" />
+		</a>     
+          
 		</td>
+		
 	</tr>
 	<tr>
 		<td class="postformheader" valign="top" width="20%">

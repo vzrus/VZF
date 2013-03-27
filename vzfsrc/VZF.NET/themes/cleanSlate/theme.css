@@ -48,6 +48,22 @@
 	clear:right;
 }
 
+.yafnet span.wordyes
+{
+	color: #06fe02;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
+
+.yafnet span.wordnow
+{
+	color: #ff0101;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
+
 .yafForumWelcome
 {
 	float:right;
@@ -59,7 +75,9 @@
 	border: 1px solid #708fff;
 	background-color: #e4e4ff;
 	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;	
+	-moz-border-radius: 5px;
+    border-radius: 5px;
+    	
 }
 .yafForumWelcome div
 {
@@ -169,6 +187,7 @@
 }
 
 /* custom forum images special styles */
+/* custom forum images special styles */
 .yafnet .forum_customimage_locked
 {
 	border: solid 2px #c93a4a;    
@@ -178,6 +197,7 @@
 {
 	border: solid 2px #fe0300;
 }
+
 
 
 

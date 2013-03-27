@@ -419,7 +419,7 @@ IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a
                        NAME                 VARCHAR(255) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
                        FLAGS                INTEGER DEFAULT 0 NOT NULL,
                        PMLIMIT              INTEGER DEFAULT 0 NOT NULL,
-                       STYLE                VARCHAR(255) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
+                       STYLE                VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
                        SORTORDER            INTEGER DEFAULT 0 NOT NULL,
                        DESCRIPTION          VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
                        USRSIGCHARS          INTEGER DEFAULT 0 NOT NULL,

@@ -1901,7 +1901,8 @@ RETURNS
   "Tag" VARCHAR(255),
   "TagCount" INTEGER,
   "MaxTagCount" INTEGER,
-  "TotalCount" INTEGER)
+  "TotalCount" INTEGER
+  )
 AS
  DECLARE ICI_ALLCOUNT INTEGER;
  DECLARE VARIABLE ICI_TAGS_TOTALROWSNUMBER INTEGER; 
@@ -1944,7 +1945,7 @@ FOR	SELECT
            tg.Tag,
            tg.TAGCOUNT,
            (SELECT :ICI_ALLCOUNT FROM RDB$DATABASE) ,
-           (SELECT :ICI_TAGS_TOTALROWSNUMBER FROM RDB$DATABASE) 
+           (SELECT :ICI_TAGS_TOTALROWSNUMBER FROM RDB$DATABASE)
            FROM objQual_TAGS tg 
            JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
            JOIN objQual_TOPIC t ON tt.TOPICID = t.TOPICID
@@ -1953,7 +1954,7 @@ FOR	SELECT
            AND (LOWER(tg.TAG) LIKE CASE 
             WHEN (:I_BEGINSWITH = 0 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN '%' || LOWER(:I_SEARCHTEXT) || '%'   
             WHEN (:I_BEGINSWITH = 1 AND :I_SEARCHTEXT IS NOT NULL AND CHAR_LENGTH(:I_SEARCHTEXT) > 0) THEN LOWER(:I_SEARCHTEXT) || '%'                        
-            ELSE '%' END) 
+            ELSE '%' END)
            ORDER BY tg.TAG ROWS :ici_firstselectrownum TO :ici_lastselectrownum
            INTO
            :"TagID",

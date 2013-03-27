@@ -568,7 +568,7 @@ namespace YAF.Pages
                 // We deal with an existing topic.
                 if (topicInfo != null && (topicInfo["UserID"].ToType<int>() == PageContext.CurrentUserData.UserID || PageContext.IsForumModerator || PageContext.IsAdmin))
                 {
-                    this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
+                        this.Tags.Text = HttpUtility.HtmlEncode(topicInfo["TopicTags"].ToString());
                 }
             } 
 
@@ -1081,6 +1081,7 @@ namespace YAF.Pages
 
             bool tagCountIsAllowed = false;
             bool forbiddenSymbols = false;
+
             if (!CheckTagLength(this.Tags.Text.Trim(), this.Get<YafBoardSettings>().TagMaxLength, this.Get<YafBoardSettings>().TagTopicMaxCount, this.Get<YafBoardSettings>().TagForbiddenSymbols, out tagCountIsAllowed, out forbiddenSymbols))
             {
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOLONG", this.Get<YafBoardSettings>().TagMaxLength));

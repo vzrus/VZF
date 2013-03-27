@@ -17,14 +17,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-using System.Web;
-
 namespace VZF.Controls
 {
     #region Using
 
     using System;
+    using System.Web;
     using System.Web.UI;
 
     using YAF.Classes;
@@ -41,30 +39,11 @@ namespace VZF.Controls
     /// </summary>
     public class UserLink : UserLabel
     {
-        #region Properties
+        #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable hover card].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable hover card]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableHoverCard
-        {
-            get
-            {
-                return this.ViewState["EnableHoverCard"] == null || this.ViewState["EnableHoverCard"].ToType<bool>(); 
-            }
-
-            set
-            {
-                this.ViewState["EnableHoverCard"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether 
-        /// Make the link target "blank" to open in a new window.
+        ///     Gets or sets a value indicating whether
+        ///     Make the link target "blank" to open in a new window.
         /// </summary>
         public bool BlankTarget
         {
@@ -80,8 +59,27 @@ namespace VZF.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether 
-        /// User Is a Guest.
+        ///     Gets or sets a value indicating whether [enable hover card].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [enable hover card]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableHoverCard
+        {
+            get
+            {
+                return this.ViewState["EnableHoverCard"] == null || this.ViewState["EnableHoverCard"].ToType<bool>();
+            }
+
+            set
+            {
+                this.ViewState["EnableHoverCard"] = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether
+        ///     User Is a Guest.
         /// </summary>
         public bool IsGuest
         {
@@ -98,6 +96,32 @@ namespace VZF.Controls
 
         #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether can view profile.
+        /// </summary>
+        private bool CanViewProfile
+        {
+            get
+            {
+                return this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ProfileViewPermissions);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether is hover card enabled.
+        /// </summary>
+        private bool IsHoverCardEnabled
+        {
+            get
+            {
+                return this.Get<YafBoardSettings>().EnableUserInfoHoverCards && this.EnableHoverCard;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -108,7 +132,7 @@ namespace VZF.Controls
         /// </param>
         protected override void OnPreRender([NotNull] EventArgs e)
         {
-            if (!this.Get<YafBoardSettings>().EnableUserInfoHoverCards && this.EnableHoverCard || !this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ProfileViewPermissions)) 
+            if (!this.CanViewProfile || !this.IsHoverCardEnabled)
             {
                 return;
             }
@@ -123,7 +147,7 @@ namespace VZF.Controls
             // Setup Hover Card JS
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "yafhovercardtjs",
-                "{0}('.userHoverCard').hovercard({{showYafCard: true,width: 350,loadingHTML: '{1}',errorHTML: '{2}'}});"
+                "{0}('.userHoverCard').hovercard({{showYafCard: true, delay: 1500, width: 350,loadingHTML: '{1}',errorHTML: '{2}'}});"
                     .FormatWith(
                         Config.JQueryAlias,
                         this.GetText("DEFAULT", "LOADING_HOVERCARD"),
@@ -157,8 +181,8 @@ namespace VZF.Controls
                 output.WriteBeginTag("a");
 
                 output.WriteAttribute("href", YafBuildLink.GetLink(ForumPages.profile, "u={0}", this.UserID));
-                
-                if (this.Get<YafBoardSettings>().EnableUserInfoHoverCards && this.EnableHoverCard || !this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ProfileViewPermissions))
+
+                if (this.CanViewProfile && this.IsHoverCardEnabled)
                 {
                     if (this.CssClass.IsSet())
                     {

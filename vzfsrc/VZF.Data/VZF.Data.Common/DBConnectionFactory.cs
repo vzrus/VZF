@@ -10,6 +10,10 @@
     using VZF.Data.Mysql;
     using VZF.Data.Postgre;
 
+    using YAF.Classes.Data;
+    using VZF.Types;
+    using YAF.Types.Interfaces;
+
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Utils;
@@ -64,15 +68,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.IsolationLevel;
                     case "MySql.Data.MySqlClient":
-                       // return PostgreDBAccess.IsolationLevel;
+                       // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                      //  return PostgreDBAccess.IsolationLevel;
+                      //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                     //   return PostgreDBAccess.IsolationLevel;
+                     //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                     //   return PostgreDBAccess.IsolationLevel;
+                     //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -95,15 +99,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.DatabaseOwner;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -124,15 +128,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.ObjectQualifier;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -153,15 +157,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.SchemaName;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -182,15 +186,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.DatabaseEncoding;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -211,15 +215,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.GranteeName;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -240,15 +244,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.DBName;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -269,15 +273,15 @@
                     case "Npgsql":
                         return PostgreDbAccess.HostName;
                     case "MySql.Data.MySqlClient":
-                    // return PostgreDBAccess.IsolationLevel;
+                    // return PostgreDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                    //  return PostgreDBAccess.IsolationLevel;
+                    //  return PostgreDbAccess.IsolationLevel;
                     case "oracle":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
-                    //    return PostgreDBAccess.IsolationLevel;
+                    //    return PostgreDbAccess.IsolationLevel;
                     case "other":
-                    //   return PostgreDBAccess.IsolationLevel;
+                    //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
@@ -332,7 +336,7 @@
                  case "System.Data.SqlClient":
                      return string.Empty;
                  case "Npgsql":
-                     return PostgreDBAccess.GetConnectionManager();
+                     return PostgreDbAccess.GetConnectionManager();
                  case "MySql.Data.MySqlClient":
                      return string.Empty;
                  case "FirebirdSql.Data.FirebirdClient":
@@ -373,7 +377,7 @@
                 case "System.Data.SqlClient":
                     return string.Empty;
                 case "Npgsql":
-                    return PostgreDBAccess.GetConnectionManager();
+                    return PostgreDbAccess.GetConnectionManager();
                 case "MySql.Data.MySqlClient":
                     return string.Empty;
                 case "FirebirdSql.Data.FirebirdClient":
@@ -692,11 +696,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                     return FbDbAccess.GetCommand(commandText, isText);
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -726,11 +730,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                     return FbDbAccess.GetCommandTextReplaced(commandText);
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -761,15 +765,15 @@
                 case "Npgsql":
                     throw new ApplicationException("Not implemented for the data layer.");
                 case "MySql.Data.MySqlClient":
-                //  return PostgreDBAccess.GetCommandTextReplaced(commandText)
+                //  return PostgreDbAccess.GetCommandTextReplaced(commandText)
                 case "FirebirdSql.Data.FirebirdClient":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);;
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);;
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -827,11 +831,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                     return  FbDbAccess.Current.GetData(commandText, transaction, connectionString);
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -863,11 +867,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                     FbDbAccess.Current.ExecuteNonQuery(cmd, transaction, connectionString); break;
                 case "oracle":
-                    //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                    //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                    //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                    //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -892,11 +896,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                     throw new ApplicationException("Not implemented for the data layer.");
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -922,11 +926,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                   return FbDbAccess.Current.ExecuteScalar(cmd, transaction, connectionString);
                 case "oracle":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "db2":
-                //   return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 case "other":
-                //    return PostgreDBAccess.GetCommandTextReplaced(commandText);
+                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;
@@ -964,11 +968,11 @@
                 case "FirebirdSql.Data.FirebirdClient":
                   return FbDbAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "oracle":
-                //   return PostgreDBAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                //   return PostgreDbAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "db2":
-                //   return PostgreDBAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                //   return PostgreDbAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 case "other":
-                //    return PostgreDBAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
+                //    return PostgreDbAccess.Current.GetDataTableFromReader( cmd,transaction, acceptChanges,connectionString);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;

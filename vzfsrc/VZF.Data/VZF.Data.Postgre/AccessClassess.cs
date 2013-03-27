@@ -24,6 +24,8 @@ namespace VZF.Data.Postgre
 
     using Npgsql;
 
+    using YAF.Classes.Data;
+
     /// <summary>
     /// The class creates accessmask_list stored procedure data access functionality.
     /// </summary>

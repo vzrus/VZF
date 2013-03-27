@@ -50,10 +50,8 @@ namespace YAF.Providers.Membership
 
     using NpgsqlTypes;
 
-    using VZF.Data.Postgre;
-
     using YAF.Classes;
-    using YAF.Classes.Pattern;
+    using YAF.Classes.Data;
     using YAF.Core;
 
     public static class PgMembershipDBConnManager 

@@ -179,8 +179,8 @@
         </asp:Repeater>
         <tr>
             <td class="postfooter" align="center" colspan="2">
-                <asp:Button ID="Save" runat="server" CssClass="pbutton"></asp:Button>&nbsp;
-                <asp:Button ID="Cancel" runat="server" CssClass="pbutton"></asp:Button>
+                 <VZF:ThemeButton ID="Save" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="ADMIN_EDITFORUM" TextLocalizedTag="SAVE" TitleLocalizedPage="ADMIN_EDITFORUM" TitleLocalizedTag="SAVE" runat="server"/>&nbsp;
+                 <VZF:ThemeButton ID="Cancel" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="ADMIN_EDITFORUM" TextLocalizedTag="CANCEL" TitleLocalizedPage="ADMIN_EDITFORUM" TitleLocalizedTag="CANCEL" runat="server"/>
             </td>
         </tr>
     </table>

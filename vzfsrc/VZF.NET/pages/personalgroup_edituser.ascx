@@ -14,12 +14,14 @@
 		<td class="post" width="50%">
 			<asp:TextBox runat="server" ID="UserName" /><asp:DropDownList runat="server" ID="ToList"
 				Visible="false" />
-			<asp:Button runat="server" ID="FindUsers" OnClick="FindUsers_Click" /></td>
+             <VZF:ThemeButton ID="FindUsers" OnClick="FindUsers_Click" CssClass="yafcssbigbutton leftItem" TextLocalizedPage="SEARCH" TextLocalizedTag="FIND" TitleLocalizedPage="SEARCH" TitleLocalizedTag="FIND" runat="server"/>&nbsp;
+		
+		</td>
 	</tr>
 	<tr class="footer1">
 		<td colspan="2" align="center">
-			<asp:Button runat="server" ID="Save" CssClass="pbutton" OnClick="Update_Click" />
-			<asp:Button runat="server" ID="Cancel" CssClass="pbutton" OnClick="Cancel_Click" />
+		    <VZF:ThemeButton ID="Save" OnClick="Update_Click" CssClass="yafcssbigbutton centerItem" TextLocalizedPage="COMMON" TextLocalizedTag="SAVE" TitleLocalizedPage="COMMON" TitleLocalizedTag="SAVE" runat="server"/>&nbsp;
+            <VZF:ThemeButton ID="Cancel" OnClick="Cancel_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="COMMON" TextLocalizedTag="CANCEL" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" runat="server"/>
 		</td>
 	</tr>
 </table>

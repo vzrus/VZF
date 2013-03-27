@@ -37,6 +37,7 @@ namespace VZF.Data.MsSql
 
     using YAF.Classes;
     using YAF.Types;
+    using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
     using YAF.Types.Objects;
@@ -8223,10 +8224,17 @@ namespace VZF.Data.MsSql
         /// </param>
         public static void topic_delete(string connectionString, [NotNull] object topicID, [NotNull] object eraseTopic)
         {
-            // ABOT CHANGE 16.04.04
-            topic_deleteAttachments(connectionString,topicID);
+            if (eraseTopic == null)
+            {
+                eraseTopic = 0;
+            }
 
-            // END ABOT CHANGE 16.04.04
+            if ((int)eraseTopic == 0)
+            {
+                topic_deleteAttachments(connectionString, topicID);
+
+                topic_deleteimages(connectionString, (int)topicID);
+            }
             using (var cmd = MsSqlDbAccess.GetCommand("topic_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -8429,7 +8437,7 @@ namespace VZF.Data.MsSql
         /// <param name="imageUrl">
         /// The image url.
         /// </param>
-        public static void topic_imagesave(string connectionString, [NotNull] object topicID, [NotNull] object imageUrl, Stream stream, object avatarImageType)
+        public static void topic_imagesave(string connectionString, [NotNull] object topicID, [CanBeNull] object imageUrl, Stream stream, object topicImageType)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_imagesave"))
             {
@@ -8445,7 +8453,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("TopicID", topicID);
                 cmd.Parameters.AddWithValue("ImageUrl", imageUrl);
                 cmd.Parameters.AddWithValue("Stream", data);
-                cmd.Parameters.AddWithValue("AvatarImageType", avatarImageType);
+                cmd.Parameters.AddWithValue("TopicImageType", topicImageType);
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
@@ -10282,7 +10290,7 @@ namespace VZF.Data.MsSql
                     catch (Exception x)
                     {
                         trans.Rollback();
-                        eventlog_create(connectionString,null, "user_register in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error);
+                        eventlog_create(connectionString,null, "user_register in VZF.Classes.Data.DB.cs", x, EventLogTypes.Error);
                         return false;
                     }
                 }
@@ -12139,6 +12147,39 @@ namespace VZF.Data.MsSql
                     }
                 }
             }
+        }
+
+        private static void topic_deleteimages(string connectionString, int topicID)
+        {
+           
+                string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
+
+                try
+                {
+                    string topicImage = string.Empty;
+                    var dt = topic_info(
+                     connectionString, topicID, false);
+                    if (dt != null)
+                    {
+                        topicImage = dt["TopicImage"].ToString();
+                    }
+
+                    string fileName = string.Format("{0}/{1}.{2}.yafupload", uploadDir, topicID, topicImage);
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        System.IO.File.Delete(fileName);
+                    }
+
+                    string fileNameThumb = string.Format("{0}/{1}.thumb.{2}.yafupload", uploadDir, topicID, topicImage);
+                    if (System.IO.File.Exists(fileNameThumb))
+                    {
+                        System.IO.File.Delete(fileNameThumb);
+                    }
+                }
+                catch
+                {
+                    // error deleting that file... 
+                }
         }
 
         /// <summary>

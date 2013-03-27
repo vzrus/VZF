@@ -40,7 +40,7 @@ namespace VZF.Controls {
         protected global::VZF.Controls.LocalizedLabel LocalizedLabel2;
         
         /// <summary>
-        /// avatarImageTD control.
+        /// topicImageTD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -49,13 +49,22 @@ namespace VZF.Controls {
         protected global::System.Web.UI.HtmlControls.HtmlTableCell topicImageTD;
         
         /// <summary>
-        /// AvatarImg control.
+        /// TopicImg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image TopicImg;
+        
+        /// <summary>
+        /// TopicImg1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage TopicImg1;
         
         /// <summary>
         /// NoImage control.

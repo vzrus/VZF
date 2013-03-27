@@ -219,6 +219,7 @@ namespace YAF.Pages
                 this.retBtnArgs = "b={0}".FormatWith(this.boardIdb);
             }
 
+            this.Pager.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
             DataTable dtTopics = CommonDb.topic_bytags(
                 PageContext.PageModuleID,
                 this.PageContext.PageBoardID,
@@ -227,7 +228,7 @@ namespace YAF.Pages
                 this.Request.QueryString.GetFirstOrDefault("tagid"),
                                                      DateTime.MinValue.AddYears(1902),
                                                      this.Pager.CurrentPageIndex,
-                                                     this.Get<YafBoardSettings>().TopicsPerPage);
+                                                     this.Pager.PageSize);
            
             if (dtTopics != null && dtTopics.Rows.Count > 0)
             {

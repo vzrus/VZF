@@ -12,13 +12,16 @@
 <div class="DivTopSeparator">
 </div>  
 <table class="command" width="100%">
-    <tr>
-        <td colspan="2">
-            <VZF:Pager runat="server" ID="Pager" UsePostBack="False" />
-        </td>
-    </tr>
+    <thead>
+        <tr>
+            <td colspan="2">
+                <VZF:Pager runat="server" ID="Pager" UsePostBack="False" />
+            </td>
+        </tr>
+    </thead>
 </table>
 <table class="content" width="100%">
+    <thead>
     <tr class="topicTitle">
         <th class="header1" colspan="6">
             <asp:Label ID="PageTitle" runat="server"></asp:Label>
@@ -46,26 +49,34 @@
             <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
         </th>
     </tr>
-    <asp:Repeater ID="TopicList" runat="server">
-        <ItemTemplate>
-            <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
-        </ItemTemplate>
-        <AlternatingItemTemplate>
-            <VZF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
-        </AlternatingItemTemplate>
-    </asp:Repeater>
+    </thead>
+    <tbody>
+        <tr>
+            <asp:Repeater ID="TopicList" runat="server">
+                <ItemTemplate>
+                    <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+                </ItemTemplate>
+                <AlternatingItemTemplate>
+                    <VZF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+                </AlternatingItemTemplate>
+            </asp:Repeater>
+        </tr>
+    </tbody>
 </table>
 <table class="command" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-        <td align="left" colspan="2">
-            <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="Pager" UsePostBack="False" />
-        </td>
-    </tr>
-     <tr>
-        <td align="center" colspan="5">
-            <asp:Button ID="OKButon"  Text='<%# this.GetText("COMMON","OK") %>' CausesValidation="False" CommandName="Action" CommandArgument='<%# this.retBtnArgs %>' OnClick="okBtn_click"  runat="server"/>
-        </td>
-    </tr>
+    <tfoot>
+        <tr>
+            <td align="left" colspan="2">
+                <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="Pager" UsePostBack="False" />
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="5">
+                <VZF:ThemeButton ID="OKButon" runat="server" CssClass="yafcssbigbutton centerItem"
+                OnClick="okBtn_click" TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="OK" CommandName="Action" CommandArgument='<%# this.retBtnArgs %>' />
+            </td>
+        </tr>
+    </tfoot>
 </table>
 <asp:PlaceHolder ID="ForumJumpHolder" runat="server">
     <div id="DivForumJump">

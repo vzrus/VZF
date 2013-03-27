@@ -307,7 +307,7 @@ namespace YAF.pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Save;
+        protected global::VZF.Controls.ThemeButton Save;
         
         /// <summary>
         /// Cancel control.
@@ -316,7 +316,7 @@ namespace YAF.pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Cancel;
+        protected global::VZF.Controls.ThemeButton Cancel;
         
         /// <summary>
         /// SmartScroller1 control.

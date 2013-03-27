@@ -15,6 +15,14 @@
     </Resource>
   </page>
   <page name="ICONS">
+    <Resource tag="SAVE_ICON">~/images/disk-black.png</Resource>
+    <Resource tag="FORUMS_ICON">~/images/tables.png</Resource>
+    <Resource tag="TICK_YES_ICON">~/images/tick.png</Resource>
+    <Resource tag="USERS_ICON">~/images/users.png</Resource>
+    <Resource tag="HOT_T_ICON">~/images/fire-big.png</Resource>
+    <Resource tag="ANOUNCEMENT_T_SICON">~/images/bell.png</Resource>
+    <Resource tag="STICKY_T_SICON">~/images/pin-small.png</Resource>
+    <Resource tag="POLL_T_SICON">~/images/chart-medium.png</Resource>
     <Resource tag="ARROWUP_16">~/images/navigation-090-button.png</Resource>
     <Resource tag="ARROWDOWN_16">~/images/navigation-270-button.png</Resource>
     <Resource tag="ALBUMS">~/images/albums.png</Resource>

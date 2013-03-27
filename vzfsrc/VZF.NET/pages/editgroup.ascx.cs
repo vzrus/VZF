@@ -105,18 +105,17 @@ namespace YAF.Pages
             // forum index
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
-            // user profile
-            this.PageLinks.AddLink(this.GetText("CP_PROFILE", "TITLE"), YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID)));
+            // profile
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID))); ;
 
-            this.PageLinks.AddLink(this.GetText("ADMIN_GROUPS", "TITLE"), YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID)));
+            this.PageLinks.AddLink(this.GetText("PERSONALGROUP", "TITLE"), YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // current page label (no link)
-            this.PageLinks.AddLink(this.GetText("ADMIN_EDITGROUP", "TITLE"), string.Empty);
+            this.PageLinks.AddLink(this.GetText("PERSONALGROUP_EDIT", "TITLE_EDIT"), string.Empty);
 
-            this.Page.Header.Title = "{0} - {1} - {2}".FormatWith(
-               this.Get<YafBoardSettings>().Name,
-               this.GetText("CP_PROFILE", "TITLE"),
-               this.GetText("ADMIN_EDITGROUP", "TITLE"));
+            this.Page.Header.Title = "{0} - {1}".FormatWith(
+                this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
+                this.GetText("PERSONALGROUP_EDIT", "TITLE"));
         }
 
         /// <summary>
@@ -173,10 +172,6 @@ namespace YAF.Pages
 
             // create page links
             this.CreatePageLinks();
-
-            this.Save.Text = this.GetText("COMMON", "SAVE");
-            this.Cancel.Text = this.GetText("COMMON", "CANCEL");
-
 
             // bind data
             this.BindData();
@@ -314,6 +309,9 @@ namespace YAF.Pages
                 RoleMembershipHelper.CreateRole(roleName);
             }
 
+            // number of current groups changed
+            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
+
             // Access masks for a newly created or an existing role
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
@@ -324,11 +322,14 @@ namespace YAF.Pages
                         RepeaterItem item = this.AccessList.Items[i];
 
                         // get forum ID
-                        int forumID = int.Parse(((Label)item.FindControl("ForumID")).Text);
+                        int forumId = int.Parse(((Label)item.FindControl("ForumID")).Text);
 
                         // save forum access maks for this role
-                        CommonDb.forumaccess_save(PageContext.PageModuleID, forumID, roleID,
-                                                  ((DropDownList)item.FindControl("AccessmaskID")).SelectedValue);
+                        CommonDb.forumaccess_save(
+                            PageContext.PageModuleID,
+                            forumId,
+                            roleID,
+                            ((DropDownList)item.FindControl("AccessmaskID")).SelectedValue);
                     }
 
                     YafBuildLink.Redirect(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID));
@@ -338,10 +339,10 @@ namespace YAF.Pages
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
 
             // Clearing cache with old permissions data...
-            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(String.Empty)));
+            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(string.Empty)));
 
             // Done, redirect to role editing page
-            YafBuildLink.Redirect(ForumPages.editgroup, "i={0}", roleID);
+            YafBuildLink.Redirect(ForumPages.editgroup, "i={0}&u={1}", roleID, this.PageContext.PageUserID);
         }
 
         /// <summary>

@@ -7258,7 +7258,7 @@ namespace VZF.Data.Mysql
              {
               
                  DataTable dt = null;
-                 dbcn.ConnectionString = YAF.Classes.Config.ConnectionString;
+                 dbcn.ConnectionString = VZF.Classes.Config.ConnectionString;
                  dbcn.Open();                
                  using (MySqlCommand dbcmd = (MySqlCommand)dbcn.CreateCommand())
                  {
@@ -7699,17 +7699,55 @@ namespace VZF.Data.Mysql
             }
         }
 
+
+        private static void topic_deleteimages(string connectionString, int topicID)
+        {
+
+            string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
+
+            try
+            {
+                string topicImage = string.Empty;
+                var dt = topic_info(
+                 connectionString, topicID, false);
+                if (dt != null)
+                {
+                    topicImage = dt["TopicImage"].ToString();
+                }
+
+                string fileName = string.Format("{0}/{1}.{2}.yafupload", uploadDir, topicID, topicImage);
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+                string fileNameThumb = string.Format("{0}/{1}.thumb.{2}.yafupload", uploadDir, topicID, topicImage);
+                if (System.IO.File.Exists(fileNameThumb))
+                {
+                    System.IO.File.Delete(fileNameThumb);
+                }
+            }
+            catch
+            {
+                // error deleting that file... 
+            }
+        }
+
         public static void topic_delete(string connectionString, object topicID, object eraseTopic)
         {
-            //ABOT CHANGE 16.04.04
-            topic_deleteAttachments(connectionString, topicID);
-            //END ABOT CHANGE 16.04.04
+            if (eraseTopic == null)
+            {
+                eraseTopic = 0;
+            }
+
+            if ((int)eraseTopic == 0)
+            {
+                topic_deleteAttachments(connectionString, topicID);
+
+                topic_deleteimages(connectionString, (int)topicID);
+            }
             using (var cmd = MySqlDbAccess.GetCommand("topic_delete"))
             {
-                if (eraseTopic == null)
-                {
-                    eraseTopic = 0;
-                }
 
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -9906,7 +9944,7 @@ namespace VZF.Data.Mysql
                     catch ( Exception x )
                     {
                         trans.Rollback();
-                        YAF.Classes.Data.DB.eventlog_create( null, "user_register in YAF.Classes.Data.DB.cs", x, EventLogTypes.Error );
+                        VZF.Classes.Data.DB.eventlog_create( null, "user_register in VZF.Classes.Data.DB.cs", x, EventLogTypes.Error );
                         return false;
                     }
                 }
@@ -11335,9 +11373,9 @@ namespace VZF.Data.Mysql
         /// </param>
         public static void system_initialize_fixaccess(string connectionString, bool bGrant)
         {
-            /* using (YAF.Classes.Data.MySqlDbConnectionManager connMan = new MySqlDbConnectionManager())
+            /* using (VZF.Classes.Data.MySqlDbConnectionManager connMan = new MySqlDbConnectionManager())
               {
-                  using (MySqlTransaction trans = connMan.OpenDBConnection.BeginTransaction(YAF.Classes.Data.DBAccess.IsolationLevel))
+                  using (MySqlTransaction trans = connMan.OpenDBConnection.BeginTransaction(VZF.Classes.Data.DBAccess.IsolationLevel))
                   {
                       // REVIEW : Ederon - would "{databaseName}.{objectQualifier}" work, might need only "{objectQualifier}"
                       using (SqlDataAdapter da = new SqlDataAdapter("select Name,IsUserTable = OBJECTPROPERTY(id, N'IsUserTable'),IsScalarFunction = OBJECTPROPERTY(id, N'IsScalarFunction'),IsProcedure = OBJECTPROPERTY(id, N'IsProcedure'),IsView = OBJECTPROPERTY(id, N'IsView') from dbo.sysobjects where Name like '{databaseName}.{objectQualifier}%'", connMan.OpenDBConnection))

@@ -45,6 +45,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataRowConvert.cs" />
@@ -54,12 +58,6 @@
   <ItemGroup>
     <None Include="VZFGeneralKey.pfx" />
     <None Include="YetAnotherForum.NET.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
-      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
-      <Name>VZF.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

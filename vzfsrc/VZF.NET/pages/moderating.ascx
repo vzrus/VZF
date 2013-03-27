@@ -44,7 +44,9 @@
     </asp:Repeater>
     <tr class="footer1">
         <td colspan="4">
-            <asp:Button runat="server" ID="AddUser" Text="Invite User" OnClick="AddUser_Click" CssClass="pbutton" />
+            <VZF:ThemeButton ID="AddUser" runat="server" CssClass="yafcssbigbutton leftItem" TextLocalizedPage="MODERATE" TitleLocalizedPage="MODERATE"
+    TextLocalizedTag="INVITE" TitleLocalizedTag="INVITE"
+     OnClick="AddUser_Click" />
         </td>
     </tr>
 </table>

@@ -55,7 +55,20 @@
     text-align:right;
     display:inline;
 }
-
+.yafnet span.wordyes
+{
+	color: #06fe02;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
+.yafnet span.wordnow
+{
+	color: #ff0101;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-decoration:none;
+}
 .yafnet img {
     border: 0;
 }

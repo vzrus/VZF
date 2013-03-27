@@ -1,37 +1,42 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="editaccessmask.ascx.cs" Inherits="YAF.pages.editaccessmask" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
-    <table class="content" cellspacing="1" cellpadding="0" width="100%">
+<table class="content" cellspacing="1" cellpadding="0" width="100%">
+    <thead>
         <tr>
             <td class="header1" colspan="2">
                 <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_EDITACCESSMASKS" />
             </td>
         </tr>
         <tr>
-          <td class="header2" colspan="2" style="height:30px"></td>
+            <td class="header2" colspan="2" style="height:30px">&nbsp;</td>
         </tr>
+    </thead>
+    <tbody>
         <tr>
             <td class="postheader" width="50%">
                 <VZF:HelpLabel ID="HelpLabel1" runat="server" LocalizedTag="MASK_NAME" LocalizedPage="ADMIN_EDITACCESSMASKS" />
             </td>
             <td class="post" width="50%">
                 <asp:TextBox runat="server" ID="Name" CssClass="edit" style="width:250px" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1"
-                    runat="server" Text="<br />Enter name please!" ControlToValidate="Name" Display="Dynamic" /></td>
+                    runat="server" Text="<br />Enter name please!" ControlToValidate="Name" Display="Dynamic" />&nbsp;</td>
         </tr>
         <tr>
             <td class="postheader" width="50%">
                 <VZF:HelpLabel ID="HelpLabel2" runat="server" LocalizedTag="MASK_ORDER" LocalizedPage="ADMIN_EDITACCESSMASKS" />
                 <strong></strong><br />
-                </td>
+            </td>
             <td class="post" width="50%">
                 <asp:TextBox runat="server" ID="SortOrder" MaxLength="5" style="width:250px" CssClass="edit" /><asp:RequiredFieldValidator ID="RequiredFieldValidator2"
-                    runat="server" Text="<br />Enter sort order please!" ControlToValidate="SortOrder" Display="Dynamic" /></td>
+                    runat="server" Text="<br />Enter sort order please!" ControlToValidate="SortOrder" Display="Dynamic" />
+            </td>
         </tr>
         <tr>
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel3" runat="server" LocalizedTag="READ_ACCESS" LocalizedPage="ADMIN_EDITACCESSMASKS" Suffix=":" />
             </td>
             <td class="post">
-                <asp:CheckBox runat="server" ID="ReadAccess" /></td>
+                <asp:CheckBox runat="server" ID="ReadAccess" />
+            </td>
         </tr>
         <tr>
             <td class="postheader">
@@ -110,11 +115,14 @@
             <td class="post">
                 <asp:CheckBox runat="server" ID="UserForumAccess" /></td>
         </tr>
+    </tbody>
+    <tfoot>
         <tr class="footer1">
             <td align="center" colspan="2">
-                <asp:Button ID="Save" runat="server" OnClick="Save_Click" CssClass="pbutton" />
-                <asp:Button ID="Cancel" runat="server" OnClick="Cancel_Click" CausesValidation="false" CssClass="pbutton" />
+                <VZF:ThemeButton ID="Save" OnClick="Save_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="COMMON" TextLocalizedTag="SAVE" TitleLocalizedPage="COMMON" TitleLocalizedTag="SAVE" runat="server"/>&nbsp;
+                <VZF:ThemeButton ID="Cancel" OnClick="Cancel_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="COMMON" TextLocalizedTag="CANCEL" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" runat="server"/>
             </td>
         </tr>
-    </table>
+    </tfoot>
+</table>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

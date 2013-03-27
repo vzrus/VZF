@@ -24,9 +24,9 @@ namespace VZF.Data.MsSql.Search
     using System.Diagnostics;
     using System.Linq;
 
-    using YAF.Utils;
     using YAF.Types;
     using YAF.Types.Constants;
+    using YAF.Utils;
 
     #endregion
 
