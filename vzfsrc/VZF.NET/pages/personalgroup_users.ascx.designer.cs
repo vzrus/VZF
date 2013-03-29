@@ -58,6 +58,15 @@ namespace YAF.Pages {
         protected global::VZF.Controls.LocalizedLabel SearchMemberLocalizedLabel;
         
         /// <summary>
+        /// Roles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList Roles;
+        
+        /// <summary>
         /// Ranks control.
         /// </summary>
         /// <remarks>

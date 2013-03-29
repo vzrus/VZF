@@ -385,6 +385,28 @@ namespace YAF.Core
     }
 
     /// <summary>
+    ///   Gets TopicsPerPage.
+    /// </summary>
+    public int? TopicsPerPage
+    {
+        get
+        {
+            return this.RowConvert.AsInt32("TopicsPerPage");
+        }
+    }
+
+    /// <summary>
+    ///   Gets PostsPerPage.
+    /// </summary>
+    public int? PostsPerPage
+    {
+        get
+        {
+            return this.RowConvert.AsInt32("PostsPerPage");
+        }
+    }
+
+    /// <summary>
     ///   Gets a value indicating whether UseMobileTheme.
     /// </summary>
     public bool UseMobileTheme

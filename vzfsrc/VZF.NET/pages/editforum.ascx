@@ -116,7 +116,7 @@
                 <asp:CheckBox ID="CanHavePersForums" runat="server"></asp:CheckBox>
             </td>
         </tr>
-        <tr>
+      <!-- <tr>
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel7" runat="server" LocalizedTag="FORUM_IMAGE" LocalizedPage="ADMIN_EDITFORUM" />
             </td>
@@ -124,7 +124,7 @@
                 <asp:DropDownList Width="250" ID="ForumImages" runat="server" />
                 <img align="middle" runat="server" id="Preview" alt="" />
             </td>
-        </tr>
+        </tr> -->
         <tr id="Tr1" visible="false" runat="server">
             <td class="postheader">
                 <VZF:HelpLabel ID="HelpLabel6" runat="server" LocalizedTag="STYLES" LocalizedPage="ADMIN_EDITFORUM" />

@@ -3389,7 +3389,10 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         IF (:I_ISMODERATOR <> 0) THEN
         iciFlags = BIN_OR(iciFlags, 8); 
 		IF (:I_ISHIDDEN <> 0) THEN
-        iciFlags = BIN_OR(iciFlags, 16); 
+        iciFlags = BIN_OR(iciFlags, 16);
+
+		 IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+         I_STYLE = NULL; 
 	
           IF (:I_USERID IS NOT NULL) THEN
     BEGIN	
@@ -6918,7 +6921,7 @@ RETURNS
   "UsrSigBBCodes"  varchar(255),
   "UsrSigHTMLTags" varchar(255),
   "UsrAlbums" integer,
-  "UsrAlbumImages"  integer   
+  "UsrAlbumImages"  integer
   )
 AS
 BEGIN
@@ -7005,6 +7008,10 @@ BEGIN
     
     IF (I_ISSTART<>0) THEN  ICI_FLAGS = BIN_OR(ICI_FLAGS, 1); 
     IF (I_ISLADDER<>0) THEN ICI_FLAGS = BIN_OR(ICI_FLAGS, 2); 
+
+	IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+    I_STYLE = NULL; 
+	
     
     IF (I_RANKID>0) THEN
     BEGIN
@@ -8851,7 +8858,9 @@ RETURNS
  "IsGuest" BOOL,
  "IsHostAdmin" integer,
  "IsForumModerator" BOOL,
- "IsModerator" integer
+ "IsModerator" integer,
+ "TopicsPerPage" integer,
+ "PostsPerPage" integer
  )
 AS
 
@@ -8913,7 +8922,9 @@ COALESCE((SELECT FIRST 1 1 FROM objQual_USER x
 a.ISGUEST AS ISGUEST,
 COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 (SELECT :ici_IsForumModerator FROM RDB$DATABASE),
-(SELECT :ici_IsModerator FROM RDB$DATABASE)
+(SELECT :ici_IsModerator FROM RDB$DATABASE),
+a.TOPICSPERPAGE,
+a.POSTSPERPAGE
 FROM
 objQual_USER a
 JOIN objQual_RANK b ON b.RANKID=a.RANKID
@@ -8968,7 +8979,9 @@ INTO
            :"IsGuest",
            :"IsHostAdmin",
            :"IsForumModerator",
-           :"IsModerator"
+           :"IsModerator",
+		   :"TopicsPerPage",
+		   :"PostsPerPage"
  DO
  BEGIN
  EXECUTE PROCEDURE objQual_vaccess_ul(:"UserID", 0) 
@@ -9027,7 +9040,9 @@ a.NUMPOSTS AS "NumPostsForum",
 COALESCE(SIGN(BIN_AND(a.FLAGS, 4)),0) AS ISGUEST,
 COALESCE(SIGN(BIN_AND(a.FLAGS, 1)),0) AS "IsHostAdmin",
 (SELECT :ici_IsForumModerator FROM RDB$DATABASE),
-(SELECT :ici_IsModerator FROM RDB$DATABASE)
+(SELECT :ici_IsModerator FROM RDB$DATABASE),
+a.TOPICSPERPAGE,
+a.POSTSPERPAGE
 FROM
 objQual_USER a
 JOIN objQual_RANK b ON b.RANKID=a.RANKID
@@ -9080,7 +9095,9 @@ INTO
            :"IsGuest",
            :"IsHostAdmin",
            :"IsForumModerator",
-           :"IsModerator"
+           :"IsModerator",
+		   :"TopicsPerPage",
+		   :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
  /*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
@@ -9141,7 +9158,9 @@ a.NUMPOSTS AS "NumPostsForum",
 COALESCE(SIGN(BIN_AND(a.FLAGS, 4)),0) AS ISGUEST,
 COALESCE(BIN_AND(a.FLAGS, 1),0) AS "IsHostAdmin",
 (SELECT :ici_IsForumModerator FROM RDB$DATABASE),
-(SELECT :ici_IsModerator FROM RDB$DATABASE)
+(SELECT :ici_IsModerator FROM RDB$DATABASE),
+a.TOPICSPERPAGE,
+a.POSTSPERPAGE
 FROM
 objQual_USER a
 JOIN objQual_RANK b ON b.RANKID=a.RANKID
@@ -9198,7 +9217,9 @@ INTO
            :"IsGuest",
            :"IsHostAdmin",
            :"IsForumModerator",
-           :"IsModerator"
+           :"IsModerator",
+		   :"TopicsPerPage",
+		   :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
 /*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
@@ -10164,9 +10185,11 @@ CREATE PROCEDURE  objQual_USER_SAVE(
                  I_NOTIFICATIONTYPE     INTEGER,
                  I_AUTOWATCHTOPICS      BOOL,
                  I_PROVIDERUSERKEY	    VARCHAR(64),
-                 I_DSTUSER              BOOL,
-                 I_UTCTIMESTAMP         TIMESTAMP,
-                 I_HIDEUSER             BOOL)
+                 I_DSTUSER              BOOL,                 
+                 I_HIDEUSER             BOOL,
+				 I_TOPICSPERPAGE        INTEGER,
+				 I_POSTSPERPAGE         INTEGER,
+				 I_UTCTIMESTAMP         TIMESTAMP)
         RETURNS
         ("UserID" INTEGER)
 AS
@@ -10191,8 +10214,8 @@ BEGIN
         INTO :ici_RankID;
      SELECT NEXT VALUE FOR SEQ_YAF_USER_USERID  
      FROM RDB$DATABASE INTO :I_USERID;
-        INSERT INTO objQual_USER(USERID,BOARDID,RANKID,"NAME",DISPLAYNAME,"PASSWORD","EMAIL",JOINED,LASTVISIT,NUMPOSTS,TIMEZONE,FLAGS,PMNOTIFICATION,PROVIDERUSERKEY, AUTOWATCHTOPICS, CULTURE) 
-        VALUES(:I_USERID,:I_BOARDID,:ici_RankID,:I_USERNAME,:I_DISPLAYNAME,'-',:I_EMAIL, :I_UTCTIMESTAMP,:I_UTCTIMESTAMP,0,:I_TIMEZONE,:ICI_FLAGS,:I_PMNOTIFICATION,CHAR_TO_UUID(:I_PROVIDERUSERKEY),:I_AUTOWATCHTOPICS, :I_CULTURE); 		
+        INSERT INTO objQual_USER(USERID,BOARDID,RANKID,"NAME",DISPLAYNAME,"PASSWORD","EMAIL",JOINED,LASTVISIT,NUMPOSTS,TIMEZONE,FLAGS,PMNOTIFICATION,PROVIDERUSERKEY, AUTOWATCHTOPICS, CULTURE,TOPICSPERPAGE,POSTSPERPAGE) 
+        VALUES(:I_USERID,:I_BOARDID,:ici_RankID,:I_USERNAME,:I_DISPLAYNAME,'-',:I_EMAIL, :I_UTCTIMESTAMP,:I_UTCTIMESTAMP,0,:I_TIMEZONE,:ICI_FLAGS,:I_PMNOTIFICATION,CHAR_TO_UUID(:I_PROVIDERUSERKEY),:I_AUTOWATCHTOPICS, :I_CULTURE,:I_TOPICSPERPAGE,:I_POSTSPERPAGE); 		
  
         INSERT INTO objQual_USERGROUP(USERID,GROUPID)
         SELECT 
@@ -10231,7 +10254,9 @@ BEGIN
     FLAGS = (CASE WHEN (:ICI_FLAGS <> FLAGS) 
             THEN :ICI_FLAGS ELSE FLAGS END),
     EMAIL = (CASE WHEN  (:I_EMAIL is not null) THEN :I_EMAIL ELSE EMAIL END),
-    DISPLAYNAME = (CASE WHEN  (:I_DISPLAYNAME is not null) THEN :I_DISPLAYNAME ELSE DISPLAYNAME END)
+    DISPLAYNAME = (CASE WHEN  (:I_DISPLAYNAME is not null) THEN :I_DISPLAYNAME ELSE DISPLAYNAME END),
+	TOPICSPERPAGE = :I_TOPICSPERPAGE,
+	POSTSPERPAGE = :I_POSTSPERPAGE
     WHERE USERID = :I_USERID;
    if (:I_DISPLAYNAME IS NOT NULL AND COALESCE(:ICI_OLDDISPLAYNAME,'') != COALESCE(:I_DISPLAYNAME,'')) THEN
         begin

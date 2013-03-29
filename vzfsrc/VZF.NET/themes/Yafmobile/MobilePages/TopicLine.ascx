@@ -85,7 +85,7 @@
             }     
 
       string tPager = this.CreatePostPager(
-        actualPostCount, this.PageContext.BoardSettings.PostsPerPage, this.TopicRow["LinkTopicID"].ToType<int>());
+        actualPostCount, this.PageContext.PostsPerPage, this.TopicRow["LinkTopicID"].ToType<int>());
 
       if (tPager != String.Empty)
       {

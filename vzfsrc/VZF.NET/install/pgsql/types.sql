@@ -3,6 +3,7 @@
 -- They are distributed under terms of GPLv2 licence only as in http://www.fsf.org/licensing/licenses/gpl.html
 -- Copyright vzrus(c) 2009-2012
 
+
 -- Table Types
 SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifier_category_save_return_type');
 --GO
@@ -1894,7 +1895,9 @@ CREATE TYPE databaseSchema.objectQualifier_user_list_return_type AS
   "TextEditor" varchar(50),
   "UseSingleSignOn" boolean,
   "IsApproved" boolean,
-  "IsActiveExcluded" boolean, 
+  "IsActiveExcluded" boolean,
+  "TopicsPerPage" integer,
+  "PostsPerPage" integer, 
   "RankName" varchar(128),
   "Style"  varchar(255),
   "NumDays" integer,
@@ -2300,7 +2303,10 @@ CREATE TYPE databaseSchema.objectQualifier_user_lazydata_return_type AS
 "PersonalGroupsNumber" integer,
 "UsrPersonalGroups" integer,
 "UsrPersonalMasks" integer,
-"UsrPersonalForums" integer
+"UsrPersonalForums" integer,
+"CommonViewType" integer,
+"TopicsPerPage" integer,
+"PostsPerPage" integer
 );
 --GO
 

@@ -581,6 +581,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether a forum description can be null.
+        /// </summary>
+        public bool ForumDescriptionCanBeNull
+        {
+            get
+            {
+                return this._regBoard.GetValue("ForumDescriptionCanBeNull", true);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("ForumDescriptionCanBeNull", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets NotificationOnUserRegisterEmailList.
         /// </summary>
         public string NotificationOnUserRegisterEmailList

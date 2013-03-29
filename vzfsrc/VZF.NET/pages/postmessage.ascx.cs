@@ -738,7 +738,7 @@ namespace YAF.Pages
                                 DateTimeHelper.SqlDbMinTime(),
                                 DateTime.UtcNow,
                                 this.PageIndex.ToType<int>(),
-                                this.Get<YafBoardSettings>().PostsPerPage,
+                                this.PageContext.PostsPerPage,
                                 1,
                                 0,
                                 0,

@@ -524,6 +524,14 @@ namespace YAF
                     return;
                 }
 
+                // Check if user has access
+                if (!this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ProfileViewPermissions))
+                {
+                    context.Response.Write(string.Empty);
+
+                    return;
+                }
+
                 var userData = new CombinedUserDataHelper(user, userId);
 
                 context.Response.Clear();
@@ -1551,7 +1559,7 @@ namespace YAF
         /// </param>
         private void GetResponseRemoteAvatar([NotNull] HttpContext context)
         {
-            if (General.GetCurrentTrustLevel() < AspNetHostingPermissionLevel.Medium)
+            if (General.GetCurrentTrustLevel() <= AspNetHostingPermissionLevel.Medium)
             {
                 // don't bother... not supported.
                 CommonDb.eventlog_create(
@@ -1650,7 +1658,7 @@ namespace YAF
         /// </param>
         private void GetResponseRemoteTopicImage([NotNull] HttpContext context)
         {
-            if (General.GetCurrentTrustLevel() < AspNetHostingPermissionLevel.Medium)
+            if (General.GetCurrentTrustLevel() <= AspNetHostingPermissionLevel.Medium)
             {
                 // don't bother... not supported.
                 CommonDb.eventlog_create(

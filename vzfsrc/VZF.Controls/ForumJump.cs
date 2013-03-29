@@ -23,6 +23,7 @@ namespace VZF.Controls
     using System;
     using System.Collections.Specialized;
     using System.Data;
+    using System.Globalization;
     using System.Web.UI;
 
     using VZF.Data.Common;
@@ -134,7 +135,7 @@ namespace VZF.Controls
       var forumJump =
         this.Get<IDataCache>().GetOrSet(
           Constants.Cache.ForumJump.FormatWith(
-            this.PageContext.User != null ? this.PageContext.PageUserID.ToString() : "Guest"),
+            this.PageContext.User != null ? this.PageContext.PageUserID.ToString(CultureInfo.InvariantCulture) : this.GetText("COMMON", "GUEST_NAME")),
           () => CommonDb.forum_listall_sorted(this.PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID),
           TimeSpan.FromMinutes(5));
 

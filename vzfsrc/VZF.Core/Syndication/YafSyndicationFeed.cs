@@ -93,7 +93,7 @@ namespace YAF.Core.Syndication
           YafBuildLink.GetLinkNotEscaped(ForumPages.rsstopic, true, "pg={0}&ft={1}".FormatWith(feedType.ToInt(), sf)));
       this.Links.Add(SyndicationLink.CreateSelfLink(slink));
 
-      this.Generator = "YetAnotherForum.NET";
+      this.Generator = "VZF.NET";
       this.LastUpdatedTime = DateTime.UtcNow;
       this.Language = YafContext.Current.Get<ILocalization>().LanguageCode;
       this.ImageUrl =

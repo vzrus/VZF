@@ -12,4 +12,9 @@
             <VZF:AlbumImageList ID="AlbumImageList1" runat="server"></VZF:AlbumImageList>
         </td>
     </tr>
+        <tr class="footer1">
+		<td colspan="3" style="text-align: center">
+			<asp:Button runat="server" CssClass="pbutton" ID="Back" OnClick="Back_Click" />
+		</td>
+	</tr>
 </table>

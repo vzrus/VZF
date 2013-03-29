@@ -22,6 +22,8 @@ namespace VZF.Controls
     #region Using
 
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Globalization;
@@ -405,26 +407,30 @@ namespace VZF.Controls
                     language = row["CultureFile"].ToString();
                 }
             }
-
+           
             // save remaining settings to the DB
-            CommonDb.user_save(PageContext.PageModuleID, this._currentUserId,
-              this.PageContext.PageBoardID,
-              null,
-              displayName,
-              null,
-              this.TimeZones.SelectedValue.ToType<int>(),
-              language,
-              culture,
-              theme,
-              this.SingleSignOn.Checked,
-              editor,
-              this.UseMobileTheme.Checked,
-              null,
-              null,
-              null,
-              this.DSTUser.Checked,
-              this.HideMe.Checked,
-              null);
+            CommonDb.user_save(
+                this.PageContext.PageModuleID,
+                this._currentUserId,
+                this.PageContext.PageBoardID,
+                null,
+                displayName,
+                null,
+                this.TimeZones.SelectedValue.ToType<int>(),
+                language,
+                culture,
+                theme,
+                this.SingleSignOn.Checked,
+                editor,
+                this.UseMobileTheme.Checked,
+                null,
+                null,
+                null,
+                this.DSTUser.Checked,
+                this.HideMe.Checked,
+                null,
+                this.TopicsPerPageDDL.SelectedValue,
+                this.PostsPerPageDDL.SelectedValue);
 
             // vzrus: If it's a guest edited by an admin registry value should be changed
             DataTable dt = CommonDb.user_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this._currentUserId, true, null, null, false);
@@ -445,7 +451,7 @@ namespace VZF.Controls
             }
             else
             {
-                _userData = null;
+                this._userData = null;
                 this.BindData();
             }
         }
@@ -501,6 +507,14 @@ namespace VZF.Controls
             this.Country.DataSource = StaticDataHelper.Country();
             this.Country.DataValueField = "Value";
             this.Country.DataTextField = "Name";
+
+            this.TopicsPerPageDDL.DataSource = this.CreateDataSourceForTopicsPostsDropDownLists(this.Get<YafBoardSettings>().TopicsPerPage);
+            this.TopicsPerPageDDL.DataTextField = "ID";
+            this.TopicsPerPageDDL.DataValueField = "Number";
+
+            this.PostsPerPageDDL.DataSource = this.CreateDataSourceForTopicsPostsDropDownLists(this.Get<YafBoardSettings>().PostsPerPage);
+            this.PostsPerPageDDL.DataTextField = "ID";
+            this.PostsPerPageDDL.DataValueField = "Number";
 
             string currentCultureLocal = this.GetCulture(true);
            
@@ -578,9 +592,58 @@ namespace VZF.Controls
                 }
             }
 
+            if (this.TopicsPerPageDDL.Items.Count > 0)
+            {
+                int tpp = this.UserData.TopicsPerPage.ToType<int>() > this.Get<YafBoardSettings>().TopicsPerPage ? this.Get<YafBoardSettings>().TopicsPerPage : this.UserData.TopicsPerPage.ToType<int>();
+                string selected = "0";
+                foreach (ListItem item in this.TopicsPerPageDDL.Items)
+                {
+                    var valueToCompare = item.Value.ToType<int>();
+
+                    if (tpp.ToType<int>() > valueToCompare)
+                    {
+                        continue;
+                    }
+
+                    var postItem = this.TopicsPerPageDDL.Items.FindByValue(valueToCompare.ToString(CultureInfo.InvariantCulture));
+                    if (postItem != null)
+                    {
+                        selected = valueToCompare.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+                }
+
+                this.TopicsPerPageDDL.Items.FindByValue(selected).Selected = true;
+            }
+
+            if (this.PostsPerPageDDL.Items.Count > 0)
+            {
+                int tpp = this.UserData.PostsPerPage.ToType<int>() > this.Get<YafBoardSettings>().PostsPerPage ? this.Get<YafBoardSettings>().PostsPerPage : this.UserData.PostsPerPage.ToType<int>();
+                string selected = "0";
+                foreach (ListItem item in this.PostsPerPageDDL.Items)
+                {
+                    var valueToCompare = item.Value.ToType<int>();
+                    if (tpp.ToType<int>() > valueToCompare)
+                    {
+                        continue;
+                    }
+
+                    var postItem = this.PostsPerPageDDL.Items.FindByValue(valueToCompare.ToString(CultureInfo.InvariantCulture));
+                    if (postItem != null)
+                    {
+                        selected = valueToCompare.ToString(CultureInfo.InvariantCulture);
+                    }
+
+                    break;
+                }
+
+                this.PostsPerPageDDL.Items.FindByValue(selected).Selected = true;
+            }
+
             if (this.UserData.Profile.Region.IsSet())
             {
-                ListItem regionItem = this.Region.Items.FindByValue(this.UserData.Profile.Region.Trim());
+                var regionItem = this.Region.Items.FindByValue(this.UserData.Profile.Region.Trim());
                 if (regionItem != null)
                 {
                     regionItem.Selected = true;
@@ -597,8 +660,8 @@ namespace VZF.Controls
             this.HideMe.Checked = this.UserData.IsActiveExcluded &&
                                   (this.Get<YafBoardSettings>().AllowUserHideHimself || this.PageContext.IsAdmin);
 
-            if (this.Get<YafBoardSettings>().MobileTheme.IsSet() &&
-                UserAgentHelper.IsMobileDevice(HttpContext.Current.Request.UserAgent) ||
+            if ((this.Get<YafBoardSettings>().MobileTheme.IsSet() &&
+                UserAgentHelper.IsMobileDevice(HttpContext.Current.Request.UserAgent)) ||
                 HttpContext.Current.Request.Browser.IsMobileDevice)
             {
                 this.UseMobileThemeRow.Visible = true;
@@ -788,8 +851,8 @@ namespace VZF.Controls
             }
         }
 
-        #endregion 
-       
+        #endregion
+
 
         /// <summary>
         /// Gets the culture.
@@ -802,37 +865,91 @@ namespace VZF.Controls
             // Language and culture
             string languageFile = this.Get<YafBoardSettings>().Language;
             string culture4Tag = this.Get<YafBoardSettings>().Culture;
-             if (overrideByPageUserCulture)
-             {
-                 if (this.PageContext.CurrentUserData.LanguageFile.IsSet())
-                 {
-                     languageFile = this.PageContext.CurrentUserData.LanguageFile;
-                 }
+            if (overrideByPageUserCulture)
+            {
+                if (this.PageContext.CurrentUserData.LanguageFile.IsSet())
+                {
+                    languageFile = this.PageContext.CurrentUserData.LanguageFile;
+                }
 
-                 if (this.PageContext.CurrentUserData.CultureUser.IsSet())
-                 {
-                     culture4Tag = this.PageContext.CurrentUserData.CultureUser;
-                 }
-             }
-             else
-             {
-                 if (!string.IsNullOrEmpty(this.UserData.LanguageFile))
-                 {
-                     languageFile = this.UserData.LanguageFile;
-                 }
+                if (this.PageContext.CurrentUserData.CultureUser.IsSet())
+                {
+                    culture4Tag = this.PageContext.CurrentUserData.CultureUser;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(this.UserData.LanguageFile))
+                {
+                    languageFile = this.UserData.LanguageFile;
+                }
 
-                 if (!string.IsNullOrEmpty(this.UserData.CultureUser))
-                 {
-                     culture4Tag = this.UserData.CultureUser;
-                 }
-             }
+                if (!string.IsNullOrEmpty(this.UserData.CultureUser))
+                {
+                    culture4Tag = this.UserData.CultureUser;
+                }
+            }
 
             // Get first default full culture from a language file tag.
             string langFileCulture = StaticDataHelper.CultureDefaultFromFile(languageFile);
-            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2)
-                                          ? culture4Tag
-                                          : langFileCulture;
-            
+            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2) ? culture4Tag : langFileCulture;
+        }
+
+        /// <summary>
+        /// The create data source.
+        /// </summary>
+        /// <param name="maxNumber">
+        /// The max number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ICollection"/>.
+        /// </returns>
+        private ICollection CreateDataSourceForTopicsPostsDropDownLists(int maxNumber)
+        {
+            // Create a table to store data for the DropDownList control.
+            var dt = new DataTable();
+
+            // Define the columns of the table.
+            dt.Columns.Add(new DataColumn("ID", typeof(int)));
+            dt.Columns.Add(new DataColumn("Number", typeof(int)));
+
+            int current = 5;
+            while (current < maxNumber)
+            {
+                dt.Rows.Add(CreateRow(current, current, dt));
+                current = current + 10;
+              
+            }
+
+            dt.Rows.Add(CreateRow(maxNumber, maxNumber, dt));
+
+            // Create a DataView from the DataTable to act as the data source
+            // for the DropDownList control.
+            var dv = new DataView(dt);
+            return dv;
+        }
+
+        /// <summary>
+        /// The create row.
+        /// </summary>
+        /// <param name="Text">
+        /// The text.
+        /// </param>
+        /// <param name="Value">
+        /// The value.
+        /// </param>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataRow"/>.
+        /// </returns>
+        private static DataRow CreateRow(int Text, int Value, DataTable dt)
+        {
+         var dr = dt.NewRow();
+         dr[0] = Text;
+         dr[1] = Value;
+         return dr;
         }
     }
 }

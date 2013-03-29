@@ -59,8 +59,8 @@
     <Compile Include="Search\SearchCondition.cs" />
     <Compile Include="Search\SearchConditionType.cs" />
     <Compile Include="SettingsPropertyColumn.cs" />
-    <Compile Include="DbAccess.cs" />
-    <Compile Include="DbConnManager.cs" />
+    <Compile Include="MySqlDbAccess.cs" />
+    <Compile Include="MySqlDbConnectionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

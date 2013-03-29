@@ -1,23 +1,26 @@
-/* VZF by vzrus
- * Copyright (C) 2006-2013 Vladimir Zakharov
- * https://github.com/vzrus
- * http://sourceforge.net/projects/yaf-datalayers/
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; version 2 only
- * General class structure was primarily based on MS SQL Server code,
- * created by YAF(YetAnotherForum) developers  * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
-
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="Db.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The Db.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace VZF.Data.Mysql
 {
@@ -33,8 +36,6 @@ namespace VZF.Data.Mysql
 
     using MySql.Data.MySqlClient;
 
-    using VZF.Data.MySqlDb;
-
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -43,10 +44,12 @@ namespace VZF.Data.Mysql
     using YAF.Utils;
     using YAF.Utils.Helpers;
 
-    [System.Runtime.InteropServices.GuidAttribute("C7184514-F7BD-4A3F-A4FB-BB4A45F01130")]
+    /// <summary>
+    /// The Db.
+    /// </summary>
     public static class Db
     {
-        //added vzrus
+        // added by vzrus
 
         #region ConnectionStringOptions
 
@@ -548,56 +551,70 @@ namespace VZF.Data.Mysql
         #region Common
 
         /// <summary>
-        /// Gets the database size
+        /// The get db size.
         /// </summary>
-        /// <returns>integer value for database size</returns>
-        public static int GetDBSize(string connectionString)
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public static int GetDbSize(string connectionString)
         {
-            string dd = YAF.Classes.Config.BaseScriptFile;
-            /*  System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.Append("SELECT IFNULL((ROUND(((SUM(t.data_length)+SUM(t.index_length))/1024/1024),2)),0) ");            
-            sb.Append(" FROM INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine = ");
-            sb.Append("'InnoDB' AND t.TABLE_SCHEMA=");
-            sb.Append(DBAccess.DatabaseName);
-            sb.Append(";");*/
-
             using (var cmd = MySqlDbAccess.GetCommand("db_size"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("i_TableSchema", MySqlDbType.VarChar).Value = MySqlDbAccess.SchemaName;
-                //This is not really an integer, but a decimal, and by this we cast it to integer
+
+                // This is not really an integer, but a decimal, and by this we cast it to integer
                 return Convert.ToInt32(MySqlDbAccess.ExecuteScalar(cmd, connectionString));
             }
         }
 
+        /// <summary>
+        /// The get is forum installed.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         public static bool GetIsForumInstalled(string connectionString)
         {
             try
             {
-                using (DataTable dt = board_list(connectionString, DBNull.Value))
+                // If boards don't exists in the table nothing was installed.
+                using (var dt = board_list(connectionString, DBNull.Value))
                 {
                     return dt.Rows.Count > 0;
                 }
             }
             catch
             {
+                return false;
             }
-            return false;
         }
 
-        public static string DBSize_old(string connectionString)
+        /// <summary>
+        /// The db size old.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string DbSizeOld(string connectionString)
         {
-
-            string version = string.Empty;
+            string version;
             using (var cmd1 = new MySqlCommand("SELECT VERSION()"))
             {
-
                 cmd1.CommandType = CommandType.Text;
                 version = MySqlDbAccess.ExecuteScalar(cmd1, false, connectionString).ToString();
             }
 
-
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("SELECT s.schema_name, ");
             sb.Append(
                 "(SELECT COUNT(table_name) FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE') total_tables, ");
@@ -634,6 +651,7 @@ namespace VZF.Data.Mysql
                 sb.Append(@"'%'");
                 sb.Append(") AS CHAR) pct_used ");
             }
+
             sb.Append(
                 "FROM INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine = ");
             sb.Append("'InnoDB' ");
@@ -641,7 +659,7 @@ namespace VZF.Data.Mysql
             sb.Append(";");
             using (var cmd = new MySqlCommand(sb.ToString()))
             {
-                System.Text.StringBuilder sb1 = new System.Text.StringBuilder();
+                var sb1 = new StringBuilder();
                 cmd.CommandType = CommandType.Text;
                 DataTable dt = MySqlDbAccess.GetData(cmd, connectionString);
                 int cnt = dt.Columns.Count - 1;
@@ -654,11 +672,21 @@ namespace VZF.Data.Mysql
                     sb1.Append(dr[i]);
                     sb1.Append(" | ");
                 }
+
                 return sb1.ToString();
             }
         }
 
-        public static int GetDBVersion(string connectionString)
+        /// <summary>
+        /// The get Db version.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public static int GetDbVersion(string connectionString)
         {
             try
             {
@@ -675,39 +703,46 @@ namespace VZF.Data.Mysql
             {
                 // not installed...
             }
-
             return -1;
         }
 
-        // MS SQL Support fulltext....
-        private static bool _fullTextSupported = false;
+        // MySQL InnoDB engine currently don't support fulltext....
 
+        /// <summary>
+        /// The _full text supported.
+        /// </summary>
+        private static bool _fullTextSupported;
+
+        /// <summary>
+        /// Gets a value indicating whether full text supported.
+        /// </summary>
         public static bool FullTextSupported
         {
             get
             {
                 return _fullTextSupported;
             }
-            set
-            {
-                _fullTextSupported = value;
-            }
         }
 
-        private static string _fullTextScript = "mysql/fulltext.sql";
+        /// <summary>
+        /// The _full text script.
+        /// </summary>
+        private const string _fullTextScript = "mysql/fulltext.sql";
 
+        /// <summary>
+        /// Gets the full text script.
+        /// </summary>
         public static string FullTextScript
         {
             get
             {
                 return _fullTextScript;
             }
-            set
-            {
-                _fullTextScript = value;
-            }
         }
 
+        /// <summary>
+        /// The _script list.
+        /// </summary>
         private static readonly string[] _scriptList =
             {
                 "mysql/tables.sql", "mysql/pkeys.sql", "mysql/indexes.sql",
@@ -718,7 +753,9 @@ namespace VZF.Data.Mysql
                 "mysql/providers/indexes.sql", "mysql/providers/procedures.sql"
             };
 
-
+        /// <summary>
+        /// Gets the script list.
+        /// </summary>
         public static string[] ScriptList
         {
             get
@@ -727,6 +764,18 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The get boolean registry value.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         private static bool GetBooleanRegistryValue(string connectionString, string name)
         {
             using (DataTable dt = Db.registry_list(connectionString, name, DBNull.Value))
@@ -1381,7 +1430,8 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin(string connectionString, object boardId, object pageUserID, object isUserForum)
+        public static DataSet ds_forumadmin(
+            string connectionString, object boardId, object pageUserID, object isUserForum)
         {
             using (var connMan = new MySqlDbConnectionManager(connectionString))
             {
@@ -1443,7 +1493,13 @@ namespace VZF.Data.Mysql
         ///<param name="excludeFlags">Flags to exclude from edititing by certain roles</param>
         /// <returns></returns>
         public static DataTable accessmask_list(
-            string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+            string connectionString,
+            object boardId,
+            object accessMaskID,
+            object excludeFlags,
+            object pageUserID,
+            bool isUserMask,
+            bool isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_list"))
             {
@@ -1462,7 +1518,13 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable accessmask_pforumlist(
-     string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+            string connectionString,
+            object boardId,
+            object accessMaskID,
+            object excludeFlags,
+            object pageUserID,
+            bool isUserMask,
+            bool isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_pforumlist"))
             {
@@ -1481,7 +1543,13 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable accessmask_aforumlist(
-    string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+            string connectionString,
+            object boardId,
+            object accessMaskID,
+            object excludeFlags,
+            object pageUserID,
+            bool isUserMask,
+            bool isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_aforumlist"))
             {
@@ -1550,7 +1618,8 @@ namespace VZF.Data.Mysql
             [NotNull] object userForumAccess,
             object sortOrder,
             [CanBeNull] object userId,
-            [NotNull] object isUserMask, [NotNull] object isAdminMask)
+            [NotNull] object isUserMask,
+            [NotNull] object isAdminMask)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_save"))
             {
@@ -2258,7 +2327,7 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID ?? DBNull.Value;
-              
+
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
@@ -2390,7 +2459,7 @@ namespace VZF.Data.Mysql
             object categoryId,
             object name,
             object categoryImage,
-            object sortOrder, 
+            object sortOrder,
             object canHavePersForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_save"))
@@ -3030,18 +3099,16 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
 
                 if (!(MySqlDbAccess.ExecuteScalar(cmd, connectionString) is DBNull)) return false;
-                else
+
+                forum_deleteAttachments(connectionString, forumID);
+                using (var cmd_new = MySqlDbAccess.GetCommand("forum_delete"))
                 {
-                    forum_deleteAttachments(connectionString, forumID);
-                    using (var cmd_new = MySqlDbAccess.GetCommand("forum_delete"))
-                    {
-                        cmd_new.CommandType = CommandType.StoredProcedure;
-                        cmd_new.CommandTimeout = 99999;
-                        cmd_new.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-                        MySqlDbAccess.ExecuteNonQuery(cmd_new, connectionString);
-                    }
-                    return true;
+                    cmd_new.CommandType = CommandType.StoredProcedure;
+                    cmd_new.CommandTimeout = 99999;
+                    cmd_new.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
+                    MySqlDbAccess.ExecuteNonQuery(cmd_new, connectionString);
                 }
+                return true;
             }
         }
 
@@ -3166,7 +3233,8 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable forum_byuserlist(string connectionString, object boardId, object forumID, object userId, object isUserForum)
+        public static DataTable forum_byuserlist(
+            string connectionString, object boardId, object forumID, object userId, object isUserForum)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_byuserlist"))
             {
@@ -3337,8 +3405,14 @@ namespace VZF.Data.Mysql
 
                 foreach (int forumID in forumidExclusions)
                 {
-                    if (bFirst) bFirst = false;
-                    else strExclusions += ",";
+                    if (bFirst)
+                    {
+                        bFirst = false;
+                    }
+                    else
+                    {
+                        strExclusions += ",";
+                    }
 
                     strExclusions += forumID.ToString();
                 }
@@ -3519,7 +3593,7 @@ namespace VZF.Data.Mysql
                             da.SelectCommand.CommandText = MySqlDbAccess.GetObjectName("forum_moderatelist");
                             da.SelectCommand.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
                             da.SelectCommand.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                           
+
                             da.Fill(ds, MySqlDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted =
                                 ds.Tables[MySqlDbAccess.GetObjectName("ForumUnsorted")].Clone();
@@ -3746,7 +3820,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentId ?? DBNull.Value;
                 cmd.Parameters.Add("i_Name", MySqlDbType.VarChar).Value = name;
                 cmd.Parameters.Add("i_Description", MySqlDbType.VarChar).Value = description;
-                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int16).Value = sortOrder;
+                cmd.Parameters.Add("i_SortOrder", MySqlDbType.Int32).Value = sortOrder;
                 cmd.Parameters.Add("i_Locked", MySqlDbType.Byte).Value = locked;
                 cmd.Parameters.Add("i_Hidden", MySqlDbType.Byte).Value = hidden;
                 cmd.Parameters.Add("i_IsTest", MySqlDbType.Byte).Value = isTest;
@@ -3846,7 +3920,8 @@ namespace VZF.Data.Mysql
 
         #region yaf_ForumAccess
 
-        public static DataTable forumaccess_list(string connectionString, object forumID, object userId, bool includeUserGroups)
+        public static DataTable forumaccess_list(
+            string connectionString, object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_list"))
             {
@@ -3875,7 +3950,8 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable forumaccess_group(string connectionString, object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_group(
+            string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
             {
@@ -3890,7 +3966,8 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable forumaccess_personalgroup(string connectionString, object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_personalgroup(
+            string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
             {
@@ -3919,7 +3996,8 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable group_byuserlist(string connectionString, object boardId, object groupID, object userId, object isUserGroup)
+        public static DataTable group_byuserlist(
+            string connectionString, object boardId, object groupID, object userId, object isUserGroup)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_byuserlist"))
             {
@@ -4002,7 +4080,7 @@ namespace VZF.Data.Mysql
             object isAdmin,
             object isGuest,
             object isStart,
-            object isModerator, 
+            object isModerator,
             [NotNull] object isHidden,
             object accessMaskId,
             object pmlimit,
@@ -7703,13 +7781,18 @@ namespace VZF.Data.Mysql
         private static void topic_deleteimages(string connectionString, int topicID)
         {
 
-            string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
+            string uploadDir =
+                HostingEnvironment.MapPath(
+                    String.Concat(
+                        BaseUrlBuilder.ServerFileRoot,
+                        YafBoardFolders.Current.Uploads,
+                        "/",
+                        YafBoardFolders.Current.Topics));
 
             try
             {
                 string topicImage = string.Empty;
-                var dt = topic_info(
-                 connectionString, topicID, false);
+                var dt = topic_info(connectionString, topicID, false);
                 if (dt != null)
                 {
                     topicImage = dt["TopicImage"].ToString();
@@ -7879,7 +7962,8 @@ namespace VZF.Data.Mysql
         /// <param name="topicImageType">
         /// The topic image type.
         /// </param>
-        public static void topic_imagesave(string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object topicImageType)
+        public static void topic_imagesave(
+            string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object topicImageType)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_imagesave"))
             {
@@ -8817,9 +8901,8 @@ namespace VZF.Data.Mysql
                 var setStr = new StringBuilder();
                 int count = 0;
 
-                foreach (
-                    SettingsPropertyColumn column in
-                        settingsColumnsList.Where(column => !dirtyOnly || values[column.Settings.Name].IsDirty))
+                foreach (SettingsPropertyColumn column in
+                    settingsColumnsList.Where(column => !dirtyOnly || values[column.Settings.Name].IsDirty))
                 {
                     columnStr.Append(", ");
                     valueStr.Append(", ");
@@ -9455,32 +9538,14 @@ namespace VZF.Data.Mysql
             object autoWatchTopics,
             object dSTUser,
             object isHidden,
-            object notificationType)
+            object notificationType,
+            object topicsPerPage,
+            object postsPerPage)
         {
 
 
             using (var cmd = MySqlDbAccess.GetCommand("user_save"))
             {
-                if (userName == null)
-                {
-                    userName = DBNull.Value;
-                }
-                if (displayName == null)
-                {
-                    displayName = DBNull.Value;
-                }
-                if (email == null)
-                {
-                    email = DBNull.Value;
-                }
-                if (languageFile == null)
-                {
-                    languageFile = DBNull.Value;
-                }
-                if (themeFile == null)
-                {
-                    themeFile = DBNull.Value;
-                }
                 if (overrideDefaultThemes == null)
                 {
                     overrideDefaultThemes = DBNull.Value;
@@ -9509,13 +9574,13 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName;
-                cmd.Parameters.Add("i_DisplayName", MySqlDbType.VarChar).Value = displayName;
-                cmd.Parameters.Add("i_Email", MySqlDbType.VarChar).Value = email;
+                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName ?? DBNull.Value;
+                cmd.Parameters.Add("i_DisplayName", MySqlDbType.VarChar).Value = displayName ?? DBNull.Value;
+                cmd.Parameters.Add("i_Email", MySqlDbType.VarChar).Value = email ?? DBNull.Value;
                 cmd.Parameters.Add("i_TimeZone", MySqlDbType.Int32).Value = timeZone;
-                cmd.Parameters.Add("i_LanguageFile", MySqlDbType.VarChar).Value = languageFile;
+                cmd.Parameters.Add("i_LanguageFile", MySqlDbType.VarChar).Value = languageFile ?? DBNull.Value;
                 cmd.Parameters.Add("i_Culture", MySqlDbType.VarChar).Value = culture;
-                cmd.Parameters.Add("i_ThemeFile", MySqlDbType.VarChar).Value = themeFile;
+                cmd.Parameters.Add("i_ThemeFile", MySqlDbType.VarChar).Value = themeFile ?? DBNull.Value;
                 cmd.Parameters.Add("i_UseSingleSignOn", MySqlDbType.Byte).Value = useSingleSignOn;
                 cmd.Parameters.Add("i_TextEditor", MySqlDbType.VarChar).Value = textEditor;
                 cmd.Parameters.Add("i_OverrideDefaultTheme", MySqlDbType.Byte).Value = overrideDefaultThemes;
@@ -9526,6 +9591,8 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_AutoWatchTopics", MySqlDbType.Byte).Value = autoWatchTopics;
                 cmd.Parameters.Add("i_DSTUser", MySqlDbType.Byte).Value = dSTUser;
                 cmd.Parameters.Add("i_HideUser", MySqlDbType.Byte).Value = isHidden;
+                cmd.Parameters.Add("i_TopicsPerPage", MySqlDbType.Int32).Value = topicsPerPage;
+                cmd.Parameters.Add("i_PostsPerPage", MySqlDbType.Int32).Value = postsPerPage;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -9878,7 +9945,7 @@ namespace VZF.Data.Mysql
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_saveavatar"))
             {
-                               byte[] data = null;
+                byte[] data = null;
 
                 if (stream != null)
                 {
@@ -11046,7 +11113,7 @@ namespace VZF.Data.Mysql
                 using (var connMan = new MySqlDbConnectionManager(connectionString))
                 {
                     // just attempt to open the connection to test if a DB is available.
-                    connMan.DBConnection(connectionString).Open();
+                    connMan.DbConnection(connectionString).Open();
                 }
             }
             catch (MySqlException ex)
@@ -11118,7 +11185,7 @@ namespace VZF.Data.Mysql
 
             using (var connMan = new MySqlDbConnectionManager(connectionString))
             {
-                options = connMan.DBConnection(connectionString).ConnectionString.Split(';');
+                options = connMan.DbConnection(connectionString).ConnectionString.Split(';');
             }
             foreach (string str in options)
             {
@@ -11268,14 +11335,12 @@ namespace VZF.Data.Mysql
                 List<string> statements =
                     System.Text.RegularExpressions.Regex.Split(
                         script, "(?:--GO)", System.Text.RegularExpressions.RegexOptions.IgnoreCase).ToList();
-               
+
                 // use transactions...
                 if (useTransactions)
                 {
                     var con = connMan.OpenDBConnection(connectionString);
-                    using (
-                        var trans =
-                            con.BeginTransaction(MySqlDbAccess.IsolationLevel))
+                    using (var trans = con.BeginTransaction(MySqlDbAccess.IsolationLevel))
                     {
                         foreach (string sql0 in statements)
                         {
@@ -11330,11 +11395,12 @@ namespace VZF.Data.Mysql
 
                             try
                             {
-                                if (sql.ToLower().IndexOf("setuser", System.StringComparison.Ordinal) >= 0 || sql.Length <= 0)
+                                if (sql.ToLower().IndexOf("setuser", System.StringComparison.Ordinal) >= 0
+                                    || sql.Length <= 0)
                                 {
                                     continue;
                                 }
-                             
+
                                 using (var cmd = new MySqlCommand())
                                 {
                                     cmd.Connection = connect;
@@ -11634,7 +11700,7 @@ namespace VZF.Data.Mysql
         #endregion
 
         #region Touradg Mods
-        
+
         /// <summary>
         /// The db_shrink_warning.
         /// </summary>

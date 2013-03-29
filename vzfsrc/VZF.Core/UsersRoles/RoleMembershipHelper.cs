@@ -543,7 +543,7 @@ namespace YAF.Core
                                 // update the YAF table with the ProviderKey -- update the provider table if this is the YAF provider...
                                 CommonDb.user_migrate(YafContext.Current.PageModuleID, row["UserID"], user.ProviderUserKey, isYafProvider);
 
-                                user.Comment = "Migrated from YetAnotherForum.NET";
+                                user.Comment = "Migrated from VZF.NET";
 
                                 YafContext.Current.Get<MembershipProvider>().UpdateUser(user);
 

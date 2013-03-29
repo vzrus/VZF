@@ -1066,6 +1066,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox RemoveNestedQuotes;
         
         /// <summary>
+        /// HelpLabel229 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel229;
+        
+        /// <summary>
+        /// ForumDescriptionCanBeNull control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ForumDescriptionCanBeNull;
+        
+        /// <summary>
         /// HelpLabel104 control.
         /// </summary>
         /// <remarks>

@@ -10,10 +10,6 @@
     using VZF.Data.Mysql;
     using VZF.Data.Postgre;
 
-    using YAF.Classes.Data;
-    using VZF.Types;
-    using YAF.Types.Interfaces;
-
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Utils;
@@ -37,7 +33,6 @@
         {
             get
             {
-                
                 return string.Empty;
             }
         }
@@ -64,13 +59,13 @@
                 switch (GetProviderNameFromConnectionString(null))
                 {
                     case "System.Data.SqlClient":
-                     //   return MsDBAccess.IsolationLevel;
+                        return MsSqlDbAccess.IsolationLevel;
                     case "Npgsql":
                         return PostgreDbAccess.IsolationLevel;
                     case "MySql.Data.MySqlClient":
-                       // return PostgreDbAccess.IsolationLevel;
+                        return MySqlDbAccess.IsolationLevel;
                     case "FirebirdSql.Data.FirebirdClient":
-                      //  return PostgreDbAccess.IsolationLevel;
+                        return FbDbAccess.IsolationLevel;
                     case "oracle":
                      //   return PostgreDbAccess.IsolationLevel;
                     case "db2":
@@ -79,8 +74,6 @@
                      //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
                 }
             }
         }
@@ -110,8 +103,6 @@
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
                 }
             }
         }

@@ -2410,6 +2410,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">انتخاب پوسته گرافیکی متفاوت</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">آیا مایل به دریافت ایمیل یادآوری در زمان دریافت پیغام خصوصی میباشید?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">نام حقیقی شما چیست؟</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">مایل به استفاده از چه زبانی هستید:</Resource>
@@ -2419,6 +2420,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="TIMEZONE">منطقه ساعتی</Resource>
     <Resource tag="TIMEZONE2">برای محاسبه تاریخ و زمان بر اساس موقیت شما ,منطقه ساعتی شما باید تعیین شود.</Resource>
     <Resource tag="TITLE">ویرایش پروفایل</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">شمای انجمن برای موبایل:</Resource>

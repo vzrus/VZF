@@ -2405,6 +2405,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Select different forum theme:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Zaslať e-mailovú notifikáciu keď dostaneš novú súkromnú správu?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Méno a priezvisko</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Aký jazyk chcete používať:</Resource>
@@ -2414,6 +2415,7 @@
     <Resource tag="TIMEZONE">Časová zóna</Resource>
     <Resource tag="TIMEZONE2">Aby sme mohli uvádzať čas a dátum vo vašom miestnom čase, musíme poznať vašu časovú zónu.</Resource>
     <Resource tag="TITLE">Úprava profilu</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

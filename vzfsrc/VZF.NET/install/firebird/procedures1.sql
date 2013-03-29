@@ -3857,7 +3857,10 @@ returns
 "PersonalGroupsNumber" INTEGER,
 "UsrPersonalMasks" INTEGER,
 "UsrPersonalGroups" INTEGER,
-"UsrPersonalForums" INTEGER
+"UsrPersonalForums" INTEGER,
+"CommonViewType" INTEGER,
+"TopicsPerPage" INTEGER,
+"PostsPerPage" INTEGER
 )
  as 
 	DECLARE VARIABLE G_UsrAlbums INTEGER;
@@ -3943,7 +3946,10 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
 		(SELECT COUNT(1) FROM objQual_GROUP WHERE CREATEDBYUSERID = :I_USERID AND ISUSERGROUP = 1),
 		(SELECT :ICI_UsrPersonalMasks FROM RDB$DATABASE),
 		(SELECT :ICI_UsrPersonalGroups FROM RDB$DATABASE),		
-		(SELECT :ICI_UsrPersonalForums FROM RDB$DATABASE) 
+		(SELECT :ICI_UsrPersonalForums FROM RDB$DATABASE),
+		a.COMMONVIEWTYPE,
+		a.TOPICSPERPAGE,
+		a.POSTSPERPAGE 
 		from
 		   objQual_USER a		
 		where
@@ -3979,7 +3985,10 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
         :"PersonalGroupsNumber",
 		:"UsrPersonalMasks",
 		:"UsrPersonalGroups",
-		:"UsrPersonalForums"
+		:"UsrPersonalForums",
+		:"CommonViewType",
+		:"TopicsPerPage",
+		:"PostsPerPage"
 do suspend;
 	 end;
 --GO

@@ -616,6 +616,42 @@ namespace VZF.Controls {
         protected global::VZF.Controls.LocalizedLabel LocalizedLabel23;
         
         /// <summary>
+        /// LocalizedLabel38 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel38;
+        
+        /// <summary>
+        /// TopicsPerPageDDL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList TopicsPerPageDDL;
+        
+        /// <summary>
+        /// LocalizedLabel39 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.LocalizedLabel LocalizedLabel39;
+        
+        /// <summary>
+        /// PostsPerPageDDL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList PostsPerPageDDL;
+        
+        /// <summary>
         /// UserThemeRow control.
         /// </summary>
         /// <remarks>

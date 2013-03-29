@@ -1819,6 +1819,39 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='CanHavePersForums' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}Forum ADD `CanHavePersForums`  TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
+  
+  -- make Description column nullable
+    IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
+  AND COLUMN_NAME='Description' AND COLUMN_DEFAULT IS NOT NULL LIMIT 1) THEN
+  ALTER TABLE {databaseName}.{objectQualifier}Forum ALTER `Description` DROP DEFAULT; 
+  END IF;
+
+      IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
+  AND COLUMN_NAME='Description' AND IS_NULLABLE='NO' LIMIT 1) THEN
+  ALTER TABLE {databaseName}.{objectQualifier}Forum MODIFY `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation};
+  END IF;
+
+  -- set sortorder of forum table to integer
+
+  IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Forum')
+  AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
+  ALTER TABLE {databaseName}.{objectQualifier}Forum MODIFY `SortOrder` INT;
+  END IF;
+
+    IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}AccessMask')
+  AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
+  ALTER TABLE {databaseName}.{objectQualifier}AccessMask MODIFY `SortOrder` INT;
+  END IF; 
+      
+  -- AccessMask Table
 
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
@@ -1867,7 +1900,14 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}ActiveAccess')
   AND COLUMN_NAME='UserForumAccess' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}ActiveAccess ADD `UserForumAccess` TINYINT(1) NOT NULL DEFAULT 0;
-  END IF; 
+  END IF;
+  
+    IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Group')
+  AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
+  ALTER TABLE {databaseName}.{objectQualifier}Group MODIFY `SortOrder` INT;
+  END IF;
 
   END;
 --GO
@@ -1979,4 +2019,15 @@ END;
   DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}tmp_initdisplayname;
   --GO 
     DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}forum_initdisplayname;
+  --GO 
+
+  CREATE PROCEDURE {databaseName}.{objectQualifier}tmp_updatevalues()
+BEGIN
+UPDATE {databaseName}.{objectQualifier}Group SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
+UPDATE {databaseName}.{objectQualifier}Rank SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
+END;
+--GO
+CALL {databaseName}.{objectQualifier}tmp_updatevalues();
+--GO
+  DROP PROCEDURE  IF EXISTS {databaseName}.{objectQualifier}tmp_updatevalues;
   --GO 

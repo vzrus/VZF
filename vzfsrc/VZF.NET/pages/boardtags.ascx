@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="boardtags.ascx.cs" Inherits="YAF.Pages.boardtags" %>
 <VZF:PageLinks ID="PageLinksTop" runat="server"/>
 
-<a id="top"></a>
+<a id="top" name="top"></a>
 <table class="command" width="100%">
     <thead>
         <tr>

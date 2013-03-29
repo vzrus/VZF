@@ -2423,6 +2423,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Valige erinev foorumiteema:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Kas saata e-posti teavitus uue privaatsõnumi laekumise kohta?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Mis on teie tegelik nimi?</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Mis keelt soovite kasutada:</Resource>
@@ -2432,6 +2433,7 @@
     <Resource tag="TIMEZONE">Ajavöönd</Resource>
     <Resource tag="TIMEZONE2">Kellaaegade ja kuupäevade kuvamiseks vastavalt kohalikule ajale, palume märkida teie ajavöönd.</Resource>
     <Resource tag="TITLE">Profiili muutmine</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

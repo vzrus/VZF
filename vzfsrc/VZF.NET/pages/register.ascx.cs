@@ -381,7 +381,7 @@ namespace YAF.Pages
         // save the time zone...
         int userId = UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey);
 
-        CommonDb.user_save(PageContext.PageModuleID, userId, 
+        CommonDb.user_save(this.PageContext.PageModuleID, userId, 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -398,7 +398,7 @@ namespace YAF.Pages
             null, 
             dstUser.Checked, 
             null, 
-            null);
+            null, 20, 20);
 
         bool autoWatchTopicsEnabled = this.Get<YafBoardSettings>().DefaultNotificationSetting ==
                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;

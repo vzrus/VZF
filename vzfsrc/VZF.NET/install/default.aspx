@@ -7,7 +7,7 @@
         name="scriptlanguage" content="text/javascript" />
     <meta id="YafMetaStyles" http-equiv="Content-Style-Type" runat="server" name="styles"
         content="text/css" />
-    <title>Yet Another Forum.NET Installation</title>
+    <title>VZF Installation</title>
    <link type="text/css" rel="stylesheet" href="wizard.css" />
    <script src="../resources/js/jquery.min.js" type="text/javascript"></script>    
 </head>

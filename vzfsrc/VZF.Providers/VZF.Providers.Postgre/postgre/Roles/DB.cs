@@ -29,7 +29,6 @@ namespace YAF.Providers.Roles
     using VZF.Data.Postgre;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Core;
 
     /// <summary>

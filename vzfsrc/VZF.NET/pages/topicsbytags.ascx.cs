@@ -187,7 +187,7 @@ namespace YAF.Pages
         /// </summary>
         private void BindData()
         {
-            this.Pager.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+            this.Pager.PageSize = PageContext.TopicsPerPage;
 
             // when userId is null it returns the count of all deleted messages
 
@@ -219,11 +219,11 @@ namespace YAF.Pages
                 this.retBtnArgs = "b={0}".FormatWith(this.boardIdb);
             }
 
-            this.Pager.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+            this.Pager.PageSize = PageContext.TopicsPerPage;
             DataTable dtTopics = CommonDb.topic_bytags(
                 PageContext.PageModuleID,
                 this.PageContext.PageBoardID,
-                forumId,
+                0,
                 this.PageContext.PageUserID,
                 this.Request.QueryString.GetFirstOrDefault("tagid"),
                                                      DateTime.MinValue.AddYears(1902),

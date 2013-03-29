@@ -2445,6 +2445,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">עקוף את ערכת הנושא ברירת המחדל</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">האם ברצונך לקבל הודעה בדוא"ל כשמתקבלת הודעה פרטית חדשה?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">מהו שמך האמיתי?</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">באיזו שפה ברצונך להשתמש:</Resource>
@@ -2454,6 +2455,7 @@
     <Resource tag="TIMEZONE">איזור זמן</Resource>
     <Resource tag="TIMEZONE2">על מנת להציג את הזמנים והתאריכים בזמן שלך, אנו צריכים לדעת את איזור הזמן שלך. (ישראל נמצאת ב GMT+2)</Resource>
     <Resource tag="TITLE">עריכת פרופיל</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

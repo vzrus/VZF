@@ -2110,6 +2110,8 @@ Spoiler Content
     <Resource tag="FACEBOOK">Your Facebook Profile ID:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
      <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
+     <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
+     <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="SKYPE">Your SKYPE ID:</Resource>
     <Resource tag="YIM">Your Yahoo ID:</Resource>
       <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
@@ -2723,6 +2725,7 @@ Spoiler Content
       <Resource tag="ALBUM_IMAGE_CHANGE_CAPTION">Add Caption</Resource>
       <Resource tag="ALBUMS_INFO">Currently you have {0} Album(s). You can have max. {1} Album(s).</Resource>
       <Resource tag="ALBUMS_NOTALLOWED">You are not allowed to have Albums.</Resource>
+      <Resource tag="BACK_ALBUMS">Go Back to Albums</Resource>
    </page>
   <page name="MOSTACTIVEUSERS">
       <Resource tag="FOR_DAYS">For last {0} day(s)</Resource>
@@ -4778,6 +4781,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="SERVERTIME_CORRECT_HELP">Enter a positive or a negative value in minutes between -720 and 720, if the server UTC time value is incorrect: </Resource>
      <Resource tag="FORUM_EMAIL">Forum Email:</Resource>
        <Resource tag="FORUM_EMAIL_HELP">The from address when sending emails to users.</Resource>
+     <Resource tag="FORUM_DESCCANBENULL">Forum description can be missing.</Resource>
+       <Resource tag="FORUM_DESCCANBENULL_HELP">Forum description can be missing.</Resource>
      <Resource tag="EMAIL_VERIFICATION">Require Email Verification:</Resource>
        <Resource tag="EMAIL_VERIFICATION_HELP">If unchecked users will not need to verify their email address.</Resource>
      <Resource tag="FILE_TABLE">Use File Table:</Resource>

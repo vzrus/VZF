@@ -314,6 +314,24 @@
             </b>
         </td>
     </tr>
+    <tr>
+        <td class="postheader">
+            <VZF:LocalizedLabel ID="LocalizedLabel38" runat="server" LocalizedPage="CP_EDITPROFILE"
+                LocalizedTag="TOPICSPERPAGE" />
+        </td>
+        <td class="post">
+            <asp:DropDownList runat="server" ID="TopicsPerPageDDL" CssClass="edit" />
+        </td>
+    </tr>
+    <tr>
+        <td class="postheader">
+            <VZF:LocalizedLabel ID="LocalizedLabel39" runat="server" LocalizedPage="CP_EDITPROFILE"
+                LocalizedTag="POSTSPERPAGE" />
+        </td>
+        <td class="post">
+            <asp:DropDownList runat="server" ID="PostsPerPageDDL" CssClass="edit" />
+        </td>
+    </tr> 
     <tr runat="server" id="UserThemeRow">
         <td class="postheader">
             <VZF:LocalizedLabel ID="LocalizedLabel22" runat="server" LocalizedPage="CP_EDITPROFILE"
@@ -379,9 +397,9 @@
     </asp:PlaceHolder>
     <tr>
         <td class="footer1" colspan="2" align="center">
-            <asp:Button ID="UpdateProfile" CssClass="pbutton" runat="server" OnClick="UpdateProfile_Click" />
+            <asp:Button ID="UpdateProfile" CssClass="yafcssbigbutton" runat="server" OnClick="UpdateProfile_Click" />
             |
-            <asp:Button ID="Cancel" CssClass="pbutton" runat="server" OnClick="Cancel_Click" />
+            <asp:Button ID="Cancel" CssClass="yafcssbigbutton" runat="server" OnClick="Cancel_Click" />
         </td>
     </tr>
 </table>

@@ -391,7 +391,7 @@ namespace YAF.Pages.Admin
         return;
       }
 
-      if (this.Description.Text.Trim().Length == 0)
+      if (!this.Get<YafBoardSettings>().ForumDescriptionCanBeNull && this.Description.Text.Trim().Length == 0)
       {
         this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_DESCRIPTION"));
         return;
@@ -497,7 +497,7 @@ namespace YAF.Pages.Admin
         this.CategoryList.SelectedValue, 
         parentID, 
         this.Name.Text.Trim(), 
-        this.Description.Text.Trim(), 
+        this.Description.Text.Trim().IsSet() ? this.Description.Text.Trim() : null, 
         sortOrder, 
         this.Locked.Checked, 
         this.HideNoAccess.Checked, 

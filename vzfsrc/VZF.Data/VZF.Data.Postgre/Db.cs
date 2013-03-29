@@ -39,7 +39,6 @@ namespace VZF.Data.Postgre
     using NpgsqlTypes;
 
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
@@ -8900,14 +8899,12 @@ namespace VZF.Data.Postgre
             object autoWatchTopics,
             object dSTUser,
             object isHidden,
-            object notificationType)
+            object notificationType, 
+            object topicsPerPage, 
+            object postsPerPage)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_save"))
             {
-                if (userName == null)
-                {
-                    userName = DBNull.Value;
-                }
                 if (email == null)
                 {
                     email = DBNull.Value;
@@ -8949,7 +8946,7 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
+                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName ?? DBNull.Value; 
                 cmd.Parameters.Add(new NpgsqlParameter("i_displayname", NpgsqlDbType.Varchar)).Value = displayName;
                 cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
                 cmd.Parameters.Add(new NpgsqlParameter("i_timezone", NpgsqlDbType.Integer)).Value = timeZone;
@@ -8970,8 +8967,9 @@ namespace VZF.Data.Postgre
                     autoWatchTopics;
                 cmd.Parameters.Add(new NpgsqlParameter("i_dstuser", NpgsqlDbType.Boolean)).Value = dSTUser;
                 cmd.Parameters.Add(new NpgsqlParameter("i_hideuser", NpgsqlDbType.Boolean)).Value = isHidden;
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
-                    DateTime.UtcNow;
+                cmd.Parameters.Add(new NpgsqlParameter("i_topicsperpage", NpgsqlDbType.Integer)).Value = topicsPerPage;
+                cmd.Parameters.Add(new NpgsqlParameter("i_postsperpage", NpgsqlDbType.Integer)).Value = postsPerPage;
+                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
 
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
 
@@ -10613,7 +10611,7 @@ namespace VZF.Data.Postgre
                 // use transactions..
                 if (useTransactions)
                 {
-                    using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(YAF.Classes.Data.PostgreDbAccess.IsolationLevel))
+                    using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(PostgreDbAccess.IsolationLevel))
                     {
                         foreach (var sql0 in statements)
                         {
@@ -11387,7 +11385,6 @@ namespace VZF.Data.Postgre
                     DateTime.UtcNow;
 
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
-                int d = 1;
             }
         }
 
@@ -11462,7 +11459,6 @@ namespace VZF.Data.Postgre
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new NpgsqlParameter("i_imageid", NpgsqlDbType.Integer)).Value = ImageID;
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
-                int s33 = 0;
             }
         }
 

@@ -50,8 +50,8 @@ namespace VZF.Data.Common
         /// Deletes the access mask.
         /// </summary>
         /// <param name="mid">
-        /// The module id
-        /// .</param>
+        /// The module id.
+        /// </param>
         /// <param name="accessMaskID">
         /// The access mask id. 
         /// </param>
@@ -11974,26 +11974,7 @@ namespace VZF.Data.Common
 
         }
 
-        public static void user_save(
-            int? mid,
-            object userId,
-            object boardId,
-            object userName,
-            object displayName,
-            object email,
-            object timeZone,
-            object languageFile,
-            object culture,
-            object themeFile,
-            object useSingleSignOn,
-            object textEditor,
-            object overrideDefaultThemes,
-            object approved,
-            object pmNotification,
-            object autoWatchTopics,
-            object dSTUser,
-            object isHidden,
-            object notificationType)
+        public static void user_save(int? mid, object userId, object boardId, object userName, object displayName, object email, object timeZone, object languageFile, object culture, object themeFile, object useSingleSignOn, object textEditor, object overrideDefaultThemes, object approved, object pmNotification, object autoWatchTopics, object dSTUser, object isHidden, object notificationType, object topicsPerPage, object postsPerPage)
         {
             string dataEngine;
             string connectionString;
@@ -12022,7 +12003,9 @@ namespace VZF.Data.Common
                         autoWatchTopics,
                         dSTUser,
                         isHidden,
-                        notificationType);
+                        notificationType, 
+                        topicsPerPage, 
+                        postsPerPage);
                     break;
                 case "Npgsql":
                     VZF.Data.Postgre.Db.user_save(
@@ -12044,7 +12027,9 @@ namespace VZF.Data.Common
                         autoWatchTopics,
                         dSTUser,
                         isHidden,
-                        notificationType);
+                        notificationType,
+                        topicsPerPage,
+                        postsPerPage);
                     break;
                 case "MySql.Data.MySqlClient":
                     VZF.Data.Mysql.Db.user_save(
@@ -12066,7 +12051,9 @@ namespace VZF.Data.Common
                         autoWatchTopics,
                         dSTUser,
                         isHidden,
-                        notificationType);
+                        notificationType,
+                        topicsPerPage,
+                        postsPerPage);
                     break;
                 case "FirebirdSql.Data.FirebirdClient":
                     VZF.Data.Firebird.Db.user_save(
@@ -12088,7 +12075,9 @@ namespace VZF.Data.Common
                         autoWatchTopics,
                         dSTUser,
                         isHidden,
-                        notificationType);
+                        notificationType,
+                        topicsPerPage,
+                        postsPerPage);
                     break;
                     // case "oracle":   orPostgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType);break;
                     // case "db2":   db2Postgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
@@ -12167,6 +12156,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_savepassword.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="password">
+        /// The password.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_savepassword(int? mid, object userId, object password)
         {
             string dataEngine;
@@ -12196,6 +12199,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_savesignature.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="signature">
+        /// The signature.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_savesignature(int? mid, object userId, object signature)
         {
             string dataEngine;
@@ -12225,6 +12242,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_setinfo.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_setinfo(int? mid, int boardId, MembershipUser user)
         {
             string dataEngine;
@@ -12253,6 +12284,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_setnotdirty.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_setnotdirty(int? mid, int boardId, int userId)
         {
             string dataEngine;
@@ -12282,6 +12327,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_setpoints.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="points">
+        /// The points.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_setpoints(int? mid, object userId, object points)
         {
             string dataEngine;
@@ -12311,6 +12370,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_setrole.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="providerUserKey">
+        /// The provider user key.
+        /// </param>
+        /// <param name="role">
+        /// The role.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_setrole(int? mid, int boardId, object providerUserKey, object role)
         {
             string dataEngine;
@@ -12340,6 +12416,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_simplelist.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="StartID">
+        /// The start id.
+        /// </param>
+        /// <param name="Limit">
+        /// The limit.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable user_simplelist(int? mid, int StartID, int Limit)
         {
             string dataEngine;
@@ -12363,9 +12456,22 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The user_suspend.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="suspend">
+        /// The suspend.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_suspend(int? mid, object userId, object suspend)
         {
             string dataEngine;
@@ -12395,6 +12501,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_update_single_sign_on_status.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="isFacebookUser">
+        /// The is facebook user.
+        /// </param>
+        /// <param name="isTwitterUser">
+        /// The is twitter user.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void user_update_single_sign_on_status(
             int? mid, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
         {
@@ -12429,6 +12552,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_ thanked message.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="messageId">
+        /// The message id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool user_ThankedMessage(int? mid, object messageId, object userId)
         {
             string dataEngine;
@@ -12452,9 +12592,22 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The user_ thank from count.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static int user_ThankFromCount(int? mid, [NotNull] object userId)
         {
             string dataEngine;
@@ -12480,6 +12633,29 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user_viewthanksfrom.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable user_viewthanksfrom(
             int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
         {
@@ -12508,9 +12684,31 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The user_viewthanksto.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="UserID">
+        /// The user id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable user_viewthanksto(
             int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
         {
@@ -12539,9 +12737,40 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The user find.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="filter">
+        /// The filter.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
+        /// </param>
+        /// <param name="email">
+        /// The email.
+        /// </param>
+        /// <param name="displayName">
+        /// The display name.
+        /// </param>
+        /// <param name="notificationType">
+        /// The notification type.
+        /// </param>
+        /// <param name="dailyDigest">
+        /// The daily digest.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static IEnumerable<TypedUserFind> UserFind(
             int? mid,
             int boardId,
@@ -12609,9 +12838,22 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The userforum_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void userforum_delete(int? mid, object userId, object forumID)
         {
             string dataEngine;
@@ -12641,6 +12883,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The userforum_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable userforum_list(int? mid, object userId, object forumID)
         {
             string dataEngine;
@@ -12664,9 +12923,25 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The userforum_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <param name="accessMaskID">
+        /// The access mask id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void userforum_save(int? mid, object userId, object forumID, object accessMaskID)
         {
             string dataEngine;
@@ -12693,10 +12968,23 @@ namespace VZF.Data.Common
                     // case "other":   othPostgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
+        /// <summary>
+        /// The usergroup_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable usergroup_list(int? mid, object userId)
         {
             string dataEngine;
@@ -12720,9 +13008,25 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The usergroup_save.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="member">
+        /// The member.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void usergroup_save(int? mid, object userId, object groupID, object member)
         {
             string dataEngine;
@@ -12752,6 +13056,35 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The user list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="approved">
+        /// The approved.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="rankID">
+        /// The rank id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static IEnumerable<TypedUserList> UserList(
             int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
         {
@@ -12780,9 +13113,22 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The watchforum_add.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void watchforum_add(int? mid, object userId, object forumID)
         {
             string dataEngine;
@@ -12812,6 +13158,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The watchforum_check.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable watchforum_check(int? mid, object userId, object forumID)
         {
             string dataEngine;
@@ -12835,9 +13198,19 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The watchforum_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="watchForumID">
+        /// The watch forum id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void watchforum_delete(int? mid, object watchForumID)
         {
             string dataEngine;
@@ -12867,6 +13240,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The watchforum_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable watchforum_list(int? mid, object userId)
         {
             string dataEngine;
@@ -12890,9 +13277,22 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
+        /// <summary>
+        /// The watchtopic_add.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void watchtopic_add(int? mid, object userId, object topicID)
         {
             string dataEngine;
@@ -12922,6 +13322,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The watchtopic_check.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable watchtopic_check(int? mid, object userId, object topicID)
         {
             string dataEngine;
@@ -12948,6 +13365,17 @@ namespace VZF.Data.Common
 
         }
 
+        /// <summary>
+        /// The watchtopic_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="watchTopicID">
+        /// The watch topic id.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static void watchtopic_delete(int? mid, object watchTopicID)
         {
             string dataEngine;
@@ -12977,6 +13405,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The watchtopic_list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable watchtopic_list(int? mid, object userId)
         {
             string dataEngine;
@@ -13000,13 +13442,23 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-
         }
 
 
         // Properties
 
-        public static int GetDBSize(int? mid)
+        /// <summary>
+        /// The get db size.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
+        public static int GetDbSize(int? mid)
         {
             string dataEngine;
             string connectionString;
@@ -13020,7 +13472,7 @@ namespace VZF.Data.Common
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.GetDBSize(connectionString);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.GetDBSize(connectionString);
+                    return VZF.Data.Mysql.Db.GetDbSize(connectionString);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.GetDBSize(connectionString);
                     // case "oracle":  return orPostgre.Db.GetDBSize();
@@ -13031,6 +13483,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get is forum installed.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static bool GetIsForumInstalled(int? mid)
         {
             string dataEngine;
@@ -13056,7 +13519,17 @@ namespace VZF.Data.Common
             }
         }
 
-
+        /// <summary>
+        /// The get db version.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static int GetDBVersion(int? mid)
         {
             string dataEngine;
@@ -13071,7 +13544,7 @@ namespace VZF.Data.Common
                 case "Npgsql":
                     return VZF.Data.Postgre.Db.GetDBVersion(connectionString);
                 case "MySql.Data.MySqlClient":
-                    return VZF.Data.Mysql.Db.GetDBVersion(connectionString);
+                    return VZF.Data.Mysql.Db.GetDbVersion(connectionString);
                 case "FirebirdSql.Data.FirebirdClient":
                     return VZF.Data.Firebird.Db.GetDBVersion(connectionString);
                     // case "oracle":  return orPostgre.Db.GetDBVersion();
@@ -13082,6 +13555,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get full text supported.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static bool GetFullTextSupported(int? mid)
         {
             string dataEngine;
@@ -13110,6 +13594,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get full text script.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static string GetFullTextScript(int? mid)
         {
             string dataEngine;
@@ -13132,7 +13627,6 @@ namespace VZF.Data.Common
                     // case "other":  return othPostgre.Db.fullTextScript; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
@@ -13144,7 +13638,7 @@ namespace VZF.Data.Common
              set { _connectionOptions = value; }
          } */
 
-        //added vzrus
+        // added by vzrus
 
         #region ConnectionStringOptions
 
@@ -14663,6 +15157,17 @@ namespace VZF.Data.Common
 
         #endregion
 
+        /// <summary>
+        /// The get script list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string[]"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static string[] GetScriptList(int? mid)
         {
             string dataEngine;
@@ -14686,10 +15191,20 @@ namespace VZF.Data.Common
                     // case "other":  return othPostgre.Db.scriptList; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
+        /// <summary>
+        /// The get panel get stats.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool GetPanelGetStats(int? mid)
         {
             string dataEngine;
@@ -14715,6 +15230,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get panel recovery mode.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool GetPanelRecoveryMode(int? mid)
         {
             string dataEngine;
@@ -14740,6 +15266,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get panel reindex.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool GetPanelReindex(int? mid)
         {
             string dataEngine;
@@ -14765,6 +15302,17 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get panel shrink.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool GetPanelShrink(int? mid)
         {
             string dataEngine;
@@ -14788,11 +15336,20 @@ namespace VZF.Data.Common
                     // case "other":  return othPostgre.Db.PanelShrink; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
-
+        /// <summary>
+        /// The get btn reindex visible.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool getBtnReindexVisible(int? mid)
         {
             string dataEngine;
@@ -14816,10 +15373,18 @@ namespace VZF.Data.Common
                     // case "other":  return othPostgre.Db.btnReindexVisible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-
             }
         }
 
+        /// <summary>
+        /// The data engine name.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string DataEngineName(int? mid)
         {
             string dataEngine;

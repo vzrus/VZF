@@ -37,6 +37,7 @@ namespace YAF.Pages
     using VZF.Controls;
 
     using YAF.Core;
+    using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
@@ -755,7 +756,7 @@ namespace YAF.Pages
                 PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
             this.ThanksToTimes.Text = thanksToArray[0].ToString();
             this.ThanksToPosts.Text = thanksToArray[1].ToString();
-            this.ReputationReceived.Text = userData.Points.ToString();
+            this.ReputationReceived.Text = YafReputation.GenerateReputationBar(userData.Points.Value, userData.UserID);
             this.OnlineStatusImage1.UserID = userID;
             this.OnlineStatusImage1.Visible = this.Get<YafBoardSettings>().ShowUserOnlineStatus;
 
@@ -855,6 +856,13 @@ namespace YAF.Pages
                 // Setup Hover Card JS
                 YafContext.Current.PageElements.RegisterJsBlockStartup(
                     "hovercardtwitterfacebookjs", hoverCardLoadJs.ToString());
+            }
+
+            if (this.Get<YafBoardSettings>().EnableUserReputation)
+            {
+                // Setup UserBox Reputation Script Block
+                YafContext.Current.PageElements.RegisterJsBlockStartup(
+                    "reputationprogressjs", JavaScriptBlocks.RepuatationProgressLoadJs);
             }
 
             if (this.User != null && userData.Profile.Birthday != DateTime.MinValue)

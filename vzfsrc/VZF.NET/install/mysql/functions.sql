@@ -203,6 +203,7 @@ BEGIN
 DECLARE  oNumPosts INT DEFAULT 0;
 DECLARE itmpp INT;
 
+
 DECLARE ctpcr20 CURSOR  FOR
 SELECT b.`ForumID`
 FROM   {databaseName}.{objectQualifier}Forum b

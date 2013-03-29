@@ -2422,6 +2422,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Select different forum theme:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Receive an email notification when you get a new private message?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Vad är ditt riktiga namn?</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Vilket språk vill du använda:</Resource>
@@ -2431,6 +2432,7 @@
     <Resource tag="TIMEZONE">Tidszon</Resource>
     <Resource tag="TIMEZONE2">För att du ska få tider och datum i din lokala tid behöver vi veta vilken tidszon du befinner dig i.</Resource>
     <Resource tag="TITLE">Ändra profil</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

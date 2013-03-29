@@ -202,7 +202,9 @@ namespace YAF.Core.Services
                             null,
                             null,
                             null,
-                            null);
+                            null, 
+                            20, 
+                            20);
 
                         bool autoWatchTopicsEnabled = YafContext.Current.Get<YafBoardSettings>().DefaultNotificationSetting ==
                                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;
@@ -444,7 +446,9 @@ namespace YAF.Core.Services
                     null,
                     null,
                     null,
-                    null);
+                    null,
+                    YafContext.Current.Get<YafBoardSettings>().TopicsPerPage > 20 ? 20 : YafContext.Current.Get<YafBoardSettings>().TopicsPerPage,
+                    YafContext.Current.Get<YafBoardSettings>().PostsPerPage > 20 ? 20 : YafContext.Current.Get<YafBoardSettings>().PostsPerPage);
 
                 bool autoWatchTopicsEnabled = YafContext.Current.Get<YafBoardSettings>().DefaultNotificationSetting ==
                                               UserNotificationSetting.TopicsIPostToOrSubscribeTo;

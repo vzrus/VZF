@@ -667,6 +667,39 @@ namespace YAF.Core
         }
 
         /// <summary>
+        ///   Gets the number of selected user's CommonViewType
+        /// </summary>
+        public int CommonViewType
+        {
+            get
+            {
+                return this.Page["CommonViewType"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of selected user's TopicsPerPage
+        /// </summary>
+        public int TopicsPerPage
+        {
+            get
+            {
+                return this.Page["TopicsPerPage"].ToType<int>();
+            }
+        }
+
+        /// <summary>
+        ///   Gets the number of selected user's PostsPerPage
+        /// </summary>
+        public int PostsPerPage
+        {
+            get
+            {
+                return this.Page["PostsPerPage"].ToType<int>();
+            }
+        }
+
+        /// <summary>
         ///   Gets a value indicating whether a user has buddies
         /// </summary>
         public bool UserHasBuddies

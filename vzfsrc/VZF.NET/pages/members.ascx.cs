@@ -246,9 +246,8 @@ namespace YAF.Pages
             this.Posts.Text = this.GetText("posts");
             this.LastVisitLB.Text = this.GetText("members", "lastvisit");
        
-            using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (var dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
-                List<DataRow> rows = null;
                 var dtt = dt.Clone();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -292,7 +291,7 @@ namespace YAF.Pages
                 newRow["Name"] = this.GetText("ALL");
                 newRow["RankID"] = DBNull.Value;
                 dt.Rows.InsertAt(newRow, 0);
-
+                // this.GetText("COMMON", "GUEST_NAME")
                 DataRow[] guestRows = dt.Select("Name='Guest'");
 
                 if (guestRows.Length > 0)

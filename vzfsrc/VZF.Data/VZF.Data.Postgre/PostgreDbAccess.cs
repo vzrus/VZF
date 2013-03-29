@@ -17,12 +17,12 @@
 //   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
 // </copyright>
 // <summary>
-//   The common db.
+//   The Postgre Db Access.
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace YAF.Classes.Data
+namespace VZF.Data.Postgre
 {
     using System;
     using System.Configuration;
@@ -33,6 +33,7 @@ namespace YAF.Classes.Data
 
     using VZF.Data.Utils;
 
+    using YAF.Classes;
     using YAF.Types;
     using YAF.Utils.Helpers;
 

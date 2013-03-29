@@ -114,7 +114,7 @@ namespace YAF.Pages.Admin
         userProfile.Save();
 
         // save the time zone...
-        CommonDb.user_save(PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
+        CommonDb.user_save(this.PageContext.PageModuleID, UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey), 
             this.PageContext.PageBoardID, 
             null, 
             null, 
@@ -131,7 +131,9 @@ namespace YAF.Pages.Admin
             null, 
             null, 
             null, 
-            null);
+            null, 
+            20, 
+            20);
 
         if (this.Get<YafBoardSettings>().EmailVerification)
         {

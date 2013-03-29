@@ -22,14 +22,15 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace YAF.Classes.Data
+namespace VZF.Data.Postgre
 {
     using System;
     using System.Data;
     using System.Globalization;
 
     using Npgsql;
-  
+
+    using YAF.Classes;
     using YAF.Types.Handlers;
 
     /// <summary>

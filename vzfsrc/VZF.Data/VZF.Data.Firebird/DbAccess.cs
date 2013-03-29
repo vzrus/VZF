@@ -397,7 +397,7 @@ namespace VZF.Data.Firebird
 
       public static DataTable GetData(string commandText, bool transaction, string connectionString)
       {
-          QueryCounter qc = new QueryCounter(commandText);
+          var qc = new QueryCounter(commandText);
           try
           {
               using (FbCommand cmd = new FbCommand())

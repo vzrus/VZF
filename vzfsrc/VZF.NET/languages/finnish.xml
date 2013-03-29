@@ -2405,6 +2405,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Select different forum theme:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Receive an email notification when you get a new private message?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Oikea nimesi:</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Mitä kieltä haluat käyttää:</Resource>
@@ -2414,6 +2415,7 @@
     <Resource tag="TIMEZONE">Aikavyöhyke</Resource>
     <Resource tag="TIMEZONE2">nähdäksesi ajat oikein, tarvitsemme tietoomme aikavyöhykkeesi.</Resource>
     <Resource tag="TITLE">Muokkaa profiilia</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

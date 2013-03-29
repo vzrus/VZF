@@ -10322,17 +10322,20 @@ namespace VZF.Data.MsSql
         /// <summary>
         /// The user_save.
         /// </summary>
-        /// <param name="userID">
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userId">
         /// The user id.
         /// </param>
-        /// <param name="boardID">
+        /// <param name="boardId">
         /// The board id.
         /// </param>
         /// <param name="userName">
         /// The user name.
         /// </param>
         /// <param name="displayName">
-        /// the display name.
+        /// The display name.
         /// </param>
         /// <param name="email">
         /// The email.
@@ -10344,19 +10347,19 @@ namespace VZF.Data.MsSql
         /// The language file.
         /// </param>
         /// <param name="culture">
-        /// the user culture
+        /// The culture.
         /// </param>
         /// <param name="themeFile">
         /// The theme file.
         /// </param>
         /// <param name="useSingleSignOn">
-        /// The use Single Sign On.
+        /// The use single sign on.
         /// </param>
         /// <param name="textEditor">
-        /// The text Editor.
+        /// The text editor.
         /// </param>
         /// <param name="useMobileTheme">
-        /// The override Mobile Theme.
+        /// The use mobile theme.
         /// </param>
         /// <param name="approved">
         /// The approved.
@@ -10365,20 +10368,27 @@ namespace VZF.Data.MsSql
         /// The pm notification.
         /// </param>
         /// <param name="autoWatchTopics">
-        /// The auto Watch Topics.
+        /// The auto watch topics.
         /// </param>
         /// <param name="dSTUser">
-        /// The d ST User.
+        /// The d st user.
         /// </param>
         /// <param name="hideUser">
-        /// The hide User.
+        /// The hide user.
         /// </param>
         /// <param name="notificationType">
-        /// The notification Type.
+        /// The notification type.
         /// </param>
-        public static void user_save(string connectionString,
-            [NotNull] object userID, 
-            [NotNull] object boardID, 
+        /// <param name="topicsPerPage">
+        /// The topics per page.
+        /// </param>
+        /// <param name="postsPerPage">
+        /// The posts per page.
+        /// </param>
+        public static void user_save(
+            [NotNull] string connectionString,
+            [NotNull] object userId,
+            [NotNull] object boardId, 
             [NotNull] object userName, 
             [NotNull] object displayName, 
             [NotNull] object email, 
@@ -10393,14 +10403,16 @@ namespace VZF.Data.MsSql
             [NotNull] object pmNotification, 
             [NotNull] object autoWatchTopics, 
             [NotNull] object dSTUser, 
-            [NotNull] object hideUser, 
-            [NotNull] object notificationType)
+            [NotNull] object hideUser,
+            [NotNull] object notificationType,
+            [NotNull] object topicsPerPage,
+            [NotNull] object postsPerPage)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("UserID", userID);
-                cmd.Parameters.AddWithValue("BoardID", boardID);
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("BoardID", boardId);
                 cmd.Parameters.AddWithValue("UserName", userName);
                 cmd.Parameters.AddWithValue("DisplayName", displayName);
                 cmd.Parameters.AddWithValue("Email", email);
@@ -10417,6 +10429,8 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("DSTUser", dSTUser);
                 cmd.Parameters.AddWithValue("HideUser", hideUser);
                 cmd.Parameters.AddWithValue("NotificationType", notificationType);
+                cmd.Parameters.AddWithValue("TopicsPerPage", topicsPerPage);
+                cmd.Parameters.AddWithValue("PostsPerPage", postsPerPage);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }

@@ -470,6 +470,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_removeignoreduser;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_savestyle;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_savestyle_all;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_isuserignored;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_deleteold;
@@ -1410,7 +1412,7 @@ MODIFIES SQL DATA
 BEGIN
   DECLARE ici_count int;
   DECLARE ici_max int;
-  DECLARE ici_maxStr varchar(255);
+  DECLARE ici_maxStr VARCHAR(255);
 
 -- SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 SET ici_count = IFNULL((SELECT COUNT(DISTINCT CAST(IP AS CHAR(37))+ CAST(UserID AS CHAR(10)))
@@ -1636,7 +1638,7 @@ WHERE  BoardID = i_BoardID;
         {databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
       FROM   {databaseName}.{objectQualifier}BannedIP b
       WHERE  b.BoardID = ',i_BoardID,'
-      order by b.ID  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+      order by b.Mask  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
     PREPARE stmt_els FROM @biplpr;
     EXECUTE stmt_els;
     -- show global status like 'com_stmt%';
@@ -2321,7 +2323,7 @@ END;
 CREATE  PROCEDURE {databaseName}.{objectQualifier}board_save(
                 i_BoardID       INT,
                 i_Name          VARCHAR(128),
-                i_LanguageFile  varchar(128), 
+                i_LanguageFile  VARCHAR(128), 
                 i_Culture       VARCHAR(10),
                 i_AllowThreaded TINYINT(1))
                MODIFIES SQL DATA 
@@ -2444,13 +2446,13 @@ END;
 READS SQL DATA
 BEGIN
     IF i_CategoryID IS NULL THEN
-        SELECT *,
+        SELECT c.*,
 		IFNULL((SELECT SIGN(f.ForumID) FROM {databaseName}.{objectQualifier}Forum f where f.CategoryID = c.CategoryID and f.CanHavePersForums  = 1 LIMIT 1),0) AS HasForumsForPersForums
-		FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID ORDER BY SortOrder;
+		FROM {databaseName}.{objectQualifier}Category c WHERE c.BoardID = i_BoardID ORDER BY c.SortOrder;
     ELSE
-        SELECT *,
+        SELECT c.*,
 		IFNULL((SELECT SIGN(f.ForumID) FROM {databaseName}.{objectQualifier}Forum f where f.CategoryID = c.CategoryID and f.CanHavePersForums  = 1 LIMIT 1),0)  AS HasForumsForPersForums
-		FROM {databaseName}.{objectQualifier}Category WHERE BoardID = i_BoardID AND CategoryID = i_CategoryID;
+		FROM {databaseName}.{objectQualifier}Category c WHERE c.BoardID = i_BoardID AND c.CategoryID = i_CategoryID;
         END IF;
 END;
 --GO
@@ -2722,109 +2724,105 @@ CREATE  PROCEDURE {databaseName}.{objectQualifier}eventlog_delete
  END;
 --GO
 
-
-
-create procedure {databaseName}.{objectQualifier}eventlog_list(i_BoardID INT, i_PageUserID int, i_MaxRows int, i_MaxDays int,  i_PageIndex int,
-   i_PageSize int, i_SinceDate datetime, i_ToDate datetime, i_EventIDs varchar(8000),i_UTCTIMESTAMP datetime) 
+create procedure {databaseName}.{objectQualifier}eventlog_list(
+                 i_BoardID INT, i_PageUserID int, i_MaxRows int, i_MaxDays int,  i_PageIndex int,
+				 i_PageSize int, i_SinceDate datetime, i_ToDate datetime, i_EventIDs VARCHAR(8000),
+				 i_UTCTIMESTAMP datetime) 
 begin
-   declare ici_TotalRows int ;
-   declare ici_FirstSelectRowNumber int default 0;
-   declare ici_FirstSelectRowID int;	  
-DECLARE ici_EventID varchar(11);
-DECLARE ici_Pos INT;  
-DECLARE topLogID INT;
-DECLARE Version VARCHAR(128);
---  delete entries older than 10 days
-DELETE FROM {databaseName}.{objectQualifier}EventLog
-WHERE DATEDIFF(i_UTCTIMESTAMP,EventTime) > i_MaxDays;
-      -- or if there are more then 1000
-        IF ((SELECT COUNT(*)
-             FROM   {databaseName}.{objectQualifier}eventlog) >= (i_MaxRows+50)) THEN
- SELECT VERSION() INTO Version;
- IF LOCATE('5.1',Version)<>0 OR LOCATE('5.4',Version)<>0 OR LOCATE('6.0',Version)<>0 THEN
- -- DELETE FROM {databaseName}.{objectQualifier}EventLog WHERE EventLogID IN (SELECT EventLogID FROM {databaseName}.{objectQualifier}EventLog ORDER BY EventTime LIMIT 100) ; 
- SELECT EventLogID INTO topLogID  FROM  {databaseName}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1; 
-            
-            DELETE FROM {databaseName}.{objectQualifier}EventLog
-            WHERE       EventLogID BETWEEN  topLogID  AND topLogID +100;
- ELSE        
-           
-            SELECT EventLogID INTO topLogID  FROM  {databaseName}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1; 
-            
-            DELETE FROM {databaseName}.{objectQualifier}EventLog
-            WHERE       EventLogID BETWEEN  topLogID  AND topLogID + 100;
-        END IF;
-  END IF; 
+   DECLARE ici_TotalRows INT ;
+   DECLARE ici_FirstSelectRowNumber INT DEFAULT 0;
+   DECLARE ici_FirstSelectRowID INT;
+   DECLARE ici_EventID VARCHAR(11);
+   DECLARE ici_Pos INT;
+   DECLARE topLogID INT;
+   DECLARE Version VARCHAR(128);
+
+   --  delete entries older than i_MaxDays days
    
-   -- DROP TEMPORARY TABLE IF EXISTS {objectQualifier}tmp_ParsedEventIDs;
-    CREATE TEMPORARY TABLE IF NOT EXISTS  {objectQualifier}tmp_ParsedEventIDs 
-      (
-            EventID int
-      );  
-      TRUNCATE TABLE {objectQualifier}tmp_ParsedEventIDs;
+   DELETE FROM {databaseName}.{objectQualifier}EventLog
+   WHERE DATEDIFF(i_UTCTIMESTAMP,EventTime) > i_MaxDays;
 
-SET i_EventIDs = (CONCAT(TRIM(i_EventIDs), ','));
-    SET ici_Pos = (LOCATE(',', i_EventIDs, 1));
-    IF REPLACE(i_EventIDs, ',', '') <> '' THEN	
-        WHILE ici_Pos > 0 DO		
-            SET ici_EventID = LTRIM(RTRIM(LEFT(i_EventIDs, ici_Pos - 1)));
-            IF ici_EventID <> '' THEN			
-                INSERT INTO {objectQualifier}tmp_ParsedEventIDs(EventID) VALUES (CAST(ici_EventID AS SIGNED)) ;
-                -- Use Appropriate conversion
-            END IF;
-            SET i_EventIDs = RIGHT(i_EventIDs, CHAR_LENGTH(i_EventIDs) - ici_Pos);
-            SET ici_Pos = LOCATE(',', i_EventIDs, 1);
+   -- or if there are more then i_MaxRows
+   IF ((SELECT COUNT(1) FROM   {databaseName}.{objectQualifier}eventlog) >= (i_MaxRows+50)) THEN
+   SELECT VERSION() INTO Version;
+   
+   IF LOCATE('5.1',Version)<>0 OR LOCATE('5.4',Version)<>0 OR LOCATE('6.0',Version)<>0 THEN
+
+   -- DELETE FROM {databaseName}.{objectQualifier}EventLog WHERE EventLogID IN (SELECT EventLogID FROM {databaseName}.{objectQualifier}EventLog ORDER BY EventTime LIMIT 100) ; 
+   SELECT EventLogID INTO topLogID  FROM  {databaseName}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
+   DELETE FROM {databaseName}.{objectQualifier}EventLog
+            WHERE  EventLogID BETWEEN  topLogID  AND topLogID +100;
+   ELSE 
+   SELECT EventLogID INTO topLogID  FROM  {databaseName}.{objectQualifier}EventLog ORDER BY EventLogID LIMIT 1;
+   DELETE FROM {databaseName}.{objectQualifier}EventLog WHERE EventLogID BETWEEN  topLogID  AND topLogID + 100;
+   END IF;
+   END IF;    
+  
+   CREATE TEMPORARY TABLE IF NOT EXISTS  {objectQualifier}tmp_ParsedEventIDs
+   (
+   EventID int
+   );
+   
+   TRUNCATE TABLE {objectQualifier}tmp_ParsedEventIDs;
+   
+   SET i_EventIDs = (CONCAT(TRIM(i_EventIDs), ','));
+   SET ici_Pos = (LOCATE(',', i_EventIDs, 1));
+   IF REPLACE(i_EventIDs, ',', '') <> '' THEN
+        WHILE ici_Pos > 0 DO SET ici_EventID = LTRIM(RTRIM(LEFT(i_EventIDs, ici_Pos - 1)));
+		IF ici_EventID <> '' THEN
+		INSERT INTO {objectQualifier}tmp_ParsedEventIDs(EventID) VALUES (CAST(ici_EventID AS SIGNED)); 
+		-- Use Appropriate conversion
+		END IF;
+		
+		SET i_EventIDs = RIGHT(i_EventIDs, CHAR_LENGTH(i_EventIDs) - ici_Pos);
+		SET ici_Pos = LOCATE(',', i_EventIDs, 1);
         END WHILE;
-          -- to be sure that last value is inserted
-                    IF (CHAR_LENGTH(ici_EventID) > 0) THEN
-                     INSERT INTO {objectQualifier}tmp_ParsedEventIDs (MessageID) 
-                     VALUES (CAST(ici_EventID AS SIGNED));  
-                    END IF;
-    END	IF; 
-
-
-     set i_PageIndex = i_PageIndex + 1;
-    
-    if (exists (select 1 from {databaseName}.{objectQualifier}User where ((Flags & 1) = 1 and UserID = i_PageUserID) limit 1)) then
-    
-    
-        select  count(1) into  ici_TotalRows from
-        {databaseName}.{objectQualifier}EventLog a		
+        -- to be sure that last value is inserted
+		IF (CHAR_LENGTH(ici_EventID) > 0) THEN
+		 INSERT INTO {objectQualifier}tmp_ParsedEventIDs (MessageID)
+		  VALUES (CAST(ici_EventID AS SIGNED)); 
+		END IF;
+		END IF;
+		
+		set i_PageIndex = i_PageIndex + 1;
+		
+		if (exists (select 1 from {databaseName}.{objectQualifier}User where ((Flags & 1) = 1 and UserID = i_PageUserID) limit 1)) then
+		select  count(1) into  ici_TotalRows from {databaseName}.{objectQualifier}EventLog a		
         left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
-        where	   
-        (b.UserID IS NULL or b.BoardID = i_BoardID)	and ((i_EventIDs IS NULL )  OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  and EventTime between i_SinceDate and i_ToDate;
-    
-         select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
-
-
-       
-         
-       set @elprep = CONCAT('select
+		where  (b.UserID IS NULL or b.BoardID = i_BoardID)	
+		and ((i_EventIDs IS NULL )  
+		      OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
+		and EventTime between i_SinceDate and i_ToDate;
+		
+		select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber; 
+		
+		set @elprep = CONCAT('select
         a.*,		
         IFNULL(b.`Name`,''System'') as `Name`,
         {databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
-    from
+        from
         {databaseName}.{objectQualifier}EventLog a		
         left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
-      where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between ''',i_SinceDate,''' and ''',i_ToDate,''' 
-      order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+        where (b.UserID IS NULL or b.BoardID = ',i_BoardID,')	and (',COALESCE(i_EventIDs,-1),' = - 1 OR  a.`Type` IN (',COALESCE(i_EventIDs,-1),')) and a.EventTime between ''',i_SinceDate,''' and ''',i_ToDate,''' 
+        order by a.EventLogID   desc LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
         
        PREPARE stmt_els FROM @elprep;
        EXECUTE stmt_els;
-       DEALLOCATE PREPARE stmt_els;       
-     
+       DEALLOCATE PREPARE stmt_els;     
 else
-
-        select  count(1) into  ici_TotalRows from
-        {databaseName}.{objectQualifier}EventLog a
-        left join {databaseName}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
-        join {databaseName}.{objectQualifier}UserGroup ug on (ug.UserID =  i_PageUserID and ug.GroupID = e.GroupID)
-        left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
-    where	 
-        (b.UserID IS NULL or b.BoardID = i_BoardID)	and ((i_EventIDs IS NULL )  OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  and EventTime between i_SinceDate and i_ToDate;
+       select  count(1) into  ici_TotalRows 
+	   from  {databaseName}.{objectQualifier}EventLog a
+       left join {databaseName}.{objectQualifier}EventLogGroupAccess e on e.EventTypeID = a.`Type`
+       join {databaseName}.{objectQualifier}UserGroup ug on (ug.UserID =  i_PageUserID and ug.GroupID = e.GroupID)
+       left join {databaseName}.{objectQualifier}User b on b.UserID=a.UserID
+       where	 
+       (b.UserID IS NULL or b.BoardID = i_BoardID)	
+	   and ((i_EventIDs IS NULL )  
+	         OR  a.`Type` IN (select * from {objectQualifier}tmp_ParsedEventIDs))  
+	   and EventTime between i_SinceDate and i_ToDate;
     
-        select  (i_PageIndex - 1) * i_PageSize + 1 into ici_FirstSelectRowNumber;
-                   -- find first selectedrowid 
+       select  (i_PageIndex - 1) * i_PageSize + 1 into ici_FirstSelectRowNumber;
+       -- find first selectedrowid 
       set @elprep = CONCAT('select
         a.*,		
         IFNULL(b.`Name`,''System'') as `Name`,
@@ -2855,8 +2853,6 @@ end;
  END;
 --GO
 
-
-
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE PROCEDURE {databaseName}.{objectQualifier}extension_edit (i_ExtensionID INT)
  READS SQL DATA
@@ -2883,12 +2879,9 @@ end;
             WHERE
                 a.BoardID = i_BoardID AND a.Extension=i_Extension
             ORDER BY
-                a.Extension;
-
- 
+                a.Extension; 
     ELSE
-        /* Otherwise, just get a list for the given i_BoardId*/
-        
+        /* Otherwise, just get a list for the given i_BoardId */        
             SELECT
                 a.*
             FROM
@@ -3809,7 +3802,7 @@ END;
     i_ParentID		INT,
     i_Name			VARCHAR(128),
     i_Description	VARCHAR(255),
-    i_SortOrder		SMALLINT,
+    i_SortOrder		INT,
     i_Locked		TINYINT(1),
     i_Hidden		TINYINT(1),
     i_IsTest		TINYINT(1),
@@ -3831,6 +3824,17 @@ BEGIN
     DECLARE ici_UserName  VARCHAR(255);
     DECLARE ici_UserDisplayName  VARCHAR(255);
     DECLARE ici_BoardID INT;
+	DECLARE ici_LatestOtherSortOrder INT;  
+
+	 -- If this is a personal forum we should override SortOrder 
+	-- if (i_IsUserForum = 1 OR ) THEN
+	-- SELECT SortOrder INTO ici_LatestOtherSortOrder FROM {databaseName}.{objectQualifier}Forum WHERE CreatedDate IS NOT NULL
+	-- ORDER BY  CreatedDate DESC LIMIT 1;
+	 -- personal forums should be sorted in creation order
+	-- IF i_SortOrder <= ici_LatestOtherSortOrder THEN	
+	-- i_SortOrder = ici_LatestOtherSortOrder + 1;
+	-- END IF;	 
+	-- END IF;
 
     SET l_Flags = 0;
     IF i_Locked<>0 THEN SET l_Flags = l_Flags | 1;END IF;
@@ -4410,6 +4414,8 @@ END;
         SET iciFlags = iciFlags | 8; END IF;
 		IF i_IsHidden <> 0 THEN
         SET iciFlags = iciFlags | 16; END IF;
+		IF CHAR_LENGTH(i_Style) <= 2 THEN
+		SET i_Style = NULL; END IF;
 
 		 IF i_UserID IS NOT NULL THEN   
     SELECT Name, DisplayName INTO ici_UserName, ici_UserDisplayName FROM {databaseName}.{objectQualifier}User where UserID = i_UserID LIMIT  1;
@@ -5558,8 +5564,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}message_reportresolve(i_Message
     i_Posted		DATETIME,
     i_ReplyTo		INT,
     i_BlogPostID	VARCHAR(128),
-    i_ExternalMessageId varchar(255),
-    i_ReferenceMessageId varchar(255),
+    i_ExternalMessageId VARCHAR(255),
+    i_ReferenceMessageId VARCHAR(255),
     i_Flags			INT,
     i_UTCTIMESTAMP DATETIME,
     OUT i_MessageID	INT
@@ -5678,10 +5684,10 @@ END;
 --GO
 
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_tagsave 
-    (i_TopicID int, i_MessageIDs varchar(4001))
+    (i_TopicID int, i_MessageIDs VARCHAR(4001))
 BEGIN
-    DECLARE ici_MessageID varchar(11);
-    DECLARE ici_MessageIDsChunk varchar(4000);
+    DECLARE ici_MessageID VARCHAR(11);
+    DECLARE ici_MessageIDsChunk VARCHAR(4000);
     DECLARE ici_Pos int;
     DECLARE ici_Itr int;
     DECLARE ici_trimindex int;
@@ -5956,7 +5962,7 @@ END;
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}nntptopic_list(i_Thread varchar(128))
+CREATE PROCEDURE {databaseName}.{objectQualifier}nntptopic_list(i_Thread VARCHAR(128))
 BEGIN
     SELECT
         a.*
@@ -5976,8 +5982,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}nntptopic_savemessage(
     i_UserName		VARCHAR(128),
     i_IP			VARCHAR(39),
     i_Posted			DATETIME, 
-    i_ExternalMessageId	varchar(64),
-    i_ReferenceMessageId varchar(64),
+    i_ExternalMessageId	VARCHAR(64),
+    i_ReferenceMessageId VARCHAR(64),
     i_UTCTIMESTAMP DATETIME
  )  
  BEGIN   
@@ -6766,8 +6772,8 @@ BEGIN
     i_PollID		INT,
     i_Question	VARCHAR(128),
     i_Closes 	DATETIME,
-    i_QuestionObjectPath varchar(255), 
-    i_QuestionMimeType varchar(50),
+    i_QuestionObjectPath VARCHAR(255), 
+    i_QuestionMimeType VARCHAR(50),
     i_IsBounded  TINYINT(1),
     i_IsClosedBounded  TINYINT(1),
     i_AllowMultipleChoices TINYINT(1),
@@ -6832,7 +6838,7 @@ END;
 
 
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_votecheck(i_PollGroupID int, i_UserID int, i_RemoteIP varchar(39)) 
+CREATE PROCEDURE {databaseName}.{objectQualifier}pollgroup_votecheck(i_PollGroupID int, i_UserID int, i_RemoteIP VARCHAR(39)) 
 BEGIN
     IF i_UserID IS NULL THEN
       IF i_RemoteIP IS NOT NULL THEN		
@@ -7284,6 +7290,8 @@ BEGIN
     SET ici_Flags = 0;
     IF i_IsStart<>0 THEN SET ici_Flags = ici_Flags | 1; END IF;
     IF i_IsLadder<>0 THEN SET ici_Flags = ici_Flags | 2; END IF;
+	IF CHAR_LENGTH(i_Style) <= 2 THEN
+		SET i_Style = NULL; END IF;
     
     IF i_RankID>0 THEN
         UPDATE {databaseName}.{objectQualifier}Rank 
@@ -7470,10 +7478,10 @@ set @prstr_shsl = CONCAT('SELECT
 CREATE PROCEDURE {databaseName}.{objectQualifier}shoutbox_savemessage(
     i_BoardId int,
     i_UserID		int,
-    i_UserName		varchar(128),	
+    i_UserName		VARCHAR(128),	
     i_Message		text,
     i_Date			datetime,
-    i_IP			varchar(39),
+    i_IP			VARCHAR(39),
     i_UTCTIMESTAMP DATETIME
 )
 BEGIN
@@ -8295,7 +8303,7 @@ END;
 
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_findduplicate
 (
-    i_TopicName varchar(255)
+    i_TopicName VARCHAR(255)
 )
 BEGIN
     IF i_TopicName IS NOT NULL
@@ -9035,7 +9043,7 @@ SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{obje
   --GO
 
   CREATE procedure {databaseName}.{objectQualifier}topic_updatetopic
-(i_TopicID int,i_Topic varchar (100))
+(i_TopicID int,i_Topic VARCHAR (100))
 begin
         if i_TopicID is not null then
         update {databaseName}.{objectQualifier}Topic set
@@ -9729,7 +9737,7 @@ create procedure {databaseName}.{objectQualifier}user_listmembers(
                 I_GroupID int,
                 I_RankID int,
                 I_StyledNicks tinyint(1),
-                I_Literals varchar(255), 
+                I_Literals VARCHAR(255), 
                 I_Exclude  tinyint(1), 
                 I_BeginsWith  tinyint(1), 				
                 I_PageIndex int, 
@@ -9893,11 +9901,11 @@ create procedure {databaseName}.{objectQualifier}user_listmembers_result(
                 I_GroupID int,
                 I_RankID int,
                 I_BeginsWith  tinyint(1), 
-                I_Literals varchar(255), 
+                I_Literals VARCHAR(255), 
                 I_SortRank int,			
                 I_SortPosts int,
                 I_Exclude  tinyint(1),		
-                i_firstselectuserid varchar(255),
+                i_firstselectuserid VARCHAR(255),
                 i_firstselectlastvisit datetime,
                 i_firstselectjoined datetime,
                 i_firstselectrankid int,
@@ -10184,7 +10192,9 @@ BEGIN
             IFNULL(c.IsForumModerator,0) AS IsForumModerator,
             IFNULL(c.IsModerator,0) AS IsModerator,
             {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 2,0)) AS IsApproved,
-            {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 16,0)) AS IsActiveExcluded										
+            {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 16,0)) AS IsActiveExcluded,
+			a.`TopicsPerPage`,
+			a.`PostsPerPage`										
         FROM 
             {databaseName}.{objectQualifier}User a
             JOIN {databaseName}.{objectQualifier}Rank b ON b.RankID=a.RankID
@@ -10214,7 +10224,7 @@ BEGIN
                                WHERE x.UserID=a.UserID
                                  AND (y.Flags & 1)<>0) AS IsAdmin,
             {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 2,0)) AS IsApproved,
-            {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 16,0)) AS IsActiveExcluded																					      		 			
+            {databaseName}.{objectQualifier}biginttobool (IFNULL(a.Flags & 16,0)) AS IsActiveExcluded																											      		 			
             
         FROM 
             {databaseName}.{objectQualifier}User a
@@ -10620,12 +10630,14 @@ END;
     i_AutoWatchTopics		TINYINT(1),
     i_DSTUser               TINYINT(1),
     i_HideUser              TINYINT(1),
+	i_TopicsPerPage         INT,
+	i_PostsPerPage          INT,
     i_UTCTIMESTAMP DATETIME)
 
 BEGIN
     DECLARE ici_RankID INT;
     DECLARE ici_Flags INT DEFAULT 0;
-    DECLARE ici_OldDisplayName varchar(255);
+    DECLARE ici_OldDisplayName VARCHAR(255);
     
                      if i_DSTUser is null 
                       THEN 
@@ -10665,8 +10677,8 @@ BEGIN
         FROM {databaseName}.{objectQualifier}Rank 
         WHERE (Flags & 1)<>0 AND BoardID=i_BoardID;
  
-        INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,DisplayName,Password,Email,Joined,LastVisit,NumPosts,TimeZone,Flags,PMNotification,NotificationType,ProviderUserKey,AutoWatchTopics) 
-          VALUES(i_BoardID,ici_RankID,i_UserName,i_DisplayName,'-',i_Email,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,i_TimeZone,ici_Flags,i_PMNotification,i_NotificationType,i_ProviderUserKey,i_AutoWatchTopics);		
+        INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,DisplayName,Password,Email,Joined,LastVisit,NumPosts,TimeZone,Flags,PMNotification,NotificationType,ProviderUserKey,AutoWatchTopics,TopicsPerPage,PostsPerPage) 
+          VALUES(i_BoardID,ici_RankID,i_UserName,i_DisplayName,'-',i_Email,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,i_TimeZone,ici_Flags,i_PMNotification,i_NotificationType,i_ProviderUserKey,i_AutoWatchTopics,i_TopicsPerPage,i_PostsPerPage);		
     
         SET i_UserID = LAST_INSERT_ID();
  
@@ -10712,7 +10724,9 @@ BEGIN
     NotificationType =  (CASE WHEN (i_NotificationType > 0) THEN  i_NotificationType ELSE NotificationType END),
     Flags = (CASE WHEN ici_Flags<>Flags THEN  ici_Flags ELSE Flags END),
     DisplayName = (CASE WHEN (i_DisplayName is not null) THEN  i_DisplayName ELSE DisplayName END),
-    Email = (CASE WHEN (i_Email is not null) THEN  i_Email ELSE Email END)					
+    Email = (CASE WHEN (i_Email is not null) THEN  i_Email ELSE Email END),
+	TopicsPerPage = i_TopicsPerPage,
+	PostsPerPage = i_PostsPerPage				
     WHERE UserID = i_UserID; 
       if (i_DisplayName IS NOT NULL AND COALESCE(ici_OldDisplayName,'') != COALESCE(i_DisplayName,''))
         then
@@ -11907,8 +11921,8 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}message_getallthanks 
     (i_MessageIDs longtext)
 BEGIN
-    DECLARE ici_MessageID varchar(11);
-    DECLARE ici_MessageIDsChunk varchar(4000);
+    DECLARE ici_MessageID VARCHAR(11);
+    DECLARE ici_MessageIDsChunk VARCHAR(4000);
     DECLARE ici_Pos int;
     DECLARE ici_Itr int;
     DECLARE ici_trimindex int;
@@ -12711,17 +12725,17 @@ BEGIN
     -- Ugly but bullet proof - it used very rarely
 
     DECLARE i_G_UsrSigChars int;
-    DECLARE i_G_UsrSigBBCodes varchar(4000);
-    DECLARE i_G_UsrSigHTMLTags varchar(4000);
+    DECLARE i_G_UsrSigBBCodes VARCHAR(4000);
+    DECLARE i_G_UsrSigHTMLTags VARCHAR(4000);
      
     DECLARE i_R_UsrSigChars int;
-    DECLARE i_R_UsrSigBBCodes varchar(4000);
-    DECLARE i_R_UsrSigHTMLTags varchar(4000); 
+    DECLARE i_R_UsrSigBBCodes VARCHAR(4000);
+    DECLARE i_R_UsrSigHTMLTags VARCHAR(4000); 
 
     -- for cursors
     DECLARE i_tmp_UsrSigChars int;
-    DECLARE i_tmp_UsrSigBBCodes varchar(4000);
-    DECLARE i_tmp_UsrSigHTMLTags varchar(4000);
+    DECLARE i_tmp_UsrSigBBCodes VARCHAR(4000);
+    DECLARE i_tmp_UsrSigHTMLTags VARCHAR(4000);
     
     
   DECLARE sig_cursor CURSOR  FOR
@@ -12984,7 +12998,10 @@ SELECT IFNULL(MAX(c.UsrPersonalMasks),0),IFNULL(MAX(c.UsrPersonalForums),0)
 		(SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Group WHERE CreatedByUserID = i_UserID AND IsUserGroup = 1) as PersonalGroupsNumber,
 		ici_UsrPersonalGroups AS UsrPersonalGroups,
 		ici_UsrPersonalMasks AS UsrPersonalMasks,
-		ici_UsrPersonalForums AS UsrPersonalForums
+		ici_UsrPersonalForums AS UsrPersonalForums,
+		a.CommonViewType,
+		a.TopicsPerPage,
+		a.PostsPerPage
         from
            {databaseName}.{objectQualifier}User a		
         where
@@ -12996,8 +13013,8 @@ SELECT IFNULL(MAX(c.UsrPersonalMasks),0),IFNULL(MAX(c.UsrPersonalForums),0)
 CREATE PROCEDURE {databaseName}.{objectQualifier}message_gettextbyids 
     (i_MessageIDs longtext)
 BEGIN
-    DECLARE ici_MessageID varchar(11);
-    DECLARE ici_MessageIDsChunk varchar(4000);
+    DECLARE ici_MessageID VARCHAR(11);
+    DECLARE ici_MessageIDsChunk VARCHAR(4000);
     DECLARE ici_Pos int;
     DECLARE ici_Itr int;
     DECLARE ici_trimindex int;
@@ -13384,7 +13401,7 @@ CREATE procedure {databaseName}.{objectQualifier}TopicStatus_List(i_BoardID int)
         END;
 --GO
 
-CREATE procedure {databaseName}.{objectQualifier}TopicStatus_Save(i_TopicStatusID int, i_BoardID int, i_TopicStatusName varchar(100),i_DefaultDescription varchar(100)) 
+CREATE procedure {databaseName}.{objectQualifier}TopicStatus_Save(i_TopicStatusID int, i_BoardID int, i_TopicStatusName VARCHAR(100),i_DefaultDescription VARCHAR(100)) 
 begin
     if i_TopicStatusID is null or i_TopicStatusID = 0 then
         insert into {databaseName}.{objectQualifier}TopicStatus(BoardID,TopicStatusName,DefaultDescription) 
@@ -13569,14 +13586,13 @@ END;
 
 create procedure {databaseName}.{objectQualifier}user_savestyle(i_GroupID int, i_RankID int) 
 begin
-  declare _usridtmp int; 
-    declare _styletmp varchar(255);
+declare _usridtmp int; 
+    declare _styletmp VARCHAR(255);
     declare _rankidtmp int;    
       
         declare c cursor for
         select UserID,UserStyle,RankID from {databaseName}.{objectQualifier}User;   
 -- loop thru users to sync styles
- if (i_GroupID is not null or i_RankID is not null or not exists (select 1 from {databaseName}.{objectQualifier}User where UserStyle IS NOT NULL LIMIT 1)) THEN
    
        
         open c;
@@ -13594,14 +13610,24 @@ begin
         
         END LOOP;
         END;
-        close c;	   
-   end if;
+        close c; 
+		
+		/* UPDATE {databaseName}.{objectQualifier}User usr, 
+		(SELECT e.UserID,f.Style FROM {databaseName}.{objectQualifier}UserGroup e 
+            join {databaseName}.{objectQualifier}Group f on f.GroupID=e.GroupID 
+            ORDER BY f.SortOrder LIMIT 1) gt, 
+           (SELECT u.UserID, r.Style FROM {databaseName}.{objectQualifier}Rank r join {databaseName}.{objectQualifier}User u ON u.RankID = r.RankID) rt
+SET usr.UserStyle = IFNULL(gt.Style, rt.STYLE)
+WHERE usr.UserID = rt.UserID  and usr.UserID = gt.UserID;*/
+
 end;
 --GO
 CALL {databaseName}.{objectQualifier}user_savestyle (null,null);
 --GO
+CALL {databaseName}.{objectQualifier}user_savestyle (null,null);
+--GO
 
-CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_save (i_UserID int, i_PageName varchar(128))
+CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_save (i_UserID int, i_PageName VARCHAR(128))
 begin
     if not exists (select 1 from {databaseName}.{objectQualifier}AdminPageUserAccess where UserID = i_UserID and PageName = i_PageName limit 1) then 
         insert into {databaseName}.{objectQualifier}AdminPageUserAccess(UserID,PageName) 
@@ -13610,13 +13636,13 @@ begin
 end;
 --GO
 
-CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_delete (i_UserID int, i_PageName varchar(128)) 
+CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_delete (i_UserID int, i_PageName VARCHAR(128)) 
 begin
         delete from {databaseName}.{objectQualifier}AdminPageUserAccess  where UserID = i_UserID AND (i_PageName IS NULL OR PageName = i_PageName);
 end;
 --GO
 
-CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_list (i_UserID int, i_PageName varchar(128)) 
+CREATE procedure {databaseName}.{objectQualifier}adminpageaccess_list (i_UserID int, i_PageName VARCHAR(128)) 
 begin
         if (i_UserID > 0  and i_PageName IS NOT NULL) then
         select ap.*, 
@@ -13705,7 +13731,7 @@ begin
 end;
 --GO
 
-CREATE procedure {databaseName}.{objectQualifier}eventloggroupaccess_save (i_GroupID int, i_EventTypeID int, i_EventTypeName varchar(128), i_DeleteAccess tinyint(1)) 
+CREATE procedure {databaseName}.{objectQualifier}eventloggroupaccess_save (i_GroupID int, i_EventTypeID int, i_EventTypeName VARCHAR(128), i_DeleteAccess tinyint(1)) 
 begin
     if not exists (select  1 from {databaseName}.{objectQualifier}EventLogGroupAccess where GroupID = i_GroupID and EventTypeName = i_EventTypeName limit 1) then
     
@@ -13719,7 +13745,7 @@ end;
 --GO
 
 
-CREATE procedure {databaseName}.{objectQualifier}eventloggroupaccess_delete (i_GroupID int, i_EventTypeID int, i_EventTypeName varchar(128)) 
+CREATE procedure {databaseName}.{objectQualifier}eventloggroupaccess_delete (i_GroupID int, i_EventTypeID int, i_EventTypeName VARCHAR(128)) 
 begin
     if i_EventTypeName is not null  then
     
@@ -13780,7 +13806,7 @@ begin
 end;
 --GO
 
-create procedure {databaseName}.{objectQualifier}forum_tags(i_BoardID int, i_PageUserID int, i_ForumID int, i_PageIndex int, i_PageSize int, i_SearchText varchar(255), i_BeginsWith tinyint(1)) 
+create procedure {databaseName}.{objectQualifier}forum_tags(i_BoardID int, i_PageUserID int, i_ForumID int, i_PageIndex int, i_PageSize int, i_SearchText VARCHAR(255), i_BeginsWith tinyint(1)) 
 begin	
     DECLARE ici_maxcount INT DEFAULT 0;   
     DECLARE ici_tags_totalrowsnumber INT DEFAULT 0;
@@ -13859,16 +13885,17 @@ end;
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}topic_imagesave(
-    i_TopicID 	INT,
-    i_ImageURL	VARCHAR(255),
-    i_Stream		LONGBLOB,
+    i_TopicID 	        INT,
+    i_ImageURL	        VARCHAR(255),
+    i_Stream		    LONGBLOB,
     i_TopicImageType	VARCHAR(128)
- )  BEGIN
-        UPDATE {databaseName}.{objectQualifier}Topic SET
-            TopicImage = i_ImageURL,
-            TopicImageBin = i_Stream,
-            TopicImageType = i_TopicImageType
-        WHERE TopicID = i_TopicID;       
+ )  
+ BEGIN
+      UPDATE {databaseName}.{objectQualifier}Topic 
+	  SET    TopicImage = i_ImageURL,
+             TopicImageBin = i_Stream,
+             TopicImageType = i_TopicImageType
+      WHERE  TopicID = i_TopicID;       
 END;
 --GO
 

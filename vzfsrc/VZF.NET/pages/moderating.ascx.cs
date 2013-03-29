@@ -83,7 +83,7 @@ namespace YAF.Pages
         /// </summary>
         protected void BindData()
         {
-            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+            this.PagerTop.PageSize = PageContext.TopicsPerPage;
            
             DataTable dt = CommonDb.topic_list(PageContext.PageModuleID, this.PageContext.PageForumID,
                 null,

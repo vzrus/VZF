@@ -341,7 +341,7 @@ namespace YAF.Pages
                 this.SubForums.Visible = true;
             }
 
-            this.Pager.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+            this.Pager.PageSize = PageContext.TopicsPerPage;
 
             // when userId is null it returns the count of all deleted messages
             int? userId = null;
@@ -393,7 +393,7 @@ namespace YAF.Pages
                 date,
                 DateTime.UtcNow,
                 this.Pager.CurrentPageIndex,
-                this.Get<YafBoardSettings>().TopicsPerPage,
+                PageContext.TopicsPerPage,
                 this.Get<YafBoardSettings>().UseStyledNicks,
                 true,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,

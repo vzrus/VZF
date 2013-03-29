@@ -72,7 +72,7 @@ namespace YAF.Pages
       YafContext.Current.PageElements.RegisterJsBlock("toggleMessageJs", JavaScriptBlocks.ToggleMessageJs);
 
       // ceebox Js
-      YafContext.Current.PageElements.RegisterJsResourceInclude("ceeboxjs", "js/jquery.ceebox-min.js");
+      YafContext.Current.PageElements.RegisterJsResourceInclude("ceeboxjs", "js/jquery.ceebox.js");
       YafContext.Current.PageElements.RegisterCssIncludeResource("css/jquery.ceebox.css");
       YafContext.Current.PageElements.RegisterJsBlock("ceeboxloadjs", JavaScriptBlocks.CeeBoxLoadJs);
 
@@ -116,12 +116,25 @@ namespace YAF.Pages
       // Set the title text.
       this.LocalizedLabel1.Param0 = this.Server.HtmlEncode(displayName);
       this.LocalizedLabel1.Param1 = this.Server.HtmlEncode(CommonDb.album_gettitle(PageContext.PageModuleID, albumId));
+      
+      this.Back.Text = this.GetText("BACK_ALBUMS");
 
       // Initialize the Album Image List control.
       this.AlbumImageList1.UserID = (int)userId;
       this.AlbumImageList1.AlbumID = (int)albumId;
     }
 
+    /// <summary>
+    /// Go Back to Albums Page
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+    /// <exception cref="System.NotImplementedException"></exception>
+    protected void Back_Click(object sender, EventArgs e)
+    {
+        YafBuildLink.Redirect(
+            ForumPages.albums, "u={0}", this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u"));
+    }
     #endregion
   }
 }

@@ -9,7 +9,7 @@
 <%@ Register TagPrefix="VZF" TagName="ForumJumper" Src="../controls/ForumJumper.ascx" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:PollList ID="PollList" TopicId='<%# PageContext.PageTopicID %>' ShowButtons='<%# ShowPollButtons() %>' Visible='<%# PollGroupId() > 0 %>' PollGroupId='<%# PollGroupId() %>' runat="server"/>
-<a id="top"  name="top"></a>
+<a id="top" name="top"></a>
 <table class="command" width="100%">
     <tr>
         <td align="left">

@@ -4,4 +4,4 @@
 @SET PATH=%FrameworkDir%;%FrameworkSDKDir%;%PATH%
 @SET LANGDIR=EN
 
-msbuild.exe VZF.NET.sln /p:Configuration=Release /p:Platform="Any CPU" /t:Clean;Build /p:WarningLevel=0
+msbuild.exe vzf.full.net.sln /p:Configuration=Release /p:Platform="Any CPU" /t:Clean;Build /p:WarningLevel=0

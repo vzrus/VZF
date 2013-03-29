@@ -1022,7 +1022,7 @@ namespace YAF.Pages
                 userId = this.PageContext.PageUserID;
             }
 
-            this.Pager.PageSize = this.Get<YafBoardSettings>().PostsPerPage;
+            this.Pager.PageSize = this.PageContext.PostsPerPage;
             int messagePosition;
             int findMessageId = this.GetFindMessageId(showDeleted, userId, out messagePosition);
             if (findMessageId > 0)

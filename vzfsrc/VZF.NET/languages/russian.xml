@@ -144,7 +144,7 @@
   </page>
   <page name="ADMIN_ACCESSMASKS">
     <Resource tag="CONFIRM_DELETE">Удалить эту маску доступа?</Resource>
-    <Resource tag="CREATEUSERFORUM">Create User Forum</Resource>
+    <Resource tag="CREATEUSERFORUM">Персональный форум</Resource>
     <Resource tag="DELETE">Удаление</Resource>
     <Resource tag="DOWNLOAD">Загрузка</Resource>
     <Resource tag="EDIT">Редактирование</Resource>
@@ -205,7 +205,7 @@
   <page name="ADMIN_BANNEDIP">
     <Resource tag="ADD_IP">Добавить новый IP</Resource>
     <Resource tag="BAN_BY">Забанил: </Resource>
-    <Resource tag="IMPORT_IPS">Import Adress(es)</Resource>
+    <Resource tag="IMPORT_IPS">Импорт адреса/адресов</Resource>
     <Resource tag="MASK">Маска</Resource>
     <Resource tag="REASON">Причина</Resource>
     <Resource tag="SINCE">С</Resource>
@@ -378,20 +378,20 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Доступ</Resource>
-    <Resource tag="CREATEDBYUSER">Created by</Resource>
-    <Resource tag="CREATEDBYUSER_HELP">The name of a user who created the mask.</Resource>
-    <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
-    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
+    <Resource tag="CREATEDBYUSER">Создана пользователем</Resource>
+    <Resource tag="CREATEDBYUSER_HELP">Имя пользователя создавшего маску.</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS">Создание личных форумов</Resource>
+    <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Пользователи могут создавать личные форумы(блоги).</Resource>
     <Resource tag="DELETE_ACCESS">Удаление сообщений</Resource>
     <Resource tag="DELETE_ACCESS_HELP">Пользователи могут удалять собственные сообщения.</Resource>
     <Resource tag="DOWNLOAD_ACCESS">Загрузка вложений</Resource>
     <Resource tag="DOWNLOAD_ACCESS_HELP">Пользователи могут скачивать/просматривать вложения к сообщениям.</Resource>
     <Resource tag="EDIT_ACCESS">Редактирование сообщений</Resource>
     <Resource tag="EDIT_ACCESS_HELP">Пользователи могут редактировать собственные сообщения.</Resource>
-    <Resource tag="ISADMINMASK">Admin mask</Resource>
-    <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
-    <Resource tag="ISUSERMASK">User mask</Resource>
-    <Resource tag="ISUSERMASK_HELP">This is a personal mask of a user.</Resource>
+    <Resource tag="ISADMINMASK">Маска администратора</Resource>
+    <Resource tag="ISADMINMASK_HELP">Просто пользователи не могут выбирать эту маску.</Resource>
+    <Resource tag="ISUSERMASK">Маска пользователя</Resource>
+    <Resource tag="ISUSERMASK_HELP">Это личная маска пользователя.</Resource>
     <Resource tag="MASK_NAME">Название:</Resource>
     <Resource tag="MASK_NAME_HELP">Название маски доступа</Resource>
     <Resource tag="MASK_ORDER">Сортировка:</Resource>
@@ -490,8 +490,8 @@
     <Resource tag="HIDE_NOACESS_HELP">Если пользователь не имеет разрешение на чтение форума, то он не будет отображаться в списке форумов.</Resource>
     <Resource tag="INITAL_MASK">Начальная маска доступа:</Resource>
     <Resource tag="INITAL_MASK_HELP">Начальная маска доступа для всех групп.</Resource>
-    <Resource tag="ISUSERFORUM">Is User Forum:</Resource>
-    <Resource tag="ISUSERFORUM_HELP">The forum is a user forum(blog).</Resource>
+    <Resource tag="ISUSERFORUM">Пользовательский форум:</Resource>
+    <Resource tag="ISUSERFORUM_HELP">Это пользовательский форум(блог).</Resource>
     <Resource tag="LOCKED">Закрыт:</Resource>
     <Resource tag="LOCKED_HELP">Если форум закрыт никто не может оставлять посты или ответы на этом форуме.</Resource>
     <Resource tag="MSG_CATEGORY">Вы должны выбрать категорию для этого форума.</Resource>
@@ -502,9 +502,9 @@
     <Resource tag="MSG_INVALID_URL">Вы ввели неверный адрес Url.</Resource>
     <Resource tag="MSG_NAME_FORUM">Вы должны ввести название для форума.</Resource>
     <Resource tag="MSG_PARENT_SELF">Форум не может быть подчинённым форумом самого себя.</Resource>
-    <Resource tag="MSG_PFORUMS_MASKSNUMBER">You should enter max allowed access masks number.</Resource>
-    <Resource tag="MSG_PFORUMS_NUMBER">You should enter max allowed personal forums number.</Resource>
-    <Resource tag="MSG_PFORUMS_PGROUPSNUMBER">You should enter max allowed personal groups number.</Resource>
+    <Resource tag="MSG_PFORUMS_MASKSNUMBER">Вы должны ввести максимально разрешённое число масок доступа.</Resource>
+    <Resource tag="MSG_PFORUMS_NUMBER">Вы должны ввести максимально разрешённое число личных форумов(блогов).</Resource>
+    <Resource tag="MSG_PFORUMS_PGROUPSNUMBER">Вы должны ввести максимально разрешённое число линых групп пользователя.</Resource>
     <Resource tag="MSG_POSITIVE_VALUE">Порядок сортировки должин быть целым числом в диапазоне от 0 до 32767.</Resource>
     <Resource tag="MSG_VALUE">Вы должны вести значение для порядка сортировки.</Resource>
     <Resource tag="NAME">Название:</Resource>
@@ -513,10 +513,10 @@
     <Resource tag="NO_POSTSCOUNT_HELP">Если это включено, то посты на этом форуме не будут считаться в статистике.</Resource>
     <Resource tag="PARENT_FORUM">Родительский форум:</Resource>
     <Resource tag="PARENT_FORUM_HELP">Если значение выбрано, то тот форум будет подфорумом одного из форумов.</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Number of personal access masks:</Resource>
-    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Number of personal access masks allowed for a user to create.</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS">Number of personal groups:</Resource>
-    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Max number of users personal groups.</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER">Число личных масок доступа:</Resource>
+    <Resource tag="PERSONALFORUMS_ACCESSMASKSNUMBER_HELP">Чило масок доступа, которое разрешено создавать пользователям.</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS">Число линых групп:</Resource>
+    <Resource tag="PERSONALFORUMS_GROUPS_HELP">Максимальное число личных групп пользователя.</Resource>
     <Resource tag="PERSONALFORUMS_NUMBER">Разрешить личные форумы(Блоги), кол-во:</Resource>
     <Resource tag="PERSONALFORUMS_NUMBER_HELP">Количество разрешённых персональных форумов или блогов для одного пользователя.</Resource>
     <Resource tag="PRE_MODERATED">Пре-модерируемый:</Resource>
@@ -550,8 +550,8 @@
     <Resource tag="IS_ADMIN_HELP">Все кто в этой роли являются администраторами VZF.</Resource>
     <Resource tag="IS_GUEST">Гость::</Resource>
     <Resource tag="IS_GUEST_HELP">Это значение для внутреннего использования и делает роль недоступной для .NET membership. Никогда не назначайте этот флаг никаким пользователям кроме роли гостя или в комбинации с другими значениями ролей. </Resource>
-    <Resource tag="IS_HIDDEN">Is Hidden:</Resource>
-    <Resource tag="IS_HIDDEN_HELP">If this is checked, The group will not be displayed to anyone but to admins.</Resource>
+    <Resource tag="IS_HIDDEN">Скрытая:</Resource>
+    <Resource tag="IS_HIDDEN_HELP">Если включено, то группа будет не видна не администраторам.</Resource>
     <Resource tag="IS_START">Стартовая:</Resource>
     <Resource tag="IS_START_HELP">Если это значение выбрано, то все новые пользовтели будут в этой роли. Только одна роль должна быть стартовой.</Resource>
     <Resource tag="MSG_ALBUM_NUMBER">Вы должны ввести целое положительное число для максимвльного количества изображений в каждом альбоме.</Resource>
@@ -848,7 +848,7 @@
     <Resource tag="TITLE">Импорт расширений</Resource>
   </page>
   <page name="ADMIN_FORUMS">
-    <Resource tag="CATEGORY_CANTADDASCHILD_MSG">You can't add a category as a child of other category.</Resource>
+    <Resource tag="CATEGORY_CANTADDASCHILD_MSG">Вы не можете добавить категорию как потомка другой категории.</Resource>
     <Resource tag="CATEGORY_CANTADDFORUMBEFORE_MSG">You can't add a forum directly before a category, select a category to add after or a forum.</Resource>
     <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
     <Resource tag="CONFIRM_DELETE">Удалить этот форум навсегда, включая темы, сообщения, вложения и другую связанную с ним информацию?</Resource>
@@ -1152,8 +1152,8 @@
     <Resource tag="LOG_SUSPENDEDANDCONTRA_HELP">События бана и амнистии пользователя по времени будут журналироваться.</Resource>
     <Resource tag="LOG_USERDELETED">Записывать событие удаления пользователя:</Resource>
     <Resource tag="LOG_USERDELETED_HELP">Событие удаления пользователя будет журналироваться.</Resource>
-    <Resource tag="LOG_USERSUSPENDED">Allow log user suspended and unsuspended:</Resource>
-    <Resource tag="LOG_USERSUSPENDED_HELP">Suspended and unsuspended events will be logged.</Resource>
+    <Resource tag="LOG_USERSUSPENDED">Разрешать журналирование временно запрещённых пользователей и открытие им доступа:</Resource>
+    <Resource tag="LOG_USERSUSPENDED_HELP">Разрешать журналирование временно запрещённых пользователей и открытие им доступ.</Resource>
     <Resource tag="LOG_WARNING">Записывать предупреждения:</Resource>
     <Resource tag="LOG_WARNING_HELP">Преудпреждения приложения будут журналироваться.</Resource>
     <Resource tag="LOGIN_REDIR_URL">Специальный Url для перенаправления на страницу регистрации:</Resource>
@@ -1980,7 +1980,7 @@
     <Resource tag="NAME">Имя</Resource>
     <Resource tag="NO">Нет</Resource>
     <Resource tag="NONE">Ничего</Resource>
-    <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">You have been award on the {0} Forum</Resource>
+    <Resource tag="NOTIFICATION_ON_MEDAL_AWARDED_SUBJECT">Вам дали медаль на форуме {0}</Resource>
     <Resource tag="NOTIFICATION_ON_MODERATOR_MESSAGE_APPROVAL">Новое сообщение на форуме {0} должно быть Вами одобрено</Resource>
     <Resource tag="NOTIFICATION_ON_MODERATOR_REPORTED_MESSAGE">Пожаловались на сообщение в форуме {0}</Resource>
     <Resource tag="NOTIFICATION_ON_NEW_FACEBOOK_USER_SUBJECT">Успешная регистрация на форуме {0}</Resource>
@@ -2115,7 +2115,7 @@
     <Resource tag="CO">Колумбия</Resource>
     <Resource tag="CR">Коста Рика</Resource>
     <Resource tag="CU">Куба</Resource>
-    <Resource tag="CV">КАпе Верде</Resource>
+    <Resource tag="CV">Капе Верде</Resource>
     <Resource tag="CX">Рождества Остров</Resource>
     <Resource tag="CY">Кипр</Resource>
     <Resource tag="CZ">Чехия</Resource>
@@ -2346,7 +2346,7 @@
     <Resource tag="NOAVATAR">[ Нет аватара  ]</Resource>
     <Resource tag="NOTE_IMG_REMOTE">Примечание: Если размер изображения более чем {0}x{1} пикс., оно будет автоматически изменено до допустимого размера.</Resource>
     <Resource tag="NOTE_LOCAL">Примечание: Если размер изображения более чем {0}x{1} пикс., оно будет автоматически изменено до допустимого размера. Предельный размер файла изображения {2} КБ.</Resource>
-    <Resource tag="NOTE_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
+    <Resource tag="NOTE_REMOTE">Примечание: Если размер изоражения больше {0}x{1} пикс., его размер будет автоматически изменён.</Resource>
     <Resource tag="OURAVATAR">Выберите аватар из нашей коллекции:</Resource>
     <Resource tag="OURAVATAR_SELECT">Нажмите здесь, чтобы выбрать аватар</Resource>
     <Resource tag="TITLE">Изменить аватар</Resource>
@@ -2414,6 +2414,7 @@
     <Resource tag="MSN">Ваш ник в  Windows Live-ID (MSN):</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Выберите другую тему форума:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Желаете ли Вы получать уведомление по электронной почте при получении нового личного сообщения?</Resource>
+    <Resource tag="POSTSPERPAGE">Сообщений на страницу:</Resource>
     <Resource tag="REALNAME2">Ваше настоящее имя:</Resource>
     <Resource tag="REGION">Регион:</Resource>
     <Resource tag="SELECT_LANGUAGE">Какой язык вы хотите использовать:</Resource>
@@ -2423,6 +2424,7 @@
     <Resource tag="TIMEZONE">Часовой пояс</Resource>
     <Resource tag="TIMEZONE2">Чтобы показывать местную дату и время мы должны знать Ваш часовой пояс.</Resource>
     <Resource tag="TITLE">Изменить профиль</Resource>
+    <Resource tag="TOPICSPERPAGE">Тем на страницу:</Resource>
     <Resource tag="TWITTER">Ваш ник в Twitter:</Resource>
     <Resource tag="TWITTER_ID">Ваш Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Использовать тему для мобильного устройства:</Resource>
@@ -2549,9 +2551,9 @@
     <Resource tag="ATOMICONTOOLTIPFORUM">Подписаться на форумы используя ленту Atom.</Resource>
     <Resource tag="BY"> {0}</Resource>
     <Resource tag="CURRENT_TIME">Текущее время: {0}.</Resource>
-    <Resource tag="ERROR_FB_HOVERCARD">The requested user could not be found.</Resource>
-    <Resource tag="ERROR_HOVERCARD">Sorry, no data found or something went wrong.</Resource>
-    <Resource tag="ERROR_TWIT_HOVERCARD">Invalid username or you have exceeded Twitter request limit.&lt;br/&gt;&lt;small&gt;Please note, Twitter only allows 150 requests per hour.&lt;/small&gt;.</Resource>
+    <Resource tag="ERROR_FB_HOVERCARD">Данный пользователь пока не обнаружен.</Resource>
+    <Resource tag="ERROR_HOVERCARD">Извините, данные пока не получены.</Resource>
+    <Resource tag="ERROR_TWIT_HOVERCARD">Неверное имя пользователя или время запроса к Twitter превышено.&lt;br/&gt;&lt;small&gt;Максимальное число запросов к Twitter - 150 в час.&lt;/small&gt;.</Resource>
     <Resource tag="FORUM">Форум</Resource>
     <Resource tag="GO_LAST_POST">К последнему сообщению</Resource>
     <Resource tag="GO_LASTUNREAD_POST">К первому непрочитанному</Resource>
@@ -2560,9 +2562,9 @@
     <Resource tag="LAST_VISIT">Последний раз Вы были: {0}.</Resource>
     <Resource tag="LASTPOST">Последнее сообщение</Resource>
     <Resource tag="LATEST_POSTS">Последние сообщения</Resource>
-    <Resource tag="LOADING_FB_HOVERCARD">Loading Facebook Info ...</Resource>
-    <Resource tag="LOADING_HOVERCARD">Loading User Info ...</Resource>
-    <Resource tag="LOADING_TWIT_HOVERCARD">Loading Twitter Info ...</Resource>
+    <Resource tag="LOADING_FB_HOVERCARD">Загрузка информации Facebook ...</Resource>
+    <Resource tag="LOADING_HOVERCARD">Загрузка информации пользователя ...</Resource>
+    <Resource tag="LOADING_TWIT_HOVERCARD">Загрузка информации Twitter ...</Resource>
     <Resource tag="MAIN_FORUM_ATOM">Лента Atom основного форума</Resource>
     <Resource tag="MAIN_FORUM_RSS">Лента RSS основного форума</Resource>
     <Resource tag="MARKALL">Отметить все форумы как прочитанные</Resource>
@@ -2626,10 +2628,10 @@
     <Resource tag="TO">Послать на (адрес Email):</Resource>
   </page>
   <page name="EVENTLOG_EVENTS">
-    <Resource tag="ERROR">Error</Resource>
-    <Resource tag="INFORMATION">Information</Resource>
-    <Resource tag="SQLERROR">Sql Script Error</Resource>
-    <Resource tag="WARNING">Warning</Resource>
+    <Resource tag="ERROR">Ошибка</Resource>
+    <Resource tag="INFORMATION">Информация</Resource>
+    <Resource tag="SQLERROR">Ошибка Sql</Resource>
+    <Resource tag="WARNING">Предупреждение</Resource>
   </page>
   <page name="HELP_INDEX">
     <Resource tag="ANOUNCECONTENT">&lt;p&gt;Announcements are special messages posted by the administrator or moderators. They are a simple one-way communication with the users and you can't reply. If you wish to discuss announcements, you will have to create a new thread in the forum.&lt;/p&gt;
@@ -4031,25 +4033,25 @@ Spoiler Content
     <Resource tag="TITLE">Сообщения Yahoo!</Resource>
   </page>
   <page name="IMAGEADD">
-    <Resource tag="IMAGE">Image</Resource>
-    <Resource tag="IMAGECURRENT">Current image</Resource>
-    <Resource tag="IMAGEDELETE">Remove image</Resource>
-    <Resource tag="IMAGENEW">Select a new image</Resource>
-    <Resource tag="IMAGEREMOTE">Add URL for a remote image:</Resource>
-    <Resource tag="IMAGETEXT">Image explanatory text</Resource>
-    <Resource tag="IMAGEUPLOAD">Upload image from your computer:</Resource>
-    <Resource tag="INVALID_IMG_FILE">The uploaded file is not an allowed image.</Resource>
-    <Resource tag="NOIMAGE">[ No image  ]</Resource>
-    <Resource tag="NOTE_IMG_LOCAL">Note If the Image is larger than {0}x{1} pixels, it will be automatically resized. And the size of your image can't be more than {2} KB.</Resource>
-    <Resource tag="NOTE_IMG_REMOTE">Note: If the Image is larger than {0}x{1} pixels, it will be automatically resized.</Resource>
-    <Resource tag="OURIMAGE">Select an image from our collection:</Resource>
-    <Resource tag="OURIMAGE_SELECT">Click here to select an image.</Resource>
-    <Resource tag="TITLE">Change/add image. </Resource>
-    <Resource tag="WARN_IMG_BIGFILE">The size of your image can't be more than {0} bytes.</Resource>
-    <Resource tag="WARN_IMG_File size">The size of your image was {0} bytes.</Resource>
-    <Resource tag="WARN_IMG_RESIZED">The image was resized to fit.</Resource>
-    <Resource tag="WARN_IMG_SIZE">The size of your image was {0}x{1} pixels.</Resource>
-    <Resource tag="WARN_IMG_TOOBIG">Image size can't be larger than {0}x{1} pixels.</Resource>
+    <Resource tag="IMAGE">Изображение</Resource>
+    <Resource tag="IMAGECURRENT">Текущее изображение</Resource>
+    <Resource tag="IMAGEDELETE">Удалить изображение</Resource>
+    <Resource tag="IMAGENEW">Выбор изображения</Resource>
+    <Resource tag="IMAGEREMOTE">Добавьте URL для удалённого изображения:</Resource>
+    <Resource tag="IMAGETEXT">Пояснительный текст изображения</Resource>
+    <Resource tag="IMAGEUPLOAD">Загрузка изображения с Вашего компьютера:</Resource>
+    <Resource tag="INVALID_IMG_FILE">Загруженный файл - не изображение.</Resource>
+    <Resource tag="NOIMAGE">[ Нет изображения  ]</Resource>
+    <Resource tag="NOTE_IMG_LOCAL">Если изображение больше, чем  {0}x{1} пикс., размер будет автоматически изменён. Размер изображеня не может быть больше {2} КБ.</Resource>
+    <Resource tag="NOTE_IMG_REMOTE">Если изображение больше, чем  {0}x{1} пикс., размер будет автоматически изменён.</Resource>
+    <Resource tag="OURIMAGE">Выберите изображение из нашей коллекции:</Resource>
+    <Resource tag="OURIMAGE_SELECT">Нажмите для выбора изображения.</Resource>
+    <Resource tag="TITLE">Изменить/добавить изображение</Resource>
+    <Resource tag="WARN_IMG_BIGFILE">Размер изображение не должен превышать {0} байт.</Resource>
+    <Resource tag="WARN_IMG_File size">Размер изображения был {0} байт.</Resource>
+    <Resource tag="WARN_IMG_RESIZED">Изображение было изменено до разрешённого.</Resource>
+    <Resource tag="WARN_IMG_SIZE">Размер изображения был {0}x{1} пикс.</Resource>
+    <Resource tag="WARN_IMG_TOOBIG">Размер изображение не может быть больше, чем {0}x{1} пикс.</Resource>
   </page>
   <page name="INFO">
     <Resource tag="ACCESSDENIED">Вы попытались попасть в область, куда у Вас нет прав доступа.</Resource>
@@ -4266,19 +4268,19 @@ Spoiler Content
     <Resource tag="VIEWS">Просмотры</Resource>
   </page>
   <page name="PERSONALACCESSMASK">
-    <Resource tag="CANCEL">Cancel</Resource>
-    <Resource tag="NEW_MASK">New Mask</Resource>
-    <Resource tag="TITLE">Personal Access Masks</Resource>
+    <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="NEW_MASK">Новая маска</Resource>
+    <Resource tag="TITLE">Личные маски доступа</Resource>
   </page>
   <page name="PERSONALACCESSMASK_EDIT">
-    <Resource tag="CANCEL">Cancel</Resource>
-    <Resource tag="SAVE">Save</Resource>
-    <Resource tag="TITLE_CREATE">Create Personal Access Mask</Resource>
-    <Resource tag="TITLE_EDIT">Edit Personal Access Mask</Resource>
-    <Resource tag="UPDATE">Update</Resource>
+    <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="SAVE">Сохранить</Resource>
+    <Resource tag="TITLE_CREATE">Создание личной маски доступа</Resource>
+    <Resource tag="TITLE_EDIT">Редактирование личной маски доступа</Resource>
+    <Resource tag="UPDATE">Обновить</Resource>
   </page>
   <page name="PERSONALFORUM">
-    <Resource tag="NEW_FORUM">New Forum</Resource>
+    <Resource tag="NEW_FORUM">Новый форум</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">Мои личные форумы (Блоги)</Resource>
     <Resource tag="PERSONALGROUPS">Мои группы</Resource>
@@ -4286,24 +4288,24 @@ Spoiler Content
     <Resource tag="TITLE">Личные форумы</Resource>
   </page>
   <page name="PERSONALFORUM_EDIT">
-    <Resource tag="CANCEL">Cancel</Resource>
-    <Resource tag="SAVE">Save</Resource>
-    <Resource tag="TITLE_CREATE">Create Personal Forum</Resource>
-    <Resource tag="TITLE_EDIT">Edit Personal Forum</Resource>
-    <Resource tag="UPDATE">Update</Resource>
+    <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="SAVE">Сохранить</Resource>
+    <Resource tag="TITLE_CREATE">Создание личного форума</Resource>
+    <Resource tag="TITLE_EDIT">Редактирование личного форума</Resource>
+    <Resource tag="UPDATE">ОБновить</Resource>
   </page>
   <page name="PERSONALGROUP">
     <Resource tag="CANCEL">Отмена</Resource>
-    <Resource tag="NEW_GROUP">New Group</Resource>
+    <Resource tag="NEW_GROUP">Новая группа</Resource>
     <Resource tag="TITLE">Личные группы</Resource>
     <Resource tag="UPDATE">Обновить</Resource>
   </page>
   <page name="PERSONALGROUP_EDIT">
-    <Resource tag="CANCEL">Cancel</Resource>
-    <Resource tag="SAVE">Save</Resource>
-    <Resource tag="TITLE_CREATE">Create Personal Group</Resource>
-    <Resource tag="TITLE_EDIT">Edit Personal Group</Resource>
-    <Resource tag="UPDATE">Update</Resource>
+    <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="SAVE">Сохранить</Resource>
+    <Resource tag="TITLE_CREATE">Создать личную группу</Resource>
+    <Resource tag="TITLE_EDIT">Редактировать личную группу</Resource>
+    <Resource tag="UPDATE">ОБновить</Resource>
   </page>
   <page name="PERSONALGROUP_EDITUSER">
     <Resource tag="CANCEL">Отмена</Resource>
@@ -4422,9 +4424,9 @@ Spoiler Content
     <Resource tag="PERSISTENCY">Постоянная</Resource>
     <Resource tag="PERSISTENCY_INFO">Постоянные темы не чистятся</Resource>
     <Resource tag="POSTED">Дата:</Resource>
-    <Resource tag="POSTTOBLOG">Post to blog?</Resource>
+    <Resource tag="POSTTOBLOG">Разместит в блоге?</Resource>
     <Resource tag="POSTTOBLOG_FAILED">Произошла ошибка при размещении в Вашем блоге. Видимо, аутентификация не удалась.</Resource>
-    <Resource tag="POSTTOBLOG_PASS">Blog Password:</Resource>
+    <Resource tag="POSTTOBLOG_PASS">Пароль блога:</Resource>
     <Resource tag="PREVIEW">Предварительный просмотр</Resource>
     <Resource tag="PREVIEW_TITLE">Предварительный просмотр сообщения</Resource>
     <Resource tag="PREVIEWTITLE">Предварительный просмотр:</Resource>
@@ -4446,7 +4448,7 @@ Spoiler Content
     <Resource tag="TAGS_TOADD_DESC">Добавить теги к теме.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_TOOLONG">Описание темы не может превышать 255 символов.</Resource>
     <Resource tag="TOPIC_DESCRIPTION_WORDTOOLONG">Длина одного слова в описании темы не может быть больше {0} символов. Используйте сокращения.</Resource>
-    <Resource tag="TOPIC_IMAGE">Topic Image (clickable)</Resource>
+    <Resource tag="TOPIC_IMAGE">Изображение темы (клик)</Resource>
     <Resource tag="TOPIC_NAME_TOOLONG">Название темы не может превышать 255 символов.</Resource>
     <Resource tag="TOPIC_NAME_WORDTOOLONG">Длина одного слова в названии темы не может быть больше {0} символов. Используйте сокращения.</Resource>
     <Resource tag="TOPICATTACH">Прикрепить файлы к этому сообщению?</Resource>
@@ -5223,7 +5225,7 @@ Spoiler Content
   </page>
   <page name="TOPICSBYTAGS">
     <Resource tag="TAGS_LIST">Теги: {0}</Resource>
-    <Resource tag="TAGS_MORE">More Tags:</Resource>
+    <Resource tag="TAGS_MORE">Ещё теги:</Resource>
     <Resource tag="TITLE">Темы с тегом</Resource>
   </page>
   <page name="VIEWTHANKS">

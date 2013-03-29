@@ -2416,6 +2416,7 @@
     <Resource tag="MSN">Il tuo nome MSN (Live-ID):</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Seleziona un tema personalizzato per il forum:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Vuoi ricevere una notifica in e-mail quando hai un nuovo messaggio privato?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Qual è il tuo vero nome?</Resource>
     <Resource tag="REGION">Provincia:</Resource>
     <Resource tag="SELECT_LANGUAGE">La tua lingua:</Resource>
@@ -2425,6 +2426,7 @@
     <Resource tag="TIMEZONE">Fuso orario</Resource>
     <Resource tag="TIMEZONE2">Specifica il tuo fuso orario per ottenere data e ora corrette.</Resource>
     <Resource tag="TITLE">Modifica il profilo</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Il tuo nome Twitter:</Resource>
     <Resource tag="TWITTER_ID">Il tuo ID Twitter:</Resource>
     <Resource tag="USE_MOBILE_THEME">Usa un tema speciale coi dispositivi mobili.</Resource>

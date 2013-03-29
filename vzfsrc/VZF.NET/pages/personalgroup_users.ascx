@@ -13,17 +13,25 @@
             </td>
         </tr>
         <tr class="header2">
-            <td>
+            <th>
                 <VZF:LocalizedLabel ID="SearchRolesLocalizedLabel" runat="server" LocalizedTag="Search_Role" />
-            </td>
-            <td>
+            </th>
+            <th>
                 <VZF:LocalizedLabel ID="SearchRankLocalizedLabel" runat="server" LocalizedTag="Search_Rank" />
-            </td>
-            <td>
+            </th>
+            <th>
                 <VZF:LocalizedLabel ID="SearchMemberLocalizedLabel" runat="server" LocalizedTag="Search_Member" />
-            </td>
+            </th>
+             <th>
+               &nbsp;
+            </th>
         </tr>
+    </thead>
+    <tbody>
         <tr class="post">
+            <td>
+                <asp:DropDownList ID="Roles" runat="server" Width="95%" />
+            </td>
             <td>
                 <asp:DropDownList ID="Ranks" runat="server" Width="95%" />
             </td>
@@ -32,19 +40,21 @@
             </td>
         </tr>
         <tr class="post">
-            <td colspan="3">
+            <td colspan="4">
                 <VZF:LocalizedLabel ID="NumPostsLabel" runat="server" LocalizedTag="NUMPOSTS" />&nbsp;
                 <asp:DropDownList ID="NumPostDDL" runat="server" Width="200px"/>&nbsp;
                 <asp:TextBox ID="NumPostsTB" runat="server" Width="70px"/>
             </td>
         </tr>
+    </tbody>
+    <tfoot>
         <tr>
-            <td class="footer1" colspan="4" style="text-align: center">
-                <VZF:ThemeButton ID="SearchByUserName" OnClick="Search_Click" CssClass="yafcssbigbutton leftItem"   TextLocalizedPage="SEARCH" TextLocalizedTag="BTNSEARCH" TitleLocalizedPage="SEARCH" TitleLocalizedTag="BTNSEARCH" runat="server"/>&nbsp;
-                <VZF:ThemeButton ID="ResetUserSearch" OnClick="Reset_Click" CssClass="yafcssbigbutton leftItem"   TextLocalizedPage="SEARCH" TextLocalizedTag="CLEAR" TitleLocalizedPage="SEARCH" TitleLocalizedTag="CLEAR" runat="server"/>
+            <td class="footer1" colspan="4" >
+                <VZF:ThemeButton ID="SearchByUserName" OnClick="Search_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="SEARCH" TextLocalizedTag="BTNSEARCH" TitleLocalizedPage="SEARCH" TitleLocalizedTag="BTNSEARCH" runat="server"/>&nbsp;
+                <VZF:ThemeButton ID="ResetUserSearch" OnClick="Reset_Click" CssClass="yafcssbigbutton centerItem"   TextLocalizedPage="SEARCH" TextLocalizedTag="CLEAR" TitleLocalizedPage="SEARCH" TitleLocalizedTag="CLEAR" runat="server"/>
             </td>
         </tr>
-    </thead>
+    </tfoot>
 </table>
 <br />
 <VZF:AlphaSort ID="AlphaSort1" runat="server" />

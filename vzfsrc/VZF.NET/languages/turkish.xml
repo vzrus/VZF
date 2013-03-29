@@ -2405,6 +2405,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Seçilen temayı etkinleştirmek istiyor musunuz?</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Yeni bir özel mesaj aldığınızda E-Posta ile haber almak ister misiniz?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Adınız ve Soyadınız:</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">İstediğiniz dili seçiniz:</Resource>
@@ -2414,6 +2415,7 @@
     <Resource tag="TIMEZONE">Zaman Dilimi</Resource>
     <Resource tag="TIMEZONE2">Doğru zaman diliminizi seçiniz:</Resource>
     <Resource tag="TITLE">Profili Düzenle</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

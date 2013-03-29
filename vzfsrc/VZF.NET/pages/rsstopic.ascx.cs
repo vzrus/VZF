@@ -939,7 +939,7 @@ namespace YAF.Pages
                     DateTimeHelper.SqlDbMinTime(),
                     DateTime.UtcNow,
                     0,
-                    this.Get<YafBoardSettings>().PostsPerPage,
+                    this.PageContext.PostsPerPage,
                     2,
                     0,
                     0,
@@ -950,7 +950,7 @@ namespace YAF.Pages
                 var rowList = dt.AsEnumerable();
 
                 // last page posts
-                var dataRows = rowList.Take(this.Get<YafBoardSettings>().PostsPerPage);
+                var dataRows = rowList.Take(this.PageContext.PostsPerPage);
 
                 var altItem = false;
 
@@ -961,7 +961,7 @@ namespace YAF.Pages
                         "{0}{1} - {2}".FormatWith(
                             this.GetText("PROFILE", "TOPIC"),
                             this.PageContext.PageTopicName,
-                            this.Get<YafBoardSettings>().PostsPerPage),
+                            this.PageContext.PostsPerPage),
                         feedType,
                         atomFeedByVar ? YafSyndicationFormats.Atom.ToInt() : YafSyndicationFormats.Rss.ToInt(),
                         urlAlphaNum);

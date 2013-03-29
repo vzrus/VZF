@@ -8,7 +8,7 @@
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" Assembly="VZF" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:PollList ID="PollList" TopicId='<%# PageContext.PageTopicID %>' ShowButtons='<%# ShowPollButtons() %>' Visible='<%# PollGroupId() > 0 %>' PollGroupId='<%# PollGroupId() %>' runat="server"/>
-<a id="top"  name="top"></a>
+<a id="top" name="top"></a>
 
 <div>
             <span id="dvFavorite1">

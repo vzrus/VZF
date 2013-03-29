@@ -266,7 +266,7 @@ CREATE TABLE databaseSchema.objectQualifier_forum
 			 categoryid                integer NOT NULL,
 			 parentid                  integer,
 			 name                      varchar(128) NOT NULL CHECK (name <> ''),
-			 description               varchar(255) NOT NULL,
+			 description               varchar(255),
 			 sortorder                 integer NOT NULL CHECK (sortorder >= 0),
 			 lastposted                timestampTZ ,
 			 lasttopicid               integer,
@@ -1175,7 +1175,33 @@ BEGIN
 
 	 	 IF (NOT column_exists('databaseSchema.objectQualifier_forum','canhavepersforums')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
-	 END IF;			 
+	 END IF;	 
+
+	 if exists (select 1 from information_schema.columns were tablename='objectQualifier_forum' 
+		and table_schema='databaseSchema' and column_name ='description' and is_nullable='NO') then
+		 ALTER TABLE databaseSchema.objectQualifier_forum ALTER COLUMN description DROP NOT NULL;		 
+	 END IF;		
+	 
+	 if exists (select 1 from information_schema.columns were tablename='objectQualifier_forum' 
+		and table_schema='databaseSchema' and column_name ='sortorder' and data_type !='integer') then
+		 ALTER TABLE databaseSchema.objectQualifier_forum ALTER COLUMN sortorder integer;		
+     END IF;
+	 
+	 if exists (select 1 from information_schema.columns were tablename='objectQualifier_group' 
+		and table_schema='databaseSchema' and column_name ='sortorder' and data_type !='integer') then
+		 ALTER TABLE databaseSchema.objectQualifier_group ALTER COLUMN sortorder integer;		
+	 END IF;
+
+	 if exists (select 1 from information_schema.columns were tablename='objectQualifier_accessmask' 
+		and table_schema='databaseSchema' and column_name ='sortorder' and data_type !='integer') then
+		 ALTER TABLE databaseSchema.objectQualifier_accessmask ALTER COLUMN sortorder integer;		
+	 END IF;
+
+	 	 IF (column_exists('databaseSchema.objectQualifier_forum','description')) THEN
+	    if exists (select 1 from information_schema.columns were tablename='objectQualifier_group' 
+		and table_schema='databaseSchema' and column_name ='sortorder' and data_type !='smallint') then
+		 ALTER TABLE databaseSchema.objectQualifier_group ALTER COLUMN sortorder integer;		
+	 END IF;
 
 	  IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserid')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyuserid  integer;
@@ -1285,6 +1311,9 @@ BEGIN
 	 IF (NOT column_exists('databaseSchema.objectQualifier_activeaccess','userforumaccess')) THEN
 		 ALTER TABLE databaseSchema.objectQualifier_activeaccess ADD COLUMN userforumaccess  boolean  DEFAULT false NOT NULL ;
 	 END IF;
+
+	 UPDATE databaseSchema.objectQualifier_group set style = null where style is not null and char_length(style) <= 2;
+	 UPDATE databaseSchema.objectQualifier_rank set style = null where style is not null and char_length(style) <= 2;
 	END;	
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER STRICT

@@ -41,6 +41,7 @@
         %>
         <span class="post_priority">
             <%=priorityMessage %></span>
+          <%=this.GetTags() %>
         <%
             }
 
@@ -100,7 +101,7 @@
             }     
 
       string tPager = this.CreatePostPager(
-        actualPostCount, this.Get<YafBoardSettings>().PostsPerPage, this.TopicRow["LinkTopicID"].ToType<int>());
+        actualPostCount, this.PageContext.PostsPerPage, this.TopicRow["LinkTopicID"].ToType<int>());
 
       if (tPager != String.Empty)
       {

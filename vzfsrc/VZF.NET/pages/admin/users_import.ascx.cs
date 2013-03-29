@@ -466,7 +466,7 @@ namespace YAF.Pages.Admin
                 };
             }
 
-            CommonDb.user_save(PageContext.PageModuleID, userId,
+            CommonDb.user_save(this.PageContext.PageModuleID, userId,
                 YafContext.Current.PageBoardID,
                 row["Name"],
                 row.Table.Columns.Contains("DisplayName") ? row["DisplayName"] : null,
@@ -483,7 +483,9 @@ namespace YAF.Pages.Admin
                 null,
                 isDST,
                 null,
-                null);
+                null,
+                row.Table.Columns.Contains("TopicsPerPage") ? row["TopicsPerPage"] : this.Get<YafBoardSettings>().TopicsPerPage,
+                row.Table.Columns.Contains("PostsPerPage") ? row["PostsPerPage"] : this.Get<YafBoardSettings>().PostsPerPage);
 
             bool autoWatchTopicsEnabled = this.Get<YafBoardSettings>().DefaultNotificationSetting
                                           == UserNotificationSetting.TopicsIPostToOrSubscribeTo;

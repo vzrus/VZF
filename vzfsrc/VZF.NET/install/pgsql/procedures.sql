@@ -22,9 +22,9 @@ FOR _rec IN select userid,userstyle,rankid from databaseSchema.objectQualifier_u
              SET userstyle = 
              COALESCE(
              (SELECT f.style FROM databaseSchema.objectQualifier_usergroup e 
-              join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid= _rec.userid AND CHAR_LENGTH(f.style) > 2 ORDER BY f.sortorder limit 1), 
+              join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid= _rec.userid AND f.style is not null ORDER BY f.sortorder limit 1), 
              (SELECT r.style FROM databaseSchema.objectQualifier_rank r where rankid =  _rec.rankid)
-                      )   
+                     )   
               WHERE userid = _rec.userid;
          END LOOP;
 END;$BODY$
@@ -5325,6 +5325,9 @@ BEGIN
         iciFlags := iciFlags | 8; END IF;
 		 IF i_ishidden IS NOT FALSE THEN
         iciFlags := iciFlags | 16; END IF;
+		IF char_length(style) <= 2 THEN  
+    style := null; 
+    END IF;
         
 		SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
 				  IF i_UserID IS NOT NULL THEN   
@@ -8666,6 +8669,10 @@ BEGIN
     IF i_isladder IS NOT FALSE THEN  
     ici_flags := ici_flags | 2; 
     END IF;
+
+	IF char_length(style) <= 2 THEN  
+    style := null; 
+    END IF;
     
     IF i_rankid > 0 THEN
         UPDATE databaseSchema.objectQualifier_rank 
@@ -11802,6 +11809,8 @@ FOR _rec IN
             a.usesinglesignon,
             a.isapproved,
             a.isactiveexcluded,
+			a.topicsperpage,
+			a.postsperpage,
             b.name AS RankName,
             (case(i_stylednicks)
             when true THEN  a.userstyle 
@@ -11878,6 +11887,8 @@ FOR _rec IN
             a.usesinglesignon,
             a.isapproved,
             a.isactiveexcluded,
+			a.topicsperpage,
+			a.postsperpage,
             b.name AS RankName,
             case(i_stylednicks)
             when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = a.userid)  
@@ -11946,6 +11957,8 @@ FOR _rec IN
             a.usesinglesignon, 
             a.isapproved,
             a.isactiveexcluded,
+			a.topicsperpage,
+			a.postsperpage,
             b.name AS RankName,
             case(i_stylednicks)
             when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = a.userid)  
@@ -12731,6 +12744,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_save(
                            i_autowatchtopics boolean,
                            i_dstuser boolean,
                            i_hideuser boolean,
+						   i_topicsperpage integer,
+						   i_postsperpage integer,
                            i_utctimestamp timestampTZ)
                  RETURNS integer AS
 $BODY$DECLARE
@@ -12769,8 +12784,8 @@ BEGIN
         SELECT rankid INTO ici_rankid FROM databaseSchema.objectQualifier_rank 
         WHERE (flags & 1)<>0 AND boardid=i_boardid;
 
-        INSERT INTO databaseSchema.objectQualifier_user(boardid,rankid,name,displayname,password,email,joined,lastvisit,numposts,timezone,flags,pmnotification,provideruserkey,autowatchtopics, notificationtype) 
-        VALUES(i_boardid,ici_rankid,i_username,i_displayname,'-',ici_email,i_utctimestamp,i_utctimestamp,0,i_timezone,ici_flags,ici_PMNotification,i_provideruserkey,ici_autowatchtopics, i_notificationtype);		
+        INSERT INTO databaseSchema.objectQualifier_user(boardid,rankid,name,displayname,password,email,joined,lastvisit,numposts,timezone,flags,pmnotification,provideruserkey,autowatchtopics, notificationtype,topicsperpage,postsperpage) 
+        VALUES(i_boardid,ici_rankid,i_username,i_displayname,'-',ici_email,i_utctimestamp,i_utctimestamp,0,i_timezone,ici_flags,ici_PMNotification,i_provideruserkey,ici_autowatchtopics, i_notificationtype,i_topicsperpage,i_postsperpage);		
         SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_user','userid')) INTO ici_userid; 		
         INSERT INTO databaseSchema.objectQualifier_usergroup(userid,groupid) 
         SELECT ici_userid,
@@ -12812,7 +12827,9 @@ BEGIN
                    flags = (CASE WHEN ici_flags<>flags THEN  ici_flags ELSE flags END),
                    displayname = (CASE WHEN (i_displayname  is not null) THEN  i_displayname ELSE displayname END),
                    email = (CASE WHEN (ici_email IS NOT NULL) THEN  ici_email ELSE email END),
-                   usesinglesignon =	i_usesinglesignon	
+                   usesinglesignon = i_usesinglesignon,
+				   topicsperpage = i_topicsperpage,
+				   postsperpage = i_postsperpage
             WHERE userid = ici_userid;
 
             if (i_DisplayName IS NOT NULL AND COALESCE(ici_OldDisplayName,'') != COALESCE(i_DisplayName,'')) then
@@ -13234,7 +13251,7 @@ BEGIN
         VALUES (i_userid,i_groupid);
         -- update style for the user
    UPDATE databaseSchema.objectQualifier_user SET userstyle= COALESCE((SELECT f.style FROM databaseSchema.objectQualifier_userGroup e 
-        join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid=i_userid AND CHAR_LENGTH(f.style) > 2 ORDER BY f.sortorder LIMIT 1), (SELECT r.style FROM databaseSchema.objectQualifier_rank r where r.rankid = databaseSchema.objectQualifier_user.rankid LIMIT 1)) 
+        join databaseSchema.objectQualifier_group f on f.groupid=e.groupid WHERE e.userid=i_userid AND f.style is not null ORDER BY f.sortorder LIMIT 1), (SELECT r.style FROM databaseSchema.objectQualifier_rank r where r.rankid = databaseSchema.objectQualifier_user.rankid LIMIT 1)) 
        WHERE userid = i_userid;   
       
  END IF;
@@ -15600,7 +15617,10 @@ BEGIN
         (SELECT COUNT(1) FROM databaseSchema.objectQualifier_group gr   WHERE gr.createdbyuserid = i_userid and gr.isusergroup),
 		ici_grouppersonalgroups,
 		ici_grouppersonalmasks,
-		ici_grouppersonalforums
+		ici_grouppersonalforums,
+		a.commonviewtype,
+		a.topicsperpage,
+		a.postsperpage
 		from
            databaseSchema.objectQualifier_user a		
         where

@@ -482,7 +482,7 @@ namespace VZF.Controls
                     foreach (DataRow role in CommonDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
                         // CommonDb.eventlog_create(PageContext.PageModuleID,this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
-                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || !role["IsHidden"].ToType<bool>())
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || role["IsHidden"].ToType<bool>())
                         {
                             continue;
                         }

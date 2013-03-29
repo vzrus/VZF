@@ -182,7 +182,9 @@ public class YafWebService : WebService, IHaveServiceLocator
                 null,
                 null,
                 null,
-                null);
+                null, 
+                userFields["TopicsPerPage"], 
+                userFields["PostsPerPage"]);
 
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(userId));
 

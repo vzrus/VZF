@@ -446,6 +446,14 @@
                     </tr>
                     <tr>
                         <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel229" runat="server" LocalizedTag="FORUM_DESCCANBENULL" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="ForumDescriptionCanBeNull" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
                             <VZF:HelpLabel ID="HelpLabel104" runat="server" LocalizedTag="DISABLE_NOFOLLOW_ONOLDERPOSTS" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">

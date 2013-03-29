@@ -408,7 +408,7 @@ namespace YAF.Pages.Admin
 
             try
             {
-                this.DBSize.Text = "{0} MB".FormatWith(CommonDb.GetDBSize(PageContext.PageModuleID));
+                this.DBSize.Text = "{0} MB".FormatWith(CommonDb.GetDbSize(PageContext.PageModuleID));
             }
             catch (Exception)
             {

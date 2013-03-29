@@ -2405,6 +2405,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Select different forum theme:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Nhận email thông báo khi có tin nhắn mới?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Tên thật của bạn?</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Chọn ngôn ngữ:</Resource>
@@ -2414,6 +2415,7 @@
     <Resource tag="TIMEZONE">Múi giờ</Resource>
     <Resource tag="TIMEZONE2">Chọn múi giờ của bạn.</Resource>
     <Resource tag="TITLE">Sửa lý lịch</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

@@ -2481,6 +2481,7 @@
 
       naują privačią žinutę? 
     </Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Koks jūsų vardas? </Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Kokia kalba norėtumėte naudoti: </Resource>
@@ -2494,6 +2495,7 @@
       turime žinoti savo laiko juostą. 
     </Resource>
     <Resource tag="TITLE">Redaguoti profilį </Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

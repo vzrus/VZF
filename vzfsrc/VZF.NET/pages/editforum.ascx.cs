@@ -119,10 +119,10 @@ namespace YAF.pages
                     }
                 }
 
-                this.ForumImages.DataSource = dt;
+               /* this.ForumImages.DataSource = dt;
                 this.ForumImages.DataValueField = "FileName";
                 this.ForumImages.DataTextField = "Description";
-                this.ForumImages.DataBind();
+                this.ForumImages.DataBind(); */
             }
         }
 
@@ -231,9 +231,9 @@ namespace YAF.pages
             // Populate Forum Images Table
             this.CreateImagesDataTable();
 
-            this.ForumImages.Attributes["onchange"] =
+          /*  this.ForumImages.Attributes["onchange"] =
               "getElementById('{1}').src='{0}{2}/' + this.value".FormatWith(
-                YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Forums);
+                YafForumInfo.ForumClientFileRoot, this.Preview.ClientID, YafBoardFolders.Current.Forums); */
 
             this.BindData();
 
@@ -283,13 +283,13 @@ namespace YAF.pages
 
                 this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
 
-                ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
+               /* ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
                 if (item != null)
                 {
                     item.Selected = true;
                     this.Preview.Src = "{0}{2}/{1}".FormatWith(
                       YafForumInfo.ForumClientFileRoot, row["ImageURL"], YafBoardFolders.Current.Forums); // path corrected
-                }
+                } */
 
                 // populate parent forums list with forums according to selected category
                 this.BindParentList();
@@ -462,7 +462,7 @@ namespace YAF.pages
                 return;
             }
 
-            if (this.Description.Text.Trim().Length == 0)
+            if (!this.Get<YafBoardSettings>().ForumDescriptionCanBeNull && this.Description.Text.Trim().Length == 0)
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_DESCRIPTION"));
                 return;
@@ -568,7 +568,7 @@ namespace YAF.pages
               this.CategoryList.SelectedValue,
               parentID,
               this.Name.Text.Trim(),
-              this.Description.Text.Trim(),
+              this.Description.Text.Trim().IsSet() ? this.Description.Text.Trim() : null,
               sortOrder,
               this.Locked.Checked,
               this.HideNoAccess.Checked,
@@ -577,7 +577,8 @@ namespace YAF.pages
               this.AccessMaskID.SelectedValue,
               IsNull(this.remoteurl.Text),
               themeUrl,
-              this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : null,
+           // this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : 
+              null,
               this.Styles.Text,
               false,
               PageContext.PageUserID,

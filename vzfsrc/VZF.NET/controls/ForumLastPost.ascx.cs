@@ -231,6 +231,7 @@ namespace VZF.Controls
 
                     this.LastUnreadImage.ThemeTag = showNewIcon ? "ICON_NEWEST_UNREAD" : "ICON_LATEST_UNREAD";
                 }
+
                 // temporarily desabled.
                 if (false && showLastLinks && this.Get<YafBoardSettings>().ShowAvatarsInTopic)
                 {
@@ -238,6 +239,7 @@ namespace VZF.Controls
                     this.userAvatar.Alt = this.userAvatar.Attributes["title"] = GetAvatarTitle(this.DataRow);
                     this.userAvatar.Visible = true;
                 }
+
                 this.LastTopicImgLink.Enabled = this.ImageLastUnreadMessageLink.Enabled = showLastLinks;
 
                 this.LastPostedHolder.Visible = true;

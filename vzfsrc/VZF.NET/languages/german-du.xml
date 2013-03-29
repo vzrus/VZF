@@ -2404,6 +2404,7 @@
     <Resource tag="MSN">Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Anderes Thema wählen</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Möchtest du eine E-Mail erhalten, wenn dir jemand eine private Nachricht schickt?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Wie ist dein richtiger Name?</Resource>
     <Resource tag="REGION">Region:</Resource>
     <Resource tag="SELECT_LANGUAGE">Welche Sprache möchtest Du benutzen:</Resource>
@@ -2413,6 +2414,7 @@
     <Resource tag="TIMEZONE">Zeitzone</Resource>
     <Resource tag="TIMEZONE2">Damit Daten und Uhrzeiten im Forum richtig angezeigt werden, musst du Deine Zeitzone angeben.</Resource>
     <Resource tag="TITLE">Profil bearbeiten</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Twittername:</Resource>
     <Resource tag="TWITTER_ID">Twitter ID:</Resource>
     <Resource tag="USE_MOBILE_THEME">Mobile Forum Skin benutzen:</Resource>

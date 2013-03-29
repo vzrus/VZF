@@ -112,6 +112,16 @@ namespace YAF.Types.Interfaces
     int? NumPosts { get; }
 
     /// <summary>
+    ///   Gets TopicsPerPage.
+    /// </summary>
+    int? TopicsPerPage { get; }
+
+    /// <summary>
+    ///   Gets PostsPerPage.
+    /// </summary>
+    int? PostsPerPage { get; }
+
+    /// <summary>
     ///   Gets a value indicating whether UseMobileTheme.
     /// </summary>
     bool UseMobileTheme { get; }

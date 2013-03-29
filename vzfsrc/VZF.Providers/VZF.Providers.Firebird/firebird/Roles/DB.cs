@@ -100,10 +100,8 @@ namespace YAF.Providers.Roles
 
                 cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
                 cmd.Parameters[1].Value = roleName;
-
                
-                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
-                int i = 1;
+                FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
 

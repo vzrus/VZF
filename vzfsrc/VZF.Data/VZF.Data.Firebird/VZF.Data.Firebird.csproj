@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="VZF.Data.Utils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\VZF.NET\Bin\VZF.Data.Utils.dll</HintPath>
+      <HintPath>..\VZF.Data.Utils\obj\Debug\VZF.Data.Utils.dll</HintPath>
     </Reference>
     <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

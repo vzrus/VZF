@@ -119,7 +119,7 @@ namespace YAF.Pages
                     this.TopicsTabs.ClientID,
                     this.hidLastTab.ClientID,
                     this.hidLastTabId.ClientID,
-                    this.Page.ClientScript.GetPostBackEventReference(ChangeTab, string.Empty),
+                    this.Page.ClientScript.GetPostBackEventReference(this.ChangeTab, string.Empty),
                     false,
                     true));
 
@@ -168,7 +168,7 @@ namespace YAF.Pages
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void ChangeTabClick(object sender, EventArgs e)
+        public void ChangeTabClick([NotNull] object sender, [NotNull] EventArgs e)
         {
             switch (hidLastTabId.Value)
             {

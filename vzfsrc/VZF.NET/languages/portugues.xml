@@ -2420,6 +2420,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">Select different forum theme:</Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">Você deseja receber um email de notificação quando receber uma nova mensagem privada?</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">Qual é o seu verdadeiro nome?</Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">Qual linguagem você deseja utilizar:</Resource>
@@ -2429,6 +2430,7 @@
     <Resource tag="TIMEZONE">Zona de Horário</Resource>
     <Resource tag="TIMEZONE2">Para fornecer a você horários e datas localizados, nós precisamos saber sua Zona de Horário.</Resource>
     <Resource tag="TITLE">Editar Perfil</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

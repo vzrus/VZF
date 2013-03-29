@@ -50,12 +50,19 @@ namespace YAF.Providers.Membership
 
     using NpgsqlTypes;
 
+    using VZF.Data.Postgre;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Core;
 
+    /// <summary>
+    /// The pg membership db conn manager.
+    /// </summary>
     public static class PgMembershipDBConnManager 
     {
+        /// <summary>
+        /// Gets the connection string.
+        /// </summary>
         public static string ConnectionString
         {
             get

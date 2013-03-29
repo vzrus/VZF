@@ -1232,8 +1232,8 @@ namespace YAF.Pages.Admin
                           _excludeCurrentBoard))
                     {
                         CommonDb.user_save(
-                            PageContext.PageModuleID,
-                            CommonDb.user_get(PageContext.PageModuleID, boardID, user.ProviderUserKey),
+                            this.PageContext.PageModuleID,
+                            CommonDb.user_get(this.PageContext.PageModuleID, boardID, user.ProviderUserKey),
                             boardID,
                             null,
                             null,
@@ -1250,7 +1250,9 @@ namespace YAF.Pages.Admin
                             null,
                             null,
                             null,
-                            null);
+                            null, 
+                            20, 
+                            20);
                         _outCounter++;
                     }
                 }

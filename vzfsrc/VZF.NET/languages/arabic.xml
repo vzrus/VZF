@@ -2413,6 +2413,7 @@
     <Resource tag="MSN">Your Windows Live-ID (MSN) Name:</Resource>
     <Resource tag="OVERRIDE_DEFAULT_THEMES">:اختيار تطبيق مختلف للمنتدى </Resource>
     <Resource tag="PM_EMAIL_NOTIFICATION">تلقى إشعارا بالبريد الالكتروني عندما تحصل على رسالة خاصة جديدة؟</Resource>
+    <Resource tag="POSTSPERPAGE">Posts Per Page:</Resource>
     <Resource tag="REALNAME2">ما هو اسمك الحقيقي؟ </Resource>
     <Resource tag="REGION">State:</Resource>
     <Resource tag="SELECT_LANGUAGE">:ماهي اللغة التي تود استخدامها</Resource>
@@ -2422,6 +2423,7 @@
     <Resource tag="TIMEZONE">التوقيت</Resource>
     <Resource tag="TIMEZONE2">لتحصل على الوقت والتاريخ حسب توقيتك الحالي , نحتاج لمعرفة توقيتك.</Resource>
     <Resource tag="TITLE">تعديل الملف الشخصي</Resource>
+    <Resource tag="TOPICSPERPAGE">Topics Per Page:</Resource>
     <Resource tag="TWITTER">Your Twitter Name:</Resource>
     <Resource tag="TWITTER_ID">Your Twitter Id:</Resource>
     <Resource tag="USE_MOBILE_THEME">Use Mobile Forum Theme:</Resource>

@@ -8324,7 +8324,9 @@ namespace VZF.Data.Firebird
             [NotNull] object autoWatchTopics,
             [NotNull] object dSTUser,
             [NotNull] object hideUser,
-            [NotNull] object notificationType)
+            [NotNull] object notificationType,
+            [NotNull] object topicsPerPage,
+            [NotNull] object postsPerPage)
         {
             using (var cmd = FbDbAccess.GetCommand("user_save"))
             {
@@ -8402,8 +8404,11 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add("@I_AUTOWATCHTOPIC", FbDbType.Boolean).Value = autoWatchTopics;
                 cmd.Parameters.Add("@I_PROVIDERUSERKEY", FbDbType.VarChar).Value = DBNull.Value;
                 cmd.Parameters.Add("@I_DSTUSER", FbDbType.Boolean).Value = dSTUser;
-                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
                 cmd.Parameters.Add("@I_HIDEUSER", FbDbType.Boolean).Value = hideUser;
+                cmd.Parameters.Add("@I_TOPICSPERPAGE", FbDbType.Integer).Value = topicsPerPage;
+                cmd.Parameters.Add("@I_POSTSPERPAGE", FbDbType.Integer).Value = postsPerPage;
+                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
+               
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
 

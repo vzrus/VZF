@@ -34,8 +34,9 @@ namespace YAF.Providers.Profile
 
     using NpgsqlTypes;
 
+    using VZF.Data.Postgre;
+
     using YAF.Classes;
-    using YAF.Classes.Data;
     using YAF.Core;
 
     public static class YafProfileDBConnManager 
