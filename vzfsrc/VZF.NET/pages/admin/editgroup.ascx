@@ -158,6 +158,7 @@
                 <VZF:HelpLabel ID="HelpLabel13" runat="server" LocalizedTag="STYLE" LocalizedPage="ADMIN_EDITGROUP" />            
             </td>
             <td class="post" width="50%">
+               <!-- <VZF:UserNickStyleEditor ID="UserNickStyleEditor"  runat="server"/> -->
                 <asp:TextBox Style="width: 350px" ID="StyleTextBox" TextMode="MultiLine" runat="server" />
             </td>
         </tr>

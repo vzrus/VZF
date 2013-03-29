@@ -104,7 +104,10 @@ CREATE TYPE databaseSchema.objectQualifier_accessmask_list_return_type AS
 "Flags" integer,
 "SortOrder" integer,
 "IsUserMask" boolean,
-"IsAdminMask" boolean
+"IsAdminMask" boolean,
+"CreatedByUserID" integer,
+"CreatedByUserName" varchar,
+"CreatedByUserDisplayName" varchar
 );
 --GO
 

@@ -45,8 +45,8 @@
 		<FooterTemplate>
 			<tr class="footer1">
 			<td colspan="5" align="center">            
-						<VZF:ThemeButton ID="btnReturn" runat="server" CssClass="yafcssbigbutton rightItem"
-				TextLocalizedPage="COMMON" TextLocalizedTag="OK" TitleLocalizedPage="COMMON" TitleLocalizedTag="OK" OnClick="btnReturn_Click" /> 
+						<VZF:ThemeButton ID="btnReturn" runat="server" CssClass="yafcssbigbutton centralItem"
+				TextLocalizedPage="COMMON" TextLocalizedTag="CANCEL" TitleLocalizedPage="COMMON" TitleLocalizedTag="CANCEL" OnClick="btnReturn_Click" /> 
 			</td>
 		   </tr>
 		</FooterTemplate>

@@ -39,6 +39,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using YAF.Utils;
     using YAF.Utils.Helpers;
+ 
 
     #endregion
 
@@ -206,6 +207,8 @@ namespace YAF.Pages.Admin
 
                 this.PersonalAccessMasksNumber.Text = row["UsrPersonalMasks"].ToString();
                 this.PersonalAccessMasksNumber.Enabled = !flags.IsGuest;
+
+               // this.UserNickStyleEditor.Styles = row["Style"].ToString();
 
                 this.Description.Text = row["Description"].ToString();
 

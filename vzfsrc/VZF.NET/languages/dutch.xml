@@ -378,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Toegang</Resource>
+    <Resource tag="CREATEDBYUSER">Created by</Resource>
+    <Resource tag="CREATEDBYUSER_HELP">The name of a user who created the mask.</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
@@ -388,6 +390,8 @@
     <Resource tag="EDIT_ACCESS_HELP">Allows Users to Edit their own Posts.</Resource>
     <Resource tag="ISADMINMASK">Admin mask</Resource>
     <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
+    <Resource tag="ISUSERMASK">User mask</Resource>
+    <Resource tag="ISUSERMASK_HELP">This is a personal mask of a user.</Resource>
     <Resource tag="MASK_NAME">Naam:</Resource>
     <Resource tag="MASK_NAME_HELP">Naam van dit Toegangsmasker.</Resource>
     <Resource tag="MASK_ORDER">Sorteervolgorde:</Resource>
@@ -945,6 +949,8 @@
     <Resource tag="ALLOW_POSTBLOG_HELP">Als deze is aangevinkt, kunnen gebruikers posten naar hun blog.</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER">Sta Snel Antwoord toe:</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER_HELP">Laat het "Snel Antwoorden" vak zien aan de onderkant van de pagina.</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
     <Resource tag="ALLOW_SENDMAIL">Sta e-mail versturen toe:</Resource>
     <Resource tag="ALLOW_SENDMAIL_HELP">Gebruikers mogen elkaar e-mails sturen.</Resource>
     <Resource tag="ALLOW_SHARE_TOPIC">Zet het 'Deel-menu' aan:</Resource>
@@ -1976,6 +1982,7 @@
     <Resource tag="GOTOPAGE_HEADER">Ga naar pagina...</Resource>
     <Resource tag="GOTOPOST_ТТ">Ga naar bericht</Resource>
     <Resource tag="GOTOPREVPAGE_TT">Vorige pagina</Resource>
+    <Resource tag="GUEST_NAME">Guest</Resource>
     <Resource tag="HIDDEN">Verborgen</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">Je tekst mag geen HTML tags bevatten.</Resource>
     <Resource tag="HTMLTAG_WRONG">Je tekst bevat een verboden {0} HTML tag.</Resource>

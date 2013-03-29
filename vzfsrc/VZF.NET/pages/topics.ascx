@@ -83,6 +83,9 @@
             <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </ItemTemplate>
     </asp:Repeater>
+    <tr>
+        <td colspan="6" class="header2"></td>
+    </tr>
     <asp:Repeater ID="TopicList" runat="server">
         <ItemTemplate>
             <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />

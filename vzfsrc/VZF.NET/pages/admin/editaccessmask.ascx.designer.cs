@@ -310,6 +310,51 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox IsAdminMaskChk;
         
         /// <summary>
+        /// HelpLabel16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel16;
+        
+        /// <summary>
+        /// IsUserMaskChk control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox IsUserMaskChk;
+        
+        /// <summary>
+        /// HelpLabel17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel17;
+        
+        /// <summary>
+        /// UserID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label UserID;
+        
+        /// <summary>
+        /// CreatedByUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CreatedByUser;
+        
+        /// <summary>
         /// Save control.
         /// </summary>
         /// <remarks>

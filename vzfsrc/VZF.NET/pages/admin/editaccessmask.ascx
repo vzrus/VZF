@@ -119,6 +119,20 @@
             <td class="post">
                 <asp:CheckBox runat="server" ID="IsAdminMaskChk" /></td>
         </tr>
+        <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel16" runat="server" LocalizedTag="ISUSERMASK" LocalizedPage="ADMIN_EDITACCESSMASKS" Suffix=":" />
+            </td>
+            <td class="post">
+                <asp:CheckBox runat="server" ID="IsUserMaskChk" /></td>
+        </tr>
+        <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel17" runat="server" LocalizedTag="CREATEDBYUSER" LocalizedPage="ADMIN_EDITACCESSMASKS" Suffix=":" />
+            </td>
+            <td class="post">
+               <asp:Label ID="UserID" runat="server"></asp:Label>&nbsp;<asp:Label runat="server" ID="CreatedByUser" CssClass="edit" style="width:250px" /></td>
+        </tr>
         <tr class="footer1">
             <td align="center" colspan="2">
                 <asp:Button ID="Save" runat="server" OnClick="Save_Click" CssClass="pbutton" />

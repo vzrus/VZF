@@ -378,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">Access</Resource>
+    <Resource tag="CREATEDBYUSER">Created by</Resource>
+    <Resource tag="CREATEDBYUSER_HELP">The name of a user who created the mask.</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
@@ -388,6 +390,8 @@
     <Resource tag="EDIT_ACCESS_HELP">Allows Users to Edit their own Posts.</Resource>
     <Resource tag="ISADMINMASK">Admin mask</Resource>
     <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
+    <Resource tag="ISUSERMASK">User mask</Resource>
+    <Resource tag="ISUSERMASK_HELP">This is a personal mask of a user.</Resource>
     <Resource tag="MASK_NAME">Name:</Resource>
     <Resource tag="MASK_NAME_HELP">Name of this access mask.</Resource>
     <Resource tag="MASK_ORDER">Order:</Resource>
@@ -952,6 +956,8 @@
     <Resource tag="ALLOW_POSTBLOG_HELP">If checked, post to blog feature is enabled.</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER">Allow Quick Answer:</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER_HELP">Enable or disable display of the Quick Reply Box at the bottom of the Posts page</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
     <Resource tag="ALLOW_SENDMAIL">Allow Email Sending:</Resource>
     <Resource tag="ALLOW_SENDMAIL_HELP">Allow users to send emails to each other.</Resource>
     <Resource tag="ALLOW_SHARE_TOPIC">Enable Share Menu:</Resource>
@@ -1985,6 +1991,7 @@
     <Resource tag="GOTOPAGE_HEADER">Mine lehele...</Resource>
     <Resource tag="GOTOPOST_ТТ">Go to message</Resource>
     <Resource tag="GOTOPREVPAGE_TT">Prev Page</Resource>
+    <Resource tag="GUEST_NAME">Guest</Resource>
     <Resource tag="HIDDEN">Peidetud</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">Sisestatud andmed ei tohi sisaldada HTML tage.</Resource>
     <Resource tag="HTMLTAG_WRONG">Sisestatud andmetes on keelatud HTML tag {0}.</Resource>

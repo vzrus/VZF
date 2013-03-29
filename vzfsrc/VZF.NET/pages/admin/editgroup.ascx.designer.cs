@@ -335,7 +335,7 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::VZF.Controls.HelpLabel HelpLabel13;
-        
+    
         /// <summary>
         /// StyleTextBox control.
         /// </summary>

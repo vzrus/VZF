@@ -648,7 +648,7 @@ namespace YAF.Utilities
 
             return
                 @"{3}(document).ready(function() {{
-                    {3}('#{0}').tabs(
+					{3}('#{0}').tabs(
                     {{
             show: function() {{
                 var sel = {3}('#{0}').tabs('option', 'selected');

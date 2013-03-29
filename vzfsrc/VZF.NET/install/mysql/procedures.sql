@@ -7115,7 +7115,7 @@ INTO  	@PostTotalRowsNumber,
         (CASE (',i_ShowReputation,') WHEN 1 THEN CAST(IFNULL((select VoteDate 
         from {databaseName}.{objectQualifier}ReputationVote repVote 
         where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID = ',i_PageUserID,' LIMIT 1), null) as datetime) 
-        ELSE (''',i_UTCTIMESTAMP,''') END) AS ReputationVoteDate,		
+        ELSE NULL END) AS ReputationVoteDate,		
         d.Views,
         d.ForumID,
         c.Name AS RankName,		
@@ -8431,15 +8431,18 @@ t.LastPosted INTO @i_FirstSelectLastPosted
             (case(',i_FindLastRead,')
              when 1 then
                (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else ''''	 end ) AS LastForumAccess,
+             else null	 end ) AS LastForumAccess,
             (case(',i_FindLastRead,')
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else ''''	 end) AS LastTopicAccess,
+             else null	 end) AS LastTopicAccess,
              (case(',i_GetTags,')
              when 1 then
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
              else ''''	 end)  AS TopicTags, 
+			 c.TopicImage,
+			 c.TopicImageType,
+			 c.TopicImageBin,
             {databaseName}.{objectQualifier}biginttoint(',ici_post_priorityrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex
     from	
@@ -13763,16 +13766,16 @@ begin
     SELECT MAX(tg.TagCount) INTO ici_maxcount
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID;
+    WHERE BoardID=i_BoardID and t.TopicID=i_TopicID AND aa.UserID = i_PageUserID;
 
     SELECT tg.TagID,tg.Tag,tg.TagCount,ici_maxcount AS MaxTagCount 
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TagID
+    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=i_BoardID and tt.TopicID=i_TopicID AND aa.UserID = i_PageUserID	
+    WHERE BoardID=i_BoardID and t.TopicID=i_TopicID AND aa.UserID = i_PageUserID	
     ORDER BY Tag;
 end;
 --GO
@@ -13782,24 +13785,43 @@ begin
     DECLARE ici_maxcount INT DEFAULT 0;   
     DECLARE ici_tags_totalrowsnumber INT DEFAULT 0;
     DECLARE ici_firstselectrownum INT DEFAULT 0;
- 
+
+	DECLARE PI_Literals0 VARCHAR(255);
+    DECLARE PI_Literals1 VARCHAR(255);
+    DECLARE PI_LiteralsALL VARCHAR(4);
+
+	SET i_SearchText = LOWER(i_SearchText);
+	
+	if CHAR_LENGTH(i_SearchText) > 0 THEN 
+	SET PI_Literals0 = CONCAT('%',i_SearchText,'%');
+	ELSE
+	SET PI_Literals0 = '';
+	END IF;
+	if CHAR_LENGTH(i_SearchText) > 0 THEN 
+	 SET PI_Literals1 = CONCAT(i_SearchText,'%');
+	ELSE
+	SET PI_Literals1 = '';
+	END IF;   
+
+    SET PI_LiteralsALL ='%';
+	 
     SELECT IFNULL(MAX(tg.TagCount),0) INTO ici_maxcount
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
     WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.ForumID=i_ForumID) AND aa.UserID = i_PageUserID	
-	 AND     
+	AND     
          LOWER(tg.Tag) LIKE (CASE 
-            WHEN (i_BeginsWith = 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT('%',LOWER(IFNULL(i_SearchText,'')),'%'))) 
-            WHEN (i_BeginsWith <> 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(i_SearchText,'')),'%')))                
-            ELSE ('%') END);
+            WHEN (i_BeginsWith = 0 and i_SearchText != '') THEN PI_Literals0 
+            WHEN (i_BeginsWith <> 0 and i_SearchText != '') THEN PI_Literals1
+            ELSE '%' END);
 
     SET i_PageIndex = i_PageIndex + 1;
             
     -- find total returned count
     SELECT
-        COUNT(DISTINCT(tg.TagID))
+        COUNT(DISTINCT(tt.TagID))
         INTO ici_tags_totalrowsnumber
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
@@ -13808,51 +13830,29 @@ begin
     WHERE BoardID=i_BoardID and (i_ForumID <= 0 OR t.forumid=i_ForumID) AND aa.UserID = i_PageUserID
     AND     
          LOWER(tg.Tag) LIKE (CASE 
-            WHEN (i_BeginsWith = 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT('%',LOWER(IFNULL(i_SearchText,'')),'%'))) 
-            WHEN (i_BeginsWith <> 0 and i_SearchText IS NOT NULL AND CHAR_LENGTH(i_SearchText) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(i_SearchText,'')),'%')))                
-            ELSE ('%') END);
+            WHEN (i_BeginsWith = 0 and i_SearchText != '') THEN PI_Literals0 
+            WHEN (i_BeginsWith <> 0 and i_SearchText != '') THEN PI_Literals1               
+            ELSE '%' END);
 
     select (i_PageIndex-1) * i_PageSize + 1  INTO ici_firstselectrownum; 
    SET ici_firstselectrownum = (I_PageIndex - 1) * I_PageSize + 1; 
    SET ici_firstselectrownum = ici_firstselectrownum -1 ;
-    SET @i_FirstSelectedTag = NULL; 
-    
- /*   SET @tlist2_str = CONCAT('select
-        DISTINCT(tg.Tag) INTO @i_FirstSelectedTag
-        FROM {databaseName}.{objectQualifier}Tags tg 
-    JOIN  {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
-    JOIN  {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
-    JOIN  {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
-    WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
-    AND     
-         LOWER(tg.Tag) LIKE (CASE 
-            WHEN (',COALESCE(i_BeginsWith,0),' = 0 AND ? IS NOT NULL AND  CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(?,'''')),''%'')))     
-             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ? IS NOT NULL AND  CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(?,'''')),''%'')))                
-            ELSE (''%'') END) ORDER BY tg.Tag   	    
-    LIMIT 1 OFFSET ',ici_firstselectrownum - 1,';');  
-		SET @ii_SearchText = i_SearchText; 
-		-- SET @PI_Literals0 = CONCAT('%',LOWER(IFNULL(I_Literals,'')),'%');   		
-        PREPARE tlist2 from @tlist2_str;
-        EXECUTE tlist2 USING
-         @ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText;	 
-        DEALLOCATE PREPARE tlist2;			
-     SET @i_FirstSelectedTag = IFNULL(@i_FirstSelectedTag,'');  */       
+   SET @ii_SearchText = i_SearchText;
     SET @tlist1_str = CONCAT( 
-    'SELECT DISTINCT(tg.TagID),tg.Tag,tg.TagCount,',ici_maxcount,' AS MaxTagCount,', ici_tags_totalrowsnumber,' as TotalCount 
+    'SELECT DISTINCT(tt.TagID),tg.Tag,tg.TagCount,',ici_maxcount,' AS MaxTagCount,', ici_tags_totalrowsnumber,' as TotalCount 
     FROM {databaseName}.{objectQualifier}Tags tg 
     JOIN {databaseName}.{objectQualifier}TopicTags tt ON tt.TagID = tg.TagID 
     JOIN {databaseName}.{objectQualifier}Topic t ON t.TopicID = tt.TopicID
     JOIN {databaseName}.{objectQualifier}ActiveAccess aa ON aa.ForumID = t.ForumID
          WHERE BoardID=', i_BoardID,' and  (',i_ForumID,' <= 0 OR t.ForumID = ',i_ForumID,') AND aa.UserID = ',i_PageUserID,'	
-         AND     
+        AND     
          LOWER(tg.Tag) LIKE (CASE 
-            WHEN (',COALESCE(i_BeginsWith,0),' = 0  AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(''%'',LOWER(IFNULL(?,'''')),''%'')))     
-             WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (LOWER(CONCAT(LOWER(IFNULL(?,'''')),''%'')))                
-            ELSE (''%'') END)  /* AND tg.Tag <= @i_FirstSelectedTag */  
-       ORDER BY tg.Tag LIMIT ',i_PageSize,' ;'); 
+            WHEN (',COALESCE(i_BeginsWith,0),' = 0  AND ''',i_SearchText,''' != '''') THEN ''',PI_Literals0,'''    
+            WHEN (',COALESCE(i_BeginsWith,0),' <> 0 AND ''',i_SearchText,''' != '''') THEN ''',PI_Literals1,'''               
+            ELSE ''%'' END) 
+       ORDER BY tg.Tag LIMIT ',ici_firstselectrownum, ',' ,i_PageSize,' ;'); 
          PREPARE tlist1 FROM @tlist1_str;
-         	  EXECUTE tlist1 USING
-          @ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText,@ii_SearchText;	  	 
+         	  EXECUTE tlist1;	  	 
         DEALLOCATE PREPARE tlist1;
 end;
 --GO

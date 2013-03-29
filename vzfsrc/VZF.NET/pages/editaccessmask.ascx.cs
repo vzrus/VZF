@@ -187,7 +187,7 @@ namespace YAF.pages
                 sortOrder,
                 PageContext.PageUserID,
                 true,
-                true);
+                false);
 
             // empty out access table
             CommonDb.activeaccess_reset(PageContext.PageModuleID);

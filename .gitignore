@@ -41,3 +41,4 @@ vzfsrc/VZF.NET/dbmy.config
 vzfsrc/VZF.NET/web_pg_remote.config
 vzfsrc/VZF.NET/app_pg_remote.config
 vzfsrc/VZF.NET/app_offline1.htm
+vzfsrc/VZF.NET/mail.config

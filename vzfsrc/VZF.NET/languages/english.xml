@@ -1655,6 +1655,7 @@ Spoiler Content
       <Resource tag="POST">Post</Resource>
       <Resource tag="REPLY">Reply</Resource>
       <Resource tag="PRIORITY">Priority</Resource>
+     <Resource tag="GUEST_NAME">Guest</Resource>
       <Resource tag="VOTE">Vote</Resource>
       <Resource tag="MODERATOR">Moderator</Resource>
       <Resource tag="DOWNLOAD">Download</Resource>
@@ -4388,6 +4389,10 @@ Visit {forumname} at {forumlink}
       <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
       <Resource tag="ISADMINMASK">Admin mask</Resource>
       <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
+      <Resource tag="ISUSERMASK">User mask</Resource>
+      <Resource tag="ISUSERMASK_HELP">This is a personal mask of a user.</Resource>
+      <Resource tag="CREATEDBYUSER">Created by</Resource>
+      <Resource tag="CREATEDBYUSER_HELP">The name of a user who created the mask.</Resource>
     </page>
   <page name="ADMIN_GROUPS">
      <Resource tag="ADD_ROLETOYAF">Add to YAF</Resource>
@@ -5033,6 +5038,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="TOPICS_PER_PAGE_HELP">Number of topics to show per page.</Resource>
      <Resource tag="SHOW_RELATIVE_TIME">Show Relative Time:</Resource>
        <Resource tag="SHOW_RELATIVE_TIME_HELP">If checked, client-side "Time Ago" library will be used to show "relative times" to users instead of UTC and or imperfect server-side times.</Resource>
+     <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
+       <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
      <Resource tag="TOPICIMAGE_WIDTH">Topic image width:</Resource>
        <Resource tag="TOPICIMAGE_WIDTH_HELP">The max width of the topic images in px.</Resource>
      <Resource tag="TOPICIMAGE_HEIGHT">Topic Image Height:</Resource>

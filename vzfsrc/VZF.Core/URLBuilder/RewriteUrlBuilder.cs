@@ -96,7 +96,7 @@ namespace YAF.Core
 
             if (scriptName.EndsWith(scriptFile))
             {
-                string before = scriptName.Remove(scriptName.LastIndexOf(scriptFile, StringComparison.Ordinal));
+                string before = scriptName.Remove(scriptName.LastIndexOf(scriptFile));
 
                 var parser = new SimpleURLParameterParser(url);
 
@@ -305,7 +305,7 @@ namespace YAF.Core
                     newUrl =
                         newUrl.Remove(
                             newUrl.LastIndexOf(
-                                "{0}forum.aspx".FormatWith(Config.UrlRewritingPrefix), StringComparison.Ordinal),
+                                "{0}forum.aspx".FormatWith(Config.UrlRewritingPrefix)),
                             "{0}forum.aspx".FormatWith(Config.UrlRewritingPrefix).Length);
                 }
 

@@ -1026,11 +1026,11 @@ namespace VZF.Controls
         private string RemoveEmptyDividers([NotNull] string userBox)
         {
             userBox = userBox.Replace("\"\"section\"\"", "\"section\"").Replace(@"""section""", "\"section\"");
-            if (userBox.IndexOf("<div class=\"section\"></div>", StringComparison.Ordinal) > 0)
+            if (userBox.IndexOf("<div class=\"section\"></div>", StringComparison.InvariantCultureIgnoreCase) > 0)
             {
                 userBox =
                     userBox.Replace(
-                        userBox.IndexOf("<div class=\"section\"></div><br />", StringComparison.Ordinal) > 0
+                        userBox.IndexOf("<div class=\"section\"></div><br />", StringComparison.InvariantCultureIgnoreCase) > 0
                             ? "<div class=\"section\"></div><br />"
                             : "<div class=\"section\"></div>",
                         string.Empty);

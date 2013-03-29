@@ -276,7 +276,7 @@ namespace YAF.Pages
 
             string selectedLetter = this.UserSearchName.Text.IsSet() ? this.UserSearchName.Text.Trim() : (!(selectedCharLetter == char.MinValue || selectedCharLetter == '#') ? selectedCharLetter.ToString(CultureInfo.InvariantCulture) : string.Empty);
 
-            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
+            this.PagerTop.PageSize = 2;
 
             using (var dtTopics = CommonDb.forum_tags(
                     this.PageContext.PageModuleID,

@@ -1358,7 +1358,7 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
   LOWER(TABLE_NAME)=LOWER('{objectQualifier}User')
   AND COLUMN_NAME='TopicsPerPage' LIMIT 1) THEN
-        ALTER TABLE   {databaseName}.{objectQualifier}User ADD  `TopicPerPage`   INT NOT NULL DEFAULT 20;
+        ALTER TABLE   {databaseName}.{objectQualifier}User ADD  `TopicsPerPage`   INT NOT NULL DEFAULT 20;
   END IF;   
 
   -- Message Table

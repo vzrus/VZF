@@ -259,7 +259,10 @@ RETURNS
 "Flags" INTEGER,
 "SortOrder" INTEGER,
 "IsUserMask" BOOL,
-"IsAdminMask" BOOL
+"IsAdminMask" BOOL,
+"CreatedByUserID" INTEGER,
+"CreatedByUserName" VARCHAR(255) CHARACTER SET UTF8,
+"CreatedByUserDisplayName" VARCHAR(255) CHARACTER SET UTF8
 )
 as
 begin
@@ -271,7 +274,10 @@ begin
             a.FLAGS,
             a.SORTORDER,
 			a.ISUSERMASK,
-			a.ISADMINMASK 
+			a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+			a.CREATEDBYUSERNAME,
+			a.CREATEDBYUSERDISPLAYNAME	 
         from 
             objQual_ACCESSMASK a 
         where
@@ -289,7 +295,10 @@ begin
             :"Flags",
             :"SortOrder",
 			:"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+			:"CreatedByUserName",
+			:"CreatedByUserDisplayName"
              DO SUSPEND;
     else
         FOR select FIRST 1
@@ -299,7 +308,10 @@ begin
             a.FLAGS,
             a.SORTORDER,
 			a.ISUSERMASK,
-			a.ISADMINMASK 
+			a.ISADMINMASK,
+			a.CREATEDBYUSERID,
+			a.CREATEDBYUSERNAME,
+			a.CREATEDBYUSERDISPLAYNAME			 
         from 
             objQual_ACCESSMASK a 
         where
@@ -314,7 +326,10 @@ begin
             :"Flags",
             :"SortOrder",
 			:"IsUserMask",
-            :"IsAdminMask"
+            :"IsAdminMask",
+			:"CreatedByUserID",
+			:"CreatedByUserName",
+			:"CreatedByUserDisplayName"
             DO SUSPEND;
 end
 --GO
@@ -6567,7 +6582,7 @@ ici_pageindex = :I_PAGEINDEX;
         b.POINTS,
         (case when (:I_SHOWREPUTATION  = 1) THEN CAST(COALESCE((select VoteDate from objQual_ReputationVote repVote 
                        where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID=:I_PAGEUSERID), CAST('1902-01-01' as timestamp)) 
-                       as TIMESTAMP) ELSE :I_UTCTIMESTAMP END),		
+                       as TIMESTAMP) ELSE CAST('1902-01-01' as timestamp) END),		
         d.VIEWS,
         d.FORUMID,
         c.NAME AS "RankName",

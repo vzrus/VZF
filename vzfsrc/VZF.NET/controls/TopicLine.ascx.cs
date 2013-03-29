@@ -454,30 +454,48 @@ namespace VZF.Controls
 
             string strReturn = string.Empty;
 
-            if (row["TopicMovedID"].ToString().Length > 0)
+            /* if (row["TopicMovedID"].ToString().Length > 0)
             {
                 strReturn = this.GetText("MOVED");
-            }
-            else if (row["PollID"].ToString() != string.Empty)
-            {
-                strReturn = this.GetText("POLL");
-            }
-            else
-            {
-                switch (int.Parse(row["Priority"].ToString()))
-                {
-                    case 1:
-                        strReturn = this.GetText("STICKY");
-                        break;
-                    case 2:
-                        strReturn = this.GetText("ANNOUNCEMENT");
-                        break;
-                }
-            }
+            } */
 
-            if (strReturn.Length > 0)
+            if (this.ShowIconBar())
             {
-                strReturn = "[ {0} ] ".FormatWith(strReturn);
+                if (row["PollID"].ToString() != string.Empty)
+                {
+                    strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "POLL_T_SICON"), this.GetText("POLL"));
+                }
+                
+                switch (int.Parse(row["Priority"].ToString()))
+                    {
+                        case 1:
+                            strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "STICKY_T_SICON"), this.GetText("STICKY"));
+                            break;
+                        case 2:
+                            strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "ANOUNCEMENT_T_SICON"), this.GetText("ANNOUNCEMENT"));
+                            break;
+                    }
+
+
+                DateTime lastPosted = row["LastPosted"] != DBNull.Value
+                                     ? (DateTime)row["LastPosted"]
+                                     : DateTimeHelper.SqlDbMinTime();
+
+                var isHot = this.IsPopularTopic(lastPosted, row);
+                if (isHot)
+                {
+                    strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "HOT_T_ICON"), this.GetText("ICONLEGEND", "HOT_NEW_POSTS"));
+                }
+              /*  if (strReturn.Length > 0)
+                {
+                    strReturn = "[ {0} ] ".FormatWith(strReturn);
+                }
+              */
+
+                if (strReturn.IsSet())
+                {
+                    strReturn = "{0}<br />".FormatWith(strReturn);
+                }
             }
 
             return strReturn;
@@ -501,25 +519,27 @@ namespace VZF.Controls
             CodeContracts.ArgumentNotNull(imgTitle, "imgTitle");
 
             var row = (DataRowView)o;
-
-            if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
+            if (this.ShowIconBar())
             {
-                imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
-                return "{0}resource.ashx?ti={1}".FormatWith(
-                    YafForumInfo.ForumClientFileRoot, row["TopicID"].ToType<int>());
-            }
+                if (row["TopicImageBin"] != null && row["TopicImageBin"].ToString().Length > 0)
+                {
+                    imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
+                    return "{0}resource.ashx?ti={1}".FormatWith(
+                        YafForumInfo.ForumClientFileRoot, row["TopicID"].ToType<int>());
+                }
 
-            if (row["TopicImage"].ToString().Length > 0)
-            {
-                // remote
-                imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
-                return 
-                    "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
-                        YafForumInfo.ForumClientFileRoot,
-                         row["TopicID"].ToType<int>(),
-                        this.Server.UrlEncode(row["TopicImage"].ToString()),
-                        this.Get<YafBoardSettings>().TopicImageWidth,
-                        this.Get<YafBoardSettings>().TopicImageHeight);
+                if (row["TopicImage"].ToString().Length > 0)
+                {
+                    // remote
+                    imgTitle = HttpUtility.HtmlEncode(row["Subject"].ToString());
+                    return
+                        "{0}resource.ashx?ti={1}&url={2}&width={3}&height={4}".FormatWith(
+                            YafForumInfo.ForumClientFileRoot,
+                            row["TopicID"].ToType<int>(),
+                            this.Server.UrlEncode(row["TopicImage"].ToString()),
+                            this.Get<YafBoardSettings>().TopicImageWidth,
+                            this.Get<YafBoardSettings>().TopicImageHeight);
+                }
             }
 
             DateTime lastPosted = row["LastPosted"] != DBNull.Value
@@ -611,6 +631,17 @@ namespace VZF.Controls
                     imgTitle = this.GetText("NO_NEW_POSTS");
                     return this.Get<ITheme>().GetItem("ICONS", "TOPIC");
             }
+        }
+
+        /// <summary>
+        /// The show icon bar.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private bool ShowIconBar()
+        {
+            return this.Get<YafBoardSettings>().AllowTopicImages || this.TopicRow["TopicMovedID"].ToString().Length <= 0;
         }
 
         /// <summary>

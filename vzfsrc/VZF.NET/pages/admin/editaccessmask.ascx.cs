@@ -157,8 +157,8 @@ namespace YAF.Pages.Admin
                 this.DownloadAccess.Checked,
                 this.UserForumAccess.Checked,
                 sortOrder,
-                PageContext.PageUserID,
-                false,
+                this.UserID.Text.IsSet() ? this.UserID.Text.ToType<int>() : PageContext.PageUserID,
+                this.IsUserMaskChk,
                 this.IsAdminMaskChk.Checked);
 
             // empty out access table
@@ -191,6 +191,9 @@ namespace YAF.Pages.Admin
                     this.Name.Text = (string)row["Name"];
                     this.SortOrder.Text = row["SortOrder"].ToString();
                     this.IsAdminMaskChk.Checked = row["IsAdminMask"].ToType<bool>();
+                    this.IsUserMaskChk.Checked = row["IsUserMask"].ToType<bool>();
+                    this.CreatedByUser.Text = this.Get<YafBoardSettings>().EnableDisplayName ? row["CreatedByUserDisplayName"].ToString() : row["CreatedByUserName"].ToString();
+                    this.UserID.Text = row["CreatedByUserID"].ToString();
 
                     // get flags
                     var flags = new AccessFlags(row["Flags"]);

@@ -378,6 +378,8 @@
   </page>
   <page name="ADMIN_EDITACCESSMASKS">
     <Resource tag="ACCESS">دسترسی</Resource>
+    <Resource tag="CREATEDBYUSER">Created by</Resource>
+    <Resource tag="CREATEDBYUSER_HELP">The name of a user who created the mask.</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS">Create User Forum Access</Resource>
     <Resource tag="CREATEUSERFORUM_ACCESS_HELP">Allows Users to Create own forums(blogs).</Resource>
     <Resource tag="DELETE_ACCESS">Delete Access</Resource>
@@ -388,6 +390,8 @@
     <Resource tag="EDIT_ACCESS_HELP">Allows Users to Edit their own Posts.</Resource>
     <Resource tag="ISADMINMASK">Admin mask</Resource>
     <Resource tag="ISADMINMASK_HELP">Simply users can't see or select it i.e. in personal forums.</Resource>
+    <Resource tag="ISUSERMASK">User mask</Resource>
+    <Resource tag="ISUSERMASK_HELP">This is a personal mask of a user.</Resource>
     <Resource tag="MASK_NAME">نام:</Resource>
     <Resource tag="MASK_NAME_HELP">نام این قالب دسترسی:</Resource>
     <Resource tag="MASK_ORDER">اولویت:</Resource>
@@ -951,6 +955,8 @@
     <Resource tag="ALLOW_POSTBLOG_HELP">خصوصیت ارسال به وبلاگ را فعال می کند.</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER">مجوز پاسخ سریع :</Resource>
     <Resource tag="ALLOW_QUICK_ANSWER_HELP">فعال یا غیر فعال کردن جعبه پاسخ سریع در پائین صفحه ارسال ها.</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES">Allow remote topic images:</Resource>
+    <Resource tag="ALLOW_REMOTETOPICIMAGES_HELP">You can use remote topic images.</Resource>
     <Resource tag="ALLOW_SENDMAIL">مجوز ارسال پست الکترونیک :</Resource>
     <Resource tag="ALLOW_SENDMAIL_HELP">کاربران بتوانند به یکدیگر پست الکترونیک ارسال کنندو</Resource>
     <Resource tag="ALLOW_SHARE_TOPIC">Enable Share Menu:</Resource>
@@ -1990,6 +1996,7 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="GOTOPAGE_HEADER">برو به صفحه...</Resource>
     <Resource tag="GOTOPOST_ТТ">برو به پیام</Resource>
     <Resource tag="GOTOPREVPAGE_TT">صفحه قبل</Resource>
+    <Resource tag="GUEST_NAME">Guest</Resource>
     <Resource tag="HIDDEN">مخفی</Resource>
     <Resource tag="HTMLTAG_FORBIDDEN">داده های ورود شما نمی بایست دارای تگ HTML باشند.</Resource>
     <Resource tag="HTMLTAG_WRONG">داده های ورود شما شامل تگ های {0} غیر مجاز HTML  میباشد.</Resource>

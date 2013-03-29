@@ -52,12 +52,13 @@ namespace YAF.Pages
       /// Indicates if the thanksfrom Tab was loaded
       /// </summary>
       private bool thanksfromloaded;
+      
       /// <summary>
       ///  Gets or sets the current tab.
       ///  </summary>
       ///  <value>
       ///  The current tab.
-      ///  </value>
+      /// </value>
       private ThanksListMode CurrentTab
       {
           get
@@ -66,8 +67,10 @@ namespace YAF.Pages
               {
                   return (ThanksListMode)this.ViewState["CurrentTab"];
               }
+
               return ThanksListMode.FromUser;
           }
+
           set
           {
               this.ViewState["CurrentTab"] = value;
@@ -150,7 +153,7 @@ namespace YAF.Pages
     /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     protected void ChangeTabClick(object sender, EventArgs e)
     {
-        switch (hidLastTabId.Value)
+        switch (this.hidLastTabId.Value)
         {
             case "ThanksFromTab":
                 this.CurrentTab = ThanksListMode.FromUser;
@@ -160,7 +163,7 @@ namespace YAF.Pages
                 break;
             default:
                 this.CurrentTab = ThanksListMode.FromUser;
-                break;
+                break; 
         }
       
        this.RefreshTab();
@@ -191,6 +194,7 @@ namespace YAF.Pages
                     this.ThanksToList.BindData();
                     this.thankstoloaded = true;
                 }
+
                 break;
         }
     }

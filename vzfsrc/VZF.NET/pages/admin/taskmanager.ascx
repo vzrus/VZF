@@ -1,8 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.Admin.taskmanager"
     CodeBehind="taskmanager.ascx.cs" %>
-<%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="YAF.Core.Tasks" %>
-<%@ Import Namespace="YAF.Types.Flags" %>
 <%@ Import Namespace="YAF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
@@ -35,8 +33,8 @@
                         </asp:PlaceHolder>
                     </td>
                     <td>
-                    <asp:Label ID="Label2" runat="server" ForeColor='<%# GetItemColor(Eval("Value.IsRunning").ToType<bool>()) %>'><%# GetItemName(Eval("Value.IsRunning").ToType<bool>())%></asp:Label>
-                    </td>
+                        <span class='<%# Eval("Value.IsRunning").ToType<bool>() ? "wordyes" : "wordnow" %>'><asp:Label ID="Label1" runat="server" ><%# GetItemName(Eval("Value.IsRunning").ToType<bool>())%></asp:Label></span>
+                   </td>
                     <td>
                         <%# FormatTimeSpan(Container.ToDataItemType<KeyValuePair<string, IBackgroundTask>>().Value.Started)%>
                     </td>

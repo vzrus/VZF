@@ -281,7 +281,10 @@ BEGIN
               a.flags,
               a.sortorder,
 			  a.isusermask,
-			  a.isadminmask
+			  a.isadminmask,
+			  a.createdbyuserid,
+			  a.createdbyusername,
+			  a.createdbyuserdisplayname
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0
@@ -301,7 +304,10 @@ BEGIN
               a.flags,
               a.sortorder,
 			  a.isusermask,
-			  a.isadminmask
+			  a.isadminmask,
+			  a.createdbyuserid,
+			  a.createdbyusername,
+			  a.createdbyuserdisplayname
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid

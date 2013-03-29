@@ -227,89 +227,97 @@ namespace YAF.Pages.Admin
             // handle checked fields...
             foreach (string name in settingCollection.SettingsBool.Keys)
             {
-                Control control = this.HostSettingsTabs.FindControlRecursive(name);
-
-                if (control != null && control is CheckBox && settingCollection.SettingsBool[name].CanWrite)
+                using (Control control = this.HostSettingsTabs.FindControlRecursive(name))
                 {
-                    settingCollection.SettingsBool[name].SetValue(
-                        this.Get<YafBoardSettings>(), ((CheckBox)control).Checked, null);
+
+                    if (control != null && control is CheckBox && settingCollection.SettingsBool[name].CanWrite)
+                    {
+                        settingCollection.SettingsBool[name].SetValue(
+                            this.Get<YafBoardSettings>(), ((CheckBox)control).Checked, null);
+                    }
                 }
             }
 
             // handle string fields...
             foreach (string name in settingCollection.SettingsString.Keys)
             {
-                Control control = this.HostSettingsTabs.FindControlRecursive(name);
+                using (Control control = this.HostSettingsTabs.FindControlRecursive(name))
+                {
 
-                if (control != null && control is TextBox && settingCollection.SettingsString[name].CanWrite)
-                {
-                    settingCollection.SettingsString[name].SetValue(
-                        this.Get<YafBoardSettings>(), ((TextBox)control).Text.Trim(), null);
-                }
-                else if (control != null && control is DropDownList && settingCollection.SettingsString[name].CanWrite)
-                {
-                    settingCollection.SettingsString[name].SetValue(
-                        this.Get<YafBoardSettings>(),
-                        Convert.ToString(((DropDownList)control).SelectedItem.Value),
-                        null);
+                    if (control is TextBox && settingCollection.SettingsString[name].CanWrite)
+                    {
+                        settingCollection.SettingsString[name].SetValue(
+                            this.Get<YafBoardSettings>(), ((TextBox)control).Text.Trim(), null);
+                    }
+                    else if (control is DropDownList
+                             && settingCollection.SettingsString[name].CanWrite)
+                    {
+                        settingCollection.SettingsString[name].SetValue(
+                            this.Get<YafBoardSettings>(),
+                            Convert.ToString(((DropDownList)control).SelectedItem.Value),
+                            null);
+                    }
                 }
             }
 
             // handle int fields...
             foreach (string name in settingCollection.SettingsInt.Keys)
             {
-                Control control = this.HostSettingsTabs.FindControlRecursive(name);
-
-                if (control != null && control is TextBox && settingCollection.SettingsInt[name].CanWrite)
+                using (Control control = this.HostSettingsTabs.FindControlRecursive(name))
                 {
-                    string value = ((TextBox)control).Text.Trim();
-                    int i;
-
-                    if (value.IsNotSet())
+                    if (control is TextBox && settingCollection.SettingsInt[name].CanWrite)
                     {
-                        i = 0;
-                    }
-                    else
-                    {
-                        int.TryParse(value, out i);
-                    }
+                        string value = ((TextBox)control).Text.Trim();
+                        int i;
 
-                    settingCollection.SettingsInt[name].SetValue(this.Get<YafBoardSettings>(), i, null);
-                }
-                else if (control != null && control is DropDownList && settingCollection.SettingsInt[name].CanWrite)
-                {
-                    settingCollection.SettingsInt[name].SetValue(
-                        this.Get<YafBoardSettings>(), ((DropDownList)control).SelectedItem.Value.ToType<int>(), null);
+                        if (value.IsNotSet())
+                        {
+                            i = 0;
+                        }
+                        else
+                        {
+                            int.TryParse(value, out i);
+                        }
+
+                        settingCollection.SettingsInt[name].SetValue(this.Get<YafBoardSettings>(), i, null);
+                    }
+                    else if (control is DropDownList && settingCollection.SettingsInt[name].CanWrite)
+                    {
+                        settingCollection.SettingsInt[name].SetValue(
+                            this.Get<YafBoardSettings>(), ((DropDownList)control).SelectedItem.Value.ToType<int>(), null);
+                    }
                 }
             }
 
             // handle double fields...
             foreach (string name in settingCollection.SettingsDouble.Keys)
             {
-                Control control = this.HostSettingsTabs.FindControlRecursive(name);
-
-                if (control != null && control is TextBox && settingCollection.SettingsDouble[name].CanWrite)
+                using (Control control = this.HostSettingsTabs.FindControlRecursive(name))
                 {
-                    string value = ((TextBox)control).Text.Trim();
-                    double i;
-
-                    if (value.IsNotSet())
+                    if (control is TextBox && settingCollection.SettingsDouble[name].CanWrite)
                     {
-                        i = 0;
-                    }
-                    else
-                    {
-                        double.TryParse(value, out i);
-                    }
+                        string value = ((TextBox)control).Text.Trim();
+                        double i;
 
-                    settingCollection.SettingsDouble[name].SetValue(this.Get<YafBoardSettings>(), i, null);
-                }
-                else if (control != null && control is DropDownList && settingCollection.SettingsDouble[name].CanWrite)
-                {
-                    settingCollection.SettingsDouble[name].SetValue(
-                        this.Get<YafBoardSettings>(),
-                        Convert.ToDouble(((DropDownList)control).SelectedItem.Value),
-                        null);
+                        if (value.IsNotSet())
+                        {
+                            i = 0;
+                        }
+                        else
+                        {
+                            double.TryParse(value, out i);
+                        }
+
+                        settingCollection.SettingsDouble[name].SetValue(this.Get<YafBoardSettings>(), i, null);
+                    }
+                    else if (control != null && control is DropDownList
+                             && settingCollection.SettingsDouble[name].CanWrite)
+                    {
+                        settingCollection.SettingsDouble[name].SetValue(
+                            this.Get<YafBoardSettings>(),
+                            Convert.ToDouble(((DropDownList)control).SelectedItem.Value),
+                            null);
+                    }
                 }
             }
 

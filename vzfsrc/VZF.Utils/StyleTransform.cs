@@ -225,7 +225,7 @@ namespace YAF.Utils
     {
       string styleStrResult = styleStr;
 
-      if (pair.Select(t => string.Format("{0}.xml", pair[0])).Where(filename => filename.Trim().Equals(this.CurrentThemeFile, StringComparison.CurrentCultureIgnoreCase)).Any())
+      if (pair.Select(t => string.Format("{0}.xml", pair[0])).Where(filename => filename.Trim().Equals(this.CurrentThemeFile)).Any())
       {
         styleStrResult = colorOnly ? this.GetColorOnly(pair[1]) : pair[1];
       }
