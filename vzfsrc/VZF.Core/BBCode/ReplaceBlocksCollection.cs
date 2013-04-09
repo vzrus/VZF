@@ -24,8 +24,8 @@ namespace YAF.Core.BBCode
   using System.Text.RegularExpressions;
 
   using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
 
   /// <summary>
   /// Handles the collection of replacement tags and can also pull the HTML out of the text making a new replacement tag

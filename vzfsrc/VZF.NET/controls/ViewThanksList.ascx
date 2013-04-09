@@ -2,7 +2,7 @@
     CodeBehind="ViewThanksList.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>

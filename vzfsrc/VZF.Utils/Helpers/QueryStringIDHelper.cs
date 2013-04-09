@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Utils.Helpers
+namespace VZF.Utils.Helpers
 {
   #region Using
 
@@ -24,8 +24,8 @@ namespace YAF.Utils.Helpers
   using System.Collections.Generic;
   using System.Web;
 
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
   using YAF.Types;
 
   #endregion

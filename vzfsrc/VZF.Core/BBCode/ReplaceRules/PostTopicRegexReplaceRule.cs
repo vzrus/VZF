@@ -20,7 +20,7 @@ namespace YAF.Core.BBCode.ReplaceRules
 {
   using System.Text.RegularExpressions;
 
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types.Constants;
 
   /// <summary>

@@ -28,7 +28,7 @@ namespace YAF.Core.Tasks
 	using YAF.Types.Constants;
 	
 	using YAF.Types.Interfaces;
-	using YAF.Utils;
+	using VZF.Utils;
 
 	/// <summary>
 	/// The forum delete task.

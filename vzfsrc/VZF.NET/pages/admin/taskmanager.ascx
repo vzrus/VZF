@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.Admin.taskmanager"
     CodeBehind="taskmanager.ascx.cs" %>
 <%@ Import Namespace="YAF.Core.Tasks" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:AdminMenu runat="server">

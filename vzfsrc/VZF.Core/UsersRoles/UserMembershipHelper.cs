@@ -32,9 +32,9 @@ namespace YAF.Core
     using YAF.Core.Services;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
-    using YAF.Utils.Structures;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
+    using VZF.Utils.Structures;
 
     /// <summary>
     /// This is a stop-gap class to help with syncing operations

@@ -24,7 +24,7 @@ namespace YAF.Core
   using System;
 
   using YAF.Types;
-  using YAF.Utils;
+  using VZF.Utils;
 
   #endregion
 

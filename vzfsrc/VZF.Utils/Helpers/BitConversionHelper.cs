@@ -18,7 +18,7 @@
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
-namespace YAF.Utils.Helpers
+namespace VZF.Utils.Helpers
 {
     using YAF.Types;
 

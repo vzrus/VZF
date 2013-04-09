@@ -31,6 +31,7 @@
     <Resource tag="EMAIL">~/images/icon_email.png</Resource>
     <Resource tag="HOME">~/images/icon_home.png</Resource>
     <Resource tag="BLOG">~/images/icon_blog.png</Resource>
+    <Resource tag="BLOG_GENERAL">~/images/blog1.png</Resource>
     <Resource tag="DUSTBIN_SMALL">~/images/dustbin.gif</Resource>
     <Resource tag="COPY_SMALL_ICON">~/images/copy_small_icon.png</Resource>
     <Resource tag="EDIT_SMALL_ICON">~/images/edit_small_icon.gif</Resource>

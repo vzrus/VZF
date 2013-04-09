@@ -31,13 +31,13 @@ namespace YAF.Pages
     using System.Web;
 
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
 
     /// <summary>
     /// The board tags.
@@ -276,7 +276,7 @@ namespace YAF.Pages
 
             string selectedLetter = this.UserSearchName.Text.IsSet() ? this.UserSearchName.Text.Trim() : (!(selectedCharLetter == char.MinValue || selectedCharLetter == '#') ? selectedCharLetter.ToString(CultureInfo.InvariantCulture) : string.Empty);
 
-            this.PagerTop.PageSize = 2;
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().TopicsPerPage;
 
             using (var dtTopics = CommonDb.forum_tags(
                     this.PageContext.PageModuleID,

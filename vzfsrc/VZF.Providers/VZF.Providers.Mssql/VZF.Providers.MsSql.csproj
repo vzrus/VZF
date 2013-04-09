@@ -69,6 +69,22 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Providers.Common, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Providers.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mssql\Membership\UserPasswordInfo.cs" />
@@ -79,32 +95,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="mssql\Roles\DB.cs" />
     <Compile Include="mssql\Roles\YafRoleProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
-      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
-      <Name>VZF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Core\VZF.Core.csproj">
-      <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
-      <Name>VZF.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Mssql\VZF.Data.Mssql.csproj">
-      <Project>{f42d380a-c4f3-45b5-985c-1d8185823fdd}</Project>
-      <Name>VZF.Data.Mssql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
-      <Name>VZF.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
-      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
-      <Name>VZF.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VZF.Providers.Common\VZF.Providers.Common.csproj">
-      <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
-      <Name>VZF.Providers.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -125,6 +115,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="YetAnotherForum.NET.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VZF.Core\VZF.Core.csproj">
+      <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
+      <Name>VZF.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Mssql\VZF.Data.Mssql.csproj">
+      <Project>{f42d380a-c4f3-45b5-985c-1d8185823fdd}</Project>
+      <Name>VZF.Data.Mssql</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -56,6 +56,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
     </Reference>
+    <Reference Include="VZF.Providers.Common, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Providers.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="postgre\Membership\DB.cs" />
@@ -87,6 +99,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="YetAnotherForum.NET.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\VZF.Core\VZF.Core.csproj">
       <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
       <Name>VZF.Core</Name>
@@ -99,23 +114,12 @@
       <Project>{26fc1fb1-9dcb-4ed9-9f74-ef453646e97e}</Project>
       <Name>VZF.Data.Postgre</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
-      <Name>VZF.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
-      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
-      <Name>VZF.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VZF.Providers.Common\VZF.Providers.Common.csproj">
-      <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
-      <Name>VZF.Providers.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\ /d /y 
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

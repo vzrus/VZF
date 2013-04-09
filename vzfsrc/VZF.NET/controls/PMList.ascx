@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.PMList" EnableTheming="true" Codebehind="PMList.ascx.cs" EnableViewState="true" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Core" %>
 
 <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />

@@ -22,7 +22,7 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl.
 */
 
-namespace YAF.Utils.Helpers.StringUtils
+namespace VZF.Utils.Helpers.StringUtils
 {
 	#region Using
 

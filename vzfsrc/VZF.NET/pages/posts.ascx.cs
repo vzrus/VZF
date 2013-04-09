@@ -46,8 +46,8 @@ namespace YAF.Pages
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Extensions;
     using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -469,6 +469,7 @@ namespace YAF.Pages
             {
                 this._quickReplyEditor = this.Get<IModuleManager<ForumEditor>>().GetBy("1");
             }
+
             // Quick Reply Modification Begin
             // this._quickReplyEditor = new BasicBBCodeEditor();
             this.QuickReplyLine.Controls.Add(this._quickReplyEditor);

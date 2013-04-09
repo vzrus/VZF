@@ -25,7 +25,7 @@ namespace YAF.Modules.BBCode
 
     using VZF.Controls;
     using YAF.Core;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// Hide Group BBCode Module

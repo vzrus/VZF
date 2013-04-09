@@ -27,7 +27,7 @@ namespace YAF.Providers.Utils
   using System.Xml;
 
   using YAF.Classes;
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types;
 
   #endregion

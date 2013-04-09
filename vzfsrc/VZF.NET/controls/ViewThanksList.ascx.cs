@@ -20,7 +20,7 @@
 
 using YAF.Classes;
 
-using YAF.Utils;
+using VZF.Utils;
 
 namespace VZF.Controls
 {

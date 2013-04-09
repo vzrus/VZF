@@ -18,7 +18,7 @@
  */
 
 
-namespace YAF.Utils.Helpers
+namespace VZF.Utils.Helpers
 {
   using System.Text.RegularExpressions;
 

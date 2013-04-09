@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace YAF.Core
 {
@@ -35,8 +35,8 @@ namespace YAF.Core
 	using YAF.Types.EventProxies;
 	using YAF.Types.Interfaces;
 	using YAF.Types.Interfaces.Extensions;
-	using YAF.Utils;
-	using YAF.Utils.Extensions;
+	using VZF.Utils;
+	using VZF.Utils.Extensions;
 
 	/// <summary>
 	/// The load page from database.

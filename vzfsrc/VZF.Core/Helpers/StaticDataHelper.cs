@@ -30,7 +30,7 @@ namespace YAF.Core
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// The static data helper.

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.smilies"CodeBehind="smilies.ascx.cs" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:AdminMenu runat="server">

@@ -27,8 +27,8 @@ namespace YAF.Modules
   using YAF.Types.Constants;
   using YAF.Types.EventProxies;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Structures;
+  using VZF.Utils;
+  using VZF.Utils.Structures;
 
   #endregion
 

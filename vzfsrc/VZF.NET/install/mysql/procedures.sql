@@ -162,6 +162,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listpath;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread1;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread_old;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listSubForums;
@@ -1979,8 +1981,8 @@ MODIFIES SQL DATA
     IF i_IsHostAdmin<>0 THEN SET l_UserFlags = 3; END IF;
 
   /*User (ADMIN)*/
-  INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password, Email,ProviderUserKey, Joined,LastVisit,NumPosts,TimeZone,Flags)
-  VALUES(l_BoardID,l_RankIDAdmin,i_UserName,i_UserName,'na',i_UserEmail,i_UserKey,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,l_TimeZone,l_UserFlags);
+  INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password, Email,ProviderUserKey, Joined,LastVisit,NumPosts,TimeZone,Flags,Points)
+  VALUES(l_BoardID,l_RankIDAdmin,i_UserName,i_UserName,'na',i_UserEmail,i_UserKey,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,l_TimeZone,l_UserFlags,1);
   SET l_UserIDAdmin = LAST_INSERT_ID();
 
   /*UserGroup*/
@@ -3354,6 +3356,170 @@ END;
  i_CategoryID INT,
  i_ParentID INT, 
  i_StyledNicks TINYINT(1),
+ i_FindLastRead TINYINT(1), 
+ i_ShowCommonForums TINYINT(1), 
+ i_ShowPersonalForums  TINYINT(1), 
+ i_ForumCreatedByUserId INT, 
+ i_UTCTIMESTAMP DATETIME
+ ) 
+ BEGIN
+ DROP TEMPORARY TABLE IF EXISTS tbl_1;
+ DROP TEMPORARY TABLE IF EXISTS tbl;
+ 
+ -- get parent forums list first
+ CREATE TEMPORARY TABLE IF NOT EXISTS  tbl_1
+ select 	
+        b.ForumID,
+        b.ParentID		
+    from 
+        {databaseName}.{objectQualifier}Category a  
+        join {databaseName}.{objectQualifier}Forum b  on b.CategoryID=a.CategoryID
+        join {databaseName}.{objectQualifier}ActiveAccess x  on x.ForumID=b.ForumID	
+    where 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
+        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
+        ((i_ParentID is null and b.ParentID is null) or b.ParentID=i_ParentID) and
+        x.UserID = i_BoardID
+    order by
+        a.SortOrder,
+        b.SortOrder;
+-- child forums
+CREATE TEMPORARY TABLE IF NOT EXISTS  tbl
+select 	
+        b.ForumID,
+        b.ParentID		
+    from 
+        {databaseName}.{objectQualifier}Category a  
+        join {databaseName}.{objectQualifier}Forum b   on b.CategoryID=a.CategoryID
+        join {databaseName}.{objectQualifier}ActiveAccess x   on x.ForumID=b.ForumID		
+    where 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
+        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
+        (b.ParentID IN (SELECT ForumID FROM tbl_1)) and
+        x.UserID = i_UserID
+    order by
+        a.SortOrder,
+        b.SortOrder;
+
+insert into tbl(ForumID,ParentID)
+select * FROM tbl_1;
+ -- more childrens can be added to display as a tree
+
+
+   CREATE TEMPORARY TABLE IF NOT EXISTS  tmp_flr
+    SELECT 
+        a.CategoryID, 
+        a.Name AS Category, 
+        b.ForumID AS ForumID,
+        b.Name AS Forum, 
+        b.Description,
+        b.ImageURL AS ImageUrl,
+        b.Styles, 
+        b.ParentID,
+        b.PollGroupID,  
+		b.IsUserForum,        
+        b.Flags,
+    (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseName}.{objectQualifier}Active a1 
+    JOIN {databaseName}.{objectQualifier}User usr 
+    ON a1.UserID = usr.UserID     
+    WHERE a1.ForumID=b.ForumID    
+    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,   
+        b.RemoteURL, 		
+        {databaseName}.{objectQualifier}forum_topics(b.ForumID) AS Topics,
+        {databaseName}.{objectQualifier}forum_posts(b.ForumID) AS Posts, 				
+        CAST(x.ReadAccess AS signed) AS ReadAccess,
+        b.LastTopicID AS LTID,
+        b.LastPosted AS LP,		
+        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+		a.SortOrder AS CategoryOrder,
+		b.SortOrder AS ForumOrder  
+        /* {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+        (SELECT t.LastPosted  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastPosted, 
+         (SELECT t.LastMessageID  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastMessageID,
+         (SELECT t.LastUserID  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastUserID, 	 
+        (SELECT t.Topic  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastTopicName,
+        COALESCE((SELECT t.LastUserName FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1),(SELECT u2.Name
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = b.LastUserID LIMIT 1)) AS LastUser */
+    FROM 
+        {databaseName}.{objectQualifier}Category a
+        JOIN {databaseName}.{objectQualifier}Forum b 
+        ON b.CategoryID=a.CategoryID 
+        JOIN {databaseName}.{objectQualifier}ActiveAccess x 
+        ON x.ForumID=b.ForumID
+
+    WHERE 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and 
+        a.BoardID = i_BoardID
+        AND
+        (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND 
+		--	(b.ForumID IN (SELECT aa.ForumID FROM tbl aa  UNION SELECT ab.ForumID FROM tbl_1 ab)) and		
+        (b.ForumID IN (SELECT a.ForumID FROM tbl a)) and
+        x.UserID = i_UserID
+    ORDER BY
+        a.SortOrder,
+        b.SortOrder;
+
+	DROP TEMPORARY TABLE IF EXISTS tbl_1;
+    DROP TEMPORARY TABLE IF EXISTS tbl;
+        
+        SELECT tf.*, 		
+        t.LastPosted AS LastPosted,
+        t.LastMessageID AS LastMessageID,
+        t.LastMessageFlags,
+        t.TopicMovedID,
+        t.LastUserID AS LastUserID,		
+        t.Topic AS LastTopicName,
+        t.Status AS LastTopicStatus,
+        t.Styles AS LastTopicStyles,
+                (case(i_StyledNicks)
+            when 1 then (select usr.UserStyle from {databaseName}.{objectQualifier}User usr where usr.UserID = t.LastUserID LIMIT 1)
+            else ''	 end)  AS 	Style,		
+        COALESCE(t.LastUserName,(SELECT u2.Name
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUser,
+        COALESCE(t.LastUserDisplayName,(SELECT u2.DisplayName
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUserDisplayName,
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess    
+         FROM tmp_flr tf 
+         LEFT JOIN {databaseName}.{objectQualifier}Topic t 
+         ON t.TopicID = tf.LastTopicID 
+		ORDER BY
+        tf.CategoryOrder,
+        tf.ForumOrder;
+
+         DROP TEMPORARY TABLE IF EXISTS tmp_flr;
+END;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+ CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listread1(
+ i_BoardID INT,
+ i_UserID INT,
+ i_CategoryID INT,
+ i_ParentID INT, 
+ i_StyledNicks TINYINT(1),
  i_FindLastRead TINYINT(1)) 
  BEGIN
  DROP TEMPORARY TABLE IF EXISTS tbl_1;
@@ -3425,26 +3591,10 @@ select
         CAST(x.ReadAccess AS signed) AS ReadAccess,
         b.LastTopicID AS LTID,
         b.LastPosted AS LP,		
-        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID
-  
-        /* {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
-        (SELECT t.LastPosted  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastPosted, 
-         (SELECT t.LastMessageID  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastMessageID,
-         (SELECT t.LastUserID  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastUserID, 	 
-        (SELECT t.Topic  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastTopicName,
-        COALESCE((SELECT t.LastUserName FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1),(SELECT u2.Name
-             FROM   {databaseName}.{objectQualifier}User u2
-             WHERE  u2.UserID = b.LastUserID LIMIT 1)) AS LastUser */
+        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+		a.SortOrder AS CategoryOrder,
+		b.SortOrder AS ForumOrder
+
     FROM 
         {databaseName}.{objectQualifier}Category a
         JOIN {databaseName}.{objectQualifier}Forum b 
@@ -3463,6 +3613,9 @@ select
     ORDER BY
         a.SortOrder,
         b.SortOrder;
+
+	DROP TEMPORARY TABLE IF EXISTS tbl_1;
+    DROP TEMPORARY TABLE IF EXISTS tbl;
         
         SELECT tf.*, 		
         t.LastPosted AS LastPosted,
@@ -3485,87 +3638,21 @@ select
         (case(i_FindLastRead)
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
-             else null	end) AS  LastForumAccess,  
+             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
         (case(i_FindLastRead)
              when 1 then
                (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
-             else null	end) AS  LastTopicAccess    
+             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess    
          FROM tmp_flr tf 
          LEFT JOIN {databaseName}.{objectQualifier}Topic t 
-         ON t.TopicID = tf.LastTopicID;
+         ON t.TopicID = tf.LastTopicID 
+		ORDER BY
+        tf.CategoryOrder,
+        tf.ForumOrder;
 
          DROP TEMPORARY TABLE IF EXISTS tmp_flr;
-         DROP TEMPORARY TABLE IF EXISTS tbl_1;
-         DROP TEMPORARY TABLE IF EXISTS tbl;
 END;
 --GO
-
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
- CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listread_old(i_BoardID INT,i_UserID INT,i_CategoryID INT,i_ParentID INT, i_StyledNicks TINYINT(1)) 
- BEGIN
-    SELECT 
-        a.CategoryID, 
-        a.Name AS Category, 
-        b.ForumID AS ForumID,
-        b.Name AS Forum, 
-        b.Description,
-        b.ImageURL AS ImageUrl,
-        b.Styles, 
-        b.PollGroupID,          
-        b.Flags,
-    (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseName}.{objectQualifier}Active a1 
-    JOIN {databaseName}.{objectQualifier}User usr 
-    ON a1.UserID = usr.UserID     
-    WHERE a1.ForumID=b.ForumID    
-    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,   
-        b.RemoteURL, 		
-        {databaseName}.{objectQualifier}forum_topics(b.ForumID) AS Topics,
-        {databaseName}.{objectQualifier}forum_posts(b.ForumID) AS Posts, 			
-        {databaseName}.{objectQualifier}vaccess_s_readaccess_combo(i_UserID,b.ForumID) AS ReadAccess, 
-        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
-        (SELECT t.LastPosted  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastPosted, 
-         (SELECT t.LastMessageID  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastMessageID,
-         (SELECT t.LastUserID  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastUserID, 	 
-        (SELECT t.Topic  FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastTopicName,
-        COALESCE((SELECT t.LastUserName FROM 
-        {databaseName}.{objectQualifier}Topic t
-        WHERE  t.TopicID=LastTopicID LIMIT 1),(SELECT u2.Name
-             FROM   {databaseName}.{objectQualifier}User u2
-             WHERE  u2.UserID = b.LastUserID LIMIT 1)) AS LastUser
-    FROM 
-        {databaseName}.{objectQualifier}Category a
-        JOIN {databaseName}.{objectQualifier}Forum b on b.CategoryID=a.CategoryID 
-        
-    /*LEFT OUTER JOIN {databaseName}.{objectQualifier}Topic t 
-    ON t.TopicID ={databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted)*/
-    WHERE  	  
-        a.BoardID = i_BoardID 		
-        /*AND b.Flags & 2 = 0 */
-        AND
-        (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND
-        ((i_ParentID IS NULL AND b.ParentID IS NULL) 
-                OR b.ParentID=i_ParentID)
-    ORDER BY
-        a.SortOrder,
-        b.SortOrder;
-END;
---GO
-
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listSubForums(i_ForumID INT)
-BEGIN
-SELECT SUM(1) FROM {databaseName}.{objectQualifier}Forum WHERE ParentID = i_ForumID;
-END;
---GO
-
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listtopics(i_ForumID INT) 
@@ -7118,10 +7205,10 @@ INTO  	@PostTotalRowsNumber,
         b.Signature,
         b.NumPosts AS Posts,
         b.Points,
-        (CASE (',i_ShowReputation,') WHEN 1 THEN CAST(IFNULL((select VoteDate 
+        (CASE (',i_ShowReputation,') WHEN 1 THEN CAST(IFNULL((select repVote.VoteDate
         from {databaseName}.{objectQualifier}ReputationVote repVote 
-        where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID = ',i_PageUserID,' LIMIT 1), null) as datetime) 
-        ELSE NULL END) AS ReputationVoteDate,		
+        where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID = ',i_PageUserID,' LIMIT 1), NULL) as datetime) 
+        ELSE CAST(NULL AS DATETIME) END) AS ReputationVoteDate,		
         d.Views,
         d.ForumID,
         c.Name AS RankName,		
@@ -7815,12 +7902,12 @@ INTO @i_FirstSelectLastPosted,
             else ''''	 end ) AS LastUserStyle,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) AS LastForumAccess,
+               (SELECT CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) AS LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) AS  LastTopicAccess,
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) AS  LastTopicAccess,
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
 			 c.TopicImage,
 			 c.TopicImageType,
@@ -7995,12 +8082,12 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
             else ''''	 end ) AS LastUserStyle,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) AS LastForumAccess,
+               (SELECT CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) AS LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) AS  LastTopicAccess,	
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) AS  LastTopicAccess,	
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
              {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
@@ -8438,12 +8525,12 @@ t.LastPosted INTO @i_FirstSelectLastPosted
             else ''''	 end) AS LastUserStyle,
             (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else null	 end ) AS LastForumAccess,
+               (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME)	 end ) AS LastForumAccess,
             (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else null	 end) AS LastTopicAccess,
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME)	 end) AS LastTopicAccess,
              (case(',i_GetTags,')
              when 1 then
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
@@ -8617,12 +8704,12 @@ t.LastPosted INTO @Shiftsticky, @i_FirstSelectLastPosted
             else '''' end) AS LastUserStyle,			
             (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else null end ) AS LastForumAccess,
+               (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME) end ) AS LastForumAccess,
             (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else null end) AS LastTopicAccess,	
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME) end) AS LastTopicAccess,	
            (case(',i_GetTags,')
              when 1 then
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) 
@@ -8740,12 +8827,12 @@ BEGIN
             else '''' end) AS LastUserStyle,			
             (case(',0,')
              when 1 then
-            (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
-             else null end ) AS LastForumAccess,
+            (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=c.ForumID AND x.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME) end ) AS LastForumAccess,
             (case(',0,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
-             else null	 end) AS LastTopicAccess,		
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = c.UserID LIMIT 1)
+             else CAST(NULL AS DATETIME)	 end) AS LastTopicAccess,		
              m.Message,
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
             {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex,
@@ -10989,7 +11076,7 @@ BEGIN
         INSERT INTO {databaseName}.{objectQualifier}UserGroup(UserID,GroupID)
         VALUES (i_UserID,i_GroupID);         
          UPDATE {databaseName}.{objectQualifier}User SET UserStyle= IFNULL(( SELECT f.Style FROM {databaseName}.{objectQualifier}UserGroup e 
-        join {databaseName}.{objectQualifier}Group f on f.GroupID=e.GroupID WHERE e.UserID=i_UserID AND CHAR_LENGTH(f.Style) > 2 ORDER BY f.SortOrder LIMIT 1), (SELECT r.Style FROM {databaseName}.{objectQualifier}Rank r where r.RankID = {databaseName}.{objectQualifier}User.RankID LIMIT 1)) 
+        join {databaseName}.{objectQualifier}Group f on f.GroupID=e.GroupID WHERE e.UserID=i_UserID AND f.Style IS NOT NULL ORDER BY f.SortOrder LIMIT 1), (SELECT r.Style FROM {databaseName}.{objectQualifier}Rank r where r.RankID = {databaseName}.{objectQualifier}User.RankID LIMIT 1)) 
         WHERE UserID = i_UserID; 
         END IF;
     END IF;
@@ -11490,12 +11577,12 @@ set @tlpreps = CONCAT('SELECT
             else null end) AS LastUserStyle,	
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=f.ForumID AND x.UserID = ',i_PageUserID,' LIMIT 1)
-             else null	end) AS LastForumAccess,
+               (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=f.ForumID AND x.UserID = ',i_PageUserID,' LIMIT 1)
+             else CAST(NULL AS DATETIME)	end) AS LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
-             else null	 end) AS  	LastTopicAccess    
+               (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
+             else CAST(NULL AS DATETIME)	 end) AS  	LastTopicAccess    
     FROM 
         {databaseName}.{objectQualifier}Topic t
     INNER JOIN
@@ -12457,12 +12544,12 @@ INTO @i_FirstSelectLastPosted, @i_FirstSelectPosted
             else ''''	 end) AS LastUserStyle,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) as LastForumAccess,
+               (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) as LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) as LastTopicAccess,
+               (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) as LastTopicAccess,
         (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
 			 c.TopicImage,
 			 c.TopicImageType,
@@ -13318,12 +13405,12 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
             else ''''	 end) as LastUserStyle,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) as LastForumAccess,
+               (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) as LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT  LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
-             else null	 end) as LastTopicAccess,	
+               (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
+             else CAST(NULL AS DATETIME)	 end) as LastTopicAccess,	
               (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags			 , 
 			 c.TopicImage,
 			 c.TopicImageType,
@@ -13543,12 +13630,12 @@ INTO
             else '''' end) AS LastUserStyle,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,'  LIMIT 1)
-             else null end) AS LastForumAccess,
+               (SELECT CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,'  LIMIT 1)
+             else CAST(NULL AS DATETIME) end) AS LastForumAccess,
         (case(',i_FindLastRead,')
              when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
-             else null end) AS  LastTopicAccess,
+               (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
+             else CAST(NULL AS DATETIME) end) AS  LastTopicAccess,
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags,  
 			 c.TopicImage,
 			 c.TopicImageType,
@@ -13604,7 +13691,7 @@ declare _usridtmp int;
         UPDATE {databaseName}.{objectQualifier}User  
         SET UserStyle = IFNULL((SELECT f.Style FROM {databaseName}.{objectQualifier}UserGroup e 
             join {databaseName}.{objectQualifier}Group f on f.GroupID=e.GroupID 
-            WHERE e.UserID=_usridtmp AND CHAR_LENGTH(f.Style) > 2 ORDER BY f.SortOrder LIMIT 1), 
+            WHERE e.UserID=_usridtmp AND f.Style IS NOT NULL ORDER BY f.SortOrder LIMIT 1), 
             (SELECT r.Style FROM {databaseName}.{objectQualifier}Rank r where RankID = _rankidtmp LIMIT 1)) 
         WHERE UserID = _usridtmp ;		  	 
         

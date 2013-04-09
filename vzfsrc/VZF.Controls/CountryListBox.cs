@@ -25,7 +25,7 @@ namespace VZF.Controls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

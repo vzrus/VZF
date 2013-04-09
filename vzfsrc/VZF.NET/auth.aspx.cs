@@ -24,7 +24,7 @@ namespace YAF
 
     using YAF.Core.Services;
     using YAF.Types.Constants;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// The Twitter Authentification Page

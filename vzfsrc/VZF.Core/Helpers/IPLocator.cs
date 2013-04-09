@@ -29,7 +29,7 @@ namespace YAF.Core
     using YAF.Classes.Pattern;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 
@@ -80,7 +80,7 @@ namespace YAF.Core
             {
                 try
                 {
-                    string path = YafContext.Current.Get<YafBoardSettings>().IPLocatorUrlPath.FormatWith(Utils.Helpers.IPHelper.GetIp4Address(ip));
+                    string path = YafContext.Current.Get<YafBoardSettings>().IPLocatorUrlPath.FormatWith(VZF.Utils.Helpers.IPHelper.GetIp4Address(ip));
                     var client = new WebClient();
                     string[] result = client.DownloadString(path).Split(';');
                     string[] sray = YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMapping.Trim().Split(',');

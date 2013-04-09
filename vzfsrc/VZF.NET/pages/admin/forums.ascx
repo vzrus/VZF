@@ -46,6 +46,7 @@
                     <ItemTemplate>
                         <tr class="post">
                             <td align="left">
+                                <VZF:ThemeImage ID="ForumTypeImg" ThemePage="ICONS" ThemeTag='<%# DataBinder.Eval(Container.DataItem, "[\"IsUserForum\"]").ToType<bool>() ? "BLOG_GENERAL" : "MULTIPAGES_SMALL" %>' LocalizedTitleTag='<%# DataBinder.Eval(Container.DataItem, "[\"IsUserForum\"]").ToType<bool>() ? "ISUSERFORUM" : "ISGENERALFORUM" %>' runat="server"/>
                                 <strong>
                                     <%#  HttpUtility.HtmlEncode(DataBinder.Eval(Container.DataItem, "[\"Name\"]")) %></strong><br />
                                 <%#  HttpUtility.HtmlEncode(DataBinder.Eval(Container.DataItem, "[\"Description\"]")) %>

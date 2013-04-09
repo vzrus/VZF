@@ -1,7 +1,7 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.members" CodeBehind="members.ascx.cs" %>
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <table cellspacing="0" cellpadding="0" class="content" width="100%">

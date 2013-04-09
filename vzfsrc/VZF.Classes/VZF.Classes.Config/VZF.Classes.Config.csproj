@@ -108,15 +108,21 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="YetAnotherForum.NET.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
       <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
       <Name>VZF.Types</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="YetAnotherForum.NET.snk" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(SolutionDir)\packages\firebird\FirebirdSql.Data.FirebirdClient.dll $(SolutionDir)\VZF.NET\Bin\  /d /y
+xcopy $(SolutionDir)\packages\mysql\MySql.Data.dll $(SolutionDir)\VZF.NET\Bin\   /d /y
+xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\   /d /y
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

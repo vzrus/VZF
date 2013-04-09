@@ -66,17 +66,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.accessmask_delete(connectionString, accessMaskID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.accessmask_delete(connectionString, accessMaskID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.accessmask_delete(connectionString, accessMaskID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.accessmask_delete(connectionString, accessMaskID);
-                    // case "oracle": return OracleLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
-                    // case "db2": return Db2LegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
-                    // case "other": return OtherLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID); 
+                    // case CommonSqlDbAccess.Oracle: return OracleLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
+                    // case CommonSqlDbAccess.Db2: return Db2LegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
+                    // case CommonSqlDbAccess.Other: return OtherLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -103,17 +103,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "oracle": orPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "db2": db2Postgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "other": otherPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -140,17 +140,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "oracle": orPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "db2": db2Postgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "other": otherPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -193,17 +193,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "oracle": orPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "db2": db2Postgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                // case "other": otherPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
+                // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -288,7 +288,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.accessmask_save(
                         connectionString,
                         accessMaskId,
@@ -311,7 +311,7 @@ namespace VZF.Data.Common
                         isUserMask,
                         isAdminMask);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.accessmask_save(
                         connectionString,
                         accessMaskId,
@@ -334,7 +334,7 @@ namespace VZF.Data.Common
                         isUserMask,
                         isAdminMask);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.accessmask_save(
                         connectionString,
                         accessMaskId,
@@ -357,7 +357,7 @@ namespace VZF.Data.Common
                         isUserMask,
                         isAdminMask);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.accessmask_save(
                         connectionString,
                         accessMaskId,
@@ -380,9 +380,9 @@ namespace VZF.Data.Common
                         isUserMask,
                         isAdminMask);
                     break;
-                // case "oracle": orPostgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask,isAdminMask);break;
-                // case "db2": db2Postgre.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
-                // case "other": otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
+                // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask,isAdminMask);break;
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
+                // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -421,21 +421,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.active_list(
                         connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.active_list(
                         connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.active_list(
                         connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.active_list(
                         connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case "oracle": return orPostgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case "db2": return db2Postgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case "other": return othPostgre.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -481,21 +481,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.active_list_user(
                         connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.active_list_user(
                         connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.active_list_user(
                         connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.active_list_user(
                         connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                    // case "oracle": return orPostgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
-                    // case "db2": return db2Postgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
-                    // case "other": return othPostgre.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -524,17 +524,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.active_listforum(connectionString, forumID, styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.active_listforum(connectionString, forumID, styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.active_listforum(connectionString, forumID, styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.active_listforum(connectionString, forumID, styledNicks);
-                    // case "oracle": return orPostgre.Db.active_listforum(connectionString,  forumID, styledNicks);
-                    // case "db2": return db2Postgre.Db.active_listforum(connectionString,  forumID, styledNicks);
-                    // case "other": return othPostgre.Db.active_listforum(connectionString,  forumID, styledNicks);
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_listforum(connectionString,  forumID, styledNicks);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_listforum(connectionString,  forumID, styledNicks);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_listforum(connectionString,  forumID, styledNicks);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -563,17 +563,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case "oracle": return orPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case "db2": return db2Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case "other": return othPostgre.Db.active_listtopic(connectionString, topicID, styledNicks);
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_listtopic(connectionString, topicID, styledNicks);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_listtopic(connectionString, topicID, styledNicks);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_listtopic(connectionString, topicID, styledNicks);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -599,17 +599,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.active_stats(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.active_stats(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.active_stats(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.active_stats(connectionString, boardId);
-                    // case "oracle": return orPostgre.Db.active_stats(connectionString, boardId);
-                    // case "db2": return db2Postgre.Db.active_stats(connectionString, boardId);
-                    // case "other": return othPostgre.Db.active_stats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_stats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_stats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_stats(connectionString, boardId);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -629,21 +629,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.activeaccess_reset(connectionString);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.activeaccess_reset(connectionString);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.activeaccess_reset(connectionString);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.activeaccess_reset(connectionString);
                     break;
-                    // case "oracle":  orPostgre.Db.activeaccess_reset(connectionString); break;
-                    // case "db2": db2Postgre.Db.activeaccess_reset(connectionString); break;
-                    // case "other": othPostgre.Db.activeaccess_reset(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.activeaccess_reset(connectionString); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.activeaccess_reset(connectionString); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.activeaccess_reset(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -676,21 +676,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.User_ListProfilesByIdsList(
                         connectionString, boardID, userIdsList, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.User_ListProfilesByIdsList(
                         connectionString, boardID, userIdsList, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.User_ListProfilesByIdsList(
                         connectionString, boardID, userIdsList, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.User_ListProfilesByIdsList(
                         connectionString, boardID, userIdsList, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
-                    // case "db2":  return db2Postgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
-                    // case "other":  return othPostgre.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -718,17 +718,17 @@ namespace VZF.Data.Common
             CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-                    // case "db2":  return db2Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-                    // case "other":  return othPostgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -757,17 +757,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case "other":  return othPostgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -797,17 +797,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-                    // case "db2":  return db2Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-                    // case "other":  return othPostgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -836,17 +836,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.adminpageaccess_list(connectionString, userId, pageName);
-                    // case "oracle":  return orPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
-                    // case "db2":  return db2Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
-                    // case "other":  return othPostgre.Db.adminpageaccess_list(connectionString, userId, pageName); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.adminpageaccess_list(connectionString, userId, pageName); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.adminpageaccess_list(connectionString, userId, pageName);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.adminpageaccess_list(connectionString, userId, pageName); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -872,21 +872,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.adminpageaccess_delete(connectionString, userId, pageName);
                     return;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.adminpageaccess_delete(connectionString, userId, pageName);
                     return;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.adminpageaccess_delete(connectionString, userId, pageName);
                     return;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.adminpageaccess_delete(connectionString, userId, pageName);
                     return;
-                    // case "oracle":   orPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-                    // case "db2":   db2Postgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-                    // case "other":   othPostgre.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
@@ -913,21 +913,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.adminpageaccess_save(connectionString, userId, pageName);
                     return;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.adminpageaccess_save(connectionString, userId, pageName);
                     return;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.adminpageaccess_save(connectionString, userId, pageName);
                     return;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.adminpageaccess_save(connectionString, userId, pageName);
                     return;
-                    // case "oracle":   orPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-                    // case "db2":   db2Postgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-                    // case "other":   othPostgre.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -950,21 +950,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.album_delete(connectionString, AlbumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.album_delete(connectionString, AlbumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.album_delete(connectionString, AlbumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.album_delete(connectionString, AlbumID);
                     break;
-                    // case "oracle":  orPostgre.Db.album_delete(connectionString, AlbumID); break;
-                    // case "db2": db2Postgre.Db.album_delete(connectionString, AlbumID); break;
-                    // case "other": othPostgre.Db.album_delete(connectionString, AlbumID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_delete(connectionString, AlbumID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_delete(connectionString, AlbumID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_delete(connectionString, AlbumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -993,17 +993,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_getstats(connectionString, UserID, AlbumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_getstats(connectionString, UserID, AlbumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_getstats(connectionString, UserID, AlbumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_getstats(connectionString, UserID, AlbumID);
-                    // case "oracle":  return orPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-                    // case "db2": return db2Postgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
-                    // case "other": return othPostgre.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.album_getstats(connectionString,  UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.album_getstats(connectionString,  UserID,  AlbumID);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1029,17 +1029,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_gettitle(connectionString, AlbumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_gettitle(connectionString, AlbumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_gettitle(connectionString, AlbumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_gettitle(connectionString, AlbumID);
-                    // case "oracle":  return orPostgre.Db.album_gettitle(connectionString, AlbumID);
-                    // case "db2": return db2Postgre.Db.album_gettitle(connectionString, AlbumID);
-                    // case "other": return othPostgre.Db.album_gettitle(connectionString, AlbumID);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_gettitle(connectionString, AlbumID);
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.album_gettitle(connectionString, AlbumID);
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.album_gettitle(connectionString, AlbumID);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1062,21 +1062,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.album_image_delete(connectionString, ImageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.album_image_delete(connectionString, ImageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.album_image_delete(connectionString, ImageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.album_image_delete(connectionString, ImageID);
                     break;
-                    // case "oracle":  orPostgre.Db.album_image_delete(connectionString, ImageID); break;
-                    // case "db2": db2Postgre.Db.album_image_delete(connectionString, ImageID); break;
-                    // case "other": othPostgre.Db.album_image_delete(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_delete(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_delete(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_delete(connectionString, ImageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1100,21 +1100,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.album_image_download(connectionString, ImageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.album_image_download(connectionString, ImageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.album_image_download(connectionString, ImageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.album_image_download(connectionString, ImageID);
                     break;
-                    // case "oracle":  orPostgre.Db.album_image_download(connectionString, ImageID); break;
-                    // case "db2": db2Postgre.Db.album_image_download(connectionString, ImageID); break;
-                    // case "other": othPostgre.Db.album_image_download(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_download(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_download(connectionString, ImageID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_download(connectionString, ImageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1141,17 +1141,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_images_by_user(connectionString, userID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_images_by_user(connectionString, userID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_images_by_user(connectionString, userID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_images_by_user(connectionString, userID);
-                    // case "oracle":  return orPostgre.Db.album_images_by_user(connectionString, userID); 
-                    // case "db2":  return db2Postgre.Db.album_images_by_user(connectionString, userID); 
-                    // case "other":  return othPostgre.Db.album_images_by_user(connectionString, userID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_images_by_user(connectionString, userID); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_images_by_user(connectionString, userID); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_images_by_user(connectionString, userID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1181,17 +1181,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_image_list(connectionString, AlbumID, ImageID);
-                    // case "oracle":  return orPostgre.Db.album_image_list(connectionString, AlbumID, ImageID);
-                    // case "db2":  return db2Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case "other":  return othPostgre.Db.album_image_list(connectionString, AlbumID, ImageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_image_list(connectionString, AlbumID, ImageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_image_list(connectionString, AlbumID, ImageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -1232,25 +1232,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.album_image_save(
                         connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.album_image_save(
                         connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.album_image_save(
                         connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.album_image_save(
                         connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
                     break;
-                    // case "oracle":  orPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-                    // case "db2": db2Postgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-                    // case "other": othPostgre.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1280,17 +1280,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_list(connectionString, UserID, AlbumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_list(connectionString, UserID, AlbumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_list(connectionString, UserID, AlbumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_list(connectionString, UserID, AlbumID);
-                    // case "oracle":  return orPostgre.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case "other":  return othPostgre.Db.album_list(connectionString, UserID,  AlbumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_list(connectionString, UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_list(connectionString, UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_list(connectionString, UserID,  AlbumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1326,17 +1326,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                    // case "oracle":  return orPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                    // case "db2":  return db2Postgre.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case "other":  return othPostgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_list(connectionString, UserID,  AlbumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1360,21 +1360,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                    // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_delete(connectionString, attachmentID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1398,21 +1398,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.attachment_delete(connectionString, attachmentID);
                     break;
-                    // case "oracle":  orPostgre.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case "db2": db2Postgre.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case "other": othPostgre.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_delete(connectionString, attachmentID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_delete(connectionString, attachmentID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1453,21 +1453,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.attachment_list(
                         connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.attachment_list(
                         connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.attachment_list(
                         connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.attachment_list(
                         connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                    // case "oracle":  return orPostgre.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
-                    // case "db2":  return db2Postgre.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
-                    // case "other":  return othPostgre.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1504,23 +1504,23 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.attachment_save(connectionString, messageID, fileName, bytes, contentType, stream);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.attachment_save(
                         connectionString, messageID, fileName, bytes, contentType, stream);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.attachment_save(connectionString, messageID, fileName, bytes, contentType, stream);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.attachment_save(
                         connectionString, messageID, fileName, bytes, contentType, stream);
                     break;
-                    // case "oracle":  orPostgre.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
-                    // case "db2": db2Postgre.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
-                    // case "other": othPostgre.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1544,21 +1544,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.bannedip_delete(connectionString, ID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.bannedip_delete(connectionString, ID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.bannedip_delete(connectionString, ID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.bannedip_delete(connectionString, ID);
                     break;
-                    // case "oracle":  orPostgre.Db.bannedip_delete(connectionString, ID); break;
-                    // case "db2": db2Postgre.Db.bannedip_delete(connectionString, ID); break;
-                    // case "other": othPostgre.Db.bannedip_delete(connectionString, ID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bannedip_delete(connectionString, ID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bannedip_delete(connectionString, ID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bannedip_delete(connectionString, ID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1595,17 +1595,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                    // case "oracle":  return orPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-                    // case "db2":  return db2Postgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-                    // case "other":  return othPostgre.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1644,21 +1644,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
                     break;
-                    // case "oracle":  orPostgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
-                    // case "db2": db2Postgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
-                    // case "other": othPostgre.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1685,21 +1685,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.bbcode_delete(connectionString, bbcodeID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.bbcode_delete(connectionString, bbcodeID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.bbcode_delete(connectionString, bbcodeID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.bbcode_delete(connectionString, bbcodeID);
                     break;
-                    // case "oracle":  orPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-                    // case "db2": db2Postgre.Db.bbcode_delete(connectionString, bbcodeID); break;
-                    // case "other": othPostgre.Db.bbcode_delete(connectionString, bbcodeID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bbcode_delete(connectionString, bbcodeID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bbcode_delete(connectionString, bbcodeID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bbcode_delete(connectionString, bbcodeID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1732,17 +1732,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                    // case "oracle":  return orPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                    // case "db2":  return db2Postgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                    // case "other":  return othPostgre.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -1823,7 +1823,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.bbcode_save(
                         connectionString,
                         bbcodeID,
@@ -1841,7 +1841,7 @@ namespace VZF.Data.Common
                         moduleclass,
                         execorder);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.bbcode_save(
                         connectionString,
                         bbcodeID,
@@ -1859,7 +1859,7 @@ namespace VZF.Data.Common
                         moduleclass,
                         execorder);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.bbcode_save(
                         connectionString,
                         bbcodeID,
@@ -1877,7 +1877,7 @@ namespace VZF.Data.Common
                         moduleclass,
                         execorder);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.bbcode_save(
                         connectionString,
                         bbcodeID,
@@ -1895,9 +1895,9 @@ namespace VZF.Data.Common
                         moduleclass,
                         execorder);
                     break;
-                    // case "oracle":  orPostgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-                    // case "db2": db2Postgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-                    // case "other": othPostgre.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -1931,17 +1931,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case "oracle":  return orPostgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case "db2":  return db2Postgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case "other":  return othPostgre.Db.BBCodeList(connectionString, boardId, bbcodeID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.BBCodeList(connectionString, boardId, bbcodeID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.BBCodeList(connectionString, boardId, bbcodeID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.BBCodeList(connectionString, boardId, bbcodeID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -2010,7 +2010,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.board_create(
                         connectionString,
                         adminUsername,
@@ -2023,7 +2023,7 @@ namespace VZF.Data.Common
                         boardRolesName,
                         rolePrefix,
                         isHostUser);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.board_create(
                         connectionString,
                         adminUsername,
@@ -2036,7 +2036,7 @@ namespace VZF.Data.Common
                         boardRolesName,
                         rolePrefix,
                         isHostUser);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.board_create(
                         connectionString,
                         adminUsername,
@@ -2049,7 +2049,7 @@ namespace VZF.Data.Common
                         boardRolesName,
                         rolePrefix,
                         isHostUser);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.board_create(
                         connectionString,
                         adminUsername,
@@ -2062,9 +2062,9 @@ namespace VZF.Data.Common
                         boardRolesName,
                         rolePrefix,
                         isHostUser);
-                    // case "oracle":  return orPostgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
-                    // case "db2":  return db2Postgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
-                    // case "other":  return othPostgre.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2091,21 +2091,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.board_delete(connectionString, boardId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.board_delete(connectionString, boardId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.board_delete(connectionString, boardId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.board_delete(connectionString, boardId);
                     break;
-                    // case "oracle":  orPostgre.Db.board_delete(connectionString, boardId); break;
-                    // case "db2": db2Postgre.Db.board_delete(connectionString, boardId); break;
-                    // case "other": othPostgre.Db.board_delete(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.board_delete(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.board_delete(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.board_delete(connectionString, boardId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2135,17 +2135,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.board_list(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.board_list(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.board_list(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.board_list(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.board_list(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.board_list(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.board_list(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_list(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_list(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_list(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2182,35 +2182,35 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return
                         VZF.Data.MsSql.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
                            .Table.AsEnumerable()
                            .Select(r => new board_poststats_Result(r))
                            .ToList()[0];
                     ;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return
                         VZF.Data.Postgre.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
                            .Table.AsEnumerable()
                            .Select(r => new board_poststats_Result(r))
                            .ToList()[0];
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return
                         VZF.Data.Mysql.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
                            .Table.AsEnumerable()
                            .Select(r => new board_poststats_Result(r))
                            .ToList()[0];
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return
                         VZF.Data.Firebird.Db.board_poststats(
                             connectionString, boardId, useStyledNicks, showNoCountPosts)
                            .Table.AsEnumerable()
                            .Select(r => new board_poststats_Result(r))
                            .ToList()[0];
-                    // case "oracle":  return orPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
-                    // case "db2":  return db2Postgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
-                    // case "other":  return othPostgre.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2248,21 +2248,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.board_resync(connectionString, boardId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.board_resync(connectionString, boardId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.board_resync(connectionString, boardId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.board_resync(connectionString, boardId);
                     break;
-                    // case "oracle":  orPostgre.Db.board_resync(connectionString, boardId); break;
-                    // case "db2": db2Postgre.Db.board_resync(connectionString, boardId); break;
-                    // case "other": othPostgre.Db.board_resync(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.board_resync(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.board_resync(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.board_resync(connectionString, boardId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2305,21 +2305,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.board_save(
                         connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.board_save(
                         connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.board_save(
                         connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.board_save(
                         connectionString, boardId, languageFile, culture, name, allowThreaded);
-                    // case "oracle":  return orPostgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
-                    // case "db2":  return db2Postgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
-                    // case "other":  return othPostgre.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2349,33 +2349,33 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return
                         VZF.Data.MsSql.Db.board_stats(connectionString, boardId)
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return
                         VZF.Data.Postgre.Db.board_stats(connectionString, boardId)
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return
                         VZF.Data.Mysql.Db.board_stats(connectionString, boardId)
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return
                         VZF.Data.Firebird.Db.board_stats(connectionString, boardId)
                            .Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                    // case "oracle":  return orPostgre.Db.board_stats(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.board_stats(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.board_stats(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_stats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_stats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_stats(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2405,17 +2405,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.board_userstats(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.board_userstats(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.board_userstats(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.board_userstats(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.board_userstats(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.board_userstats(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.board_userstats(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_userstats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_userstats(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_userstats(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2448,17 +2448,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                    // case "oracle":  return orPostgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
-                    // case "db2":  return db2Postgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
-                    // case "other":  return othPostgre.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2494,17 +2494,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case "oracle":  return orPostgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case "db2":  return db2Postgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case "other":  return othPostgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2537,17 +2537,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case "oracle":  return orPostgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case "db2":  return db2Postgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case "other":  return othPostgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2577,17 +2577,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.buddy_list(connectionString, FromUserID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.buddy_list(connectionString, FromUserID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.buddy_list(connectionString, FromUserID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.buddy_list(connectionString, FromUserID);
-                    // case "oracle":  return orPostgre.Db.buddy_list(connectionString, FromUserID);
-                    // case "db2":  return db2Postgre.Db.buddy_list(connectionString, FromUserID);
-                    // case "other":  return othPostgre.Db.buddy_list(connectionString, FromUserID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_list(connectionString, FromUserID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_list(connectionString, FromUserID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_list(connectionString, FromUserID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2620,17 +2620,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case "oracle":  return orPostgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case "db2":  return db2Postgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case "other":  return othPostgre.Db.buddy_remove(connectionString, FromUserID, ToUserID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_remove(connectionString, FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_remove(connectionString, FromUserID, ToUserID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_remove(connectionString, FromUserID, ToUserID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2660,17 +2660,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_delete(connectionString, CategoryID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_delete(connectionString, CategoryID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_delete(connectionString, CategoryID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_delete(connectionString, CategoryID);
-                    // case "oracle":  return orPostgre.Db.category_delete(connectionString, CategoryID);
-                    // case "db2":  return db2Postgre.Db.category_delete(connectionString, CategoryID);
-                    // case "other":  return othPostgre.Db.category_delete(connectionString, CategoryID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_delete(connectionString, CategoryID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_delete(connectionString, CategoryID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_delete(connectionString, CategoryID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2702,17 +2702,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_list(connectionString, boardId, categoryID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_list(connectionString, boardId, categoryID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_list(connectionString, boardId, categoryID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_list(connectionString, boardId, categoryID);
-                // case "oracle":  return orPostgre.Db.category_list(connectionString,  boardId, categoryID);
-                // case "db2":  return db2Postgre.Db.category_list(connectionString,  boardId, categoryID);
-                // case "other":  return othPostgre.Db.category_list(connectionString,  boardId, categoryID); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_list(connectionString,  boardId, categoryID);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_list(connectionString,  boardId, categoryID);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_list(connectionString,  boardId, categoryID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2727,17 +2727,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                // case "oracle":  return orPostgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
-                // case "db2":  return db2Postgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
-                // case "other":  return othPostgre.Db.category_pfaccesslist(connectionString,  boardId, categoryID); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_pfaccesslist(connectionString,  boardId, categoryID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2772,17 +2772,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                // case "oracle":  return orPostgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                // case "db2":  return db2Postgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                // case "other":  return othPostgre.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2817,17 +2817,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case "oracle":  return orPostgre.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case "db2":  return db2Postgre.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case "other":  return othPostgre.Db.category_listread(connectionString, boardId, userId, categoryID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_listread(connectionString, boardId, userId, categoryID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_listread(connectionString, boardId, userId, categoryID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_listread(connectionString, boardId, userId, categoryID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2859,17 +2859,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.category_simplelist(connectionString, startID, limit);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.category_simplelist(connectionString, startID, limit);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.category_simplelist(connectionString, startID, limit);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.category_simplelist(connectionString, startID, limit);
-                    // case "oracle":  return orPostgre.Db.category_simplelist(connectionString, startID, limit);
-                    // case "db2":  return db2Postgre.Db.category_simplelist(connectionString, startID, limit);
-                    // case "other":  return othPostgre.Db.category_simplelist(connectionString, startID, limit); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_simplelist(connectionString, startID, limit);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_simplelist(connectionString, startID, limit);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_simplelist(connectionString, startID, limit); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2908,25 +2908,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.category_save(
                         connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.category_save(
                         connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.category_save(
                         connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.category_save(
                         connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
                     break;
-                // case "oracle":  orPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
-                // case "db2": db2Postgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
-                // case "other": othPostgre.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
+                // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
+                // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2955,17 +2955,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.checkemail_list(connectionString, email);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.checkemail_list(connectionString, email);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.checkemail_list(connectionString, email);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.checkemail_list(connectionString, email);
-                    // case "oracle":  return orPostgre.Db.checkemail_list(connectionString, email);
-                    // case "db2":  return db2Postgre.Db.checkemail_list(connectionString, email);
-                    // case "other":  return othPostgre.Db.checkemail_list(connectionString, email); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.checkemail_list(connectionString, email);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.checkemail_list(connectionString, email);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.checkemail_list(connectionString, email); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -2997,21 +2997,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.checkemail_save(connectionString, userId, hash, email);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.checkemail_save(connectionString, userId, hash, email);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.checkemail_save(connectionString, userId, hash, email);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.checkemail_save(connectionString, userId, hash, email);
                     break;
-                    // case "oracle":  orPostgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
-                    // case "db2": db2Postgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
-                    // case "other": othPostgre.Db.checkemail_save(connectionString, userId,  hash,  email); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.checkemail_save(connectionString, userId,  hash,  email); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.checkemail_save(connectionString, userId,  hash,  email); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.checkemail_save(connectionString, userId,  hash,  email); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3040,17 +3040,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.checkemail_update(connectionString, hash);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.checkemail_update(connectionString, hash);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.checkemail_update(connectionString, hash);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.checkemail_update(connectionString, hash);
-                    // case "oracle":  return orPostgre.Db.checkemail_update(connectionString, hash);
-                    // case "db2":  return db2Postgre.Db.checkemail_update(connectionString, hash);
-                    // case "other":  return othPostgre.Db.checkemail_update(connectionString, hash); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.checkemail_update(connectionString, hash);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.checkemail_update(connectionString, hash);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.checkemail_update(connectionString, hash); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3065,21 +3065,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.choice_add(connectionString, pollID, choice, path, mime);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.choice_add(connectionString, pollID, choice, path, mime);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.choice_add(connectionString, pollID, choice, path, mime);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.choice_add(connectionString, pollID, choice, path, mime);
                     break;
-                    // case "oracle":  orPostgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
-                    // case "db2": db2Postgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
-                    // case "other": othPostgre.Db.choice_add(connectionString, pollID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_add(connectionString, pollID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_add(connectionString, pollID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_add(connectionString, pollID, choice, path, mime); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3094,21 +3094,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.choice_delete(connectionString, choiceID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.choice_delete(connectionString, choiceID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.choice_delete(connectionString, choiceID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.choice_delete(connectionString, choiceID);
                     break;
-                    // case "oracle":  orPostgre.Db.choice_delete(connectionString, choiceID); break;
-                    // case "db2": db2Postgre.Db.choice_delete(connectionString, choiceID); break;
-                    // case "other": othPostgre.Db.choice_delete(connectionString, choiceID); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_delete(connectionString, choiceID); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_delete(connectionString, choiceID); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_delete(connectionString, choiceID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3123,21 +3123,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.choice_update(connectionString, choiceID, choice, path, mime);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.choice_update(connectionString, choiceID, choice, path, mime);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.choice_update(connectionString, choiceID, choice, path, mime);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.choice_update(connectionString, choiceID, choice, path, mime);
                     break;
-                    // case "oracle":  orPostgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
-                    // case "db2": db2Postgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
-                    // case "other": othPostgre.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3152,21 +3152,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
                     break;
-                    // case "oracle":  orPostgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
-                    // case "db2": db2Postgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
-                    // case "other": othPostgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3181,22 +3181,22 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_getstats_new(connectionString);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_getstats_new(connectionString);
                     ;
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_getstats_new(connectionString);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_getstats_new(connectionString);
                     break;
-                    // case "oracle": return  orPostgre.Db.db_getstats_new(connectionString); break;
-                    // case "db2": return db2Postgre.Db.db_getstats_new(connectionString); break;
-                    // case "other": return othPostgre.Db.db_getstats_new(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_getstats_new(connectionString); break;
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_getstats_new(connectionString); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_getstats_new(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3212,22 +3212,22 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_getstats_warning();
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_getstats_warning();
                     ;
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_getstats_warning();
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_getstats_warning();
                     break;
-                    // case "oracle": return  orPostgre.Db.db_getstats_warning(); break;
-                    // case "db2": return db2_db_getstats_warning(); break;
-                    // case "other": return othPostgre.Db.db_getstats_warning(); break;
+                    // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_getstats_warning(); break;
+                    // case CommonSqlDbAccess.Db2: return db2_db_getstats_warning(); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_getstats_warning(); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3242,21 +3242,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_recovery_mode_warning();
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_recovery_mode_warning();
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_recovery_mode_warning();
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_recovery_mode_warning();
                     break;
-                    // case "oracle": return  orPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case "db2": return db2Postgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case "other": return othPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3271,13 +3271,13 @@ namespace VZF.Data.Common
 
           switch (dataEngine)
           {
-              case "System.Data.SqlClient": return  MsSql.Db.db_getstats_warning(); break;
-              case "Npgsql": return Postgre.Db.db_getstats_warning(); ; break;
-              case "MySql.Data.MySqlClient": return MySqlDb.Db.db_getstats_warning(); break;
-              case "FirebirdSql.Data.FirebirdClient": return FirebirdDb.Db.db_getstats_warning(); break;
-              // case "oracle": return  orPostgre.Db.db_getstats_warning(); break;
-              // case "db2": return db2_db_getstats_warning(); break;
-              // case "other": return othPostgre.Db.db_getstats_warning(); break;
+              case CommonSqlDbAccess.MsSql: return  MsSql.Db.db_getstats_warning(); break;
+              case CommonSqlDbAccess.Npgsql: return Postgre.Db.db_getstats_warning(); ; break;
+              case CommonSqlDbAccess.MySql: return MySqlDb.Db.db_getstats_warning(); break;
+              case CommonSqlDbAccess.Firebird: return FirebirdDb.Db.db_getstats_warning(); break;
+              // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_getstats_warning(); break;
+              // case CommonSqlDbAccess.Db2: return db2_db_getstats_warning(); break;
+              // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_getstats_warning(); break;
               default:
                   throw new ArgumentOutOfRangeException(dataEngine);
                   break;
@@ -3300,21 +3300,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
                     break;
-                    // case "oracle": return  orPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case "db2": return db2Postgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case "other": return othPostgre.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3329,21 +3329,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_reindex_new(connectionString);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_reindex_new(connectionString);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_reindex_new(connectionString);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_reindex_new(connectionString);
                     break;
-                    // case "oracle": return orPostgre.Db.db_reindex_new(connectionString); break;
-                    // case "db2": return db2Postgre.Db.db_reindex_new(connectionString); break;
-                    // case "other": return othPostgre.Db.db_reindex_new(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_reindex_new(connectionString); break;
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_reindex_new(connectionString); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_reindex_new(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3358,17 +3358,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_reindex_warning();
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_reindex_warning();
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_reindex_warning();
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_reindex_warning();
-                    // case "oracle":  return orPostgre.Db.db_reindex_warning();
-                    // case "db2":  return db2Postgre.Db.db_reindex_warning();
-                    // case "other":  return othPostgre.Db.db_reindex_warning(); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.db_reindex_warning();
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.db_reindex_warning();
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.db_reindex_warning(); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3383,17 +3383,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_runsql_new(connectionString, sql, useTransaction);
-                    // case "oracle":  return orPostgre.Db.db_runsql_new(connectionString, sql,  useTransaction);
-                    // case "db2":  return db2Postgre.Db.db_runsql_new(connectionString, sql,  useTransaction);
-                    // case "other":  return othPostgre.Db.db_runsql_new(connectionString, sql, useTransaction); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.db_runsql_new(connectionString, sql,  useTransaction);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.db_runsql_new(connectionString, sql,  useTransaction);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.db_runsql_new(connectionString, sql, useTransaction); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3408,21 +3408,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_shrink_new(connectionString);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_shrink_new(connectionString);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_shrink_new(connectionString);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_shrink_new(connectionString);
                     break;
-                    // case "oracle": return orPostgre.Db.db_shrink(connectionString); break;
-                    // case "db2": return db2Postgre.Db.db_shrink(connectionString); break;
-                    // case "other": return othPostgre.Db.db_shrink(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_shrink(connectionString); break;
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_shrink(connectionString); break;
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_shrink(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3437,17 +3437,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_shrink_warning();
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_shrink_warning(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_shrink_warning();
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_shrink_warning();
-                    // case "oracle":  return orPostgre.Db.db_shrink_warning(connectionString);
-                    // case "db2":  return db2Postgre.Db.db_shrink_warning(connectionStringe);
-                    // case "other":  return othPostgre.Db.db_shrink_warning(connectionString); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.db_shrink_warning(connectionString);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.db_shrink_warning(connectionStringe);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.db_shrink_warning(connectionString); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3463,17 +3463,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_byuserlist(connectionString, boardId, forumID, userId, isUserForum);
-                // case "oracle":  return orPostgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
-                // case "db2":  return db2Postgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
-                // case "other":  return othPostgre.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_list(connectionString, boardId, forumID, userId, isUserForum); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3488,17 +3488,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                // case "oracle":  return orPostgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                // case "db2":  return db2Postgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
-                // case "other":  return othPostgre.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.ds_forumadmin(connectionString, boardId, pageUserID, isUserForum); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3518,21 +3518,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.eventlog_create(connectionString, userId, source, description, type);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.eventlog_create(connectionString, userId, source, description, type);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.eventlog_create(connectionString, userId, source, description, type);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.eventlog_create(connectionString, userId, source, description, type);
                     break;
-                    // case "oracle":  orPostgre.Db.eventlog_create(connectionString,  userId, source, description,type); break;
-                    // case "db2": db2Postgre.Db.eventlog_create(connectionString,  userId, source, description,type); break;
-                    // case "other": othPostgre.Db.eventlog_create(connectionString,  userId, source, description,type); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.eventlog_create(connectionString,  userId, source, description,type); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.eventlog_create(connectionString,  userId, source, description,type); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.eventlog_create(connectionString,  userId, source, description,type); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3563,21 +3563,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.eventlog_delete(connectionString, eventLogID, boardId, pageUserId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.eventlog_delete(connectionString, eventLogID, boardId, pageUserId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.eventlog_delete(connectionString, eventLogID, boardId, pageUserId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.eventlog_delete(connectionString, eventLogID, boardId, pageUserId);
                     break;
-                    // case "oracle":  orPostgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
-                    // case "db2": db2Postgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
-                    // case "other": othPostgre.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.eventlog_delete(connectionString, eventLogID, boardId,pageUserId ); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -3593,21 +3593,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.eventlog_deletebyuser(connectionString, boardID, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.eventlog_deletebyuser(connectionString, boardID, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.eventlog_deletebyuser(connectionString, boardID, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.eventlog_deletebyuser(connectionString, boardID, userId);
                     break;
-                    // case "oracle":  orPostgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
-                    // case "db2": db2Postgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
-                    // case "other": othPostgre.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.eventlog_deletebyuser(connectionString,boardID,userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3632,7 +3632,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.eventlog_list(
                         connectionString,
                         boardId,
@@ -3644,7 +3644,7 @@ namespace VZF.Data.Common
                         sinceDate,
                         toDate,
                         eventIDs);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.eventlog_list(
                         connectionString,
                         boardId,
@@ -3656,7 +3656,7 @@ namespace VZF.Data.Common
                         sinceDate,
                         toDate,
                         eventIDs);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.eventlog_list(
                         connectionString,
                         boardId,
@@ -3668,7 +3668,7 @@ namespace VZF.Data.Common
                         sinceDate,
                         toDate,
                         eventIDs);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.eventlog_list(
                         connectionString,
                         boardId,
@@ -3680,9 +3680,9 @@ namespace VZF.Data.Common
                         sinceDate,
                         toDate,
                         eventIDs);
-                    // case "oracle":  return orPostgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
-                    // case "db2":  return db2Postgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
-                    // case "other":  return othPostgre.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.eventlog_list(connectionString, boardId, pageUserID,  maxRows, maxDays,  pageIndex, pageSize,  sinceDate,  toDate,  eventIDs); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3698,17 +3698,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.eventloggroupaccess_list(connectionString, groupID, eventTypeId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.eventloggroupaccess_list(connectionString, groupID, eventTypeId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.eventloggroupaccess_list(connectionString, groupID, eventTypeId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.eventloggroupaccess_list(connectionString, groupID, eventTypeId);
-                    // case "oracle":  return orPostgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
-                    // case "db2":  return db2Postgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
-                    // case "other":  return othPostgre.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.eventloggroupaccess_list(connectionString,groupID,eventTypeId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3723,17 +3723,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_eventlogaccesslist(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_eventlogaccesslist(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_eventlogaccesslist(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_eventlogaccesslist(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.group_eventlogaccesslist(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.group_eventlogaccesslist(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.group_eventlogaccesslist(connectionString, boardId);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_eventlogaccesslist(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_eventlogaccesslist(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_eventlogaccesslist(connectionString, boardId);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3753,25 +3753,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.eventloggroupaccess_save(
                         connectionString, groupID, eventTypeId, eventTypeName, deleteAccess);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.eventloggroupaccess_save(
                         connectionString, groupID, eventTypeId, eventTypeName, deleteAccess);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.eventloggroupaccess_save(
                         connectionString, groupID, eventTypeId, eventTypeName, deleteAccess);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.eventloggroupaccess_save(
                         connectionString, groupID, eventTypeId, eventTypeName, deleteAccess);
                     break;
-                    // case "oracle":  orPostgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
-                    // case "db2": db2Postgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
-                    // case "other": othPostgre.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.eventloggroupaccess_save( connectionString, groupID,  eventTypeId,eventTypeName, deleteAccess); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3786,21 +3786,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.extension_delete(connectionString, extensionId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.extension_delete(connectionString, extensionId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.extension_delete(connectionString, extensionId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.extension_delete(connectionString, extensionId);
                     break;
-                    // case "oracle":  orPostgre.Db.extension_delete(connectionString, extensionId); break;
-                    // case "db2": db2Postgre.Db.extension_delete(connectionString, extensionId); break;
-                    // case "other": othPostgre.Db.extension_delete(connectionString, extensionId); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.extension_delete(connectionString, extensionId); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.extension_delete(connectionString, extensionId); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.extension_delete(connectionString, extensionId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3816,23 +3816,23 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.eventloggroupaccess_delete(connectionString, groupID, eventTypeId, eventTypeName);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.eventloggroupaccess_delete(
                         connectionString, groupID, eventTypeId, eventTypeName);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.eventloggroupaccess_delete(connectionString, groupID, eventTypeId, eventTypeName);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.eventloggroupaccess_delete(
                         connectionString, groupID, eventTypeId, eventTypeName);
                     break;
-                    // case "oracle":  orPostgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
-                    // case "db2": db2Postgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
-                    // case "other": othPostgre.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.eventloggroupaccess_delete(connectionString,groupID,eventTypeId,eventTypeName); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3847,17 +3847,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.extension_edit(connectionString, extensionId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.extension_edit(connectionString, extensionId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.extension_edit(connectionString, extensionId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.extension_edit(connectionString, extensionId);
-                    // case "oracle":  return orPostgre.Db.extension_edit(connectionString, extensionId);
-                    // case "db2":  return db2Postgre.Db.extension_edit(connectionString, extensionId);
-                    // case "other":  return othPostgre.Db.extension_edit(connectionString, extensionId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.extension_edit(connectionString, extensionId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.extension_edit(connectionString, extensionId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.extension_edit(connectionString, extensionId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3879,17 +3879,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.extension_list(connectionString, boardId, extension);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.extension_list(connectionString, boardId, extension);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.extension_list(connectionString, boardId, extension);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.extension_list(connectionString, boardId, extension);
-                    // case "oracle":  return orPostgre.Db.extension_list(connectionString, boardId, extension);
-                    // case "db2":  return db2Postgre.Db.extension_list(connectionString, boardId, extension);
-                    // case "other":  return othPostgre.Db.extension_list(connectionString, boardId, extension); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.extension_list(connectionString, boardId, extension);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.extension_list(connectionString, boardId, extension);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.extension_list(connectionString, boardId, extension); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3904,21 +3904,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.extension_save(connectionString, extensionId, boardId, extension);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.extension_save(connectionString, extensionId, boardId, extension);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.extension_save(connectionString, extensionId, boardId, extension);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.extension_save(connectionString, extensionId, boardId, extension);
                     break;
-                    // case "oracle":  orPostgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
-                    // case "db2": db2Postgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
-                    // case "other": othPostgre.Db.extension_save(connectionString, extensionId, boardId, extension); break;
+                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.extension_save(connectionString, extensionId, boardId, extension); break;
+                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.extension_save(connectionString, extensionId, boardId, extension); break;
+                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.extension_save(connectionString, extensionId, boardId, extension); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3933,17 +3933,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_categoryaccess_activeuser(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3958,17 +3958,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_delete(connectionString, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_delete(connectionString, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_delete(connectionString, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_delete(connectionString, forumID);
-                    // case "oracle":  return orPostgre.Db.forum_delete(connectionString, forumID);
-                    // case "db2":  return db2Postgre.Db.forum_delete(connectionString, forumID);
-                    // case "other":  return othPostgre.Db.forum_delete(connectionString, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_delete(connectionString, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_delete(connectionString, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_delete(connectionString, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -3983,17 +3983,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_move(connectionString, forumOldID, forumNewID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_move(connectionString, forumOldID, forumNewID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_move(connectionString, forumOldID, forumNewID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_move(connectionString, forumOldID, forumNewID);
-                    // case "oracle":  return orPostgre.Db.forum_move(connectionString, forumOldID, forumNewID);
-                    // case "db2":  return db2Postgre.Db.forum_move(connectionString, forumOldID, forumNewID);
-                    // case "other":  return othPostgre.Db.forum_move(connectionString, forumOldID, forumNewID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_move(connectionString, forumOldID, forumNewID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_move(connectionString, forumOldID, forumNewID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_move(connectionString, forumOldID, forumNewID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4008,17 +4008,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_list(connectionString, boardId, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_list(connectionString, boardId, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_list(connectionString, boardId, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_list(connectionString, boardId, forumID);
-                    // case "oracle":  return orPostgre.Db.forum_list(connectionString, boardId, forumID);
-                    // case "db2":  return db2Postgre.Db.forum_list(connectionString, boardId, forumID);
-                    // case "other":  return othPostgre.Db.forum_list(connectionString, boardId, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_list(connectionString, boardId, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_list(connectionString, boardId, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_list(connectionString, boardId, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4045,17 +4045,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                    // case "oracle":  return orPostgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                    // case "db2":  return db2Postgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
-                    // case "other":  return othPostgre.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listall(connectionString, boardId, userId, startAt, returnAll); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4082,19 +4082,19 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listall_fromCat(
                         connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listall_fromCat(
                         connectionString, boardId, categoryID, emptyFirstRow, allowUserForumsOnly);
-                // case "oracle":  return orPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
-                // case "db2":  return db2Postgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
-                // case "other":  return othPostgre.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listall_fromCat(connectionString, boardId, categoryID, emptyFirstRow,allowUserForumsOnly); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -4205,7 +4205,7 @@ namespace VZF.Data.Common
             DataTable dtTable;
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     dtTable = VZF.Data.MsSql.Db.forum_ns_getchildren_activeuser(
                         connectionString,
                         boardid ?? 0,
@@ -4216,7 +4216,7 @@ namespace VZF.Data.Common
                         immediateonly,
                         indentchars);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     dtTable = VZF.Data.Postgre.Db.forum_ns_getchildren_activeuser(
                         connectionString,
                         boardid ?? 0,
@@ -4227,7 +4227,7 @@ namespace VZF.Data.Common
                         immediateonly,
                         indentchars);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     dtTable = VZF.Data.Mysql.Db.forum_ns_getchildren_activeuser(
                         connectionString,
                         boardid ?? 0,
@@ -4238,7 +4238,7 @@ namespace VZF.Data.Common
                         immediateonly,
                         indentchars);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     dtTable = VZF.Data.Firebird.Db.forum_ns_getchildren_activeuser(
                         connectionString,
                         boardid ?? 0,
@@ -4249,9 +4249,9 @@ namespace VZF.Data.Common
                         immediateonly,
                         indentchars);
                     break;
-                    // case "oracle":  dtTable = orPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
-                    // case "db2":  dtTable = db2Postgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
-                    // case "other":  dtTable = othPostgre.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                    // case CommonSqlDbAccess.Oracle:  dtTable = VZF.Data.Oracle.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                    // case CommonSqlDbAccess.Db2:  dtTable = VZF.Data.Db2.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
+                    // case CommonSqlDbAccess.Other:  dtTable = VZF.Data.Other.Db.forum_ns_getchildren_activeuser(connectionString,  boardid ?? 0,  categoryid ?? 0,  forumid ?? 0,  userid,  notincluded,  immediateonly,  indentchars);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4275,7 +4275,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_ns_getchildren(
                         connectionString,
                         boardid ?? 0,
@@ -4284,7 +4284,7 @@ namespace VZF.Data.Common
                         notincluded,
                         immediateonly,
                         indentchars);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_ns_getchildren(
                         connectionString,
                         boardid ?? 0,
@@ -4293,7 +4293,7 @@ namespace VZF.Data.Common
                         notincluded,
                         immediateonly,
                         indentchars);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_ns_getchildren(
                         connectionString,
                         boardid ?? 0,
@@ -4302,7 +4302,7 @@ namespace VZF.Data.Common
                         notincluded,
                         immediateonly,
                         indentchars);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_ns_getchildren(
                         connectionString,
                         boardid ?? 0,
@@ -4311,9 +4311,9 @@ namespace VZF.Data.Common
                         notincluded,
                         immediateonly,
                         indentchars);
-                    // case "oracle":  return orPostgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
-                    // case "db2":  return db2Postgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
-                    // case "other":  return othPostgre.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_ns_getchildren(connectionString, boardid ?? 0, categoryid ?? 0, forumid ?? 0, notincluded, immediateonly, indentchars)
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4450,17 +4450,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                // case "oracle":  return orPostgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                // case "db2":  return db2Postgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
-                // case "other":  return othPostgre.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_tags(connectionString, boardId, pageUserId, forumId, pageIndex, pageSize, searchText, beginsWith);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4475,17 +4475,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.forum_listallMyModerated(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.forum_listallMyModerated(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listallMyModerated(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listallMyModerated(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listallMyModerated(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4500,22 +4500,60 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listpath(connectionString, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listpath(connectionString, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listpath(connectionString, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listpath(connectionString, forumID);
-                    // case "oracle":  return orPostgre.Db.forum_listpath(connectionString, forumID);
-                    // case "db2":  return db2Postgre.Db.forum_listpath(connectionString, forumID);
-                    // case "other":  return othPostgre.Db.forum_listpath(connectionString, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listpath(connectionString, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listpath(connectionString, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listpath(connectionString, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
+        /// <summary>
+        /// The forum_listread.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="parentID">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable forum_listread(
             int? mid,
             object boardID,
@@ -4523,7 +4561,10 @@ namespace VZF.Data.Common
             object categoryID,
             object parentID,
             object useStyledNicks,
-            bool findLastRead)
+            bool findLastRead,
+            [NotNull] bool showCommonForums, 
+            [NotNull]bool showPersonalForums, 
+            [CanBeNull] int? forumCreatedByUserId)
         {
             string dataEngine;
             string connectionString;
@@ -4532,21 +4573,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listread(
-                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead);
-                case "Npgsql":
+                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listread(
-                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead);
-                case "MySql.Data.MySqlClient":
+                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listread(
-                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listread(
-                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead);
-                    // case "oracle":  return orPostgre.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead);
-                    // case "db2":  return db2Postgre.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead);
-                    // case "other":  return othPostgre.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead); 
+                        connectionString, boardID, userID, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4561,17 +4602,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_moderatelist(connectionString, userId, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_moderatelist(connectionString, userId, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_moderatelist(connectionString, userId, boardId);
-                // case "oracle":  return orPostgre.Db.forum_moderatelist(connectionString, userId, boardId);
-                // case "db2":  return db2Postgre.Db.forum_moderatelist(connectionString, userId, boardId);
-                // case "other":  return othPostgre.Db.forum_moderatelist(connectionString, userId, boardId); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_moderatelist(connectionString, userId, boardId);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_moderatelist(connectionString, userId, boardId);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_moderatelist(connectionString, userId, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4586,17 +4627,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_moderators(connectionString, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_moderators(connectionString, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_moderators(connectionString, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_moderators(connectionString, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.forum_moderators(connectionString, useStyledNicks);
-                    // case "db2":  return db2Postgre.Db.forum_moderators(connectionString, useStyledNicks);
-                    // case "other":  return othPostgre.Db.forum_moderators(connectionString, useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_moderators(connectionString, useStyledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_moderators(connectionString, useStyledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_moderators(connectionString, useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4621,22 +4662,22 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.forum_resync(connectionString, boardId, forumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.forum_resync(connectionString, boardId, forumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.forum_resync(connectionString, boardId, forumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.forum_resync(connectionString, boardId, forumID);
                     break;
                     ;
-                    // case "oracle":   orPostgre.Db.forum_resync(connectionString, boardId, forumID); break;;
-                    // case "db2":   db2Postgre.Db.forum_resync(connectionString, boardId, forumID); break;
-                    // case "other":   othPostgre.Db.forum_resync(connectionString, boardId, forumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.forum_resync(connectionString, boardId, forumID); break;;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.forum_resync(connectionString, boardId, forumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.forum_resync(connectionString, boardId, forumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4671,7 +4712,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_save(
                         connectionString,
                         forumID,
@@ -4693,7 +4734,7 @@ namespace VZF.Data.Common
                         userId,
                         isUserForum,
                         canhavepersforums);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_save(
                         connectionString,
                         forumID,
@@ -4715,7 +4756,7 @@ namespace VZF.Data.Common
                         userId,
                         isUserForum,
                         canhavepersforums);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_save(
                         connectionString,
                         forumID,
@@ -4737,7 +4778,7 @@ namespace VZF.Data.Common
                         userId,
                         isUserForum,
                         canhavepersforums);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_save(
                         connectionString,
                         forumID,
@@ -4759,10 +4800,10 @@ namespace VZF.Data.Common
                         userId,
                         isUserForum,
                         canhavepersforums);
-                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
-                // case "oracle":  return orPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
-                // case "db2":  return db2Postgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
-                // case "other":  return othPostgre.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_save(connectionString, forumID,categoryID,  parentID, name, description,  sortOrder,  locked, hidden,  isTest,  moderated, accessMaskID,  remoteURL, themeURL,imageURL,styles,dummy, userId,isUserForum, canhavepersforums);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4777,17 +4818,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                    // case "oracle":  return orPostgre.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                    // case "db2":  return db2Postgre.Db.forum_save_parentschecker(connectionString, forumID, parentID);
-                    // case "other":  return othPostgre.Db.forum_save_parentschecker(connectionString, forumID, parentID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_save_parentschecker(connectionString, forumID, parentID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_save_parentschecker(connectionString, forumID, parentID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_save_parentschecker(connectionString, forumID, parentID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4802,17 +4843,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_simplelist(connectionString, startID, limit);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_simplelist(connectionString, startID, limit);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_simplelist(connectionString, startID, limit);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_simplelist(connectionString, startID, limit);
-                    // case "oracle":  return orPostgre.Db.forum_simplelist(connectionString, startID, limit);
-                    // case "db2":  return db2Postgre.Db.forum_simplelist(connectionString, startID, limit);
-                    // case "other":  return othPostgre.Db.forum_simplelist(connectionString, startID, limit); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_simplelist(connectionString, startID, limit);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_simplelist(connectionString, startID, limit);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_simplelist(connectionString, startID, limit); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4827,17 +4868,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                // case "oracle":  return orPostgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                // case "db2":  return db2Postgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
-                // case "other":  return othPostgre.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumaccess_group(connectionString, groupID, userId, includeUserForums); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4851,17 +4892,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                // case "oracle":  return orPostgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                // case "db2":  return db2Postgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
-                // case "other":  return othPostgre.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumaccess_personalgroup(connectionString, groupID, userId, includeUserForums); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4877,17 +4918,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                // case "oracle":  return orPostgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                // case "db2":  return db2Postgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
-                // case "other":  return othPostgre.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumaccess_list(connectionString, forumID, userId, includeUserGroups); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4902,22 +4943,22 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID);
                     break;
                     ;
-                    // case "oracle":   orPostgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;;
-                    // case "db2":   db2Postgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
-                    // case "other":   othPostgre.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.forumaccess_save(connectionString, forumID, groupID, accessMaskID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -4986,17 +5027,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                    // case "oracle":  return orPostgre.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                    // case "db2":  return db2Postgre.Db.ForumListAll(connectionString, boardId, userId, startForumId);
-                    // case "other":  return othPostgre.Db.ForumListAll(connectionString, boardId, userId, startForumId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.ForumListAll(connectionString, boardId, userId, startForumId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.ForumListAll(connectionString, boardId, userId, startForumId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.ForumListAll(connectionString, boardId, userId, startForumId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5011,17 +5052,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                    // case "oracle":  return orPostgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
-                    // case "db2":  return db2Postgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
-                    // case "other":  return othPostgre.Db.forumpage_initdb(connectionString, out  errorStr,  debugging); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumpage_initdb(connectionString, out  errorStr,  debugging); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5036,17 +5077,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                    // case "oracle":  return orPostgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                    // case "db2":  return db2Postgre.Db.forumpage_validateversion(connectionString, mid, appVersion);
-                    // case "other":  return othPostgre.Db.forumpage_validateversion(connectionString, mid, appVersion); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumpage_validateversion(connectionString, mid, appVersion);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumpage_validateversion(connectionString, mid, appVersion); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5074,7 +5115,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.GetSearchResult(
                         connectionString,
                         toSearchWhat,
@@ -5089,7 +5130,7 @@ namespace VZF.Data.Common
                         useFullText,
                         searchDisplayName,
                         includeChildren);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.GetSearchResult(
                         connectionString,
                         toSearchWhat,
@@ -5104,7 +5145,7 @@ namespace VZF.Data.Common
                         useFullText,
                         searchDisplayName,
                         includeChildren);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.GetSearchResult(
                         connectionString,
                         toSearchWhat,
@@ -5119,7 +5160,7 @@ namespace VZF.Data.Common
                         useFullText,
                         searchDisplayName,
                         includeChildren);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.GetSearchResult(
                         connectionString,
                         toSearchWhat,
@@ -5134,9 +5175,9 @@ namespace VZF.Data.Common
                         useFullText,
                         searchDisplayName,
                         includeChildren);
-                    // case "oracle":  return orPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
-                    // case "db2":  return db2Postgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
-                    // case "other":  return othPostgre.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5151,22 +5192,22 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.group_delete(connectionString, groupID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.group_delete(connectionString, groupID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.group_delete(connectionString, groupID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.group_delete(connectionString, groupID);
                     break;
                     ;
-                    // case "oracle":   orPostgre.Db.group_delete(connectionString, groupID); break;;
-                    // case "db2":   db2Postgre.Db.group_delete(connectionString, groupID); break;
-                    // case "other":   othPostgre.Db.group_delete(connectionString, groupID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.group_delete(connectionString, groupID); break;;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.group_delete(connectionString, groupID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.group_delete(connectionString, groupID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5181,17 +5222,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_list(connectionString, boardId, groupID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_list(connectionString, boardId, groupID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_list(connectionString, boardId, groupID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_list(connectionString, boardId, groupID);
-                    // case "oracle":  return orPostgre.Db.group_list(connectionString, boardId, groupID);
-                    // case "db2":  return db2Postgre.Db.group_list(connectionString, boardId, groupID);
-                    // case "other":  return othPostgre.Db.group_list(connectionString, boardId, groupID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_list(connectionString, boardId, groupID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_list(connectionString, boardId, groupID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_list(connectionString, boardId, groupID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5206,17 +5247,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                // case "oracle":  return orPostgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                // case "db2":  return db2Postgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
-                // case "other":  return othPostgre.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_byuserlist(connectionString, boardId, groupID, userId, isUserGroup); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5231,21 +5272,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.group_medal_delete(connectionString, groupID, medalID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.group_medal_delete(connectionString, groupID, medalID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.group_medal_delete(connectionString, groupID, medalID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.group_medal_delete(connectionString, groupID, medalID);
                     break;
-                    // case "oracle":   orPostgre.Db.group_medal_delete(connectionString, groupID, medalID);break;
-                    // case "db2":   db2Postgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
-                    // case "other":   othPostgre.Db.group_medal_delete(connectionString, groupID, medalID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.group_medal_delete(connectionString, groupID, medalID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.group_medal_delete(connectionString, groupID, medalID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.group_medal_delete(connectionString, groupID, medalID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5260,17 +5301,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_medal_list(connectionString, groupID, medalID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_medal_list(connectionString, groupID, medalID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_medal_list(connectionString, groupID, medalID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_medal_list(connectionString, groupID, medalID);
-                    // case "oracle":  return orPostgre.Db.group_medal_list(connectionString, groupID, medalID);
-                    // case "db2":  return db2Postgre.Db.group_medal_list(connectionString, groupID, medalID);
-                    // case "other":  return othPostgre.Db.group_medal_list(connectionString, groupID, medalID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_medal_list(connectionString, groupID, medalID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_medal_list(connectionString, groupID, medalID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_medal_list(connectionString, groupID, medalID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5286,25 +5327,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.group_medal_save(
                         connectionString, groupID, medalID, message, hide, onlyRibbon, sortOrder);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.group_medal_save(
                         connectionString, groupID, medalID, message, hide, onlyRibbon, sortOrder);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.group_medal_save(
                         connectionString, groupID, medalID, message, hide, onlyRibbon, sortOrder);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.group_medal_save(
                         connectionString, groupID, medalID, message, hide, onlyRibbon, sortOrder);
                     break;
-                    // case "oracle":   orPostgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder);break;
-                    // case "db2":   db2Postgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
-                    // case "other":   othPostgre.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.group_medal_save(connectionString, groupID, medalID, message, hide, onlyRibbon,  sortOrder); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5319,17 +5360,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_member(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_member(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_member(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_member(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.group_member(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.group_member(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.group_member(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_member(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_member(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_member(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5344,17 +5385,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_rank_style(connectionString, boardID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_rank_style(connectionString, boardID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_rank_style(connectionString, boardID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_rank_style(connectionString, boardID);
-                    // case "oracle":  return orPostgre.Db.group_rank_style(connectionString, boardID);
-                    // case "db2":  return db2Postgre.Db.group_rank_style(connectionString, boardID);
-                    // case "other":  return othPostgre.Db.group_rank_style(connectionString, boardID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_rank_style(connectionString, boardID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_rank_style(connectionString, boardID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_rank_style(connectionString, boardID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
                     break;
@@ -5394,7 +5435,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.group_save(
                         connectionString,
                         groupId,
@@ -5420,7 +5461,7 @@ namespace VZF.Data.Common
                         personalForumsNumber,
                         personalAccessMasksNumber,
                         personalGroupsNumber);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.group_save(
                         connectionString,
                         groupId,
@@ -5446,7 +5487,7 @@ namespace VZF.Data.Common
                         personalForumsNumber,
                         personalAccessMasksNumber,
                         personalGroupsNumber);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.group_save(
                         connectionString,
                         groupId,
@@ -5472,7 +5513,7 @@ namespace VZF.Data.Common
                         personalForumsNumber,
                         personalAccessMasksNumber,
                         personalGroupsNumber);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.group_save(
                         connectionString,
                         groupId,
@@ -5498,9 +5539,9 @@ namespace VZF.Data.Common
                         personalForumsNumber,
                         personalAccessMasksNumber,
                         personalGroupsNumber);
-                // case "oracle":  return orPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
-                // case "db2":  return db2Postgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
-                // case "other":  return othPostgre.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden, accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_save(connectionString, groupID, boardId, name, isAdmin, isGuest, isStart, isModerator, isHidden,accessMaskID, pmLimit, style, sortOrder,description,usrSigChars,usrSigBBCodes,usrSigHTMLTags,usrAlbums,usrAlbumImages,userId,isUserGroup,personalForumsNumber,personalAccessMasksNumber,personalGroupsNumber); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5523,23 +5564,23 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.mail_create(
                         connectionString, from, fromName, to, toName, subject, body, bodyHtml);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.mail_create(
                         connectionString, from, fromName, to, toName, subject, body, bodyHtml);
                     break;
-                    // case "oracle":   orPostgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml);break;
-                    // case "db2":   db2Postgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
-                    // case "other":   othPostgre.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.mail_create(connectionString, from, fromName, to, toName, subject, body, bodyHtml); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5562,25 +5603,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.mail_createwatch(
                         connectionString, topicID, from, fromName, subject, body, bodyHtml, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.mail_createwatch(
                         connectionString, topicID, from, fromName, subject, body, bodyHtml, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.mail_createwatch(
                         connectionString, topicID, from, fromName, subject, body, bodyHtml, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.mail_createwatch(
                         connectionString, topicID, from, fromName, subject, body, bodyHtml, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId);break;
-                    // case "db2":   db2_mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
-                    // case "other":   othPostgre.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId);break;
+                    // case CommonSqlDbAccess.Db2:   db2_mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.mail_createwatch(connectionString,  topicID, from, fromName, subject, body, bodyHtml, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5595,21 +5636,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.mail_delete(connectionString, mailID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.mail_delete(connectionString, mailID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.mail_delete(connectionString, mailID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.mail_delete(connectionString, mailID);
                     break;
-                    // case "oracle":   orPostgre.Db.mail_delete(connectionString, mailID);break;
-                    // case "db2":   db2_mail_delete(connectionString, mailID); break;
-                    // case "other":   othPostgre.Db.mail_delete(connectionString, mailID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.mail_delete(connectionString, mailID);break;
+                    // case CommonSqlDbAccess.Db2:   db2_mail_delete(connectionString, mailID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.mail_delete(connectionString, mailID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5624,17 +5665,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.MailList(connectionString, processId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.MailList(connectionString, processId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.MailList(connectionString, processId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.MailList(connectionString, processId);
-                    // case "oracle":  return orPostgre.Db.MailList(connectionString, processId);
-                    // case "db2":  return db2Postgre.Db.MailList(connectionString, processId);
-                    // case "other":  return othPostgre.Db.MailList(connectionString, processId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.MailList(connectionString, processId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.MailList(connectionString, processId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.MailList(connectionString, processId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5670,21 +5711,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.medal_delete(connectionString, boardId, medalID, category);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.medal_delete(connectionString, boardId, medalID, category);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.medal_delete(connectionString, boardId, medalID, category);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.medal_delete(connectionString, boardId, medalID, category);
                     break;
-                    // case "oracle":   orPostgre.Db.medal_delete(connectionString, boardId,  medalID, category);break;
-                    // case "db2":   db2Postgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
-                    // case "other":   othPostgre.Db.medal_delete(connectionString, boardId,  medalID, category); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.medal_delete(connectionString, boardId,  medalID, category);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.medal_delete(connectionString, boardId,  medalID, category); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.medal_delete(connectionString, boardId,  medalID, category); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5704,17 +5745,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.medal_list(connectionString, null, medalID, null);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.medal_list(connectionString, null, medalID, null);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.medal_list(connectionString, null, medalID, null);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.medal_list(connectionString, null, medalID, null);
-                    // case "oracle":  return orPostgre.Db.medal_list(connectionString, null, medalID, null);
-                    // case "db2":  return db2Postgre.Db.medal_list(connectionString, null, medalID, null);
-                    // case "other":  return othPostgre.Db.medal_list(connectionString, null, medalID, null); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.medal_list(connectionString, null, medalID, null);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.medal_list(connectionString, null, medalID, null);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.medal_list(connectionString, null, medalID, null); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5737,17 +5778,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.medal_list(connectionString, boardId, null, category);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.medal_list(connectionString, boardId, null, category);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.medal_list(connectionString, boardId, null, category);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.medal_list(connectionString, boardId, null, category);
-                    // case "oracle":  return orPostgre.Db.medal_list(connectionString, boardId, null, category);
-                    // case "db2":  return db2Postgre.Db.medal_list(connectionString, boardId, null, category);
-                    // case "other":  return othPostgre.Db.medal_list(connectionString, boardId, null, category); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.medal_list(connectionString, boardId, null, category);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.medal_list(connectionString, boardId, null, category);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.medal_list(connectionString, boardId, null, category); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5772,17 +5813,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.medal_listusers(connectionString, medalID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.medal_listusers(connectionString, medalID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.medal_listusers(connectionString, medalID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.medal_listusers(connectionString, medalID);
-                    // case "oracle":  return orPostgre.Db.medal_listusers(connectionString, medalID);
-                    // case "db2":  return db2Postgre.Db.medal_listusers(connectionString, medalID);
-                    // case "other":  return othPostgre.Db.medal_listusers(connectionString, medalID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.medal_listusers(connectionString, medalID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.medal_listusers(connectionString, medalID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.medal_listusers(connectionString, medalID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5798,21 +5839,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.medal_resort(connectionString, boardId, medalID, move);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.medal_resort(connectionString, boardId, medalID, move);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.medal_resort(connectionString, boardId, medalID, move);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.medal_resort(connectionString, boardId, medalID, move);
                     break;
-                    // case "oracle":   orPostgre.Db.medal_resort(connectionString, boardId, medalID, move);break;
-                    // case "db2":   db2Postgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
-                    // case "other":   othPostgre.Db.medal_resort(connectionString, boardId, medalID, move); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.medal_resort(connectionString, boardId, medalID, move);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.medal_resort(connectionString, boardId, medalID, move); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.medal_resort(connectionString, boardId, medalID, move); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5844,7 +5885,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.medal_save(
                         connectionString,
                         boardId,
@@ -5863,7 +5904,7 @@ namespace VZF.Data.Common
                         smallRibbonHeight,
                         sortOrder,
                         flags);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.medal_save(
                         connectionString,
                         boardId,
@@ -5882,7 +5923,7 @@ namespace VZF.Data.Common
                         smallRibbonHeight,
                         sortOrder,
                         flags);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.medal_save(
                         connectionString,
                         boardId,
@@ -5901,7 +5942,7 @@ namespace VZF.Data.Common
                         smallRibbonHeight,
                         sortOrder,
                         flags);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.medal_save(
                         connectionString,
                         boardId,
@@ -5920,9 +5961,9 @@ namespace VZF.Data.Common
                         smallRibbonHeight,
                         sortOrder,
                         flags);
-                    // case "oracle":  return orPostgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
-                    // case "db2":  return db2Postgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
-                    // case "other":  return othPostgre.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.medal_save(connectionString, boardId, medalID, name, description, message, category, medalURL, ribbonURL, smallMedalURL, smallRibbonURL, smallMedalWidth, smallMedalHeight, smallRibbonWidth, smallRibbonHeight, sortOrder, flags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5938,19 +5979,19 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_AddThanks(connectionString, fromUserID, messageID, useDisplayName);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_AddThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_AddThanks(connectionString, fromUserID, messageID, useDisplayName);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_AddThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                    // case "oracle":  return or_message_AddThanks(connectionString, fromUserID, messageID,useDisplayName,useDisplayName);
-                    // case "db2":  return db2Postgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
-                    // case "other":  return othPostgre.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName); 
+                    // case CommonSqlDbAccess.Oracle:  return or_message_AddThanks(connectionString, fromUserID, messageID,useDisplayName,useDisplayName);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_AddThanks(connectionString, fromUserID, messageID,useDisplayName); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -5966,21 +6007,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_approve(connectionString, messageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_approve(connectionString, messageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_approve(connectionString, messageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_approve(connectionString, messageID);
                     break;
-                    // case "oracle":   orPostgre.Db.message_approve(connectionString, messageID);break;
-                    // case "db2":   db2Postgre.Db.message_approve(connectionString, messageID); break;
-                    // case "other":   othPostgre.Db.message_approve(connectionString, messageID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_approve(connectionString, messageID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_approve(connectionString, messageID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_approve(connectionString, messageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6013,7 +6054,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_delete(
                         connectionString,
                         messageID,
@@ -6023,7 +6064,7 @@ namespace VZF.Data.Common
                         DeleteLinked,
                         eraseMessage);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_delete(
                         connectionString,
                         messageID,
@@ -6033,7 +6074,7 @@ namespace VZF.Data.Common
                         DeleteLinked,
                         eraseMessage);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_delete(
                         connectionString,
                         messageID,
@@ -6043,7 +6084,7 @@ namespace VZF.Data.Common
                         DeleteLinked,
                         eraseMessage);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_delete(
                         connectionString,
                         messageID,
@@ -6053,9 +6094,9 @@ namespace VZF.Data.Common
                         DeleteLinked,
                         eraseMessage);
                     break;
-                    // case "oracle":   orPostgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage);break;
-                    // case "db2":   db2Postgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
-                    // case "other":   othPostgre.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_delete(connectionString, messageID, isModeratorChanged, deleteReason, isDeleteAction,DeleteLinked,eraseMessage); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6071,21 +6112,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_findunread(
                         connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_findunread(
                         connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_findunread(
                         connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_findunread(
                         connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                    // case "oracle":  return orPostgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                    // case "db2":  return db2Postgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
-                    // case "other":  return othPostgre.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_findunread(connectionString, topicID, messageId, lastRead, showDeleted, authorUserID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6101,17 +6142,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_getRepliesList(connectionString, messageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_getRepliesList(connectionString, messageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_getRepliesList(connectionString, messageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_getRepliesList(connectionString, messageID);
-                    // case "oracle":  return orPostgre.Db.message_getRepliesList(connectionString, messageID);
-                    // case "db2":  return db2Postgre.Db.message_getRepliesList(connectionString, messageID);
-                    // case "other":  return othPostgre.Db.message_getRepliesList(connectionString, messageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_getRepliesList(connectionString, messageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_getRepliesList(connectionString, messageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_getRepliesList(connectionString, messageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6127,17 +6168,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_GetTextByIds(connectionString, messageIDs);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_GetTextByIds(connectionString, messageIDs);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_GetTextByIds(connectionString, messageIDs);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_GetTextByIds(connectionString, messageIDs);
-                    // case "oracle":  return orPostgre.Db.message_GetTextByIds(connectionString, messageIDs);
-                    // case "db2":  return db2Postgre.Db.message_GetTextByIds(connectionString, messageIDs);
-                    // case "other":  return othPostgre.Db.message_GetTextByIds(connectionString, messageIDs); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_GetTextByIds(connectionString, messageIDs);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_GetTextByIds(connectionString, messageIDs);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_GetTextByIds(connectionString, messageIDs); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6153,17 +6194,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_GetThanks(connectionString, messageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_GetThanks(connectionString, messageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_GetThanks(connectionString, messageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_GetThanks(connectionString, messageID);
-                    // case "oracle":  return orPostgre.Db.message_GetThanks(connectionString, messageID);
-                    // case "db2":  return db2Postgre.Db.message_GetThanks(connectionString, messageID);
-                    // case "other":  return othPostgre.Db.message_GetThanks(connectionString, messageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_GetThanks(connectionString, messageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_GetThanks(connectionString, messageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_GetThanks(connectionString, messageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6179,17 +6220,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_list(connectionString, messageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_list(connectionString, messageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_list(connectionString, messageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_list(connectionString, messageID);
-                    // case "oracle":  return orPostgre.Db.message_list(connectionString, messageID);
-                    // case "db2":  return db2Postgre.Db.message_list(connectionString, messageID);
-                    // case "other":  return othPostgre.Db.message_list(connectionString, messageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_list(connectionString, messageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_list(connectionString, messageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_list(connectionString, messageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6205,17 +6246,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_listreported(connectionString, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_listreported(connectionString, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_listreported(connectionString, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_listreported(connectionString, forumID);
-                    // case "oracle":  return orPostgre.Db.message_listreported(connectionString, forumID);
-                    // case "db2":  return db2Postgre.Db.message_listreported(connectionString, forumID);
-                    // case "other":  return othPostgre.Db.message_listreported(connectionString, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_listreported(connectionString, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_listreported(connectionString, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_listreported(connectionString, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6242,17 +6283,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_listreporters(connectionString, messageID, userID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_listreporters(connectionString, messageID, userID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_listreporters(connectionString, messageID, userID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_listreporters(connectionString, messageID, userID);
-                    // case "oracle":  return orPostgre.Db.message_listreporters(connectionString, messageID, userID);
-                    // case "db2":  return db2Postgre.Db.message_listreporters(connectionString, messageID, userID);
-                    // case "other":  return othPostgre.Db.message_listreporters(connectionString, messageID, userID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_listreporters(connectionString, messageID, userID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_listreporters(connectionString, messageID, userID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_listreporters(connectionString, messageID, userID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6267,21 +6308,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_move(connectionString, messageID, moveToTopic, moveAll);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_move(connectionString, messageID, moveToTopic, moveAll);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_move(connectionString, messageID, moveToTopic, moveAll);
                     break;
-                    // case "oracle":   orPostgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll);break;
-                    // case "db2":   db2Postgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
-                    // case "other":   othPostgre.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_move(connectionString, messageID, moveToTopic, moveAll);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_move(connectionString, messageID, moveToTopic, moveAll); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6296,21 +6337,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_RemoveThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_RemoveThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_RemoveThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_RemoveThanks(
                         connectionString, fromUserID, messageID, useDisplayName);
-                    // case "oracle":  return orPostgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
-                    // case "db2":  return db2Postgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
-                    // case "other":  return othPostgre.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_RemoveThanks(connectionString, fromUserID, messageID,useDisplayName); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6327,23 +6368,23 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_report(
                         connectionString, messageID, userId, reportedDateTime, reportText);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_report(
                         connectionString, messageID, userId, reportedDateTime, reportText);
                     break;
-                    // case "oracle":   orPostgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText);break;
-                    // case "db2":   db2Postgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
-                    // case "other":   othPostgre.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_report(connectionString, messageID, userId, reportedDateTime, reportText); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6358,21 +6399,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_reportcopyover(connectionString, messageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_reportcopyover(connectionString, messageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_reportcopyover(connectionString, messageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_reportcopyover(connectionString, messageID);
                     break;
-                    // case "oracle":   orPostgre.Db.message_reportcopyover(connectionString, messageID);break;
-                    // case "db2":   db2Postgre.Db.message_reportcopyover(connectionString, messageID); break;
-                    // case "other":   othPostgre.Db.message_reportcopyover(connectionString, messageID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_reportcopyover(connectionString, messageID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_reportcopyover(connectionString, messageID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_reportcopyover(connectionString, messageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6387,21 +6428,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);break;
-                    // case "db2":   db2Postgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
-                    // case "other":   othPostgre.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_reportresolve(connectionString, messageFlag, messageID, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_reportresolve(connectionString, messageFlag, messageID, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6426,21 +6467,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_save(
                         connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_save(
                         connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_save(
                         connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_save(
                         connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
-                    // case "oracle":  return orPostgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
-                    // case "db2":  return db2Postgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
-                    // case "other":  return othPostgre.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6456,17 +6497,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_secdata(connectionString, MessageID, pageUserId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_secdata(connectionString, MessageID, pageUserId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_secdata(connectionString, MessageID, pageUserId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_secdata(connectionString, MessageID, pageUserId);
-                    // case "oracle":  return orPostgre.Db.message_secdata(connectionString, MessageID, pageUserId);
-                    // case "db2":  return db2Postgre.Db.message_secdata(connectionString, MessageID, pageUserId);
-                    // case "other":  return othPostgre.Db.message_secdata(connectionString, MessageID, pageUserId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_secdata(connectionString, MessageID, pageUserId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_secdata(connectionString, MessageID, pageUserId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_secdata(connectionString, MessageID, pageUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6482,17 +6523,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_simplelist(connectionString, StartID, Limit);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_simplelist(connectionString, StartID, Limit);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_simplelist(connectionString, StartID, Limit);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_simplelist(connectionString, StartID, Limit);
-                    // case "oracle":  return orPostgre.Db.message_simplelist(connectionString, StartID, Limit);
-                    // case "db2":  return db2Postgre.Db.message_simplelist(connectionString, StartID, Limit);
-                    // case "other":  return othPostgre.Db.message_simplelist(connectionString, StartID, Limit); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_simplelist(connectionString, StartID, Limit); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6508,17 +6549,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_ThanksNumber(connectionString, messageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_ThanksNumber(connectionString, messageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_ThanksNumber(connectionString, messageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_ThanksNumber(connectionString, messageID);
-                    // case "oracle":  return orPostgre.Db.message_ThanksNumber(connectionString, messageID);
-                    // case "db2":  return db2Postgre.Db.message_ThanksNumber(connectionString, messageID);
-                    // case "other":  return othPostgre.Db.message_ThanksNumber(connectionString, messageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_ThanksNumber(connectionString, messageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_ThanksNumber(connectionString, messageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_ThanksNumber(connectionString, messageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6534,17 +6575,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_unapproved(connectionString, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_unapproved(connectionString, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_unapproved(connectionString, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_unapproved(connectionString, forumID);
-                    // case "oracle":  return orPostgre.Db.message_unapproved(connectionString, forumID);
-                    // case "db2":  return db2Postgre.Db.message_unapproved(connectionString, forumID);
-                    // case "other":  return othPostgre.Db.message_unapproved(connectionString, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_unapproved(connectionString, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_unapproved(connectionString, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_unapproved(connectionString, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6575,7 +6616,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_update(
                         connectionString,
                         messageID,
@@ -6593,7 +6634,7 @@ namespace VZF.Data.Common
                         editedBy,
                         tags);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_update(
                         connectionString,
                         messageID,
@@ -6611,7 +6652,7 @@ namespace VZF.Data.Common
                         editedBy,
                         tags);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_update(
                         connectionString,
                         messageID,
@@ -6629,7 +6670,7 @@ namespace VZF.Data.Common
                         editedBy,
                         tags);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_update(
                         connectionString,
                         messageID,
@@ -6647,9 +6688,9 @@ namespace VZF.Data.Common
                         editedBy,
                         tags);
                     break;
-                    // case "oracle":   orPostgre.Db.message_update(connectionString, messageID, priority, message, description, status,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags);break;
-                    // case "db2":   db2Postgre.Db.message_update(connectionString, messageID, priority, message, description, status,styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
-                    // case "other":   othPostgre.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_update(connectionString, messageID, priority, message, description, status,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.message_update(connectionString, messageID, priority, message, description, status,styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.message_update(connectionString, messageID, priority, message, description, status, styles,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6664,17 +6705,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                    // case "oracle":  return orPostgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                    // case "db2":  return db2Postgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
-                    // case "other":  return othPostgre.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.MessageGetAllThanks(connectionString, messageIdsSeparatedWithColon); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6690,17 +6731,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                    // case "oracle":  return orPostgre.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                    // case "db2":  return db2Postgre.Db.messagehistory_list(connectionString, messageID, daysToClean);
-                    // case "other":  return othPostgre.Db.messagehistory_list(connectionString, messageID, daysToClean); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.messagehistory_list(connectionString, messageID, daysToClean);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.messagehistory_list(connectionString, messageID, daysToClean);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.messagehistory_list(connectionString, messageID, daysToClean); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6715,17 +6756,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.MessageList(connectionString, messageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.MessageList(connectionString, messageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.MessageList(connectionString, messageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.MessageList(connectionString, messageID);
-                    // case "oracle":  return orPostgre.Db.MessageList(connectionString, messageID);
-                    // case "db2":  return db2Postgre.Db.MessageList(connectionString, messageID);
-                    // case "other":  return othPostgre.Db.MessageList(connectionString, messageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.MessageList(connectionString, messageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.MessageList(connectionString, messageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.MessageList(connectionString, messageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6741,17 +6782,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.moderators_team_list(connectionString, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.moderators_team_list(connectionString, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.moderators_team_list(connectionString, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.moderators_team_list(connectionString, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.moderators_team_list( connectionString,  useStyledNicks);
-                    // case "db2":  return db2Postgre.Db.moderators_team_list( connectionString,  useStyledNicks);
-                    // case "other":  return othPostgre.Db.moderators_team_list( connectionString,  useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.moderators_team_list( connectionString,  useStyledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.moderators_team_list( connectionString,  useStyledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.moderators_team_list( connectionString,  useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6766,21 +6807,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.Readtopic_AddOrUpdate(connectionString, userID, topicID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.Readtopic_AddOrUpdate(connectionString, userID, topicID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.Readtopic_AddOrUpdate(connectionString, userID, topicID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.Readtopic_AddOrUpdate(connectionString, userID, topicID);
                     break;
-                    // case "oracle":   orPostgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID);break;
-                    // case "db2":   db2Postgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
-                    // case "other":   othPostgre.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.Readtopic_AddOrUpdate( connectionString,  userID,   topicID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6795,13 +6836,13 @@ namespace VZF.Data.Common
              
              switch (dataEngine)
              {
-                 case "System.Data.SqlClient": MsSql.Db.Readtopic_delete(connectionString, trackingID); break;
-                 case "Npgsql": Postgre.Db.Readtopic_delete(connectionString, trackingID); break;
-                 case "MySql.Data.MySqlClient":  MySqlDb.Db.Readtopic_delete(connectionString, trackingID); break;
-                 case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.Readtopic_delete(connectionString, trackingID); break;
-                 // case "oracle":   orPostgre.Db.Readtopic_delete(connectionString, trackingID);break;
-                 // case "db2":   db2Postgre.Db.Readtopic_delete(connectionString, trackingID); break;
-                 // case "other":   othPostgre.Db.Readtopic_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.MsSql: MsSql.Db.Readtopic_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.Npgsql: Postgre.Db.Readtopic_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.MySql:  MySqlDb.Db.Readtopic_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.Firebird:  FirebirdDb.Db.Readtopic_delete(connectionString, trackingID); break;
+                 // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.Readtopic_delete(connectionString, trackingID);break;
+                 // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.Readtopic_delete(connectionString, trackingID); break;
+                 // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.Readtopic_delete(connectionString, trackingID); break;
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
                      break;
@@ -6836,17 +6877,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.User_LastRead(connectionString, userID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.User_LastRead(connectionString, userID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.User_LastRead(connectionString, userID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.User_LastRead(connectionString, userID);
-                    // case "oracle":  return orPostgre.Db.User_LastRead( connectionString,  userID);
-                    // case "db2":  return db2Postgre.Db.User_LastRead( connectionString,  userID);
-                    // case "other":  return othPostgre.Db.User_LastRead( connectionString,  userID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.User_LastRead( connectionString,  userID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.User_LastRead( connectionString,  userID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.User_LastRead( connectionString,  userID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6861,17 +6902,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Readtopic_lastread(connectionString, userID, topicID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Readtopic_lastread(connectionString, userID, topicID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Readtopic_lastread(connectionString, userID, topicID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Readtopic_lastread(connectionString, userID, topicID);
-                    // case "oracle":  return orPostgre.Db.Readtopic_lastread(connectionString, userID, topicID);
-                    // case "db2":  return db2Postgre.Db.Readtopic_lastread(connectionString, userID, topicID);
-                    // case "other":  return othPostgre.Db.Readtopic_lastread(connectionString, userID, topicID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Readtopic_lastread(connectionString, userID, topicID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Readtopic_lastread(connectionString, userID, topicID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Readtopic_lastread(connectionString, userID, topicID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6886,21 +6927,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.ReadForum_AddOrUpdate(connectionString, userID, forumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.ReadForum_AddOrUpdate(connectionString, userID, forumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.ReadForum_AddOrUpdate(connectionString, userID, forumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.ReadForum_AddOrUpdate(connectionString, userID, forumID);
                     break;
-                    // case "oracle":   orPostgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID);break;
-                    // case "db2":   db2Postgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
-                    // case "other":   othPostgre.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.ReadForum_AddOrUpdate(connectionString,userID, forumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6915,13 +6956,13 @@ namespace VZF.Data.Common
              
              switch (dataEngine)
              {
-                 case "System.Data.SqlClient": MsSql.Db.ReadForum_delete(connectionString, trackingID); break;
-                 case "Npgsql": Postgre.Db.ReadForum_delete(connectionString, trackingID); break;
-                 case "MySql.Data.MySqlClient":  MySqlDb.Db.ReadForum_delete(connectionString, trackingID); break;
-                 case "FirebirdSql.Data.FirebirdClient":  FirebirdDb.Db.ReadForum_delete(connectionString, trackingID); break;
-                 // case "oracle":   orPostgre.Db.ReadForum_delete(connectionString, trackingID);break;
-                 // case "db2":   db2Postgre.Db.ReadForum_delete(connectionString, trackingID); break;
-                 // case "other":   othPostgre.Db.ReadForum_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.MsSql: MsSql.Db.ReadForum_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.Npgsql: Postgre.Db.ReadForum_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.MySql:  MySqlDb.Db.ReadForum_delete(connectionString, trackingID); break;
+                 case CommonSqlDbAccess.Firebird:  FirebirdDb.Db.ReadForum_delete(connectionString, trackingID); break;
+                 // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.ReadForum_delete(connectionString, trackingID);break;
+                 // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.ReadForum_delete(connectionString, trackingID); break;
+                 // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.ReadForum_delete(connectionString, trackingID); break;
                  default:
                      throw new ArgumentOutOfRangeException(dataEngine);
                      break;
@@ -6937,17 +6978,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.ReadForum_lastread(connectionString, userID, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.ReadForum_lastread(connectionString, userID, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.ReadForum_lastread(connectionString, userID, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.ReadForum_lastread(connectionString, userID, forumID);
-                    // case "oracle":  return orPostgre.Db.ReadForum_lastread(connectionString,userID, forumID);
-                    // case "db2":  return db2Postgre.Db.ReadForum_lastread(connectionString,userID, forumID);
-                    // case "other":  return othPostgre.Db.ReadForum_lastread(connectionString,userID, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.ReadForum_lastread(connectionString,userID, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.ReadForum_lastread(connectionString,userID, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.ReadForum_lastread(connectionString,userID, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -6963,21 +7004,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntpforum_delete(connectionString, nntpForumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntpforum_delete(connectionString, nntpForumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntpforum_delete(connectionString, nntpForumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntpforum_delete(connectionString, nntpForumID);
                     break;
-                    // case "oracle":   orPostgre.Db.nntpforum_delete(connectionString, nntpForumID);break;
-                    // case "db2":   db2Postgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
-                    // case "other":   othPostgre.Db.nntpforum_delete(connectionString, nntpForumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntpforum_delete(connectionString, nntpForumID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntpforum_delete(connectionString, nntpForumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntpforum_delete(connectionString, nntpForumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6993,17 +7034,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "oracle":  return orPostgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "db2":  return db2Postgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "other":  return othPostgre.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.nntpforum_list(connectionString, boardId, minutes, nntpForumID, active); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7026,25 +7067,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntpforum_save(
                         connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntpforum_save(
                         connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntpforum_save(
                         connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntpforum_save(
                         connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);
                     break;
-                    // case "oracle":   orPostgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);break;
-                    // case "db2":   db2Postgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
-                    // case "other":   othPostgre.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntpforum_save(connectionString, nntpForumID, nntpServerID, groupName, forumID, active, cutoffdate); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7059,21 +7100,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);break;
-                    // case "db2":   db2Postgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
-                    // case "other":   othPostgre.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntpforum_update(connectionString, nntpForumID, lastMessageNo, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7089,17 +7130,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "oracle":  return orPostgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "db2":  return db2Postgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
-                    // case "other":  return othPostgre.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.NntpForumList(connectionString, boardId, minutes, nntpForumID, active); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7115,21 +7156,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntpserver_delete(connectionString, nntpServerID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntpserver_delete(connectionString, nntpServerID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntpserver_delete(connectionString, nntpServerID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntpserver_delete(connectionString, nntpServerID);
                     break;
-                    // case "oracle":   orPostgre.Db.nntpserver_delete(connectionString, nntpServerID);break;
-                    // case "db2":   db2Postgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
-                    // case "other":   othPostgre.Db.nntpserver_delete(connectionString, nntpServerID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntpserver_delete(connectionString, nntpServerID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntpserver_delete(connectionString, nntpServerID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntpserver_delete(connectionString, nntpServerID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7144,17 +7185,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.nntpserver_list(connectionString, boardId, nntpServerID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.nntpserver_list(connectionString, boardId, nntpServerID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.nntpserver_list(connectionString, boardId, nntpServerID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.nntpserver_list(connectionString, boardId, nntpServerID);
-                    // case "oracle":  return orPostgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
-                    // case "db2":  return db2Postgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
-                    // case "other":  return othPostgre.Db.nntpserver_list(connectionString,  boardId, nntpServerID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.nntpserver_list(connectionString,  boardId, nntpServerID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.nntpserver_list(connectionString,  boardId, nntpServerID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7178,25 +7219,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntpserver_save(
                         connectionString, nntpServerID, boardId, name, address, port, userName, userPass);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntpserver_save(
                         connectionString, nntpServerID, boardId, name, address, port, userName, userPass);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntpserver_save(
                         connectionString, nntpServerID, boardId, name, address, port, userName, userPass);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntpserver_save(
                         connectionString, nntpServerID, boardId, name, address, port, userName, userPass);
                     break;
-                    // case "oracle":   orPostgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass);break;
-                    // case "db2":   db2Postgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
-                    // case "other":   othPostgre.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntpserver_save(connectionString, nntpServerID, boardId, name, address, port, userName, userPass); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7211,17 +7252,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.nntptopic_list(connectionString, thread);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.nntptopic_list(connectionString, thread);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.nntptopic_list(connectionString, thread);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.nntptopic_list(connectionString, thread);
-                    // case "oracle":  return orPostgre.Db.nntptopic_list(connectionString, thread);
-                    // case "db2":  return db2Postgre.Db.nntptopic_list(connectionString, thread);
-                    // case "other":  return othPostgre.Db.nntptopic_list(connectionString, thread); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.nntptopic_list(connectionString, thread);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.nntptopic_list(connectionString, thread);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.nntptopic_list(connectionString, thread); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7247,7 +7288,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.nntptopic_savemessage(
                         connectionString,
                         nntpForumID,
@@ -7260,7 +7301,7 @@ namespace VZF.Data.Common
                         externalMessageId,
                         referenceMessageId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.nntptopic_savemessage(
                         connectionString,
                         nntpForumID,
@@ -7273,7 +7314,7 @@ namespace VZF.Data.Common
                         externalMessageId,
                         referenceMessageId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.nntptopic_savemessage(
                         connectionString,
                         nntpForumID,
@@ -7286,7 +7327,7 @@ namespace VZF.Data.Common
                         externalMessageId,
                         referenceMessageId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.nntptopic_savemessage(
                         connectionString,
                         nntpForumID,
@@ -7299,9 +7340,9 @@ namespace VZF.Data.Common
                         externalMessageId,
                         referenceMessageId);
                     break;
-                    // case "oracle":   orPostgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId);break;
-                    // case "db2":   db2Postgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
-                    // case "other":   othPostgre.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.nntptopic_savemessage(connectionString, nntpForumID,topic,body,userId, userName, ip, posted, externalMessageId,referenceMessageId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7332,7 +7373,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pageload(
                         connectionString,
                         sessionId,
@@ -7350,7 +7391,7 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pageload(
                         connectionString,
                         sessionId,
@@ -7368,7 +7409,7 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pageload(
                         connectionString,
                         sessionId,
@@ -7386,7 +7427,7 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pageload(
                         connectionString,
                         sessionId,
@@ -7404,9 +7445,9 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack);
-                    // case "oracle":  return orPostgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
-                    // case "db2":  return db2Postgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
-                    // case "other":  return othPostgre.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7422,21 +7463,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pmessage_archive(connectionString, userPMessageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pmessage_archive(connectionString, userPMessageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pmessage_archive(connectionString, userPMessageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pmessage_archive(connectionString, userPMessageID);
                     break;
-                    // case "oracle":   orPostgre.Db.pmessage_archive(connectionString, userPMessageID);break;
-                    // case "db2":   db2Postgre.Db.pmessage_archive(connectionString, userPMessageID); break;
-                    // case "other":   othPostgre.Db.pmessage_archive(connectionString, userPMessageID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pmessage_archive(connectionString, userPMessageID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pmessage_archive(connectionString, userPMessageID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pmessage_archive(connectionString, userPMessageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7462,21 +7503,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);
                     break;
-                    // case "oracle":   orPostgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);break;
-                    // case "db2":   db2Postgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
-                    // case "other":   othPostgre.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pmessage_delete(connectionString, userPMessageID, fromOutbox); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7491,17 +7532,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pmessage_info(connectionString);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pmessage_info(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pmessage_info(connectionString);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pmessage_info(connectionString);
-                    // case "oracle":  return orPostgre.Db.pmessage_info(connectionString);
-                    // case "db2":  return db2Postgre.Db.pmessage_info(connectionString);
-                    // case "other":  return othPostgre.Db.pmessage_info(connectionString); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pmessage_info(connectionString);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pmessage_info(connectionString);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pmessage_info(connectionString); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7534,17 +7575,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                    // case "oracle":  return orPostgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                    // case "db2":  return db2Postgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
-                    // case "other":  return othPostgre.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pmessage_list(connectionString, toUserID, fromUserID, userPMessageID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7560,21 +7601,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pmessage_markread(connectionString, userPMessageID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pmessage_markread(connectionString, userPMessageID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pmessage_markread(connectionString, userPMessageID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pmessage_markread(connectionString, userPMessageID);
                     break;
-                    // case "oracle":   orPostgre.Db.pmessage_markread(connectionString, userPMessageID);break;
-                    // case "db2":   db2Postgre.Db.pmessage_markread(connectionString, userPMessageID); break;
-                    // case "other":   othPostgre.Db.pmessage_markread(connectionString, userPMessageID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pmessage_markread(connectionString, userPMessageID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pmessage_markread(connectionString, userPMessageID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pmessage_markread(connectionString, userPMessageID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7589,21 +7630,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pmessage_prune(connectionString, daysRead, daysUnread);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pmessage_prune(connectionString, daysRead, daysUnread);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pmessage_prune(connectionString, daysRead, daysUnread);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pmessage_prune(connectionString, daysRead, daysUnread);
                     break;
-                    // case "oracle":   orPostgre.Db.pmessage_prune(connectionString, daysRead, daysUnread);break;
-                    // case "db2":   db2Postgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
-                    // case "other":   othPostgre.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pmessage_prune(connectionString, daysRead, daysUnread);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pmessage_prune(connectionString, daysRead, daysUnread); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7619,25 +7660,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pmessage_save(
                         connectionString, fromUserID, toUserID, subject, body, Flags, replyTo);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pmessage_save(
                         connectionString, fromUserID, toUserID, subject, body, Flags, replyTo);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pmessage_save(
                         connectionString, fromUserID, toUserID, subject, body, Flags, replyTo);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pmessage_save(
                         connectionString, fromUserID, toUserID, subject, body, Flags, replyTo);
                     break;
-                    // case "oracle":   orPostgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo);break;
-                    // case "db2":   db2Postgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
-                    // case "other":   othPostgre.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pmessage_save(connectionString, fromUserID, toUserID, subject, body, Flags,replyTo); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7653,25 +7694,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.poll_remove(
                         connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.poll_remove(
                         connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.poll_remove(
                         connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.poll_remove(
                         connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);
                     break;
-                    // case "oracle":   orPostgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);break;
-                    // case "db2":   db2Postgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
-                    // case "other":   othPostgre.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.poll_remove(connectionString, pollGroupID, pollID, boardId, removeCompletely, removeEverywhere); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7686,17 +7727,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.poll_save(connectionString, pollList);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.poll_save(connectionString, pollList);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.poll_save(connectionString, pollList);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.poll_save(connectionString, pollList);
-                    // case "oracle":  return orPostgre.Db.poll_save(connectionString, pollList);
-                    // case "db2":  return db2Postgre.Db.poll_save(connectionString, pollList);
-                    // case "other":  return othPostgre.Db.poll_save(connectionString, pollList); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.poll_save(connectionString, pollList);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.poll_save(connectionString, pollList);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.poll_save(connectionString, pollList); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7712,17 +7753,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.poll_stats(connectionString, pollId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.poll_stats(connectionString, pollId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.poll_stats(connectionString, pollId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.poll_stats(connectionString, pollId);
-                    // case "oracle":  return orPostgre.Db.poll_stats(connectionString, pollId);
-                    // case "db2":  return db2Postgre.Db.poll_stats(connectionString, pollId);
-                    // case "other":  return othPostgre.Db.poll_stats(connectionString, pollId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.poll_stats(connectionString, pollId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.poll_stats(connectionString, pollId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.poll_stats(connectionString, pollId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7739,21 +7780,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pollgroup_attach(
                         connectionString, pollGroupId, topicId, forumId, categoryId, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pollgroup_attach(
                         connectionString, pollGroupId, topicId, forumId, categoryId, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pollgroup_attach(
                         connectionString, pollGroupId, topicId, forumId, categoryId, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pollgroup_attach(
                         connectionString, pollGroupId, topicId, forumId, categoryId, boardId);
-                    // case "oracle":  return orPostgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
-                    // case "db2":  return db2Postgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
-                    // case "other":  return othPostgre.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db._pollgroup_attach(connectionString, pollGroupId, topicId,  forumId,  categoryId, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7777,7 +7818,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.pollgroup_remove(
                         connectionString,
                         pollGroupID,
@@ -7788,7 +7829,7 @@ namespace VZF.Data.Common
                         removeCompletely,
                         removeEverywhere);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.pollgroup_remove(
                         connectionString,
                         pollGroupID,
@@ -7799,7 +7840,7 @@ namespace VZF.Data.Common
                         removeCompletely,
                         removeEverywhere);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.pollgroup_remove(
                         connectionString,
                         pollGroupID,
@@ -7810,7 +7851,7 @@ namespace VZF.Data.Common
                         removeCompletely,
                         removeEverywhere);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.pollgroup_remove(
                         connectionString,
                         pollGroupID,
@@ -7821,9 +7862,9 @@ namespace VZF.Data.Common
                         removeCompletely,
                         removeEverywhere);
                     break;
-                    // case "oracle":   orPostgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere);break;
-                    // case "db2":   db2Postgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
-                    // case "other":   othPostgre.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.pollgroup_remove(connectionString, pollGroupID, topicId, forumId, categoryId, boardId, removeCompletely, removeEverywhere); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7838,17 +7879,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pollgroup_stats(connectionString, pollGroupId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pollgroup_stats(connectionString, pollGroupId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pollgroup_stats(connectionString, pollGroupId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pollgroup_stats(connectionString, pollGroupId);
-                    // case "oracle":  return orPostgre.Db.pollgroup_stats(connectionString, pollGroupId);
-                    // case "db2":  return db2Postgre.Db.pollgroup_stats(connectionString, pollGroupId);
-                    // case "other":  return othPostgre.Db.pollgroup_stats(connectionString, pollGroupId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pollgroup_stats(connectionString, pollGroupId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pollgroup_stats(connectionString, pollGroupId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pollgroup_stats(connectionString, pollGroupId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7875,7 +7916,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.poll_update(
                         connectionString,
                         pollID,
@@ -7889,7 +7930,7 @@ namespace VZF.Data.Common
                         questionPath,
                         questionMime);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.poll_update(
                         connectionString,
                         pollID,
@@ -7903,7 +7944,7 @@ namespace VZF.Data.Common
                         questionPath,
                         questionMime);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.poll_update(
                         connectionString,
                         pollID,
@@ -7917,7 +7958,7 @@ namespace VZF.Data.Common
                         questionPath,
                         questionMime);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.poll_update(
                         connectionString,
                         pollID,
@@ -7931,9 +7972,9 @@ namespace VZF.Data.Common
                         questionPath,
                         questionMime);
                     break;
-                    // case "oracle":   orPostgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime);break;
-                    // case "db2":   db2Postgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
-                    // case "other":   othPostgre.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.poll_update(connectionString, pollID, question, closes, isBounded, isClosedBounded, allowMultipleChoices, showVoters, allowSkipVote, questionPath, questionMime); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7948,17 +7989,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                    // case "oracle":  return orPostgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                    // case "db2":  return db2Postgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
-                    // case "other":  return othPostgre.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pollgroup_votecheck(connectionString, pollGroupId, userId, remoteIp); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -7974,17 +8015,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                    // case "oracle":  return orPostgre.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                    // case "db2":  return db2Postgre.Db.PollGroupList(connectionString, userID, forumId, boardId);
-                    // case "other":  return othPostgre.Db.PollGroupList(connectionString, userID, forumId, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PollGroupList(connectionString, userID, forumId, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PollGroupList(connectionString, userID, forumId, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PollGroupList(connectionString, userID, forumId, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8000,17 +8041,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.pollvote_check(connectionString, pollid, userid, remoteip);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.pollvote_check(connectionString, pollid, userid, remoteip);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.pollvote_check(connectionString, pollid, userid, remoteip);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.pollvote_check(connectionString, pollid, userid, remoteip);
-                    // case "oracle":  return orPostgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
-                    // case "db2":  return db2Postgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
-                    // case "other":  return othPostgre.Db.pollvote_check(connectionString, pollid,  userid,  remoteip); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pollvote_check(connectionString, pollid,  userid,  remoteip);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pollvote_check(connectionString, pollid,  userid,  remoteip); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8027,17 +8068,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.post_alluser(connectionString, boardid, userid, pageUserID, topCount);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.post_alluser(connectionString, boardid, userid, pageUserID, topCount);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.post_alluser(connectionString, boardid, userid, pageUserID, topCount);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.post_alluser(connectionString, boardid, userid, pageUserID, topCount);
-                    // case "oracle":  return orPostgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
-                    // case "db2":  return db2Postgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
-                    // case "other":  return othPostgre.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.post_alluser(connectionString, boardid,  userid,  pageUserID,  topCount); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8072,7 +8113,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.post_list(
                         connectionString,
                         topicId,
@@ -8093,7 +8134,7 @@ namespace VZF.Data.Common
                         sortPosition,
                         showThanks,
                         messagePosition);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.post_list(
                         connectionString,
                         topicId,
@@ -8114,7 +8155,7 @@ namespace VZF.Data.Common
                         sortPosition,
                         showThanks,
                         messagePosition);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.post_list(
                         connectionString,
                         topicId,
@@ -8135,7 +8176,7 @@ namespace VZF.Data.Common
                         sortPosition,
                         showThanks,
                         messagePosition);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.post_list(
                         connectionString,
                         topicId,
@@ -8156,9 +8197,9 @@ namespace VZF.Data.Common
                         sortPosition,
                         showThanks,
                         messagePosition);
-                    // case "oracle":  return orPostgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
-                    // case "db2":  return db2Postgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
-                    // case "other":  return othPostgre.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8174,17 +8215,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.post_list_reverse10(connectionString, topicID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.post_list_reverse10(connectionString, topicID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.post_list_reverse10(connectionString, topicID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.post_list_reverse10(connectionString, topicID);
-                    // case "oracle":  return orPostgre.Db.post_list_reverse10(connectionString, topicID);
-                    // case "db2":  return db2Postgre.Db.post_list_reverse10(connectionString, topicID);
-                    // case "other":  return othPostgre.Db.post_list_reverse10(connectionString, topicID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.post_list_reverse10(connectionString, topicID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.post_list_reverse10(connectionString, topicID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.post_list_reverse10(connectionString, topicID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8200,21 +8241,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.rank_delete(connectionString, rankID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.rank_delete(connectionString, rankID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.rank_delete(connectionString, rankID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.rank_delete(connectionString, rankID);
                     break;
-                    // case "oracle":   orPostgre.Db.rank_delete(connectionString, rankID);break;
-                    // case "db2":   db2Postgre.Db.rank_delete(connectionString, rankID); break;
-                    // case "other":   othPostgre.Db.rank_delete(connectionString, rankID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.rank_delete(connectionString, rankID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.rank_delete(connectionString, rankID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.rank_delete(connectionString, rankID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8229,17 +8270,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.rank_list(connectionString, boardId, rankID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.rank_list(connectionString, boardId, rankID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.rank_list(connectionString, boardId, rankID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.rank_list(connectionString, boardId, rankID);
-                    // case "oracle":  return orPostgre.Db.rank_list(connectionString, boardId, rankID);
-                    // case "db2":  return db2Postgre.Db.rank_list(connectionString, boardId, rankID);
-                    // case "other":  return othPostgre.Db.rank_list(connectionString, boardId, rankID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.rank_list(connectionString, boardId, rankID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.rank_list(connectionString, boardId, rankID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.rank_list(connectionString, boardId, rankID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8272,7 +8313,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.rank_save(
                         connectionString,
                         rankID,
@@ -8292,7 +8333,7 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.rank_save(
                         connectionString,
                         rankID,
@@ -8312,7 +8353,7 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.rank_save(
                         connectionString,
                         rankID,
@@ -8332,7 +8373,7 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.rank_save(
                         connectionString,
                         rankID,
@@ -8352,9 +8393,9 @@ namespace VZF.Data.Common
                         usrAlbums,
                         usrAlbumImages);
                     break;
-                    // case "oracle":   orPostgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages);break;
-                    // case "db2":   db2Postgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
-                    // case "other":   othPostgre.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.rank_save(connectionString, rankID, boardId, name,isStart,  isLadder,  minPosts,  rankImage, pmLimit, style,  sortOrder, description, usrSigChars, usrSigBBCodes, usrSigHTMLTags, usrAlbums, usrAlbumImages); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -8370,17 +8411,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.recent_users(connectionString, boardID, timeSinceLastLogin, styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.recent_users(connectionString, boardID, timeSinceLastLogin, styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.recent_users(connectionString, boardID, timeSinceLastLogin, styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.recent_users(connectionString, boardID, timeSinceLastLogin, styledNicks);
-                    // case "oracle":  return orPostgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
-                    // case "db2":  return db2Postgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
-                    // case "other":  return othPostgre.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.recent_users(connectionString, boardID,  timeSinceLastLogin,  styledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8418,17 +8459,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.registry_list(connectionString, name, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.registry_list(connectionString, name, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.registry_list(connectionString, name, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.registry_list(connectionString, name, boardId);
-                    // case "oracle":  return orPostgre.Db.registry_list(connectionString, name,  boardId);
-                    // case "db2":  return db2Postgre.Db.registry_list(connectionString, name,  boardId);
-                    // case "other":  return othPostgre.Db.registry_list(connectionString, name,  boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.registry_list(connectionString, name,  boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.registry_list(connectionString, name,  boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.registry_list(connectionString, name,  boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -8460,21 +8501,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.registry_save(connectionString, name, value, boardId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.registry_save(connectionString, name, value, boardId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.registry_save(connectionString, name, value, boardId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.registry_save(connectionString, name, value, boardId);
                     break;
-                    // case "oracle":   orPostgre.Db.registry_save(connectionString, name, value, boardId);break;
-                    // case "db2":   db2Postgre.Db.registry_save(connectionString, name, value, boardId); break;
-                    // case "other":   othPostgre.Db.registry_save(connectionString, name, value, boardId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.registry_save(connectionString, name, value, boardId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.registry_save(connectionString, name, value, boardId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.registry_save(connectionString, name, value, boardId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8489,21 +8530,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.replace_words_delete(connectionString, id);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.replace_words_delete(connectionString, id);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.replace_words_delete(connectionString, id);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.replace_words_delete(connectionString, id);
                     break;
-                    // case "oracle":   orPostgre.Db.replace_words_delete(connectionString, id);break;
-                    // case "db2":   db2Postgre.Db.replace_words_delete(connectionString, id); break;
-                    // case "other":   othPostgre.Db.replace_words_delete(connectionString, id); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.replace_words_delete(connectionString, id);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.replace_words_delete(connectionString, id); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.replace_words_delete(connectionString, id); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8518,17 +8559,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.replace_words_list(connectionString, boardId, id);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.replace_words_list(connectionString, boardId, id);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.replace_words_list(connectionString, boardId, id);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.replace_words_list(connectionString, boardId, id);
-                    // case "oracle":  return orPostgre.Db.replace_words_list(connectionString, boardId, id);
-                    // case "db2":  return db2Postgre.Db.replace_words_list(connectionString, boardId, id);
-                    // case "other":  return othPostgre.Db.replace_words_list(connectionString, boardId, id); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.replace_words_list(connectionString, boardId, id);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.replace_words_list(connectionString, boardId, id);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.replace_words_list(connectionString, boardId, id); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8544,21 +8585,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.replace_words_save(connectionString, boardId, id, badword, goodword);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.replace_words_save(connectionString, boardId, id, badword, goodword);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.replace_words_save(connectionString, boardId, id, badword, goodword);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.replace_words_save(connectionString, boardId, id, badword, goodword);
                     break;
-                    // case "oracle":   orPostgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword);break;
-                    // case "db2":   db2Postgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
-                    // case "other":   othPostgre.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.replace_words_save(connectionString, boardId,  id,  badword,  goodword); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8579,21 +8620,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.rss_topic_latest(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.rss_topic_latest(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.rss_topic_latest(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.rss_topic_latest(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts);
-                    // case "oracle":  return orPostgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
-                    // case "db2":  return db2Postgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
-                    // case "other":  return othPostgre.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.rss_topic_latest(connectionString, boardId,  numOfPostsToRetrieve,  pageUserId,  useStyledNicks, showNoCountPosts); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8614,17 +8655,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                    // case "oracle":  return orPostgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                    // case "db2":  return db2Postgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
-                    // case "other":  return othPostgre.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.rsstopic_list(connectionString, forumID, topicStart, topicCount); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8647,25 +8688,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.SetPropertyValues(
                         connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.SetPropertyValues(
                         connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.SetPropertyValues(
                         connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.SetPropertyValues(
                         connectionString, boardId, appname, userId, userName, collection, dirtyOnly);
                     break;
-                    // case "oracle":   orPostgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case "db2":   db2Postgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case "other":   othPostgre.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8680,17 +8721,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.shoutbox_clearmessages(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.shoutbox_clearmessages(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.shoutbox_clearmessages(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.shoutbox_clearmessages(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.shoutbox_clearmessages(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.shoutbox_clearmessages(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.shoutbox_clearmessages(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.shoutbox_clearmessages(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.shoutbox_clearmessages(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.shoutbox_clearmessages(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8706,21 +8747,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.shoutbox_getmessages(
                         connectionString, boardId, numberOfMessages, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.shoutbox_getmessages(
                         connectionString, boardId, numberOfMessages, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.shoutbox_getmessages(
                         connectionString, boardId, numberOfMessages, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.shoutbox_getmessages(
                         connectionString, boardId, numberOfMessages, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
-                    // case "db2":  return db2Postgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
-                    // case "other":  return othPostgre.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.shoutbox_getmessages(connectionString, boardId,  numberOfMessages,  useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8737,21 +8778,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.shoutbox_savemessage(
                         connectionString, boardId, message, userName, userID, ip);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.shoutbox_savemessage(
                         connectionString, boardId, message, userName, userID, ip);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.shoutbox_savemessage(
                         connectionString, boardId, message, userName, userID, ip);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.shoutbox_savemessage(
                         connectionString, boardId, message, userName, userID, ip);
-                    // case "oracle":  return orPostgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
-                    // case "db2":  return db2Postgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
-                    // case "other":  return othPostgre.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.shoutbox_savemessage(connectionString, boardId, message, userName, userID, ip); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8767,21 +8808,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.smiley_delete(connectionString, smileyID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.smiley_delete(connectionString, smileyID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.smiley_delete(connectionString, smileyID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.smiley_delete(connectionString, smileyID);
                     break;
-                    // case "oracle":   orPostgre.Db.smiley_delete(connectionString, smileyID);break;
-                    // case "db2":   db2Postgre.Db.smiley_delete(connectionString, smileyID); break;
-                    // case "other":   othPostgre.Db.smiley_delete(connectionString, smileyID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.smiley_delete(connectionString, smileyID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.smiley_delete(connectionString, smileyID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.smiley_delete(connectionString, smileyID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8796,17 +8837,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.smiley_list(connectionString, boardId, smileyID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.smiley_list(connectionString, boardId, smileyID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.smiley_list(connectionString, boardId, smileyID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.smiley_list(connectionString, boardId, smileyID);
-                    // case "oracle":  return orPostgre.Db.smiley_list(connectionString, boardId, smileyID);
-                    // case "db2":  return db2Postgre.Db.smiley_list(connectionString, boardId, smileyID);
-                    // case "other":  return othPostgre.Db.smiley_list(connectionString, boardId, smileyID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.smiley_list(connectionString, boardId, smileyID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.smiley_list(connectionString, boardId, smileyID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.smiley_list(connectionString, boardId, smileyID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8822,17 +8863,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.smiley_listunique(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.smiley_listunique(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.smiley_listunique(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.smiley_listunique(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.smiley_listunique(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.smiley_listunique(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.smiley_listunique(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.smiley_listunique(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.smiley_listunique(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.smiley_listunique(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8848,21 +8889,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.smiley_resort(connectionString, boardId, smileyID, move);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.smiley_resort(connectionString, boardId, smileyID, move);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.smiley_resort(connectionString, boardId, smileyID, move);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.smiley_resort(connectionString, boardId, smileyID, move);
                     break;
-                    // case "oracle":   orPostgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move);break;
-                    // case "db2":   db2Postgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
-                    // case "other":   othPostgre.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.smiley_resort(connectionString, boardId,  smileyID,  move);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.smiley_resort(connectionString, boardId,  smileyID,  move); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8885,25 +8926,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.smiley_save(
                         connectionString, smileyID, boardId, code, icon, emoticon, sortOrder, replace);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.smiley_save(
                         connectionString, smileyID, boardId, code, icon, emoticon, sortOrder, replace);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.smiley_save(
                         connectionString, smileyID, boardId, code, icon, emoticon, sortOrder, replace);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.smiley_save(
                         connectionString, smileyID, boardId, code, icon, emoticon, sortOrder, replace);
                     break;
-                    // case "oracle":   orPostgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace);break;
-                    // case "db2":   db2Postgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
-                    // case "other":   othPostgre.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.smiley_save(connectionString, smileyID, boardId, code, icon, emoticon, sortOrder,replace); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8918,17 +8959,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.SmileyList(connectionString, boardId, smileyID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.SmileyList(connectionString, boardId, smileyID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.SmileyList(connectionString, boardId, smileyID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.SmileyList(connectionString, boardId, smileyID);
-                    // case "oracle":  return orPostgre.Db.SmileyList(connectionString, boardId, smileyID);
-                    // case "db2":  return db2Postgre.Db.SmileyList(connectionString, boardId, smileyID);
-                    // case "other":  return othPostgre.Db.SmileyList(connectionString, boardId, smileyID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.SmileyList(connectionString, boardId, smileyID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.SmileyList(connectionString, boardId, smileyID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.SmileyList(connectionString, boardId, smileyID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8944,21 +8985,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.system_deleteinstallobjects(connectionString);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.system_deleteinstallobjects(connectionString);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.system_deleteinstallobjects(connectionString);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.system_deleteinstallobjects(connectionString);
                     break;
-                    // case "oracle":   orPostgre.Db.system_deleteinstallobjects(connectionString);break;
-                    // case "db2":   db2Postgre.Db.system_deleteinstallobjects(connectionString); break;
-                    // case "other":   othPostgre.Db.system_deleteinstallobjects(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_deleteinstallobjects(connectionString);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.system_deleteinstallobjects(connectionString); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.system_deleteinstallobjects(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8984,7 +9025,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.system_initialize(
                         connectionString,
                         forumName,
@@ -8998,7 +9039,7 @@ namespace VZF.Data.Common
                         providerUserKey,
                         rolePrefix);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.system_initialize(
                         connectionString,
                         forumName,
@@ -9012,7 +9053,7 @@ namespace VZF.Data.Common
                         providerUserKey,
                         rolePrefix);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.system_initialize(
                         connectionString,
                         forumName,
@@ -9026,7 +9067,7 @@ namespace VZF.Data.Common
                         providerUserKey,
                         rolePrefix);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.system_initialize(
                         connectionString,
                         forumName,
@@ -9040,9 +9081,9 @@ namespace VZF.Data.Common
                         providerUserKey,
                         rolePrefix);
                     break;
-                    // case "oracle":   orPostgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix);break;
-                    // case "db2":   db2Postgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
-                    // case "other":   othPostgre.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.system_initialize(connectionString, forumName, timeZone,  culture,  languageFile,  forumEmail, smtpServer,  userName,  userEmail,  providerUserKey, rolePrefix); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9058,25 +9099,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.system_initialize_executescripts(
                         connectionString, script, scriptFile, useTransactions);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.system_initialize_executescripts(
                         connectionString, script, scriptFile, useTransactions);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.system_initialize_executescripts(
                         connectionString, script, scriptFile, useTransactions);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.system_initialize_executescripts(
                         connectionString, script, scriptFile, useTransactions);
                     break;
-                    // case "oracle":   orPostgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions);break;
-                    // case "db2":   db2Postgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
-                    // case "other":   othPostgre.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9091,21 +9132,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.system_initialize_fixaccess(connectionString, bGrant);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.system_initialize_fixaccess(connectionString, bGrant);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.system_initialize_fixaccess(connectionString, bGrant);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.system_initialize_fixaccess(connectionString, bGrant);
                     break;
-                    // case "oracle":   orPostgre.Db.system_initialize_fixaccess(connectionString, bGrant);break;
-                    // case "db2":   db2Postgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
-                    // case "other":   othPostgre.Db.system_initialize_fixaccess(connectionString, bGrant); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_initialize_fixaccess(connectionString, bGrant);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.system_initialize_fixaccess(connectionString, bGrant); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.system_initialize_fixaccess(connectionString, bGrant); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9120,17 +9161,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.system_list(connectionString);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.system_list(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.system_list(connectionString);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.system_list(connectionString);
-                    // case "oracle":  return orPostgre.Db.system_list(connectionString);
-                    // case "db2":  return db2Postgre.Db.system_list(connectionString);
-                    // case "other":  return othPostgre.Db.system_list(connectionString); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.system_list(connectionString);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.system_list(connectionString);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.system_list(connectionString); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9146,21 +9187,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.system_updateversion(connectionString, version, name);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.system_updateversion(connectionString, version, name);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.system_updateversion(connectionString, version, name);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.system_updateversion(connectionString, version, name);
                     break;
-                    // case "oracle":   orPostgre.Db.system_updateversion(connectionString, version, name);break;
-                    // case "db2":   db2Postgre.Db.system_updateversion(connectionString, version, name); break;
-                    // case "other":   othPostgre.Db.system_updateversion(connectionString, version, name); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_updateversion(connectionString, version, name);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.system_updateversion(connectionString, version, name); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.system_updateversion(connectionString, version, name); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9186,7 +9227,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_active(
                         connectionString,
                         boardId,
@@ -9198,7 +9239,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_active(
                         connectionString,
                         boardId,
@@ -9210,7 +9251,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_active(
                         connectionString,
                         boardId,
@@ -9222,7 +9263,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_active(
                         connectionString,
                         boardId,
@@ -9234,9 +9275,9 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
-                    // case "other":  return othPostgre.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_active(connectionString,  boardId,  categoryId,  pageUserId, sinceDate,  toDate,  pageIndex,  pageSize,  useStyledNicks,  findLastRead);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9253,21 +9294,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_announcements(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_announcements(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_announcements(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_announcements(
                         connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                    // case "oracle":  return orPostgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                    // case "db2":  return db2Postgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
-                    // case "other":  return othPostgre.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_announcements(connectionString, boardId, numOfPostsToRetrieve, pageUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9293,7 +9334,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_unanswered(
                         connectionString,
                         boardId,
@@ -9305,7 +9346,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_unanswered(
                         connectionString,
                         boardId,
@@ -9317,7 +9358,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_unanswered(
                         connectionString,
                         boardId,
@@ -9329,7 +9370,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_unanswered(
                         connectionString,
                         boardId,
@@ -9341,9 +9382,9 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "other":  return othPostgre.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_unanswered(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9369,7 +9410,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_unread(
                         connectionString,
                         boardId,
@@ -9381,7 +9422,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_unread(
                         connectionString,
                         boardId,
@@ -9393,7 +9434,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_unread(
                         connectionString,
                         boardId,
@@ -9405,7 +9446,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_unread(
                         connectionString,
                         boardId,
@@ -9417,9 +9458,9 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "other":  return othPostgre.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_unread(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9446,7 +9487,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_unread(
                         connectionString,
                         boardId,
@@ -9458,7 +9499,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Topics_ByUser(
                         connectionString,
                         boardId,
@@ -9470,7 +9511,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Topics_ByUser(
                         connectionString,
                         boardId,
@@ -9482,7 +9523,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Topics_ByUser(
                         connectionString,
                         boardId,
@@ -9494,9 +9535,9 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "db2":  return db2Postgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
-                    // case "other":  return othPostgre.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Topics_ByUser(connectionString, boardId,categoryId, pageUserId, sinceDate,toDate, pageIndex,pageSize,useStyledNicks,findLastRead);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9512,21 +9553,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.TopicStatus_Delete(connectionString, topicStatusID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.TopicStatus_Delete(connectionString, topicStatusID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.TopicStatus_Delete(connectionString, topicStatusID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.TopicStatus_Delete(connectionString, topicStatusID);
                     break;
-                    // case "oracle":   orPostgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
-                    // case "db2":   db2Postgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
-                    // case "other":   othPostgre.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.TopicStatus_Delete(connectionString,  topicStatusID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9541,17 +9582,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.TopicStatus_Edit(connectionString, topicStatusID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.TopicStatus_Edit(connectionString, topicStatusID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.TopicStatus_Edit(connectionString, topicStatusID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.TopicStatus_Edit(connectionString, topicStatusID);
-                    // case "oracle":  return orPostgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
-                    // case "db2":  return db2Postgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
-                    // case "other":  return othPostgre.Db.TopicStatus_Edit(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.TopicStatus_Edit(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.TopicStatus_Edit(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.TopicStatus_Edit(connectionString,  topicStatusID);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9567,17 +9608,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.TopicStatus_List(connectionString, topicStatusID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.TopicStatus_List(connectionString, topicStatusID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.TopicStatus_List(connectionString, topicStatusID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.TopicStatus_List(connectionString, topicStatusID);
-                    // case "oracle":  return orPostgre.Db.TopicStatus_List(connectionString,  topicStatusID);
-                    // case "db2":  return db2Postgre.Db.TopicStatus_List(connectionString,  topicStatusID);
-                    // case "other":  return othPostgre.Db.TopicStatus_List(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.TopicStatus_List(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.TopicStatus_List(connectionString,  topicStatusID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.TopicStatus_List(connectionString,  topicStatusID);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9597,25 +9638,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.TopicStatus_Save(
                         connectionString, topicStatusID, boardID, topicStatusName, defaultDescription);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.TopicStatus_Save(
                         connectionString, topicStatusID, boardID, topicStatusName, defaultDescription);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.TopicStatus_Save(
                         connectionString, topicStatusID, boardID, topicStatusName, defaultDescription);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.TopicStatus_Save(
                         connectionString, topicStatusID, boardID, topicStatusName, defaultDescription);
                     break;
-                    // case "oracle":   orPostgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
-                    // case "db2":   db2Postgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
-                    // case "other":   othPostgre.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.TopicStatus_Save(connectionString, topicStatusID, boardID, topicStatusName, defaultDescription); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9630,19 +9671,19 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_create_by_message(
                         connectionString, messageID, forumId, newTopicSubj);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_create_by_message(
                         connectionString, messageID, forumId, newTopicSubj);
-                    // case "oracle":  return orPostgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
-                    // case "db2":  return db2Postgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
-                    // case "other":  return othPostgre.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_create_by_message(connectionString, messageID, forumId, newTopicSubj); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9663,21 +9704,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_delete(connectionString, topicID, eraseTopic);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_delete(connectionString, topicID, eraseTopic);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_delete(connectionString, topicID, eraseTopic);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_delete(connectionString, topicID, eraseTopic);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_delete(connectionString, topicID, eraseTopic);break;
-                    // case "db2":   db2Postgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
-                    // case "other":   othPostgre.Db.topic_delete(connectionString, topicID, eraseTopic); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_delete(connectionString, topicID, eraseTopic);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_delete(connectionString, topicID, eraseTopic); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_delete(connectionString, topicID, eraseTopic); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9692,21 +9733,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_favorite_add(connectionString, userID, topicID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_favorite_add(connectionString, userID, topicID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_favorite_add(connectionString, userID, topicID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_favorite_add(connectionString, userID, topicID);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_favorite_add(connectionString, userID, topicID);break;
-                    // case "db2":   db2Postgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
-                    // case "other":   othPostgre.Db.topic_favorite_add(connectionString, userID, topicID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_favorite_add(connectionString, userID, topicID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_favorite_add(connectionString, userID, topicID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_favorite_add(connectionString, userID, topicID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9731,7 +9772,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_favorite_details(
                         connectionString,
                         boardId,
@@ -9743,7 +9784,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_favorite_details(
                         connectionString,
                         boardId,
@@ -9755,7 +9796,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_favorite_details(
                         connectionString,
                         boardId,
@@ -9767,7 +9808,7 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_favorite_details(
                         connectionString,
                         boardId,
@@ -9779,9 +9820,9 @@ namespace VZF.Data.Common
                         pageSize,
                         useStyledNicks,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
-                    // case "other":  return othPostgre.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_favorite_details(connectionString, boardId, categoryId, pageUserId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, findLastRead);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9797,17 +9838,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_favorite_list(connectionString, userID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_favorite_list(connectionString, userID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_favorite_list(connectionString, userID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_favorite_list(connectionString, userID);
-                    // case "oracle":  return orPostgre.Db.topic_favorite_list(connectionString, userID);
-                    // case "db2":  return db2Postgre.Db.topic_favorite_list(connectionString, userID);
-                    // case "other":  return othPostgre.Db.topic_favorite_list(connectionString, userID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_favorite_list(connectionString, userID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_favorite_list(connectionString, userID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_favorite_list(connectionString, userID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9823,21 +9864,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_favorite_remove(connectionString, userID, topicID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_favorite_remove(connectionString, userID, topicID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_favorite_remove(connectionString, userID, topicID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_favorite_remove(connectionString, userID, topicID);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_favorite_remove(connectionString, userID, topicID);break;
-                    // case "db2":   db2Postgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
-                    // case "other":   othPostgre.Db.topic_favorite_remove(connectionString, userID, topicID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_favorite_remove(connectionString, userID, topicID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_favorite_remove(connectionString, userID, topicID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_favorite_remove(connectionString, userID, topicID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9852,17 +9893,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_findduplicate(connectionString, topicName);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_findduplicate(connectionString, topicName);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_findduplicate(connectionString, topicName);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_findduplicate(connectionString, topicName);
-                    // case "oracle":  return orPostgre.Db.topic_findduplicate(connectionString, topicName);
-                    // case "db2":  return db2Postgre.Db.topic_findduplicate(connectionString, topicName);
-                    // case "other":  return othPostgre.Db.topic_findduplicate(connectionString, topicName); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_findduplicate(connectionString, topicName);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_findduplicate(connectionString, topicName);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_findduplicate(connectionString, topicName); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9878,17 +9919,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_findnext(connectionString, topicID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_findnext(connectionString, topicID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_findnext(connectionString, topicID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_findnext(connectionString, topicID);
-                    // case "oracle":  return orPostgre.Db.topic_findnext(connectionString, topicID);
-                    // case "db2":  return db2Postgre.Db.topic_findnext(connectionString, topicID);
-                    // case "other":  return othPostgre.Db.topic_findnext(connectionString, topicID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_findnext(connectionString, topicID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_findnext(connectionString, topicID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_findnext(connectionString, topicID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9904,17 +9945,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_findprev(connectionString, topicID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_findprev(connectionString, topicID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_findprev(connectionString, topicID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_findprev(connectionString, topicID);
-                    // case "oracle":  return orPostgre.Db.topic_findprev(connectionString, topicID);
-                    // case "db2":  return db2Postgre.Db.topic_findprev(connectionString, topicID);
-                    // case "other":  return othPostgre.Db.topic_findprev(connectionString, topicID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_findprev(connectionString, topicID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_findprev(connectionString, topicID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_findprev(connectionString, topicID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9930,17 +9971,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_info(connectionString, topicID, getTags);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_info(connectionString, topicID, getTags);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_info(connectionString, topicID, getTags);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_info(connectionString, topicID, getTags);
-                // case "oracle":  return orPostgre.Db.topic_info(connectionString, topicID, getTags);
-                // case "db2":  return db2Postgre.Db.topic_info(connectionString, topicID, getTags);
-                // case "other":  return othPostgre.Db.topic_info(connectionString, topicID, getTags); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_info(connectionString, topicID, getTags);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_info(connectionString, topicID, getTags);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_info(connectionString, topicID, getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9955,17 +9996,17 @@ namespace VZF.Data.Common
    
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                      VZF.Data.MsSql.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                      VZF.Data.Postgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                      VZF.Data.Mysql.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                      VZF.Data.Firebird.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                // case "oracle": orPostgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                // case "db2":   db2Postgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
-                // case "other":   othPostgre.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break; 
+                // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break;
+                // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_imagesave(connectionString, topicID, imageUrl, stream, avatarImageType); break; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -9988,7 +10029,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_latest(
                         connectionString,
                         boardID,
@@ -9997,7 +10038,7 @@ namespace VZF.Data.Common
                         useStyledNicks,
                         showNoCountPosts,
                         findLastRead);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_latest(
                         connectionString,
                         boardID,
@@ -10006,7 +10047,7 @@ namespace VZF.Data.Common
                         useStyledNicks,
                         showNoCountPosts,
                         findLastRead);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_latest(
                         connectionString,
                         boardID,
@@ -10015,7 +10056,7 @@ namespace VZF.Data.Common
                         useStyledNicks,
                         showNoCountPosts,
                         findLastRead);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_latest(
                         connectionString,
                         boardID,
@@ -10024,9 +10065,9 @@ namespace VZF.Data.Common
                         useStyledNicks,
                         showNoCountPosts,
                         findLastRead);
-                    // case "oracle":  return orPostgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
-                    // case "db2":  return db2Postgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
-                    // case "other":  return othPostgre.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_latest(connectionString, boardID, numOfPostsToRetrieve, pageUserId, useStyledNicks, showNoCountPosts, findLastRead); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10053,7 +10094,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_list(
                         connectionString,
                         forumID,
@@ -10066,7 +10107,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_list(
                         connectionString,
                         forumID,
@@ -10079,7 +10120,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_list(
                         connectionString,
                         forumID,
@@ -10092,7 +10133,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_list(
                         connectionString,
                         forumID,
@@ -10105,9 +10146,9 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                // case "oracle":  return orPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
-                // case "db2":  return db2Postgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
-                // case "other":  return othPostgre.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10134,7 +10175,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.announcements_list(
                         connectionString,
                         forumID,
@@ -10147,7 +10188,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.announcements_list(
                         connectionString,
                         forumID,
@@ -10160,7 +10201,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.announcements_list(
                         connectionString,
                         forumID,
@@ -10173,7 +10214,7 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.announcements_list(
                         connectionString,
                         forumID,
@@ -10186,9 +10227,9 @@ namespace VZF.Data.Common
                         showMoved,
                         findLastRead,
                         getTags);
-                // case "oracle":  return orPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
-                // case "db2":  return db2Postgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
-                // case "other":  return othPostgre.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.announcements_list(connectionString, forumID, userId, sinceDate, toDate, pageIndex, pageSize,useStyledNicks, showMoved, findLastRead,getTags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10204,21 +10245,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_lock(connectionString, topicID, locked);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_lock(connectionString, topicID, locked);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_lock(connectionString, topicID, locked);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_lock(connectionString, topicID, locked);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_lock(connectionString, topicID, locked);break;
-                    // case "db2":   db2Postgre.Db.topic_lock(connectionString, topicID, locked); break;
-                    // case "other":   othPostgre.Db.topic_lock(connectionString, topicID, locked); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_lock(connectionString, topicID, locked);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_lock(connectionString, topicID, locked); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_lock(connectionString, topicID, locked); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10233,21 +10274,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_move(connectionString, topicID, forumID, showMoved, linkDays);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_move(connectionString, topicID, forumID, showMoved, linkDays);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_move(connectionString, topicID, forumID, showMoved, linkDays);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_move(connectionString, topicID, forumID, showMoved, linkDays);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays);break;
-                    // case "db2":   db2Postgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
-                    // case "other":   othPostgre.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_move(connectionString, topicID,  forumID,  showMoved, linkDays); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10267,17 +10308,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_prune(connectionString, boardID, forumID, days, permDelete);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_prune(connectionString, boardID, forumID, days, permDelete);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_prune(connectionString, boardID, forumID, days, permDelete);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_prune(connectionString, boardID, forumID, days, permDelete);
-                    // case "oracle":  return orPostgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
-                    // case "db2":  return db2Postgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
-                    // case "other":  return othPostgre.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_prune(connectionString, boardID,  forumID, days, permDelete); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10309,7 +10350,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_save(
                         connectionString,
                         forumID,
@@ -10327,7 +10368,7 @@ namespace VZF.Data.Common
                         flags,
                         ref messageID,
                         tags);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_save(
                         connectionString,
                         forumID,
@@ -10345,7 +10386,7 @@ namespace VZF.Data.Common
                         flags,
                         ref messageID,
                         tags);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_save(
                         connectionString,
                         forumID,
@@ -10363,7 +10404,7 @@ namespace VZF.Data.Common
                         flags,
                         ref messageID,
                         tags);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_save(
                         connectionString,
                         forumID,
@@ -10381,9 +10422,9 @@ namespace VZF.Data.Common
                         flags,
                         ref messageID,
                         tags);
-                    // case "oracle":  return orPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
-                    // case "db2":  return db2Postgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
-                    // case "other":  return othPostgre.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10399,17 +10440,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_simplelist(connectionString, StartID, Limit);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_simplelist(connectionString, StartID, Limit);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_simplelist(connectionString, StartID, Limit);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_simplelist(connectionString, StartID, Limit);
-                    // case "oracle":  return orPostgre.Db.topic_simplelist(connectionString, StartID, Limit);
-                    // case "db2":  return db2Postgre.Db.topic_simplelist(connectionString, StartID, Limit);
-                    // case "other":  return othPostgre.Db.topic_simplelist(connectionString, StartID, Limit); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_simplelist(connectionString, StartID, Limit); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10425,17 +10466,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_tags(connectionString, boardId, pageUserId, topicId);
-                    // case "oracle":  return orPostgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
-                    // case "db2":  return db2Postgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
-                    // case "other":  return othPostgre.Db.topic_tags(connectionString,  boardId, pageUserId, topicId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_tags(connectionString,  boardId, pageUserId, topicId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_tags(connectionString,  boardId, pageUserId, topicId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10452,21 +10493,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.topic_bytags(
                         connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_bytags(
                         connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_bytags(
                         connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_bytags(
                         connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                // case "oracle":  return orPostgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                // case "db2":  return db2Postgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
-                // case "other":  return othPostgre.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_bytags(connectionString, boardId, forumId, pageUserId, tags, date, pageIndex, pageSize);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10482,21 +10523,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.topic_updatetopic(connectionString, topicId, topic);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.topic_updatetopic(connectionString, topicId, topic);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.topic_updatetopic(connectionString, topicId, topic);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.topic_updatetopic(connectionString, topicId, topic);
                     break;
-                    // case "oracle":   orPostgre.Db.topic_updatetopic(connectionString, topicId, topic);break;
-                    // case "db2":   db2Postgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
-                    // case "other":   othPostgre.Db.topic_updatetopic(connectionString, topicId, topic); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.topic_updatetopic(connectionString, topicId, topic);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.topic_updatetopic(connectionString, topicId, topic); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.topic_updatetopic(connectionString, topicId, topic); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10511,17 +10552,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.TopicFavoriteCount(connectionString, topicId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.TopicFavoriteCount(connectionString, topicId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.TopicFavoriteCount(connectionString, topicId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.TopicFavoriteCount(connectionString, topicId);
-                    // case "oracle":  return orPostgre.Db.TopicFavoriteCount(connectionString, topicId);
-                    // case "db2":  return db2Postgre.Db.TopicFavoriteCount(connectionString, topicId);
-                    // case "other":  return othPostgre.Db.TopicFavoriteCount(connectionString, topicId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.TopicFavoriteCount(connectionString, topicId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.TopicFavoriteCount(connectionString, topicId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.TopicFavoriteCount(connectionString, topicId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10537,21 +10578,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);
                     break;
-                    // case "oracle":   orPostgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);break;
-                    // case "db2":   db2Postgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
-                    // case "other":   othPostgre.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.unencode_all_topics_subjects(connectionString, decodeTopicFunc); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10566,17 +10607,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_accessmasks(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_accessmasks(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_accessmasks(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_accessmasks(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.user_accessmasks(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.user_accessmasks(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.user_accessmasks(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_accessmasks(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_accessmasks(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_accessmasks(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10592,17 +10633,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.user_accessmasksbyforum(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.user_accessmasksbyforum(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_accessmasksbyforum(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_accessmasksbyforum(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10618,17 +10659,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                    // case "oracle":  return orPostgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                    // case "db2":  return db2Postgre.Db.user_accessmasksbygroup(connectionString, boardId, userId);
-                    // case "other":  return othPostgre.Db.user_accessmasksbygroup(connectionString, boardId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_accessmasksbygroup(connectionString, boardId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_accessmasksbygroup(connectionString, boardId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10644,17 +10685,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_activity_rank(connectionString, boardId, startDate, displayNumber);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_activity_rank(connectionString, boardId, startDate, displayNumber);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_activity_rank(connectionString, boardId, startDate, displayNumber);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_activity_rank(connectionString, boardId, startDate, displayNumber);
-                    // case "oracle":  return orPostgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
-                    // case "db2":  return db2Postgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
-                    // case "other":  return othPostgre.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_activity_rank(connectionString, boardId,  startDate, displayNumber); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10670,21 +10711,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_addignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_addignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_addignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId);break;
-                    // case "db2":   db2Postgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
-                    // case "other":   othPostgre.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_addignoreduser(connectionString, userId, ignoredUserId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_addignoreduser(connectionString, userId, ignoredUserId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10699,21 +10740,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_addpoints(connectionString, userId, forumUserId, points);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_addpoints(connectionString, userId, forumUserId, points);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_addpoints(connectionString, userId, forumUserId, points);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_addpoints(connectionString, userId, forumUserId, points);
                     break;
-                    // case "oracle":   orPostgre.Db.user_addpoints(connectionString, userId, forumUserId, points);break;
-                    // case "db2":   db2Postgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
-                    // case "other":   othPostgre.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_addpoints(connectionString, userId, forumUserId, points);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_addpoints(connectionString, userId, forumUserId, points); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10736,25 +10777,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_adminsave(
                         connectionString, boardId, userId, name, displayName, email, flags, rankID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_adminsave(
                         connectionString, boardId, userId, name, displayName, email, flags, rankID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_adminsave(
                         connectionString, boardId, userId, name, displayName, email, flags, rankID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_adminsave(
                         connectionString, boardId, userId, name, displayName, email, flags, rankID);
                     break;
-                    // case "oracle":   orPostgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID);break;
-                    // case "db2":   db2Postgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
-                    // case "other":   othPostgre.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_adminsave(connectionString, boardId,  userId,  name,  displayName,  email,  flags,  rankID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10769,21 +10810,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_approve(connectionString, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_approve(connectionString, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_approve(connectionString, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_approve(connectionString, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_approve(connectionString, userId);break;
-                    // case "db2":   db2Postgre.Db.user_approve(connectionString, userId); break;
-                    // case "other":   othPostgre.Db.user_approve(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_approve(connectionString, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_approve(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_approve(connectionString, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10798,21 +10839,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_approveall(connectionString, boardId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_approveall(connectionString, boardId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_approveall(connectionString, boardId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_approveall(connectionString, boardId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_approveall(connectionString, boardId);break;
-                    // case "db2":   db2Postgre.Db.user_approveall(connectionString, boardId); break;
-                    // case "other":   othPostgre.Db.user_approveall(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_approveall(connectionString, boardId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_approveall(connectionString, boardId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_approveall(connectionString, boardId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10834,21 +10875,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_aspnet(
                         connectionString, boardId, userName, displayName, email, providerUserKey, isApproved);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_aspnet(
                         connectionString, boardId, userName, displayName, email, providerUserKey, isApproved);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_aspnet(
                         connectionString, boardId, userName, displayName, email, providerUserKey, isApproved);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_aspnet(
                         connectionString, boardId, userName, displayName, email, providerUserKey, isApproved);
-                    // case "oracle":  return orPostgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
-                    // case "db2":  return db2Postgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
-                    // case "other":  return othPostgre.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_aspnet(connectionString, boardId,  userName,  displayName,  email,  providerUserKey, isApproved); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10864,17 +10905,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_avatarimage(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_avatarimage(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_avatarimage(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_avatarimage(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_avatarimage(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_avatarimage(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_avatarimage(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_avatarimage(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_avatarimage(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_avatarimage(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10890,17 +10931,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_changepassword(connectionString, userId, oldPassword, newPassword);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_changepassword(connectionString, userId, oldPassword, newPassword);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_changepassword(connectionString, userId, oldPassword, newPassword);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_changepassword(connectionString, userId, oldPassword, newPassword);
-                    // case "oracle":  return orPostgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
-                    // case "db2":  return db2Postgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
-                    // case "other":  return othPostgre.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_changepassword(connectionString, userId,  oldPassword, newPassword); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10916,21 +10957,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_delete(connectionString, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_delete(connectionString, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_delete(connectionString, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_delete(connectionString, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_delete(connectionString, userId);break;
-                    // case "db2":   db2Postgre.Db.user_delete(connectionString, userId); break;
-                    // case "other":   othPostgre.Db.user_delete(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_delete(connectionString, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_delete(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_delete(connectionString, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10945,21 +10986,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_deleteavatar(connectionString, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_deleteavatar(connectionString, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_deleteavatar(connectionString, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_deleteavatar(connectionString, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_deleteavatar(connectionString, userId);break;
-                    // case "db2":   db2Postgre.Db.user_deleteavatar(connectionString, userId); break;
-                    // case "other":   othPostgre.Db.user_deleteavatar(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_deleteavatar(connectionString, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_deleteavatar(connectionString, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_deleteavatar(connectionString, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -10974,21 +11015,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_deleteold(connectionString, boardId, days);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_deleteold(connectionString, boardId, days);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_deleteold(connectionString, boardId, days);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_deleteold(connectionString, boardId, days);
                     break;
-                    // case "oracle":   orPostgre.Db.user_deleteold(connectionString, boardId, days);break;
-                    // case "db2":   db2Postgre.Db.user_deleteold(connectionString, boardId, days); break;
-                    // case "other":   othPostgre.Db.user_deleteold(connectionString, boardId, days); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_deleteold(connectionString, boardId, days);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_deleteold(connectionString, boardId, days); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_deleteold(connectionString, boardId, days); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11003,17 +11044,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_emails(connectionString, boardId, groupID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_emails(connectionString, boardId, groupID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_emails(connectionString, boardId, groupID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_emails(connectionString, boardId, groupID);
-                    // case "oracle":  return orPostgre.Db.user_emails(connectionString, boardId, groupID);
-                    // case "db2":  return db2Postgre.Db.user_emails(connectionString, boardId, groupID);
-                    // case "other":  return othPostgre.Db.user_emails(connectionString, boardId, groupID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_emails(connectionString, boardId, groupID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_emails(connectionString, boardId, groupID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_emails(connectionString, boardId, groupID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11029,17 +11070,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_get(connectionString, boardId, providerUserKey);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_get(connectionString, boardId, providerUserKey);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_get(connectionString, boardId, providerUserKey);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_get(connectionString, boardId, providerUserKey);
-                    // case "oracle":  return orPostgre.Db.user_get(connectionString, boardId, providerUserKey);
-                    // case "db2":  return db2Postgre.Db.user_get(connectionString, boardId, providerUserKey);
-                    // case "other":  return othPostgre.Db.user_get(connectionString, boardId, providerUserKey); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_get(connectionString, boardId, providerUserKey);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_get(connectionString, boardId, providerUserKey);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_get(connectionString, boardId, providerUserKey); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11055,17 +11096,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getalbumsdata(connectionString, userID, boardID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getalbumsdata(connectionString, userID, boardID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getalbumsdata(connectionString, userID, boardID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getalbumsdata(connectionString, userID, boardID);
-                    // case "oracle":  return orPostgre.Db.user_getalbumsdata(connectionString, userID, boardID);
-                    // case "db2":  return db2Postgre.Db.user_getalbumsdata(connectionString, userID, boardID);
-                    // case "other":  return othPostgre.Db.user_getalbumsdata(connectionString, userID, boardID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getalbumsdata(connectionString, userID, boardID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_getalbumsdata(connectionString, userID, boardID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_getalbumsdata(connectionString, userID, boardID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11081,17 +11122,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getpoints(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getpoints(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getpoints(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getpoints(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_getpoints(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_getpoints(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_getpoints(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getpoints(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_getpoints(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_getpoints(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -11108,17 +11149,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getsignature(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getsignature(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getsignature(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getsignature(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_getsignature(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_user_getsignature(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_user_getsignature(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getsignature(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_user_getsignature(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_user_getsignature(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11134,17 +11175,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getsignaturedata(connectionString, userID, boardID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getsignaturedata(connectionString, userID, boardID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getsignaturedata(connectionString, userID, boardID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getsignaturedata(connectionString, userID, boardID);
-                    // case "oracle":  return orPostgre.Db.user_getsignaturedata(connectionString, userID, boardID);
-                    // case "db2":  return db2Postgre.Db.user_getsignaturedata(connectionString, userID, boardID);
-                    // case "other":  return othPostgre.Db.user_getsignaturedata(connectionString, userID, boardID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getsignaturedata(connectionString, userID, boardID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_getsignaturedata(connectionString, userID, boardID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_getsignaturedata(connectionString, userID, boardID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
 
@@ -11161,17 +11202,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                    // case "oracle":  return orPostgre.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                    // case "db2":  return db2Postgre.Db.user_getthanks_from(connectionString, userID, pageUserId);
-                    // case "other":  return othPostgre.Db.user_getthanks_from(connectionString, userID, pageUserId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getthanks_from(connectionString, userID, pageUserId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_getthanks_from(connectionString, userID, pageUserId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_getthanks_from(connectionString, userID, pageUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11186,17 +11227,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                    // case "oracle":  return orPostgre.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                    // case "db2":  return db2Postgre.Db.user_getthanks_to(connectionString, userID, pageUserId);
-                    // case "other":  return othPostgre.Db.user_getthanks_to(connectionString, userID, pageUserId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_getthanks_to(connectionString, userID, pageUserId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_getthanks_to(connectionString, userID, pageUserId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_getthanks_to(connectionString, userID, pageUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11211,17 +11252,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_guest(connectionString, boardId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_guest(connectionString, boardId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_guest(connectionString, boardId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_guest(connectionString, boardId);
-                    // case "oracle":  return orPostgre.Db.user_guest(connectionString, boardId);
-                    // case "db2":  return db2Postgre.Db.user_guest(connectionString, boardId);
-                    // case "other":  return othPostgre.Db.user_guest(connectionString, boardId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_guest(connectionString, boardId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_guest(connectionString, boardId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_guest(connectionString, boardId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11236,17 +11277,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_ignoredlist(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_ignoredlist(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_ignoredlist(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_ignoredlist(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_ignoredlist(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_ignoredlist(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_ignoredlist(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_ignoredlist(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_ignoredlist(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_ignoredlist(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11262,17 +11303,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                    // case "oracle":  return orPostgre.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                    // case "db2":  return db2Postgre.Db.user_isuserignored(connectionString, userId, ignoredUserId);
-                    // case "other":  return othPostgre.Db.user_isuserignored(connectionString, userId, ignoredUserId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_isuserignored(connectionString, userId, ignoredUserId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_isuserignored(connectionString, userId, ignoredUserId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_isuserignored(connectionString, userId, ignoredUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11295,7 +11336,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_lazydata(
                         connectionString,
                         userID,
@@ -11305,7 +11346,7 @@ namespace VZF.Data.Common
                         showUnreadPMs,
                         showUserAlbums,
                         styledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_lazydata(
                         connectionString,
                         userID,
@@ -11315,7 +11356,7 @@ namespace VZF.Data.Common
                         showUnreadPMs,
                         showUserAlbums,
                         styledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_lazydata(
                         connectionString,
                         userID,
@@ -11325,7 +11366,7 @@ namespace VZF.Data.Common
                         showUnreadPMs,
                         showUserAlbums,
                         styledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_lazydata(
                         connectionString,
                         userID,
@@ -11335,9 +11376,9 @@ namespace VZF.Data.Common
                         showUnreadPMs,
                         showUserAlbums,
                         styledNicks);
-                    // case "oracle":  return orPostgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
-                    // case "db2":  return db2Postgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
-                    // case "other":  return othPostgre.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_lazydata(connectionString, userID, boardID, showPendingMails, showPendingBuddies, showUnreadPMs,  showUserAlbums,  styledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11420,21 +11461,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_list(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_list(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_list(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_list(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
-                    // case "db2":  return db2Postgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
-                    // case "other":  return othPostgre.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_list(connectionString,  boardId,  userId,  approved,  groupID,  rankID,  useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11459,21 +11500,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_pagedlist(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_pagedlist(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_pagedlist(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_pagedlist(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                // case "oracle":  return orPostgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                // case "db2":  return db2Postgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
-                // case "other":  return othPostgre.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_pagedlist(connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks, pageIndex, pageSize); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11489,17 +11530,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_listmedals(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_listmedals(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_listmedals(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_listmedals(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_listmedals(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_listmedals(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_listmedals(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_listmedals(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_listmedals(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_listmedals(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11535,7 +11576,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_listmembers(
                         connectionString,
                         boardId,
@@ -11557,7 +11598,7 @@ namespace VZF.Data.Common
                         sortLastVisit,
                         numPosts,
                         numPostCompare);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_listmembers(
                         connectionString,
                         boardId,
@@ -11579,7 +11620,7 @@ namespace VZF.Data.Common
                         sortLastVisit,
                         numPosts,
                         numPostCompare);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_listmembers(
                         connectionString,
                         boardId,
@@ -11601,7 +11642,7 @@ namespace VZF.Data.Common
                         sortLastVisit,
                         numPosts,
                         numPostCompare);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_listmembers(
                         connectionString,
                         boardId,
@@ -11623,9 +11664,9 @@ namespace VZF.Data.Common
                         sortLastVisit,
                         numPosts,
                         numPostCompare);
-                    // case "oracle":  return orPostgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
-                    // case "db2":  return db2Postgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
-                    // case "other":  return othPostgre.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_listmembers(connectionString, boardId, userId, approved, groupId, rankId, useStyledNicks, lastUserId, literals, exclude, beginsWith, pageIndex, pageSize, sortName, sortRank, sortJoined, sortPosts, sortLastVisit, numPosts, numPostCompare); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11641,21 +11682,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_medal_delete(connectionString, userId, medalID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_medal_delete(connectionString, userId, medalID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_medal_delete(connectionString, userId, medalID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_medal_delete(connectionString, userId, medalID);
                     break;
-                    // case "oracle":   orPostgre.Db.user_medal_delete(connectionString, userId, medalID);break;
-                    // case "db2":   db2Postgre.Db.user_medal_delete(connectionString, userId, medalID); break;
-                    // case "other":   othPostgre.Db.user_medal_delete(connectionString, userId, medalID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_medal_delete(connectionString, userId, medalID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_medal_delete(connectionString, userId, medalID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_medal_delete(connectionString, userId, medalID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11670,17 +11711,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_medal_list(connectionString, userId, medalID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_medal_list(connectionString, userId, medalID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_medal_list(connectionString, userId, medalID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_medal_list(connectionString, userId, medalID);
-                    // case "oracle":  return orPostgre.Db.user_medal_list(connectionString, userId, medalID);
-                    // case "db2":  return db2Postgre.Db.user_medal_list(connectionString, userId, medalID);
-                    // case "other":  return othPostgre.Db.user_medal_list(connectionString, userId, medalID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_medal_list(connectionString, userId, medalID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_medal_list(connectionString, userId, medalID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_medal_list(connectionString, userId, medalID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11704,25 +11745,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_medal_save(
                         connectionString, userId, medalID, message, hide, onlyRibbon, sortOrder, dateAwarded);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_medal_save(
                         connectionString, userId, medalID, message, hide, onlyRibbon, sortOrder, dateAwarded);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_medal_save(
                         connectionString, userId, medalID, message, hide, onlyRibbon, sortOrder, dateAwarded);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_medal_save(
                         connectionString, userId, medalID, message, hide, onlyRibbon, sortOrder, dateAwarded);
                     break;
-                    // case "oracle":   orPostgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded);break;
-                    // case "db2":   db2Postgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
-                    // case "other":   othPostgre.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_medal_save(connectionString, userId, medalID, message,hide,  onlyRibbon, sortOrder, dateAwarded); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11737,21 +11778,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);
                     break;
-                    // case "oracle":   orPostgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);break;
-                    // case "db2":   db2Postgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
-                    // case "other":   othPostgre.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_migrate(connectionString, userId, providerUserKey, updateProvider); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11766,17 +11807,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_nntp(connectionString, boardId, userName, email, timeZone);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_nntp(connectionString, boardId, userName, email, timeZone);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_nntp(connectionString, boardId, userName, email, timeZone);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_nntp(connectionString, boardId, userName, email, timeZone);
-                    // case "oracle":  return orPostgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
-                    // case "db2":  return db2Postgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
-                    // case "other":  return othPostgre.Db.user_nntp(connectionString, boardId, userName,  email,timeZone); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_nntp(connectionString, boardId, userName,  email,timeZone);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_nntp(connectionString, boardId, userName,  email,timeZone); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11791,17 +11832,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_pmcount(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_pmcount(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_pmcount(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_pmcount(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_pmcount(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.user_pmcount(connectionString, userId);
-                    // case "other":  return othPostgre.Db.user_pmcount(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_pmcount(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_pmcount(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_pmcount(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11817,17 +11858,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                    // case "oracle":  return orPostgre.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                    // case "db2":  return db2Postgre.Db.user_recoverpassword(connectionString, boardId, userName, email);
-                    // case "other":  return othPostgre.Db.user_recoverpassword(connectionString, boardId, userName, email); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_recoverpassword(connectionString, boardId, userName, email);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_recoverpassword(connectionString, boardId, userName, email);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_recoverpassword(connectionString, boardId, userName, email); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11853,7 +11894,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_register(
                         connectionString,
                         boardId,
@@ -11865,7 +11906,7 @@ namespace VZF.Data.Common
                         homePage,
                         timeZone,
                         approved);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_register(
                         connectionString,
                         boardId,
@@ -11877,13 +11918,13 @@ namespace VZF.Data.Common
                         homePage,
                         timeZone,
                         approved);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return true;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return true;
-                    // case "oracle":  return orPostgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
-                    // case "db2":  return db2Postgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
-                    // case "other":  return othPostgre.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_register(connectionString, boardId,  userName,  password,  hash,  email,  location, homePage,  timeZone,  approved); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11899,21 +11940,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);break;
-                    // case "db2":   db2Postgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
-                    // case "other":   othPostgre.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_removeignoreduser(connectionString, userId, ignoredUserId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_removeignoreduser(connectionString, userId, ignoredUserId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11928,21 +11969,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_removepoints(connectionString, userId, fromUserID, points);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_removepoints(connectionString, userId, fromUserID, points);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_removepoints(connectionString, userId, fromUserID, points);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_removepoints(connectionString, userId, fromUserID, points);
                     break;
-                    // case "oracle":   orPostgre.Db.user_removepoints(connectionString, userId, fromUserID, points);break;
-                    // case "db2":   db2Postgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
-                    // case "other":   othPostgre.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_removepoints(connectionString, userId, fromUserID, points);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_removepoints(connectionString, userId, fromUserID, points); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11957,17 +11998,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_RepliedTopic(connectionString, messageId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_RepliedTopic(connectionString, messageId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_RepliedTopic(connectionString, messageId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_RepliedTopic(connectionString, messageId, userId);
-                    // case "oracle":  return orPostgre.Db.user_RepliedTopic(connectionString, messageId, userId);
-                    // case "db2":  return db2Postgre.Db.user_RepliedTopic(connectionString, messageId, userId);
-                    // case "other":  return othPostgre.Db.user_RepliedTopic(connectionString, messageId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_RepliedTopic(connectionString, messageId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_RepliedTopic(connectionString, messageId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_RepliedTopic(connectionString, messageId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11983,7 +12024,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_save(
                         connectionString,
                         userId,
@@ -12007,7 +12048,7 @@ namespace VZF.Data.Common
                         topicsPerPage, 
                         postsPerPage);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_save(
                         connectionString,
                         userId,
@@ -12031,7 +12072,7 @@ namespace VZF.Data.Common
                         topicsPerPage,
                         postsPerPage);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_save(
                         connectionString,
                         userId,
@@ -12055,7 +12096,7 @@ namespace VZF.Data.Common
                         topicsPerPage,
                         postsPerPage);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_save(
                         connectionString,
                         userId,
@@ -12079,9 +12120,9 @@ namespace VZF.Data.Common
                         topicsPerPage,
                         postsPerPage);
                     break;
-                    // case "oracle":   orPostgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType);break;
-                    // case "db2":   db2Postgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
-                    // case "other":   othPostgre.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_save(connectionString, userId, boardId, userName, displayName, email, timeZone, languageFile, culture, themeFile, useSingleSignOn, textEditor, overrideDefaultThemes, approved, pmNotification, autoWatchTopics, dSTUser, isHidden, notificationType); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12097,21 +12138,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);
                     break;
-                    // case "oracle":   orPostgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);break;
-                    // case "db2":   db2Postgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
-                    // case "other":   othPostgre.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_saveavatar(connectionString, userId, avatar, stream, avatarImageType); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12132,25 +12173,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_savenotification(
                         connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_savenotification(
                         connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_savenotification(
                         connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_savenotification(
                         connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);
                     break;
-                    // case "oracle":   orPostgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);break;
-                    // case "db2":   db2Postgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
-                    // case "other":   othPostgre.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_savenotification(connectionString, userId, pmNotification, autoWatchTopics, notificationType, dailyDigest); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12179,21 +12220,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_savepassword(connectionString, userId, password);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_savepassword(connectionString, userId, password);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_savepassword(connectionString, userId, password);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_savepassword(connectionString, userId, password);
                     break;
-                    // case "oracle":   orPostgre.Db.user_savepassword(connectionString, userId, password);break;
-                    // case "db2":   db2Postgre.Db.user_savepassword(connectionString, userId, password); break;
-                    // case "other":   othPostgre.Db.user_savepassword(connectionString, userId, password); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_savepassword(connectionString, userId, password);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_savepassword(connectionString, userId, password); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_savepassword(connectionString, userId, password); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12222,21 +12263,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_savesignature(connectionString, userId, signature);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_savesignature(connectionString, userId, signature);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_savesignature(connectionString, userId, signature);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_savesignature(connectionString, userId, signature);
                     break;
-                    // case "oracle":   orPostgre.Db.user_savesignature(connectionString, userId, signature);break;
-                    // case "db2":   db2Postgre.Db.user_savesignature(connectionString, userId, signature); break;
-                    // case "other":   othPostgre.Db.user_savesignature(connectionString, userId, signature); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_savesignature(connectionString, userId, signature);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_savesignature(connectionString, userId, signature); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_savesignature(connectionString, userId, signature); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12265,20 +12306,20 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_setinfo(connectionString, boardId, user);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_setinfo(connectionString, boardId, user);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_setinfo(connectionString, boardId, user);
                     break;
-                    // case "oracle":   orPostgre.Db.user_setinfo(connectionString, boardId, user);break;
-                    // case "db2":   db2Postgre.Db.user_setinfo(connectionString, boardId, user); break;
-                    // case "other":   othPostgre.Db.user_setinfo(connectionString, boardId, user); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_setinfo(connectionString, boardId, user);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_setinfo(connectionString, boardId, user); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_setinfo(connectionString, boardId, user); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12307,21 +12348,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_setnotdirty(connectionString, boardId, userId);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_setnotdirty(connectionString, boardId, userId);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_setnotdirty(connectionString, boardId, userId);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_setnotdirty(connectionString, boardId, userId);
                     break;
-                    // case "oracle":   orPostgre.Db.user_setnotdirty(connectionString, boardId, userId);break;
-                    // case "db2":   db2Postgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
-                    // case "other":   othPostgre.Db.user_setnotdirty(connectionString, boardId, userId); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_setnotdirty(connectionString, boardId, userId);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_setnotdirty(connectionString, boardId, userId); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_setnotdirty(connectionString, boardId, userId); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12350,21 +12391,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_setpoints(connectionString, userId, points);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_setpoints(connectionString, userId, points);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_setpoints(connectionString, userId, points);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_setpoints(connectionString, userId, points);
                     break;
-                    // case "oracle":   orPostgre.Db.user_setpoints(connectionString, userId, points);break;
-                    // case "db2":   db2Postgre.Db.user_setpoints(connectionString, userId, points); break;
-                    // case "other":   othPostgre.Db.user_setpoints(connectionString, userId, points); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_setpoints(connectionString, userId, points);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_setpoints(connectionString, userId, points); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_setpoints(connectionString, userId, points); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12396,21 +12437,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_setrole(connectionString, boardId, providerUserKey, role);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_setrole(connectionString, boardId, providerUserKey, role);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_setrole(connectionString, boardId, providerUserKey, role);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_setrole(connectionString, boardId, providerUserKey, role);
                     break;
-                    // case "oracle":   orPostgre.Db.user_setrole(connectionString, boardId, providerUserKey, role);break;
-                    // case "db2":   db2Postgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
-                    // case "other":   othPostgre.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_setrole(connectionString, boardId, providerUserKey, role);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_setrole(connectionString, boardId, providerUserKey, role); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12442,17 +12483,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_simplelist(connectionString, StartID, Limit);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_simplelist(connectionString, StartID, Limit);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_simplelist(connectionString, StartID, Limit);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_simplelist(connectionString, StartID, Limit);
-                    // case "oracle":  return orPostgre.Db.user_simplelist(connectionString, StartID, Limit);
-                    // case "db2":  return db2Postgre.Db.user_simplelist(connectionString, StartID, Limit);
-                    // case "other":  return othPostgre.Db.user_simplelist(connectionString, StartID, Limit); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_simplelist(connectionString, StartID, Limit);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_simplelist(connectionString, StartID, Limit); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12481,21 +12522,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_suspend(connectionString, userId, suspend);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_suspend(connectionString, userId, suspend);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_suspend(connectionString, userId, suspend);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_suspend(connectionString, userId, suspend);
                     break;
-                    // case "oracle":   orPostgre.Db.user_suspend(connectionString, userId, suspend);break;
-                    // case "db2":   db2Postgre.Db.user_suspend(connectionString, userId, suspend); break;
-                    // case "other":   othPostgre.Db.user_suspend(connectionString, userId, suspend); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_suspend(connectionString, userId, suspend);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_suspend(connectionString, userId, suspend); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_suspend(connectionString, userId, suspend); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12528,25 +12569,25 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.user_update_single_sign_on_status(
                         connectionString, userID, isFacebookUser, isTwitterUser);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.user_update_single_sign_on_status(
                         connectionString, userID, isFacebookUser, isTwitterUser);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.user_update_single_sign_on_status(
                         connectionString, userID, isFacebookUser, isTwitterUser);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.user_update_single_sign_on_status(
                         connectionString, userID, isFacebookUser, isTwitterUser);
                     break;
-                    // case "oracle":   orPostgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
-                    // case "db2":   db2Postgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
-                    // case "other":   othPostgre.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser);break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.user_update_single_sign_on_status(connectionString, userID, isFacebookUser, isTwitterUser);break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12578,17 +12619,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_ThankedMessage(connectionString, messageId, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_ThankedMessage(connectionString, messageId, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_ThankedMessage(connectionString, messageId, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_ThankedMessage(connectionString, messageId, userId);
-                    // case "oracle":  return orPostgre.Db.user_ThankedMessage(connectionString, messageId, userId);
-                    // case "db2":  return db2Postgre.Db.user_ThankedMessage(connectionString, messageId, userId);
-                    // case "other":  return othPostgre.Db.user_ThankedMessage(connectionString, messageId, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_ThankedMessage(connectionString, messageId, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_ThankedMessage(connectionString, messageId, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_ThankedMessage(connectionString, messageId, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12617,17 +12658,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_ThankFromCount(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_ThankFromCount(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_ThankFromCount(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_ThankFromCount(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.user_ThankFromCount(connectionString,  userId);
-                    // case "db2":  return db2Postgre.Db.user_ThankFromCount(connectionString,  userId);
-                    // case "other":  return othPostgre.Db.user_ThankFromCount(connectionString,  userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_ThankFromCount(connectionString,  userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_ThankFromCount(connectionString,  userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_ThankFromCount(connectionString,  userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12666,21 +12707,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_viewthanksfrom(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_viewthanksfrom(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_viewthanksfrom(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_viewthanksfrom(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "oracle":  return orPostgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "db2":  return db2Postgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "other":  return othPostgre.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_viewthanksfrom(connectionString, UserID, pageUserId, pageIndex, pageSize);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12719,21 +12760,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.user_viewthanksto(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.user_viewthanksto(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.user_viewthanksto(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.user_viewthanksto(
                         connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "oracle":  return orPostgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "db2":  return db2Postgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
-                    // case "other":  return othPostgre.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.user_viewthanksto(connectionString, UserID, pageUserId, pageIndex, pageSize);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12788,7 +12829,7 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return
                         VZF.Data.MsSql.Db.UserFind(
                             connectionString,
@@ -12799,7 +12840,7 @@ namespace VZF.Data.Common
                             displayName,
                             notificationType,
                             dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return
                         VZF.Data.Postgre.Db.UserFind(
                             connectionString,
@@ -12810,7 +12851,7 @@ namespace VZF.Data.Common
                             displayName,
                             notificationType,
                             dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return
                         VZF.Data.Mysql.Db.UserFind(
                             connectionString,
@@ -12821,7 +12862,7 @@ namespace VZF.Data.Common
                             displayName,
                             notificationType,
                             dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return
                         VZF.Data.Firebird.Db.UserFind(
                             connectionString,
@@ -12832,9 +12873,9 @@ namespace VZF.Data.Common
                             displayName,
                             notificationType,
                             dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                    // case "oracle":  return orPostgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                    // case "db2":  return db2Postgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
-                    // case "other":  return othPostgre.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u));
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.UserFind(connectionString, boardId,  filter,  userName,  email, displayName,notificationType,dailyDigest).AsEnumerable().Select(u => new TypedUserFind(u); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12863,21 +12904,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.userforum_delete(connectionString, userId, forumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.userforum_delete(connectionString, userId, forumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.userforum_delete(connectionString, userId, forumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.userforum_delete(connectionString, userId, forumID);
                     break;
-                    // case "oracle":   orPostgre.Db.userforum_delete(connectionString, userId, forumID);break;
-                    // case "db2":   db2Postgre.Db.userforum_delete(connectionString, userId, forumID); break;
-                    // case "other":   othPostgre.Db.userforum_delete(connectionString, userId, forumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.userforum_delete(connectionString, userId, forumID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.userforum_delete(connectionString, userId, forumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.userforum_delete(connectionString, userId, forumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12909,17 +12950,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.userforum_list(connectionString, userId, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.userforum_list(connectionString, userId, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.userforum_list(connectionString, userId, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.userforum_list(connectionString, userId, forumID);
-                    // case "oracle":  return orPostgre.Db.userforum_list(connectionString, userId, forumID);
-                    // case "db2":  return db2Postgre.Db.userforum_list(connectionString, userId, forumID);
-                    // case "other":  return othPostgre.Db.userforum_list(connectionString, userId, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.userforum_list(connectionString, userId, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.userforum_list(connectionString, userId, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.userforum_list(connectionString, userId, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12951,21 +12992,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.userforum_save(connectionString, userId, forumID, accessMaskID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.userforum_save(connectionString, userId, forumID, accessMaskID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.userforum_save(connectionString, userId, forumID, accessMaskID);
                     break;
-                    // case "oracle":   orPostgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID);break;
-                    // case "db2":   db2Postgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
-                    // case "other":   othPostgre.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.userforum_save(connectionString, userId, forumID, accessMaskID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.userforum_save(connectionString, userId, forumID, accessMaskID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -12994,17 +13035,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.usergroup_list(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.usergroup_list(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.usergroup_list(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.usergroup_list(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.usergroup_list(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.usergroup_list(connectionString, userId);
-                    // case "other":  return othPostgre.Db.usergroup_list(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.usergroup_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.usergroup_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.usergroup_list(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13036,21 +13077,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.usergroup_save(connectionString, userId, groupID, member);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.usergroup_save(connectionString, userId, groupID, member);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.usergroup_save(connectionString, userId, groupID, member);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.usergroup_save(connectionString, userId, groupID, member);
                     break;
-                    // case "oracle":   orPostgre.Db.usergroup_save(connectionString, userId,  groupID, member);break;
-                    // case "db2":   db2Postgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
-                    // case "other":   othPostgre.Db.usergroup_save(connectionString, userId,  groupID, member); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.usergroup_save(connectionString, userId,  groupID, member);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.usergroup_save(connectionString, userId,  groupID, member); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.usergroup_save(connectionString, userId,  groupID, member); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13095,21 +13136,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.UserList(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.UserList(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.UserList(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.UserList(
                         connectionString, boardId, userId, approved, groupID, rankID, useStyledNicks);
-                    // case "oracle":  return orPostgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
-                    // case "db2":  return db2Postgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
-                    // case "other":  return othPostgre.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.UserList(connectionString, boardId,  userId,  approved,  groupID,  rankID,useStyledNicks); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13138,21 +13179,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.watchforum_add(connectionString, userId, forumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.watchforum_add(connectionString, userId, forumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.watchforum_add(connectionString, userId, forumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.watchforum_add(connectionString, userId, forumID);
                     break;
-                    // case "oracle":   orPostgre.Db.watchforum_add(connectionString, userId, forumID);break;
-                    // case "db2":   db2Postgre.Db.watchforum_add(connectionString, userId, forumID); break;
-                    // case "other":   othPostgre.Db.watchforum_add(connectionString, userId, forumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchforum_add(connectionString, userId, forumID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchforum_add(connectionString, userId, forumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchforum_add(connectionString, userId, forumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13184,17 +13225,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.watchforum_check(connectionString, userId, forumID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.watchforum_check(connectionString, userId, forumID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.watchforum_check(connectionString, userId, forumID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.watchforum_check(connectionString, userId, forumID);
-                    // case "oracle":  return orPostgre.Db.watchforum_check(connectionString, userId, forumID);
-                    // case "db2":  return db2Postgre.Db.watchforum_check(connectionString, userId, forumID);
-                    // case "other":  return othPostgre.Db.watchforum_check(connectionString, userId, forumID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchforum_check(connectionString, userId, forumID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchforum_check(connectionString, userId, forumID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchforum_check(connectionString, userId, forumID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13220,21 +13261,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.watchforum_delete(connectionString, watchForumID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.watchforum_delete(connectionString, watchForumID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.watchforum_delete(connectionString, watchForumID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.watchforum_delete(connectionString, watchForumID);
                     break;
-                    // case "oracle":   orPostgre.Db.watchforum_delete(connectionString, watchForumID);break;
-                    // case "db2":   db2Postgre.Db.watchforum_delete(connectionString, watchForumID); break;
-                    // case "other":   othPostgre.Db.watchforum_delete(connectionString, watchForumID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchforum_delete(connectionString, watchForumID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchforum_delete(connectionString, watchForumID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchforum_delete(connectionString, watchForumID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13263,17 +13304,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.watchforum_list(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.watchforum_list(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.watchforum_list(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.watchforum_list(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.watchforum_list(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.watchforum_list(connectionString, userId);
-                    // case "other":  return othPostgre.Db.watchforum_list(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchforum_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchforum_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchforum_list(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13302,21 +13343,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.watchtopic_add(connectionString, userId, topicID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.watchtopic_add(connectionString, userId, topicID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.watchtopic_add(connectionString, userId, topicID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.watchtopic_add(connectionString, userId, topicID);
                     break;
-                    // case "oracle":   orPostgre.Db.watchtopic_add(connectionString, userId, topicID);break;
-                    // case "db2":   db2Postgre.Db.watchtopic_add(connectionString, userId, topicID); break;
-                    // case "other":   othPostgre.Db.watchtopic_add(connectionString, userId, topicID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchtopic_add(connectionString, userId, topicID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchtopic_add(connectionString, userId, topicID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchtopic_add(connectionString, userId, topicID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13348,17 +13389,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.watchtopic_check(connectionString, userId, topicID);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.watchtopic_check(connectionString, userId, topicID);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.watchtopic_check(connectionString, userId, topicID);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case "oracle":  return orPostgre.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case "db2":  return db2Postgre.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case "other":  return othPostgre.Db.watchtopic_check(connectionString, userId, topicID); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchtopic_check(connectionString, userId, topicID);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchtopic_check(connectionString, userId, topicID);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchtopic_check(connectionString, userId, topicID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13385,21 +13426,21 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.watchtopic_delete(connectionString, watchTopicID);
                     break;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.watchtopic_delete(connectionString, watchTopicID);
                     break;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.watchtopic_delete(connectionString, watchTopicID);
                     break;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.watchtopic_delete(connectionString, watchTopicID);
                     break;
-                    // case "oracle":   orPostgre.Db.watchtopic_delete(connectionString, watchTopicID);break;
-                    // case "db2":   db2Postgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
-                    // case "other":   othPostgre.Db.watchtopic_delete(connectionString, watchTopicID); break;
+                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchtopic_delete(connectionString, watchTopicID);break;
+                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchtopic_delete(connectionString, watchTopicID); break;
+                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchtopic_delete(connectionString, watchTopicID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13428,17 +13469,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.watchtopic_list(connectionString, userId);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.watchtopic_list(connectionString, userId);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.watchtopic_list(connectionString, userId);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.watchtopic_list(connectionString, userId);
-                    // case "oracle":  return orPostgre.Db.watchtopic_list(connectionString, userId);
-                    // case "db2":  return db2Postgre.Db.watchtopic_list(connectionString, userId);
-                    // case "other":  return othPostgre.Db.watchtopic_list(connectionString, userId); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchtopic_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchtopic_list(connectionString, userId);
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchtopic_list(connectionString, userId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13467,17 +13508,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.GetDBSize(connectionString);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.GetDBSize(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.GetDbSize(connectionString);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.GetDBSize(connectionString);
-                    // case "oracle":  return orPostgre.Db.GetDBSize();
-                    // case "db2":  return db2Postgre.Db.GetDBSize();
-                    // case "other":  return othPostgre.Db.GetDBSize(); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetDBSize();
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetDBSize();
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.GetDBSize(); 
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", mid));
             }
@@ -13503,17 +13544,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.GetIsForumInstalled(connectionString);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.GetIsForumInstalled(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.GetIsForumInstalled(connectionString);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.GetIsForumInstalled(connectionString);
-                    // case "oracle":  return orPostgre.Db.GetIsForumInstalled();
-                    // case "db2":  return db2Postgre.Db.GetIsForumInstalled();
-                    // case "other":  return othPostgre.Db.GetIsForumInstalled(); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetIsForumInstalled();
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetIsForumInstalled();
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.GetIsForumInstalled(); 
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", mid));
             }
@@ -13539,17 +13580,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.GetDBVersion(connectionString);
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.GetDBVersion(connectionString);
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.GetDbVersion(connectionString);
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.GetDBVersion(connectionString);
-                    // case "oracle":  return orPostgre.Db.GetDBVersion();
-                    // case "db2":  return db2Postgre.Db.GetDBVersion();
-                    // case "other":  return othPostgre.Db.GetDBVersion(); 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetDBVersion();
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetDBVersion();
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.GetDBVersion(); 
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", mid));
             }
@@ -13575,20 +13616,20 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.FullTextSupported;
                     ;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.FullTextSupported;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.FullTextSupported;
                     ;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.FullTextSupported;
                     ;
-                    // case "oracle":  return orPostgre.Db.fullTextSupported;;
-                    // case "db2":  return db2Postgre.Db.fullTextSupported;;
-                    // case "other":  return othPostgre.Db.fullTextSupported;; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.fullTextSupported;;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.fullTextSupported;;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.fullTextSupported;; 
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", mid));
             }
@@ -13614,17 +13655,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.FullTextScript;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.FullTextScript;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.FullTextScript;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.FullTextScript;
-                    // case "oracle":  return orPostgre.Db.fullTextScript;
-                    // case "db2":  return db2Postgre.Db.fullTextScript;
-                    // case "other":  return othPostgre.Db.fullTextScript; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.fullTextScript;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.fullTextScript;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.fullTextScript; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13651,17 +13692,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.ProviderAssemblyName;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.ProviderAssemblyName;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.ProviderAssemblyName;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.ProviderAssemblyName;
-                    // case "oracle":  return orPostgre.Db.ProviderAssemblyName;
-                    // case "db2":  return db2Postgre.Db.ProviderAssemblyName;
-                    // case "other":  return othPostgre.Db.ProviderAssemblyName; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.ProviderAssemblyName;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.ProviderAssemblyName;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.ProviderAssemblyName; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13676,17 +13717,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PasswordPlaceholderVisible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PasswordPlaceholderVisible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PasswordPlaceholderVisible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PasswordPlaceholderVisible;
-                    // case "oracle":  return orPostgre.Db.PasswordPlaceholderVisible;
-                    // case "db2":  return db2Postgre.Db.PasswordPlaceholderVisible;
-                    // case "other":  return othPostgre.Db.PasswordPlaceholderVisible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PasswordPlaceholderVisible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PasswordPlaceholderVisible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PasswordPlaceholderVisible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13703,17 +13744,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter1_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter1Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter1_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter1Name;
-                    // case "oracle":  return orPostgre.Db.Parameter1Name;
-                    // case "db2":  return db2Postgre.Db.Parameter1Name;
-                    // case "other":  return othPostgre.Db.Parameter1Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter1Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter1Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter1Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13728,17 +13769,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter1_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter1Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter1_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter1Value;
-                    // case "oracle":  return orPostgre.Db.Parameter1Value;
-                    // case "db2":  return db2Postgre.Db.Parameter1Value;
-                    // case "other":  return othPostgre.Db.Parameter1Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter1Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter1Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter1Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13753,17 +13794,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter1_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter1Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter1_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter1Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter1Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter1Visible;
-                    // case "other":  return othPostgre.Db.Parameter1Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter1Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter1Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter1Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13780,17 +13821,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter2_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter2Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter2_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter2Name;
-                    // case "oracle":  return orPostgre.Db.Parameter2Name;
-                    // case "db2":  return db2Postgre.Db.Parameter2Name;
-                    // case "other":  return othPostgre.Db.Parameter2Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter2Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter2Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter2Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13805,17 +13846,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter2_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter2Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter2_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter2Value;
-                    // case "oracle":  return orPostgre.Db.Parameter2Value;
-                    // case "db2":  return db2Postgre.Db.Parameter2Value;
-                    // case "other":  return othPostgre.Db.Parameter2Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter2Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter2Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter2Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13830,17 +13871,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter2_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter2Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter2_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter2Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter2Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter2Visible;
-                    // case "other":  return othPostgre.Db.Parameter2Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter2Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter2Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter2Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13857,17 +13898,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter3_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter3Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter3_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter3Name;
-                    // case "oracle":  return orPostgre.Db.Parameter3Name;
-                    // case "db2":  return db2Postgre.Db.Parameter3Name;
-                    // case "other":  return othPostgre.Db.Parameter3Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter3Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter3Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter3Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13882,17 +13923,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter3_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter3Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter3_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter3Value;
-                    // case "oracle":  return orPostgre.Db.Parameter3Value;
-                    // case "db2":  return db2Postgre.Db.Parameter3Value;
-                    // case "other":  return othPostgre.Db.Parameter3Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter3Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter3Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter3Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13907,17 +13948,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter3_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter3Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter3_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter3Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter3Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter3Visible;
-                    // case "other":  return othPostgre.Db.Parameter3Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter3Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter3Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter3Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13934,17 +13975,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter4_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter4_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter4_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter4_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter4_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter4_Name;
-                    // case "other":  return othPostgre.Db.Parameter4_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter4_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter4_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter4_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13959,17 +14000,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter4_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter4_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter4_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter4_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter4_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter4_Value;
-                    // case "other":  return othPostgre.Db.Parameter4_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter4_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter4_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter4_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13984,17 +14025,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter4_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter4_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter4_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter4_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter4_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter4_Visible;
-                    // case "other":  return othPostgre.Db.Parameter4_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter4_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter4_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter4_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14011,17 +14052,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter5_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter5_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter5_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter5_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter5_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter5_Name;
-                    // case "other":  return othPostgre.Db.Parameter5_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter5_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter5_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter5_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14036,17 +14077,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter5_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter5_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter5_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter5_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter5_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter5_Value;
-                    // case "other":  return othPostgre.Db.Parameter5_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter5_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter5_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter5_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14061,17 +14102,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter5_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter5_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter5_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter5_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter5_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter5_Visible;
-                    // case "other":  return othPostgre.Db.Parameter5_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter5_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter5_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter5_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14088,17 +14129,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter6_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter6_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter6_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter6_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter6_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter6_Name;
-                    // case "other":  return othPostgre.Db.Parameter6_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter6_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter6_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter6_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14113,17 +14154,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter6_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter6_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter6_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter6_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter6_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter6_Value;
-                    // case "other":  return othPostgre.Db.Parameter6_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter6_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter6_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter6_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14138,17 +14179,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter6_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter6_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter6_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter6_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter6_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter6_Visible;
-                    // case "other":  return othPostgre.Db.Parameter6_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter6_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter6_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter6_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14165,17 +14206,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter7_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter7_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter7_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter7_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter7_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter7_Name;
-                    // case "other":  return othPostgre.Db.Parameter7_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter7_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter7_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter7_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14190,17 +14231,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter7_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter7_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter7_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter7_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter7_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter7_Value;
-                    // case "other":  return othPostgre.Db.Parameter7_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter7_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter7_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter7_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14215,17 +14256,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter7_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter7_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter7_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter7_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter7_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter7_Visible;
-                    // case "other":  return othPostgre.Db.Parameter7_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter7_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter7_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter7_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14242,17 +14283,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter8_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter8_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter8_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter8_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter8_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter8_Name;
-                    // case "other":  return othPostgre.Db.Parameter8_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter8_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter8_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter8_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14267,17 +14308,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter8_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter8_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter8_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter8_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter8_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter8_Value;
-                    // case "other":  return othPostgre.Db.Parameter8_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter8_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter8_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter8_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14292,17 +14333,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter8_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter8_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter8_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter8_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter8_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter8_Visible;
-                    // case "other":  return othPostgre.Db.Parameter8_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter8_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter8_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter8_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14319,17 +14360,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter9_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter9_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter9_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter9_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter9_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter9_Name;
-                    // case "other":  return othPostgre.Db.Parameter9_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter9_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter9_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter9_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14344,17 +14385,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter9_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter9_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter9_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter9_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter9_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter9_Value;
-                    // case "other":  return othPostgre.Db.Parameter9_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter9_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter9_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter9_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14369,17 +14410,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter9_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter9_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter9_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter9_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter9_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter9_Visible;
-                    // case "other":  return othPostgre.Db.Parameter9_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter9_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter9_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter9_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14396,17 +14437,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter10_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter10_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter10_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter10_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter10_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter10_Name;
-                    // case "other":  return othPostgre.Db.Parameter10_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter10_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter10_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter10_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14421,17 +14462,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter10_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter10_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter10_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter10_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter10_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter10_Value;
-                    // case "other":  return othPostgre.Db.Parameter10_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter10_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter10_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter10_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14446,17 +14487,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter10_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter10_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter10_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter10_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter10_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter10_Visible;
-                    // case "other":  return othPostgre.Db.Parameter10_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter10_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter10_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter10_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14476,17 +14517,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter11_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter11_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter11_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter11_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter11_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter11_Name;
-                    // case "other":  return othPostgre.Db.Parameter11_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter11_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter11_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter11_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14501,17 +14542,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter11_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter11_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter11_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter11_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter11_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter11_Value;
-                    // case "other":  return othPostgre.Db.Parameter11_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter11_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter11_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter11_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14526,17 +14567,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter11_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter11_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter11_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter11_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter11_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter11_Visible;
-                    // case "other":  return othPostgre.Db.Parameter11_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter11_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter11_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter11_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14551,17 +14592,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter12_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter12_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter12_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter12_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter12_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter12_Name;
-                    // case "other":  return othPostgre.Db.Parameter12_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter12_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter12_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter12_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14576,17 +14617,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter12_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter12_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter12_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter12_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter12_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter12_Value;
-                    // case "other":  return othPostgre.Db.Parameter12_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter12_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter12_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter12_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14601,17 +14642,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter12_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter12_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter12_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter12_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter12_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter12_Visible;
-                    // case "other":  return othPostgre.Db.Parameter12_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter12_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter12_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter12_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14626,17 +14667,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter13_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter13_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter13_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter13_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter13_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter13_Name;
-                    // case "other":  return othPostgre.Db.Parameter13_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter13_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter13_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter13_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14651,17 +14692,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter13_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter13_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter13_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter13_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter13_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter13_Value;
-                    // case "other":  return othPostgre.Db.Parameter13_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter13_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter13_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter13_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14676,17 +14717,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter13_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter13_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter13_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter13_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter13_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter13_Visible;
-                    // case "other":  return othPostgre.Db.Parameter13_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter13_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter13_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter13_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14703,17 +14744,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter14_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter14_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter14_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter14_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter14_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter14_Name;
-                    // case "other":  return othPostgre.Db.Parameter14_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter14_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter14_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter14_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14728,17 +14769,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter14_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter14_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter14_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter14_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter14_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter14_Value;
-                    // case "other":  return othPostgre.Db.Parameter4_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter14_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter14_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter4_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14753,17 +14794,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter14_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter14_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter14_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter14_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter14_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter14_Visible;
-                    // case "other":  return othPostgre.Db.Parameter14_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter14_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter14_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter14_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14780,17 +14821,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter15_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter15_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter15_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter15_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter15_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter15_Name;
-                    // case "other":  return othPostgre.Db.Parameter15_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter15_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter15_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter15_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14805,17 +14846,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter15_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter15_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter15_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter15_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter15_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter15_Value;
-                    // case "other":  return othPostgre.Db.Parameter15_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter15_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter15_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter15_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14830,17 +14871,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter15_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter15_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter15_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter15_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter15_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter15_Visible;
-                    // case "other":  return othPostgre.Db.Parameter15_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter15_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter15_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter15_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14857,17 +14898,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter16_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter16_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter16_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter16_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter16_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter16_Name;
-                    // case "other":  return othPostgre.Db.Parameter16_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter16_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter16_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter16_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14882,17 +14923,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter16_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter16_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter16_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter16_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter16_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter16_Value;
-                    // case "other":  return othPostgre.Db.Parameter16_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter16_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter16_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter16_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14907,17 +14948,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter16_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter16_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter16_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter16_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter16_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter16_Visible;
-                    // case "other":  return othPostgre.Db.Parameter16_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter16_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter16_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter16_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14934,17 +14975,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter17_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter17_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter17_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter17_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter17_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter17_Name;
-                    // case "other":  return othPostgre.Db.Parameter17_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter17_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter17_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter17_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14959,17 +15000,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter17_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter17_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter17_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter17_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter17_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter17_Value;
-                    // case "other":  return othPostgre.Db.Parameter17_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter17_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter17_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter17_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -14984,17 +15025,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter17_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter17_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter17_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter17_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter17_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter17_Visible;
-                    // case "other":  return othPostgre.Db.Parameter17_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter17_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter17_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter17_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15011,17 +15052,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter18_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter18_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter18_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter18_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter18_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter18_Name;
-                    // case "other":  return othPostgre.Db.Parameter18_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter18_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter18_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter18_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15036,17 +15077,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter18_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter18_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter18_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter18_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter18_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter18_Value;
-                    // case "other":  return othPostgre.Db.Parameter18_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter18_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter18_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter18_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15061,17 +15102,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter18_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter18_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter18_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter18_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter18_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter18_Visible;
-                    // case "other":  return othPostgre.Db.Parameter18_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter18_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter18_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter18_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15088,17 +15129,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter19_Name;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter19_Name;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter19_Name;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter19_Name;
-                    // case "oracle":  return orPostgre.Db.Parameter19_Name;
-                    // case "db2":  return db2Postgre.Db.Parameter19_Name;
-                    // case "other":  return othPostgre.Db.Parameter19_Name; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter19_Name;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter19_Name;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter19_Name; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15113,17 +15154,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter19_Value;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter19_Value;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter19_Value;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter19_Value;
-                    // case "oracle":  return orPostgre.Db.Parameter19_Value;
-                    // case "db2":  return db2Postgre.Db.Parameter19_Value;
-                    // case "other":  return othPostgre.Db.Parameter19_Value; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter19_Value;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter19_Value;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter19_Value; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15138,17 +15179,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.Parameter19_Visible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.Parameter19_Visible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.Parameter19_Visible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.Parameter19_Visible;
-                    // case "oracle":  return orPostgre.Db.Parameter19_Visible;
-                    // case "db2":  return db2Postgre.Db.Parameter19_Visible;
-                    // case "other":  return othPostgre.Db.Parameter19_Visible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter19_Visible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter19_Visible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter19_Visible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15178,17 +15219,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.ScriptList;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.ScriptList;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.ScriptList;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.ScriptList;
-                    // case "oracle":  return orPostgre.Db.scriptList;
-                    // case "db2":  return db2Postgre.Db.scriptList;
-                    // case "other":  return othPostgre.Db.scriptList; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.scriptList;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.scriptList;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.scriptList; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15214,17 +15255,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PanelGetStats;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PanelGetStats;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PanelGetStats;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelGetStats;
-                    // case "oracle":  return orPostgre.Db.PanelGetStats;
-                    // case "db2":  return db2Postgre.Db.PanelGetStats;
-                    // case "other":  return othPostgre.Db.PanelGetStats; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelGetStats;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelGetStats;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PanelGetStats; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15250,17 +15291,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PanelRecoveryMode;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PanelRecoveryMode;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PanelRecoveryMode;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelRecoveryMode;
-                    // case "oracle":  return orPostgre.Db.PanelRecoveryMode;
-                    // case "db2":  return db2Postgre.Db.PanelRecoveryMode;
-                    // case "other":  return othPostgre.Db.PanelRecoveryMode; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelRecoveryMode;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelRecoveryMode;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PanelRecoveryMode; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15286,17 +15327,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PanelReindex;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PanelReindex;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PanelReindex;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelReindex;
-                    // case "oracle":  return orPostgre.Db.PanelReindex;
-                    // case "db2":  return db2Postgre.Db.PanelReindex;
-                    // case "other":  return othPostgre.Db.PanelReindex; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelReindex;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelReindex;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PanelReindex; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15323,17 +15364,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.PanelShrink;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.PanelShrink;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.PanelShrink;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelShrink;
-                    // case "oracle":  return orPostgre.Db.PanelShrink;
-                    // case "db2":  return db2Postgre.Db.PanelShrink;
-                    // case "other":  return othPostgre.Db.PanelShrink; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelShrink;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelShrink;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.PanelShrink; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -15360,17 +15401,17 @@ namespace VZF.Data.Common
 
             switch (dataEngine)
             {
-                case "System.Data.SqlClient":
+                case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.btnReindexVisible;
-                case "Npgsql":
+                case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.btnReindexVisible;
-                case "MySql.Data.MySqlClient":
+                case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.btnReindexVisible;
-                case "FirebirdSql.Data.FirebirdClient":
+                case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.btnReindexVisible;
-                    // case "oracle":  return orPostgre.Db.btnReindexVisible;
-                    // case "db2":  return db2Postgre.Db.btnReindexVisible;
-                    // case "other":  return othPostgre.Db.btnReindexVisible; 
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.btnReindexVisible;
+                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.btnReindexVisible;
+                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.btnReindexVisible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

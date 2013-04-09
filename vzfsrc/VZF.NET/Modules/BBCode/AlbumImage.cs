@@ -22,7 +22,7 @@ namespace YAF.Modules.BBCode
     using System.Web.UI;
 
     using VZF.Controls;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// The Album Image BB Code Module.

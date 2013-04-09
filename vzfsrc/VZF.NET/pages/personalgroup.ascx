@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="personalgroup.ascx.cs" Inherits="YAF.pages.personalgroup" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="YAF.Types.Flags" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
+<%@ Import Namespace="VZF.Utils.Helpers" %>
 <VZF:PageLinks ID="PageLinks" runat="server"></VZF:PageLinks>
 <a id="top" name="top"></a>
 <table class="content" width="100%" cellspacing="1" cellpadding="0">

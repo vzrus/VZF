@@ -3,7 +3,7 @@
 <%@ Import Namespace="YAF.Core"%>
 <%@ Import Namespace="YAF.Core.Services" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Classes" %>
 <tr class="postheader">		
@@ -88,6 +88,7 @@
 </tr>
 <tr class="postsep">
     <td colspan="3">
-        <VZF:PopMenu runat="server" ID="PopMenu1" Control="UserName" />
+        <VZF:PopMenu runat="server" ID="PopMenu1" Control="UserName" />     
     </td>
+    
 </tr>

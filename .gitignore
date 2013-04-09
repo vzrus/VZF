@@ -42,5 +42,3 @@ vzfsrc/VZF.NET/web_pg_remote.config
 vzfsrc/VZF.NET/app_pg_remote.config
 vzfsrc/VZF.NET/app_offline1.htm
 vzfsrc/VZF.NET/mail.config
-vzfsrc/VZF.NET/mail_local.config
-.gitignore

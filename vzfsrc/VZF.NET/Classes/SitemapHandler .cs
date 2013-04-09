@@ -11,7 +11,7 @@
     using YAF.Classes;
     using YAF.Core;
     using YAF.Types.Constants;
-    using YAF.Utils;
+    using VZF.Utils;
 
     public class SitemapHandler : IHttpHandler
     {

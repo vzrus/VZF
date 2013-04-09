@@ -26,7 +26,7 @@ namespace YAF.Core.Services
 
   using YAF.Core; 
   
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types.Interfaces;
 
   /// <summary>

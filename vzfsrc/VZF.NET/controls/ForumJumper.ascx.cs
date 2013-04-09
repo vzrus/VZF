@@ -25,7 +25,7 @@ namespace YAF.Сontrols
     using YAF.Core;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using YAF.Utils;
+    using VZF.Utils;
 
     public partial class ForumJumper : BaseUserControl
     {

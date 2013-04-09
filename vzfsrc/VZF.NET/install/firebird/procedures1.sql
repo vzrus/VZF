@@ -1666,6 +1666,9 @@ I_CATEGORYID INTEGER,
 I_PARENTID INTEGER,
 I_STYLEDNICKS INTEGER,
 I_FINDLASTUNREAD BOOL,
+I_SHOWCOMMONFORUMS BOOL,
+I_SHOWPERSONALFORUMS BOOL,
+I_FORUMCREATEDBYUSERID INTEGER,
 I_UTCTIMESTAMP TIMESTAMP) 
 RETURNS
 (
@@ -2770,6 +2773,7 @@ RETURNS (
 "IsHidden" BOOL,
 "IsNoCount" BOOL,
 "IsModerated" BOOL,
+"IsUserForum" BOOL,
 "CreatedByUserID" INTEGER,
 "CanHavePersForums" BOOL
 )		
@@ -2801,6 +2805,7 @@ begin
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
 				   a.ISMODERATED,
+				   a.ISUSERFORUM,
 				   a.CREATEDBYUSERID,
                    a.CANHAVEPERSFORUMS 
 		from objQual_FORUM a 
@@ -2833,6 +2838,7 @@ begin
 		:"IsHidden",
 		:"IsNoCount",
 		:"IsModerated",
+		:"IsUserForum",
 		:"CreatedByUserID",
 		:"CanHavePersForums"
 DO SUSPEND;
@@ -2861,6 +2867,7 @@ DO SUSPEND;
 				   a.ISHIDDEN,
 				   a.ISNOCOUNT,
 				   a.ISMODERATED,
+				   a.ISUSERFORUM,
 				   a.CREATEDBYUSERID,
                    a.CANHAVEPERSFORUMS
 				   from objQual_FORUM a 
@@ -2893,6 +2900,7 @@ DO SUSPEND;
 		:"IsHidden",
 		:"IsNoCount",
 		:"IsModerated",
+		:"IsUserForum",
 		:"CreatedByUserID",
 		:"CanHavePersForums"
 DO SUSPEND;

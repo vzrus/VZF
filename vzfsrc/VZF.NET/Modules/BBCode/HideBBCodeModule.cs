@@ -28,7 +28,7 @@ namespace YAF.Modules.BBCode
     using VZF.Controls;
     using YAF.Core;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// Hidden BBCode Module

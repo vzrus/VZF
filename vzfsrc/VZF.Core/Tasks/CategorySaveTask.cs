@@ -27,7 +27,7 @@ namespace YAF.Core.Tasks
 
   
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   /// <summary>
   /// Run when we want to do migration of users in the background...

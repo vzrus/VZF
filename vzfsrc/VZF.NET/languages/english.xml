@@ -3563,6 +3563,7 @@ Visit {forumname} at {forumlink}
    <page name="PERSONALACCESSMASK">
      <Resource tag="TITLE">Personal Access Masks</Resource>
      <Resource tag="NEW_MASK">New Mask</Resource>
+     <Resource tag="COMMONMASKS">Common Masks</Resource>
      <Resource tag="CANCEL">Cancel</Resource>
    </page>
   <page name="PERSONALACCESSMASK_EDIT">
@@ -4081,6 +4082,10 @@ Visit {forumname} at {forumlink}
       <Resource tag="CATEGORY_CANTBEACHILD_MSG">Category can't be a child.</Resource>
       <Resource tag="NEW_CATEGORY">New Category</Resource>
       <Resource tag="NEW_FORUM">New Forum</Resource>
+      <Resource tag="ISUSERFORUM">User Forum (blog)</Resource>
+      <Resource tag="ISGENERALFORUM">General forum</Resource>
+      <Resource tag="FORUMAUTHOR">Created by </Resource>
+      <Resource tag="CREATEDDATE">Created on </Resource>
     </page>
     <page name="ADMIN_EDITCATEGORY">
       <Resource tag="TITLE">Add/Edit Category</Resource>
@@ -4148,6 +4153,8 @@ Visit {forumname} at {forumlink}
       <Resource tag="PRE_MODERATED_HELP">If the forum is moderated, posts have to be approved by a moderator.</Resource>
       <Resource tag="ISUSERFORUM">Is User Forum:</Resource>
       <Resource tag="ISUSERFORUM_HELP">The forum is a user forum(blog).</Resource>
+      <Resource tag="USERFORUM">Created by:</Resource>
+      <Resource tag="USERFORUM_HELP">Who created the forum.</Resource>
       <Resource tag="CANHAVEUSERFORUMS">Forum can have user forums:</Resource>
       <Resource tag="CANHAVEUSERFORUMS_HELP">The forum can have user forums.</Resource>
       <Resource tag="FORUM_IMAGE">Forum Image:</Resource>

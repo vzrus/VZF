@@ -36,8 +36,8 @@ namespace YAF.Core.Services
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -248,7 +248,7 @@ namespace YAF.Core.Services
                     categoryTable.AcceptChanges();
                 }
 
-                DataTable forum = CommonDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
+                DataTable forum = CommonDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase,true,false,null);
                 forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
                 ds.Tables.Add(forum.Copy());
 

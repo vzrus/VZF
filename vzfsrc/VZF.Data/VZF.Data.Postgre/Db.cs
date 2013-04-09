@@ -43,8 +43,8 @@ namespace VZF.Data.Postgre
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
     using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     /// <summary>
     /// All the Database functions for YAF
@@ -593,7 +593,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="int"/>. value for database size.
         /// </returns>
-        public static int GetDBSize(string connectionString)
+        public static int GetDBSize([NotNull] string connectionString )
         {
             using (
                 var cmd =
@@ -614,7 +614,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool GetIsForumInstalled(string connectionString)
+        public static bool GetIsForumInstalled([NotNull] string connectionString )
         {
             try
             {
@@ -639,7 +639,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int GetDBVersion(string connectionString)
+        public static int GetDBVersion([NotNull] string connectionString )
         {
             try
             {
@@ -668,7 +668,7 @@ namespace VZF.Data.Postgre
         #region Forum
 
         public static DataTable forum_ns_getchildren_anyuser(
-            string connectionString,
+            [NotNull] string connectionString ,
             int boardid,
             int categoryid,
             int forumid,
@@ -728,7 +728,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable forum_ns_getchildren(
-            string connectionString,
+            [NotNull] string connectionString ,
             int? boardid,
             int? categoryid,
             int? forumid,
@@ -751,7 +751,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable forum_ns_getchildren_activeuser(
-            string connectionString,
+            [NotNull] string connectionString ,
             int? boardid,
             int? categoryid,
             int? forumid,
@@ -777,7 +777,7 @@ namespace VZF.Data.Postgre
 
 
         public static DataTable forum_listall_sorted(
-            string connectionString, object boardId, object userId, int[] forumidExclusions)
+            [NotNull] string connectionString , object boardId, object userId, int[] forumidExclusions)
         {
             var d = new List<int>();
             d.Add(0);
@@ -786,7 +786,7 @@ namespace VZF.Data.Postgre
 
         //Here
         public static DataTable forum_listall_sorted(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userId,
             int[] forumidExclusions,
@@ -815,7 +815,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void activeaccess_reset(string connectionString)
+        public static void activeaccess_reset([NotNull] string connectionString )
         {
             using (var cmd = PostgreDbAccess.GetCommand("activeaccess_reset"))
             {
@@ -825,7 +825,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataRow pageload(
-            string connectionString,
+            [NotNull] string connectionString ,
             object sessionID,
             object boardId,
             object userKey,
@@ -915,7 +915,7 @@ namespace VZF.Data.Postgre
         /// <param name="UserID">ID of user</param>
         /// <returns>Results</returns>
         public static DataTable GetSearchResult(
-            string connectionString,
+            [NotNull] string connectionString ,
             string toSearchWhat,
             string toSearchFromWho,
             SearchWhatFlags searchFromWhoMethod,
@@ -1299,7 +1299,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin(string connectionString, object boardId, object pageUserID, object isUserForum)
+        public static DataSet ds_forumadmin([NotNull] string connectionString , object boardId, object pageUserID, object isUserForum)
         {
             using (var connMan = new PostgreDbConnectionManager(connectionString))
             {
@@ -1361,7 +1361,7 @@ namespace VZF.Data.Postgre
         /// <param name="accessMaskID">ID of access mask</param>
         /// <returns></returns>
         public static DataTable accessmask_list(
-            string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+            [NotNull] string connectionString , object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_list"))
             {
@@ -1380,7 +1380,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable accessmask_pforumlist(
-           string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+           [NotNull] string connectionString , object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_pforumlist"))
             {
@@ -1399,7 +1399,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable accessmask_aforumlist(
-           string connectionString, object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+           [NotNull] string connectionString , object boardId, object accessMaskID, object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_aforumlist"))
             {
@@ -1422,7 +1422,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="accessMaskID">ID of access mask</param>
         /// <returns></returns>
-        public static bool accessmask_delete(string connectionString, object accessMaskID)
+        public static bool accessmask_delete([NotNull] string connectionString , object accessMaskID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("accessmask_delete"))
             {
@@ -1452,7 +1452,7 @@ namespace VZF.Data.Postgre
         /// <param name="uploadAccess">Upload Access?</param>
         /// <param name="downloadAccess">Download Access?</param>
         public static void accessmask_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object accessMaskID,
             object boardId,
             object name,
@@ -1513,7 +1513,7 @@ namespace VZF.Data.Postgre
         /// <param name="Guests"></param>
         /// <returns>Returns a DataTable of active users</returns>    
         public static DataTable active_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object guests,
             object showCrawlers,
@@ -1558,7 +1558,7 @@ namespace VZF.Data.Postgre
         /// Returns a DataTable of active users
         /// </returns>
         public static DataTable active_list_user(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardID,
             object userID,
             object Guests,
@@ -1588,7 +1588,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="forumID">forumID</param>
         /// <returns>DataTable of all ative users in a forum</returns>
-        public static DataTable active_listforum(string connectionString, object forumID, object styledNicks)
+        public static DataTable active_listforum([NotNull] string connectionString , object forumID, object styledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("active_listforum"))
             {
@@ -1606,7 +1606,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="topicID">ID of topic </param>
         /// <returns>DataTable of all users that are in a topic</returns>
-        public static DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
+        public static DataTable active_listtopic([NotNull] string connectionString , object topicID, object styledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("active_listtopic"))
             {
@@ -1625,7 +1625,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">boardId</param>
         /// <returns>DataRow of activity stata</returns>
-        public static DataRow active_stats(string connectionString, object boardId)
+        public static DataRow active_stats([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("active_stats"))
             {
@@ -1652,7 +1652,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">boardId</param>
         /// <returns>DataTable with attachement list</returns>
         public static DataTable attachment_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object messageID,
             [NotNull] object attachmentID,
             [NotNull] object boardID,
@@ -1682,7 +1682,7 @@ namespace VZF.Data.Postgre
         /// <param name="contentType">type of attchment</param>
         /// <param name="stream">stream of bytes</param>
         public static void attachment_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             object fileName,
             object bytes,
@@ -1715,7 +1715,7 @@ namespace VZF.Data.Postgre
         /// Delete attachment
         /// </summary>
         /// <param name="attachmentID">ID of attachment to delete</param>
-        public static void attachment_delete(string connectionString, object attachmentID)
+        public static void attachment_delete([NotNull] string connectionString , object attachmentID)
         {
             bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
@@ -1772,7 +1772,7 @@ namespace VZF.Data.Postgre
         /// Attachement dowload
         /// </summary>
         /// <param name="attachmentID">ID of attachemnt to download</param>
-        public static void attachment_download(string connectionString, object attachmentID)
+        public static void attachment_download([NotNull] string connectionString , object attachmentID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("attachment_download"))
             {
@@ -1795,7 +1795,7 @@ namespace VZF.Data.Postgre
         /// <param name="ID">ID</param>
         /// <returns>DataTable of banned IPs</returns>
         public static DataTable bannedip_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardID,
             [CanBeNull] object ID,
             [CanBeNull] object pageIndex,
@@ -1822,7 +1822,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">BoardID</param>
         /// <param name="Mask">Mask</param>
         public static void bannedip_save(
-            string connectionString, object ID, object boardId, object Mask, string reason, int userID)
+            [NotNull] string connectionString , object ID, object boardId, object Mask, string reason, int userID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("bannedip_save"))
             {
@@ -1846,7 +1846,7 @@ namespace VZF.Data.Postgre
         /// Deletes Banned IP
         /// </summary>
         /// <param name="ID">ID of banned ip to delete</param>
-        public static void bannedip_delete(string connectionString, object ID)
+        public static void bannedip_delete([NotNull] string connectionString , object ID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("bannedip_delete"))
             {
@@ -1867,7 +1867,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">board id</param>
         /// <returns>DataTable</returns>
-        public static DataTable board_list(string connectionString, object boardId)
+        public static DataTable board_list([NotNull] string connectionString , object boardId)
         {
             String _systemInfo = String.Concat(
                 " OS: ",
@@ -1900,7 +1900,7 @@ namespace VZF.Data.Postgre
         /// <param name="useStyledNicks">useStyledNicks</param>
         /// <returns>DataRow of Poststats</returns>
         public static DataRow board_poststats(
-            string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
+            [NotNull] string connectionString , int? boardId, bool useStyledNicks, bool showNoCountPosts)
         {
             using (var cmd = PostgreDbAccess.GetCommand("board_poststats"))
             {
@@ -1953,7 +1953,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// DataRow of Poststats
         /// </returns>
-        public static DataRow board_userstats(string connectionString, int? boardId)
+        public static DataRow board_userstats([NotNull] string connectionString , int? boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("board_userstats"))
             {
@@ -1970,7 +1970,7 @@ namespace VZF.Data.Postgre
         /// Recalculates topic and post numbers and updates last post for specified board
         /// </summary>
         /// <param name="boardId">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
-        public static void board_resync(string connectionString, object boardId)
+        public static void board_resync([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("board_resync"))
             {
@@ -1986,7 +1986,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <returns>DataRow</returns>
 
-        public static DataRow board_stats(string connectionString, object boardId)
+        public static DataRow board_stats([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("board_stats"))
             {
@@ -2008,7 +2008,7 @@ namespace VZF.Data.Postgre
         /// <param name="name">Name of Board</param>
         /// <param name="allowThreaded">Boolen value, allowThreaded</param>
         public static int board_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object languageFile,
             object culture,
@@ -2069,7 +2069,7 @@ namespace VZF.Data.Postgre
         /// The <see cref="int"/> key for a created board.
         /// </returns>
         public static int board_create(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object adminUserName,
             [NotNull] object adminUserEmail,
             [NotNull] object adminUserKey,
@@ -2110,7 +2110,7 @@ namespace VZF.Data.Postgre
         /// Deletes a board
         /// </summary>
         /// <param name="boardId">ID of board to delete</param>
-        public static void board_delete(string connectionString, object boardId)
+        public static void board_delete([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("board_delete"))
             {
@@ -2131,7 +2131,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="CategoryID">ID of category to delete</param>
         /// <returns>Bool value indicationg if category was deleted</returns>
-        public static bool category_delete(string connectionString, object CategoryID)
+        public static bool category_delete([NotNull] string connectionString , object CategoryID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_delete"))
             {
@@ -2150,7 +2150,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">boardId</param>
         /// <param name="categoryID">categotyID</param>
         /// <returns>DataTable with a list of forums in a category</returns>
-        public static DataTable category_list(string connectionString, object boardId, object categoryID)
+        public static DataTable category_list([NotNull] string connectionString , object boardId, object categoryID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_list"))
             {
@@ -2169,7 +2169,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">boardId</param>
         /// <param name="categoryID">categotyID</param>
         /// <returns>DataTable with a list of forums in a category</returns>
-        public static DataTable category_pfaccesslist(string connectionString, object boardId, object categoryID)
+        public static DataTable category_pfaccesslist([NotNull] string connectionString , object boardId, object categoryID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_pfaccesslist"))
             {
@@ -2201,7 +2201,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable category_getadjacentforum(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryID, object userId, bool isAfter)
+        public static DataTable category_getadjacentforum([NotNull] string connectionString , [NotNull] object boardId, [CanBeNull] object categoryID, object userId, bool isAfter)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_getadjacentforum"))
             {
@@ -2235,7 +2235,7 @@ namespace VZF.Data.Postgre
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable category_listread(
-            string connectionString, object boardId, object userId, object categoryID)
+            [NotNull] string connectionString , object boardId, object userId, object categoryID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_listread"))
             {
@@ -2255,7 +2255,7 @@ namespace VZF.Data.Postgre
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable category_simplelist(string connectionString, int startID, int limit)
+        public static DataTable category_simplelist([NotNull] string connectionString , int startID, int limit)
         {
             using (var cmd = PostgreDbAccess.GetCommand("category_simplelist"))
             {
@@ -2276,7 +2276,7 @@ namespace VZF.Data.Postgre
         /// <param name="Name">Name of the category</param>
         /// <param name="SortOrder">Sort Order</param>
         public static void category_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object categoryId,
             object name,
@@ -2320,7 +2320,7 @@ namespace VZF.Data.Postgre
         /// <param name="UserID">ID of user to verify</param>
         /// <param name="Hash">Hash of user</param>
         /// <param name="Email">email of user</param>
-        public static void checkemail_save(string connectionString, object userId, object hash, object email)
+        public static void checkemail_save([NotNull] string connectionString , object userId, object hash, object email)
         {
             using (var cmd = PostgreDbAccess.GetCommand("checkemail_save"))
             {
@@ -2341,7 +2341,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="hash">New hash</param>
         /// <returns>DataTable with user information</returns>
-        public static DataTable checkemail_update(string connectionString, object hash)
+        public static DataTable checkemail_update([NotNull] string connectionString , object hash)
         {
             using (var cmd = PostgreDbAccess.GetCommand("checkemail_update"))
             {
@@ -2358,7 +2358,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="email">Associated email</param>
         /// <returns>DataTable with check email information</returns>
-        public static DataTable checkemail_list(string connectionString, object email)
+        public static DataTable checkemail_list([NotNull] string connectionString , object email)
         {
             using (var cmd = PostgreDbAccess.GetCommand("checkemail_list"))
             {
@@ -2378,7 +2378,7 @@ namespace VZF.Data.Postgre
         /// Saves a vote in the database
         /// </summary>
         /// <param name="choiceID">Choice of the vote</param>
-        public static void choice_vote(string connectionString, object choiceID, object userId, object remoteIP)
+        public static void choice_vote([NotNull] string connectionString , object choiceID, object userId, object remoteIP)
         {
             using (var cmd = PostgreDbAccess.GetCommand("choice_vote"))
             {
@@ -2396,13 +2396,13 @@ namespace VZF.Data.Postgre
 
         #region yaf_EventLog
 
-        public static void eventlog_create(string connectionString, object userId, object source, object description)
+        public static void eventlog_create([NotNull] string connectionString , object userId, object source, object description)
         {
             eventlog_create(connectionString, userId, (object)source.GetType().ToString(), description, (object)0);
         }
 
         public static void eventlog_create(
-            string connectionString, object userId, object source, object description, object type)
+            [NotNull] string connectionString , object userId, object source, object description, object type)
         {
             try
             {
@@ -2440,7 +2440,7 @@ namespace VZF.Data.Postgre
         /// Deletes event log entry of given ID.
         /// </summary>
         /// <param name="eventLogID">ID of event log entry.</param>
-        public static void eventlog_delete(string connectionString, object eventLogID, object pageuserId)
+        public static void eventlog_delete([NotNull] string connectionString , object eventLogID, object pageuserId)
         {
             eventlog_delete(connectionString, eventLogID, null, pageuserId);
         }
@@ -2451,7 +2451,7 @@ namespace VZF.Data.Postgre
         /// <param name="eventLogID">When not null, only given event log entry is deleted.</param>
         /// <param name="boardId">Specifies board. It is ignored if eventLogID parameter is not null.</param>
         public static void eventlog_delete(
-            string connectionString, object eventLogID, object boardId, object pageUserId)
+            [NotNull] string connectionString , object eventLogID, object boardId, object pageUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("eventlog_delete"))
             {
@@ -2475,7 +2475,7 @@ namespace VZF.Data.Postgre
         /// The page User Id.
         /// </param>
         public static void eventlog_deletebyuser(
-            string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
+            [NotNull] string connectionString , [NotNull] object boardId, [NotNull] object pageUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("eventlog_deletebyuser"))
             {
@@ -2498,7 +2498,7 @@ namespace VZF.Data.Postgre
         /// A list of events for the pageUserID access level. 
         /// </returns>
         public static DataTable eventlog_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardID,
             [NotNull] object pageUserID,
             [NotNull] object maxRows,
@@ -2543,7 +2543,7 @@ namespace VZF.Data.Postgre
         /// The event Type Name.
         /// </param>
         public static void eventloggroupaccess_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object groupID,
             [NotNull] object eventTypeId,
             [NotNull] object eventTypeName,
@@ -2575,7 +2575,7 @@ namespace VZF.Data.Postgre
         /// The event Type Name.
         /// </param>
         public static void eventloggroupaccess_delete(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object groupID,
             [NotNull] object eventTypeId,
             [NotNull] object eventTypeName)
@@ -2601,7 +2601,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>Returns a list of access entries for a group.</returns>
         public static DataTable eventloggroupaccess_list(
-            string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
+            [NotNull] string connectionString , [NotNull] object groupID, [NotNull] object eventTypeId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("eventloggroupaccess_list"))
             {
@@ -2620,7 +2620,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>Lists group for the board Id handy to display on the calling admin page.
         /// </returns>
-        public static DataTable group_eventlogaccesslist(string connectionString, [CanBeNull] object boardId)
+        public static DataTable group_eventlogaccesslist([NotNull] string connectionString , [CanBeNull] object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_eventlogaccesslist"))
             {
@@ -2637,7 +2637,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Extensions
 
-        public static void extension_delete(string connectionString, object extensionId)
+        public static void extension_delete([NotNull] string connectionString , object extensionId)
         {
             try
             {
@@ -2657,7 +2657,7 @@ namespace VZF.Data.Postgre
         }
 
         // Get Extension record by extensionId
-        public static DataTable extension_edit(string connectionString, object extensionId)
+        public static DataTable extension_edit([NotNull] string connectionString , object extensionId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("extension_edit"))
             {
@@ -2671,14 +2671,14 @@ namespace VZF.Data.Postgre
         }
 
         // Returns an extension list for a given Board
-        public static DataTable extension_list(string connectionString, object boardId)
+        public static DataTable extension_list([NotNull] string connectionString , object boardId)
         {
             return extension_list(connectionString, boardId, null);
 
         }
 
         // Used to validate a file before uploading
-        public static DataTable extension_list(string connectionString, object boardId, object extension)
+        public static DataTable extension_list([NotNull] string connectionString , object boardId, object extension)
         {
             using (var cmd = PostgreDbAccess.GetCommand("extension_list"))
             {
@@ -2693,7 +2693,7 @@ namespace VZF.Data.Postgre
         }
 
         // Saves / creates extension
-        public static void extension_save(string connectionString, object extensionId, object boardId, object extension)
+        public static void extension_save([NotNull] string connectionString , object extensionId, object boardId, object extension)
         {
             try
             {
@@ -2731,7 +2731,7 @@ namespace VZF.Data.Postgre
         /// The remoteip.
         /// </param>
         public static DataTable pollgroup_votecheck(
-            string connectionString, object pollGroupId, object userId, object remoteIp)
+            [NotNull] string connectionString , object pollGroupId, object userId, object remoteIp)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pollgroup_votecheck"))
             {
@@ -2747,7 +2747,7 @@ namespace VZF.Data.Postgre
         /// Checks for a vote in the database
         /// </summary>
         /// <param name="choiceID">Choice of the vote</param>
-        public static DataTable pollvote_check(string connectionString, object pollid, object userid, object remoteip)
+        public static DataTable pollvote_check([NotNull] string connectionString , object pollid, object userid, object remoteip)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pollvote_check"))
             {
@@ -2781,7 +2781,7 @@ namespace VZF.Data.Postgre
         /// The list of users in Datatable format.
         /// </returns>
         public static DataTable recent_users(
-            string connectionString, object boardID, int timeSinceLastLogin, object styledNicks)
+            [NotNull] string connectionString , object boardID, int timeSinceLastLogin, object styledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("recent_users"))
             {
@@ -2803,7 +2803,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">The board id.</param>
         /// <param name="userId">The user Id.</param>
         /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
-        public static DataTable forum_categoryaccess_activeuser(string connectionString, object boardId, object userId)
+        public static DataTable forum_categoryaccess_activeuser([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_categoryaccess_activeuser"))
             {
@@ -2821,7 +2821,7 @@ namespace VZF.Data.Postgre
         /// Deletes attachments out of a entire forum
         /// </summary>
         /// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
-        private static void forum_deleteAttachments(string connectionString, object forumID)
+        private static void forum_deleteAttachments([NotNull] string connectionString , object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listtopics"))
             {
@@ -2847,7 +2847,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="ForumID">forum to delete</param>
         /// <returns>bool to indicate that forum has been deleted</returns>
-        public static bool forum_delete(string connectionString, object forumID)
+        public static bool forum_delete([NotNull] string connectionString , object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -2898,7 +2898,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable forum_tags(string connectionString, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
+        public static DataTable forum_tags([NotNull] string connectionString , int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_tags"))
             {
@@ -2931,7 +2931,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
+        public static bool forum_move([NotNull] string connectionString , [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -2963,7 +2963,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">board if of moderators</param>
         /// <param name="userId">user id</param>
         /// <returns>DataTable of moderated forums</returns>
-        public static DataTable forum_listallMyModerated(string connectionString, object boardId, object userId)
+        public static DataTable forum_listallMyModerated([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listallmymoderated"))
             {
@@ -2983,7 +2983,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">boardId</param>
         /// <param name="ForumID">forumID</param>
         /// <returns>DataTable with list of topics from a forum</returns>
-        public static DataTable forum_list(string connectionString, object boardId, object forumID)
+        public static DataTable forum_list([NotNull] string connectionString , object boardId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_list"))
             {
@@ -3002,7 +3002,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable forum_byuserlist(string connectionString, object boardId, object forumID, object userId, object isUserForum)
+        public static DataTable forum_byuserlist([NotNull] string connectionString , object boardId, object forumID, object userId, object isUserForum)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_byuserlist"))
             {
@@ -3031,7 +3031,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// Max forum id for a board
         /// </returns>
-        public static int forum_maxid(string connectionString, [NotNull] object boardID)
+        public static int forum_maxid([NotNull] string connectionString , [NotNull] object boardID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_maxid"))
             {
@@ -3049,7 +3049,7 @@ namespace VZF.Data.Postgre
         /// <param name="startAt">startAt ID</param>
         /// <returns>DataTable of all accessible forums</returns>
         public static DataTable forum_listall(
-            string connectionString, object boardId, object userId, object startAt, bool returnAll)
+            [NotNull] string connectionString , object boardId, object userId, object startAt, bool returnAll)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listall"))
             {
@@ -3069,7 +3069,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
+        public static IEnumerable<TypedForumListAll> ForumListAll([NotNull] string connectionString , int boardId, int userId)
         {
             return
                 forum_listall(connectionString, boardId, userId, 0, false)
@@ -3078,7 +3078,7 @@ namespace VZF.Data.Postgre
         }
 
         public static IEnumerable<TypedForumListAll> ForumListAll(
-            string connectionString, int boardId, int userId, List<int> startForumId)
+            [NotNull] string connectionString , int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
@@ -3124,7 +3124,7 @@ namespace VZF.Data.Postgre
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable forum_simplelist(string connectionString, int startID, int limit)
+        public static DataTable forum_simplelist([NotNull] string connectionString , int startID, int limit)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_simplelist"))
             {
@@ -3240,7 +3240,7 @@ namespace VZF.Data.Postgre
         /// <param name="EmptyFirstRow">EmptyFirstRow</param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            string connectionString, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
+            [NotNull] string connectionString , object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -3263,7 +3263,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="forumID"></param>
         /// <returns></returns>
-        public static DataTable forum_listpath(string connectionString, object forumID)
+        public static DataTable forum_listpath([NotNull] string connectionString , object forumID)
         {
             if (!Config.LargeForumTree)
             {
@@ -3291,69 +3291,89 @@ namespace VZF.Data.Postgre
         }
 
         /// <summary>
-        /// Lists read topics
+        /// The forum_listread.
         /// </summary>
-        /// <param name="boardId">BoardID</param>
-        /// <param name="UserID">UserID</param>
-        /// <param name="CategoryID">CategoryID</param>
-        /// <param name="parentID">ParentID</param>
-        /// <returns>DataTable with list</returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="parentID">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_listread(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardID,
             object userID,
             object categoryID,
             object parentID,
             object useStyledNicks,
-            [CanBeNull] bool findLastRead)
+            [CanBeNull] bool findLastRead, 
+            [NotNull] bool showCommonForums, 
+            [NotNull]bool showPersonalForums, 
+            [CanBeNull] int? forumCreatedByUserId)
         {
-
-            //  DataTable dt1 = null;
-            // DataTable dt2 = null;
-
-            if (categoryID == null)
-            {
-                categoryID = DBNull.Value;
-            }
-            if (parentID == null)
-            {
-                parentID = DBNull.Value;
-            }
             if (!Config.LargeForumTree)
             {
-                using (var cmd1 = PostgreDbAccess.GetCommand("forum_listread"))
+                using (var cmd = PostgreDbAccess.GetCommand("forum_listread"))
                 {
-                    cmd1.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                    cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
-                    cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
-                    cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
-
-                    // dt1 = 
-                    return PostgreDbAccess.GetData(cmd1, false, connectionString);
-                    // return dt1;
+                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+                    cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
+                    cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID ?? DBNull.Value;
+                    cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID ?? DBNull.Value;
+                    cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+                    cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+                    cmd.Parameters.Add("i_showcommonforums", NpgsqlDbType.Boolean).Value = showCommonForums;
+                    cmd.Parameters.Add("i_showpersonalforums", NpgsqlDbType.Boolean).Value = showPersonalForums;
+                    cmd.Parameters.Add("i_forumcreatedbyuserid", NpgsqlDbType.Integer).Value = forumCreatedByUserId;
+                    cmd.Parameters.Add("i_UTCTIMESTAMP", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+                    
+                    return PostgreDbAccess.GetData(cmd, false, connectionString);
                 }
             }
-            else
+            using (var cmd = PostgreDbAccess.GetCommand("forum_ns_listread"))
             {
-                using (var cmd1 = PostgreDbAccess.GetCommand("forum_ns_listread"))
-                {
-                    cmd1.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd1.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd1.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                    cmd1.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
-                    cmd1.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
-                    cmd1.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
-                    cmd1.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
-
-                    // dt1 = 
-                    return PostgreDbAccess.GetData(cmd1, false, connectionString);
-                    // return dt1;
-                }
+                cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
+                cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
+                cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
+                cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
+                cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+                cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+                cmd.Parameters.Add("i_ShowCommonForums", NpgsqlDbType.Boolean).Value = showCommonForums;
+                cmd.Parameters.Add("i_ShowPersonalForums", NpgsqlDbType.Boolean).Value = showPersonalForums;
+                cmd.Parameters.Add("i_ForumCreatedByUserId", NpgsqlDbType.Integer).Value = forumCreatedByUserId;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
+                  
+                return PostgreDbAccess.GetData(cmd, false, connectionString);
             }
 
             /*
@@ -3396,7 +3416,6 @@ namespace VZF.Data.Postgre
             }
 
             return dt2; */
-
         }
 
         /// <summary>
@@ -3405,7 +3424,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">BoardID</param>
         /// <param name="userId">UserID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet forum_moderatelist(string connectionString, object userId, object boardId)
+        public static DataSet forum_moderatelist([NotNull] string connectionString , object userId, object boardId)
         {
             using (var connMan = new PostgreDbConnectionManager(connectionString))
             {
@@ -3502,7 +3521,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable forum_moderators(string connectionString, bool useStyledNicks)
+        public static DataTable forum_moderators([NotNull] string connectionString , bool useStyledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_moderators"))
             {
@@ -3521,7 +3540,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         ///  Returns Data Table with all Mods
         /// </returns>
-        public static DataTable moderators_team_list(string connectionString, bool useStyledNicks)
+        public static DataTable moderators_team_list([NotNull] string connectionString , bool useStyledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("moderators_team_list"))
             {
@@ -3536,7 +3555,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <param name="forumID">If null, all forums in board are updated</param>
-        public static void forum_resync(string connectionString, object boardId, object forumID)
+        public static void forum_resync([NotNull] string connectionString , object boardId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_resync"))
             {
@@ -3554,7 +3573,7 @@ namespace VZF.Data.Postgre
         }
 
         public static long forum_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object forumID,
             object categoryID,
             object parentID,
@@ -3630,7 +3649,7 @@ namespace VZF.Data.Postgre
         /// <param name="forumID"></param>
         /// <param name="parentID"></param>
         /// <returns>Integer value for a found dependency</returns>
-        public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
+        public static int forum_save_parentschecker([NotNull] string connectionString , object forumID, object parentID)
         {
             using (
                 var cmd =
@@ -3649,7 +3668,7 @@ namespace VZF.Data.Postgre
         /// <summary>
         /// Recreate tree.
         /// </summary>
-        public static void forum_ns_recreate(string connectionString)
+        public static void forum_ns_recreate([NotNull] string connectionString )
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_ns_recreate"))
             {
@@ -3663,7 +3682,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_ForumAccess
 
-        public static DataTable forumaccess_list(string connectionString, object forumID, object userId, bool includeUserGroups)
+        public static DataTable forumaccess_list([NotNull] string connectionString , object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_list"))
             {
@@ -3677,7 +3696,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void forumaccess_save(
-            string connectionString, object forumID, object groupID, object accessMaskID)
+            [NotNull] string connectionString , object forumID, object groupID, object accessMaskID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_save"))
             {
@@ -3691,7 +3710,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable forumaccess_group(string connectionString, object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_group([NotNull] string connectionString , object groupID, object userId, bool includeUserForums)
         {
             // this needs to be rewritten as a separate sp
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_group"))
@@ -3706,7 +3725,7 @@ namespace VZF.Data.Postgre
                 return userforumaccess_sort_list(dt, 0, 0, 0);
             }
         }
-        public static DataTable forumaccess_personalgroup(string connectionString, object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_personalgroup([NotNull] string connectionString , object groupID, object userId, bool includeUserForums)
         {
             // this needs to be rewritten as a separate sp
             using (var cmd = PostgreDbAccess.GetCommand("forumaccess_personalgroup"))
@@ -3725,7 +3744,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Group
 
-        public static DataTable group_list(string connectionString, object boardId, object groupID)
+        public static DataTable group_list([NotNull] string connectionString , object boardId, object groupID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_list"))
             {
@@ -3738,7 +3757,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable group_byuserlist(string connectionString, object boardId, object groupID, object userId, object isUserGroup)
+        public static DataTable group_byuserlist([NotNull] string connectionString , object boardId, object groupID, object userId, object isUserGroup)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_byuserlist"))
             {
@@ -3753,7 +3772,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void group_delete(string connectionString, object groupID)
+        public static void group_delete([NotNull] string connectionString , object groupID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_delete"))
             {
@@ -3765,7 +3784,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable group_member(string connectionString, object boardId, object userId)
+        public static DataTable group_member([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_member"))
             {
@@ -3780,7 +3799,7 @@ namespace VZF.Data.Postgre
         }
 
         public static long group_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object groupId,
             object boardId,
             object name,
@@ -3847,7 +3866,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Mail
 
-        public static void mail_delete(string connectionString, object mailID)
+        public static void mail_delete([NotNull] string connectionString , object mailID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("mail_delete"))
             {
@@ -3867,7 +3886,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
+        public static IEnumerable<TypedMailList> MailList([NotNull] string connectionString , long processId)
         {
             DateTime dtm = DateTime.UtcNow;
             using (var cmd = PostgreDbAccess.GetCommand("mail_listupdate"))
@@ -3887,7 +3906,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void mail_createwatch(
-            string connectionString,
+            [NotNull] string connectionString ,
             object topicID,
             object from,
             object fromName,
@@ -3924,7 +3943,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void mail_create(
-            string connectionString,
+            [NotNull] string connectionString ,
             object from,
             object fromName,
             object to,
@@ -3962,7 +3981,7 @@ namespace VZF.Data.Postgre
         #region yaf_Message
 
         public static DataTable post_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             object topicId,
             object currentUserID,
             object authorUserID,
@@ -4021,7 +4040,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable post_list_reverse10(string connectionString, object topicID)
+        public static DataTable post_list_reverse10([NotNull] string connectionString , object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("post_list_reverse10"))
             {
@@ -4052,7 +4071,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable post_alluser(
-            string connectionString, object boardid, object userid, object pageUserID, object topCount)
+            [NotNull] string connectionString , object boardid, object userid, object pageUserID, object topCount)
         {
             using (var cmd = PostgreDbAccess.GetCommand("post_alluser"))
             {
@@ -4069,7 +4088,7 @@ namespace VZF.Data.Postgre
 
 
         // gets list of replies to message
-        public static DataTable message_getRepliesList(string connectionString, object messageID)
+        public static DataTable message_getRepliesList([NotNull] string connectionString , object messageID)
         {
             DataTable list = new DataTable();
 
@@ -4110,7 +4129,7 @@ namespace VZF.Data.Postgre
 
         // gets list of nested replies to message
         private static void message_getRepliesList_populate(
-            string connectionString, DataTable listsource, DataTable list, int messageID)
+            [NotNull] string connectionString , DataTable listsource, DataTable list, int messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_reply_list"))
             {
@@ -4142,7 +4161,7 @@ namespace VZF.Data.Postgre
 
         //creates new topic, using some parameters from message itself
         public static long topic_create_by_message(
-            string connectionString, object messageID, object forumId, object newTopicSubj)
+            [NotNull] string connectionString , object messageID, object forumId, object newTopicSubj)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_create_by_message"))
             {
@@ -4160,7 +4179,7 @@ namespace VZF.Data.Postgre
         }
 
         [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list(string connectionString, object messageID)
+        public static DataTable message_list([NotNull] string connectionString , object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_list"))
             {
@@ -4180,7 +4199,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
+        public static IEnumerable<TypedMessageList> MessageList([NotNull] string connectionString , int messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_list"))
             {
@@ -4195,7 +4214,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void message_delete(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4207,7 +4226,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void message_delete(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4227,7 +4246,7 @@ namespace VZF.Data.Postgre
         }
 
         // <summary> Retrieve all reported messages with the correct forumID argument. </summary>
-        public static DataTable message_listreported(string connectionString, object forumID)
+        public static DataTable message_listreported([NotNull] string connectionString , object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_listreported"))
             {
@@ -4244,14 +4263,14 @@ namespace VZF.Data.Postgre
         /// </summary>       
         /// <param name="MessageID">Should not be NULL</param>
         /// <returns>Returns reporters DataTable for a reported message.</returns>
-        public static DataTable message_listreporters(string connectionString, int messageID)
+        public static DataTable message_listreporters([NotNull] string connectionString , int messageID)
         {
 
             return message_listreporters(connectionString, messageID, null);
 
         }
 
-        public static DataTable message_listreporters(string connectionString, int messageID, object userID)
+        public static DataTable message_listreporters([NotNull] string connectionString , int messageID, object userID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_listreporters"))
             {
@@ -4264,7 +4283,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Save reported message back to the database. </summary>
         public static void message_report(
-            string connectionString, object messageID, object userId, object reportedDateTime, object reportText)
+            [NotNull] string connectionString , object messageID, object userId, object reportedDateTime, object reportText)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_report"))
             {
@@ -4283,7 +4302,7 @@ namespace VZF.Data.Postgre
         }
 
         // <summary> Copy current Message text over reported Message text. </summary>
-        public static void message_reportcopyover(string connectionString, object messageID)
+        public static void message_reportcopyover([NotNull] string connectionString , object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_reportcopyover"))
             {
@@ -4297,7 +4316,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Copy current Message text over reported Message text. </summary>
         public static void message_reportresolve(
-            string connectionString, object messageFlag, object messageID, object userId)
+            [NotNull] string connectionString , object messageFlag, object messageID, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_reportresolve"))
             {
@@ -4316,7 +4335,7 @@ namespace VZF.Data.Postgre
         //BAI ADDED 30.01.2004
         // <summary> Delete message and all subsequent releated messages to that ID </summary>
         private static void message_deleteRecursively(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4336,7 +4355,7 @@ namespace VZF.Data.Postgre
         }
 
         private static void message_deleteRecursively(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4446,7 +4465,7 @@ namespace VZF.Data.Postgre
         }
 
         // <summary> Set flag on message to approved and store in DB </summary>
-        public static void message_approve(string connectionString, object messageID)
+        public static void message_approve([NotNull] string connectionString , object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_approve"))
             {
@@ -4464,7 +4483,7 @@ namespace VZF.Data.Postgre
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable message_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable message_simplelist([NotNull] string connectionString , int StartID, int Limit)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_simplelist"))
             {
@@ -4488,7 +4507,7 @@ namespace VZF.Data.Postgre
 
 
         public static void message_update(
-            string connectionString,
+            [NotNull] string connectionString ,
             object messageID,
             object priority,
             object message,
@@ -4539,7 +4558,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Save message to Db. </summary>
         public static bool message_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object topicId,
             [NotNull] object userId,
             [NotNull] object message,
@@ -4589,7 +4608,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable message_unapproved(string connectionString, object forumID)
+        public static DataTable message_unapproved([NotNull] string connectionString , object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_unapproved"))
             {
@@ -4602,7 +4621,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable message_findunread(
-            string connectionString,
+            [NotNull] string connectionString ,
             object topicID,
             object messageId,
             object lastRead,
@@ -4624,7 +4643,7 @@ namespace VZF.Data.Postgre
         }
 
         // message movind function
-        public static void message_move(string connectionString, object messageID, object moveToTopic, bool moveAll)
+        public static void message_move([NotNull] string connectionString , object messageID, object moveToTopic, bool moveAll)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_move"))
             {
@@ -4656,7 +4675,7 @@ namespace VZF.Data.Postgre
         }
 
         //moves answers of moved post
-        private static void message_moveRecursively(string connectionString, object messageID, object moveToTopic)
+        private static void message_moveRecursively([NotNull] string connectionString , object messageID, object moveToTopic)
         {
             bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
@@ -4692,7 +4711,7 @@ namespace VZF.Data.Postgre
         // <summary> Checks if the message with the provided messageID is thanked 
         //           by the user with the provided UserID. if so, returns true,
         //           otherwise returns false. </summary>
-        public static bool message_isThankedByUser(string connectionString, object userID, object messageID)
+        public static bool message_isThankedByUser([NotNull] string connectionString , object userID, object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_isthankedbyuser"))
             {
@@ -4717,7 +4736,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// If the User Thanked the the Current Message
         /// </returns>
-        public static bool user_ThankedMessage(string connectionString, object messageId, object userId)
+        public static bool user_ThankedMessage([NotNull] string connectionString , object messageId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_thankedmessage"))
             {
@@ -4733,7 +4752,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static int user_ThankFromCount(string connectionString, [NotNull] object userId)
+        public static int user_ThankFromCount([NotNull] string connectionString , [NotNull] object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_thankfromcount"))
             {
@@ -4751,7 +4770,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Return the number of times the message with the provided messageID
         //           has been thanked. </summary>
-        public static int message_ThanksNumber(string connectionString, object messageID)
+        public static int message_ThanksNumber([NotNull] string connectionString , object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_thanksnumber"))
             {
@@ -4764,7 +4783,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Returns the UserIDs and UserNames who have thanked the message
         //           with the provided messageID. </summary>
-        public static DataTable message_GetThanks(string connectionString, object messageID)
+        public static DataTable message_GetThanks([NotNull] string connectionString , object messageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_getthanks"))
             {
@@ -4776,7 +4795,7 @@ namespace VZF.Data.Postgre
 
         // <summary> Retuns All the Thanks for the Message IDs which are in the 
         //           delimited string variable MessageIDs </summary>
-        public static DataTable message_GetAllThanks(string connectionString, object messageIDs)
+        public static DataTable message_GetAllThanks([NotNull] string connectionString , object messageIDs)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_getallthanks"))
             {
@@ -4795,7 +4814,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_GetTextByIds(string connectionString, string messageIDs)
+        public static DataTable message_GetTextByIds([NotNull] string connectionString , string messageIDs)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_gettextbyids"))
             {
@@ -4815,7 +4834,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static IEnumerable<TypedAllThanks> MessageGetAllThanks(
-            string connectionString, string messageIdsSeparatedWithColon)
+            [NotNull] string connectionString , string messageIdsSeparatedWithColon)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_getallthanks"))
             {
@@ -4828,7 +4847,7 @@ namespace VZF.Data.Postgre
         }
 
         public static string message_AddThanks(
-            string connectionString, object fromUserID, object messageID, bool useDisplayName)
+            [NotNull] string connectionString , object fromUserID, object messageID, bool useDisplayName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_addthanks"))
             {
@@ -4847,7 +4866,7 @@ namespace VZF.Data.Postgre
         }
 
         public static string message_RemoveThanks(
-            string connectionString, object fromUserID, object messageID, bool useDisplayName)
+            [NotNull] string connectionString , object fromUserID, object messageID, bool useDisplayName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_removethanks"))
             {
@@ -4877,7 +4896,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// List of all message changes. 
         /// </returns>
-        public static DataTable messagehistory_list(string connectionString, int messageID, int daysToClean)
+        public static DataTable messagehistory_list([NotNull] string connectionString , int messageID, int daysToClean)
         {
             using (var cmd = PostgreDbAccess.GetCommand("messagehistory_list"))
             {
@@ -4898,7 +4917,7 @@ namespace VZF.Data.Postgre
         /// <param name="MessageID">The Message Id.</param>
         /// <param name="UserID">The UserId.</param>
         /// <returns></returns>
-        public static DataTable message_secdata(string connectionString, int MessageID, object pageUserId)
+        public static DataTable message_secdata([NotNull] string connectionString , int MessageID, object pageUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_secdata"))
             {
@@ -4920,12 +4939,12 @@ namespace VZF.Data.Postgre
         /// Lists given medal.
         /// </summary>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable medal_list(string connectionString, object medalID)
+        public static DataTable medal_list([NotNull] string connectionString , object medalID)
         {
             return medal_list(connectionString, null, medalID, null);
         }
 
-        public static DataTable medal_list(string connectionString, object boardId, object category)
+        public static DataTable medal_list([NotNull] string connectionString , object boardId, object category)
         {
             return medal_list(connectionString, boardId, category, null);
         }
@@ -4936,7 +4955,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">ID of board of which medals to list. Can be null if medalID parameter is specified.</param>
         /// <param name="medalID">ID of medal to list. When specified, boardId and category parameters are ignored.</param>
         /// <param name="category">Cateogry of medals to list. Must be complemented with not-null boardId parameter.</param>
-        public static DataTable medal_list(string connectionString, object boardId, object medalID, object category)
+        public static DataTable medal_list([NotNull] string connectionString , object boardId, object medalID, object category)
         {
             using (var cmd = PostgreDbAccess.GetCommand("medal_list"))
             {
@@ -4970,7 +4989,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="medalID">Medal of which owners to get.</param>
         /// <returns>List of users with their user id and usernames, who own this medal.</returns>
-        public static DataTable medal_listusers(string connectionString, object medalID)
+        public static DataTable medal_listusers([NotNull] string connectionString , object medalID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("medal_listusers"))
             {
@@ -4990,7 +5009,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardId">ID of board of which medals to delete. Required.</param>
         /// <param name="category">Cateogry of medals to delete. Can be null. In such case this parameter is ignored.</param>
-        public static void medal_delete(string connectionString, object boardId, object category)
+        public static void medal_delete([NotNull] string connectionString , object boardId, object category)
         {
             medal_delete(connectionString, boardId, null, category);
         }
@@ -4999,7 +5018,7 @@ namespace VZF.Data.Postgre
         /// Deletes given medal.
         /// </summary>
         /// <param name="medalID">ID of medal to delete.</param>
-        public static void medal_delete(string connectionString, object medalID)
+        public static void medal_delete([NotNull] string connectionString , object medalID)
         {
             medal_delete(connectionString, null, medalID, null);
         }
@@ -5010,7 +5029,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">ID of board of which medals to delete. Can be null if medalID parameter is specified.</param>
         /// <param name="medalID">ID of medal to delete. When specified, boardId and category parameters are ignored.</param>
         /// <param name="category">Cateogry of medals to delete. Must be complemented with not-null boardId parameter.</param>
-        public static void medal_delete(string connectionString, object boardId, object medalID, object category)
+        public static void medal_delete([NotNull] string connectionString , object boardId, object medalID, object category)
         {
             using (var cmd = PostgreDbAccess.GetCommand("medal_delete"))
             {
@@ -5059,7 +5078,7 @@ namespace VZF.Data.Postgre
         /// <param name="flags">Medal's flags.</param>
         /// <returns>True if medal was successfully created or updated. False otherwise.</returns>
         public static bool medal_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object medalID,
             object name,
@@ -5163,7 +5182,7 @@ namespace VZF.Data.Postgre
         /// <param name="boardId">ID of board.</param>
         /// <param name="medalID">ID of medal to re-sort.</param>
         /// <param name="move">Change of sort.</param>
-        public static void medal_resort(string connectionString, object boardId, object medalID, int move)
+        public static void medal_resort([NotNull] string connectionString , object boardId, object medalID, int move)
         {
             using (var cmd = PostgreDbAccess.GetCommand("medal_resort"))
             {
@@ -5183,7 +5202,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="groupID">ID of group owning medal.</param>
         /// <param name="medalID">ID of medal.</param>
-        public static void group_medal_delete(string connectionString, object groupID, object medalID)
+        public static void group_medal_delete([NotNull] string connectionString , object groupID, object medalID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_medal_delete"))
             {
@@ -5202,7 +5221,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="groupID">ID of group of which to list medals.</param>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable group_medal_list(string connectionString, object groupID, object medalID)
+        public static DataTable group_medal_list([NotNull] string connectionString , object groupID, object medalID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_medal_list"))
             {
@@ -5235,7 +5254,7 @@ namespace VZF.Data.Postgre
         /// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
         /// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
         public static void group_medal_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object groupID,
             object medalID,
             object message,
@@ -5280,7 +5299,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="userId">ID of user owning medal.</param>
         /// <param name="medalID">ID of medal.</param>
-        public static void user_medal_delete(string connectionString, object userId, object medalID)
+        public static void user_medal_delete([NotNull] string connectionString , object userId, object medalID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_medal_delete"))
             {
@@ -5299,7 +5318,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="userId">ID of user who was given medal.</param>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable user_medal_list(string connectionString, object userId, object medalID)
+        public static DataTable user_medal_list([NotNull] string connectionString , object userId, object medalID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_medal_list"))
             {
@@ -5335,7 +5354,7 @@ namespace VZF.Data.Postgre
         /// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
         /// <param name="dateAwarded">Date when medal was awarded to a user. Is ignored when existing user-medal allocation is edited.</param>
         public static void user_medal_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object userId,
             object medalID,
             object message,
@@ -5381,7 +5400,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="userId">ID of user.</param>
         /// <returns>List of medals, ribbon bar only first.</returns>
-        public static DataTable user_listmedals(string connectionString, object userId)
+        public static DataTable user_listmedals([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_listmedals"))
             {
@@ -5398,7 +5417,7 @@ namespace VZF.Data.Postgre
         #region yaf_NntpForum
 
         public static IEnumerable<TypedNntpForum> NntpForumList(
-            string connectionString, int boardId, int? minutes, int? nntpForumID, bool? active)
+            [NotNull] string connectionString , int boardId, int? minutes, int? nntpForumID, bool? active)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpforum_list"))
             {
@@ -5417,7 +5436,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable nntpforum_list(
-            string connectionString, object boardId, object minutes, object nntpForumID, object active)
+            [NotNull] string connectionString , object boardId, object minutes, object nntpForumID, object active)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpforum_list"))
             {
@@ -5448,7 +5467,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void nntpforum_update(
-            string connectionString, object nntpForumID, object lastMessageNo, object userId)
+            [NotNull] string connectionString , object nntpForumID, object lastMessageNo, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpforum_update"))
             {
@@ -5465,7 +5484,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void nntpforum_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object nntpForumID,
             object nntpServerID,
             object groupName,
@@ -5495,7 +5514,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void nntpforum_delete(string connectionString, object nntpForumID)
+        public static void nntpforum_delete([NotNull] string connectionString , object nntpForumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpforum_delete"))
             {
@@ -5511,7 +5530,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_NntpServer
 
-        public static DataTable nntpserver_list(string connectionString, object boardId, object nntpServerID)
+        public static DataTable nntpserver_list([NotNull] string connectionString , object boardId, object nntpServerID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpserver_list"))
             {
@@ -5534,7 +5553,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void nntpserver_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object nntpServerID,
             object boardId,
             object name,
@@ -5572,7 +5591,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void nntpserver_delete(string connectionString, object nntpServerID)
+        public static void nntpserver_delete([NotNull] string connectionString , object nntpServerID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntpserver_delete"))
             {
@@ -5588,7 +5607,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_NntpTopic
 
-        public static DataTable nntptopic_list(string connectionString, object thread)
+        public static DataTable nntptopic_list([NotNull] string connectionString , object thread)
         {
             using (var cmd = PostgreDbAccess.GetCommand("nntptopic_list"))
             {
@@ -5601,7 +5620,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void nntptopic_savemessage(
-            string connectionString,
+            [NotNull] string connectionString ,
             object nntpForumID,
             object topic,
             object body,
@@ -5639,7 +5658,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_PMessage
 
-        public static DataTable pmessage_list(string connectionString, object userPMessageID)
+        public static DataTable pmessage_list([NotNull] string connectionString , object userPMessageID)
         {
             return pmessage_list(connectionString, null, null, userPMessageID);
         }
@@ -5655,7 +5674,7 @@ namespace VZF.Data.Postgre
         /// <param name="pMessageID">The id of the private message</param>
         /// <returns></returns>
         public static DataTable pmessage_list(
-            string connectionString, object toUserID, object fromUserID, object userPMessageID)
+            [NotNull] string connectionString , object toUserID, object fromUserID, object userPMessageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_list"))
             {
@@ -5688,7 +5707,7 @@ namespace VZF.Data.Postgre
         /// the message is only deleted from the user's outbox.  Otherwise, it is completely delete from the database.
         /// </summary>
         /// <param name="userPMessageID"></param>
-        public static void pmessage_delete(string connectionString, object userPMessageID)
+        public static void pmessage_delete([NotNull] string connectionString , object userPMessageID)
         {
             pmessage_delete(connectionString, userPMessageID, false);
         }
@@ -5699,7 +5718,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="pMessageID"></param>
         /// <param name="fromOutbox">If true, removes the message from the outbox.  Otherwise deletes the message completely.</param>
-        public static void pmessage_delete(string connectionString, object userPMessageID, bool fromOutbox)
+        public static void pmessage_delete([NotNull] string connectionString , object userPMessageID, bool fromOutbox)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_delete"))
             {
@@ -5718,7 +5737,7 @@ namespace VZF.Data.Postgre
         /// Archives the private message of the given id.  Archiving moves the message from the user's inbox to his message archive.
         /// </summary>
         /// <param name="pMessageID">The ID of the private message</param>
-        public static void pmessage_archive(string connectionString, object userPMessageID)
+        public static void pmessage_archive([NotNull] string connectionString , object userPMessageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_archive"))
             {
@@ -5736,7 +5755,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void pmessage_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object fromUserID,
             object toUserID,
             object subject,
@@ -5761,7 +5780,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void pmessage_markread(string connectionString, object userPMessageID)
+        public static void pmessage_markread([NotNull] string connectionString , object userPMessageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_markread"))
             {
@@ -5778,7 +5797,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable pmessage_info(string connectionString)
+        public static DataTable pmessage_info([NotNull] string connectionString )
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_info"))
             {
@@ -5787,7 +5806,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void pmessage_prune(string connectionString, object daysRead, object daysUnread)
+        public static void pmessage_prune([NotNull] string connectionString , object daysRead, object daysUnread)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_prune"))
             {
@@ -5812,7 +5831,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
+        public static DataTable pollgroup_stats([NotNull] string connectionString , int? pollGroupId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pollgroup_stats"))
             {
@@ -5831,7 +5850,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static int pollgroup_attach(
-            string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+            [NotNull] string connectionString , int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pollgroup_attach"))
             {
@@ -5845,7 +5864,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable poll_stats(string connectionString, int? pollId)
+        public static DataTable poll_stats([NotNull] string connectionString , int? pollId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("poll_stats"))
             {
@@ -5862,7 +5881,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="pollList">List to hold all polls data</param>
         /// <returns>Last saved poll id.</returns>
-        public static int? poll_save(string connectionString, List<PollSaveList> pollList)
+        public static int? poll_save([NotNull] string connectionString , List<PollSaveList> pollList)
         {
             int? currPoll;
             int? pollGroup = null;
@@ -6121,7 +6140,7 @@ namespace VZF.Data.Postgre
 
 
         public static void poll_update(
-            string connectionString,
+            [NotNull] string connectionString ,
             object pollID,
             object question,
             object closes,
@@ -6161,7 +6180,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void poll_remove(
-            string connectionString,
+            [NotNull] string connectionString ,
             object pollGroupID,
             object pollID,
             object boardId,
@@ -6198,7 +6217,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static IEnumerable<TypedPollGroup> PollGroupList(
-            string connectionString, int userID, int? forumId, int boardId)
+            [NotNull] string connectionString , int userID, int? forumId, int boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("pollgroup_list"))
             {
@@ -6231,7 +6250,7 @@ namespace VZF.Data.Postgre
         /// <param name="forumId"></param>
         /// <param name="removeEverywhere"></param>
         public static void pollgroup_remove(
-            string connectionString,
+            [NotNull] string connectionString ,
             object pollGroupID,
             object topicId,
             object forumId,
@@ -6258,7 +6277,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        public static void choice_delete(string connectionString, object choiceID)
+        public static void choice_delete([NotNull] string connectionString , object choiceID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("choice_delete"))
             {
@@ -6271,7 +6290,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void choice_update(
-            string connectionString, object choiceID, object choice, object path, object mime)
+            [NotNull] string connectionString , object choiceID, object choice, object path, object mime)
         {
             using (var cmd = PostgreDbAccess.GetCommand("choice_update"))
             {
@@ -6286,7 +6305,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void choice_add(string connectionString, object pollID, object choice, object path, object mime)
+        public static void choice_add([NotNull] string connectionString , object pollID, object choice, object path, object mime)
         {
             using (var cmd = PostgreDbAccess.GetCommand("choice_add"))
             {
@@ -6316,7 +6335,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Rank
 
-        public static DataTable rank_list(string connectionString, object boardId, object rankID)
+        public static DataTable rank_list([NotNull] string connectionString , object boardId, object rankID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("rank_list"))
             {
@@ -6335,7 +6354,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void rank_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object rankID,
             object boardId,
             object name,
@@ -6386,7 +6405,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void rank_delete(string connectionString, object rankID)
+        public static void rank_delete([NotNull] string connectionString , object rankID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("rank_delete"))
             {
@@ -6402,7 +6421,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Smiley
 
-        public static DataTable smiley_list(string connectionString, object boardId, object smileyID)
+        public static DataTable smiley_list([NotNull] string connectionString , object boardId, object smileyID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("smiley_list"))
             {
@@ -6431,7 +6450,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardId, int? smileyID)
+        public static IEnumerable<TypedSmileyList> SmileyList([NotNull] string connectionString , int boardId, int? smileyID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("smiley_list"))
             {
@@ -6443,7 +6462,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable smiley_listunique(string connectionString, object boardId)
+        public static DataTable smiley_listunique([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("smiley_listunique"))
             {
@@ -6455,7 +6474,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void smiley_delete(string connectionString, object smileyID)
+        public static void smiley_delete([NotNull] string connectionString , object smileyID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("smiley_delete"))
             {
@@ -6473,7 +6492,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void smiley_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object smileyID,
             object boardId,
             object code,
@@ -6508,7 +6527,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void smiley_resort(string connectionString, object boardId, object smileyID, int move)
+        public static void smiley_resort([NotNull] string connectionString , object boardId, object smileyID, int move)
         {
             using (var cmd = PostgreDbAccess.GetCommand("smiley_resort"))
             {
@@ -6538,12 +6557,12 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
+        public static IEnumerable<TypedBBCode> BBCodeList([NotNull] string connectionString , int boardID, int? bbcodeID)
         {
             return bbcode_list(connectionString, boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
         }
 
-        public static DataTable bbcode_list(string connectionString, object boardId, object bbcodeID)
+        public static DataTable bbcode_list([NotNull] string connectionString , object boardId, object bbcodeID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("bbcode_list"))
             {
@@ -6561,7 +6580,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void bbcode_delete(string connectionString, object bbcodeID)
+        public static void bbcode_delete([NotNull] string connectionString , object bbcodeID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("bbcode_delete"))
             {
@@ -6579,7 +6598,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void bbcode_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object bbcodeID,
             object boardId,
             object name,
@@ -6687,7 +6706,7 @@ namespace VZF.Data.Postgre
         /// <param name="name">Use to specify return of specific entry only. Setting this to null returns all entries.
         /// </param>
         /// <returns>DataTable filled will registry entries</returns>
-        public static DataTable registry_list(string connectionString, object name, object boardId)
+        public static DataTable registry_list([NotNull] string connectionString , object name, object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("registry_list"))
             {
@@ -6715,7 +6734,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
         /// <returns>DataTable filled will registry entries</returns>
-        public static DataTable registry_list(string connectionString, [NotNull] object name)
+        public static DataTable registry_list([NotNull] string connectionString , [NotNull] object name)
         {
             return registry_list(connectionString, name, null);
         }
@@ -6724,7 +6743,7 @@ namespace VZF.Data.Postgre
         /// Retrieves all the entries in the board settings registry
         /// </summary>
         /// <returns>DataTable filled will all registry entries</returns>
-        public static DataTable registry_list(string connectionString)
+        public static DataTable registry_list([NotNull] string connectionString )
         {
             return registry_list(connectionString, null, null);
         }
@@ -6734,7 +6753,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="Name">Unique name associated with this entry</param>
         /// <param name="Value">Value associated with this entry which can be null</param>
-        public static void registry_save(string connectionString, object name, object value)
+        public static void registry_save([NotNull] string connectionString , object name, object value)
         {
 
             registry_save(connectionString, name, value, DBNull.Value);
@@ -6747,7 +6766,7 @@ namespace VZF.Data.Postgre
         /// <param name="Name">Unique name associated with this entry</param>
         /// <param name="Value">Value associated with this entry which can be null</param>
         /// <param name="BoardID">The BoardID for this entry</param>
-        public static void registry_save(string connectionString, object name, object value, object boardId)
+        public static void registry_save([NotNull] string connectionString , object name, object value, object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("registry_save"))
             {
@@ -6778,7 +6797,7 @@ namespace VZF.Data.Postgre
         /// Not in use anymore. Only required for old database versions.
         /// </summary>
         /// <returns></returns>
-        public static DataTable system_list(string connectionString)
+        public static DataTable system_list([NotNull] string connectionString )
         {
             using (var cmd = PostgreDbAccess.GetCommand("system_list"))
             {
@@ -6791,7 +6810,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_Topic
 
-        public static DataTable topic_tags(string connectionString, object boardId, object pageUserId, object topicId)
+        public static DataTable topic_tags([NotNull] string connectionString , object boardId, object pageUserId, object topicId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_tags"))
             {
@@ -6807,7 +6826,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_bytags(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             int forumId,
             object pageUserId,
@@ -6833,7 +6852,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        public static void topic_updatetopic(string connectionString, int topicId, string topic)
+        public static void topic_updatetopic([NotNull] string connectionString , int topicId, string topic)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_updatetopic"))
             {
@@ -6847,7 +6866,7 @@ namespace VZF.Data.Postgre
         }
 
         public static int topic_prune(
-            string connectionString, object boardId, object forumID, object days, object permDelete)
+            [NotNull] string connectionString , object boardId, object forumID, object days, object permDelete)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_prune"))
             {
@@ -6864,7 +6883,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             object forumID,
             [NotNull] object userId,
             [NotNull] object sinceDate,
@@ -6898,7 +6917,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable announcements_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object forumID,
             [NotNull] object userId,
             [NotNull] object sinceDate,
@@ -6937,7 +6956,7 @@ namespace VZF.Data.Postgre
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable topic_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable topic_simplelist([NotNull] string connectionString , int StartID, int Limit)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_simplelist"))
             {
@@ -6961,7 +6980,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void topic_move(
-            string connectionString, object topicID, object forumID, object showMoved, object linkDays)
+            [NotNull] string connectionString , object topicID, object forumID, object showMoved, object linkDays)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_move"))
             {
@@ -6978,7 +6997,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_announcements(
-            string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserId)
+            [NotNull] string connectionString , object boardId, object numOfPostsToRetrieve, object pageUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_announcements"))
             {
@@ -6993,7 +7012,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_latest(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardID,
             object numOfPostsToRetrieve,
             object pageUserId,
@@ -7037,7 +7056,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable rss_topic_latest(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object numOfPostsToRetrieve,
             object pageUserId,
@@ -7060,7 +7079,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_active(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7091,7 +7110,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        private static void topic_deleteAttachments(string connectionString, object topicID)
+        private static void topic_deleteAttachments([NotNull] string connectionString , object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_listmessages"))
             {
@@ -7111,7 +7130,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        private static void topic_deleteimages(string connectionString, int topicID)
+        private static void topic_deleteimages([NotNull] string connectionString , int topicID)
         {
 
             string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
@@ -7142,12 +7161,12 @@ namespace VZF.Data.Postgre
                 // error deleting that file... 
             }
         }
-        public static void topic_delete(string connectionString, object topicID)
+        public static void topic_delete([NotNull] string connectionString , object topicID)
         {
             topic_delete(connectionString, topicID, false);
         }
 
-        public static void topic_delete(string connectionString, object topicID, object eraseTopic)
+        public static void topic_delete([NotNull] string connectionString , object topicID, object eraseTopic)
         {
             if (eraseTopic == null)
             {
@@ -7175,7 +7194,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable topic_findprev(string connectionString, object topicID)
+        public static DataTable topic_findprev([NotNull] string connectionString , object topicID)
         {
             DataTable dt;
             DataRow dr;
@@ -7196,7 +7215,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable topic_findnext(string connectionString, object topicID)
+        public static DataTable topic_findnext([NotNull] string connectionString , object topicID)
         {
             DataTable dt;
             DataRow dr;
@@ -7218,7 +7237,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void topic_lock(string connectionString, object topicID, object locked)
+        public static void topic_lock([NotNull] string connectionString , object topicID, object locked)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_lock"))
             {
@@ -7232,7 +7251,7 @@ namespace VZF.Data.Postgre
         }
 
         public static long topic_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object forumID,
             object subject,
             object status,
@@ -7276,7 +7295,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataRow topic_info(string connectionString, object topicID, [NotNull] bool getTags)
+        public static DataRow topic_info([NotNull] string connectionString , object topicID, [NotNull] bool getTags)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_info"))
             {
@@ -7293,7 +7312,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void topic_imagesave(string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object avatarImageType)
+        public static void topic_imagesave([NotNull] string connectionString , object topicID, [NotNull] object imageUrl, Stream stream, object avatarImageType)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_imagesave"))
             {
@@ -7315,7 +7334,7 @@ namespace VZF.Data.Postgre
             }
         }
       
-        public static int topic_findduplicate(string connectionString, object topicName)
+        public static int topic_findduplicate([NotNull] string connectionString , object topicName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_findduplicate"))
             {
@@ -7326,7 +7345,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_favorite_details(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7365,7 +7384,7 @@ namespace VZF.Data.Postgre
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_favorite_list(string connectionString, object userID)
+        public static DataTable topic_favorite_list([NotNull] string connectionString , object userID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_favorite_list"))
             {
@@ -7384,7 +7403,7 @@ namespace VZF.Data.Postgre
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_remove(string connectionString, object userID, object topicID)
+        public static void topic_favorite_remove([NotNull] string connectionString , object userID, object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_favorite_remove"))
             {
@@ -7404,7 +7423,7 @@ namespace VZF.Data.Postgre
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_add(string connectionString, object userID, object topicID)
+        public static void topic_favorite_add([NotNull] string connectionString , object userID, object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_favorite_add"))
             {
@@ -7422,7 +7441,7 @@ namespace VZF.Data.Postgre
         /// <param name="topicId">
         /// The topic Id.
         /// </param>
-        public static int TopicFavoriteCount(string connectionString, int topicId)
+        public static int TopicFavoriteCount([NotNull] string connectionString , int topicId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("topic_favorite_count"))
             {
@@ -7461,7 +7480,7 @@ namespace VZF.Data.Postgre
         /// Returns the List with the Active Topics
         /// </returns>
         public static DataTable topic_unanswered(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7493,7 +7512,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable topic_unread(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7552,7 +7571,7 @@ namespace VZF.Data.Postgre
         /// Returns the List with the User Topics
         /// </returns>
         public static DataTable Topics_ByUser(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7584,7 +7603,7 @@ namespace VZF.Data.Postgre
         /// Delete a topic status.
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
-        public static void TopicStatus_Delete(string connectionString, [NotNull] object topicStatusID)
+        public static void TopicStatus_Delete([NotNull] string connectionString , [NotNull] object topicStatusID)
         {
             try
             {
@@ -7606,7 +7625,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_Edit(string connectionString, [NotNull] object topicStatusID)
+        public static DataTable TopicStatus_Edit([NotNull] string connectionString , [NotNull] object topicStatusID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("TopicStatus_Edit"))
             {
@@ -7621,7 +7640,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="boardID">The board ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_List(string connectionString, [NotNull] object boardID)
+        public static DataTable TopicStatus_List([NotNull] string connectionString , [NotNull] object boardID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("TopicStatus_List"))
             {
@@ -7639,7 +7658,7 @@ namespace VZF.Data.Postgre
         /// <param name="topicStatusName">Name of the topic status.</param>
         /// <param name="defaultDescription">The default description.</param>
         public static void TopicStatus_Save(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object topicStatusID,
             [NotNull] object boardID,
             [NotNull] object topicStatusName,
@@ -7674,7 +7693,7 @@ namespace VZF.Data.Postgre
         /// Gets a list of replace words
         /// </summary>
         /// <returns>DataTable with replace words</returns>
-        public static DataTable replace_words_list(string connectionString, object boardId, object id)
+        public static DataTable replace_words_list([NotNull] string connectionString , object boardId, object id)
         {
             using (var cmd = PostgreDbAccess.GetCommand("replace_words_list"))
             {
@@ -7699,7 +7718,7 @@ namespace VZF.Data.Postgre
         /// <param name="badword">bad word</param>
         /// <param name="goodword">good word</param>
         public static void replace_words_save(
-            string connectionString, object boardId, object id, object badword, object goodword)
+            [NotNull] string connectionString , object boardId, object id, object badword, object goodword)
         {
             using (var cmd = PostgreDbAccess.GetCommand("replace_words_save"))
             {
@@ -7722,7 +7741,7 @@ namespace VZF.Data.Postgre
         /// Deletes a bad/good word
         /// </summary>
         /// <param name="ID">ID of bad/good word to delete</param>
-        public static void replace_words_delete(string connectionString, object id)
+        public static void replace_words_delete([NotNull] string connectionString , object id)
         {
             using (var cmd = PostgreDbAccess.GetCommand("replace_words_delete"))
             {
@@ -7738,7 +7757,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_IgnoreUser
 
-        public static void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_addignoreduser([NotNull] string connectionString , object userId, object ignoredUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_addignoreduser"))
             {
@@ -7751,7 +7770,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_removeignoreduser([NotNull] string connectionString , object userId, object ignoredUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_removeignoreduser"))
             {
@@ -7764,7 +7783,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
+        public static bool user_isuserignored([NotNull] string connectionString , object userId, object ignoredUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_isuserignored"))
             {
@@ -7778,7 +7797,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_ignoredlist(string connectionString, object userId)
+        public static DataTable user_ignoredlist([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_ignoredlist"))
             {
@@ -7801,7 +7820,7 @@ namespace VZF.Data.Postgre
         /// <param name="styledNicks">If styles should be returned.</param>
         /// <returns>A DataRow, it should never return a null value.</returns>
         public static DataRow user_lazydata(
-            string connectionString,
+            [NotNull] string connectionString ,
             object userID,
             object boardID,
             bool showPendingMails,
@@ -7827,7 +7846,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        public static DataTable user_list(string connectionString, object boardID, object userID, object approved)
+        public static DataTable user_list([NotNull] string connectionString , object boardID, object userID, object approved)
         {
             return user_list(connectionString, boardID, userID, approved, null, null, false);
         }
@@ -7856,7 +7875,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable user_list(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userId,
             object approved,
@@ -7886,7 +7905,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable user_pagedlist(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userId,
             object approved,
@@ -7943,7 +7962,7 @@ namespace VZF.Data.Postgre
         /// </returns>
         [NotNull]
         public static IEnumerable<TypedUserList> UserList(
-            string connectionString,
+            [NotNull] string connectionString ,
             int boardId,
             int? userId,
             bool? approved,
@@ -7987,7 +8006,7 @@ namespace VZF.Data.Postgre
         /// The user_ list with todays birthdays.
         /// </returns>
         public static DataTable User_ListTodaysBirthdays(
-            string connectionString, [NotNull] int boardID, [CanBeNull] object useStyledNicks)
+            [NotNull] string connectionString , [NotNull] int boardID, [CanBeNull] object useStyledNicks)
         {
             // Profile columns cannot yet exist when we first are gettinng data.
             try
@@ -8033,7 +8052,7 @@ namespace VZF.Data.Postgre
         /// The user_ list profiles.
         /// </returns>
         public static DataTable User_ListProfilesByIdsList(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] int boardID,
             [NotNull] int[] userIdsList,
             [CanBeNull] object useStyledNicks)
@@ -8091,7 +8110,7 @@ namespace VZF.Data.Postgre
         /// The dirty only.
         /// </param>
         public static void SetPropertyValues(
-            string connectionString,
+            [NotNull] string connectionString ,
             int boardId,
             string appname,
             int userId, 
@@ -8144,7 +8163,7 @@ namespace VZF.Data.Postgre
         /// The settings columns list.
         /// </param>
         public static void SetProfileProperties(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] int boardId,
             [NotNull] object appName,
             [NotNull] int userID,
@@ -8268,7 +8287,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <returns>
         /// </returns>
-        public static DataTable GetProfileStructure(string connectionString)
+        public static DataTable GetProfileStructure([NotNull] string connectionString )
         {
             string sql = @"SELECT * FROM {0} LIMIT 1".FormatWith(PostgreDbAccess.GetObjectName("UserProfile"));
 
@@ -8292,7 +8311,7 @@ namespace VZF.Data.Postgre
         /// The size.
         /// </param>
         public static void AddProfileColumn(
-            string connectionString, [NotNull] string name, NpgsqlDbType columnType, int size)
+            [NotNull] string connectionString , [NotNull] string name, NpgsqlDbType columnType, int size)
         {
             // get column type..
             string type = columnType.ToString();
@@ -8375,7 +8394,7 @@ namespace VZF.Data.Postgre
         }
 
         private static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(
-            string connectionString, SettingsPropertyValueCollection collection)
+            [NotNull] string connectionString , SettingsPropertyValueCollection collection)
         {
             var settingsColumnsList = new List<SettingsPropertyColumn>();
 
@@ -8425,7 +8444,7 @@ namespace VZF.Data.Postgre
 
         #endregion
 
-        public static DataTable admin_list(string connectionString, int? boardId, object useStyledNicks)
+        public static DataTable admin_list([NotNull] string connectionString , int? boardId, object useStyledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("admin_list"))
             {
@@ -8450,7 +8469,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable admin_pageaccesslist(
-            string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+            [NotNull] string connectionString , [CanBeNull] object boardId, [NotNull] object useStyledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("admin_pageaccesslist"))
             {
@@ -8466,7 +8485,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void adminpageaccess_save(
-            string connectionString, [NotNull] object userId, [NotNull] object pageName)
+            [NotNull] string connectionString , [NotNull] object userId, [NotNull] object pageName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("adminpageaccess_save"))
             {
@@ -8480,7 +8499,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void adminpageaccess_delete(
-            string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
+            [NotNull] string connectionString , [NotNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("adminpageaccess_delete"))
             {
@@ -8494,7 +8513,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable adminpageaccess_list(
-            string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
+            [NotNull] string connectionString , [CanBeNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = PostgreDbAccess.GetCommand("adminpageaccess_list"))
             {
@@ -8549,7 +8568,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable user_listmembers(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userId,
             object approved,
@@ -8615,7 +8634,7 @@ namespace VZF.Data.Postgre
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable user_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable user_simplelist([NotNull] string connectionString , int StartID, int Limit)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_simplelist"))
             {
@@ -8638,7 +8657,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_delete(string connectionString, object userId)
+        public static void user_delete([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_delete"))
             {
@@ -8650,7 +8669,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_setrole(string connectionString, int boardId, object providerUserKey, object role)
+        public static void user_setrole([NotNull] string connectionString , int boardId, object providerUserKey, object role)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_setrole"))
             {
@@ -8666,7 +8685,7 @@ namespace VZF.Data.Postgre
         }
 
         // TODO: is not used anywhere? 
-        public static void user_setinfo(string connectionString, int boardId, System.Web.Security.MembershipUser user)
+        public static void user_setinfo([NotNull] string connectionString , int boardId, System.Web.Security.MembershipUser user)
         {
             using (
                 var cmd =
@@ -8695,7 +8714,7 @@ namespace VZF.Data.Postgre
         /// <param name="userId">
         /// The userId key.
         /// </param>
-        public static void user_setnotdirty(string connectionString, int boardId, int userId)
+        public static void user_setnotdirty([NotNull] string connectionString , int boardId, int userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_setnotdirty"))
             {
@@ -8706,7 +8725,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void user_migrate(
-            string connectionString, object userId, object providerUserKey, object updateProvider)
+            [NotNull] string connectionString , object userId, object providerUserKey, object updateProvider)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_migrate"))
             {
@@ -8731,7 +8750,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_deleteold(string connectionString, object boardId, object days)
+        public static void user_deleteold([NotNull] string connectionString , object boardId, object days)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_deleteold"))
             {
@@ -8746,7 +8765,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_approve(string connectionString, object userId)
+        public static void user_approve([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_approve"))
             {
@@ -8758,7 +8777,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_approveall(string connectionString, object boardId)
+        public static void user_approveall([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_approveall"))
             {
@@ -8770,7 +8789,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_suspend(string connectionString, object userId, object suspend)
+        public static void user_suspend([NotNull] string connectionString , object userId, object suspend)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_suspend"))
             {
@@ -8795,7 +8814,7 @@ namespace VZF.Data.Postgre
         /// <param name="userID">The userID</param>
         /// <param name="boardID">The boardID</param>
         /// <returns>Data Table</returns>
-        public static DataTable user_getsignaturedata(string connectionString, object userID, object boardID)
+        public static DataTable user_getsignaturedata([NotNull] string connectionString , object userID, object boardID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_getsignaturedata"))
             {
@@ -8811,7 +8830,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="userID">The userID</param>
         /// <param name="boardID">The boardID</param>  
-        public static DataTable user_getalbumsdata(string connectionString, object userID, object boardID)
+        public static DataTable user_getalbumsdata([NotNull] string connectionString , object userID, object boardID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_getalbumsdata"))
             {
@@ -8824,7 +8843,7 @@ namespace VZF.Data.Postgre
         }
 
         public static bool user_changepassword(
-            string connectionString, object userId, object oldPassword, object newPassword)
+            [NotNull] string connectionString , object userId, object oldPassword, object newPassword)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_changepassword"))
             {
@@ -8838,7 +8857,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_pmcount(string connectionString, object userId)
+        public static DataTable user_pmcount([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_pmcount"))
             {
@@ -8863,7 +8882,7 @@ namespace VZF.Data.Postgre
         /// Returns if true or not
         /// </returns>
         public static bool user_RepliedTopic(
-            string connectionString, [NotNull] object messageId, [NotNull] object userId)
+            [NotNull] string connectionString , [NotNull] object messageId, [NotNull] object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_repliedtopic"))
             {
@@ -8881,7 +8900,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void user_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object userId,
             object boardId,
             object userName,
@@ -8986,7 +9005,7 @@ namespace VZF.Data.Postgre
         /// The notification type.
         /// </param>
         public static void user_savenotification(
-            string connectionString,
+            [NotNull] string connectionString ,
             object userId,
             object pmNotification,
             object autoWatchTopics,
@@ -9010,7 +9029,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void user_adminsave(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userId,
             object name,
@@ -9036,7 +9055,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_emails(string connectionString, object boardId, object groupID)
+        public static DataTable user_emails([NotNull] string connectionString , object boardId, object groupID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_emails"))
             {
@@ -9055,7 +9074,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_accessmasks(string connectionString, object boardId, object userId)
+        public static DataTable user_accessmasks([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_accessmasks"))
             {
@@ -9068,7 +9087,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_accessmasksbyforum(string connectionString, object boardId, object userId)
+        public static DataTable user_accessmasksbyforum([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_accessmasksbyforum"))
             {
@@ -9081,7 +9100,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_accessmasksbygroup(string connectionString, object boardId, object userId)
+        public static DataTable user_accessmasksbygroup([NotNull] string connectionString , object boardId, object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_accessmasksbygroup"))
             {
@@ -9157,7 +9176,7 @@ namespace VZF.Data.Postgre
         }
 
         public static object user_recoverpassword(
-            string connectionString, object boardId, object userName, object email)
+            [NotNull] string connectionString , object boardId, object userName, object email)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_recoverpassword"))
             {
@@ -9171,7 +9190,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_savepassword(string connectionString, object userId, object password)
+        public static void user_savepassword([NotNull] string connectionString , object userId, object password)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_savepassword"))
             {
@@ -9185,7 +9204,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static object user_login(string connectionString, object boardId, object name, object password)
+        public static object user_login([NotNull] string connectionString , object boardId, object name, object password)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_login"))
             {
@@ -9199,7 +9218,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable user_avatarimage(string connectionString, object userId)
+        public static DataTable user_avatarimage([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_avatarimage"))
             {
@@ -9211,7 +9230,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static int user_get(string connectionString, int boardId, object providerUserKey)
+        public static int user_get([NotNull] string connectionString , int boardId, object providerUserKey)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_get"))
             {
@@ -9245,7 +9264,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable UserFind(
-            string connectionString,
+            [NotNull] string connectionString ,
             int boardId,
             bool filter,
             string userName,
@@ -9275,7 +9294,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static string user_getsignature(string connectionString, object userId)
+        public static string user_getsignature([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_getsignature"))
             {
@@ -9287,7 +9306,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_savesignature(string connectionString, object userId, object signature)
+        public static void user_savesignature([NotNull] string connectionString , object userId, object signature)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_savesignature"))
             {
@@ -9301,7 +9320,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void user_saveavatar(
-            string connectionString, object userId, object avatar, System.IO.Stream stream, object avatarImageType)
+            [NotNull] string connectionString , object userId, object avatar, System.IO.Stream stream, object avatarImageType)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_saveavatar"))
             {
@@ -9326,7 +9345,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_deleteavatar(string connectionString, object userId)
+        public static void user_deleteavatar([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_deleteavatar"))
             {
@@ -9339,7 +9358,7 @@ namespace VZF.Data.Postgre
         }
 
         public static bool user_register(
-            string connectionString,
+            [NotNull] string connectionString ,
             object boardId,
             object userName,
             object password,
@@ -9400,7 +9419,7 @@ namespace VZF.Data.Postgre
         }
 
         public static int user_aspnet(
-            string connectionString,
+            [NotNull] string connectionString ,
             int boardId,
             string userName,
             string displayName,
@@ -9444,7 +9463,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The user_guest.
         /// </returns>
-        public static int? user_guest(string connectionString, object boardId)
+        public static int? user_guest([NotNull] string connectionString , object boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_guest"))
             {
@@ -9457,7 +9476,7 @@ namespace VZF.Data.Postgre
         }
 
         public static DataTable user_activity_rank(
-            string connectionString, object boardId, object startDate, object displayNumber)
+            [NotNull] string connectionString , object boardId, object startDate, object displayNumber)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_activity_rank"))
             {
@@ -9472,7 +9491,7 @@ namespace VZF.Data.Postgre
         }
 
         public static int user_nntp(
-            string connectionString, object boardId, object userName, object email, int? timeZone)
+            [NotNull] string connectionString , object boardId, object userName, object email, int? timeZone)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_nntp"))
             {
@@ -9503,7 +9522,7 @@ namespace VZF.Data.Postgre
         /// <param name="fromUserID">From user ID.</param>
         /// <param name="points">The points.</param>
         public static void user_addpoints(
-            string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+            [NotNull] string connectionString , [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_addpoints"))
             {
@@ -9527,7 +9546,7 @@ namespace VZF.Data.Postgre
         /// <param name="fromUserID">From user ID.</param>
         /// <param name="points">The points.</param>
         public static void user_removepoints(
-            string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+            [NotNull] string connectionString , [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
 
             using (var cmd = PostgreDbAccess.GetCommand("user_removepoints"))
@@ -9543,7 +9562,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void user_setpoints(string connectionString, object userId, object points)
+        public static void user_setpoints([NotNull] string connectionString , object userId, object points)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_setpoints"))
             {
@@ -9556,7 +9575,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static int user_getpoints(string connectionString, object userId)
+        public static int user_getpoints([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_getpoints"))
             {
@@ -9569,7 +9588,7 @@ namespace VZF.Data.Postgre
         }
 
 
-        public static int user_getthanks_from(string connectionString, object userID, object pageUserId)
+        public static int user_getthanks_from([NotNull] string connectionString , object userID, object pageUserId)
         {
 
             using (var cmd = PostgreDbAccess.GetCommand("user_getthanks_from"))
@@ -9584,7 +9603,7 @@ namespace VZF.Data.Postgre
 
         //<summary> Returns the number of times and posts that other users have thanked the 
         // user with the provided userID.
-        public static int[] user_getthanks_to(string connectionString, object userID, object pageUserId)
+        public static int[] user_getthanks_to([NotNull] string connectionString , object userID, object pageUserId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_getthanks_to"))
             {
@@ -9626,7 +9645,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable user_viewthanksfrom(
-            string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+            [NotNull] string connectionString , object UserID, object pageUserId, int pageIndex, int pageSize)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_viewthanksfrom"))
             {
@@ -9649,7 +9668,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable user_viewthanksto(
-            string connectionString, object UserID, object pageUserId, int pageIndex, int pageSize)
+            [NotNull] string connectionString , object UserID, object pageUserId, int pageIndex, int pageSize)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_viewthanksto"))
             {
@@ -9675,7 +9694,7 @@ namespace VZF.Data.Postgre
         /// The is Twitter User.
         /// </param>
         public static void user_update_single_sign_on_status(
-            string connectionString,
+            [NotNull] string connectionString ,
             [NotNull] object userID,
             [NotNull] object isFacebookUser,
             [NotNull] object isTwitterUser)
@@ -9695,7 +9714,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_UserForum
 
-        public static DataTable userforum_list(string connectionString, object userId, object forumID)
+        public static DataTable userforum_list([NotNull] string connectionString , object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("userforum_list"))
             {
@@ -9718,7 +9737,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void userforum_delete(string connectionString, object userId, object forumID)
+        public static void userforum_delete([NotNull] string connectionString , object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("userforum_delete"))
             {
@@ -9731,7 +9750,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void userforum_save(string connectionString, object userId, object forumID, object accessMaskID)
+        public static void userforum_save([NotNull] string connectionString , object userId, object forumID, object accessMaskID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("userforum_save"))
             {
@@ -9751,7 +9770,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_UserGroup
 
-        public static DataTable usergroup_list(string connectionString, object userId)
+        public static DataTable usergroup_list([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("usergroup_list"))
             {
@@ -9763,7 +9782,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void usergroup_save(string connectionString, object userId, object groupID, object member)
+        public static void usergroup_save([NotNull] string connectionString , object userId, object groupID, object member)
         {
             using (var cmd = PostgreDbAccess.GetCommand("usergroup_save"))
             {
@@ -9782,7 +9801,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_WatchForum
 
-        public static void watchforum_add(string connectionString, object userId, object forumID)
+        public static void watchforum_add([NotNull] string connectionString , object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchforum_add"))
             {
@@ -9797,7 +9816,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable watchforum_list(string connectionString, object userId)
+        public static DataTable watchforum_list([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchforum_list"))
             {
@@ -9809,7 +9828,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable watchforum_check(string connectionString, object userId, object forumID)
+        public static DataTable watchforum_check([NotNull] string connectionString , object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchforum_check"))
             {
@@ -9822,7 +9841,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void watchforum_delete(string connectionString, object watchForumID)
+        public static void watchforum_delete([NotNull] string connectionString , object watchForumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchforum_delete"))
             {
@@ -9839,7 +9858,7 @@ namespace VZF.Data.Postgre
 
         #region yaf_WatchTopic
 
-        public static DataTable watchtopic_list(string connectionString, object userId)
+        public static DataTable watchtopic_list([NotNull] string connectionString , object userId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchtopic_list"))
             {
@@ -9851,7 +9870,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable watchtopic_check(string connectionString, object userId, object topicID)
+        public static DataTable watchtopic_check([NotNull] string connectionString , object userId, object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchtopic_check"))
             {
@@ -9864,7 +9883,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void watchtopic_delete(string connectionString, object watchTopicID)
+        public static void watchtopic_delete([NotNull] string connectionString , object watchTopicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchtopic_delete"))
             {
@@ -9876,7 +9895,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static void watchtopic_add(string connectionString, object userId, object topicID)
+        public static void watchtopic_add([NotNull] string connectionString , object userId, object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("watchtopic_add"))
             {
@@ -9901,7 +9920,7 @@ namespace VZF.Data.Postgre
         /// The topic id.
         /// </param>
         public static void Readtopic_AddOrUpdate(
-            string connectionString, [NotNull] object userID, [NotNull] object topicID)
+            [NotNull] string connectionString , [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("readtopic_addorupdate"))
             {
@@ -9942,7 +9961,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// Returns the Global Last Read DateTime
         /// </returns>
-        public static DateTime? User_LastRead(string connectionString, [NotNull] object userID)
+        public static DateTime? User_LastRead([NotNull] string connectionString , [NotNull] object userID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("user_lastread"))
             {
@@ -9968,7 +9987,7 @@ namespace VZF.Data.Postgre
         /// Returns the Last Read DateTime
         /// </returns>
         public static DateTime? Readtopic_lastread(
-            string connectionString, [NotNull] object userID, [NotNull] object topicID)
+            [NotNull] string connectionString , [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("readtopic_lastread"))
             {
@@ -9994,7 +10013,7 @@ namespace VZF.Data.Postgre
         /// The forum id.
         /// </param>
         public static void ReadForum_AddOrUpdate(
-            string connectionString, [NotNull] object userID, [NotNull] object forumID)
+            [NotNull] string connectionString , [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("readforum_addorupdate"))
             {
@@ -10036,7 +10055,7 @@ namespace VZF.Data.Postgre
         /// Returns the Last Read DateTime
         /// </returns>
         public static DateTime? ReadForum_lastread(
-            string connectionString, [NotNull] object userID, [NotNull] object forumID)
+            [NotNull] string connectionString , [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("readforum_lastread"))
             {
@@ -10105,7 +10124,7 @@ namespace VZF.Data.Postgre
 
         #endregion
 
-        public static DataTable rsstopic_list(string connectionString, int forumID, int topicStart, int topicCount)
+        public static DataTable rsstopic_list([NotNull] string connectionString , int forumID, int topicStart, int topicCount)
         {
             using (var cmd = PostgreDbAccess.GetCommand("rsstopic_list"))
             {
@@ -10133,7 +10152,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        static public string db_getstats_new(string connectionString)
+        static public string db_getstats_new([NotNull] string connectionString )
         {
             try
             {
@@ -10187,7 +10206,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        static public string db_reindex_new(string connectionString)
+        static public string db_reindex_new([NotNull] string connectionString )
         {
             // VACUUM ANALYZE VERBOSE;VACUUM cannot be implemeneted within function or multiline command line string 
             try
@@ -10201,7 +10220,7 @@ namespace VZF.Data.Postgre
                             new NpgsqlCommand(
                                 String.Format(
                                     @"REINDEX DATABASE {0};",
-                                    Config.DatabaseScheme.IsSet() ? Config.DatabaseScheme : "public"),
+                                    Config.DatabaseSchemaName.IsSet() ? Config.DatabaseSchemaName : "public"),
                                 connMan.OpenDBConnection(connectionString)))
                     {
                         cmd.CommandType = CommandType.Text;
@@ -10375,7 +10394,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The db_runsql.
         /// </returns>
-        public static string db_runsql_new(string connectionString, [NotNull] string sql, bool useTransaction)
+        public static string db_runsql_new([NotNull] string connectionString , [NotNull] string sql, bool useTransaction)
         {
 
             try
@@ -10492,7 +10511,7 @@ namespace VZF.Data.Postgre
             messageRunSql = "\r\n" + e.Message;
         }
 
-        public static bool forumpage_initdb(string connectionString, out string errorStr, bool debugging)
+        public static bool forumpage_initdb([NotNull] string connectionString , out string errorStr, bool debugging)
         {
             errorStr = null;
             try
@@ -10526,7 +10545,7 @@ namespace VZF.Data.Postgre
 
         }
 
-        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
+        public static string forumpage_validateversion([NotNull] string connectionString , int? mid, int appVersion)
         {
             string redirect = string.Empty;
 
@@ -10572,7 +10591,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        private static bool GetBooleanRegistryValue(string connectionString, string name)
+        private static bool GetBooleanRegistryValue([NotNull] string connectionString , string name)
         {
             using (DataTable dt = Db.registry_list(connectionString, name))
             {
@@ -10587,7 +10606,7 @@ namespace VZF.Data.Postgre
             return false;
         }
 
-        public static void system_deleteinstallobjects(string connectionString)
+        public static void system_deleteinstallobjects([NotNull] string connectionString )
         {
             string tSQL = "DROP FUNCTION" + PostgreDbAccess.GetObjectName("system_initialize");
             using (var cmd = PostgreDbAccess.GetCommand(tSQL, true))
@@ -10598,7 +10617,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void system_initialize_executescripts(
-            string connectionString, string script, string scriptFile, bool useTransactions)
+            [NotNull] string connectionString , string script, string scriptFile, bool useTransactions)
         {
             script = PostgreDbAccess.GetCommandTextReplaced(script);
 
@@ -10688,7 +10707,7 @@ namespace VZF.Data.Postgre
 
         }
 
-        public static void system_initialize_fixaccess(string connectionString, bool bGrant)
+        public static void system_initialize_fixaccess([NotNull] string connectionString , bool bGrant)
         {
             /*   using (VZF.Classes.Data.IDbConnectionManager connMan = new IDbConnectionManager())
             {
@@ -10773,7 +10792,7 @@ namespace VZF.Data.Postgre
         }
 
         public static void system_initialize(
-            string connectionString,
+            [NotNull] string connectionString ,
             string forumName,
             string timeZone,
             string culture,
@@ -10810,7 +10829,7 @@ namespace VZF.Data.Postgre
 
         }
 
-        public static void system_updateversion(string connectionString, int version, string name)
+        public static void system_updateversion([NotNull] string connectionString , int version, string name)
         {
             using (var cmd = PostgreDbAccess.GetCommand("system_updateversion"))
             {
@@ -10828,7 +10847,7 @@ namespace VZF.Data.Postgre
         /// Used in GroupRankStyles cache.
         /// Usage: LegendID = 1 - Select Groups, LegendID = 2 - select Ranks by Name 
         /// </summary>
-        public static DataTable group_rank_style(string connectionString, object boardID)
+        public static DataTable group_rank_style([NotNull] string connectionString , object boardID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("group_rank_style"))
             {
@@ -10854,7 +10873,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         public static DataTable shoutbox_getmessages(
-            string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
+            [NotNull] string connectionString , int boardId, int numberOfMessages, object useStyledNicks)
         {
             using (var cmd = PostgreDbAccess.GetCommand("shoutbox_getmessages"))
             {
@@ -10870,7 +10889,7 @@ namespace VZF.Data.Postgre
         }
 
         public static bool shoutbox_savemessage(
-            string connectionString, int boardId, string message, string userName, int userID, object ip)
+            [NotNull] string connectionString , int boardId, string message, string userName, int userID, object ip)
         {
             using (var cmd = PostgreDbAccess.GetCommand("shoutbox_savemessage"))
             {
@@ -10891,7 +10910,7 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static Boolean shoutbox_clearmessages(string connectionString, int boardId)
+        public static Boolean shoutbox_clearmessages([NotNull] string connectionString , int boardId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("shoutbox_clearmessages"))
             {
@@ -10909,7 +10928,7 @@ namespace VZF.Data.Postgre
         #region Touradg Mods
 
         // Shinking Operation
-        public static string db_shrink_warning(string connectionString)
+        public static string db_shrink_warning([NotNull] string connectionString )
         {
             return string.Empty;
         }
@@ -10938,7 +10957,7 @@ namespace VZF.Data.Postgre
         /// <param name="DBName">
         /// The db name.
         /// </param>
-        public static string db_shrink_new(string connectionString)
+        public static string db_shrink_new([NotNull] string connectionString )
         {
             /* try
              {
@@ -10988,7 +11007,7 @@ namespace VZF.Data.Postgre
             return string.Empty;
         }
 
-        public static string db_recovery_mode_new(string connectionString, string dbRecoveryMode)
+        public static string db_recovery_mode_new([NotNull] string connectionString , string dbRecoveryMode)
         {
             /* String RecoveryMode = "ALTER DATABASE " + DBName.DBConnection.Database + " SET RECOVERY " + dbRecoveryMode;
             SqlConnection RecoveryModeConn = new SqlConnection(VZF.Classes.Config.ConnectionString);
@@ -11021,7 +11040,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The name of the second user + Whether this request is approved or not.
         /// </returns>
-        public static string[] buddy_addrequest(string connectionString, object FromUserID, object ToUserID)
+        public static string[] buddy_addrequest([NotNull] string connectionString , object FromUserID, object ToUserID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("buddy_addrequest"))
             {
@@ -11057,7 +11076,7 @@ namespace VZF.Data.Postgre
         /// the name of the second user.
         /// </returns>
         public static string buddy_approveRequest(
-            string connectionString, object FromUserID, object ToUserID, object Mutual)
+            [NotNull] string connectionString , object FromUserID, object ToUserID, object Mutual)
         {
             using (var cmd = PostgreDbAccess.GetCommand("buddy_approverequest"))
             {
@@ -11091,7 +11110,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// the name of the second user.
         /// </returns>
-        public static string buddy_denyRequest(string connectionString, object FromUserID, object ToUserID)
+        public static string buddy_denyRequest([NotNull] string connectionString , object FromUserID, object ToUserID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("buddy_denyrequest"))
             {
@@ -11122,7 +11141,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The name of the second user.
         /// </returns>
-        public static string buddy_remove(string connectionString, object FromUserID, object ToUserID)
+        public static string buddy_remove([NotNull] string connectionString , object FromUserID, object ToUserID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("buddy_remove"))
             {
@@ -11150,7 +11169,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// a Datatable containing the buddy list.
         /// </returns>
-        public static DataTable buddy_list(string connectionString, object FromUserID)
+        public static DataTable buddy_list([NotNull] string connectionString , object FromUserID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("buddy_list"))
             {
@@ -11180,7 +11199,7 @@ namespace VZF.Data.Postgre
         /// New Cover image id.
         /// </param>
         public static int album_save(
-            string connectionString, object AlbumID, object UserID, object Title, object CoverImageID)
+            [NotNull] string connectionString , object AlbumID, object UserID, object Title, object CoverImageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("album_save"))
             {
@@ -11231,7 +11250,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// a Datatable containing the albums.
         /// </returns>
-        public static DataTable album_list(string connectionString, object UserID, object AlbumID)
+        public static DataTable album_list([NotNull] string connectionString , object UserID, object AlbumID)
         {
             if (AlbumID == null || AlbumID.ToString() == "0")
             {
@@ -11257,7 +11276,7 @@ namespace VZF.Data.Postgre
         /// <param name="AlbumID">
         /// the album id.
         /// </param>
-        public static void album_delete(string connectionString, object AlbumID)
+        public static void album_delete([NotNull] string connectionString , object AlbumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("album_delete"))
             {
@@ -11273,7 +11292,7 @@ namespace VZF.Data.Postgre
         /// <param name="AlbumID">
         /// the album id.
         /// </param>
-        public static string album_gettitle(string connectionString, object AlbumID)
+        public static string album_gettitle([NotNull] string connectionString , object AlbumID)
         {
 
             if (AlbumID == null || AlbumID.ToString() == "0")
@@ -11302,7 +11321,7 @@ namespace VZF.Data.Postgre
         /// the album id.
         /// </param>
         /// <returns></returns>
-        public static int[] album_getstats(string connectionString, object UserID, object AlbumID)
+        public static int[] album_getstats([NotNull] string connectionString , object UserID, object AlbumID)
         {
             if (AlbumID == null || AlbumID.ToString() == "0")
             {
@@ -11349,7 +11368,7 @@ namespace VZF.Data.Postgre
         /// the content type.
         /// </param>
         public static void album_image_save(
-            string connectionString,
+            [NotNull] string connectionString ,
             object ImageID,
             object AlbumID,
             object Caption,
@@ -11401,7 +11420,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// a Datatable containing the image(s).
         /// </returns>
-        public static DataTable album_image_list(string connectionString, object AlbumID, object ImageID)
+        public static DataTable album_image_list([NotNull] string connectionString , object AlbumID, object ImageID)
         {
             if (AlbumID == null || AlbumID.ToString() == "0")
             {
@@ -11436,7 +11455,7 @@ namespace VZF.Data.Postgre
         /// <param name="ImageID">
         /// the image id.
         /// </param>
-        public static void album_image_delete(string connectionString, object ImageID)
+        public static void album_image_delete([NotNull] string connectionString , object ImageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("album_image_delete"))
             {
@@ -11452,7 +11471,7 @@ namespace VZF.Data.Postgre
         /// <param name="ImageID">
         /// the image id.
         /// </param>
-        public static void album_image_download(string connectionString, object ImageID)
+        public static void album_image_download([NotNull] string connectionString , object ImageID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("album_image_download"))
             {
@@ -11467,7 +11486,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="userID">The user ID.</param>
         /// <returns>All Albbum Images of the User</returns>
-        public static DataTable album_images_by_user(string connectionString, [NotNull] object userID)
+        public static DataTable album_images_by_user([NotNull] string connectionString , [NotNull] object userID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("album_images_by_user"))
             {
@@ -11479,7 +11498,7 @@ namespace VZF.Data.Postgre
 
         #endregion
 
-        public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
+        public static void unencode_all_topics_subjects([NotNull] string connectionString , Func<string, string> decodeTopicFunc)
         {
             var topics =
                 Db.topic_simplelist(connectionString, 0, 99999999)

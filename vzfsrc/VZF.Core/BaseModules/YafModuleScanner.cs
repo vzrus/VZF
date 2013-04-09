@@ -29,7 +29,7 @@ namespace YAF.Core
   using System.Security.Policy;
 
   using YAF.Types;
-  using YAF.Utils;
+  using VZF.Utils;
 
   /// <summary>
   /// The module scanner

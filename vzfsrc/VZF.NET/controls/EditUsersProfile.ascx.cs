@@ -47,8 +47,8 @@ namespace VZF.Controls
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -437,7 +437,7 @@ namespace VZF.Controls
 
             if (dt.Rows.Count > 0 && dt.Rows[0]["IsGuest"].ToType<bool>())
             {
-                CommonDb.registry_save(PageContext.PageModuleID, "timezone", this.TimeZones.SelectedValue, this.PageContext.PageBoardID);
+                CommonDb.registry_save(PageContext.PageModuleID, "timezone", this.TimeZones.SelectedValue, 0);
             }
 
             // clear the cache for this user...)

@@ -25,7 +25,7 @@ namespace YAF.Core
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Extensions;
-    using YAF.Utils.Extensions;
+    using VZF.Utils.Extensions;
 
     /// <summary>
     /// The load page lazy user data.

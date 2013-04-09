@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace VZF.Controls
 {
@@ -34,7 +34,7 @@ namespace VZF.Controls
   using YAF.Types;
   using YAF.Types.Interfaces;
   using YAF.Utilities;
-  using YAF.Utils;
+  using VZF.Utils;
 
     #endregion
 

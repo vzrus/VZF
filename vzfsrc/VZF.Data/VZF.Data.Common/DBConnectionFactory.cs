@@ -12,7 +12,7 @@
 
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     public partial class CommonSqlDbAccess: IDbAccess 
     { 
@@ -130,8 +130,6 @@
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
                 }
             }
         }
@@ -160,9 +158,7 @@
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
-
                 }
-
             }
         }
         static public string DatabaseEncoding

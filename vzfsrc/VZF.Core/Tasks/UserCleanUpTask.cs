@@ -27,9 +27,9 @@ namespace YAF.Core.Tasks
   using VZF.Data.Common;
 
   
-  using YAF.Utils;
-  using YAF.Utils.Helpers;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers;
+  using VZF.Utils.Helpers.StringUtils;
 
   /// <summary>
   /// Does some user clean up tasks such as unsuspending users...

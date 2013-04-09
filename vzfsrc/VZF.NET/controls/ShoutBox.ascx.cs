@@ -9,7 +9,7 @@
 //  Note: clear button removes message more than 24hrs old from db
  */
 
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace VZF.Controls
 {
@@ -31,7 +31,7 @@ namespace VZF.Controls
     using YAF.Types.Constants;
     
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

@@ -35,7 +35,7 @@ namespace YAF.Core.Data
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Data;
     using YAF.Types.Interfaces.Extensions;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

@@ -35,7 +35,7 @@ namespace VZF.Kernel
     using YAF.Core;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

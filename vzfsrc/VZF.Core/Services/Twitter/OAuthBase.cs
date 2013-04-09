@@ -39,7 +39,7 @@ namespace YAF.Core.Services.Twitter
     using System.Text;
     using System.Web;
 
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

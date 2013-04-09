@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Utils.Helpers
+namespace VZF.Utils.Helpers
 {
   using System;
   using System.Collections.Specialized;

@@ -24,25 +24,21 @@ namespace VZF.Controls
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Data;
-    using System.Globalization;
-    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    
-    using YAF.Classes.Pattern;
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
 
     #endregion
 
@@ -354,7 +350,7 @@ namespace VZF.Controls
                 {
                     filler =
                         this.Get<YafBoardSettings>().UserBoxAvatar.FormatWith(
-                            @"<a href=""{1}"" title=""{2}""><img class=""avatarimage"" src=""{0}"" alt=""{2}"" title=""{2}""  /></a>"
+                            "<a href=\"{1}\" title=\"{2}\"><img class=\"avatarimage\" src=\"{0}\" alt=\"{2}\" title=\"{2}\"  /></a>"
                                 .FormatWith(
                                     avatarUrl,
                                     YafBuildLink.GetLinkNotEscaped(ForumPages.profile, "u={0}", this.UserId),
@@ -439,7 +435,7 @@ namespace VZF.Controls
 
                     filler =
                         this.Get<YafBoardSettings>().UserBoxGender.FormatWith(
-                            @"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(imagePath, imageAlt));
+                            "<a><img src=\"{0}\" alt=\"{1}\" title=\"{1}\" /></a>".FormatWith(imagePath, imageAlt));
                 }
             }
 
@@ -460,7 +456,7 @@ namespace VZF.Controls
         [NotNull]
         private string MatchUserBoxGroups([NotNull] string userBox)
         {
-            const string styledNick = @"<span class=""YafGroup_{0}"" style=""{1}"">{0}</span>";
+            const string styledNick = "<span class=\"YafGroup_{0}\" style=\"{1}\">{0}</span>";
 
             string filler = string.Empty;
 
@@ -878,7 +874,7 @@ namespace VZF.Controls
 
             string filler = this.Get<YafBoardSettings>().UserBoxRank.FormatWith(
                 this.GetText("rank"),
-                this.Get<YafBoardSettings>().UseStyledNicks ? @"<span class=""YafRank_{0}"" style=""{1}"">{0}</span>".FormatWith(this.DataRow["RankName"], this.TransformStyle.DecodeStyleByString(this.DataRow["RankStyle"].ToString(),true)) : this.DataRow["RankName"]);
+                this.Get<YafBoardSettings>().UseStyledNicks ? "<span class=\"YafRank_{0}\" style=\"{1}\">{0}</span>".FormatWith(this.DataRow["RankName"], this.TransformStyle.DecodeStyleByString(this.DataRow["RankStyle"].ToString(),true)) : this.DataRow["RankName"]);
 
             // replaces template placeholder with actual rank
             userBox = rx.Replace(userBox, filler);
@@ -904,7 +900,7 @@ namespace VZF.Controls
             {
                 filler =
                     this.Get<YafBoardSettings>().UserBoxRankImage.FormatWith(
-                        @"<img class=""rankimage"" src=""{0}{1}/{2}"" alt="""" />".FormatWith(
+                        "<img class=\"rankimage\" src=\"{0}{1}/{2}\" alt=\"\" />".FormatWith(
                             YafForumInfo.ForumClientFileRoot, YafBoardFolders.Current.Ranks, this.DataRow["RankImage"]));
             }
 
@@ -939,7 +935,7 @@ namespace VZF.Controls
 
                 filler =
                     this.Get<YafBoardSettings>().UserBoxCountryImage.FormatWith(
-                        @"<a><img src=""{0}"" alt=""{1}"" title=""{1}"" /></a>".FormatWith(imagePath, imageAlt));
+                        "<a><img src=\"{0}\" alt=\"{1}\" title=\"{1}\" /></a>".FormatWith(imagePath, imageAlt));
             }
 
             // replaces template placeholder with actual rank image
@@ -1024,9 +1020,8 @@ namespace VZF.Controls
         /// </returns>
         [NotNull]
         private string RemoveEmptyDividers([NotNull] string userBox)
-        {
-            userBox = userBox.Replace("\"\"section\"\"", "\"section\"").Replace(@"""section""", "\"section\"");
-            if (userBox.IndexOf("<div class=\"section\"></div>", StringComparison.InvariantCultureIgnoreCase) > 0)
+        {          
+           if (userBox.IndexOf("<div class=\"section\"></div>", StringComparison.InvariantCultureIgnoreCase) > 0)
             {
                 userBox =
                     userBox.Replace(
@@ -1034,7 +1029,7 @@ namespace VZF.Controls
                             ? "<div class=\"section\"></div><br />"
                             : "<div class=\"section\"></div>",
                         string.Empty);
-            }
+            } 
 
             return userBox;
         }

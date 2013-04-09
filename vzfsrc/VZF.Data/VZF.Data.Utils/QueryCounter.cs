@@ -24,7 +24,7 @@ namespace VZF.Data.Utils
     using System.Diagnostics;
     using System.Web;
 
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
   /// The query counter.

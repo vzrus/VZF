@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.version"
     CodeBehind="version.ascx.cs" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu ID="adminmenu1" runat="server">
     <table width="100%" cellspacing="0" cellpadding="0" class="content">

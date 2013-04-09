@@ -463,6 +463,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_list_return_type AS
 "ImageURL" varchar(128),
 "Styles" varchar(255),
 "PollGroupID" integer,
+"IsUserForum" boolean,
 "CreatedByUserID" integer,
 "CanHavePersForums" boolean
 );

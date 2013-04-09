@@ -41,8 +41,8 @@ namespace YAF.pages
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     /// <summary>
     /// The personalforum.

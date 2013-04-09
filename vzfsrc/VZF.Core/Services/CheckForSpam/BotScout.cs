@@ -26,7 +26,7 @@ namespace YAF.Core.Services.CheckForSpam
     using System.Net;
 
     using YAF.Classes;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

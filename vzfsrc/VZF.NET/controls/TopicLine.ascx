@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TopicLine.ascx.cs" Inherits="VZF.Controls.TopicLine" %>
 <%@ Import Namespace="YAF.Core.Services" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
+<%@ Import Namespace="VZF.Utils.Helpers" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="VZF.Controls" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Classes" %>
@@ -41,12 +41,12 @@
         %>
         <span class="post_priority">
             <%=priorityMessage %></span>
-          <%=this.GetTags() %>
+        
         <%
             }
-
             const string linkParams = "t={0}";
         %>
+        <%=this.GetTags() %>
         <a href="<%=YafBuildLink.GetLink(ForumPages.posts, linkParams, this.TopicRow["LinkTopicID"])%>"
             class="post_link" title="<%=this.Get<IFormatMessage>().GetCleanedTopicMessage(this.TopicRow["FirstMessage"], this.TopicRow["LinkTopicID"]).MessageTruncated%>">
            <%=this.FormatTopicName() %>  
@@ -142,8 +142,8 @@
                 this.Get<IReadTrackCurrentUser>().GetForumTopicRead(
                 forumId: this.TopicRow["ForumID"].ToType<int>(),
                 topicId: this.TopicRow["TopicID"].ToType<int>(),
-                forumReadOverride: this.TopicRow["LastForumAccess"].ToType<DateTime?>() ?? YAF.Utils.Helpers.DateTimeHelper.SqlDbMinTime(),
-                topicReadOverride: this.TopicRow["LastTopicAccess"].ToType<DateTime?>() ?? YAF.Utils.Helpers.DateTimeHelper.SqlDbMinTime()); 
+                forumReadOverride: this.TopicRow["LastForumAccess"].ToType<DateTime?>() ?? VZF.Utils.Helpers.DateTimeHelper.SqlDbMinTime(),
+                topicReadOverride: this.TopicRow["LastTopicAccess"].ToType<DateTime?>() ?? VZF.Utils.Helpers.DateTimeHelper.SqlDbMinTime()); 
 
 
         string strMiniPost = this.Get<ITheme>().GetItem(

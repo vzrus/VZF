@@ -29,7 +29,7 @@ namespace YAF.Core
 
     using VZF.Data.Common;
 
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// The data import.

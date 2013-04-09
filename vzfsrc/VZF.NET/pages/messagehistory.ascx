@@ -1,8 +1,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.messagehistory"CodeBehind="messagehistory.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
+<%@ Import Namespace="VZF.Utils" %>
+<%@ Import Namespace="VZF.Utils.Helpers" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <table class="content" width="100%" cellspacing="1" cellpadding="0">
@@ -66,9 +66,9 @@
                     <%# this.Get<IDateTime>().FormatDateTimeTopic( Container.DataItemToField<DateTime>("Posted") )%>
                     &nbsp; <span id="IPSpan2" runat="server" visible='<%# PageContext.IsAdmin || (this.Get<YafBoardSettings>().AllowModeratorsViewIPs && PageContext.IsModeratorInAnyForum)%>'>
                         <strong>
-                            <%# this.GetText("IP") %>: </strong><a id="IPLink2" href='<%# this.Get<YafBoardSettings>().IPInfoPageURL.FormatWith(YAF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP"))) %>'
+                            <%# this.GetText("IP") %>: </strong><a id="IPLink2" href='<%# this.Get<YafBoardSettings>().IPInfoPageURL.FormatWith(VZF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP"))) %>'
                                 title='<%# this.GetText("COMMON","TT_IPDETAILS") %>'
-                                target="_blank" runat="server"><%# YAF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP")) %></a>
+                                target="_blank" runat="server"><%# VZF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP")) %></a>
                     </span>
                 </td>
             </tr>
@@ -117,9 +117,9 @@
                     <br />
                     <span id="IPSpan3" runat="server" visible='<%# PageContext.IsAdmin || (this.Get<YafBoardSettings>().AllowModeratorsViewIPs && PageContext.IsModeratorInAnyForum)%>'>
                         <strong>
-                            <%# this.GetText("IP") %>: </strong><a id="IPLink3" href='<%# this.Get<YafBoardSettings>().IPInfoPageURL.FormatWith(YAF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP"))) %>'
+                            <%# this.GetText("IP") %>: </strong><a id="IPLink3" href='<%# this.Get<YafBoardSettings>().IPInfoPageURL.FormatWith(VZF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP"))) %>'
                                 title='<%# this.GetText("COMMON","TT_IPDETAILS") %>'
-                                target="_blank" runat="server"><%# YAF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP")) %></a>
+                                target="_blank" runat="server"><%# VZF.Utils.Helpers.IPHelper.GetIp4Address(Container.DataItemToField<string>("IP")) %></a>
                     </span>
                     <br />
                 </td>

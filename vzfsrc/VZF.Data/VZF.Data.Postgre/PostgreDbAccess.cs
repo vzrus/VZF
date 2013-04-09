@@ -35,7 +35,7 @@ namespace VZF.Data.Postgre
 
     using YAF.Classes;
     using YAF.Types;
-    using YAF.Utils.Helpers;
+    using VZF.Utils.Helpers;
 
     /// <summary>
     /// The yaf db access for PostgreSQL.
@@ -116,7 +116,7 @@ namespace VZF.Data.Postgre
             {
                 if (string.IsNullOrEmpty(_schemaName))
                 {
-                    _schemaName = Config.DatabaseScheme;
+                    _schemaName = Config.DatabaseSchemaName;
                 }
                 if (string.IsNullOrEmpty(_schemaName) || _schemaName == "dbo")
                 {

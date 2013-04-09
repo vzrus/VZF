@@ -17,7 +17,7 @@
 //   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
 // </copyright>
 // <summary>
-//   The Db.
+//   The MySQL Db Access.
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
@@ -36,13 +36,14 @@ namespace VZF.Data.Mysql
 
     using MySql.Data.MySqlClient;
 
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
+
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
     using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
 
     /// <summary>
     /// The Db.
@@ -50,9 +51,11 @@ namespace VZF.Data.Mysql
     public static class Db
     {
         // added by vzrus
-
         #region ConnectionStringOptions
 
+        /// <summary>
+        /// Gets the provider assembly name.
+        /// </summary>
         public static string ProviderAssemblyName
         {
             get
@@ -559,12 +562,12 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int GetDbSize(string connectionString)
+        public static int GetDbSize([NotNull] string connectionString)
         {
             using (var cmd = MySqlDbAccess.GetCommand("db_size"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_TableSchema", MySqlDbType.VarChar).Value = MySqlDbAccess.SchemaName;
+                cmd.Parameters.Add("i_TableSchema", MySqlDbType.VarChar).Value = MySqlDbAccess.DatabaseSchemaName;
 
                 // This is not really an integer, but a decimal, and by this we cast it to integer
                 return Convert.ToInt32(MySqlDbAccess.ExecuteScalar(cmd, connectionString));
@@ -580,7 +583,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool GetIsForumInstalled(string connectionString)
+        public static bool GetIsForumInstalled([NotNull] string connectionString)
         {
             try
             {
@@ -605,7 +608,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string DbSizeOld(string connectionString)
+        public static string DbSizeOld([NotNull] string connectionString)
         {
             string version;
             using (var cmd1 = new MySqlCommand("SELECT VERSION()"))
@@ -686,7 +689,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int GetDbVersion(string connectionString)
+        public static int GetDbVersion([NotNull] string connectionString)
         {
             try
             {
@@ -776,7 +779,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private static bool GetBooleanRegistryValue(string connectionString, string name)
+        private static bool GetBooleanRegistryValue([NotNull] string connectionString, string name)
         {
             using (DataTable dt = Db.registry_list(connectionString, name, DBNull.Value))
             {
@@ -796,15 +799,31 @@ namespace VZF.Data.Mysql
         #region Forum
 
         /// <summary>
-        /// Listes all forums accessible to a user
+        /// Lists all forums accessible to a user sorted by order.
         /// </summary>
-        /// <param name="boardId">BoardID</param>
-        /// <param name="userId">ID of user</param>
-        /// <returns>DataTable of all accessible forums</returns>
-
-        //Here
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumidExclusions">
+        /// The forumid exclusions.
+        /// </param>
+        /// <param name="emptyFirstRow">
+        /// The empty first row.
+        /// </param>
+        /// <param name="startAt">
+        /// The start at.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/> of all accessible forums.
+        /// </returns>
         public static DataTable forum_listall_sorted(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             int[] forumidExclusions,
@@ -851,7 +870,7 @@ namespace VZF.Data.Mysql
         /// The list of users in Datatable format.
         /// </returns>
         public static DataTable recent_users(
-            string connectionString, object boardID, int timeSinceLastLogin, object styledNicks)
+            [NotNull] string connectionString, object boardID, int timeSinceLastLogin, object styledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("recent_users"))
             {
@@ -863,7 +882,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void activeaccess_reset(string connectionString)
+        public static void activeaccess_reset([NotNull] string connectionString)
         {
             using (var cmd = MySqlDbAccess.GetCommand("activeaccess_reset"))
             {
@@ -926,7 +945,7 @@ namespace VZF.Data.Mysql
         /// <exception cref="ApplicationException">
         /// </exception>
         public static DataRow pageload(
-            string connectionString,
+            [NotNull] string connectionString,
             object sessionId,
             object boardId,
             object userKey,
@@ -1038,7 +1057,7 @@ namespace VZF.Data.Mysql
         /// <param name="UserID">ID of user</param>
         /// <returns>Results</returns>
         public static DataTable GetSearchResult(
-            string connectionString,
+            [NotNull] string connectionString,
             string toSearchWhat,
             string toSearchFromWho,
             SearchWhatFlags searchFromWhoMethod,
@@ -1431,7 +1450,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">BoardID</param>
         /// <returns>DataSet with categories</returns>
         public static DataSet ds_forumadmin(
-            string connectionString, object boardId, object pageUserID, object isUserForum)
+            [NotNull] string connectionString, object boardId, object pageUserID, object isUserForum)
         {
             using (var connMan = new MySqlDbConnectionManager(connectionString))
             {
@@ -1486,18 +1505,38 @@ namespace VZF.Data.Mysql
         #region yaf_AccessMask
 
         /// <summary>
-        /// Gets a list of access mask properities
+        /// The accessmask_list.
         /// </summary>
-        /// <param name="boardId">ID of Board</param>
-        /// <param name="accessMaskID">ID of access mask</param>
-        ///<param name="excludeFlags">Flags to exclude from edititing by certain roles</param>
-        /// <returns></returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="accessMaskId">
+        /// The access mask id.
+        /// </param>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable accessmask_list(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isUserMask,
             bool isAdminMask)
         {
@@ -1506,19 +1545,45 @@ namespace VZF.Data.Mysql
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
+                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
-
             }
         }
 
+        /// <summary>
+        /// The accessmask_pforumlist.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="accessMaskID">
+        /// The access mask id.
+        /// </param>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable accessmask_pforumlist(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object accessMaskID,
             object excludeFlags,
@@ -1538,16 +1603,42 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
-
             }
         }
 
+        /// <summary>
+        /// The accessmask_aforumlist.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="accessMaskId">
+        /// The access mask id.
+        /// </param>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable accessmask_aforumlist(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
-            object accessMaskID,
+            object accessMaskId,
             object excludeFlags,
-            object pageUserID,
+            object pageUserId,
             bool isUserMask,
             bool isAdminMask)
         {
@@ -1556,23 +1647,29 @@ namespace VZF.Data.Mysql
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
+                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
-
             }
         }
 
         /// <summary>
         /// Deletes an access mask
         /// </summary>
-        /// <param name="accessMaskID">ID of access mask</param>
-        /// <returns></returns>
-        public static bool accessmask_delete(string connectionString, object accessMaskID)
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="accessMaskID">
+        /// ID of access mask
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/> indicating if the mask was deleted.
+        /// </returns>
+        public static bool accessmask_delete([NotNull] string connectionString, object accessMaskID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("accessmask_delete"))
             {
@@ -1585,23 +1682,57 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Saves changes to a access mask 
         /// </summary>
-        /// <param name="accessMaskID">ID of access mask</param>
-        /// <param name="boardId">ID of board</param>
-        /// <param name="name">Name of access mask</param>
-        /// <param name="readAccess">Read Access?</param>
-        /// <param name="postAccess">Post Access?</param>
-        /// <param name="replyAccess">Reply Access?</param>
-        /// <param name="priorityAccess">Priority Access?</param>
-        /// <param name="pollAccess">Poll Access?</param>
-        /// <param name="voteAccess">Vote Access?</param>
-        /// <param name="moderatorAccess">Moderator Access?</param>
-        /// <param name="editAccess">Edit Access?</param>
-        /// <param name="deleteAccess">Delete Access?</param>
-        /// <param name="uploadAccess">Upload Access?</param>
-        /// <param name="downloadAccess">Download Access?</param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="accessMaskId">
+        /// ID of access mask
+        /// </param>
+        /// <param name="boardId">
+        /// ID of board
+        /// </param>
+        /// <param name="name">
+        /// Name of access mask
+        /// </param>
+        /// <param name="readAccess">
+        /// Read Access?
+        /// </param>
+        /// <param name="postAccess">
+        /// Post Access?
+        /// </param>
+        /// <param name="replyAccess">
+        /// Reply Access?
+        /// </param>
+        /// <param name="priorityAccess">
+        /// Priority Access?
+        /// </param>
+        /// <param name="pollAccess">
+        /// Poll Access?
+        /// </param>
+        /// <param name="voteAccess">
+        /// Vote Access?
+        /// </param>
+        /// <param name="moderatorAccess">
+        /// Moderator Access?
+        /// </param>
+        /// <param name="editAccess">
+        /// Edit Access?
+        /// </param>
+        /// <param name="deleteAccess">
+        /// Delete Access?
+        /// </param>
+        /// <param name="uploadAccess">
+        /// Upload Access?
+        /// </param>
+        /// <param name="downloadAccess">
+        /// Download Access?
+        /// </param>
+        /// <param name="userForumAccess">
+        /// THe user forum access.
+        /// </param>
         public static void accessmask_save(
-            string connectionString,
-            object accessMaskID,
+            [NotNull] string connectionString,
+            object accessMaskId,
             object boardId,
             object name,
             object readAccess,
@@ -1625,7 +1756,7 @@ namespace VZF.Data.Mysql
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
+                cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_Name", MySqlDbType.VarChar).Value = name;
                 cmd.Parameters.Add("i_ReadAccess", MySqlDbType.Byte).Value = readAccess;
@@ -1677,7 +1808,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>Returns a DataTable of active users</returns>
         public static DataTable active_list(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object guests,
             object showCrawlers,
@@ -1701,6 +1832,9 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Gets list of active users for a specific user with access fixes to not display him forbidden locations. 
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="boardId">
         /// BoardID
         /// </param>
@@ -1723,7 +1857,7 @@ namespace VZF.Data.Mysql
         /// Returns a DataTable of active users
         /// </returns>
         public static DataTable active_list_user(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             object guests,
@@ -1745,13 +1879,23 @@ namespace VZF.Data.Mysql
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
         }
-
+ 
         /// <summary>
-        /// Gets the list of active users within a certain forum
+        /// Gets the list of active users within a certain forum.
         /// </summary>
-        /// <param name="forumID">forumId</param>
-        /// <returns>DataTable of all ative users in a forum</returns>
-        public static DataTable active_listforum(string connectionString, object forumId, object styledNicks)
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="forumId">
+        /// The forum id.
+        /// </param>
+        /// <param name="styledNicks">
+        /// The styled nicks.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>  of all ative users in a forum.
+        /// </returns>
+        public static DataTable active_listforum([NotNull] string connectionString, object forumId, object styledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("active_listforum"))
             {
@@ -1767,12 +1911,14 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Gets the list of active users in a topic
         /// </summary>
-        /// <param name="topicID">ID of topic </param>
+        /// <param name="topicID">
+        /// ID of topic. 
+        /// </param>
         /// <returns>DataTable of all users that are in a topic</returns>
-        public static DataTable active_listtopic(string connectionString, object topicID, object styledNicks)
+        public static DataTable active_listtopic([NotNull] string connectionString, object topicID, object styledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("active_listtopic"))
-            {
+            {  
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_TopicID", MySqlDbType.Int32).Value = topicID;
@@ -1787,13 +1933,13 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">boardId</param>
         /// <returns>DataRow of activity stata</returns>
-        public static DataRow active_stats(string connectionString, object boardId)
+        public static DataRow active_stats([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("active_stats"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                using (DataTable dt = MySqlDbAccess.GetData(cmd, connectionString))
+                using (var dt = MySqlDbAccess.GetData(cmd, connectionString))
                 {
                     return dt.Rows[0];
                 }
@@ -1812,7 +1958,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">boardId</param>
         /// <returns>DataTable with attachement list</returns>
         public static DataTable attachment_list(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object messageID,
             [NotNull] object attachmentID,
             [NotNull] object boardID,
@@ -1861,7 +2007,7 @@ namespace VZF.Data.Mysql
         /// <param name="contentType">type of attchment</param>
         /// <param name="stream">stream of bytes</param>
         public static void attachment_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object messageID,
             object fileName,
             object bytes,
@@ -1904,7 +2050,7 @@ namespace VZF.Data.Mysql
         /// Delete attachment
         /// </summary>
         /// <param name="attachmentID">ID of attachment to delete</param>
-        public static void attachment_delete(string connectionString, object attachmentID)
+        public static void attachment_delete([NotNull] string connectionString, object attachmentID)
         {
             bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
@@ -1957,7 +2103,7 @@ namespace VZF.Data.Mysql
         /// Attachement dowload
         /// </summary>
         /// <param name="attachmentID">ID of attachemnt to download</param>
-        public static void attachment_download(string connectionString, object attachmentID)
+        public static void attachment_download([NotNull] string connectionString, object attachmentID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("attachment_download"))
             {
@@ -1975,7 +2121,7 @@ namespace VZF.Data.Mysql
         /// Deletes Banned IP
         /// </summary>
         /// <param name="ID">ID of banned ip to delete</param>
-        public static void bannedip_delete(string connectionString, object ID)
+        public static void bannedip_delete([NotNull] string connectionString, object ID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("bannedip_delete"))
             {
@@ -1992,7 +2138,7 @@ namespace VZF.Data.Mysql
         /// <param name="ID">ID</param>
         /// <returns>DataTable of banned IPs</returns>
         public static DataTable bannedip_list(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardID,
             [CanBeNull] object ID,
             [CanBeNull] object pageIndex,
@@ -2023,7 +2169,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">BoardID</param>
         /// <param name="Mask">Mask</param>
         public static void bannedip_save(
-            string connectionString, object ID, object boardId, object Mask, string reason, int userID)
+            [NotNull] string connectionString, object ID, object boardId, object Mask, string reason, int userID)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("bannedip_save"))
@@ -2054,7 +2200,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">board id</param>
         /// <returns>DataTable</returns>
-        public static DataTable board_list(string connectionString, object boardId)
+        public static DataTable board_list([NotNull] string connectionString, object boardId)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("board_list"))
@@ -2095,7 +2241,7 @@ namespace VZF.Data.Mysql
         /// <param name="showNoCountPosts">ShowNoCountPosts</param> 
         /// <returns>DataRow of Poststats</returns>	
         public static DataRow board_poststats(
-            string connectionString, int? boardId, bool useStyledNick, bool showNoCountPosts)
+            [NotNull] string connectionString, int? boardId, bool useStyledNick, bool showNoCountPosts)
         {
             using (var cmd = MySqlDbAccess.GetCommand("board_poststats"))
             {
@@ -2142,7 +2288,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// DataRow of Poststats
         /// </returns>
-        public static DataRow board_userstats(string connectionString, int? boardId)
+        public static DataRow board_userstats([NotNull] string connectionString, int? boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("board_userstats"))
             {
@@ -2161,7 +2307,7 @@ namespace VZF.Data.Mysql
         /// Recalculates topic and post numbers and updates last post for specified board
         /// </summary>
         /// <param name="boardId">BoardID of board to do re-sync for, if null, all boards are re-synced</param>
-        public static void board_resync(string connectionString, object boardId)
+        public static void board_resync([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("board_resync"))
             {
@@ -2177,7 +2323,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataRow board_stats(string connectionString, object boardId)
+        public static DataRow board_stats([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("board_stats"))
             {
@@ -2205,7 +2351,7 @@ namespace VZF.Data.Mysql
         /// <param name="name">Name of Board</param>
         /// <param name="allowThreaded">Boolen value, allowThreaded</param>
         public static int board_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object languageFile,
             object culture,
@@ -2237,7 +2383,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardMembershipName">Membership Provider Application Name for new board</param>
         /// <param name="boardRolesName">Roles Provider Application Name for new board</param>
         public static int board_create(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object adminUsername,
             [NotNull] object adminUserEmail,
             [NotNull] object adminUserKey,
@@ -2273,7 +2419,7 @@ namespace VZF.Data.Mysql
         /// Deletes a board
         /// </summary>
         /// <param name="boardId">ID of board to delete</param>
-        public static void board_delete(string connectionString, object boardId)
+        public static void board_delete([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("board_delete"))
             {
@@ -2292,7 +2438,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="CategoryID">ID of category to delete</param>
         /// <returns>Bool value indicationg if category was deleted</returns>
-        public static bool category_delete(string connectionString, object CategoryID)
+        public static bool category_delete([NotNull] string connectionString, object CategoryID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_delete"))
             {
@@ -2319,7 +2465,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="DataTable"/> of forums in a category.
         /// </returns>
-        public static DataTable category_list(string connectionString, object boardId, object categoryID)
+        public static DataTable category_list([NotNull] string connectionString, object boardId, object categoryID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_list"))
             {
@@ -2348,7 +2494,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="DataTable"/> of forums in a category.
         /// </returns>
-        public static DataTable category_pfaccesslist(string connectionString, object boardId, object categoryID)
+        public static DataTable category_pfaccesslist([NotNull] string connectionString, object boardId, object categoryID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_pfaccesslist"))
             {
@@ -2381,7 +2527,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable category_getadjacentforum(
-            string connectionString, object boardId, object categoryID, object userId, bool isAfter)
+            [NotNull] string connectionString, object boardId, object categoryID, object userId, bool isAfter)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_getadjacentforum"))
             {
@@ -2404,7 +2550,7 @@ namespace VZF.Data.Mysql
         /// <param name="categoryID"></param>
         /// <returns></returns>
         public static DataTable category_listread(
-            string connectionString, object boardId, object userID, object categoryID)
+            [NotNull] string connectionString, object boardId, object userID, object categoryID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_listread"))
             {
@@ -2424,7 +2570,7 @@ namespace VZF.Data.Mysql
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable category_simplelist(string connectionString, int startID, int limit)
+        public static DataTable category_simplelist([NotNull] string connectionString, int startID, int limit)
         {
             using (var cmd = MySqlDbAccess.GetCommand("category_simplelist"))
             {
@@ -2454,7 +2600,7 @@ namespace VZF.Data.Mysql
         /// <param name="Name">Name of the category</param>
         /// <param name="SortOrder">Sort Order</param>
         public static void category_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object categoryId,
             object name,
@@ -2492,7 +2638,7 @@ namespace VZF.Data.Mysql
         /// <param name="UserID">ID of user to verify</param>
         /// <param name="Hash">Hash of user</param>
         /// <param name="Email">email of user</param>
-        public static void checkemail_save(string connectionString, object userID, object hash, object email)
+        public static void checkemail_save([NotNull] string connectionString, object userID, object hash, object email)
         {
             using (var cmd = MySqlDbAccess.GetCommand("checkemail_save"))
             {
@@ -2512,7 +2658,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="hash">New hash</param>
         /// <returns>DataTable with user information</returns>
-        public static DataTable checkemail_update(string connectionString, object hash)
+        public static DataTable checkemail_update([NotNull] string connectionString, object hash)
         {
             using (var cmd = MySqlDbAccess.GetCommand("checkemail_update"))
             {
@@ -2529,7 +2675,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="email">Associated email</param>
         /// <returns>DataTable with check email information</returns>
-        public static DataTable checkemail_list(string connectionString, object email)
+        public static DataTable checkemail_list([NotNull] string connectionString, object email)
         {
             using (var cmd = MySqlDbAccess.GetCommand("checkemail_list"))
             {
@@ -2554,7 +2700,7 @@ namespace VZF.Data.Mysql
         /// Saves a vote in the database
         /// </summary>
         /// <param name="choiceID">Choice of the vote</param>
-        public static void choice_vote(string connectionString, object choiceID, object userID, object remoteIP)
+        public static void choice_vote([NotNull] string connectionString, object choiceID, object userID, object remoteIP)
         {
             using (var cmd = MySqlDbAccess.GetCommand("choice_vote"))
             {
@@ -2582,7 +2728,7 @@ namespace VZF.Data.Mysql
         #region yaf_EventLog
 
         public static void eventlog_create(
-            string connectionString, object userID, object source, object description, object type)
+            [NotNull] string connectionString, object userID, object source, object description, object type)
         {
             try
             {
@@ -2610,7 +2756,7 @@ namespace VZF.Data.Mysql
         /// <param name="eventLogID">When not null, only given event log entry is deleted.</param>
         /// <param name="boardId">Specifies board. It is ignored if eventLogID parameter is not null.</param>
         public static void eventlog_delete(
-            string connectionString, object eventLogID, object boardId, Object pageUserId)
+            [NotNull] string connectionString, object eventLogID, object boardId, Object pageUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("eventlog_delete"))
             {
@@ -2643,7 +2789,7 @@ namespace VZF.Data.Mysql
         /// The page User Id.
         /// </param>
         public static void eventlog_deletebyuser(
-            string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
+            [NotNull] string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("eventlog_deletebyuser"))
             {
@@ -2658,7 +2804,7 @@ namespace VZF.Data.Mysql
 
 
         public static DataTable eventlog_list(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardID,
             [NotNull] object pageUserID,
             [NotNull] object maxRows,
@@ -2702,7 +2848,7 @@ namespace VZF.Data.Mysql
         /// The event Type Name.
         /// </param>
         public static void eventloggroupaccess_save(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object groupID,
             [NotNull] object eventTypeId,
             [NotNull] object eventTypeName,
@@ -2734,7 +2880,7 @@ namespace VZF.Data.Mysql
         /// The event Type Name.
         /// </param>
         public static void eventloggroupaccess_delete(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object groupID,
             [NotNull] object eventTypeId,
             [NotNull] object eventTypeName)
@@ -2760,7 +2906,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>Returns a list of access entries for a group.</returns>
         public static DataTable eventloggroupaccess_list(
-            string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
+            [NotNull] string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("eventloggroupaccess_list"))
             {
@@ -2781,7 +2927,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>Lists group for the board Id handy to display on the calling admin page.
         /// </returns>
-        public static DataTable group_eventlogaccesslist(string connectionString, [CanBeNull] object boardId)
+        public static DataTable group_eventlogaccesslist([NotNull] string connectionString, [CanBeNull] object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_eventlogaccesslist"))
             {
@@ -2799,7 +2945,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_Extensions
 
-        public static void extension_delete(string connectionString, object extensionId)
+        public static void extension_delete([NotNull] string connectionString, object extensionId)
         {
             try
             {
@@ -2819,7 +2965,7 @@ namespace VZF.Data.Mysql
         }
 
         // Get Extension record by extensionId
-        public static DataTable extension_edit(string connectionString, object extensionId)
+        public static DataTable extension_edit([NotNull] string connectionString, object extensionId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("extension_edit"))
             {
@@ -2836,7 +2982,7 @@ namespace VZF.Data.Mysql
         }
 
         // Used to validate a file before uploading
-        public static DataTable extension_list(string connectionString, object boardId, object extension)
+        public static DataTable extension_list([NotNull] string connectionString, object boardId, object extension)
         {
             using (var cmd = MySqlDbAccess.GetCommand("extension_list"))
             {
@@ -2851,7 +2997,7 @@ namespace VZF.Data.Mysql
         }
 
         // Saves / creates extension
-        public static void extension_save(string connectionString, object extensionId, object boardId, object Extension)
+        public static void extension_save([NotNull] string connectionString, object extensionId, object boardId, object Extension)
         {
             try
             {
@@ -2884,7 +3030,7 @@ namespace VZF.Data.Mysql
         /// Checks for a vote in the database
         /// </summary>
         /// <param name="choiceID">Choice of the vote</param>
-        public static DataTable pollvote_check(string connectionString, object pollid, object userid, object remoteip)
+        public static DataTable pollvote_check([NotNull] string connectionString, object pollid, object userid, object remoteip)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pollvote_check"))
             {
@@ -2918,7 +3064,7 @@ namespace VZF.Data.Mysql
         /// The remoteip.
         /// </param>
         public static DataTable pollgroup_votecheck(
-            string connectionString, object pollGroupId, object userId, object remoteIp)
+            [NotNull] string connectionString, object pollGroupId, object userId, object remoteIp)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pollgroup_votecheck"))
             {
@@ -2940,7 +3086,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">The board id.</param>
         /// <param name="userId">The user Id.</param>
         /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
-        public static DataTable forum_categoryaccess_activeuser(string connectionString, object boardId, object userId)
+        public static DataTable forum_categoryaccess_activeuser([NotNull] string connectionString, object boardId, object userId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_categoryaccess_activeuser"))
             {
@@ -2954,7 +3100,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forum_ns_getchildren_anyuser(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardid,
             int categoryid,
             int forumid,
@@ -3013,7 +3159,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forum_ns_getchildren(
-            string connectionString,
+            [NotNull] string connectionString,
             int? boardid,
             int? categoryid,
             int? forumid,
@@ -3036,7 +3182,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forum_ns_getchildren_activeuser(
-            string connectionString,
+            [NotNull] string connectionString,
             int? boardid,
             int? categoryid,
             int? forumid,
@@ -3064,7 +3210,7 @@ namespace VZF.Data.Mysql
         /// Deletes attachments out of a entire forum
         /// </summary>
         /// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
-        private static void forum_deleteAttachments(string connectionString, object forumID)
+        private static void forum_deleteAttachments([NotNull] string connectionString, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listtopics"))
             {
@@ -3090,7 +3236,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="ForumID">forum to delete</param>
         /// <returns>bool to indicate that forum has been deleted</returns>
-        public static bool forum_delete(string connectionString, object forumID)
+        public static bool forum_delete([NotNull] string connectionString, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -3137,7 +3283,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable forum_tags(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardId,
             int pageUserId,
             int forumId,
@@ -3162,7 +3308,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
+        public static bool forum_move([NotNull] string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -3194,7 +3340,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">board if of moderators</param>
         /// <param name="userID">user id</param>
         /// <returns>DataTable of moderated forums</returns>
-        public static DataTable forum_listallMyModerated(string connectionString, object boardId, object userID)
+        public static DataTable forum_listallMyModerated([NotNull] string connectionString, object boardId, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listallmymoderated"))
             {
@@ -3214,7 +3360,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">boardId</param>
         /// <param name="ForumID">forumID</param>
         /// <returns>DataTable with list of topics from a forum</returns>
-        public static DataTable forum_list(string connectionString, object boardId, object forumID)
+        public static DataTable forum_list([NotNull] string connectionString, object boardId, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_list"))
             {
@@ -3234,7 +3380,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forum_byuserlist(
-            string connectionString, object boardId, object forumID, object userId, object isUserForum)
+            [NotNull] string connectionString, object boardId, object forumID, object userId, object isUserForum)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_byuserlist"))
             {
@@ -3262,7 +3408,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// A max forum id for a board
         /// </returns>
-        public static int forum_maxid(string connectionString, [NotNull] object boardID)
+        public static int forum_maxid([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_maxid"))
             {
@@ -3272,7 +3418,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
+        public static IEnumerable<TypedForumListAll> ForumListAll([NotNull] string connectionString, int boardId, int userId)
         {
             return
                 forum_listall(connectionString, boardId, userId, 0, false)
@@ -3288,7 +3434,7 @@ namespace VZF.Data.Mysql
         /// <param name="startAt">startAt ID</param>
         /// <returns>DataTable of all accessible forums</returns>
         public static DataTable forum_listall(
-            string connectionString, object boardId, object userID, object startAt, bool returnAll)
+            [NotNull] string connectionString, object boardId, object userID, object startAt, bool returnAll)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listall"))
             {
@@ -3309,7 +3455,7 @@ namespace VZF.Data.Mysql
         }
 
         public static IEnumerable<TypedForumListAll> ForumListAll(
-            string connectionString, int boardId, int userId, List<int> startForumId)
+            [NotNull] string connectionString, int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
@@ -3350,7 +3496,7 @@ namespace VZF.Data.Mysql
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable forum_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable forum_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_simplelist"))
             {
@@ -3373,7 +3519,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forum_sort_list(
-            string connectionString,
+            [NotNull] string connectionString,
             DataTable listSource,
             int parentID,
             int categoryID,
@@ -3435,7 +3581,7 @@ namespace VZF.Data.Mysql
         /// <param name="EmptyFirstRow">EmptyFirstRow</param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            string connectionString, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
+            [NotNull] string connectionString, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -3459,7 +3605,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="forumID"></param>
         /// <returns></returns>
-        public static DataTable forum_listpath(string connectionString, object forumID)
+        public static DataTable forum_listpath([NotNull] string connectionString, object forumID)
         {
             if (!Config.LargeForumTree)
             {
@@ -3486,23 +3632,17 @@ namespace VZF.Data.Mysql
             }
         }
 
-        /// <summary>
-        /// Lists read topics
-        /// </summary>
-        /// <param name="boardId">The BoardID.</param>
-        /// <param name="userId">The UserID.</param>
-        /// <param name="categoryId">The CategoryID.</param>
-        /// <param name="parentId">The ParentID.</param>
-        /// <param name="useStyledNicks">The useStyledNicks.</param>
-        /// <returns>DataTable with list</returns>
         public static DataTable forum_listread(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardID,
             object userID,
             object categoryID,
             object parentID,
             object useStyledNicks,
-            object findLastRead)
+            object findLastRead, 
+            [NotNull] bool showCommonForums, 
+            [NotNull]bool showPersonalForums, 
+            [CanBeNull] int? forumCreatedByUserId)
         {
             if (!Config.LargeForumTree)
             {
@@ -3515,6 +3655,11 @@ namespace VZF.Data.Mysql
                     cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentID;
                     cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
                     cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
+                    cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;
+                    cmd.Parameters.Add("i_ShowPersonalForums", MySqlDbType.Byte).Value = showPersonalForums;
+                    cmd.Parameters.Add("i_ForumCreatedByUserId", MySqlDbType.Int32).Value = forumCreatedByUserId;
+                    cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+
                     return MySqlDbAccess.GetData(cmd, connectionString);
                 }
             }
@@ -3527,6 +3672,10 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentID;
                 cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
                 cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
+                cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;
+                cmd.Parameters.Add("i_ShowPersonalForums", MySqlDbType.Byte).Value = showPersonalForums;
+                cmd.Parameters.Add("i_ForumCreatedByUserId", MySqlDbType.Int32).Value = forumCreatedByUserId;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
             /* DataTable dt1 = null;
@@ -3570,7 +3719,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">BoardID</param>
         /// <param name="userID">UserID</param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet forum_moderatelist(string connectionString, object userID, object boardId)
+        public static DataSet forum_moderatelist([NotNull] string connectionString, object userID, object boardId)
         {
             using (var connMan = new MySqlDbConnectionManager(connectionString))
             {
@@ -3653,7 +3802,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable forum_moderators(string connectionString, object styledNicks)
+        public static DataTable forum_moderators([NotNull] string connectionString, object styledNicks)
         {
 
             /*  using (var cmd = MySqlDbAccess.GetCommand("forum_moderators"))   
@@ -3697,7 +3846,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         ///  Returns Data Table with all Mods
         /// </returns>
-        public static DataTable moderators_team_list(string connectionString, bool styledNicks)
+        public static DataTable moderators_team_list([NotNull] string connectionString, bool styledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("moderators_team_list"))
             {
@@ -3713,7 +3862,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">BoardID</param>
         /// <param name="forumID">If null, all forums in board are updated</param>
-        public static void forum_resync(string connectionString, object boardId, object forumID)
+        public static void forum_resync([NotNull] string connectionString, object boardId, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_resync"))
             {
@@ -3790,7 +3939,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="long"/>.
         /// </returns>
         public static long forum_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object forumId,
             object categoryId,
             object parentId,
@@ -3846,7 +3995,7 @@ namespace VZF.Data.Mysql
         /// <param name="forumID"></param>
         /// <param name="parentID"></param>
         /// <returns>Integer value for a found dependency</returns>
-        public static int forum_save_parentschecker(string connectionString, object forumID, object parentID)
+        public static int forum_save_parentschecker([NotNull] string connectionString, object forumID, object parentID)
         {
             using (
                 var cmd =
@@ -3863,7 +4012,7 @@ namespace VZF.Data.Mysql
         }
 
         private static void forum_sort_list_recursive(
-            string connectionString,
+            [NotNull] string connectionString,
             DataTable listSource,
             DataTable listDestination,
             int parentID,
@@ -3921,7 +4070,7 @@ namespace VZF.Data.Mysql
         #region yaf_ForumAccess
 
         public static DataTable forumaccess_list(
-            string connectionString, object forumID, object userId, bool includeUserGroups)
+            [NotNull] string connectionString, object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_list"))
             {
@@ -3936,7 +4085,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void forumaccess_save(
-            string connectionString, object forumID, object groupID, object accessMaskID)
+            [NotNull] string connectionString, object forumID, object groupID, object accessMaskID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_save"))
             {
@@ -3951,7 +4100,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forumaccess_group(
-            string connectionString, object groupID, object userId, bool includeUserForums)
+            [NotNull] string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
             {
@@ -3967,7 +4116,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable forumaccess_personalgroup(
-            string connectionString, object groupID, object userId, bool includeUserForums)
+            [NotNull] string connectionString, object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forumaccess_group"))
             {
@@ -3985,7 +4134,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_Group
 
-        public static DataTable group_list(string connectionString, object boardId, object groupID)
+        public static DataTable group_list([NotNull] string connectionString, object boardId, object groupID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_list"))
             {
@@ -3997,7 +4146,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable group_byuserlist(
-            string connectionString, object boardId, object groupID, object userId, object isUserGroup)
+            [NotNull] string connectionString, object boardId, object groupID, object userId, object isUserGroup)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_byuserlist"))
             {
@@ -4010,7 +4159,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void group_delete(string connectionString, object groupID)
+        public static void group_delete([NotNull] string connectionString, object groupID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_delete"))
             {
@@ -4020,7 +4169,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable group_member(string connectionString, object boardId, object userID)
+        public static DataTable group_member([NotNull] string connectionString, object boardId, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_member"))
             {
@@ -4073,7 +4222,7 @@ namespace VZF.Data.Mysql
         /// The group_save.
         /// </returns>
         public static long group_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object groupID,
             object boardId,
             object name,
@@ -4135,7 +4284,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_Mail
 
-        public static void mail_delete(string connectionString, object mailID)
+        public static void mail_delete([NotNull] string connectionString, object mailID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("mail_delete"))
             {
@@ -4153,7 +4302,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>
         /// </returns>
-        public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
+        public static IEnumerable<TypedMailList> MailList([NotNull] string connectionString, long processId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("mail_list"))
             {
@@ -4166,7 +4315,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void mail_createwatch(
-            string connectionString,
+            [NotNull] string connectionString,
             object topicID,
             object from,
             object fromName,
@@ -4202,7 +4351,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void mail_create(
-            string connectionString,
+            [NotNull] string connectionString,
             object from,
             object fromName,
             object to,
@@ -4246,7 +4395,7 @@ namespace VZF.Data.Mysql
         #region yaf_Message
 
         public static DataTable post_list(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object topicId,
             object currentUserID,
             [NotNull] object authorUserID,
@@ -4372,7 +4521,7 @@ namespace VZF.Data.Mysql
             return null;*/
         }
 
-        public static DataTable post_list_reverse10(string connectionString, object topicID)
+        public static DataTable post_list_reverse10([NotNull] string connectionString, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("post_list_reverse10"))
             {
@@ -4385,7 +4534,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable post_alluser(
-            string connectionString, object boardId, object userID, object pageUserID, object numberOfMessages)
+            [NotNull] string connectionString, object boardId, object userID, object pageUserID, object numberOfMessages)
         {
             DataTable dt1 = null;
 
@@ -4425,7 +4574,7 @@ namespace VZF.Data.Mysql
         }
 
         // gets list of replies to message
-        public static DataTable message_getRepliesList(string connectionString, object messageID)
+        public static DataTable message_getRepliesList([NotNull] string connectionString, object messageID)
         {
             DataTable list = new DataTable();
             list.Columns.Add("MessageID", typeof(int));
@@ -4466,7 +4615,7 @@ namespace VZF.Data.Mysql
 
         // gets list of nested replies to message
         private static void message_getRepliesList_populate(
-            string connectionString, DataTable listsource, DataTable list, int messageID)
+            [NotNull] string connectionString, DataTable listsource, DataTable list, int messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_reply_list"))
             {
@@ -4497,7 +4646,7 @@ namespace VZF.Data.Mysql
 
         //creates new topic, using some parameters from message itself
         public static long topic_create_by_message(
-            string connectionString, object messageID, object forumId, object newTopicSubj)
+            [NotNull] string connectionString, object messageID, object forumId, object newTopicSubj)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_create_by_message"))
             {
@@ -4514,7 +4663,7 @@ namespace VZF.Data.Mysql
         }
 
         [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list(string connectionString, object messageID)
+        public static DataTable message_list([NotNull] string connectionString, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_list"))
             {
@@ -4534,7 +4683,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>
         /// </returns>
-        public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
+        public static IEnumerable<TypedMessageList> MessageList([NotNull] string connectionString, int messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_list"))
             {
@@ -4547,7 +4696,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void message_delete(
-            string connectionString,
+            [NotNull] string connectionString,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4567,7 +4716,7 @@ namespace VZF.Data.Mysql
         }
 
         // <summary> Retrieve all reported messages with the correct forumID argument. </summary>
-        public static DataTable message_listreported(string connectionString, object forumID)
+        public static DataTable message_listreported([NotNull] string connectionString, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_listreported"))
             {
@@ -4584,14 +4733,14 @@ namespace VZF.Data.Mysql
         /// </summary>       
         /// <param name="MessageID">Should not be NULL</param>
         /// <returns>Returns reporters DataTable for a reported message.</returns>
-        public static DataTable message_listreporters(string connectionString, int messageID)
+        public static DataTable message_listreporters([NotNull] string connectionString, int messageID)
         {
 
             return message_listreporters(connectionString, messageID, null);
 
         }
 
-        public static DataTable message_listreporters(string connectionString, int messageID, object userID)
+        public static DataTable message_listreporters([NotNull] string connectionString, int messageID, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_listreporters"))
             {
@@ -4604,7 +4753,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Save reported message back to the database. </summary>
         public static void message_report(
-            string connectionString, object messageID, object userID, object reportedDateTime, object reportText)
+            [NotNull] string connectionString, object messageID, object userID, object reportedDateTime, object reportText)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_report"))
             {
@@ -4621,7 +4770,7 @@ namespace VZF.Data.Mysql
         }
 
         // <summary> Copy current Message text over reported Message text. </summary>
-        public static void message_reportcopyover(string connectionString, object messageID)
+        public static void message_reportcopyover([NotNull] string connectionString, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_reportcopyover"))
             {
@@ -4635,7 +4784,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Copy current Message text over reported Message text. </summary>
         public static void message_reportresolve(
-            string connectionString, object messageFlag, object messageID, object userID)
+            [NotNull] string connectionString, object messageFlag, object messageID, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_reportresolve"))
             {
@@ -4653,7 +4802,7 @@ namespace VZF.Data.Mysql
         //BAI ADDED 30.01.2004
         // <summary> Delete message and all subsequent releated messages to that ID </summary>
         private static void message_deleteRecursively(
-            string connectionString,
+            [NotNull] string connectionString,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4673,7 +4822,7 @@ namespace VZF.Data.Mysql
         }
 
         private static void message_deleteRecursively(
-            string connectionString,
+            [NotNull] string connectionString,
             object messageID,
             bool isModeratorChanged,
             string deleteReason,
@@ -4780,7 +4929,7 @@ namespace VZF.Data.Mysql
         }
 
         // <summary> Set flag on message to approved and store in DB </summary>
-        public static void message_approve(string connectionString, object messageID)
+        public static void message_approve([NotNull] string connectionString, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_approve"))
             {
@@ -4798,7 +4947,7 @@ namespace VZF.Data.Mysql
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable message_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable message_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_simplelist"))
             {
@@ -4819,7 +4968,7 @@ namespace VZF.Data.Mysql
 
 
         public static void message_update(
-            string connectionString,
+            [NotNull] string connectionString,
             object messageID,
             object priority,
             object message,
@@ -4866,7 +5015,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Save message to DB. </summary>
         public static bool message_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object topicID,
             object userID,
             object message,
@@ -4914,7 +5063,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable message_unapproved(string connectionString, object forumID)
+        public static DataTable message_unapproved([NotNull] string connectionString, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_unapproved"))
             {
@@ -4927,7 +5076,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable message_findunread(
-            string connectionString,
+            [NotNull] string connectionString,
             object topicID,
             object messageId,
             object lastRead,
@@ -4951,7 +5100,7 @@ namespace VZF.Data.Mysql
         }
 
         // message movind function
-        public static void message_move(string connectionString, object messageID, object moveToTopic, bool moveAll)
+        public static void message_move([NotNull] string connectionString, object messageID, object moveToTopic, bool moveAll)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_move"))
             {
@@ -4983,7 +5132,7 @@ namespace VZF.Data.Mysql
         }
 
         //moves answers of moved post
-        private static void message_moveRecursively(string connectionString, object messageID, object moveToTopic)
+        private static void message_moveRecursively([NotNull] string connectionString, object messageID, object moveToTopic)
         {
             bool UseFileTable = GetBooleanRegistryValue(connectionString, "UseFileTable");
 
@@ -5016,7 +5165,7 @@ namespace VZF.Data.Mysql
         // <summary> Checks if the message with the provided messageID is thanked 
         //           by the user with the provided UserID. if so, returns true,
         //           otherwise returns false. </summary>
-        public static bool message_isThankedByUser(string connectionString, object userID, object messageID)
+        public static bool message_isThankedByUser([NotNull] string connectionString, object userID, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_isthankedbyuser"))
             {
@@ -5042,7 +5191,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// If the User Thanked the the Current Message
         /// </returns>
-        public static bool user_ThankedMessage(string connectionString, object messageId, object userId)
+        public static bool user_ThankedMessage([NotNull] string connectionString, object messageId, object userId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_thankedmessage"))
             {
@@ -5061,7 +5210,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Return the number of times the message with the provided messageID
         //           has been thanked. </summary>
-        public static int message_ThanksNumber(string connectionString, object messageID)
+        public static int message_ThanksNumber([NotNull] string connectionString, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_thanksnumber"))
             {
@@ -5075,7 +5224,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Returns the UserIDs and UserNames who have thanked the message
         //           with the provided messageID. </summary>
-        public static DataTable message_GetThanks(string connectionString, object messageID)
+        public static DataTable message_GetThanks([NotNull] string connectionString, object messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_getthanks"))
             {
@@ -5096,7 +5245,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_GetTextByIds(string connectionString, string messageIDs)
+        public static DataTable message_GetTextByIds([NotNull] string connectionString, string messageIDs)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_gettextbyids"))
             {
@@ -5116,7 +5265,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static IEnumerable<TypedAllThanks> MessageGetAllThanks(
-            string connectionString, string messageIdsSeparatedWithColon)
+            [NotNull] string connectionString, string messageIdsSeparatedWithColon)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_getallthanks"))
             {
@@ -5129,7 +5278,7 @@ namespace VZF.Data.Mysql
 
         // <summary> Retuns All the Thanks for the Message IDs which are in the 
         //           delimited string variable MessageIDs </summary>
-        public static DataTable message_GetAllThanks(string connectionString, object MessageIDs)
+        public static DataTable message_GetAllThanks([NotNull] string connectionString, object MessageIDs)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_getallthanks"))
             {
@@ -5140,7 +5289,7 @@ namespace VZF.Data.Mysql
         }
 
         public static string message_AddThanks(
-            string connectionString, object fromUserID, object messageID, bool useDisplayName)
+            [NotNull] string connectionString, object fromUserID, object messageID, bool useDisplayName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_addthanks"))
             {
@@ -5156,7 +5305,7 @@ namespace VZF.Data.Mysql
         }
 
         public static string message_RemoveThanks(
-            string connectionString, object fromUserID, object messageID, bool useDisplayName)
+            [NotNull] string connectionString, object fromUserID, object messageID, bool useDisplayName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_removethanks"))
             {
@@ -5184,7 +5333,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// List of all message changes. 
         /// </returns>
-        public static DataTable messagehistory_list(string connectionString, int messageID, int? daysToClean)
+        public static DataTable messagehistory_list([NotNull] string connectionString, int messageID, int? daysToClean)
         {
             using (var cmd = MySqlDbAccess.GetCommand("messagehistory_list"))
             {
@@ -5203,7 +5352,7 @@ namespace VZF.Data.Mysql
         /// <param name="messageID">The Message Id.</param>
         /// <param name="userID">The UserId.</param>
         /// <returns></returns>
-        public static DataTable message_secdata(string connectionString, int messageID, object pageUserId)
+        public static DataTable message_secdata([NotNull] string connectionString, int messageID, object pageUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_secdata"))
             {
@@ -5225,7 +5374,7 @@ namespace VZF.Data.Mysql
         /// Lists given medal.
         /// </summary>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable medal_list(string connectionString, object medalID)
+        public static DataTable medal_list([NotNull] string connectionString, object medalID)
         {
             return medal_list(connectionString, null, medalID, null);
         }
@@ -5235,7 +5384,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardId">ID of board of which medals to list. Required.</param>
         /// <param name="category">Cateogry of medals to list. Can be null. In such case this parameter is ignored.</param>
-        public static DataTable medal_list(string connectionString, object boardId, object category)
+        public static DataTable medal_list([NotNull] string connectionString, object boardId, object category)
         {
             return medal_list(connectionString, boardId, null, category);
         }
@@ -5246,7 +5395,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">ID of board of which medals to list. Can be null if medalID parameter is specified.</param>
         /// <param name="medalID">ID of medal to list. When specified, boardId and category parameters are ignored.</param>
         /// <param name="category">Cateogry of medals to list. Must be complemented with not-null boardId parameter.</param>
-        public static DataTable medal_list(string connectionString, object boardId, object medalID, object category)
+        public static DataTable medal_list([NotNull] string connectionString, object boardId, object medalID, object category)
         {
             using (var cmd = MySqlDbAccess.GetCommand("medal_list"))
             {
@@ -5280,7 +5429,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="medalID">Medal of which owners to get.</param>
         /// <returns>List of users with their user id and usernames, who own this medal.</returns>
-        public static DataTable medal_listusers(string connectionString, object medalID)
+        public static DataTable medal_listusers([NotNull] string connectionString, object medalID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("medal_listusers"))
             {
@@ -5298,7 +5447,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">ID of board of which medals to delete. Can be null if medalID parameter is specified.</param>
         /// <param name="medalID">ID of medal to delete. When specified, boardId and category parameters are ignored.</param>
         /// <param name="category">Cateogry of medals to delete. Must be complemented with not-null boardId parameter.</param>
-        public static void medal_delete(string connectionString, object boardId, object medalID, object category)
+        public static void medal_delete([NotNull] string connectionString, object boardId, object medalID, object category)
         {
             using (var cmd = MySqlDbAccess.GetCommand("medal_delete"))
             {
@@ -5348,7 +5497,7 @@ namespace VZF.Data.Mysql
         /// <param name="flags">Medal's flags.</param>
         /// <returns>True if medal was successfully created or updated. False otherwise.</returns>
         public static bool medal_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object medalID,
             object name,
@@ -5451,7 +5600,7 @@ namespace VZF.Data.Mysql
         /// <param name="boardId">ID of board.</param>
         /// <param name="medalID">ID of medal to re-sort.</param>
         /// <param name="move">Change of sort.</param>
-        public static void medal_resort(string connectionString, object boardId, object medalID, int move)
+        public static void medal_resort([NotNull] string connectionString, object boardId, object medalID, int move)
         {
             using (var cmd = MySqlDbAccess.GetCommand("medal_resort"))
             {
@@ -5471,7 +5620,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="groupID">ID of group owning medal.</param>
         /// <param name="medalID">ID of medal.</param>
-        public static void group_medal_delete(string connectionString, object groupID, object medalID)
+        public static void group_medal_delete([NotNull] string connectionString, object groupID, object medalID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_medal_delete"))
             {
@@ -5490,7 +5639,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="groupID">ID of group of which to list medals.</param>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable group_medal_list(string connectionString, object groupID, object medalID)
+        public static DataTable group_medal_list([NotNull] string connectionString, object groupID, object medalID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_medal_list"))
             {
@@ -5523,7 +5672,7 @@ namespace VZF.Data.Mysql
         /// <param name="onlyRibbon">Show only ribbon bar in user box.</param>
         /// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
         public static void group_medal_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object groupID,
             object medalID,
             object message,
@@ -5559,7 +5708,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="userID">ID of user owning medal.</param>
         /// <param name="medalID">ID of medal.</param>
-        public static void user_medal_delete(string connectionString, object userID, object medalID)
+        public static void user_medal_delete([NotNull] string connectionString, object userID, object medalID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_medal_delete"))
             {
@@ -5578,7 +5727,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="userID">ID of user who was given medal.</param>
         /// <param name="medalID">ID of medal to list.</param>
-        public static DataTable user_medal_list(string connectionString, object userID, object medalID)
+        public static DataTable user_medal_list([NotNull] string connectionString, object userID, object medalID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_medal_list"))
             {
@@ -5613,7 +5762,7 @@ namespace VZF.Data.Mysql
         /// <param name="sortOrder">Sort order in user box. Overrides medal's default sort order.</param>
         /// <param name="dateAwarded">Date when medal was awarded to a user. Is ignored when existing user-medal allocation is edited.</param>
         public static void user_medal_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object userID,
             object medalID,
             object message,
@@ -5655,7 +5804,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="userID">ID of user.</param>
         /// <returns>List of medals, ribbon bar only first.</returns>
-        public static DataTable user_listmedals(string connectionString, object userID)
+        public static DataTable user_listmedals([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_listmedals"))
             {
@@ -5672,7 +5821,7 @@ namespace VZF.Data.Mysql
         #region yaf_NntpForum
 
         public static IEnumerable<TypedNntpForum> NntpForumList(
-            string connectionString, int boardId, int? minutes, int? nntpForumID, bool? active)
+            [NotNull] string connectionString, int boardId, int? minutes, int? nntpForumID, bool? active)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpforum_list"))
             {
@@ -5690,7 +5839,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable nntpforum_list(
-            string connectionString, object boardId, object minutes, object nntpForumID, object active)
+            [NotNull] string connectionString, object boardId, object minutes, object nntpForumID, object active)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpforum_list"))
             {
@@ -5720,7 +5869,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void nntpforum_update(
-            string connectionString, object nntpForumID, object lastMessageNo, object userID)
+            [NotNull] string connectionString, object nntpForumID, object lastMessageNo, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpforum_update"))
             {
@@ -5736,7 +5885,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void nntpforum_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object nntpForumID,
             object nntpServerID,
             object groupName,
@@ -5765,7 +5914,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void nntpforum_delete(string connectionString, object nntpForumID)
+        public static void nntpforum_delete([NotNull] string connectionString, object nntpForumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpforum_delete"))
             {
@@ -5782,7 +5931,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_NntpServer
 
-        public static DataTable nntpserver_list(string connectionString, object boardId, object nntpServerID)
+        public static DataTable nntpserver_list([NotNull] string connectionString, object boardId, object nntpServerID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpserver_list"))
             {
@@ -5805,7 +5954,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void nntpserver_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object nntpServerID,
             object boardId,
             object name,
@@ -5843,7 +5992,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void nntpserver_delete(string connectionString, object nntpServerID)
+        public static void nntpserver_delete([NotNull] string connectionString, object nntpServerID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntpserver_delete"))
             {
@@ -5859,7 +6008,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_NntpTopic
 
-        public static DataTable nntptopic_list(string connectionString, object thread)
+        public static DataTable nntptopic_list([NotNull] string connectionString, object thread)
         {
             using (var cmd = MySqlDbAccess.GetCommand("nntptopic_list"))
             {
@@ -5872,7 +6021,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void nntptopic_savemessage(
-            string connectionString,
+            [NotNull] string connectionString,
             object nntpForumID,
             object topic,
             object body,
@@ -5920,7 +6069,7 @@ namespace VZF.Data.Mysql
         /// <param name="pMessageID">The id of the private message</param>
         /// <returns></returns>
         public static DataTable pmessage_list(
-            string connectionString, object toUserID, object fromUserID, object userPMessageID)
+            [NotNull] string connectionString, object toUserID, object fromUserID, object userPMessageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_list"))
             {
@@ -5957,7 +6106,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="pMessageID"></param>
         /// <param name="fromOutbox">If true, removes the message from the outbox.  Otherwise deletes the message completely.</param>
-        public static void pmessage_delete(string connectionString, object userPMessageID, bool fromOutbox)
+        public static void pmessage_delete([NotNull] string connectionString, object userPMessageID, bool fromOutbox)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_delete"))
             {
@@ -5986,7 +6135,7 @@ namespace VZF.Data.Mysql
         /// Archives the private message of the given id.  Archiving moves the message from the user's inbox to his message archive.
         /// </summary>
         /// <param name="pMessageID">The ID of the private message</param>
-        public static void pmessage_archive(string connectionString, object userPMessageID)
+        public static void pmessage_archive([NotNull] string connectionString, object userPMessageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_archive"))
             {
@@ -6005,7 +6154,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void pmessage_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object fromUserID,
             object toUserID,
             object subject,
@@ -6029,7 +6178,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void pmessage_markread(string connectionString, object userPMessageID)
+        public static void pmessage_markread([NotNull] string connectionString, object userPMessageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_markread"))
             {
@@ -6046,7 +6195,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable pmessage_info(string connectionString)
+        public static DataTable pmessage_info([NotNull] string connectionString)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_info"))
             {
@@ -6055,7 +6204,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void pmessage_prune(string connectionString, object daysRead, object daysUnread)
+        public static void pmessage_prune([NotNull] string connectionString, object daysRead, object daysUnread)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pmessage_prune"))
             {
@@ -6081,7 +6230,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
+        public static DataTable pollgroup_stats([NotNull] string connectionString, int? pollGroupId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pollgroup_stats"))
             {
@@ -6100,7 +6249,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static int pollgroup_attach(
-            string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+            [NotNull] string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pollgroup_attach"))
             {
@@ -6115,7 +6264,7 @@ namespace VZF.Data.Mysql
         }
 
 
-        public static DataTable poll_stats(string connectionString, int? pollID)
+        public static DataTable poll_stats([NotNull] string connectionString, int? pollID)
         {
             /*Workaround for /pages/posts.ascx.cs (int)row["Stats"]*/
             using (var cmd = MySqlDbAccess.GetCommand("poll_stats"))
@@ -6163,7 +6312,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="pollList">List to hold all polls data</param>
         /// <returns>Last saved poll id.</returns>
-        public static int? poll_save(string connectionString, List<PollSaveList> pollList)
+        public static int? poll_save([NotNull] string connectionString, List<PollSaveList> pollList)
         {
 
 
@@ -6474,7 +6623,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void poll_update(
-            string connectionString,
+            [NotNull] string connectionString,
             object pollID,
             object question,
             object closes,
@@ -6530,7 +6679,7 @@ namespace VZF.Data.Mysql
         /// The remove everywhere.
         /// </param>
         public static void poll_remove(
-            string connectionString,
+            [NotNull] string connectionString,
             object pollGroupId,
             object pollId,
             object boardId,
@@ -6566,7 +6715,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static IEnumerable<TypedPollGroup> PollGroupList(
-            string connectionString, int userID, int? forumId, int boardId)
+            [NotNull] string connectionString, int userID, int? forumId, int boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("pollgroup_list"))
             {
@@ -6600,7 +6749,7 @@ namespace VZF.Data.Mysql
         /// <param name="forumId"></param>
         /// <param name="removeEverywhere"></param>
         public static void pollgroup_remove(
-            string connectionString,
+            [NotNull] string connectionString,
             object pollGroupId,
             object topicId,
             object forumId,
@@ -6623,7 +6772,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void choice_delete(string connectionString, object choiceID)
+        public static void choice_delete([NotNull] string connectionString, object choiceID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("choice_delete"))
             {
@@ -6636,7 +6785,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void choice_update(
-            string connectionString, object choiceID, object choice, object path, object mime)
+            [NotNull] string connectionString, object choiceID, object choice, object path, object mime)
         {
             using (var cmd = MySqlDbAccess.GetCommand("choice_update"))
             {
@@ -6651,7 +6800,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void choice_add(string connectionString, object pollID, object choice, object path, object mime)
+        public static void choice_add([NotNull] string connectionString, object pollID, object choice, object path, object mime)
         {
             using (var cmd = MySqlDbAccess.GetCommand("choice_add"))
             {
@@ -6678,7 +6827,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_Rank
 
-        public static DataTable rank_list(string connectionString, object boardId, object rankID)
+        public static DataTable rank_list([NotNull] string connectionString, object boardId, object rankID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("rank_list"))
             {
@@ -6730,7 +6879,7 @@ namespace VZF.Data.Mysql
         /// The sort order.
         /// </param>
         public static void rank_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object rankID,
             object boardId,
             object name,
@@ -6783,7 +6932,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void rank_delete(string connectionString, object rankID)
+        public static void rank_delete([NotNull] string connectionString, object rankID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("rank_delete"))
             {
@@ -6798,7 +6947,7 @@ namespace VZF.Data.Mysql
         #region yaf_Smiley
 
         [NotNull]
-        public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardId, int? smileyID)
+        public static IEnumerable<TypedSmileyList> SmileyList([NotNull] string connectionString, int boardId, int? smileyID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("smiley_list"))
             {
@@ -6810,7 +6959,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable smiley_list(string connectionString, object boardId, object smileyID)
+        public static DataTable smiley_list([NotNull] string connectionString, object boardId, object smileyID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("smiley_list"))
             {
@@ -6829,7 +6978,7 @@ namespace VZF.Data.Mysql
         }
 
 
-        public static DataTable smiley_listunique(string connectionString, object boardId)
+        public static DataTable smiley_listunique([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("smiley_listunique"))
             {
@@ -6841,7 +6990,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void smiley_delete(string connectionString, object smileyID)
+        public static void smiley_delete([NotNull] string connectionString, object smileyID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("smiley_delete"))
             {
@@ -6859,7 +7008,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void smiley_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object smileyID,
             object boardId,
             object code,
@@ -6893,7 +7042,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void smiley_resort(string connectionString, object boardId, object smileyID, int move)
+        public static void smiley_resort([NotNull] string connectionString, object boardId, object smileyID, int move)
         {
             using (var cmd = MySqlDbAccess.GetCommand("smiley_resort"))
             {
@@ -6911,7 +7060,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_BBCode
 
-        public static DataTable bbcode_list(string connectionString, object boardId, object bbcodeID)
+        public static DataTable bbcode_list([NotNull] string connectionString, object boardId, object bbcodeID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("bbcode_list"))
             {
@@ -6940,12 +7089,12 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString, int boardID, int? bbcodeID)
+        public static IEnumerable<TypedBBCode> BBCodeList([NotNull] string connectionString, int boardID, int? bbcodeID)
         {
             return bbcode_list(connectionString, boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
         }
 
-        public static void bbcode_delete(string connectionString, object bbcodeID)
+        public static void bbcode_delete([NotNull] string connectionString, object bbcodeID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("bbcode_delete"))
             {
@@ -6962,7 +7111,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void bbcode_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object bbcodeID,
             object boardId,
             object name,
@@ -7056,7 +7205,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="Name">Use to specify return of specific entry only. Setting this to null returns all entries.</param>
         /// <returns>DataTable filled will registry entries</returns>
-        public static DataTable registry_list(string connectionString, object name, object boardId)
+        public static DataTable registry_list([NotNull] string connectionString, object name, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("registry_list"))
             {
@@ -7085,7 +7234,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="Name">Unique name associated with this entry</param>
         /// <param name="Value">Value associated with this entry which can be null</param>
-        public static void registry_save(string connectionString, object name, object value)
+        public static void registry_save([NotNull] string connectionString, object name, object value)
         {
             using (var cmd = MySqlDbAccess.GetCommand("registry_save"))
             {
@@ -7111,7 +7260,7 @@ namespace VZF.Data.Mysql
         /// <param name="Name">Unique name associated with this entry</param>
         /// <param name="Value">Value associated with this entry which can be null</param>
         /// <param name="BoardID">The BoardID for this entry</param>
-        public static void registry_save(string connectionString, object name, object value, object boardId)
+        public static void registry_save([NotNull] string connectionString, object name, object value, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("registry_save"))
             {
@@ -7143,7 +7292,7 @@ namespace VZF.Data.Mysql
         /// Not in use anymore. Only required for old database versions.
         /// </summary>
         /// <returns></returns>
-        public static DataTable system_list(string connectionString)
+        public static DataTable system_list([NotNull] string connectionString)
         {
             using (var cmd = MySqlDbAccess.GetCommand("system_list"))
             {
@@ -7156,7 +7305,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_Topic
 
-        public static void topic_updatetopic(string connectionString, int topicId, string topic)
+        public static void topic_updatetopic([NotNull] string connectionString, int topicId, string topic)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_updatetopic"))
             {
@@ -7168,7 +7317,7 @@ namespace VZF.Data.Mysql
         }
 
         //TODO: Overloaded method for 1.9.3 FINAL comatability should be deleted beginning with v.2373
-        public static int topic_prune(string connectionString, object forumID, object days)
+        public static int topic_prune([NotNull] string connectionString, object forumID, object days)
         {
             int boardId = 0;
             using (
@@ -7190,7 +7339,7 @@ namespace VZF.Data.Mysql
         }
 
         public static int topic_prune(
-            string connectionString, object boardId, object forumID, object days, object permDelete)
+            [NotNull] string connectionString, object boardId, object forumID, object days, object permDelete)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("topic_prune"))
@@ -7205,7 +7354,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable announcements_list(
-            string connectionString,
+            [NotNull] string connectionString,
             object forumID,
             [NotNull] object userId,
             [NotNull] object sinceDate,
@@ -7237,7 +7386,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable topic_list(
-            string connectionString,
+            [NotNull] string connectionString,
             object forumID,
             [NotNull] object userId,
             [NotNull] object sinceDate,
@@ -7274,7 +7423,7 @@ namespace VZF.Data.Mysql
         /// <param name="StartID"></param>
         /// <param name="Limit"></param>
         /// <returns></returns>
-        public static DataTable topic_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable topic_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_simplelist"))
             {
@@ -7295,7 +7444,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void topic_move(
-            string connectionString, object topicID, object forumID, object showMoved, object linkDays)
+            [NotNull] string connectionString, object topicID, object forumID, object showMoved, object linkDays)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_move"))
             {
@@ -7312,7 +7461,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable topic_announcements(
-            string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserID)
+            [NotNull] string connectionString, object boardId, object numOfPostsToRetrieve, object pageUserID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_announcements"))
             {
@@ -7393,7 +7542,7 @@ namespace VZF.Data.Mysql
          } */
 
         public static DataTable topic_latest(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardID,
             object numOfPostsToRetrieve,
             object pageUserId,
@@ -7438,7 +7587,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable rss_topic_latest(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object numOfPostsToRetrieve,
             object pageUserId,
@@ -7457,7 +7606,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable topic_active(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7487,7 +7636,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable topic_unread(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7519,7 +7668,7 @@ namespace VZF.Data.Mysql
 
 
         public static DataTable topic_tags(
-            string connectionString, [NotNull] object boardId, [NotNull] object pageUserId, [NotNull] object topicId)
+            [NotNull] string connectionString, [NotNull] object boardId, [NotNull] object pageUserId, [NotNull] object topicId)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("topic_tags"))
@@ -7535,7 +7684,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable topic_bytags(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             int forumId,
             [NotNull] object pageUserId,
@@ -7589,7 +7738,7 @@ namespace VZF.Data.Mysql
         /// Returns the List with the Active Topics
         /// </returns>
         public static DataTable topic_unanswered(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7643,7 +7792,7 @@ namespace VZF.Data.Mysql
         /// Returns the List with the User Topics
         /// </returns>
         public static DataTable Topics_ByUser(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -7676,7 +7825,7 @@ namespace VZF.Data.Mysql
         /// Delete a topic status.
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
-        public static void TopicStatus_Delete(string connectionString, [NotNull] object topicStatusID)
+        public static void TopicStatus_Delete([NotNull] string connectionString, [NotNull] object topicStatusID)
         {
             try
             {
@@ -7698,7 +7847,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_Edit(string connectionString, [NotNull] object topicStatusID)
+        public static DataTable TopicStatus_Edit([NotNull] string connectionString, [NotNull] object topicStatusID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("TopicStatus_Edit"))
             {
@@ -7713,7 +7862,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="boardID">The board ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_List(string connectionString, [NotNull] object boardID)
+        public static DataTable TopicStatus_List([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("TopicStatus_List"))
             {
@@ -7731,7 +7880,7 @@ namespace VZF.Data.Mysql
         /// <param name="topicStatusName">Name of the topic status.</param>
         /// <param name="defaultDescription">The default description.</param>
         public static void TopicStatus_Save(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object topicStatusID,
             [NotNull] object boardID,
             [NotNull] object topicStatusName,
@@ -7758,7 +7907,7 @@ namespace VZF.Data.Mysql
         }
 
         //ABOT NEW 16.04.04:Delete all topic's messages
-        private static void topic_deleteAttachments(string connectionString, object topicID)
+        private static void topic_deleteAttachments([NotNull] string connectionString, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_listmessages"))
             {
@@ -7778,7 +7927,7 @@ namespace VZF.Data.Mysql
         }
 
 
-        private static void topic_deleteimages(string connectionString, int topicID)
+        private static void topic_deleteimages([NotNull] string connectionString, int topicID)
         {
 
             string uploadDir =
@@ -7816,7 +7965,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void topic_delete(string connectionString, object topicID, object eraseTopic)
+        public static void topic_delete([NotNull] string connectionString, object topicID, object eraseTopic)
         {
             if (eraseTopic == null)
             {
@@ -7842,7 +7991,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable topic_findprev(string connectionString, object topicID)
+        public static DataTable topic_findprev([NotNull] string connectionString, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_findprev"))
             {
@@ -7852,7 +8001,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable topic_findnext(string connectionString, object topicID)
+        public static DataTable topic_findnext([NotNull] string connectionString, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_findnext"))
             {
@@ -7862,7 +8011,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void topic_lock(string connectionString, object topicID, object locked)
+        public static void topic_lock([NotNull] string connectionString, object topicID, object locked)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_lock"))
             {
@@ -7874,7 +8023,7 @@ namespace VZF.Data.Mysql
         }
 
         public static long topic_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object forumID,
             object subject,
             object status,
@@ -7917,7 +8066,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataRow topic_info(string connectionString, object topicID, [NotNull] bool getTags)
+        public static DataRow topic_info([NotNull] string connectionString, object topicID, [NotNull] bool getTags)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_info"))
             {
@@ -7963,7 +8112,7 @@ namespace VZF.Data.Mysql
         /// The topic image type.
         /// </param>
         public static void topic_imagesave(
-            string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object topicImageType)
+            [NotNull] string connectionString, object topicID, [NotNull] object imageUrl, Stream stream, object topicImageType)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_imagesave"))
             {
@@ -7998,7 +8147,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int topic_findduplicate(string connectionString, object topicName)
+        public static int topic_findduplicate([NotNull] string connectionString, object topicName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_findduplicate"))
             {
@@ -8045,7 +8194,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>  containing the current user's favorite topics with details..
         /// </returns>
         public static DataTable topic_favorite_details(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardId,
             [CanBeNull] object categoryId,
             [NotNull] object pageUserId,
@@ -8082,7 +8231,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_favorite_list(string connectionString, object userID)
+        public static DataTable topic_favorite_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_favorite_list"))
             {
@@ -8101,7 +8250,7 @@ namespace VZF.Data.Mysql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_remove(string connectionString, object userID, object topicID)
+        public static void topic_favorite_remove([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_favorite_remove"))
             {
@@ -8121,7 +8270,7 @@ namespace VZF.Data.Mysql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_add(string connectionString, object userID, object topicID)
+        public static void topic_favorite_add([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_favorite_add"))
             {
@@ -8138,7 +8287,7 @@ namespace VZF.Data.Mysql
         /// <param name="topicId">
         /// The topic Id.
         /// </param>
-        public static int TopicFavoriteCount(string connectionString, int topicId)
+        public static int TopicFavoriteCount([NotNull] string connectionString, int topicId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("topic_favorite_count"))
             {
@@ -8158,7 +8307,7 @@ namespace VZF.Data.Mysql
         /// Gets a list of replace words
         /// </summary>
         /// <returns>DataTable with replace words</returns>
-        public static DataTable replace_words_list(string connectionString, object boardId, object id)
+        public static DataTable replace_words_list([NotNull] string connectionString, object boardId, object id)
         {
             using (var cmd = MySqlDbAccess.GetCommand("replace_words_list"))
             {
@@ -8181,7 +8330,7 @@ namespace VZF.Data.Mysql
         /// <param name="badword">bad word</param>
         /// <param name="goodword">good word</param>
         public static void replace_words_save(
-            string connectionString, object boardId, object id, object badword, object goodword)
+            [NotNull] string connectionString, object boardId, object id, object badword, object goodword)
         {
             using (var cmd = MySqlDbAccess.GetCommand("replace_words_save"))
             {
@@ -8205,7 +8354,7 @@ namespace VZF.Data.Mysql
         /// Deletes a bad/good word
         /// </summary>
         /// <param name="ID">ID of bad/good word to delete</param>
-        public static void replace_words_delete(string connectionString, object ID)
+        public static void replace_words_delete([NotNull] string connectionString, object ID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("replace_words_delete"))
             {
@@ -8221,7 +8370,7 @@ namespace VZF.Data.Mysql
 
         #region IgnoreUser
 
-        public static void user_addignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_addignoreduser([NotNull] string connectionString, object userId, object ignoredUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_addignoreduser"))
             {
@@ -8234,7 +8383,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_removeignoreduser(string connectionString, object userId, object ignoredUserId)
+        public static void user_removeignoreduser([NotNull] string connectionString, object userId, object ignoredUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_removeignoreduser"))
             {
@@ -8247,7 +8396,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static bool user_isuserignored(string connectionString, object userId, object ignoredUserId)
+        public static bool user_isuserignored([NotNull] string connectionString, object userId, object ignoredUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_isuserignored"))
             {
@@ -8260,7 +8409,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_ignoredlist(string connectionString, object userId)
+        public static DataTable user_ignoredlist([NotNull] string connectionString, object userId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_ignoredlist"))
             {
@@ -8310,7 +8459,7 @@ namespace VZF.Data.Mysql
         /// <exception cref="ApplicationException">
         /// </exception>
         public static DataRow user_lazydata(
-            string connectionString,
+            [NotNull] string connectionString,
             object userId,
             object boardId,
             bool showPendingMails,
@@ -8431,7 +8580,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable user_listmembers(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             object approved,
@@ -8545,7 +8694,7 @@ namespace VZF.Data.Mysql
         /// </param>    
         /// <returns>
         /// </returns>
-        public static DataTable user_list(string connectionString, object boardID, object userID, object approved)
+        public static DataTable user_list([NotNull] string connectionString, object boardID, object userID, object approved)
         {
             return user_list(connectionString, boardID, userID, approved, null, null, false);
         }
@@ -8568,7 +8717,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable user_list(
-            string connectionString, object boardID, object userID, object approved, object useStyledNicks)
+            [NotNull] string connectionString, object boardID, object userID, object approved, object useStyledNicks)
         {
             return user_list(connectionString, boardID, userID, approved, null, null, useStyledNicks);
         }
@@ -8594,7 +8743,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable user_list(
-            string connectionString, object boardID, object userID, object approved, object groupID, object rankID)
+            [NotNull] string connectionString, object boardID, object userID, object approved, object groupID, object rankID)
         {
             return user_list(connectionString, boardID, userID, approved, null, null, false);
         }
@@ -8623,7 +8772,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable user_list(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             object approved,
@@ -8647,7 +8796,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable user_pagedlist(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             object approved,
@@ -8687,7 +8836,7 @@ namespace VZF.Data.Mysql
         /// The user_ list with todays birthdays.
         /// </returns>
         public static DataTable User_ListTodaysBirthdays(
-            string connectionString, [NotNull] object boardID, [CanBeNull] object useStyledNicks)
+            [NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object useStyledNicks)
         {
             // Profile columns cannot yet exist when we first are gettinng data.
             try
@@ -8733,7 +8882,7 @@ namespace VZF.Data.Mysql
         /// The user_ list profiles.
         /// </returns>
         public static DataTable User_ListProfilesByIdsList(
-            string connectionString, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
+            [NotNull] string connectionString, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
         {
             string result = userIdsList.Aggregate(string.Empty, (current, i) => current + (',' + i));
 
@@ -8796,7 +8945,7 @@ namespace VZF.Data.Mysql
         /// The dirty only.
         /// </param>
         public static void SetPropertyValues(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardId,
             string appname,
             int userId,
@@ -8862,7 +9011,7 @@ namespace VZF.Data.Mysql
         /// The dirty only.
         /// </param>
         public static void SetProfileProperties(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] int boardId,
             [NotNull] object appName,
             [NotNull] int userID,
@@ -8982,7 +9131,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable GetProfileStructure(string connectionString)
+        public static DataTable GetProfileStructure([NotNull] string connectionString)
         {
             string sql = @"SELECT * FROM {0} LIMIT 1".FormatWith(MySqlDbAccess.GetObjectName("UserProfile"));
 
@@ -9009,7 +9158,7 @@ namespace VZF.Data.Mysql
         /// The size.
         /// </param>
         public static void AddProfileColumn(
-            string connectionString, [NotNull] string name, MySqlDbType columnType, int size)
+            [NotNull] string connectionString, [NotNull] string name, MySqlDbType columnType, int size)
         {
             // get column type...
             string type = columnType.ToString();
@@ -9106,7 +9255,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="List"/>.
         /// </returns>
         private static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(
-            string connectionString, SettingsPropertyValueCollection collection)
+            [NotNull] string connectionString, SettingsPropertyValueCollection collection)
         {
             List<SettingsPropertyColumn> settingsColumnsList = new List<SettingsPropertyColumn>();
 
@@ -9170,7 +9319,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable admin_list(string connectionString, object boardId, object useStyledNicks)
+        public static DataTable admin_list([NotNull] string connectionString, object boardId, object useStyledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("admin_list"))
             {
@@ -9195,7 +9344,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable admin_pageaccesslist(
-            string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+            [NotNull] string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("admin_pageaccesslist"))
             {
@@ -9221,7 +9370,7 @@ namespace VZF.Data.Mysql
         /// The page name.
         /// </param>
         public static void adminpageaccess_save(
-            string connectionString, [NotNull] object userId, [NotNull] object pageName)
+            [NotNull] string connectionString, [NotNull] object userId, [NotNull] object pageName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("adminpageaccess_save"))
             {
@@ -9247,7 +9396,7 @@ namespace VZF.Data.Mysql
         /// The page name.
         /// </param>
         public static void adminpageaccess_delete(
-            string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
+            [NotNull] string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("adminpageaccess_delete"))
             {
@@ -9276,7 +9425,7 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable adminpageaccess_list(
-            string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
+            [NotNull] string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = MySqlDbAccess.GetCommand("adminpageaccess_list"))
             {
@@ -9290,7 +9439,7 @@ namespace VZF.Data.Mysql
 
         [NotNull]
         public static IEnumerable<TypedUserList> UserList(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardId,
             int? userId,
             bool? approved,
@@ -9315,7 +9464,7 @@ namespace VZF.Data.Mysql
         }
 
 
-        public static DataTable user_simplelist(string connectionString, int startId, int limit)
+        public static DataTable user_simplelist([NotNull] string connectionString, int startId, int limit)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_simplelist"))
             {
@@ -9336,7 +9485,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_delete(string connectionString, object userID)
+        public static void user_delete([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_delete"))
             {
@@ -9348,7 +9497,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_setrole(string connectionString, int boardId, object providerUserKey, object role)
+        public static void user_setrole([NotNull] string connectionString, int boardId, object providerUserKey, object role)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_setrole"))
             {
@@ -9379,7 +9528,7 @@ namespace VZF.Data.Mysql
         }*/
 
         public static void user_migrate(
-            string connectionString, object userID, object providerUserKey, object updateProvider)
+            [NotNull] string connectionString, object userID, object providerUserKey, object updateProvider)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_migrate"))
             {
@@ -9403,7 +9552,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_deleteold(string connectionString, object boardId, object days)
+        public static void user_deleteold([NotNull] string connectionString, object boardId, object days)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_deleteold"))
             {
@@ -9417,7 +9566,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_approve(string connectionString, object userID)
+        public static void user_approve([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_approve"))
             {
@@ -9429,7 +9578,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_approveall(string connectionString, object boardId)
+        public static void user_approveall([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_approveall"))
             {
@@ -9441,7 +9590,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_suspend(string connectionString, object userID, object suspend)
+        public static void user_suspend([NotNull] string connectionString, object userID, object suspend)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_suspend"))
             {
@@ -9465,7 +9614,7 @@ namespace VZF.Data.Mysql
         /// <param name="userID">The userID</param>
         /// <param name="boardID">The boardID</param>
         /// <returns>Data Table</returns>
-        public static DataTable user_getsignaturedata(string connectionString, object userID, object boardID)
+        public static DataTable user_getsignaturedata([NotNull] string connectionString, object userID, object boardID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_getsignaturedata"))
             {
@@ -9481,7 +9630,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="userID">The userID</param>
         /// <param name="boardID">The boardID</param>  
-        public static DataTable user_getalbumsdata(string connectionString, object userID, object boardID)
+        public static DataTable user_getalbumsdata([NotNull] string connectionString, object userID, object boardID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_getalbumsdata"))
             {
@@ -9493,7 +9642,7 @@ namespace VZF.Data.Mysql
         }
 
         public static bool user_changepassword(
-            string connectionString, object userID, object oldPassword, object newPassword)
+            [NotNull] string connectionString, object userID, object oldPassword, object newPassword)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_changepassword"))
             {
@@ -9507,7 +9656,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_pmcount(string connectionString, object userID)
+        public static DataTable user_pmcount([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_pmcount"))
             {
@@ -9520,7 +9669,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void user_save(
-            string connectionString,
+            [NotNull] string connectionString,
             object userId,
             object boardId,
             object userName,
@@ -9610,7 +9759,7 @@ namespace VZF.Data.Mysql
         /// </param>
         /// <param name="pmNotification"></param>
         public static void user_savenotification(
-            string connectionString,
+            [NotNull] string connectionString,
             object userID,
             object pmNotification,
             object autoWatchTopics,
@@ -9632,7 +9781,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void user_adminsave(
-            string connectionString,
+            [NotNull] string connectionString,
             object boardId,
             object userId,
             object name,
@@ -9659,7 +9808,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_emails(string connectionString, object boardId, object groupID)
+        public static DataTable user_emails([NotNull] string connectionString, object boardId, object groupID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_emails"))
             {
@@ -9679,7 +9828,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_accessmasks(string connectionString, object boardId, object userID)
+        public static DataTable user_accessmasks([NotNull] string connectionString, object boardId, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_accessmasks"))
             {
@@ -9692,7 +9841,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_accessmasksbyforum(string connectionString, object boardId, object userID)
+        public static DataTable user_accessmasksbyforum([NotNull] string connectionString, object boardId, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_accessmasksbyforum"))
             {
@@ -9704,7 +9853,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_accessmasksbygroup(string connectionString, object boardId, object userID)
+        public static DataTable user_accessmasksbygroup([NotNull] string connectionString, object boardId, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_accessmasksbygroup"))
             {
@@ -9718,7 +9867,7 @@ namespace VZF.Data.Mysql
 
         //adds some convenience while editing group's access rights (indent forums)
         private static DataTable userforumaccess_sort_list(
-            string connectionString, DataTable listSource, int parentID, int categoryID, int startingIndent)
+            [NotNull] string connectionString, DataTable listSource, int parentID, int categoryID, int startingIndent)
         {
 
             DataTable listDestination = new DataTable();
@@ -9741,7 +9890,7 @@ namespace VZF.Data.Mysql
         }
 
         private static void userforumaccess_sort_list_recursive(
-            string connectionString,
+            [NotNull] string connectionString,
             DataTable listSource,
             DataTable listDestination,
             int parentID,
@@ -9790,7 +9939,7 @@ namespace VZF.Data.Mysql
         }
 
         public static object user_recoverpassword(
-            string connectionString, object boardId, object userName, object email)
+            [NotNull] string connectionString, object boardId, object userName, object email)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_recoverpassword"))
             {
@@ -9804,7 +9953,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_savepassword(string connectionString, object userID, object password)
+        public static void user_savepassword([NotNull] string connectionString, object userID, object password)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_savepassword"))
             {
@@ -9816,7 +9965,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static object user_login(string connectionString, object boardId, object name, object password)
+        public static object user_login([NotNull] string connectionString, object boardId, object name, object password)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_login"))
             {
@@ -9830,7 +9979,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable user_avatarimage(string connectionString, object userID)
+        public static DataTable user_avatarimage([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_avatarimage"))
             {
@@ -9853,7 +10002,7 @@ namespace VZF.Data.Mysql
                 }
             }*/
 
-        public static int user_get(string connectionString, int boardId, object providerUserKey)
+        public static int user_get([NotNull] string connectionString, int boardId, object providerUserKey)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("user_get"))
@@ -9889,7 +10038,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable UserFind(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardId,
             bool filter,
             string userName,
@@ -9915,7 +10064,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static string user_getsignature(string connectionString, object userID)
+        public static string user_getsignature([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_getsignature"))
             {
@@ -9927,7 +10076,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_savesignature(string connectionString, object userID, object signature)
+        public static void user_savesignature([NotNull] string connectionString, object userID, object signature)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_savesignature"))
             {
@@ -9941,7 +10090,7 @@ namespace VZF.Data.Mysql
         }
 
         public static void user_saveavatar(
-            string connectionString, object userID, object avatar, System.IO.Stream stream, object avatarImageType)
+            [NotNull] string connectionString, object userID, object avatar, System.IO.Stream stream, object avatarImageType)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_saveavatar"))
             {
@@ -9965,7 +10114,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_deleteavatar(string connectionString, object userID)
+        public static void user_deleteavatar([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_deleteavatar"))
             {
@@ -10021,7 +10170,7 @@ namespace VZF.Data.Mysql
         } */
 
         public static int user_aspnet(
-            string connectionString,
+            [NotNull] string connectionString,
             int boardId,
             string userName,
             string displayName,
@@ -10054,7 +10203,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static int? user_guest(string connectionString, object boardId)
+        public static int? user_guest([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_guest"))
             {
@@ -10067,7 +10216,7 @@ namespace VZF.Data.Mysql
         }
 
         public static DataTable user_activity_rank(
-            string connectionString, object boardId, object startDate, object displayNumber)
+            [NotNull] string connectionString, object boardId, object startDate, object displayNumber)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_activity_rank"))
             {
@@ -10082,7 +10231,7 @@ namespace VZF.Data.Mysql
         }
 
         public static int user_nntp(
-            string connectionString, object boardId, object userName, object email, int? timeZone)
+            [NotNull] string connectionString, object boardId, object userName, object email, int? timeZone)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_nntp"))
             {
@@ -10099,14 +10248,14 @@ namespace VZF.Data.Mysql
         }
 
         public static void user_addpoints(
-            string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+            [NotNull] string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_addpoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
-                cmd.Parameters.Add("i_FromUserID", MySqlDbType.Int32).Value = userID;
+                cmd.Parameters.Add("i_FromUserID", MySqlDbType.Int32).Value = fromUserID;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                 cmd.Parameters.Add("i_Points", MySqlDbType.Int32).Value = points;
 
@@ -10116,14 +10265,14 @@ namespace VZF.Data.Mysql
 
 
         public static void user_removepoints(
-            string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+            [NotNull] string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_removepoints"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
-                cmd.Parameters.Add("i_FromUserID", MySqlDbType.Int32).Value = userID;
+                cmd.Parameters.Add("i_FromUserID", MySqlDbType.Int32).Value = fromUserID;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                 cmd.Parameters.Add("i_Points", MySqlDbType.Int32).Value = points;
 
@@ -10131,7 +10280,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_setnotdirty(string connectionString, object userID, object points)
+        public static void user_setnotdirty([NotNull] string connectionString, object userID, object points)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_setnotdirty"))
             {
@@ -10143,7 +10292,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void user_setpoints(string connectionString, object userID, object points)
+        public static void user_setpoints([NotNull] string connectionString, object userID, object points)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_setpoints"))
             {
@@ -10156,7 +10305,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static int user_getpoints(string connectionString, object userID)
+        public static int user_getpoints([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_getpoints"))
             {
@@ -10173,7 +10322,7 @@ namespace VZF.Data.Mysql
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static int user_getthanks_from(string connectionString, object userID, object pageUserId)
+        public static int user_getthanks_from([NotNull] string connectionString, object userID, object pageUserId)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("user_getthanks_from"))
@@ -10188,7 +10337,7 @@ namespace VZF.Data.Mysql
 
         //<summary> Returns the number of times and posts that other users have thanked the 
         // user with the provided userID.
-        public static int[] user_getthanks_to(string connectionString, object userID, object pageUserId)
+        public static int[] user_getthanks_to([NotNull] string connectionString, object userID, object pageUserId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_getthanks_to"))
             {
@@ -10228,7 +10377,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable user_viewthanksfrom(
-            string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
+            [NotNull] string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_viewthanksfrom"))
             {
@@ -10251,7 +10400,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable user_viewthanksto(
-            string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
+            [NotNull] string connectionString, object userID, object pageUserId, int pageIndex, int pageSize)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_viewthanksto"))
             {
@@ -10277,7 +10426,7 @@ namespace VZF.Data.Mysql
         /// The is Twitter User.
         /// </param>
         public static void user_update_single_sign_on_status(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object userID,
             [NotNull] object isFacebookUser,
             [NotNull] object isTwitterUser)
@@ -10296,7 +10445,7 @@ namespace VZF.Data.Mysql
 
         #region yaf_UserForum
 
-        public static DataTable userforum_list(string connectionString, object userID, object forumID)
+        public static DataTable userforum_list([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("userforum_list"))
             {
@@ -10318,7 +10467,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void userforum_delete(string connectionString, object userID, object forumID)
+        public static void userforum_delete([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("userforum_delete"))
             {
@@ -10329,7 +10478,7 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void userforum_save(string connectionString, object userID, object forumID, object accessMaskID)
+        public static void userforum_save([NotNull] string connectionString, object userID, object forumID, object accessMaskID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("userforum_save"))
             {
@@ -10348,7 +10497,19 @@ namespace VZF.Data.Mysql
 
         #region yaf_UserGroup
 
-        public static DataTable usergroup_list(string connectionString, object userID)
+        /// <summary>
+        /// The usergroup_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable usergroup_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("usergroup_list"))
             {
@@ -10358,7 +10519,22 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void usergroup_save(string connectionString, object userID, object groupID, object member)
+        /// <summary>
+        /// The usergroup_save.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="member">
+        /// The member.
+        /// </param>
+        public static void usergroup_save([NotNull] string connectionString, object userID, object groupID, object member)
         {
             using (var cmd = MySqlDbAccess.GetCommand("usergroup_save"))
             {
@@ -10374,7 +10550,19 @@ namespace VZF.Data.Mysql
 
         #region yaf_WatchForum
 
-        public static void watchforum_add(string connectionString, object userID, object forumID)
+        /// <summary>
+        /// The watchforum_add.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        public static void watchforum_add([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchforum_add"))
             {
@@ -10387,7 +10575,19 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable watchforum_list(string connectionString, object userID)
+        /// <summary>
+        /// The watchforum_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable watchforum_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchforum_list"))
             {
@@ -10399,7 +10599,22 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable watchforum_check(string connectionString, object userID, object forumID)
+        /// <summary>
+        /// The watchforum_check.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable watchforum_check([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchforum_check"))
             {
@@ -10412,7 +10627,16 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void watchforum_delete(string connectionString, object watchForumID)
+        /// <summary>
+        /// The watchforum_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="watchForumID">
+        /// The watch forum id.
+        /// </param>
+        public static void watchforum_delete([NotNull] string connectionString, object watchForumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchforum_delete"))
             {
@@ -10428,7 +10652,19 @@ namespace VZF.Data.Mysql
 
         #region yaf_WatchTopic
 
-        public static DataTable watchtopic_list(string connectionString, object userID)
+        /// <summary>
+        /// The watchtopic_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable watchtopic_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchtopic_list"))
             {
@@ -10438,7 +10674,22 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static DataTable watchtopic_check(string connectionString, object userID, object topicID)
+        /// <summary>
+        /// The watchtopic_check.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable watchtopic_check([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchtopic_check"))
             {
@@ -10451,7 +10702,16 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void watchtopic_delete(string connectionString, object watchTopicID)
+        /// <summary>
+        /// The watchtopic_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="watchTopicID">
+        /// The watch topic id.
+        /// </param>
+        public static void watchtopic_delete([NotNull] string connectionString, object watchTopicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchtopic_delete"))
             {
@@ -10463,7 +10723,19 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void watchtopic_add(string connectionString, object userID, object topicID)
+        /// <summary>
+        /// The watchtopic_add.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        public static void watchtopic_add([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("watchtopic_add"))
             {
@@ -10486,7 +10758,7 @@ namespace VZF.Data.Mysql
         /// The topic id.
         /// </param>
         public static void Readtopic_AddOrUpdate(
-            string connectionString, [NotNull] object userID, [NotNull] object topicID)
+            [NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("readtopic_addorupdate"))
             {
@@ -10515,19 +10787,8 @@ namespace VZF.Data.Mysql
              }
          }
          */
-        /// <summary>
-        /// Get the Global Last Read DateTime User
-        /// </summary>
-        /// <param name="userID">
-        /// The user ID.
-        /// </param>
-        /// <param name="lastVisitDate">
-        /// The last Visit Date of the User
-        /// </param>
-        /// <returns>
-        /// Returns the Global Last Read DateTime
-        /// </returns>
-        public static DateTime? User_LastRead(string connectionString, [NotNull] object userID)
+
+        public static DateTime? User_LastRead([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_lastread"))
             {
@@ -10553,7 +10814,7 @@ namespace VZF.Data.Mysql
         /// Returns the Last Read DateTime
         /// </returns>
         public static DateTime? Readtopic_lastread(
-            string connectionString, [NotNull] object userID, [NotNull] object topicID)
+            [NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("readtopic_lastread"))
             {
@@ -10577,13 +10838,13 @@ namespace VZF.Data.Mysql
         /// The forum id.
         /// </param>
         public static void ReadForum_AddOrUpdate(
-            string connectionString, [NotNull] object userID, [NotNull] object forumID)
+            [NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("readforum_addorupdate"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new MySqlParameter("i_userid", MySqlDbType.Int32)).Value = userID;
-                cmd.Parameters.Add(new MySqlParameter("i_forumid", MySqlDbType.Int32)).Value = forumID;
+                cmd.Parameters.Add("i_userid", MySqlDbType.Int32).Value = userID;
+                cmd.Parameters.Add("i_forumid", MySqlDbType.Int32).Value = forumID;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -10619,7 +10880,7 @@ namespace VZF.Data.Mysql
         /// Returns the Last Read DateTime
         /// </returns>
         public static DateTime? ReadForum_lastread(
-            string connectionString, [NotNull] object userID, [NotNull] object forumID)
+            [NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("readforum_lastread"))
             {
@@ -10639,7 +10900,25 @@ namespace VZF.Data.Mysql
 
         # region VZ-Team additions
 
-        public static DataTable rsstopic_list(string connectionString, int forumId, int start, int count)
+        /// <summary>
+        /// The rsstopic_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="forumId">
+        /// The forum id.
+        /// </param>
+        /// <param name="start">
+        /// The start.
+        /// </param>
+        /// <param name="count">
+        /// The count.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable rsstopic_list([NotNull] string connectionString, int forumId, int start, int count)
         {
             using (var cmd = MySqlDbAccess.GetCommand("rsstopic_list"))
             {
@@ -10653,16 +10932,22 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static void db_getstats(string connectionString)
+        /// <summary>
+        /// The db_getstats.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        public static void db_getstats([NotNull] string connectionString)
         {
-
             using (
                 var cmd =
                     new MySqlCommand(
-                        String.Format(
-                            "ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName, Config.DatabaseObjectQualifier)))
+                        string.Format(
+                            "ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.DatabaseSchemaName, Config.DatabaseObjectQualifier)))
             {
                 cmd.CommandType = CommandType.Text;
+
                 // up the command timeout...
                 cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
@@ -10671,12 +10956,21 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The get stats message.
+        /// </summary>
         private static string getStatsMessage;
 
         /// <summary>
         /// The db_getstats_new.
         /// </summary>
-        public static string db_getstats_new(string connectionString)
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string db_getstats_new([NotNull] string connectionString)
         {
             try
             {
@@ -10686,13 +10980,13 @@ namespace VZF.Data.Mysql
                     using (
                         var cmd =
                             new MySqlCommand(
-                                String.Format(
+                                string.Format(
                                     "ANALYZE TABLE {0}.{1}user;",
-                                    MySqlDbAccess.SchemaName,
+                                    MySqlDbAccess.DatabaseSchemaName,
                                     Config.DatabaseObjectQualifier)))
                     {
-
                         cmd.CommandType = CommandType.Text;
+
                         // up the command timeout...
                         cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
@@ -10701,8 +10995,6 @@ namespace VZF.Data.Mysql
                         return getStatsMessage;
                     }
                 }
-
-
             }
             finally
             {
@@ -10724,58 +11016,87 @@ namespace VZF.Data.Mysql
             getStatsMessage += "\r\n{0}".FormatWith(e.Message);
         }
 
-        public static DataTable db_getstats_table(string connectionString)
+        /// <summary>
+        /// The db_getstats_table.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable db_getstats_table([NotNull] string connectionString)
         {
-
-            using (var cmd = new MySqlCommand(String.Format("SHOW TABLE STATUS FROM {0};", MySqlDbAccess.SchemaName)))
+            using (var cmd = new MySqlCommand(string.Format("SHOW TABLE STATUS FROM {0};", MySqlDbAccess.DatabaseSchemaName)))
             {
-
                 cmd.CommandType = CommandType.Text;
 
                 return MySqlDbAccess.GetData(cmd, false, connectionString);
             }
         }
 
-        public static DataTable db_getstats_alltables(string connectionString)
+        /// <summary>
+        /// The db_getstats_alltables.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable db_getstats_alltables([NotNull] string connectionString)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(
-                String.Format(
+                string.Format(
                     "SELECT table_name FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE' AND t.table_schema='{0}' ",
-                    MySqlDbAccess.SchemaName));
+                    MySqlDbAccess.DatabaseSchemaName));
             sb.Append(";");
 
             using (var cmd = new MySqlCommand(sb.ToString()))
             {
                 cmd.CommandType = CommandType.Text;
                 return MySqlDbAccess.GetData(cmd, false, connectionString);
-
             }
-
         }
 
+        /// <summary>
+        /// The db_getstats_warning.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getstats_warning()
         {
             return string.Empty;
         }
 
-        public static string db_getstats_tablex(string connectionString)
+        /// <summary>
+        /// The db_getstats_tablex.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string db_getstats_tablex([NotNull] string connectionString)
         {
             int offset = 15;
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("___________________________________________________________________________________      ");
             DataTable tables = Db.db_getstats_alltables(connectionString);
             foreach (DataRow drtables in tables.Rows)
             {
                 using (
                     var cmd =
-                        new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1};", MySqlDbAccess.SchemaName, drtables[0]))
-                    )
+                        new MySqlCommand(String.Format("ANALYZE TABLE {0}.{1};", MySqlDbAccess.DatabaseSchemaName, drtables[0])))
                 {
-
                     cmd.CommandType = CommandType.Text;
+
                     // up the command timeout...
                     cmd.CommandTimeout = 9999;
+
                     // run it...
                     DataTable dt = MySqlDbAccess.GetData(cmd, false, connectionString);
                     foreach (DataRow dr in dt.Rows)
@@ -10812,16 +11133,21 @@ namespace VZF.Data.Mysql
                                 sb.Append(" ");
                             }
                         }
+
                         sb.Append("\r\n");
                     }
+
                     sb.Append("___________________________________________________________________________________");
                     sb.Append("\r\n");
                 }
-
             }
+
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets a value indicating whether btn reindex visible.
+        /// </summary>
         public static bool btnReindexVisible
         {
             get
@@ -10831,7 +11157,10 @@ namespace VZF.Data.Mysql
         }
 
 
-        //DB Maintenance page panels visibility
+        // DB Maintenance page panel visibility
+        /// <summary>
+        /// Gets a value indicating whether panel get stats.
+        /// </summary>
         public static bool PanelGetStats
         {
             get
@@ -10840,6 +11169,9 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel recovery mode.
+        /// </summary>
         public static bool PanelRecoveryMode
         {
             get
@@ -10848,6 +11180,9 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel reindex.
+        /// </summary>
         public static bool PanelReindex
         {
             get
@@ -10856,6 +11191,9 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel shrink.
+        /// </summary>
         public static bool PanelShrink
         {
             get
@@ -10864,10 +11202,21 @@ namespace VZF.Data.Mysql
             }
         }
 
-
+        /// <summary>
+        /// The my_reindex db message.
+        /// </summary>
         private static string my_reindexDbMessage;
 
-        public static string db_reindex_new(string connectionString)
+        /// <summary>
+        /// The db_reindex_new.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string db_reindex_new([NotNull] string connectionString)
         {
             try
             {
@@ -10877,19 +11226,18 @@ namespace VZF.Data.Mysql
                     using (
                         var cmd =
                             new MySqlCommand(
-                                String.Format(
+                                string.Format(
                                     "ANALYZE TABLE {0}.{1}user;",
-                                    MySqlDbAccess.SchemaName,
+                                    MySqlDbAccess.DatabaseSchemaName,
                                     Config.DatabaseObjectQualifier)))
                     {
-                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        var sb = new StringBuilder();
                         cmd.CommandType = CommandType.Text;
+
                         // up the command timeout...
                         cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
-
                         // run it...
-
                         sb.Append(
                             "SELECT table_name FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE' ");
                         sb.Append(";");
@@ -10897,7 +11245,6 @@ namespace VZF.Data.Mysql
                         return my_reindexDbMessage;
                     }
                 }
-
             }
             finally
             {
@@ -10919,14 +11266,29 @@ namespace VZF.Data.Mysql
             my_reindexDbMessage += "\r\n{0}".FormatWith(e.Message);
         }
 
+        /// <summary>
+        /// The db_reindex_warning.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_reindex_warning()
         {
             return "InnoDB data engine keeps indexes in the same table";
         }
 
-        public static DataTable db_reindex_table(string connectionString)
+        /// <summary>
+        /// The db_reindex_table.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable db_reindex_table([NotNull] string connectionString)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(
                 "SELECT table_name FROM  INFORMATION_SCHEMA.SCHEMATA s LEFT JOIN INFORMATION_SCHEMA.TABLES t ON s.schema_name = t.table_schema WHERE t.engine ='InnoDB'  AND t.TABLE_TYPE='BASE TABLE' ");
             sb.Append(";");
@@ -10936,16 +11298,16 @@ namespace VZF.Data.Mysql
                 cmd1.CommandType = CommandType.Text;
                 dtc = MySqlDbAccess.GetData(cmd1, connectionString);
             }
-            DataTable dtt = new DataTable();
+
+            var dtt = new DataTable();
             for (int i = 0; i < dtc.Rows.Count; i++)
             {
                 using (
                     var cmd =
                         new MySqlCommand(
-                            String.Format(
-                                "ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.SchemaName, Config.DatabaseObjectQualifier))
-                    )
-                {
+                            string.Format(
+                                "ANALYZE TABLE {0}.{1}user;", MySqlDbAccess.DatabaseSchemaName, Config.DatabaseObjectQualifier)))
+                                {
                     cmd.CommandType = CommandType.Text;
                     DataTable dttmp = MySqlDbAccess.GetData(cmd, false, connectionString);
                     DataRow drow = dttmp.Rows[0];
@@ -10954,22 +11316,40 @@ namespace VZF.Data.Mysql
                         dtt = dttmp.Clone();
 
                     }
+
                     DataRow ddd = dtt.NewRow();
                     ddd[0] = drow[0];
                     ddd[1] = drow[1];
                     ddd[2] = drow[2];
                     ddd[3] = drow[3];
                     dtt.Rows.Add(ddd);
-
                 }
-
             }
+
             return dtt;
         }
 
+        /// <summary>
+        /// The my_message run sql.
+        /// </summary>
         private static string my_messageRunSql;
 
-        public static string db_runsql_new(string connectionString, string sql, bool useTransaction)
+        /// <summary>
+        /// The db_runsql_new.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="sql">
+        /// The sql.
+        /// </param>
+        /// <param name="useTransaction">
+        /// The use transaction.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string db_runsql_new([NotNull] string connectionString, string sql, bool useTransaction)
         {
             try
             {
@@ -11015,7 +11395,7 @@ namespace VZF.Data.Mysql
         /// <param name="useTransaction"></param>
         /// <returns></returns>
         private static string InnerRunSqlExecuteReader(
-            string connectionString, MySqlCommand command, bool useTransaction)
+            [NotNull] string connectionString, MySqlCommand command, bool useTransaction)
         {
             MySqlDataReader reader = null;
             var results = new System.Text.StringBuilder();
@@ -11104,7 +11484,22 @@ namespace VZF.Data.Mysql
             return results.ToString();
         }
 
-        public static bool forumpage_initdb(string connectionString, out string errorStr, bool debugging)
+        /// <summary>
+        /// The forumpage_initdb.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="errorStr">
+        /// The error str.
+        /// </param>
+        /// <param name="debugging">
+        /// The debugging.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool forumpage_initdb([NotNull] string connectionString, out string errorStr, bool debugging)
         {
             errorStr = string.Empty;
 
@@ -11133,7 +11528,22 @@ namespace VZF.Data.Mysql
             return true;
         }
 
-        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
+        /// <summary>
+        /// The forumpage_validateversion.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="appVersion">
+        /// The app version.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string forumpage_validateversion([NotNull] string connectionString, int? mid, int appVersion)
         {
             string redirect = string.Empty;
             try
@@ -11153,10 +11563,17 @@ namespace VZF.Data.Mysql
                 // needs to be setup...
                 redirect = "install/";
             }
+
             return redirect;
         }
 
-        public static void system_deleteinstallobjects(string connectionString)
+        /// <summary>
+        /// The system_deleteinstallobjects.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        public static void system_deleteinstallobjects([NotNull] string connectionString)
         {
             string tSQL = "DROP PROCEDURE" + MySqlDbAccess.GetObjectName("system_initialize");
             using (var cmd = MySqlDbAccess.GetCommand(tSQL, true))
@@ -11166,12 +11583,25 @@ namespace VZF.Data.Mysql
             }
         }
 
-        public static string system_initialize_replace_entries(string connectionString, string script)
+        /// <summary>
+        /// The system_initialize_replace_entries.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="script">
+        /// The script.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string system_initialize_replace_entries([NotNull] string connectionString, string script)
         {
             bool conEncoding = false;
-            string[] options = null;
+            string[] options;
+
             // apply object qualifier
-            if (!String.IsNullOrEmpty(Config.DatabaseObjectQualifier))
+            if (!string.IsNullOrEmpty(Config.DatabaseObjectQualifier))
             {
                 script = script.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
             }
@@ -11179,6 +11609,7 @@ namespace VZF.Data.Mysql
             {
                 script = script.Replace("{objectQualifier}", "yaf_");
             }
+
             string dbcharset = null;
             string dbcollation = null;
             script = MySqlDbAccess.GetCommandTextReplaced(script);
@@ -11187,18 +11618,23 @@ namespace VZF.Data.Mysql
             {
                 options = connMan.DbConnection(connectionString).ConnectionString.Split(';');
             }
+
             foreach (string str in options)
             {
                 string[] optionValue = str.Split('=');
+
                 // apply database name
                 if (optionValue[0].Trim().ToLower() == "database")
                 {
-                    if (optionValue[1].Trim() != MySqlDbAccess.SchemaName
+                    if (optionValue[1].Trim() != MySqlDbAccess.DatabaseSchemaName
                         || !string.IsNullOrEmpty(optionValue[1].Trim()))
                     {
                         script = script.Replace("{databaseName}", optionValue[1].Trim());
                     }
-                    else script = script.Replace("{databaseName}", MySqlDbAccess.SchemaName);
+                    else
+                    {
+                        script = script.Replace("{databaseName}", MySqlDbAccess.DatabaseSchemaName);
+                    }
                 }
 
                 // apply user name from connection string to override defaults in config
@@ -11210,18 +11646,19 @@ namespace VZF.Data.Mysql
                 {
                     if (optionValue[1].Trim() != Config.DatabaseOwner || !string.IsNullOrEmpty(optionValue[1].Trim()))
                     {
-                        script = script.Replace("{databaseName}", optionValue[1].Trim());
+                        script = script.Replace("{databaseOwner}", optionValue[1].Trim());
                     }
-                    else script = script.Replace("{databaseName}", Config.DatabaseOwner.Trim());
-
+                    else
+                    {
+                        script = script.Replace("{databaseOwner}", Config.DatabaseOwner.Trim());
+                    }
                 }
 
                 // Encodings
                 // apply charset
-
                 if ((str.Contains("Charset") || str.Contains("Character Set")) && string.IsNullOrEmpty(optionValue[1]))
                 {
-                    //Verify if it's valid       
+                    // Verify if it's valid       
                     using (var cmd = MySqlDbAccess.GetCommand("SHOW VARIABLES LIKE 'character_set_database'", true))
                     {
                         DataTable dtt = MySqlDbAccess.GetData(cmd, connectionString);
@@ -11229,22 +11666,20 @@ namespace VZF.Data.Mysql
                         {
                             foreach (DataRow dr in dtt.Rows)
                             {
-                                if (dr["Variable_name"] == optionValue[1].Trim())
+                                if (dr["Variable_name"].ToString() == optionValue[1].Trim())
                                 {
                                     dbcharset = dr["Value"].ToString();
                                 }
                             }
+
                             conEncoding = true;
                         }
-
-
                     }
-
                 }
 
                 if (!string.IsNullOrEmpty(Config.DatabaseEncoding))
                 {
-                    //Verify if it's valid       
+                    // Verify if it's valid       
                     using (var cmd = MySqlDbAccess.GetCommand("SHOW VARIABLES LIKE 'character_set_database'", true))
                     {
                         DataTable dtt1 = MySqlDbAccess.GetData(cmd, connectionString);
@@ -11257,16 +11692,20 @@ namespace VZF.Data.Mysql
                                     dbcharset = dr["Value"].ToString();
                                 }
                             }
+
                             conEncoding = true;
                         }
-
-
                     }
                 }
             }
+
             if (conEncoding)
             {
-                if (Config.DatabaseCollation.Contains(dbcharset)) dbcollation = Config.DatabaseCollation;
+                if (Config.DatabaseCollation.Contains(dbcharset))
+                {
+                    dbcollation = Config.DatabaseCollation;
+                }
+
                 if (string.IsNullOrEmpty(dbcollation))
                 {
                     using (var cmd = MySqlDbAccess.GetCommand("SHOW CHARACTER SET;", true))
@@ -11276,27 +11715,23 @@ namespace VZF.Data.Mysql
                         {
                             if (dr["Charset"].ToString() == dbcharset)
                             {
-
                                 dbcollation = dr["Default collation"].ToString();
                             }
-
                         }
                     }
                 }
             }
 
-            //No entry for encoding in connection string or app.config
+            // No entry for encoding in connection string or app.config
             if (!conEncoding)
             {
                 using (var cmd = MySqlDbAccess.GetCommand("SHOW VARIABLES LIKE 'collation_database'", true))
                 {
-
                     dbcollation = MySqlDbAccess.GetData(cmd, connectionString).Rows[0]["Value"].ToString();
-
                 }
+
                 using (var cmd = MySqlDbAccess.GetCommand("SHOW VARIABLES LIKE 'character_set_database'", true))
                 {
-
                     dbcharset = MySqlDbAccess.GetData(cmd, connectionString).Rows[0]["Value"].ToString();
                 }
             }
@@ -11325,7 +11760,7 @@ namespace VZF.Data.Mysql
         /// <exception cref="Exception">
         /// </exception>
         public static void system_initialize_executescripts(
-            string connectionString, string script, string scriptFile, bool useTransactions)
+            [NotNull] string connectionString, string script, string scriptFile, bool useTransactions)
         {
             script = system_initialize_replace_entries(connectionString, script);
 
@@ -11437,7 +11872,7 @@ namespace VZF.Data.Mysql
         /// <param name="bGrant">
         /// The b grant.
         /// </param>
-        public static void system_initialize_fixaccess(string connectionString, bool bGrant)
+        public static void system_initialize_fixaccess([NotNull] string connectionString, bool bGrant)
         {
             /* using (VZF.Classes.Data.MySqlDbConnectionManager connMan = new MySqlDbConnectionManager())
               {
@@ -11547,7 +11982,7 @@ namespace VZF.Data.Mysql
         /// The role prefix.
         /// </param>
         public static void system_initialize(
-            string connectionString,
+            [NotNull] string connectionString,
             string forumName,
             string timeZone,
             string culture,
@@ -11591,7 +12026,7 @@ namespace VZF.Data.Mysql
         /// <param name="name">
         /// The name.
         /// </param>
-        public static void system_updateversion(string connectionString, int version, string name)
+        public static void system_updateversion([NotNull] string connectionString, int version, string name)
         {
             using (var cmd = MySqlDbAccess.GetCommand("system_updateversion"))
             {
@@ -11618,7 +12053,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable group_rank_style(string connectionString, object boardId)
+        public static DataTable group_rank_style([NotNull] string connectionString, object boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("group_rank_style"))
             {
@@ -11644,7 +12079,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// </returns>
         public static DataTable shoutbox_getmessages(
-            string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
+            [NotNull] string connectionString, int boardId, int numberOfMessages, object useStyledNicks)
         {
             using (var cmd = MySqlDbAccess.GetCommand("shoutbox_getmessages"))
             {
@@ -11657,7 +12092,7 @@ namespace VZF.Data.Mysql
         }
 
         public static bool shoutbox_savemessage(
-            string connectionString, int boardId, string message, string userName, int userId, object ip)
+            [NotNull] string connectionString, int boardId, string message, string userName, int userId, object ip)
         {
             using (var cmd = MySqlDbAccess.GetCommand("shoutbox_savemessage"))
             {
@@ -11686,7 +12121,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static Boolean shoutbox_clearmessages(string connectionString, int boardId)
+        public static Boolean shoutbox_clearmessages([NotNull] string connectionString, int boardId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("shoutbox_clearmessages"))
             {
@@ -11722,7 +12157,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string db_shrink_new(string connectionString)
+        public static string db_shrink_new([NotNull] string connectionString)
         {
             // Shinking Operation is not applicable to the db.
             return string.Empty;
@@ -11754,7 +12189,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string db_recovery_mode_new(string connectionString, string dbRecoveryMode)
+        public static string db_recovery_mode_new([NotNull] string connectionString, string dbRecoveryMode)
         {
             // Recovery operation is not aaplicable to the data layer.
             return string.Empty;
@@ -11767,6 +12202,9 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Adds a buddy request. (Should be approved later by "ToUserID")
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="FromUserID">
         /// The from user id.
         /// </param>
@@ -11776,7 +12214,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The name of the second user + Whether this request is approved or not.
         /// </returns>
-        public static string[] buddy_addrequest(string connectionString, object FromUserID, object ToUserID)
+        public static string[] buddy_addrequest([NotNull] string connectionString, object FromUserID, object ToUserID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("buddy_addrequest"))
             {
@@ -11807,7 +12245,7 @@ namespace VZF.Data.Mysql
         /// the name of the second user.
         /// </returns>
         public static string buddy_approveRequest(
-            string connectionString, object FromUserID, object ToUserID, object Mutual)
+            [NotNull] string connectionString, object FromUserID, object ToUserID, object Mutual)
         {
             using (var cmd = MySqlDbAccess.GetCommand("buddy_approverequest"))
             {
@@ -11836,7 +12274,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// the name of the second user.
         /// </returns>
-        public static string buddy_denyRequest(string connectionString, object FromUserID, object ToUserID)
+        public static string buddy_denyRequest([NotNull] string connectionString, object FromUserID, object ToUserID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("buddy_denyrequest"))
             {
@@ -11867,7 +12305,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// The name of the second user.
         /// </returns>
-        public static string buddy_remove(string connectionString, object FromUserID, object ToUserID)
+        public static string buddy_remove([NotNull] string connectionString, object FromUserID, object ToUserID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("buddy_remove"))
             {
@@ -11898,7 +12336,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// A <see cref="T:System.Data.DataTable"/> containing the buddy list.
         /// </returns>
-        public static DataTable buddy_list(string connectionString, object FromUserID)
+        public static DataTable buddy_list([NotNull] string connectionString, object FromUserID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("buddy_list"))
             {
@@ -11915,6 +12353,9 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Inserts/Saves a user album.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="AlbumID">
         /// AlbumID of an existing Album.
         /// </param>
@@ -11928,7 +12369,7 @@ namespace VZF.Data.Mysql
         /// New Cover image id.
         /// </param>
         public static int album_save(
-            string connectionString, object AlbumID, object UserID, object Title, object CoverImageID)
+            [NotNull] string connectionString, object AlbumID, object UserID, object Title, object CoverImageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_save"))
             {
@@ -11948,6 +12389,9 @@ namespace VZF.Data.Mysql
         /// Lists all the albums associated with the UserID or gets all the
         /// specifications for the specified album id.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param> 
         /// <param name="UserID">
         /// The user id.
         /// </param>
@@ -11957,7 +12401,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// a Datatable containing the albums.
         /// </returns>
-        public static DataTable album_list(string connectionString, object UserID, object AlbumID)
+        public static DataTable album_list([NotNull] string connectionString, object UserID, object AlbumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_list"))
             {
@@ -11971,10 +12415,13 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Deletes an album and all Images in that album.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="AlbumID">
         /// the album id.
         /// </param>
-        public static void album_delete(string connectionString, object AlbumID)
+        public static void album_delete([NotNull] string connectionString, object AlbumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_delete"))
             {
@@ -11987,10 +12434,13 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Deletes an album and all Images in that album.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="AlbumID">
         /// the album id.
         /// </param>
-        public static string album_gettitle(string connectionString, object AlbumID)
+        public static string album_gettitle([NotNull] string connectionString, object AlbumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_gettitle"))
             {
@@ -12006,6 +12456,9 @@ namespace VZF.Data.Mysql
         /// Get the number of albums + number of current uploaded files by the user if UserID is not null,
         /// Otherwise, it gets the number of images in the album with AlbumID.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="UserID">
         /// the User ID.
         /// </param>
@@ -12013,7 +12466,7 @@ namespace VZF.Data.Mysql
         /// the album id.
         /// </param>
         /// <returns></returns>
-        public static int[] album_getstats(string connectionString, object UserID, object AlbumID)
+        public static int[] album_getstats([NotNull] string connectionString, object UserID, object AlbumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_getstats"))
             {
@@ -12031,7 +12484,10 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Inserts/Saves a user image.
         /// </summary>
-        /// <param name="ImageID">
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="imageID">
         /// the image id of an existing image.
         /// </param>
         /// <param name="AlbumID">
@@ -12050,8 +12506,8 @@ namespace VZF.Data.Mysql
         /// the content type.
         /// </param>
         public static void album_image_save(
-            string connectionString,
-            object ImageID,
+            [NotNull] string connectionString,
+            object imageID,
             object AlbumID,
             object Caption,
             object FileName,
@@ -12061,7 +12517,7 @@ namespace VZF.Data.Mysql
             using (var cmd = MySqlDbAccess.GetCommand("album_image_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new MySqlParameter("i_ImageID", MySqlDbType.Int32)).Value = ImageID;
+                cmd.Parameters.Add(new MySqlParameter("i_ImageID", MySqlDbType.Int32)).Value = imageID;
                 cmd.Parameters.Add(new MySqlParameter("i_AlbumID", MySqlDbType.Int32)).Value = AlbumID;
                 cmd.Parameters.Add(new MySqlParameter("i_Caption", MySqlDbType.VarChar)).Value = Caption;
                 cmd.Parameters.Add(new MySqlParameter("i_FileName", MySqlDbType.VarChar)).Value = FileName;
@@ -12074,8 +12530,11 @@ namespace VZF.Data.Mysql
 
         /// <summary>
         /// Lists all the images associated with the AlbumID or
-        /// the image with the ImageID.
+        /// the image with the imageID.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="AlbumID">
         /// the Album id.
         /// </param>
@@ -12085,7 +12544,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// a Datatable containing the image(s).
         /// </returns>
-        public static DataTable album_image_list(string connectionString, object AlbumID, object ImageID)
+        public static DataTable album_image_list([NotNull] string connectionString, object AlbumID, object ImageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_image_list"))
             {
@@ -12099,10 +12558,13 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Deletes the image which has the specified image id.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="ImageID">
         /// the image id.
         /// </param>
-        public static void album_image_delete(string connectionString, object ImageID)
+        public static void album_image_delete([NotNull] string connectionString, object ImageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_image_delete"))
             {
@@ -12115,10 +12577,13 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Increments the image's download times.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="ImageID">
         /// the image id.
         /// </param>
-        public static void album_image_download(string connectionString, object ImageID)
+        public static void album_image_download([NotNull] string connectionString, object ImageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_image_download"))
             {
@@ -12129,11 +12594,18 @@ namespace VZF.Data.Mysql
         }
 
         /// <summary>
-        /// Album images by users the specified user ID.
+        /// The album_images_by_user.
         /// </summary>
-        /// <param name="userID">The user ID.</param>
-        /// <returns>All Albbum Images of the User</returns>
-        public static DataTable album_images_by_user(string connectionString, [NotNull] object userID)
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable album_images_by_user([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("album_images_by_user"))
             {
@@ -12154,7 +12626,7 @@ namespace VZF.Data.Mysql
         /// <param name="decodeTopicFunc">
         /// The decode topic func.
         /// </param>
-        public static void unencode_all_topics_subjects(string connectionString, Func<string, string> decodeTopicFunc)
+        public static void unencode_all_topics_subjects([NotNull] string connectionString, Func<string, string> decodeTopicFunc)
         {
             var topics =
                 Db.topic_simplelist(connectionString, 0, 99999999)
@@ -12173,7 +12645,7 @@ namespace VZF.Data.Mysql
                         Db.topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
                     }
                 }
-                catch
+                catch (Exception)
                 {
                     // soft-fail...
                 }
@@ -12192,7 +12664,7 @@ namespace VZF.Data.Mysql
         /// <returns>
         /// Returns the Thank Count.
         /// </returns>
-        public static int user_ThankFromCount(string connectionString, [NotNull] object userId)
+        public static int user_ThankFromCount([NotNull] string connectionString, [NotNull] object userId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_thankfromcount"))
             {
@@ -12206,7 +12678,7 @@ namespace VZF.Data.Mysql
         }
 
         /// <summary>
-        /// Checks if the user has replied to the specifc topic.
+        /// Checks if the user has replied to the specific topic.
         /// </summary>
         /// <param name="connectionString">
         /// The connection string.
@@ -12221,7 +12693,7 @@ namespace VZF.Data.Mysql
         /// Returns if true or not
         /// </returns>
         public static bool user_RepliedTopic(
-            string connectionString, [NotNull] object messageId, [NotNull] object userId)
+            [NotNull] string connectionString, [NotNull] object messageId, [NotNull] object userId)
         {
             using (var cmd = MySqlDbAccess.GetCommand("user_repliedtopic"))
             {

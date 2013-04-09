@@ -30,7 +30,7 @@ namespace YAF.Core.Services
   using YAF.Types.Constants;
   using YAF.Types.EventProxies;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   #endregion
 

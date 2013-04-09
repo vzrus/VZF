@@ -3026,6 +3026,7 @@ BEGIN
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
+							 a.isuserforum,
 							 a.createdbyuserid,
 							 a.canhavepersforums 
                     FROM databaseSchema.objectQualifier_forum a 
@@ -3057,6 +3058,7 @@ END LOOP;
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
+							 a.isuserforum,
 							 a.createdbyuserid,
 							 a.canhavepersforums
         FROM databaseSchema.objectQualifier_forum a 
@@ -3518,7 +3520,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listread(
                            i_categoryid integer,
                            i_parentid integer,
                            i_stylednicks boolean,
-                           i_findlastunread boolean)
+                           i_findlastunread boolean,
+						   i_showcommonforums boolean,
+						   i_showpersonalforums boolean,
+						   i_forumcreatedbyuserid integer,
+						   i_UTCTIMESTAMP timestamptz)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_listread_return_type AS
 $BODY$DECLARE
 -- ici_lasttopicid integer;

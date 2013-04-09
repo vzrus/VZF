@@ -29,7 +29,7 @@ namespace YAF.Modules
   using YAF.Types.Interfaces; 
   using YAF.Types;
   using YAF.Types.Constants;
-  using YAF.Utils;
+  using VZF.Utils;
   
 
   #endregion

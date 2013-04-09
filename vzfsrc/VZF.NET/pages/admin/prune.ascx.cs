@@ -34,8 +34,8 @@ namespace YAF.Pages.Admin
   using YAF.Types;
   using YAF.Types.Constants;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Helpers;
+  using VZF.Utils;
+  using VZF.Utils.Helpers;
 
     #endregion
 
@@ -119,7 +119,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-        this.forumlist.DataSource = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, null, null, false, false);
+        this.forumlist.DataSource = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, null, null, false, false, true,false, null);
 
         this.forumlist.DataValueField = "ForumID";
         this.forumlist.DataTextField = "Forum";

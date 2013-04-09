@@ -32,8 +32,8 @@ namespace VZF.Data.Firebird
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     /// <summary>
   /// The yaf db access for SQL Server.
@@ -100,7 +100,7 @@ namespace VZF.Data.Firebird
      
       static public string SchemaName
       {
-          get { return _schemaName ?? (_schemaName = Config.DatabaseScheme); }
+          get { return _schemaName ?? (_schemaName = Config.DatabaseSchemaName); }
       }
       
       static public string DatabaseEncoding

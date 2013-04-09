@@ -26,7 +26,7 @@ namespace YAF.Providers.Membership
   using System;
   using System.Data;
 
-  using YAF.Utils;
+  using VZF.Utils;
 
   #endregion
 

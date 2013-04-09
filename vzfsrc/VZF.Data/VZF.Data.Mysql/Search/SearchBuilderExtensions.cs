@@ -22,7 +22,7 @@ namespace VZF.Data.Mysql.Search
     using System.Text;
 
     using YAF.Types;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
   /// The search builder extensions.

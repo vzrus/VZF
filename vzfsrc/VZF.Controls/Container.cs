@@ -26,7 +26,7 @@ namespace VZF.Controls
   using System.Web.UI.WebControls;
 
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types;
 
   #endregion

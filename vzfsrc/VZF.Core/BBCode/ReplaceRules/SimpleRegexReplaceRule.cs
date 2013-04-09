@@ -23,7 +23,7 @@ namespace YAF.Core.BBCode.ReplaceRules
 
   
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   /// <summary>
   /// For basic regex with no variables

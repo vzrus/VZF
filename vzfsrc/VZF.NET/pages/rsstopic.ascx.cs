@@ -42,9 +42,9 @@ namespace YAF.Pages
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
-    using YAF.Utils.Helpers.StringUtils;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
+    using VZF.Utils.Helpers.StringUtils;
 
     #endregion
 
@@ -612,7 +612,7 @@ namespace YAF.Pages
         {
             var syndicationItems = new List<SyndicationItem>();
             using (
-                DataTable dt = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false))
+                DataTable dt = CommonDb.forum_listread(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, categoryId, null, false, false, true, false, null))
             {
                 string urlAlphaNum = FormatUrlForFeed(BaseUrlBuilder.BaseUrl);
 

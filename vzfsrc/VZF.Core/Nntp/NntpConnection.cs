@@ -29,7 +29,7 @@ namespace YAF.Core.Nntp
   using System.Text.RegularExpressions;
 
   using YAF.Types;
-  using YAF.Utils;
+  using VZF.Utils;
 
   /// <summary>
   /// The nntp connection.

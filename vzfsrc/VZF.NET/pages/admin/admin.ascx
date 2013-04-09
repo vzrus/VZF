@@ -1,8 +1,8 @@
 <%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.admin"
     CodeBehind="admin.ascx.cs" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
+<%@ Import Namespace="VZF.Utils.Helpers" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks ID="PageLinks" runat="server" />
 <VZF:AdminMenu ID="Adminmenu1" runat="server">

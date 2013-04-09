@@ -29,13 +29,10 @@ namespace VZF.Controls.Statistics
     using VZF.Data.Common;
 
     using YAF.Core;
-    using YAF.Types.Interfaces;
-    using YAF.Types.Constants;
-    using YAF.Core.Services;
-    
-    using YAF.Utils;
     using YAF.Types;
     using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using VZF.Utils;
 
     #endregion
 

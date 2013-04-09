@@ -23,12 +23,12 @@ namespace VZF.Controls
     using System.Web;
     using System.Web.UI;
 
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Utils;
-  using YAF.Types;
-  using YAF.Types.Interfaces;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
+    using VZF.Utils;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Provides a image with themed src

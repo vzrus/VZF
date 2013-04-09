@@ -25,8 +25,8 @@ namespace YAF.Core
   using System.Web.UI;
 
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
 
   #endregion
 

@@ -4194,7 +4194,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("UserBoxAvatar", @"<div class=""section"">{0}</div><br clear=""all"" />");
+                return this._reg.GetValue("UserBoxAvatar", "<div class=\"section\">{0}</div><br clear=\"all\" />");
             }
 
             set
@@ -4210,7 +4210,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("UserBoxMedals", @"<div class=""section medals"">{0} {1}{2}</div><br clear=""all"" />");
+                return this._reg.GetValue("UserBoxMedals", "<div class=\"section medals\">{0} {1}{2}</div><br clear=\"all\" />");
             }
 
             set
@@ -4338,7 +4338,7 @@ namespace YAF.Classes
         {
             get
             {
-                return this._reg.GetValue("UserBoxReputation", @"<div class=""section"">{0}: {1:N0}</div><br />");
+                return this._reg.GetValue("UserBoxReputation", "<div class=\"section\">{0}: {1:N0}</div><br />");
             }
 
             set

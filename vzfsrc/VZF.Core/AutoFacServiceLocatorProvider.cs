@@ -31,7 +31,7 @@ namespace YAF.Core
 
   using YAF.Types;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   using NamedParameter = YAF.Types.NamedParameter;
   using TypedParameter = YAF.Types.TypedParameter;

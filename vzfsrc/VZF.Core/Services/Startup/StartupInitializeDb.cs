@@ -25,7 +25,7 @@ namespace YAF.Core.Services
   using VZF.Data.Common;
 
   
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Core.Tasks;
   using YAF.Types;
   using YAF.Types.Interfaces;

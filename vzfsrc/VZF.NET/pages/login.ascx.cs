@@ -39,8 +39,8 @@ namespace YAF.Pages
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 

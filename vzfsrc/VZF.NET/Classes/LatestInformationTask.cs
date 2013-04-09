@@ -32,7 +32,7 @@ namespace YAF.Classes
     using YAF.Types;
     using YAF.Types.Attributes;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

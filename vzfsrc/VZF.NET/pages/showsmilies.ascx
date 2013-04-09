@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="YAF.Pages.showsmilies"CodeBehind="showsmilies.ascx.cs" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <script language="javascript" type="text/javascript">
 <!--
     // set close timer so this window doesn't stay open forever

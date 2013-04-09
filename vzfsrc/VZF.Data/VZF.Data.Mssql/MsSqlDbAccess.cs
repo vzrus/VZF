@@ -29,12 +29,12 @@ namespace VZF.Data.MsSql
     using System.Linq;
 
     using VZF.Data.Utils;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
 
     #endregion
 

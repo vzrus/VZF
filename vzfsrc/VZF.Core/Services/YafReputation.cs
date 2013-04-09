@@ -22,11 +22,12 @@ namespace YAF.Core.Services
     using System;
     using System.Globalization;
 
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
+
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
 
     /// <summary>
     /// Class to Generate The Reputation Bar
@@ -82,7 +83,7 @@ namespace YAF.Core.Services
                 }
 
             return
-                @"<div class=""ReputationBar ReputationUser_{2}"" data-percent=""{0}"" data-text=""{1}"" title=""{3}{4}""></div>".FormatWith(
+                "{1}({0})<div class=\"ReputationBar ReputationUser_{2}\" data-percent=\"{0}\" data-text=\"{1}\" title=\"{3}{4}\"></div>".FormatWith(
                         percentage.ToString(formatInfo), GetReputationBarText(percentage), userId, pointsSign, points);
         }
 
@@ -94,8 +95,7 @@ namespace YAF.Core.Services
         [NotNull]
         public static string GetReputationBarText([NotNull]float percentage)
         {
-            string text;
-
+            string text;       
             if (percentage.Equals(0))
             {
                 text = YafContext.Current.Get<ILocalization>().GetText("REPUTATION_VALUES", "HATED");

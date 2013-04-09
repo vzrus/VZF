@@ -1,12 +1,26 @@
-/* Code created by vzrus: http://sourceforge.net/users/vzrus  
- * for Yet Another Forum.NET http://www.yetanotherforum.net/
- * and can be used and modified without any limitations as part 
- * of Yet Another Forum.NET under every open source licence.  
- * Creation date:10/3/09
- */
-
-using System.Web;
-using VZF.Types.Data;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="test_data.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2009-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   Created by 10/3/09 for YAF.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace YAF.Pages.Admin
 {
@@ -17,13 +31,14 @@ namespace YAF.Pages.Admin
     using System.Data;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.Security;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Types.Data;
 
     using YAF.Classes;
-    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -31,8 +46,8 @@ namespace YAF.Pages.Admin
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
     using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -159,8 +174,8 @@ namespace YAF.Pages.Admin
         /// </param>
         protected void ForumsCategory_OnSelectedIndexChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            DataTable forums_category = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>(), false);
-            this.ForumsParent.DataSource = forums_category;
+            DataTable forumsCategory = CommonDb.forum_listall_fromCat(PageContext.PageModuleID, this.PageContext.PageBoardID, this.ForumsCategory.SelectedValue.ToType<int>(), false);
+            this.ForumsParent.DataSource = forumsCategory;
             this.ForumsParent.DataBind();
         }
 
@@ -224,10 +239,10 @@ namespace YAF.Pages.Admin
 
             this.Populate_Controls();
 
-            const string _BoardOptionsCurrentBoardIn = "In Current Board";
-            const string _BoardOptionsAllBoardsIn = "In All Boards";
-            const string _BoardOptionsAllBoardsButCurrentIn = "In All But Current";
-            const string _BoardOptionsAllBoardsSpecificIn = "In A Specific Board";
+            const string BoardOptionsCurrentBoardIn = "In Current Board";
+            const string BoardOptionsAllBoardsIn = "In All Boards";
+            const string BoardOptionsAllBoardsButCurrentIn = "In All But Current";
+            const string BoardOptionsAllBoardsSpecificIn = "In A Specific Board";
 
             this.TimeZones.DataSource = StaticDataHelper.TimeZones();
 
@@ -238,7 +253,7 @@ namespace YAF.Pages.Admin
             this.PostsCategory.DataSource = categories;
 
             // Access Mask Lists               
-            this.ForumsStartMask.DataSource = CommonDb.accessmask_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+            this.ForumsStartMask.DataSource = CommonDb.accessmask_aforumlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: false);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
             this.ForumsGroups.DataSource = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
@@ -276,24 +291,24 @@ namespace YAF.Pages.Admin
 
             this.TopicsPriorityList.SelectedIndex = 0;
 
-            this.UsersBoardsOptions.Items.Add(new ListItem(_BoardOptionsCurrentBoardIn, "0"));
-            this.UsersBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsIn, "1"));
-            this.UsersBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsButCurrentIn, "2"));
-            this.UsersBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsSpecificIn, "3"));
+            this.UsersBoardsOptions.Items.Add(new ListItem(BoardOptionsCurrentBoardIn, "0"));
+            this.UsersBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsIn, "1"));
+            this.UsersBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsButCurrentIn, "2"));
+            this.UsersBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsSpecificIn, "3"));
 
             this.UsersBoardsOptions.SelectedIndex = 0;
 
-            this.CategoriesBoardsOptions.Items.Add(new ListItem(_BoardOptionsCurrentBoardIn, "0"));
-            this.CategoriesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsIn, "1"));
-            this.CategoriesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsButCurrentIn, "2"));
-            this.CategoriesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsSpecificIn, "3"));
+            this.CategoriesBoardsOptions.Items.Add(new ListItem(BoardOptionsCurrentBoardIn, "0"));
+            this.CategoriesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsIn, "1"));
+            this.CategoriesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsButCurrentIn, "2"));
+            this.CategoriesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsSpecificIn, "3"));
 
             this.CategoriesBoardsOptions.SelectedIndex = 0;
 
-            this.PMessagesBoardsOptions.Items.Add(new ListItem(_BoardOptionsCurrentBoardIn, "0"));
-            this.PMessagesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsIn, "1"));
-            this.PMessagesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsButCurrentIn, "2"));
-            this.PMessagesBoardsOptions.Items.Add(new ListItem(_BoardOptionsAllBoardsSpecificIn, "3"));
+            this.PMessagesBoardsOptions.Items.Add(new ListItem(BoardOptionsCurrentBoardIn, "0"));
+            this.PMessagesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsIn, "1"));
+            this.PMessagesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsButCurrentIn, "2"));
+            this.PMessagesBoardsOptions.Items.Add(new ListItem(BoardOptionsAllBoardsSpecificIn, "3"));
 
             this.PMessagesBoardsOptions.SelectedIndex = 0;
         }
@@ -385,40 +400,42 @@ namespace YAF.Pages.Admin
         /// </returns>
         private string CreateBoards()
         {
-            int _boardNumber;
-            int _usersNumber;
-            if (!int.TryParse(this.BoardNumber.Text.Trim(), out _boardNumber))
+            int boardNumber;
+            int usersNumber;
+            if (!int.TryParse(this.BoardNumber.Text.Trim(), out boardNumber))
             {
                 return null;
             }
 
-            if (_boardNumber <= 0)
+            if (boardNumber <= 0)
             {
                 return null;
             }
 
-            if (!int.TryParse(this.BoardsUsersNumber.Text.Trim(), out _usersNumber))
+            if (!int.TryParse(this.BoardsUsersNumber.Text.Trim(), out usersNumber))
             {
                 return null;
             }
 
-            if (_usersNumber < 0)
+            if (usersNumber < 0)
             {
                 return null;
             }
 
-            if (_boardNumber > BoardCreateLimit)
+            if (boardNumber > BoardCreateLimit)
             {
-                _boardNumber = BoardCreateLimit;
+                boardNumber = BoardCreateLimit;
             }
 
             this.BoardMembershipName.Text = null;
             this.BoardRolesName.Text = null;
             int i;
-            for (i = 0; i < _boardNumber; i++)
+            for (i = 0; i < boardNumber; i++)
             {
                 string boardName = this.BoardPrefixTB.Text.Trim() + Guid.NewGuid();
-                int curboard = CommonDb.board_create(PageContext.PageModuleID, this.PageContext.User.UserName,
+                int curboard = CommonDb.board_create(
+                    PageContext.PageModuleID, 
+                    this.PageContext.User.UserName,
                     this.PageContext.User.Email,
                     this.PageContext.User.ProviderUserKey,
                     boardName,
@@ -429,10 +446,10 @@ namespace YAF.Pages.Admin
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty,
                     this.PageContext.IsHostAdmin);
 
-                this.CreateUsers(curboard, _usersNumber);
+                this.CreateUsers(curboard, usersNumber);
             }
 
-            return i + " Boards, " + _usersNumber + " Users in each Board; ";
+            return i + " Boards, " + usersNumber + " Users in each Board; ";
         }
 
         /// <summary>
@@ -446,9 +463,12 @@ namespace YAF.Pages.Admin
         /// </returns>
         private string CreateCategories(int boardID)
         {
-            string noCategories = "0 categories";
-            bool excludeCurrentBoardB = false;
-            bool useListB = false;
+            const string noCategories = "0 categories";
+
+            const bool excludeCurrentBoardB = false;
+
+            const bool useListB = false;
+
             int numCategoriesInt = 0;
             if (!int.TryParse(this.BoardsCategoriesNumber.Text.Trim(), out numCategoriesInt))
             {
@@ -465,13 +485,13 @@ namespace YAF.Pages.Admin
                 numCategoriesInt = categoryCreateLimit;
             }
 
-            int _numForums;
-            if (!int.TryParse(this.BoardsForumsNumber.Text.Trim(), out _numForums))
+            int numForums;
+            if (!int.TryParse(this.BoardsForumsNumber.Text.Trim(), out numForums))
             {
                 return noCategories;
             }
 
-            if (_numForums < 0)
+            if (numForums < 0)
             {
                 return noCategories;
             }
@@ -487,19 +507,19 @@ namespace YAF.Pages.Admin
                 return noCategories;
             }
 
-            int _numMessages;
-            if (!int.TryParse(this.BoardsMessagesNumber.Text.Trim(), out _numMessages))
+            int numMessages;
+            if (!int.TryParse(this.BoardsMessagesNumber.Text.Trim(), out numMessages))
             {
                 return noCategories;
             }
 
-            if (_numMessages < 0)
+            if (numMessages < 0)
             {
                 return noCategories;
             }
 
             return this.CreateCategoriesBase(
-                boardID, 1, _numForums, _numTopics, _numMessages, numCategoriesInt, excludeCurrentBoardB, useListB);
+                boardID, 1, numForums, _numTopics, numMessages, numCategoriesInt, excludeCurrentBoardB, useListB);
         }
 
         /// <summary>
@@ -510,91 +530,91 @@ namespace YAF.Pages.Admin
         /// </returns>
         private string CreateCategories()
         {
-            const string noCategories = "0 categories";
+            const string NoCategories = "0 categories";
             int boardID = 0;
 
             // int categoriesLimit = 1;
-            bool _excludeCurrentBoard = false;
+            bool excludeCurrentBoard = false;
 
-            int _numForums;
-            if (!int.TryParse(this.CategoriesForumsNumber.Text.Trim(), out _numForums))
+            int numForums;
+            if (!int.TryParse(this.CategoriesForumsNumber.Text.Trim(), out numForums))
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            if (_numForums < 0)
+            if (numForums < 0)
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            int _numTopics;
-            if (!int.TryParse(this.CategoriesTopicsNumber.Text.Trim(), out _numTopics))
+            int numTopics;
+            if (!int.TryParse(this.CategoriesTopicsNumber.Text.Trim(), out numTopics))
             {
                 return "0 Categories";
             }
 
-            if (_numTopics < 0)
+            if (numTopics < 0)
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            int _numMessages;
-            if (!int.TryParse(this.CategoriesMessagesNumber.Text.Trim(), out _numMessages))
+            int numMessages;
+            if (!int.TryParse(this.CategoriesMessagesNumber.Text.Trim(), out numMessages))
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            if (_numMessages < 0)
+            if (numMessages < 0)
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            int _numCategories;
-            int _boardCount = 1;
-            bool _useList = false;
+            int numCategories;
+            int boardCount = 1;
+            bool useList = false;
             switch (this.CategoriesBoardsOptions.SelectedIndex)
             {
                 case 0:
                     boardID = YafContext.Current.PageBoardID;
                     break;
                 case 1:
-                    _boardCount = this.CategoriesBoardsList.Items.Count;
-                    _useList = true;
+                    boardCount = this.CategoriesBoardsList.Items.Count;
+                    useList = true;
                     break;
                 case 2:
-                    _boardCount = this.CategoriesBoardsList.Items.Count - 1;
-                    _excludeCurrentBoard = true;
-                    _useList = true;
+                    boardCount = this.CategoriesBoardsList.Items.Count - 1;
+                    excludeCurrentBoard = true;
+                    useList = true;
                     break;
                 case 3:
                     boardID = this.CategoriesBoardsList.SelectedValue.ToType<int>();
                     break;
             }
 
-            if (!int.TryParse(this.CategoriesNumber.Text.Trim(), out _numCategories))
+            if (!int.TryParse(this.CategoriesNumber.Text.Trim(), out numCategories))
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            if (_numCategories <= 0)
+            if (numCategories <= 0)
             {
-                return noCategories;
+                return NoCategories;
             }
 
-            if (_numCategories > categoryCreateLimit)
+            if (numCategories > categoryCreateLimit)
             {
-                _numCategories = categoryCreateLimit;
+                numCategories = categoryCreateLimit;
             }
 
             return this.CreateCategoriesBase(
                 boardID,
-                _boardCount,
-                _numForums,
-                _numTopics,
-                _numMessages,
-                _numCategories,
-                _excludeCurrentBoard,
-                _useList);
+                boardCount,
+                numForums,
+                numTopics,
+                numMessages,
+                numCategories,
+                excludeCurrentBoard,
+                useList);
         }
 
         /// <summary>
@@ -758,21 +778,23 @@ namespace YAF.Pages.Admin
         {
             bool countMessagesInStatistics = this.ForumsCountMessages.Text.Trim().IsNotSet();
 
-            bool isHiddenIfNoAccess = this.ForumsHideNoAccess.Text.Trim().IsNotSet();
-
-            isHiddenIfNoAccess = true;
+            bool isHiddenIfNoAccess = true;
 
             // ForumsCategory.Items.FindByValue("0").Selected = true; 
             long uniqueForum = 0;
             int iforums;
             for (iforums = 0; iforums < numForums; iforums++)
             {
-                long _forumID = 0;
+                long forumId = 0;
                 this.randomGuid = Guid.NewGuid().ToString();
-                DataTable _accessForumList = CommonDb.forumaccess_list(this.PageContext.PageModuleID, _forumID, null, false);
-                _forumID = CommonDb.forum_save(
+                DataTable _accessForumList = CommonDb.forumaccess_list(
+                    this.PageContext.PageModuleID, 
+                    forumId, 
+                    null, 
+                    false);
+                forumId = CommonDb.forum_save(
                     PageContext.PageModuleID,
-                    _forumID,
+                    forumId,
                     categoryID,
                     parentID,
                     this.ForumPrefixTB.Text.Trim() + this.randomGuid,
@@ -792,7 +814,7 @@ namespace YAF.Pages.Admin
                     false,
                     true);
 
-                if (_forumID <= 0)
+                if (forumId <= 0)
                 {
                     continue;
                 }
@@ -801,25 +823,25 @@ namespace YAF.Pages.Admin
                 {
                     CommonDb.forumaccess_save(
                         PageContext.PageModuleID,
-                        _forumID,
+                        forumId,
                         _accessForumList.Rows[i1]["GroupID"],
                         _accessForumList.Rows[i1]["AccessMaskID"].ToType<int>());
                 }
 
-                CommonDb.forumaccess_save(PageContext.PageModuleID, _forumID, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
+                CommonDb.forumaccess_save(PageContext.PageModuleID, forumId, this.ForumsGroups.SelectedValue, this.ForumsAdminMask.SelectedValue);
 
                 if (_topicsToCreate <= 0)
                 {
                     continue;
                 }
 
-                if (uniqueForum == _forumID)
+                if (uniqueForum == forumId)
                 {
                     continue;
                 }
 
-                this.CreateTopics(_forumID.ToType<int>(), _topicsToCreate, _messagesToCreate);
-                uniqueForum = _forumID;
+                this.CreateTopics(forumId.ToType<int>(), _topicsToCreate, _messagesToCreate);
+                uniqueForum = forumId;
             }
 
             return iforums;
@@ -833,7 +855,6 @@ namespace YAF.Pages.Admin
         /// </returns>
         private int CreatePMessages()
         {
-            int userID = this.PageContext.PageUserID;
             int numPMessages;
             if (!int.TryParse(this.PMessagesNumber.Text.Trim(), out numPMessages))
             {
@@ -845,8 +866,8 @@ namespace YAF.Pages.Admin
                 return 0;
             }
 
-            string _fromUser = this.From.Text.Trim();
-            string _toUser = this.To.Text.Trim();
+            string fromUser = this.From.Text.Trim();
+            string toUser = this.To.Text.Trim();
             if (numPMessages > createCommonLimit)
             {
                 numPMessages = createCommonLimit;
@@ -856,8 +877,16 @@ namespace YAF.Pages.Admin
             for (i = 0; i < numPMessages; i++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                CommonDb.pmessage_save(PageContext.PageModuleID, CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_fromUser).ProviderUserKey),
-                    CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey),
+                CommonDb.pmessage_save(
+                    PageContext.PageModuleID,
+                    CommonDb.user_get(
+                        PageContext.PageModuleID,
+                        YafContext.Current.PageBoardID,
+                        Membership.GetUser(fromUser).ProviderUserKey),
+                    CommonDb.user_get(
+                        PageContext.PageModuleID,
+                        YafContext.Current.PageBoardID,
+                        Membership.GetUser(toUser).ProviderUserKey),
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     "{0}{1}   {2}".FormatWith(pmessagePrefix, this.randomGuid, this.PMessageText.Text.Trim()),
                     6, 
@@ -866,13 +895,13 @@ namespace YAF.Pages.Admin
 
             if (this.MarkRead.Checked)
             {
-                int userAID = CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(_toUser).ProviderUserKey);
-                foreach (DataRow dr in CommonDb.pmessage_list(PageContext.PageModuleID, null, userAID, null).Rows)
+                int userAid = CommonDb.user_get(PageContext.PageModuleID, YafContext.Current.PageBoardID, Membership.GetUser(toUser).ProviderUserKey);
+                foreach (DataRow dr in CommonDb.pmessage_list(PageContext.PageModuleID, null, userAid, null).Rows)
                 {
                     CommonDb.pmessage_markread(PageContext.PageModuleID, dr["PMessageID"]);
 
                     // Clearing cache with old permissions data...
-                    this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(userAID));
+                    this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(userAid));
                 }
             }
 
@@ -934,17 +963,19 @@ namespace YAF.Pages.Admin
             // if ( numMessages > createCommonLimit ) numMessages = createCommonLimit;        
             long messageid = 0;
             int iposts;
-            const int _replyTo = -1;
+            const int ReplyTo = -1;
             for (iposts = 0; iposts < numMessages; iposts++)
             {
                 this.randomGuid = Guid.NewGuid().ToString();
-                CommonDb.message_save(PageContext.PageModuleID, topicID,
+                CommonDb.message_save(
+                    PageContext.PageModuleID, 
+                    topicID,
                     this.PageContext.PageUserID,
                     "msgd-" + this.randomGuid + "  " + this.MyMessage.Text.Trim(),
                     this.PageContext.User.UserName,
                     this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                     null,
-                    _replyTo,
+                    ReplyTo,
                     this.GetMessageFlags(),
                     ref messageid);
 
@@ -971,10 +1002,10 @@ namespace YAF.Pages.Admin
         /// </returns>
         private int CreateTopics(int forumID, int numTopics, int _messagesToCreate)
         {
-            object _priority = 0;
+            object priority = 0;
             if (forumID <= 0)
             {
-                _priority = this.TopicsPriorityList.SelectedValue;
+                priority = this.TopicsPriorityList.SelectedValue;
             }
 
             if (numTopics <= 0)
@@ -990,9 +1021,9 @@ namespace YAF.Pages.Admin
                 return 0;
             }
 
-            int categoryID;
+            int categoryId;
 
-            if (!int.TryParse(this.TopicsCategory.SelectedValue, out categoryID))
+            if (!int.TryParse(this.TopicsCategory.SelectedValue, out categoryId))
             {
                 return 0;
             }
@@ -1026,14 +1057,16 @@ namespace YAF.Pages.Admin
                 this.randomGuid = Guid.NewGuid().ToString();
                 object pollID = null;
 
-                long topicID = CommonDb.topic_save(PageContext.PageModuleID, forumID,
+                long topicId = CommonDb.topic_save(
+                    PageContext.PageModuleID, 
+                    forumID,
                     this.TopicPrefixTB.Text.Trim() + this.randomGuid,
                     string.Empty,
                     string.Empty,
                     "{0}{1}descr".FormatWith(this.TopicPrefixTB.Text.Trim(), this.randomGuid),
                     this.MessageContentPrefixTB.Text.Trim() + this.randomGuid,
                     this.PageContext.PageUserID,
-                    _priority,
+                    priority,
                     this.PageContext.User.UserName,
                     this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                     DateTime.UtcNow,
@@ -1065,7 +1098,7 @@ namespace YAF.Pages.Admin
                             rawChoices,
                             (DateTime?)datePollExpire,
                             this.PageContext.PageUserID,
-                            (int?)topicID,
+                            (int?)topicId,
                             null,
                             null,
                             null,
@@ -1076,12 +1109,12 @@ namespace YAF.Pages.Admin
                             false,
                             false,
                             false));
-                    pollID = CommonDb.poll_save(PageContext.PageModuleID, pollList);
+                   // pollID = CommonDb.poll_save(PageContext.PageModuleID, pollList);
                 }
 
                 if (_messagesToCreate > 0)
                 {
-                    this.CreatePosts(forumID, topicID.ToType<int>(), _messagesToCreate);
+                    this.CreatePosts(forumID, topicId.ToType<int>(), _messagesToCreate);
                 }
 
                 // User != null ? null : From.Text

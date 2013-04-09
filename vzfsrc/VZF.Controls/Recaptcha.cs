@@ -20,7 +20,7 @@
 using System.Web;
 using YAF.Core;
 using YAF.Types.Interfaces;
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace VZF.Controls
 {

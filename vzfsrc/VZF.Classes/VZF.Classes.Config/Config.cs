@@ -329,10 +329,10 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        ///     Gets DatabaseScheme.
+        ///     Gets DatabaseSchemaName.
         /// </summary>
         [NotNull]
-        public static string DatabaseScheme
+        public static string DatabaseSchemaName
         {
             get
             {
@@ -485,7 +485,6 @@ namespace YAF.Classes
         [NotNull]
         public static string JQueryAlias
         {
-            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
             get
             {
                 if (IsDotNetNuke)
@@ -538,7 +537,7 @@ namespace YAF.Classes
             get
             {
                 return GetConfigValueAsString("YAF.JQueryUILangFile") ??
-                       "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/i18n/jquery-ui-i18n.min.js";
+                       "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/i18n/jquery-ui-i18n.min.js";
             }
         }
 

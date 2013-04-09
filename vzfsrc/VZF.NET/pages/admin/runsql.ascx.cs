@@ -32,7 +32,7 @@ namespace YAF.Pages.Admin
   using YAF.Types.Constants;
   using YAF.Types.Handlers;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   #endregion
 

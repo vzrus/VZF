@@ -34,7 +34,7 @@ namespace YAF.Core
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

@@ -2,7 +2,7 @@
     Inherits="VZF.Controls.ForumModeratorList" Codebehind="ForumModeratorList.ascx.cs" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
 
 <asp:Repeater ID="ModeratorList" runat="server">

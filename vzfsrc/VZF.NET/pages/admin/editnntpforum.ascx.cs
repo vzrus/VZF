@@ -22,7 +22,7 @@ using System.Collections;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using YAF.Utilities;
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace YAF.Pages.Admin
 {
@@ -40,7 +40,7 @@ namespace YAF.Pages.Admin
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

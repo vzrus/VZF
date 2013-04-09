@@ -19,8 +19,8 @@
 namespace YAF.Core.BBCode.ReplaceRules
 {
   using YAF.Types.Interfaces;
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
 
   /// <summary>
   /// Not regular expression, just a simple replace

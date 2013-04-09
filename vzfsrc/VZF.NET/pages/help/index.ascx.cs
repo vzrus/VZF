@@ -35,7 +35,7 @@ namespace YAF.Pages.help
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

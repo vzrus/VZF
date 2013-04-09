@@ -24,7 +24,7 @@ namespace YAF.Core.BBCode.ReplaceRules
 
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// Quote Block regular express replace

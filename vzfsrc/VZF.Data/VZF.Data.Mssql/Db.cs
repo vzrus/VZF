@@ -41,8 +41,8 @@ namespace VZF.Data.MsSql
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
     using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -4352,7 +4352,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list
         /// </returns>
-        public static DataTable forum_listread(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable forum_listread(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead, [NotNull] bool showCommonForums, [NotNull]bool showPersonalForums, [CanBeNull] int? forumCreatedByUserId)
         {
             if (!MsSqlDbAccess.LargeForumTree)
             {
@@ -4365,6 +4365,10 @@ namespace VZF.Data.MsSql
                     cmd.Parameters.AddWithValue("ParentID", parentID);
                     cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
                     cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                    cmd.Parameters.AddWithValue("ShowCommonForums", showCommonForums);
+                    cmd.Parameters.AddWithValue("ShowPersonalForums", showPersonalForums);
+                    cmd.Parameters.AddWithValue("ForumCreatedByUserId", forumCreatedByUserId);
+                    cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
                     return MsSqlDbAccess.GetData(cmd, connectionString);
                 }
             }
@@ -4379,6 +4383,10 @@ namespace VZF.Data.MsSql
                     cmd.Parameters.AddWithValue("ParentID", parentID);
                     cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
                     cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                    cmd.Parameters.AddWithValue("ShowCommonForums", showCommonForums);
+                    cmd.Parameters.AddWithValue("ShowPersonalForums", showPersonalForums);
+                    cmd.Parameters.AddWithValue("ForumCreatedByUserId", forumCreatedByUserId);
+                    cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
                     return MsSqlDbAccess.GetData(cmd, connectionString);
                 }
             }

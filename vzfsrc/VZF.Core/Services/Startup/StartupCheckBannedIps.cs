@@ -31,7 +31,7 @@ namespace YAF.Core.Services
   using YAF.Types;
   using YAF.Types.Constants;
   using YAF.Types.Interfaces;
-  using YAF.Utils.Helpers;
+  using VZF.Utils.Helpers;
 
   #endregion
 

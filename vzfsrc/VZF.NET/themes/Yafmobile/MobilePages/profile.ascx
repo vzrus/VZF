@@ -2,7 +2,7 @@
     Inherits="YAF.Pages.profile" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
 <%@ Import Namespace="System.Data" %>
 <%@ Register TagPrefix="VZF" TagName="SignatureEdit" Src="../../../controls/EditUsersSignature.ascx" %>

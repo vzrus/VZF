@@ -21,7 +21,7 @@
 // </summary>
 // 
 // --------------------------------------------------------------------------------------------------------------------
-namespace YAF.Utils.Helpers
+namespace VZF.Utils.Helpers
 {
     /// <summary>
     /// The tree view utils.

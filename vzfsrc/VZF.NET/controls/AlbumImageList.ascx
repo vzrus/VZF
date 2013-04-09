@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="VZF.Controls.AlbumImageList"
     CodeBehind="AlbumImageList.ascx.cs" %>
 <%@ Import Namespace="YAF.Core" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <%@ Import Namespace="YAF.Classes" %>
 <asp:Literal ID="ltrTitleOnly" runat="server"></asp:Literal>

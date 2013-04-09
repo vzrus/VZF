@@ -37,8 +37,8 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 

@@ -24,7 +24,7 @@ namespace YAF.Core.Syndication
 
   using YAF.Types.Constants;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   /// <summary>
   /// The syndication item extensions.

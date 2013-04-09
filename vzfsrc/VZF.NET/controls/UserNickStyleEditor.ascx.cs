@@ -4,7 +4,7 @@
     using System.Collections.Concurrent;
 
     using YAF.Core;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// The user nick style editor.

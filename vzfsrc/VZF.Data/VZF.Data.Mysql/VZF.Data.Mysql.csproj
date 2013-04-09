@@ -40,6 +40,7 @@
     <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,6 +52,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Classes.Config, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Classes.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db.cs" />
@@ -67,24 +80,16 @@
     <None Include="YetAnotherForum.NET.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
-      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
-      <Name>VZF.Classes.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
-      <Name>VZF.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
-      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
-      <Name>VZF.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Utils\VZF.Data.Utils.csproj">
       <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
       <Name>VZF.Data.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(SolutionDir)\packages\mysql\MySql.Data.dll $(SolutionDir)\VZF.NET\Bin\   /d /y 
+</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -40,13 +40,14 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 
     /// <summary>
     /// The simple tag cloud.
     /// </summary>
+    [ToolboxData("<{0}:SimpleTagCloud runat=\"server\"></{0}:SimpleTagCloud>")]
     public class SimpleTagCloud : BaseControl
     {
         /// <summary>
@@ -338,11 +339,11 @@ namespace VZF.Controls
 
             if (this.BoardId <= 0)
             {
-                return;
+                this.BoardId = this.PageContext.PageBoardID;
             }
 
             dt = CommonDb.forum_tags(
-                this.PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID, 0, this.PageIndex, this.PageSize, string.Empty, false);
+                this.PageContext.PageModuleID, this.BoardId, this.PageContext.PageUserID, 0, this.PageIndex, this.PageSize, string.Empty, false);
             tag.InnerHtml = this.GetTagCloudHtml(dt);
         }
 

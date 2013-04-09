@@ -38,7 +38,7 @@ namespace YAF.Providers.Profile
   // using YAF.Types.Extensions;
   using YAF.Types.Interfaces; 
   
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types;
 
   #endregion

@@ -30,7 +30,7 @@ namespace YAF.Providers.Roles
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
   /// The yaf role provider.

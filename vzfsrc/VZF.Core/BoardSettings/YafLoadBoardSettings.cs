@@ -29,7 +29,7 @@ namespace YAF.Core
   using YAF.Classes;
   
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types;
 
   #endregion
@@ -81,7 +81,7 @@ namespace YAF.Core
       // loop through all values and commit them to the DB
       foreach (string key in this._reg.Keys)
       {
-        CommonDb.registry_save((int?) YafContext.Current.PageModuleID, key, this._reg[key]);
+        CommonDb.registry_save(YafContext.Current.PageModuleID, key, this._reg[key]);
       }
 
       foreach (string key in this._regBoard.Keys)

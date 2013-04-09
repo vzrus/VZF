@@ -126,6 +126,23 @@
         </tr>
          <tr>
             <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel15" runat="server" LocalizedTag="ISUSERFORUM" LocalizedPage="ADMIN_EDITFORUM" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="IsUserForum" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+        <tr id="CreatedByTr" runat="server">
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel16" runat="server" LocalizedTag="FORUMAUTHOR" LocalizedPage="ADMIN_EDITFORUM" />
+            </td>
+            <td class="post">
+                <VZF:UserLink ID="UserLinkCreated"  runat="server" />
+            </td>
+        </tr>
+        <asp:HiddenField ID="UserID" runat="server"/>
+         <tr>
+            <td class="postheader">
                 <VZF:HelpLabel ID="CanHavePersForumsLbl" runat="server" LocalizedTag="CANHAVEUSERFORUMS" LocalizedPage="ADMIN_EDITFORUM" />
             </td>
             <td class="post">

@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Utils
+namespace VZF.Utils
 {
     #region Using
 
@@ -127,7 +127,7 @@ namespace YAF.Utils
         }
 
         /// <summary>
-        ///     Converts an <see cref="IEnumerable" /> to a HashSet -- similar to ToList()
+        ///     Converts an <see cref="IEnumerable{T}" /> to a HashSet -- similar to ToList()
         /// </summary>
         /// <param name="list"> The list. </param>
         /// <typeparam name="T"> </typeparam>

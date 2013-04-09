@@ -2,7 +2,7 @@
     Inherits="VZF.Controls.DisplayPost" EnableViewState="false" %>
 <%@ Register TagPrefix="VZF" TagName="DisplayPostFooter" Src="../../../controls/DisplayPostFooter.ascx" %>
 <%@ Import Namespace="YAF.Core" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <tr class="postheader">		
     <%#GetIndentCell()%>

@@ -27,8 +27,8 @@ namespace YAF.Core.Services
   using System.Net;
   using System.Web;
 
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
   using YAF.Types;
 
   #endregion

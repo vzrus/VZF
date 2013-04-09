@@ -28,8 +28,8 @@ namespace YAF.Core.Services
     using YAF.Classes;
     using YAF.Core;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 

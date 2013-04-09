@@ -38,8 +38,8 @@ namespace YAF.Pages.Admin
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
     
     #endregion
 
@@ -205,12 +205,10 @@ namespace YAF.Pages.Admin
 
       var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
 
- 
-
-
-
         if (!forumId.HasValue)
         {
+            this.CreatedByTr.Visible = false;
+
           // Currently creating a New Forum, and auto fill the Forum Sort Order + 1
           using (
           DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
@@ -232,24 +230,26 @@ namespace YAF.Pages.Admin
 
               return;
           }
-      }
+        }
 
       using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
       {
         DataRow row = dt.Rows[0];
         var flags = new ForumFlags(row["Flags"]);
         this.Name.Text = (string)row["Name"];
-        this.Description.Text = (string)row["Description"];
+        this.Description.Text = row["Description"].ToString();
         this.SortOrder.Text = row["SortOrder"].ToString();
         this.HideNoAccess.Checked = flags.IsHidden;
         this.Locked.Checked = flags.IsLocked;
         this.IsTest.Checked = flags.IsTest;
+        this.IsUserForum.Checked = row["IsUserForum"].ToType<bool>();
         this.ForumNameTitle.Text = this.Name.Text;
         this.Moderated.Checked = flags.IsModerated;
         this.Styles.Text = row["Styles"].ToString();
         this.CanHavePersForums.Checked = row["CanHavePersForums"].ToType<bool>();
         this.CategoryList.SelectedValue = row["CategoryID"].ToString();
-
+        this.UserID.Value = row["CreatedByUserID"].ToString();
+        this.UserLinkCreated.UserID = row["CreatedByUserID"].ToType<int>();
         this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
 
         ListItem item = this.ForumImages.Items.FindByText(row["ImageURL"].ToString());
@@ -507,10 +507,10 @@ namespace YAF.Pages.Admin
         IsNull(this.remoteurl.Text), 
         themeUrl, 
         this.ForumImages.SelectedIndex > 0 ? this.ForumImages.SelectedValue.Trim() : null, 
-        this.Styles.Text, 
+        this.Styles.Text,
         false,
-        PageContext.PageUserID,
-        false,
+        this.UserID.Value.IsSet() ? this.UserID.Value.ToType<int>() : PageContext.PageUserID,
+        this.IsUserForum.Checked,
         this.CanHavePersForums.Checked);
 
       CommonDb.activeaccess_reset(PageContext.PageModuleID);

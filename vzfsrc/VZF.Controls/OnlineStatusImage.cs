@@ -20,19 +20,18 @@ namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Data;
-  using System.Linq;
-  using System.Web.UI;
+    using System;
+    using System.Data;
+    using System.Linq;
+    using System.Web.UI;
 
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Core.Services;
-  using YAF.Utils;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+    using VZF.Utils;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Provides an Online/Offline status for a YAF User

@@ -32,7 +32,7 @@ namespace YAF.Core.Tasks
     using YAF.Types;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using YAF.Utils;
+    using VZF.Utils;
 
   #endregion
 

@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Utils
+namespace VZF.Utils
 {
   using System;
   using System.Web;
@@ -61,7 +61,7 @@ namespace YAF.Utils
     /// </returns>
     public static string CreatePassword(int length)
     {
-      string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#%&()@${[]}";
+      const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#%&()@${[]}";
       string res = string.Empty;
       var rnd = new Random();
       while (0 < length--)
@@ -82,7 +82,7 @@ namespace YAF.Utils
     {
       // ip with 
       // deny access if POST request comes from other server
-      if (request.HttpMethod == "POST" && request.UrlReferrer != null && request.Url.Host != null && request.UrlReferrer.Host != request.Url.Host)
+      if (request.HttpMethod == "POST" && request.UrlReferrer != null && request.UrlReferrer.Host != request.Url.Host)
       {
         YafBuildLink.AccessDenied();
       }

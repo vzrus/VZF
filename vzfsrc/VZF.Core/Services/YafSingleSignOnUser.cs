@@ -35,7 +35,7 @@ namespace YAF.Core.Services
     using YAF.Types.EventProxies;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
+    using VZF.Utils;
 
     /// <summary>
     /// Single Sign On User Class to handle Twitter and Facebook Logins

@@ -2,7 +2,7 @@
 <%@ Import Namespace="YAF.Core"%>
 <%@ Import Namespace="YAF.Core.Services" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils.Helpers" %>
+<%@ Import Namespace="VZF.Utils.Helpers" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <div class="DivTopSeparator"></div>

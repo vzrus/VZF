@@ -25,7 +25,7 @@ namespace YAF.Core.Tasks
 
   using YAF.Types.Attributes;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
 	#endregion
 

@@ -29,7 +29,7 @@ namespace YAF.Core
 	using System.Xml;
 	using System.Xml.Serialization;
 
-	using YAF.Utils;
+	using VZF.Utils;
 
 	#endregion
 

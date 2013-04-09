@@ -30,8 +30,6 @@ namespace VZF.Data.MsSql
     using YAF.Types;
     using YAF.Types.Handlers;
 
-    using YAF.Types.Handlers;
-
     #endregion
 
     /// <summary>

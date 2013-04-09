@@ -26,7 +26,7 @@ using YAF.Types.Constants;
 using YAF.Types.Flags;
 using YAF.Types.Interfaces;
 using YAF.Utilities;
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace VZF.Controls
 {
@@ -39,7 +39,7 @@ namespace VZF.Controls
     
     using YAF.Core;
     using YAF.Types;
-    using YAF.Utils;
+    using VZF.Utils;
 
     #endregion
 

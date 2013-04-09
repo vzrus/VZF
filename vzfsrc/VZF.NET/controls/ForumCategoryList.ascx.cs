@@ -16,117 +16,120 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-using System.Web.UI.HtmlControls;
-using YAF.Utils.Helpers;
-
 namespace VZF.Controls
 {
-	#region Using
+    #region Using
 
-	using System;
-	using System.Data;
-	using System.Web.UI.WebControls;
+    using System;
+    using System.Data;
+    using System.Web.UI.WebControls;
 
-	using VZF.Data.Common;
+    using VZF.Data.Common;
 
-	using YAF.Classes;
-	
-	using YAF.Core;
-	using YAF.Types;
-	using YAF.Types.Interfaces;
-	using YAF.Types.Interfaces.Extensions;
-	using YAF.Utils;
+    using YAF.Classes;
 
-	#endregion
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
+    using YAF.Types.Interfaces.Extensions;
+    using VZF.Utils;
 
-	/// <summary>
-	/// The forum category list.
-	/// </summary>
-	public partial class ForumCategoryList : BaseUserControl
-	{
-		#region Methods
+    #endregion
 
-		/// <summary>
-		/// Column count
-		/// </summary>
-		/// <returns>
-		/// The column count.
-		/// </returns>
-		protected int ColumnCount()
-		{
-			int cnt = 5;
+    /// <summary>
+    /// The forum category list.
+    /// </summary>
+    public partial class ForumCategoryList : BaseUserControl
+    {
+        #region Methods
 
-			if (this.Get<YafBoardSettings>().ShowModeratorList && this.Get<YafBoardSettings>().ShowModeratorListAsColumn)
-			{
-				cnt++;
-			}
+        /// <summary>
+        /// Column count
+        /// </summary>
+        /// <returns>
+        /// The column count.
+        /// </returns>
+        protected int ColumnCount()
+        {
+            int cnt = 5;
 
-			return cnt;
-		}
+            if (this.Get<YafBoardSettings>().ShowModeratorList && this.Get<YafBoardSettings>().ShowModeratorListAsColumn)
+            {
+                cnt++;
+            }
 
-		/// <summary>
-		/// The mark all_ click.
-		/// </summary>
-		/// <param name="sender">
-		/// The sender.
-		/// </param>
-		/// <param name="e">
-		/// The e.
-		/// </param>
-		protected void MarkAll_Click([NotNull] object sender, [NotNull] EventArgs e)
-		{
-			var markAll = (LinkButton)sender;
+            return cnt;
+        }
 
-			object categoryId = null;
+        /// <summary>
+        /// The mark all_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void MarkAll_Click([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            var markAll = (LinkButton)sender;
 
-			int icategoryId;
-			if (int.TryParse(markAll.CommandArgument, out icategoryId))
-			{
-				categoryId = icategoryId;
-			}
+            object categoryId = null;
 
-			DataTable dt = CommonDb.forum_listread(PageContext.PageModuleID, boardID: this.PageContext.PageBoardID,
-				userID: this.PageContext.PageUserID,
-				categoryID: categoryId,
-				parentID: null,
-				useStyledNicks: false,
-				findLastRead: false);
+            int icategoryId;
+            if (int.TryParse(markAll.CommandArgument, out icategoryId))
+            {
+                categoryId = icategoryId;
+            }
 
-			this.Get<IReadTrackCurrentUser>().SetForumRead(dt.AsEnumerable().Select(r => r["ForumID"].ToType<int>()));
+            DataTable dt = CommonDb.forum_listread(
+                mid: PageContext.PageModuleID,
+                boardID: this.PageContext.PageBoardID,
+                userID: this.PageContext.PageUserID,
+                categoryID: categoryId,
+                parentID: null,
+                useStyledNicks: false,
+                findLastRead: false,
+                showPersonalForums: true,
+                showCommonForums: false,
+                forumCreatedByUserId: null);
 
-			this.BindData();
-		}
+            this.Get<IReadTrackCurrentUser>().SetForumRead(dt.AsEnumerable().Select(r => r["ForumID"].ToType<int>()));
 
-		/// <summary>
-		/// The page_ load.
-		/// </summary>
-		/// <param name="sender">
-		/// The sender.
-		/// </param>
-		/// <param name="e">
-		/// The e.
-		/// </param>
-		protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
-		{
-           
-			this.BindData();
-		}
+            this.BindData();
+        }
 
-		/// <summary>
-		/// Bind Data
-		/// </summary>
-		private void BindData()
-		{
-			DataSet ds = this.Get<IDBBroker>().BoardLayout(
-					this.PageContext.PageBoardID, this.PageContext.PageUserID, this.PageContext.PageCategoryID, null);
+        /// <summary>
+        /// The page_ load.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            this.BindData();
+        }
+
+        /// <summary>
+        /// Bind Data
+        /// </summary>
+        private void BindData()
+        {
+            DataSet ds = this.Get<IDBBroker>()
+                             .BoardLayout(
+                                 this.PageContext.PageBoardID,
+                                 this.PageContext.PageUserID,
+                                 this.PageContext.PageCategoryID,
+                                 null);
             /* this.CategoryList.FindControlRecursiveAs<HtmlTableCell>("Td1").Visible = PageContext.BoardSettings.ShowModeratorList &&
                               PageContext.BoardSettings.ShowModeratorListAsColumn; */
             this.CategoryList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
-			this.CategoryList.DataBind();
-           
-		}
+            this.CategoryList.DataBind();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

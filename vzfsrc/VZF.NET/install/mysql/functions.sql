@@ -843,18 +843,21 @@ END;
   -- Checks if the forum is already referenced as a parent 
 	declare i_dependency int default 0;
 	declare i_haschildren int default 0;
-	declare i_frmtmp int;
+		declare i_frmtmp int;
 	declare i_prntmp int;
 	DECLARE ctt CURSOR FOR
 			select ForumID,ParentID from {databaseName}.{objectQualifier}Forum
 		where ParentID = i_ForumID;
-				
+
 	select ForumID into i_dependency from {databaseName}.{objectQualifier}Forum where ParentID=i_ForumID AND ForumID = i_ParentID;
 	if i_dependency > 0
 	then
 	return i_ParentID;
 	end if;
-	/*look for newer topic/message in subforums*/
+
+	-- simply disable it
+	return i_dependency;
+
 	IF EXISTS(SELECT 1 FROM {databaseName}.{objectQualifier}Forum WHERE ParentID=i_ForumID)
 	THEN		
 		OPEN ctt;
@@ -863,8 +866,9 @@ END;
 	LOOP            
 	/*cycle through subforums*/
 	FETCH ctt INTO i_frmtmp, i_prntmp;
-		if i_frmtmp > 0 AND i_frmtmp IS NOT NULL then             
-			set i_haschildren = {databaseName}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
+		if i_frmtmp > 0 AND i_frmtmp IS NOT NULL then
+		   -- recursion doesn't work for mysql - use cascades             
+			-- set i_haschildren = {databaseName}.{objectQualifier}forum_save_parentschecker(i_frmtmp,i_ParentID);            
 			if  i_prntmp = i_ParentID then
 			set i_dependency = i_ParentID;               
 			ELSEIF i_haschildren > 0  then

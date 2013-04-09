@@ -151,6 +151,14 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\VZF.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\VZF.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="auth.aspx.cs">
@@ -640,6 +648,13 @@
     <Compile Include="pages\imageadd.ascx.designer.cs">
       <DependentUpon>imageadd.ascx</DependentUpon>
     </Compile>
+    <Compile Include="pages\personalforums.ascx.cs">
+      <DependentUpon>personalforums.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\personalforums.ascx.designer.cs">
+      <DependentUpon>personalforums.ascx</DependentUpon>
+    </Compile>
     <Compile Include="pages\personalgroup_edituser.ascx.cs">
       <DependentUpon>personalgroup_edituser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1037,12 +1052,11 @@
     <Content Include="digest.aspx" />
     <Content Include="default.aspx" />
     <Content Include="editors\ckeditor\adapters\jquery.js" />
+    <Content Include="editors\ckeditor\CHANGES.md" />
     <Content Include="editors\ckeditor\ckeditor.js" />
     <Content Include="editors\ckeditor\ckeditor_basic.js" />
-    <Content Include="editors\ckeditor\ckeditor_basic_source.js" />
     <Content Include="editors\ckeditor\ckeditor_init.js" />
     <Content Include="editors\ckeditor\ckeditor_initbbcode.js" />
-    <Content Include="editors\ckeditor\ckeditor_source.js" />
     <Content Include="editors\ckeditor\config.js" />
     <Content Include="editors\ckeditor\contents.css" />
     <Content Include="editors\ckeditor\images\spacer.gif" />
@@ -1083,6 +1097,7 @@
     <Content Include="editors\ckeditor\lang\ka.js" />
     <Content Include="editors\ckeditor\lang\km.js" />
     <Content Include="editors\ckeditor\lang\ko.js" />
+    <Content Include="editors\ckeditor\lang\ku.js" />
     <Content Include="editors\ckeditor\lang\lt.js" />
     <Content Include="editors\ckeditor\lang\lv.js" />
     <Content Include="editors\ckeditor\lang\mk.js" />
@@ -1110,8 +1125,54 @@
     <Content Include="editors\ckeditor\lang\zh.js" />
     <Content Include="editors\ckeditor\lang\_languages.js" />
     <Content Include="editors\ckeditor\lang\_translationstatus.txt" />
-    <Content Include="editors\ckeditor\LICENSE.html" />
+    <Content Include="editors\ckeditor\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <Content Include="editors\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\lang\cs.js" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\lang\cy.js" />
     <Content Include="editors\ckeditor\plugins\a11yhelp\lang\da.js" />
@@ -1141,6 +1202,7 @@
     <Content Include="editors\ckeditor\plugins\adobeair\plugin.js" />
     <Content Include="editors\ckeditor\plugins\ajax\plugin.js" />
     <Content Include="editors\ckeditor\plugins\autogrow\plugin.js" />
+    <Content Include="editors\ckeditor\plugins\bbcodehtml\plugin.js" />
     <Content Include="editors\ckeditor\plugins\bbcodeselector\dialogs\bbcodeselector.js" />
     <Content Include="editors\ckeditor\plugins\bbcodeselector\images\yafbbcode.gif" />
     <Content Include="editors\ckeditor\plugins\bbcodeselector\lang\en.js" />
@@ -1180,6 +1242,7 @@
     <Content Include="editors\ckeditor\plugins\div\dialogs\div.js" />
     <Content Include="editors\ckeditor\plugins\docprops\dialogs\docprops.js" />
     <Content Include="editors\ckeditor\plugins\docprops\plugin.js" />
+    <Content Include="editors\ckeditor\plugins\fakeobjects\images\spacer.gif" />
     <Content Include="editors\ckeditor\plugins\find\dialogs\find.js" />
     <Content Include="editors\ckeditor\plugins\flash\dialogs\flash.js" />
     <Content Include="editors\ckeditor\plugins\flash\images\placeholder.png" />
@@ -1192,14 +1255,18 @@
     <Content Include="editors\ckeditor\plugins\forms\dialogs\textarea.js" />
     <Content Include="editors\ckeditor\plugins\forms\dialogs\textfield.js" />
     <Content Include="editors\ckeditor\plugins\forms\images\hiddenfield.gif" />
+    <Content Include="editors\ckeditor\plugins\icons.png" />
     <Content Include="editors\ckeditor\plugins\iframedialog\plugin.js" />
     <Content Include="editors\ckeditor\plugins\iframe\dialogs\iframe.js" />
     <Content Include="editors\ckeditor\plugins\iframe\images\placeholder.png" />
     <Content Include="editors\ckeditor\plugins\image\dialogs\image.js" />
+    <Content Include="editors\ckeditor\plugins\image\images\noimage.png" />
     <Content Include="editors\ckeditor\plugins\link\dialogs\anchor.js" />
     <Content Include="editors\ckeditor\plugins\link\dialogs\link.js" />
     <Content Include="editors\ckeditor\plugins\link\images\anchor.gif" />
+    <Content Include="editors\ckeditor\plugins\link\images\anchor.png" />
     <Content Include="editors\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
+    <Content Include="editors\ckeditor\plugins\magicline\images\icon.png" />
     <Content Include="editors\ckeditor\plugins\pagebreak\images\pagebreak.gif" />
     <Content Include="editors\ckeditor\plugins\pastefromword\filter\default.js" />
     <Content Include="editors\ckeditor\plugins\pastetext\dialogs\pastetext.js" />
@@ -1254,6 +1321,7 @@
     <Content Include="editors\ckeditor\plugins\smiley\images\cry_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\devil_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\embaressed_smile.gif" />
+    <Content Include="editors\ckeditor\plugins\smiley\images\embarrassed_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\envelope.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\heart.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\kiss.gif" />
@@ -1265,9 +1333,38 @@
     <Content Include="editors\ckeditor\plugins\smiley\images\teeth_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\thumbs_down.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\thumbs_up.gif" />
+    <Content Include="editors\ckeditor\plugins\smiley\images\tongue_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\tounge_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.gif" />
     <Content Include="editors\ckeditor\plugins\smiley\images\wink_smile.gif" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <Content Include="editors\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
     <Content Include="editors\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
     <Content Include="editors\ckeditor\plugins\specialchar\lang\cs.js" />
     <Content Include="editors\ckeditor\plugins\specialchar\lang\cy.js" />
@@ -1305,6 +1402,7 @@
     <Content Include="editors\ckeditor\plugins\tableresize\plugin.js" />
     <Content Include="editors\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
     <Content Include="editors\ckeditor\plugins\table\dialogs\table.js" />
+    <Content Include="editors\ckeditor\plugins\templates\dialogs\templates.css" />
     <Content Include="editors\ckeditor\plugins\templates\dialogs\templates.js" />
     <Content Include="editors\ckeditor\plugins\templates\templates\default.js" />
     <Content Include="editors\ckeditor\plugins\templates\templates\images\template1.gif" />
@@ -1351,21 +1449,18 @@
     <Content Include="editors\ckeditor\plugins\wsc\dialogs\wsc.css" />
     <Content Include="editors\ckeditor\plugins\wsc\dialogs\wsc.js" />
     <Content Include="editors\ckeditor\plugins\xml\plugin.js" />
-    <Content Include="editors\ckeditor\skins\black\dialog.css" />
-    <Content Include="editors\ckeditor\skins\black\editor.css" />
-    <Content Include="editors\ckeditor\skins\black\icons.png" />
-    <Content Include="editors\ckeditor\skins\black\images\Background.gif" />
-    <Content Include="editors\ckeditor\skins\black\images\dialog_sides.gif" />
-    <Content Include="editors\ckeditor\skins\black\images\dialog_sides.png" />
-    <Content Include="editors\ckeditor\skins\black\images\dialog_sides_rtl.png" />
-    <Content Include="editors\ckeditor\skins\black\images\mini.gif" />
-    <Content Include="editors\ckeditor\skins\black\images\noimage.png" />
-    <Content Include="editors\ckeditor\skins\black\images\sprites.png" />
-    <Content Include="editors\ckeditor\skins\black\images\sprites_ie6.png" />
-    <Content Include="editors\ckeditor\skins\black\skin.js" />
-    <Content Include="editors\ckeditor\skins\black\templates.css" />
+    <Content Include="editors\ckeditor\README.md" />
     <Content Include="editors\ckeditor\skins\kama\dialog.css" />
+    <Content Include="editors\ckeditor\skins\kama\dialog_ie.css" />
+    <Content Include="editors\ckeditor\skins\kama\dialog_ie7.css" />
+    <Content Include="editors\ckeditor\skins\kama\dialog_ie8.css" />
+    <Content Include="editors\ckeditor\skins\kama\dialog_iequirks.css" />
+    <Content Include="editors\ckeditor\skins\kama\dialog_opera.css" />
     <Content Include="editors\ckeditor\skins\kama\editor.css" />
+    <Content Include="editors\ckeditor\skins\kama\editor_ie.css" />
+    <Content Include="editors\ckeditor\skins\kama\editor_ie7.css" />
+    <Content Include="editors\ckeditor\skins\kama\editor_ie8.css" />
+    <Content Include="editors\ckeditor\skins\kama\editor_iequirks.css" />
     <Content Include="editors\ckeditor\skins\kama\icons.png" />
     <Content Include="editors\ckeditor\skins\kama\icons_rtl.png" />
     <Content Include="editors\ckeditor\skins\kama\images\dialog_sides.gif" />
@@ -1376,8 +1471,26 @@
     <Content Include="editors\ckeditor\skins\kama\images\sprites.png" />
     <Content Include="editors\ckeditor\skins\kama\images\sprites_ie6.png" />
     <Content Include="editors\ckeditor\skins\kama\images\toolbar_start.gif" />
+    <Content Include="editors\ckeditor\skins\kama\readme.md" />
     <Content Include="editors\ckeditor\skins\kama\skin.js" />
     <Content Include="editors\ckeditor\skins\kama\templates.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog_ie.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog_ie7.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog_ie8.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog_iequirks.css" />
+    <Content Include="editors\ckeditor\skins\moono\dialog_opera.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor_gecko.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor_ie.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor_ie7.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor_ie8.css" />
+    <Content Include="editors\ckeditor\skins\moono\editor_iequirks.css" />
+    <Content Include="editors\ckeditor\skins\moono\icons.png" />
+    <Content Include="editors\ckeditor\skins\moono\images\arrow.png" />
+    <Content Include="editors\ckeditor\skins\moono\images\close.png" />
+    <Content Include="editors\ckeditor\skins\moono\images\mini.png" />
+    <Content Include="editors\ckeditor\skins\moono\readme.md" />
     <Content Include="editors\ckeditor\skins\office2003\dialog.css" />
     <Content Include="editors\ckeditor\skins\office2003\editor.css" />
     <Content Include="editors\ckeditor\skins\office2003\icons.png" />
@@ -1405,6 +1518,7 @@
     <Content Include="editors\ckeditor\skins\v2\images\toolbar_start.gif" />
     <Content Include="editors\ckeditor\skins\v2\skin.js" />
     <Content Include="editors\ckeditor\skins\v2\templates.css" />
+    <Content Include="editors\ckeditor\styles.js" />
     <Content Include="editors\ckeditor\themes\default\theme.js" />
     <Content Include="editors\ckeditor\_source\adapters\jquery.js" />
     <Content Include="editors\ckeditor\_source\core\ajax.js" />
@@ -2778,10 +2892,18 @@
     <Content Include="editors\tiny_mce\plugins\searchreplace\langs\zu_dlg.js" />
     <Content Include="editors\tiny_mce\plugins\searchreplace\searchreplace.htm" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\changelog.txt" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\GoogleSpell.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\PSpell.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\PSpellShell.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\SpellChecker.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\css\content.css" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\editor_plugin.js" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
     <Content Include="editors\tiny_mce\plugins\spellchecker\img\wline.gif" />
+    <Content Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
     <Content Include="editors\tiny_mce\plugins\style\css\props.css" />
     <Content Include="editors\tiny_mce\plugins\style\editor_plugin.js" />
     <Content Include="editors\tiny_mce\plugins\style\editor_plugin_src.js" />
@@ -3613,6 +3735,7 @@
     <Content Include="pages\admin\users_import.ascx" />
     <Content Include="pages\boardtags.ascx" />
     <Content Include="pages\imageadd.ascx" />
+    <Content Include="pages\personalforums.ascx" />
     <Content Include="pages\personalgroup_edituser.ascx" />
     <Content Include="pages\personalgroup_users.ascx" />
     <Content Include="pages\personalaccessmask.ascx" />
@@ -5083,6 +5206,7 @@
     <Content Include="themes\BlueGrey\frog3.gif" />
     <Content Include="themes\BlueGrey\lifebuoy-small.png" />
     <Content Include="themes\BlueGrey\minus-circle.png" />
+    <Content Include="themes\BlueGrey\odnoklassniki.png" />
     <Content Include="themes\BlueGrey\pin--plus.png" />
     <Content Include="themes\BlueGrey\pin-small.png" />
     <Content Include="themes\BlueGrey\plus-circle.png" />
@@ -5105,6 +5229,7 @@
     <Content Include="themes\cleanSlate\frog3.gif" />
     <Content Include="themes\cleanSlate\lifebuoy-small.png" />
     <Content Include="themes\cleanSlate\minus-circle.png" />
+    <Content Include="themes\cleanSlate\odnoklassniki.png" />
     <Content Include="themes\cleanSlate\pin--plus.png" />
     <Content Include="themes\cleanSlate\pin-small.png" />
     <Content Include="themes\cleanSlate\plus-circle.png" />
@@ -5149,6 +5274,7 @@
     <Content Include="themes\Yafmobile\frog3.gif" />
     <Content Include="themes\Yafmobile\lifebuoy-small.png" />
     <Content Include="themes\Yafmobile\minus-circle.png" />
+    <Content Include="themes\Yafmobile\odnoklassniki.png" />
     <Content Include="themes\Yafmobile\pin--plus.png" />
     <Content Include="themes\Yafmobile\pin-small.png" />
     <Content Include="themes\Yafmobile\plus-circle.png" />
@@ -5163,14 +5289,6 @@
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\EnchantSpell.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\GoogleSpell.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\PSpell.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\PSpellShell.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\SpellChecker.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\JSON.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\classes\utils\Logger.php" />
-    <Content Include="editors\tiny_mce\plugins\spellchecker\includes\general.php" />
     <Content Include="BuildScripts\VZF.Package.targets" />
     <Content Include="pages\app_my.config" />
     <Content Include="app_pg.config">
@@ -5179,11 +5297,16 @@
     <Content Include="web_pg.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="editors\ckeditor\plugins\scayt\README.md" />
+    <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="editors\ckeditor\plugins\wsc\README.md" />
+    <Content Include="editors\tiny_mce\themes\advanced\img\Thumbs.db" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="themes\BlueGrey.xml" />
+    <Content Include="themes\BlueGrey1.xml" />
     <Content Include="themes\BlueGrey\albums.png" />
     <Content Include="themes\BlueGrey\arrow_up_button.png" />
     <Content Include="themes\BlueGrey\atomfeed.png" />
@@ -5945,14 +6068,6 @@
       <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
       <Name>VZF.Providers.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
-      <Name>VZF.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VZF.Utils\VZF.Utils.csproj">
-      <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
-      <Name>VZF.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
@@ -5994,7 +6109,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>7326</DevelopmentServerPort>
+          <DevelopmentServerPort>12127</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

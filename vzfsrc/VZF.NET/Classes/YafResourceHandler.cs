@@ -47,9 +47,9 @@ namespace YAF
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Extensions;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Extensions;
+    using VZF.Utils.Helpers;
 
     #endregion
 

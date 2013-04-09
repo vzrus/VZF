@@ -22,8 +22,8 @@ namespace YAF.Core.Services.Twitter
 {
     using YAF.Types;
     using YAF.Types.Objects;
-    using YAF.Utils;
-    using YAF.Utils.Extensions;
+    using VZF.Utils;
+    using VZF.Utils.Extensions;
 
     /// <summary>
     /// Twitter Class to publish, delete, retrieve tweets and Send Direct Messages via twitter.com

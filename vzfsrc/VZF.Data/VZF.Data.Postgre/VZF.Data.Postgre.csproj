@@ -41,6 +41,7 @@
     <Reference Include="Npgsql, Version=2.0.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\Npgsql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -52,6 +53,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\VZF.NET\Bin\VZF.Types.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessClassess.cs" />
@@ -70,10 +75,6 @@
       <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
       <Name>VZF.Classes.Config</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
-      <Name>VZF.Types</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
       <Project>{f80e0025-e57e-4bb5-89f2-cfbcac1afcf4}</Project>
       <Name>VZF.Utils</Name>
@@ -83,8 +84,13 @@
       <Name>VZF.Data.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\ /d /y 
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y 
+
+</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

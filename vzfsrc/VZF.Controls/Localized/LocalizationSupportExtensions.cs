@@ -24,7 +24,7 @@ namespace VZF.Controls
 
   using YAF.Core.BBCode;
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types;
 
   /// <summary>

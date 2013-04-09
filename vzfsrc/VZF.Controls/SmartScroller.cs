@@ -27,7 +27,7 @@ namespace VZF.Controls
 
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
   using YAF.Types;
-  using YAF.Utils;
+  using VZF.Utils;
 
 	#endregion
 

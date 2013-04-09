@@ -16,12 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace YAF.Utils
+namespace VZF.Utils
 {
   using System.Web;
   using System.Web.UI;
 
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils.Helpers.StringUtils;
 
   public static class HtmlWriterExtensions
   {

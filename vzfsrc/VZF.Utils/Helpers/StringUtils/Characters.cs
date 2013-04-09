@@ -19,7 +19,7 @@
 
 using System.Collections.Concurrent;
 
-namespace YAF.Utils.Helpers.StringUtils
+namespace VZF.Utils.Helpers.StringUtils
 {
 	using System;
 	using System.Collections.Concurrent;

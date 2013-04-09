@@ -31,7 +31,7 @@ namespace YAF.Providers.Roles
   using YAF.Classes.Pattern;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
   using YAF.Types;
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Providers.Utils;
 
   /// <summary>

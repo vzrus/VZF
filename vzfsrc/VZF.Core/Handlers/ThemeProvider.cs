@@ -23,7 +23,7 @@ namespace YAF.Core
   using System;
 
   using YAF.Types.Interfaces;
-  using YAF.Utils;
+  using VZF.Utils;
 
   #endregion
 

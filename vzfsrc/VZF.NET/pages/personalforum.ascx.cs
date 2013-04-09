@@ -25,24 +25,20 @@ namespace YAF.pages
 {
     using System;
     using System.Collections.Specialized;
-    using System.Data;
     using System.Drawing;
-    using System.Linq;
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using VZF.Controls;
     using VZF.Data.Common;
 
     using YAF.Classes;
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
 
     /// <summary>
     /// The personalforum.
@@ -50,12 +46,6 @@ namespace YAF.pages
     public partial class personalforum : ForumPage
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   Temporary storage of un-linked provider roles.
-        /// </summary>
-        private readonly StringCollection _availableRoles = new StringCollection();
-
         #endregion
         #region Methods
 

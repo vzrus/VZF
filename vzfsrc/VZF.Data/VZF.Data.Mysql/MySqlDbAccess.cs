@@ -39,8 +39,8 @@ namespace VZF.Data.Mysql
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using YAF.Utils;
-    using YAF.Utils.Helpers;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     /// <summary>
     /// Provides open/close management for DB Connections
@@ -63,6 +63,11 @@ namespace VZF.Data.Mysql
         /// The _schema name.
         /// </summary>
         private static string _schemaName;
+
+        /// <summary>
+        /// The _database object qualifier.
+        /// </summary>
+        private static string _databaseObjectQualifier;
 
         #endregion
 
@@ -93,13 +98,13 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Gets the schema name.
         /// </summary>
-        public static string SchemaName
+        public static string DatabaseSchemaName
         {
             get
             {
                 if (string.IsNullOrEmpty(_schemaName))
                 {
-                    _schemaName = Config.DatabaseScheme;
+                    _schemaName = Config.DatabaseSchemaName;
                 }
 
                 if (string.IsNullOrEmpty(_schemaName) || _schemaName == "dbo")
@@ -110,6 +115,28 @@ namespace VZF.Data.Mysql
                 return _schemaName;
             }
         }
+
+        /// <summary>
+        /// Gets the database object qualifier.
+        /// </summary>
+        public static string DatabaseObjectQualifier
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_databaseObjectQualifier))
+                {
+                    _databaseObjectQualifier = Config.DatabaseObjectQualifier;
+                }
+
+                if (string.IsNullOrEmpty(_databaseObjectQualifier) || _databaseObjectQualifier == "dbo")
+                {
+                    _databaseObjectQualifier = "vzf_";
+                }
+
+                return _schemaName;
+            }
+        }
+        
 
         /// <summary>
         /// Gets the result filter list.
@@ -148,7 +175,7 @@ namespace VZF.Data.Mysql
         /// <returns>Returns qualified object name of format {databaseName}.{objectQualifier}name</returns>
         public static string GetObjectName(string name)
         {
-            return String.Format("`{0}`.`{1}{2}`", SchemaName, Config.DatabaseObjectQualifier, name);
+            return string.Format("`{0}`.`{1}{2}`", DatabaseSchemaName, Config.DatabaseObjectQualifier, name);
         }
 
         /// <summary>
@@ -243,31 +270,30 @@ namespace VZF.Data.Mysql
             string userID,
             string userPassword)
         {
-            var connBuilder = new MySqlConnectionStringBuilder();
+            var connBuilder = new MySqlConnectionStringBuilder
+                                  {
+                                      OldGuids = true,
+                                      AllowBatch = true,
+                                      Server = parm1,
+                                      Database = parm2,
+                                      CharacterSet = parm3,
+                                      Port = Convert.ToUInt32(parm4),
+                                      TreatTinyAsBoolean = true,
+                                      AllowUserVariables = true,
+                                      DefaultCommandTimeout = Convert.ToUInt32(parm5),
+                                      CheckParameters = parm13,
+                                      Pooling = parm14,
+                                      UseCompression = parm15,
+                                      UseAffectedRows = parm16,
+                                      PersistSecurityInfo = parm17,
+                                      UserID = userID,
+                                      Password = userPassword
+                                  };
 
             // List<MySqlParameter> conParams = new List<MySqlParameter>();
             //  conParams.Add(new MySqlParameter())
-            connBuilder.OldGuids = true;
-            connBuilder.AllowBatch = true;
-            connBuilder.Server = parm1;
-            connBuilder.Database = parm2;
-            connBuilder.CharacterSet = parm3;
-            connBuilder.Port = Convert.ToUInt32(parm4);
-            connBuilder.TreatTinyAsBoolean = true;
-            connBuilder.AllowUserVariables = true;
-            connBuilder.DefaultCommandTimeout = Convert.ToUInt32(parm5);
-
-            connBuilder.CheckParameters = parm13;
-
-            connBuilder.Pooling = parm14;
-
-            connBuilder.UseCompression = parm15;
-            connBuilder.UseAffectedRows = parm16;
-            connBuilder.PersistSecurityInfo = parm17;
 
             // connBuilder.AllowBatch = parm18;
-            connBuilder.UserID = userID;
-            connBuilder.Password = userPassword;
 
             return connBuilder.ConnectionString;
         }
@@ -386,7 +412,7 @@ namespace VZF.Data.Mysql
 
                 // commandText = commandText.Replace("{databaseName}", DatabaseOwner);
                 commandText = commandText.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
-                commandText = commandText.Replace("{databaseName}", Config.DatabaseScheme);
+                commandText = commandText.Replace("{databaseName}", Config.DatabaseSchemaName);
 
                 MySqlCommand cmd = new MySqlCommand();
 

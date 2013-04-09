@@ -20,14 +20,14 @@
 
 using System.Web;
 using YAF.Types.Interfaces;
-using YAF.Utils.Helpers;
+using VZF.Utils.Helpers;
 
 namespace YAF.Core
 {
   using System;
   using System.Data;
 
-  using YAF.Utils;
+  using VZF.Utils;
   using YAF.Types.Flags;
 
   /// <summary>

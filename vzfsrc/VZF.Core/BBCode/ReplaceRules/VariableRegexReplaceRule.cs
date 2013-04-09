@@ -24,8 +24,8 @@ namespace YAF.Core.BBCode.ReplaceRules
   using System.Web;
 
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Utils;
-  using YAF.Utils.Helpers.StringUtils;
+  using VZF.Utils;
+  using VZF.Utils.Helpers.StringUtils;
 
   /// <summary>
   /// For complex regex with variable/default and truncate support

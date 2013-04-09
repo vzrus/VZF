@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="VZF" TagName="ReportedPosts" Src="../../controls/ReportedPosts.ascx" %>
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
-<%@ Import Namespace="YAF.Utils" %>
+<%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Classes" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <asp:Repeater ID="List" runat="server">
@@ -22,7 +22,7 @@
             <tr class="header2">
                 <td colspan="3">
                     <VZF:LocalizedLabel ID="TopicLabel" runat="server" LocalizedTag="TOPIC" />
-                    &nbsp;<a id="TopicLink" href='<%# YAF.Utils.YafBuildLink.GetLink(ForumPages.posts, "t={0}", Eval("TopicID")) %>'
+                    &nbsp;<a id="TopicLink" href='<%# VZF.Utils.YafBuildLink.GetLink(ForumPages.posts, "t={0}", Eval("TopicID")) %>'
                         runat="server"><%# Eval("Topic") %></a>
                 </td>
             </tr>
@@ -40,7 +40,7 @@
                         <VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="NUMBERREPORTED" />
                     </strong>
                     <%# DataBinder.Eval(Container.DataItem, "[\"NumberOfReports\"]") %>
-                    <label id="Label1" runat="server" visible='<%# YAF.Utils.General.CompareMessage(DataBinder.Eval(Container.DataItem, "[\"OriginalMessage\"]"),DataBinder.Eval(Container.DataItem, "[\"Message\"]"))%>'>
+                    <label id="Label1" runat="server" visible='<%# VZF.Utils.General.CompareMessage(DataBinder.Eval(Container.DataItem, "[\"OriginalMessage\"]"),DataBinder.Eval(Container.DataItem, "[\"Message\"]"))%>'>
                         <strong>
                             <VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="MODIFIED" />
                         </strong>
@@ -51,7 +51,7 @@
                         TextLocalizedTag="REPORT_SPAM" CommandName="spam" CommandArgument='<%# FormatMessage((System.Data.DataRowView)Container.DataItem) %>'
                         visible='<%# !this.Get<YafBoardSettings>().SpamServiceType.Equals(0)%>' />
                     <VZF:ThemeButton ID="CopyOverBtn" runat="server" CssClass="yaflittlebutton" TextLocalizedPage="MODERATE_FORUM"
-                        TextLocalizedTag="COPYOVER" CommandName="CopyOver" Visible='<%# YAF.Utils.General.CompareMessage(DataBinder.Eval(Container.DataItem, "[\"OriginalMessage\"]"),DataBinder.Eval(Container.DataItem, "[\"Message\"]"))%>'
+                        TextLocalizedTag="COPYOVER" CommandName="CopyOver" Visible='<%# VZF.Utils.General.CompareMessage(DataBinder.Eval(Container.DataItem, "[\"OriginalMessage\"]"),DataBinder.Eval(Container.DataItem, "[\"Message\"]"))%>'
                         CommandArgument='<%# Eval("MessageID") %>' />
                     <VZF:ThemeButton ID="DeleteBtn" runat="server" CssClass="yaflittlebutton" TextLocalizedPage="MODERATE_FORUM"
                         TextLocalizedTag="DELETE" CommandName="Delete" CommandArgument='<%# Eval("MessageID") %>'

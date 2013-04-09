@@ -33,8 +33,8 @@ namespace YAF.Core
     using YAF.Classes;
     
     using YAF.Types.Constants;
-    using YAF.Utils;
-    using YAF.Utils.Helpers.StringUtils;
+    using VZF.Utils;
+    using VZF.Utils.Helpers.StringUtils;
 
     #endregion
 
