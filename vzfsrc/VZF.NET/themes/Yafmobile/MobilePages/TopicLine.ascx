@@ -46,7 +46,7 @@
                <%}
             %></a> 
         <%
-            var favoriteCount = this.Get<IFavoriteTopic>().FavoriteTopicCount((int)this.TopicRow["LinkTopicID"]);
+            var favoriteCount = this.TopicRow["FavoriteCount"].ToType<int>();
             
             if (favoriteCount > 0)
             {

@@ -26,6 +26,8 @@ namespace YAF.Pages
     using System.Data;
     using System.Linq;
     using System.Web;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
 
@@ -356,7 +358,9 @@ namespace YAF.Pages
                 }
             }
 
-            DataTable dt = CommonDb.announcements_list(PageContext.PageModuleID, this.PageContext.PageForumID,
+            DataTable dt = CommonDb.announcements_list(
+                PageContext.PageModuleID,
+                this.PageContext.PageForumID,
                 userId,
                 null,
                 DateTime.UtcNow,
@@ -366,13 +370,15 @@ namespace YAF.Pages
                 true,
                 this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
                 this.Get<YafBoardSettings>().AllowTopicTags);
-
-            if (this.Get<YafBoardSettings>().UseStyledNicks && dt != null)
+            if (dt != null && dt.Rows.Count > 0)
             {
-                dt = this.StyleTransformDataTable(dt);
-            }
+                if (this.Get<YafBoardSettings>().UseStyledNicks)
+                {
+                    dt = this.StyleTransformDataTable(dt);
+                }
 
-            this.Announcements.DataSource = dt;
+                this.Announcements.DataSource = dt;
+            }
 
             DateTime date;
             if (this._showTopicListSelected == 0)
@@ -381,7 +387,7 @@ namespace YAF.Pages
             }
             else
             {
-                int[] days = new[] { 1, 2, 7, 14, 31, 2 * 31, 6 * 31, 356 };
+                var days = new[] { 1, 2, 7, 14, 31, 2 * 31, 6 * 31, 356 };
 
                 date = DateTime.UtcNow.AddDays(-days[this._showTopicListSelected]);
             }
@@ -402,9 +408,8 @@ namespace YAF.Pages
             if (dtTopics != null)
             {
                 dtTopics = this.StyleTransformDataTable(dtTopics);
+                this.TopicList.DataSource = dtTopics;
             }
-
-            this.TopicList.DataSource = dtTopics;
 
             this.DataBind();
 
@@ -510,5 +515,15 @@ namespace YAF.Pages
         }
 
         #endregion
+
+        protected void TopicList_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            RepeaterItem item = e.Item;
+
+            if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
+            {
+                return;
+            }
+        }
     }
 }

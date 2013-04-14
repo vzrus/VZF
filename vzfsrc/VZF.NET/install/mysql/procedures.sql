@@ -3380,7 +3380,7 @@ END;
         ((b.Flags & 2)=0 or x.ReadAccess<>0) and
         (i_CategoryID is null or a.CategoryID=i_CategoryID) and
         ((i_ParentID is null and b.ParentID is null) or b.ParentID=i_ParentID) and
-        x.UserID = i_BoardID
+        x.UserID = i_UserID
     order by
         a.SortOrder,
         b.SortOrder;
@@ -3403,8 +3403,8 @@ select
         a.SortOrder,
         b.SortOrder;
 
-insert into tbl(ForumID,ParentID)
-select * FROM tbl_1;
+insert into tbl_1(ForumID,ParentID)
+select * FROM tbl;
  -- more childrens can be added to display as a tree
 
 
@@ -3467,154 +3467,13 @@ select * FROM tbl_1;
         AND
         (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND 
 		--	(b.ForumID IN (SELECT aa.ForumID FROM tbl aa  UNION SELECT ab.ForumID FROM tbl_1 ab)) and		
-        (b.ForumID IN (SELECT a.ForumID FROM tbl a)) and
+        (b.ForumID IN (SELECT a.ForumID FROM tbl_1 a)) and
         x.UserID = i_UserID
     ORDER BY
         a.SortOrder,
         b.SortOrder;
 
-	DROP TEMPORARY TABLE IF EXISTS tbl_1;
-    DROP TEMPORARY TABLE IF EXISTS tbl;
-        
-        SELECT tf.*, 		
-        t.LastPosted AS LastPosted,
-        t.LastMessageID AS LastMessageID,
-        t.LastMessageFlags,
-        t.TopicMovedID,
-        t.LastUserID AS LastUserID,		
-        t.Topic AS LastTopicName,
-        t.Status AS LastTopicStatus,
-        t.Styles AS LastTopicStyles,
-                (case(i_StyledNicks)
-            when 1 then (select usr.UserStyle from {databaseName}.{objectQualifier}User usr where usr.UserID = t.LastUserID LIMIT 1)
-            else ''	 end)  AS 	Style,		
-        COALESCE(t.LastUserName,(SELECT u2.Name
-             FROM   {databaseName}.{objectQualifier}User u2
-             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUser,
-        COALESCE(t.LastUserDisplayName,(SELECT u2.DisplayName
-             FROM   {databaseName}.{objectQualifier}User u2
-             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUserDisplayName,
-        (case(i_FindLastRead)
-             when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
-             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
-        (case(i_FindLastRead)
-             when 1 then
-               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
-             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess    
-         FROM tmp_flr tf 
-         LEFT JOIN {databaseName}.{objectQualifier}Topic t 
-         ON t.TopicID = tf.LastTopicID 
-		ORDER BY
-        tf.CategoryOrder,
-        tf.ForumOrder;
-
-         DROP TEMPORARY TABLE IF EXISTS tmp_flr;
-END;
---GO
-
-/* STORED PROCEDURE CREATED BY VZ-TEAM */
- CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listread1(
- i_BoardID INT,
- i_UserID INT,
- i_CategoryID INT,
- i_ParentID INT, 
- i_StyledNicks TINYINT(1),
- i_FindLastRead TINYINT(1)) 
- BEGIN
- DROP TEMPORARY TABLE IF EXISTS tbl_1;
- DROP TEMPORARY TABLE IF EXISTS tbl;
- 
- -- get parent forums list first
- CREATE TEMPORARY TABLE IF NOT EXISTS  tbl_1
- select 	
-        b.ForumID,
-        b.ParentID		
-    from 
-        {databaseName}.{objectQualifier}Category a  
-        join {databaseName}.{objectQualifier}Forum b  on b.CategoryID=a.CategoryID
-        join {databaseName}.{objectQualifier}ActiveAccess x  on x.ForumID=b.ForumID	
-    where 
-        a.BoardID = i_BoardID and
-        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
-        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
-        ((i_ParentID is null and b.ParentID is null) or b.ParentID=i_ParentID) and
-        x.UserID = i_BoardID
-    order by
-        a.SortOrder,
-        b.SortOrder;
--- child forums
-CREATE TEMPORARY TABLE IF NOT EXISTS  tbl
-select 	
-        b.ForumID,
-        b.ParentID		
-    from 
-        {databaseName}.{objectQualifier}Category a  
-        join {databaseName}.{objectQualifier}Forum b   on b.CategoryID=a.CategoryID
-        join {databaseName}.{objectQualifier}ActiveAccess x   on x.ForumID=b.ForumID		
-    where 
-        a.BoardID = i_BoardID and
-        ((b.Flags & 2)=0 or x.ReadAccess<>0) and
-        (i_CategoryID is null or a.CategoryID=i_CategoryID) and
-        (b.ParentID IN (SELECT ForumID FROM tbl_1)) and
-        x.UserID = i_UserID
-    order by
-        a.SortOrder,
-        b.SortOrder;
-
- insert into tbl(ForumID,ParentID)
- select * FROM tbl_1;
- -- more childrens can be added to display as a tree
-
-
-   CREATE TEMPORARY TABLE IF NOT EXISTS  tmp_flr
-    SELECT 
-        a.CategoryID, 
-        a.Name AS Category, 
-        b.ForumID AS ForumID,
-        b.Name AS Forum, 
-        b.Description,
-        b.ImageURL AS ImageUrl,
-        b.Styles, 
-        b.ParentID,
-        b.PollGroupID,  
-		b.IsUserForum,        
-        b.Flags,
-    (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseName}.{objectQualifier}Active a1 
-    JOIN {databaseName}.{objectQualifier}User usr 
-    ON a1.UserID = usr.UserID     
-    WHERE a1.ForumID=b.ForumID    
-    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,   
-        b.RemoteURL, 		
-        {databaseName}.{objectQualifier}forum_topics(b.ForumID) AS Topics,
-        {databaseName}.{objectQualifier}forum_posts(b.ForumID) AS Posts, 				
-        CAST(x.ReadAccess AS signed) AS ReadAccess,
-        b.LastTopicID AS LTID,
-        b.LastPosted AS LP,		
-        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
-		a.SortOrder AS CategoryOrder,
-		b.SortOrder AS ForumOrder
-
-    FROM 
-        {databaseName}.{objectQualifier}Category a
-        JOIN {databaseName}.{objectQualifier}Forum b 
-        ON b.CategoryID=a.CategoryID 
-        JOIN {databaseName}.{objectQualifier}ActiveAccess x 
-        ON x.ForumID=b.ForumID
-
-    WHERE 
-        a.BoardID = i_BoardID and
-        ((b.Flags & 2)=0 or x.ReadAccess<>0) and 
-        a.BoardID = i_BoardID
-        AND
-        (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND 				
-        (b.ForumID IN (SELECT ForumID FROM tbl) ) and
-        x.UserID = i_UserID
-    ORDER BY
-        a.SortOrder,
-        b.SortOrder;
-
-	DROP TEMPORARY TABLE IF EXISTS tbl_1;
+			DROP TEMPORARY TABLE IF EXISTS tbl_1;
     DROP TEMPORARY TABLE IF EXISTS tbl;
         
         SELECT tf.*, 		
@@ -3807,6 +3666,7 @@ r.UserID as ModeratorID,
 u.Name AS ModeratorName,
 u.DisplayName AS ModeratorDisplayName,
 u.Email AS ModeratorEmail,
+u.RankID,
 COALESCE(u.Avatar, '') AS ModeratorAvatar,
 {databaseName}.{objectQualifier}biginttobool(IFNULL((select x.UserID from {databaseName}.{objectQualifier}User x where x.UserID=u.UserID and x.AvatarImage is not null),0)) AS ModeratorAvatarImage,			
 case(i_StyledNicks)
@@ -3814,26 +3674,21 @@ case(i_StyledNicks)
             else ''	 end AS Style,
 bf0 AS IsGroup
 FROM {databaseName}.{objectQualifier}User u INNER JOIN (SELECT * FROM (SELECT 
-ForumID,UserID,ModeratorAccess 
+ForumID,UserID,ModeratorAccess,AdminGroup 
 FROM
- {databaseName}.{objectQualifier}vaccessfull1  
- WHERE ModeratorAccess<>0 AND AdminGroup = 0) AS t1
-UNION
-SELECT * FROM (SELECT 
-ForumID,UserID,ModeratorAccess
-FROM
- {databaseName}.{objectQualifier}vaccessfull2  
-  WHERE ModeratorAccess<>0 AND AdminGroup = 0) AS t2
-  UNION 
- SELECT * FROM (SELECT 
- ForumID,UserID,ModeratorAccess
- FROM
- {databaseName}.{objectQualifier}vaccessfull3  
-  WHERE ModeratorAccess<>0  AND AdminGroup = 0) AS t3  
+ {databaseName}.{objectQualifier}vaccessfull  
+ WHERE ModeratorAccess<>0) AS t1
    ) r 
    ON r.UserID = u.UserID  
    JOIN    {databaseName}.{objectQualifier}Forum f 
-    ON f.ForumID = r.ForumID;
+    ON f.ForumID = r.ForumID        
+	JOIN {databaseName}.{objectQualifier}Rank rr
+        ON rr.RankID = u.RankID
+    where
+        r.ModeratorAccess<>0 and r.AdminGroup = 0
+    order by
+        IsGroup desc,
+        ModeratorName asc;
 END;
  --GO
 
@@ -8089,6 +7944,10 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
                (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) AS  LastTopicAccess,	
              (SELECT GROUP_CONCAT(tg.tag separator '','') FROM {databaseName}.{objectQualifier}Tags tg JOIN {databaseName}.{objectQualifier}TopicTags tt on tt.tagID = tg.TagID where tt.TopicID = c.TopicID) AS TopicTags, 
+              c.TopicImage,
+		 c.TopicImageType,
+			 c.TopicImageBin,
+			 0 as HasAttachments, 
              {databaseName}.{objectQualifier}biginttoint(',ici_post_totalrowsnumber,') AS TotalRows,
              {databaseName}.{objectQualifier}biginttoint(',i_PageIndex,') AS PageIndex 
     FROM
@@ -11365,16 +11224,15 @@ SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
-			and ((not a.IsAdminMask  and not a.IsUserMask)
-			or a. CreatedByUserID = i_PageUserID) 				
-ORDER BY a.SortOrder;
+			and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
+			and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0)					
+ORDER BY a.IsUserMask desc,a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
-AND a.AccessMaskID = i_AccessMaskID and ((not a.IsAdminMask  and not a.IsUserMask)
-			or a. CreatedByUserID = i_PageUserID) 
-ORDER BY a.SortOrder;
+AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
+			and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0);
 END IF;
 END;
 --GO
@@ -11387,14 +11245,15 @@ SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
-			and not a.IsUserMask				
+			and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
+			and (i_IsUserMask = 1 or a.IsUserMask = 0)			
 ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
-AND a.AccessMaskID = i_AccessMaskID and not a.IsUserMask 
-ORDER BY a.SortOrder;
+AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)	
+and (i_IsUserMask = 1 or a.IsUserMask = 0);
 END IF;
 END;
 --GO

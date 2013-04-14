@@ -361,8 +361,10 @@ begin
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-			AND (:I_PAGEUSERID IS NOT NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID OR a.ISADMINMASK = :I_ISADMINMASK )
+			AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+			AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))
         order by 
+		    a.ISUSERMASK DESC,
             a.SORTORDER ASC
             INTO
             :"AccessMaskID" ,
@@ -387,9 +389,8 @@ begin
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
-			AND (:I_PAGEUSERID IS NOT NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID OR a.ISADMINMASK = :I_ISADMINMASK )
-        order by 
-            a.SORTORDER ASC
+			AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+			AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))       
             INTO
             :"AccessMaskID",
             :"BoardID",
@@ -430,7 +431,7 @@ begin
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-			and a.ISUSERMASK = 0	
+			and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
         order by 
             a.SORTORDER ASC
             INTO
@@ -456,7 +457,7 @@ begin
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
-			and a.ISUSERMASK = 0
+			and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
         order by 
             a.SORTORDER ASC
             INTO

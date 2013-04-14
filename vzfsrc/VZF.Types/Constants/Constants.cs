@@ -120,6 +120,11 @@ namespace YAF.Types.Constants
             public const string ForumModerators = "ForumModerators";
 
             /// <summary>
+            ///   The user access table.
+            /// </summary>
+            public const string UserForumAccessData = "UserForumAccessData{0}_{1}_{2}";
+
+            /// <summary>
             ///   The guest groups cache.
             /// </summary>
             public const string GuestGroupsCache = "GuestGroupsCache";

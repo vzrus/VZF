@@ -1547,7 +1547,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
@@ -1598,7 +1598,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskID ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserID ?? DBNull.Value;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
@@ -1649,7 +1649,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
                 cmd.Parameters.Add("i_AccessMaskID", MySqlDbType.Int32).Value = accessMaskId ?? DBNull.Value;
                 cmd.Parameters.Add("i_ExcludeFlags", MySqlDbType.Int32).Value = excludeFlags;
-                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId;
+                cmd.Parameters.Add("i_PageUserID", MySqlDbType.Int32).Value = pageUserId ?? DBNull.Value;
                 cmd.Parameters.Add("i_IsUserMask", MySqlDbType.Byte).Value = isUserMask;
                 cmd.Parameters.Add("i_IsAdminMask", MySqlDbType.Byte).Value = isAdminMask;
 
@@ -3678,39 +3678,6 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
-            /* DataTable dt1 = null;
-            DataTable dt2 = null;
-
-            if ( categoryID == null ) { categoryID = DBNull.Value; }
-            if ( parentID == null ) { parentID = DBNull.Value; }      
-            
-      
-            using (var cmd1 = MySqlDbAccess.GetCommand("forum_listread"))
-            {
-                cmd1.CommandType = CommandType.StoredProcedure;
-
-                cmd1.Parameters.Add( "i_BoardID", MySqlDbType.Int32 ).Value = boardId;
-                cmd1.Parameters.Add( "i_UserID", MySqlDbType.Int32 ).Value = userID;
-                cmd1.Parameters.Add( "i_CategoryID", MySqlDbType.Int32 ).Value = categoryID;
-                cmd1.Parameters.Add( "i_ParentID", MySqlDbType.Int32 ).Value = parentID; 
-               
-                dt1 = MySqlDbAccess.GetDataTableFromReader( cmd1, false );         
-
-            }  
-           
-            //Here we delete rows without read access or no view access
-                foreach ( DataRow dr1 in dt1.Rows )
-                {           
-                                       
-                  if (dr1["ReadAccess"].ToString() == "0" && (Convert.ToInt32(dr1["Flags"]) & 2) != 0)
-                   {
-                         dr1.Delete();                        
-                   }                   
-                }
-
-                dt1.AcceptChanges();
-                return dt1;   */
-
         }
 
         /// <summary>
@@ -3770,8 +3737,10 @@ namespace VZF.Data.Mysql
                                     dr.Delete();
                                     categories[cntr] = 0;
                                 }
+
                                 cntr++;
                             }
+
                             ds.Tables[MySqlDbAccess.GetObjectName("Forum")].AcceptChanges();
 
                             foreach (DataRow dr in ds.Tables[MySqlDbAccess.GetObjectName("Category")].Rows)
@@ -3786,8 +3755,13 @@ namespace VZF.Data.Mysql
                                         deleteMe = false;
                                     }
                                 }
-                                if (deleteMe) dr.Delete();
+
+                                if (deleteMe)
+                                {
+                                    dr.Delete();
+                                }
                             }
+
                             ds.Tables[MySqlDbAccess.GetObjectName("Category")].AcceptChanges();
 
                             ds.Relations.Add(
@@ -3796,15 +3770,27 @@ namespace VZF.Data.Mysql
                                 ds.Tables[MySqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"]);
                             trans.Commit();
                         }
+
                         return ds;
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// The forum_moderators.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="styledNicks">
+        /// The styled nicks.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_moderators([NotNull] string connectionString, object styledNicks)
         {
-
             /*  using (var cmd = MySqlDbAccess.GetCommand("forum_moderators"))   
               {
                   cmd.CommandType = CommandType.StoredProcedure;
@@ -3819,6 +3805,7 @@ namespace VZF.Data.Mysql
                 dt1 = MySqlDbAccess.GetData(cmd1, connectionString);
 
             }
+
             using (var cmd2 = MySqlDbAccess.GetCommand("forum_moderators_2"))
             {
                 cmd2.CommandType = CommandType.StoredProcedure;
@@ -3826,15 +3813,13 @@ namespace VZF.Data.Mysql
                 DataTable dt2 = MySqlDbAccess.GetData(cmd2, connectionString);
                 if (dt2.Rows.Count > 0 && dt2.Rows[0]["ForumID"] != DBNull.Value)
                 {
-                    dt1.Merge(MySqlDbAccess.GetData(cmd2, connectionString));
+                    dt1.Merge(dt2);
                 }
+
                 return dt1;
-
             }
+
             //  }
-
-
-
         }
 
         /// <summary>

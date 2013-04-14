@@ -3492,6 +3492,7 @@ Visit {forumname} at {forumlink}
     <Resource tag="UNREADTOPICS">There are {0} Topic(s) with unread Messages</Resource>
    </page>
    <page name="TOPICS">
+      <Resource tag="ANNOUNCEMENTS_TITLE">Announcements</Resource>
       <Resource tag="ALL">All</Resource>
       <Resource tag="BY">by {0}</Resource>
       <Resource tag="CREATED">Created</Resource>

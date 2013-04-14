@@ -14,7 +14,7 @@
         </tr>
         <tr class="header2">
             <th>
-                <VZF:LocalizedLabel ID="SearchRolesLocalizedLabel" runat="server" LocalizedTag="Search_Role" />
+                 &nbsp;
             </th>
             <th>
                 <VZF:LocalizedLabel ID="SearchRankLocalizedLabel" runat="server" LocalizedTag="Search_Rank" />
@@ -30,7 +30,7 @@
     <tbody>
         <tr class="post">
             <td>
-                <asp:DropDownList ID="Roles" runat="server" Width="95%" />
+                 &nbsp;
             </td>
             <td>
                 <asp:DropDownList ID="Ranks" runat="server" Width="95%" />

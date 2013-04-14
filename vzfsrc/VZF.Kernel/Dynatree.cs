@@ -325,7 +325,6 @@ namespace VZF.Kernel
                 {
                 if (childRows != null && childRows.Rows.Count > 0)
                 {
-                  
                     var sb = new StringBuilder("[");
                     // level counter
                     int closeBlockTimes = 0;

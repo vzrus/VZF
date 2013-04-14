@@ -108,6 +108,18 @@ namespace YAF.Core
             }
         }
 
+        /// <summary>
+        /// Gets the Username of the Guest user for the current board.
+        /// </summary>
+        public static string GuestUserDisplayName
+        {
+            get
+            {
+                return
+                    CommonDb.user_list((int?)YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("DisplayName", null);
+            }
+        }
+
         #endregion
 
         #region Public Methods

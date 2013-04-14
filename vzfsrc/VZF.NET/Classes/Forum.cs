@@ -312,7 +312,7 @@ namespace YAF
         {
             get
             {
-                return YafContext.Current.User == null ? "Guest" : YafContext.Current.User.UserName;
+                return YafContext.Current.User == null ? UserMembershipHelper.GuestUserName : YafContext.Current.User.UserName;
             }
         }
 

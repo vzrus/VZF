@@ -1632,7 +1632,7 @@ namespace YAF.Pages
             if (!this.PageContext.IsAdmin || !this.PageContext.ForumModeratorAccess)
             {
                 if (YafSpamCheck.IsPostSpam(
-                    this.PageContext.IsGuest ? "Guest" : this.PageContext.PageUserName,
+                    this.PageContext.IsGuest ? UserMembershipHelper.GuestUserName : this.PageContext.PageUserName,
                     this.PageContext.PageTopicName,
                     this._quickReplyEditor.Text))
                 {

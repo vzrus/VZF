@@ -393,7 +393,7 @@ namespace YAF.Pages
                 newRow["GroupID"] = DBNull.Value;
                 dt.Rows.InsertAt(newRow, 0);
 
-                // commits the deletes to the table
+                // commits to the table
                 dt.AcceptChanges();
             }
 
@@ -412,7 +412,7 @@ namespace YAF.Pages
                 newRow["RankID"] = DBNull.Value;
                 dt.Rows.InsertAt(newRow, 0);
 
-                DataRow[] guestRows = dt.Select("Name='Guest'");
+                DataRow[] guestRows = dt.Select("Name='{0}'".FormatWith(UserMembershipHelper.GuestUserName));
 
                 if (guestRows.Length > 0)
                 {

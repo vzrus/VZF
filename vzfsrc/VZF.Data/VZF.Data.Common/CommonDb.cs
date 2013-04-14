@@ -5043,6 +5043,23 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The forumpage_initdb.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="errorStr">
+        /// The error str.
+        /// </param>
+        /// <param name="debugging">
+        /// The debugging.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static bool forumpage_initdb(int? mid, out string errorStr, bool debugging)
         {
             string dataEngine;
@@ -5068,6 +5085,20 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The forumpage_validateversion.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="appVersion">
+        /// The app version.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static string forumpage_validateversion(int? mid, int appVersion)
         {
             string dataEngine;
@@ -5093,6 +5124,53 @@ namespace VZF.Data.Common
             }
         }
 
+        /// <summary>
+        /// The get search result.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="toSearchWhat">
+        /// The to search what.
+        /// </param>
+        /// <param name="toSearchFromWho">
+        /// The to search from who.
+        /// </param>
+        /// <param name="searchFromWhoMethod">
+        /// The search from who method.
+        /// </param>
+        /// <param name="searchWhatMethod">
+        /// The search what method.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="forumIDToStartAt">
+        /// The forum id to start at.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="maxResults">
+        /// The max results.
+        /// </param>
+        /// <param name="useFullText">
+        /// The use full text.
+        /// </param>
+        /// <param name="searchDisplayName">
+        /// The search display name.
+        /// </param>
+        /// <param name="includeChildren">
+        /// The include children.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static DataTable GetSearchResult(
             int? mid,
             string toSearchWhat,

@@ -37,6 +37,39 @@
         <VZF:ForumList AltLastPost="<%# this.LastPostImageTT %>" runat="server" ID="ForumList" />
     </table>
 </asp:PlaceHolder>
+<table class="content" width="100%">
+   
+    <asp:Repeater ID="Announcements" runat="server">
+        <HeaderTemplate> <tr class="topicTitle">
+          <tr class="topicTitle">
+        <th class="header1" colspan="6">
+        <VZF:ThemeImage ID="ai" ThemePage="ICONS" ThemeTag="ANOUNCEMENT_T_SICON" LocalizedTitlePage="TOPICS" LocalizedTitleTag="ANNOUNCEMENTS_TITLE"  runat="server"/>
+            <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="ANNOUNCEMENTS_TITLE" />
+        </th>
+    </tr>
+    </tr>
+    <tr class="topicSubTitle">
+        <th class="header2" width="1%">&nbsp;
+            
+        </th>
+        <th class="header2 headerTopic" align="left">
+            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
+        </th>
+<%--        <th class="header2 headerReplies" align="right" width="7%">
+            <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
+        </th>
+        <th class="header2 headerViews" align="right" width="7%">
+            <VZF:LocalizedLabel ID="LocalizedLabel9" runat="server" LocalizedTag="views" />
+        </th>
+        <th class="header2 headerLastPost" align="left" width="15%">
+            <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
+        </th>--%>
+    </tr></HeaderTemplate>
+        <ItemTemplate>
+            <VZF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+        </ItemTemplate>
+    </asp:Repeater>
+</table>
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
@@ -61,7 +94,7 @@
             
         </th>
         <th class="header2 headerTopic" align="left">
-            <VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="topics" />
+            <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="topics" />
         </th>
 <%--        <th class="header2 headerReplies" align="right" width="7%">
             <VZF:LocalizedLabel ID="LocalizedLabel8" runat="server" LocalizedTag="replies" />
@@ -73,11 +106,6 @@
             <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
         </th>--%>
     </tr>
-    <asp:Repeater ID="Announcements" runat="server">
-        <ItemTemplate>
-            <VZF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
-        </ItemTemplate>
-    </asp:Repeater>
     <asp:Repeater ID="TopicList" runat="server">
         <ItemTemplate>
             <VZF:TopicLine ID="TopicLine2" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
@@ -86,22 +114,24 @@
             <VZF:TopicLine ID="TopicLine3" runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </AlternatingItemTemplate>
     </asp:Repeater>
-    <VZF:ForumUsers ID="ForumUsers1" runat="server" />
+    <VZF:ForumUsers ID="ForumUsers2" runat="server" />
     <tr>
-        <td align="center" colspan="6" class="footer1">
+       <td align="center" colspan="6" class="footer1">
              <VZF:SimpleTagCloud ID="Stc1" runat="server"/>  
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
-                    <td id="showListTd">
+                    <td width="1%" style="white-space: nowrap">
                         <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="showtopics" />
                         <asp:DropDownList ID="ShowList" runat="server" AutoPostBack="True" />
-                    <br/><br/>
+                    </td>
+                    <td align="right">
                         <asp:LinkButton ID="WatchForum" runat="server" /><span id="WatchForumID" runat="server"
                             visible="false" /><span id="delimiter1" runat="server" visible="<%# this.WatchForum.Text.Length > 0 %>"> | </span>
                         <asp:LinkButton runat="server" ID="MarkRead" />
                         <VZF:RssFeedLink ID="RssFeed" runat="server" FeedType="Topics" 
                             Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" TitleLocalizedTag="RSSICONTOOLTIPFORUM" />  
-                          <VZF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />                            
+                          <VZF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />    
+                                             
                     </td>
                 </tr>
             </table>

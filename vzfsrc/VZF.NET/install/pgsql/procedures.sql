@@ -311,7 +311,6 @@ BEGIN
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
-           ORDER BY a.sortorder LIMIT 1
       LOOP
              RETURN NEXT _rec;
       END LOOP;
@@ -347,10 +346,9 @@ BEGIN
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0
-			-- and (not i_isusermask or isusermask) 
-			and ((not isadminmask  and not a.isusermask)
-			or a.createdbyuserid = i_pageuserid) 
-           ORDER BY a.sortorder
+			and (i_isadminmask or not a.isadminmask)
+			and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
+			ORDER BY a.isusermask desc,a.sortorder;
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -367,9 +365,9 @@ BEGIN
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
-			and ((not isadminmask  and not a.isusermask)
-			or a.createdbyuserid = i_pageuserid) 
-           ORDER BY a.sortorder LIMIT 1
+			and (i_isadminmask or not a.isadminmask)
+			and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
+            LIMIT 1
       LOOP
              RETURN NEXT _rec;
       END LOOP;
@@ -405,7 +403,7 @@ BEGIN
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0		
-			and not a.isusermask
+			and (i_isadminmask or not a.isadminmask)
            ORDER BY a.sortorder
        LOOP
              RETURN NEXT _rec;
@@ -423,8 +421,8 @@ BEGIN
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
-			and not a.isusermask
-           ORDER BY a.sortorder LIMIT 1
+			and (i_isadminmask or not a.isadminmask)
+      LIMIT 1
       LOOP
              RETURN NEXT _rec;
       END LOOP;

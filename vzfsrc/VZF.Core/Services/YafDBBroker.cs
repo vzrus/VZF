@@ -210,24 +210,43 @@ namespace YAF.Core.Services
 
             using (var ds = new DataSet())
             {
-                // get the cached version of forum moderators if it's valid
-                var moderator = this.DataCache.GetOrSet(
-                    Constants.Cache.ForumModerators, 
-                    this.GetModerators, 
-                    TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardModeratorsCacheTimeout));
+                DataTable moderator;
+                if (this.Get<YafBoardSettings>().ShowModeratorList)
+                {
+                    moderator = this.GetModerators();
+                }
+                else
+                {
+                    // add dummy table.
+                    moderator = new DataTable(CommonSqlDbAccess.GetObjectName("Moderator"));
+                    moderator.Columns.AddRange(
+                        new[]
+                            {
+                                new DataColumn("ForumID", typeof(int)), 
+                                new DataColumn("ForumName", typeof(string)),
+                                new DataColumn("ModeratorName", typeof(string)),
+                                new DataColumn("ModeratorDisplayName", typeof(string)),
+                                new DataColumn("ModeratorEmail", typeof(string)),
+                                new DataColumn("ModeratorAvatar", typeof(string)),
+                                new DataColumn("ModeratorAvatarImage", typeof(bool)),
+                                new DataColumn("Style", typeof(string)), 
+                                new DataColumn("IsGroup", typeof(bool))
+                            });
+                   // moderator.Constraints.Add("PK_Mod_ForumID", moderator.Columns["ForumID"], true);
+                }
 
                 // insert it into this DataSet
                 ds.Tables.Add(moderator.Copy());
 
                 // get the Category Table
                 DataTable category = this.DataCache.GetOrSet(
-                    Constants.Cache.ForumCategory, 
+                    Constants.Cache.ForumCategory,
                     () =>
                         {
                             var catDt = CommonDb.category_list(YafContext.Current.PageModuleID, boardID, null);
                             catDt.TableName = CommonSqlDbAccess.GetObjectName("Category");
                             return catDt;
-                        }, 
+                        },
                     TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardCategoriesCacheTimeout));
 
                 // add it to this dataset
@@ -248,19 +267,29 @@ namespace YAF.Core.Services
                     categoryTable.AcceptChanges();
                 }
 
-                DataTable forum = CommonDb.forum_listread(YafContext.Current.PageModuleID, boardID, userID, categoryID, parentID, this.Get<YafBoardSettings>().UseStyledNicks, this.Get<YafBoardSettings>().UseReadTrackingByDatabase,true,false,null);
+                DataTable forum = CommonDb.forum_listread(
+                    YafContext.Current.PageModuleID,
+                    boardID,
+                    userID,
+                    categoryID,
+                    parentID,
+                    this.Get<YafBoardSettings>().UseStyledNicks,
+                    this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
+                    true,
+                    false,
+                    null);
                 forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
                 ds.Tables.Add(forum.Copy());
 
                 ds.Relations.Add(
-                    "FK_Forum_Category", 
+                    "FK_Forum_Category",
                     categoryTable.Columns["CategoryID"],
-                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"], 
+                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"],
                     false);
                 ds.Relations.Add(
                     "FK_Moderator_Forum",
                     ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["ForumID"],
-                    ds.Tables[CommonSqlDbAccess.GetObjectName("Moderator")].Columns["ForumID"], 
+                    ds.Tables[CommonSqlDbAccess.GetObjectName("Moderator")].Columns["ForumID"],
                     false);
 
                 bool deletedCategory = false;
@@ -268,7 +297,8 @@ namespace YAF.Core.Services
                 // remove empty categories...
                 foreach (DataRow row in
                     categoryTable.SelectTypedList(row => new { row, childRows = row.GetChildRows("FK_Forum_Category") })
-                        .Where(@t => !@t.childRows.Any()).Select(@t => @t.row))
+                                 .Where(@t => !@t.childRows.Any())
+                                 .Select(@t => @t.row))
                 {
                     // remove this category...
                     row.Delete();
@@ -352,10 +382,12 @@ namespace YAF.Core.Services
         {
             return
                 this.StyleTransformDataTable(
-                    CommonDb.active_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, 
-                        guests, 
-                        crawlers, 
-                        activeTime, 
+                    CommonDb.active_list(
+                        YafContext.Current.PageModuleID,
+                        YafContext.Current.PageBoardID,
+                        guests,
+                        crawlers,
+                        activeTime,
                         this.Get<YafBoardSettings>().UseStyledNicks));
         }
 
@@ -368,10 +400,7 @@ namespace YAF.Core.Services
         public List<SimpleModerator> GetAllModerators()
         {
             // get the cached version of forum moderators if it's valid
-            var moderator = this.DataCache.GetOrSet(
-                Constants.Cache.ForumModerators, 
-                this.GetModerators, 
-                TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardModeratorsCacheTimeout));
+            var moderator = this.GetModerators();
 
             if (this.Get<YafBoardSettings>().UseStyledNicks)
             {
@@ -458,13 +487,17 @@ namespace YAF.Core.Services
         /// </returns>
         public DataTable GetModerators()
         {
-            DataTable moderator = CommonDb.forum_moderators(YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
-            moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
-
-            return moderator;
+            return this.DataCache.GetOrSet(
+                Constants.Cache.ForumModerators,
+                () =>
+                    {
+                        DataTable moderator = CommonDb.forum_moderators(
+                            YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
+                        moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
+                        return moderator;
+                    },
+                TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardModeratorsCacheTimeout));
         }
-
-       
 
         /// <summary>
         /// Get the list of recently logged in users.

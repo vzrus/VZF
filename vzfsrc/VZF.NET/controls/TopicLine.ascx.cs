@@ -471,9 +471,9 @@ namespace VZF.Controls
                         case 1:
                             strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "STICKY_T_SICON"), this.GetText("STICKY"));
                             break;
-                        case 2:
+                     /*   case 2:
                             strReturn += "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />".FormatWith(this.Get<ITheme>().GetItem("ICONS", "ANOUNCEMENT_T_SICON"), this.GetText("ANNOUNCEMENT"));
-                            break;
+                            break; */
                     }
 
 

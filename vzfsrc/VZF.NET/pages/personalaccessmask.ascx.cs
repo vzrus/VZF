@@ -32,18 +32,16 @@ namespace YAF.pages
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     /// <summary>
     /// The personalforum.
@@ -51,9 +49,10 @@ namespace YAF.pages
     public partial class personalaccessmask : ForumPage
     {
         #region Constants and Fields
-       
+
 
         #endregion
+
         #region Methods
 
 
@@ -95,14 +94,21 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // user profile
-            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile));
+            this.PageLinks.AddLink(
+                this.Get<YafBoardSettings>().EnableDisplayName
+                    ? this.PageContext.CurrentUserData.DisplayName
+                    : this.PageContext.PageUserName,
+                YafBuildLink.GetLink(ForumPages.cp_profile));
 
             // title
             this.PageLinks.AddLink(this.GetText("PERSONALACCESSMASK", "TITLE"), string.Empty);
 
-            this.Page.Header.Title = "{0} - {1}".FormatWith(
-               this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
-               this.GetText("PERSONALACCESSMASK", "TITLE"));
+            this.Page.Header.Title =
+                "{0} - {1}".FormatWith(
+                    this.Get<YafBoardSettings>().EnableDisplayName
+                        ? this.PageContext.CurrentUserData.DisplayName
+                        : this.PageContext.PageUserName,
+                    this.GetText("PERSONALACCESSMASK", "TITLE"));
 
         }
 
@@ -120,7 +126,9 @@ namespace YAF.pages
         protected string GetLinkedStatus([NotNull] DataRowView currentRow)
         {
             // check whether role is Guests role, which can't be linked
-            return currentRow["Flags"].BinaryAnd(2) ? this.GetText("ADMIN_GROUPS", "UNLINKABLE") : this.GetText("ADMIN_GROUPS", "LINKED");
+            return currentRow["Flags"].BinaryAnd(2)
+                       ? this.GetText("ADMIN_GROUPS", "UNLINKABLE")
+                       : this.GetText("ADMIN_GROUPS", "LINKED");
         }
 
 
@@ -135,7 +143,10 @@ namespace YAF.pages
         /// </param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (PageContext.UsrPersonalMasks <= 0 || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>() != PageContext.PageUserID)
+            if (PageContext.UsrPersonalMasks <= 0
+                || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u") == null
+                || this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>()
+                != PageContext.PageUserID)
             {
                 YafBuildLink.AccessDenied();
             }
@@ -172,19 +183,17 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&f={0}", PageContext.PageUserID, e.CommandArgument);
+                    YafBuildLink.Redirect(
+                        ForumPages.editforum, "u={0}&f={0}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
-                    var errorMessage = string.Empty;
-
-                    // Simply Delete the Forum with all of its Content
-                    var forumId = this.GetQueryStringAsInt("f");
-
                     // schedule...
-                    ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, forumId.Value, out errorMessage);
+                    string errorMessage;
+                    ForumDeleteTask.Start(
+                        YafContext.Current.PageModuleID, this.PageContext.PageBoardID, (int)e.CommandArgument, out errorMessage);
                     break;
                 case "moderate":
-                  YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
                     break;
             }
         }
@@ -210,6 +219,7 @@ namespace YAF.pages
 
             return null;
         }
+
         #endregion
 
         /// <summary>
@@ -260,7 +270,8 @@ namespace YAF.pages
                 case "edit":
 
                     // redirect to editing page
-                    YafBuildLink.Redirect(ForumPages.editaccessmask, "i={0}&u={1}", e.CommandArgument, PageContext.PageUserID);
+                    YafBuildLink.Redirect(
+                        ForumPages.editaccessmask, "i={0}&u={1}", e.CommandArgument, PageContext.PageUserID);
                     break;
                 case "delete":
 
@@ -322,7 +333,14 @@ namespace YAF.pages
             // bind data to controls
 
             // list all access masks for this boeard
-            this.List.DataSource = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);
+            this.List.DataSource = CommonDb.accessmask_pforumlist(
+                mid: PageContext.PageModuleID,
+                boardId: this.PageContext.PageBoardID,
+                accessMaskID: null,
+                excludeFlags: 0,
+                pageUserID: this.PageContext.PageUserID,
+                isUserMask: true,
+                isAdminMask: false);
 
             this.DataBind();
         }

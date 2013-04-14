@@ -291,8 +291,9 @@ namespace YAF.Pages
                 newRow["Name"] = this.GetText("ALL");
                 newRow["RankID"] = DBNull.Value;
                 dt.Rows.InsertAt(newRow, 0);
+
                 // this.GetText("COMMON", "GUEST_NAME")
-                DataRow[] guestRows = dt.Select("Name='Guest'");
+                DataRow[] guestRows = dt.Select("Name='Guest'".FormatWith());
 
                 if (guestRows.Length > 0)
                 {
@@ -341,10 +342,10 @@ namespace YAF.Pages
         {
             this.SetSort("Joined");
 
-            ViewState["SortNameField"] = 0;
-            ViewState["SortRankNameField"] = 0;
-            ViewState["SortNumPostsField"] = 0;
-            ViewState["SortLastVisitField"] = 0;
+            this.ViewState["SortNameField"] = 0;
+            this.ViewState["SortRankNameField"] = 0;
+            this.ViewState["SortNumPostsField"] = 0;
+            this.ViewState["SortLastVisitField"] = 0;
 
             this.BindData();
         }
@@ -362,10 +363,10 @@ namespace YAF.Pages
         {
             this.SetSort("LastVisit");
 
-            ViewState["SortNameField"] = 0;
-            ViewState["SortRankNameField"] = 0;
-            ViewState["SortJoinedField"] = 0;
-            ViewState["SortNumPostsField"] = 0;
+            this.ViewState["SortNameField"] = 0;
+            this.ViewState["SortRankNameField"] = 0;
+            this.ViewState["SortJoinedField"] = 0;
+            this.ViewState["SortNumPostsField"] = 0;
 
             this.BindData();
         }
@@ -383,10 +384,10 @@ namespace YAF.Pages
         {
             this.SetSort("NumPosts");
 
-            ViewState["SortNameField"] = 0;
-            ViewState["SortRankNameField"] = 0;
-            ViewState["SortJoinedField"] = 0;
-            ViewState["SortLastVisitField"] = 0;
+            this.ViewState["SortNameField"] = 0;
+            this.ViewState["SortRankNameField"] = 0;
+            this.ViewState["SortJoinedField"] = 0;
+            this.ViewState["SortLastVisitField"] = 0;
 
             this.BindData();
         }
@@ -404,10 +405,10 @@ namespace YAF.Pages
         {
             this.SetSort("RankName");
 
-            ViewState["SortNameField"] = 0;
-            ViewState["SortJoinedField"] = 0;
-            ViewState["SortNumPostsField"] = 0;
-            ViewState["SortLastVisitField"] = 0;
+            this.ViewState["SortNameField"] = 0;
+            this.ViewState["SortJoinedField"] = 0;
+            this.ViewState["SortNumPostsField"] = 0;
+            this.ViewState["SortLastVisitField"] = 0;
 
             this.BindData();
         }
@@ -425,10 +426,10 @@ namespace YAF.Pages
         {
             this.SetSort("Name");
           
-            ViewState["SortRankNameField"] = 0;
-            ViewState["SortJoinedField"] = 0;
-            ViewState["SortNumPostsField"] = 0;
-            ViewState["SortLastVisitField"] = 0;
+            this.ViewState["SortRankNameField"] = 0;
+            this.ViewState["SortJoinedField"] = 0;
+            this.ViewState["SortNumPostsField"] = 0;
+            this.ViewState["SortLastVisitField"] = 0;
 
             this.BindData();
         }
@@ -449,17 +450,17 @@ namespace YAF.Pages
             
             int numpostsTb;
 
-            if (NumPostsTB.Text.Trim().IsSet() &&
-                (!int.TryParse(NumPostsTB.Text.Trim(), out numpostsTb) || numpostsTb < 0 || numpostsTb > int.MaxValue))
+            if (this.NumPostsTB.Text.Trim().IsSet() &&
+                (!int.TryParse(this.NumPostsTB.Text.Trim(), out numpostsTb) || numpostsTb < 0 || numpostsTb > int.MaxValue))
             {
                 PageContext.AddLoadMessage(this.GetText("MEMBERS", "INVALIDPOSTSVALUE"));
                 return;
             }
 
-            if (NumPostsTB.Text.Trim().IsNotSet())
+            if (this.NumPostsTB.Text.Trim().IsNotSet())
             {
-                NumPostsTB.Text = "0";
-                NumPostDDL.SelectedValue = "3";
+                this.NumPostsTB.Text = "0";
+                this.NumPostDDL.SelectedValue = "3";
             }
 
             // get the user list...
@@ -600,24 +601,24 @@ namespace YAF.Pages
             switch (field)
             {
                 case "Name":
-                    ViewState["SortNameField"] = ViewState["SortNameField"] == null ? 0 : 
-                    (ViewState["SortNameField"].ToType<int>() == 1 ? 2 : 1);
+                    this.ViewState["SortNameField"] = this.ViewState["SortNameField"] == null ? 0 : 
+                    (this.ViewState["SortNameField"].ToType<int>() == 1 ? 2 : 1);
                     break;
                 case "RankName":
-                    ViewState["SortRankNameField"] = ViewState["SortRankNameField"] == null ? 0 :
-                  (ViewState["SortRankNameField"].ToType<int>() == 1 ? 2 : 1);
+                    this.ViewState["SortRankNameField"] = this.ViewState["SortRankNameField"] == null ? 0 :
+                  (this.ViewState["SortRankNameField"].ToType<int>() == 1 ? 2 : 1);
                   break;
                 case "Joined":
-                    ViewState["SortJoinedField"] = ViewState["SortJoinedField"] == null ? 0 :
-                  (ViewState["SortJoinedField"].ToType<int>() == 1 ? 2 : 1);
+                    this.ViewState["SortJoinedField"] = this.ViewState["SortJoinedField"] == null ? 0 :
+                  (this.ViewState["SortJoinedField"].ToType<int>() == 1 ? 2 : 1);
                   break;
                 case "NumPosts":
-                  ViewState["SortNumPostsField"] = ViewState["SortNumPostsField"] == null ? 0 :
-                 (ViewState["SortNumPostsField"].ToType<int>() == 1 ? 2 : 1);
+                  this.ViewState["SortNumPostsField"] = this.ViewState["SortNumPostsField"] == null ? 0 :
+                 (this.ViewState["SortNumPostsField"].ToType<int>() == 1 ? 2 : 1);
                  break;
                 case "LastVisit":
-                    ViewState["SortLastVisitField"] = ViewState["SortLastVisitField"] == null  ? 0 :
-                 (ViewState["SortLastVisitField"].ToType<int>() == 1 ? 2 : 1);
+                   this.ViewState["SortLastVisitField"] = this.ViewState["SortLastVisitField"] == null  ? 0 :
+                 (this.ViewState["SortLastVisitField"].ToType<int>() == 1 ? 2 : 1);
                  break;
                 default:
                     break;

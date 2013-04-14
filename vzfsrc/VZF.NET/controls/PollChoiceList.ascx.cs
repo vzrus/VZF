@@ -284,13 +284,13 @@ namespace VZF.Controls
     protected void Poll_OnItemDataBound([NotNull] object source, [NotNull] RepeaterItemEventArgs e)
     {
       RepeaterItem item = e.Item;
-      var drowv = (DataRowView)e.Item.DataItem;
-      var trow = item.FindControlRecursiveAs<HtmlTableRow>("VoteTr");
-
       if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
       {
         return;
       }
+
+      var drowv = (DataRowView)e.Item.DataItem;
+      var trow = item.FindControlRecursiveAs<HtmlTableRow>("VoteTr");
 
       // Voting link 
       var myLinkButton = item.FindControlRecursiveAs<MyLinkButton>("MyLinkButton1");
@@ -298,12 +298,12 @@ namespace VZF.Controls
       var myChoiceMarker = item.FindControlRecursiveAs<HtmlImage>("YourChoice");
       if (this.ChoiceId != null)
       {
-          foreach (var mychoice in this.ChoiceId.Where(mychoice => (int) drowv.Row["ChoiceID"] == mychoice))
+          foreach (var mychoice in this.ChoiceId.Where(mychoice => (int)drowv.Row["ChoiceID"] == mychoice))
           {
               myChoiceMarker.Visible = true;
           }
 
-          if (Voters != null)
+          if (this.Voters != null)
           {
               var himage = item.FindControlRecursiveAs<HtmlImage>("ImgVoteBar");
               foreach (DataRow row in this.Voters.Rows)

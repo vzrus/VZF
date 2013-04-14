@@ -58,6 +58,8 @@ namespace YAF.Pages
 
         #endregion
 
+        private bool isPersonalForum = false;
+
         #region Public Methods
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace YAF.Pages
         {
             // load data
             DataTable dt;
-            bool isPersonalForum = false;
+         
             if (!this.PageContext.ForumModeratorAccess)
             {
                 var forumId = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f");
@@ -79,7 +81,7 @@ namespace YAF.Pages
                     {
                         if (dt1 != null && dt1.Rows.Count > 0)
                         {
-                            isPersonalForum = true;
+                            this.isPersonalForum = true;
                         }
                         else
                         {
@@ -94,7 +96,7 @@ namespace YAF.Pages
             }
 
             // only admin can assign all access masks
-            if (!this.PageContext.IsAdmin)
+            if (!this.PageContext.IsAdmin && !this.isPersonalForum)
             {
                 // do not include access masks with this flags set
                 const int flags = (int)AccessFlags.Flags.ModeratorAccess;
@@ -104,7 +106,7 @@ namespace YAF.Pages
             }
             else
             {
-                if (isPersonalForum)
+                if (this.isPersonalForum)
                 {
                     dt = CommonDb.accessmask_pforumlist(
                         mid: PageContext.PageModuleID, 
@@ -112,12 +114,19 @@ namespace YAF.Pages
                         accessMaskID: null, 
                         excludeFlags: 0, 
                         pageUserID: this.PageContext.PageUserID, 
-                        isUserMask: false, 
-                        isAdminMask: true);
+                        isUserMask: true, 
+                        isAdminMask: false);
                 }
                 else
                 {
-                    dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+                    dt = CommonDb.accessmask_aforumlist(
+                        mid: PageContext.PageModuleID, 
+                        boardId: this.PageContext.PageBoardID, 
+                        accessMaskID: null, 
+                        excludeFlags: 0, 
+                        pageUserID: null, 
+                        isUserMask: false,
+                        isAdminMask: PageContext.IsAdmin);
                 }
             }
 

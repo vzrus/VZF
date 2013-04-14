@@ -42,6 +42,46 @@
         <VZF:ForumList AltLastPost="<%# this.LastPostImageTT %>" runat="server" ID="ForumList" />
     </table>
 </asp:PlaceHolder>
+  <table class="content" width="100%">
+   <asp:Repeater ID="Announcements" runat="server">
+       <HeaderTemplate>
+           <tr class="topicTitle">
+        <th class="header1" colspan="6">
+            <VZF:ThemeImage ID="ai" ThemePage="ICONS" ThemeTag="ANOUNCEMENT_T_SICON" LocalizedTitlePage="TOPICS" LocalizedTitleTag="ANNOUNCEMENTS_TITLE"  runat="server"/>
+            <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="ANNOUNCEMENTS_TITLE" />
+        </th>
+    </tr>
+    <tr class="topicSubTitle">
+        <th class="header2" width="1%">
+            &nbsp;
+        </th>
+        <th class="header2 headerTopic" align="left">
+            <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="topics" />
+        </th>
+        <th class="header2 headerReplies" align="right" width="7%">
+            <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="replies" />
+        </th>
+        <th class="header2 headerViews" align="right" width="7%">
+            <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="views" />
+        </th>
+        <th class="header2 headerLastPost" align="left" width="15%">
+            <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="lastpost" />
+        </th>
+    </tr>
+       </HeaderTemplate>
+        <ItemTemplate>
+            <VZF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
+        </ItemTemplate>
+       <FooterTemplate>
+       <tfoot visible="false">
+        <tr>
+        <td colspan="6" class="header2"></td>
+        </tr>
+    </tfoot>
+       </FooterTemplate>
+           
+    </asp:Repeater>
+      </table>
 <table class="command" width="100%">
     <tr>
         <td>
@@ -78,21 +118,16 @@
             <VZF:LocalizedLabel ID="LocalizedLabel10" runat="server" LocalizedTag="lastpost" />
         </th>
     </tr>
-    <asp:Repeater ID="Announcements" runat="server">
-        <ItemTemplate>
-            <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
-        </ItemTemplate>
-    </asp:Repeater>
     <tr>
         <td colspan="6" class="header2"></td>
     </tr>
-    <asp:Repeater ID="TopicList" runat="server">
+    <asp:Repeater ID="TopicList" OnItemDataBound="TopicList_OnItemDataBound" runat="server">
         <ItemTemplate>
             <VZF:TopicLine runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </ItemTemplate>
         <AlternatingItemTemplate>
             <VZF:TopicLine runat="server" IsAlt="True" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
-        </AlternatingItemTemplate>
+      </AlternatingItemTemplate>
     </asp:Repeater>
     <VZF:ForumUsers runat="server" />
     <tr>
@@ -110,7 +145,7 @@
                         <asp:LinkButton runat="server" ID="MarkRead" />
                         <VZF:RssFeedLink ID="RssFeed" runat="server" FeedType="Topics" 
                             Visible="<%# PageContext.BoardSettings.ShowRSSLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" TitleLocalizedTag="RSSICONTOOLTIPFORUM" />  
-                          <VZF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />     
+                          <VZF:RssFeedLink ID="AtomFeed" runat="server" FeedType="Topics" IsAtomFeed="true" Visible="<%# PageContext.BoardSettings.ShowAtomLink && this.Get<IPermissions>().Check(PageContext.BoardSettings.TopicsFeedAccess) %>" ImageThemeTag="ATOMFEED" TextLocalizedTag="ATOMFEED" TitleLocalizedTag="ATOMICONTOOLTIPACTIVE" />    
                                              
                     </td>
                 </tr>
