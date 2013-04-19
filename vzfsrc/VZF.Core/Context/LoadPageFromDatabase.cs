@@ -26,6 +26,7 @@ namespace YAF.Core
     using System.Web;
 
     using VZF.Data.Common;
+    using VZF.Types.Data;
     using VZF.Utils;
     using VZF.Utils.Extensions;
 
@@ -119,7 +120,9 @@ namespace YAF.Core
                 }
 
                 int tries = 0;
-                DataRow pageRow;
+                pageload_Result pageRow;
+
+                // resources are not handled by ActiveLocation control so far.
                 string forumPage = this.Get<HttpRequestBase>().QueryString.ToString();
                 string location = this.Get<HttpRequestBase>().FilePath;
                 if (location.Contains("resource.ashx"))
@@ -216,8 +219,8 @@ namespace YAF.Core
                 }
 
                 // add all loaded page data into our data dictionary...
-                @event.DataDictionary.AddRange(pageRow.ToDictionary());
-
+                @event.DataDictionary.AddRange(pageRow.AnyToDictionary());
+          
                 // clear active users list
                 if (@event.DataDictionary["ActiveUpdate"].ToType<bool>())
                 {

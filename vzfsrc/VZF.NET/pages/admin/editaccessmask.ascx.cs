@@ -1,24 +1,26 @@
-/* Yet Another Forum.NET
- * Copyright (C) 2003-2005 Bjørnar Henden
- * Copyright (C) 2006-2012 Jaben Cargman
- * http://www.yetanotherforum.net/
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
-using System.Diagnostics;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="Vladimir Zakharov" file="editaccessmask.ascx.cs">
+//   VZF by vzrus
+//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   https://github.com/vzrus
+//   http://sourceforge.net/projects/yaf-datalayers/
+//    This program is free software; you can redistribute it and/or
+//   modify it under the terms of the GNU General Public License
+//   as published by the Free Software Foundation; version 2 only 
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. 
+// </copyright>
+// <summary>
+//   The editaccessmask.ascx is mostly based on YetAnotherForum class.
+// </summary>
+// 
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace YAF.Pages.Admin
 {
@@ -28,16 +30,15 @@ namespace YAF.Pages.Admin
     using System.Data;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -113,10 +114,10 @@ namespace YAF.Pages.Admin
         protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // retrieve access mask ID from parameter (if applicable)
-            object accessMaskID = null;
+            object accessMaskId = null;
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                accessMaskID = this.Request.QueryString.GetFirstOrDefault("i");
+                accessMaskId = this.Request.QueryString.GetFirstOrDefault("i");
             }
 
             if (this.Name.Text.Trim().Length <= 0)
@@ -140,8 +141,9 @@ namespace YAF.Pages.Admin
             }
 
             // save it
-            CommonDb.accessmask_save(this.PageContext.PageModuleID,
-                accessMaskID,
+            CommonDb.accessmask_save(
+                this.PageContext.PageModuleID,
+                accessMaskId,
                 this.PageContext.PageBoardID,
                 this.Name.Text,
                 this.ReadAccess.Checked,
@@ -158,7 +160,7 @@ namespace YAF.Pages.Admin
                 this.UserForumAccess.Checked,
                 sortOrder,
                 this.UserID.Text.IsSet() ? this.UserID.Text.ToType<int>() : PageContext.PageUserID,
-                this.IsUserMaskChk,
+                this.IsUserMaskChk.Checked,
                 this.IsAdminMaskChk.Checked);
 
             // empty out access table

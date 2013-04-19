@@ -531,6 +531,8 @@
     <Resource tag="THEME">Theme:</Resource>
     <Resource tag="THEME_HELP">Choose a theme for this forum if its to differ from the standard Board theme.</Resource>
     <Resource tag="TITLE">Add/Edit Forum</Resource>
+    <Resource tag="USERFORUM">Created by:</Resource>
+    <Resource tag="USERFORUM_HELP">Who created the forum.</Resource>
   </page>
   <page name="ADMIN_EDITGROUP">
     <Resource tag="ALBUM_NUMBER">User Albums Number:</Resource>
@@ -679,6 +681,8 @@
     <Resource tag="ALBUMS_NUMBER_HELP">Integer value for a user allowed albums number.</Resource>
     <Resource tag="IMAGES_NUMBER">Album Images Number:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">Integer value for a user allowed images number per album.</Resource>
+    <Resource tag="IS_GUEST">Is Guest:</Resource>
+    <Resource tag="IS_GUEST_HELP">This is a rank for guests. If you will check the box, the rank will not be availabel in various lists.</Resource>
     <Resource tag="IS_START">Is Start:</Resource>
     <Resource tag="IS_START_HELP">Means that this is the rank that new users belong to. Only one rank should have this checked. &lt;br /&gt;&lt;span style="color:red"&gt;[b]Warning:[/b] at least one Rank need to have this Check box enabled or new users wont be able to register.&lt;/span&gt;</Resource>
     <Resource tag="LADDER_GROUP">Is Ladder Group:</Resource>
@@ -859,6 +863,7 @@
     <Resource tag="CONFIRM_DELETE">Permanently delete this Forum including ALL topics, polls, attachments and messages associated with it?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Delete this category?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Are you POSITIVE?</Resource>
+    <Resource tag="CREATEDDATE">Created on </Resource>
     <Resource tag="DELETE_MSG">Please do not navigate away from this page while the deletion is in progress...</Resource>
     <Resource tag="DELETE_TITLE">Deleting Forum</Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
@@ -877,6 +882,9 @@
     <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
     <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
     <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="FORUMAUTHOR">Created by </Resource>
+    <Resource tag="ISGENERALFORUM">General forum</Resource>
+    <Resource tag="ISUSERFORUM">User Forum (blog)</Resource>
     <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">You cannot delete this Category as it has at least one forum assigned to it.\nTo move forums click on \"Edit\" and change the category the forum is assigned to.</Resource>
     <Resource tag="NEW_CATEGORY">New Category</Resource>
@@ -1064,6 +1072,8 @@
     <Resource tag="FLOOT_DELAY">Post Flood Delay:</Resource>
     <Resource tag="FLOOT_DELAY_HELP">Number of seconds before another post can be entered (Does not apply to admins or mods).</Resource>
     <Resource tag="FORBIDDEN">Forbidden</Resource>
+    <Resource tag="FORUM_DESCCANBENULL">Forum description can be missing.</Resource>
+    <Resource tag="FORUM_DESCCANBENULL_HELP">Forum description can be missing.</Resource>
     <Resource tag="FORUM_EDITOR">Forum Editor:</Resource>
     <Resource tag="FORUM_EDITOR_HELP">Select global editor type for your forum. To use the HTML editors (FCK and FreeTextBox) the .bin file must be in the \bin directory and the proper support files must be put in \editors.</Resource>
     <Resource tag="FORUM_EMAIL">Forum Email:</Resource>
@@ -1812,6 +1822,7 @@
     <Resource tag="ALBUMS_INFO">Currently you have {0} Album(s). You can have max. {1} Album(s).</Resource>
     <Resource tag="ALBUMS_NOTALLOWED">You are not allowed to have Albums.</Resource>
     <Resource tag="ALBUMS_TITLE">{0} Album: {1}</Resource>
+    <Resource tag="BACK_ALBUMS">Go Back to Albums</Resource>
     <Resource tag="TITLE">Album Images</Resource>
   </page>
   <page name="APPROVE">
@@ -4321,6 +4332,7 @@ Spoiler Content
   </page>
   <page name="PERSONALACCESSMASK">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="COMMONMASKS">Common Masks</Resource>
     <Resource tag="NEW_MASK">New Mask</Resource>
     <Resource tag="TITLE">Personal Access Masks</Resource>
   </page>
@@ -5243,6 +5255,7 @@ Visit {forumname} at {forumlink}
   </page>
   <page name="TOPICS">
     <Resource tag="ALL">Wszystkie</Resource>
+    <Resource tag="ANNOUNCEMENTS_TITLE">Announcements</Resource>
     <Resource tag="ATOMFEED">Atom Feed</Resource>
     <Resource tag="BY">przez {0}</Resource>
     <Resource tag="CREATED">Stworzony</Resource>

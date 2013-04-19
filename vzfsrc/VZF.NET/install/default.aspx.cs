@@ -29,22 +29,22 @@ namespace YAF.Install
     using System.IO;
     using System.Linq;
     using System.Security.Permissions;
+    using System.Text;
     using System.Web;
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    
     using YAF.Core;
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -173,28 +173,19 @@ namespace YAF.Install
                                : string.Empty;
                 }
 
-                return CommonSqlDbAccess.GetConnectionString(
-                    this.Parameter1_Value.Text.Trim(),
-                    this.Parameter2_Value.Text.Trim(),
-                    this.Parameter3_Value.Text.Trim(),
-                    this.Parameter4_Value.Text.Trim(),
-                    this.Parameter5_Value.Text.Trim(),
-                    this.Parameter6_Value.Text.Trim(),
-                    this.Parameter7_Value.Text.Trim(),
-                    this.Parameter8_Value.Text.Trim(),
-                    this.Parameter9_Value.Text.Trim(),
-                    this.Parameter10_Value.Text.Trim(),
-                    this.Parameter11_Value.Checked,
-                    this.Parameter12_Value.Checked,
-                    this.Parameter13_Value.Checked,
-                    this.Parameter14_Value.Checked,
-                    this.Parameter15_Value.Checked,
-                    this.Parameter16_Value.Checked,
-                    this.Parameter17_Value.Checked,
-                    this.Parameter18_Value.Checked,
-                    this.Parameter19_Value.Checked,
-                    this.txtDBUserID.Text.Trim(),
-                    this.txtDBPassword.Text.Trim());
+                var cstr = new StringBuilder();
+
+                foreach (RepeaterItem ri in this.PropertiesList.Items)
+                {
+                    var pv = ri.FindControlRecursiveAs<TextBox>("ParameterValue").Text.Trim();
+                    if (pv.IsSet())
+                    {
+                        cstr.AppendFormat("{0}=", ri.FindControlRecursiveAs<Label>("ParameterName").Text);
+                        cstr.AppendFormat("{0};", ri.FindControlRecursiveAs<TextBox>("ParameterValue").Text);
+                    }
+                }
+
+                return cstr.ToString();
             }
         }
 
@@ -253,6 +244,7 @@ namespace YAF.Install
                 }
             }
         }
+
         #endregion
 
         #region Public Methods
@@ -319,7 +311,7 @@ namespace YAF.Install
         /// </param>
         protected void Page_Init([NotNull] object sender, [NotNull] EventArgs e)
         {
-          
+
         }
 
         /// <summary>
@@ -333,7 +325,7 @@ namespace YAF.Install
         /// </param>
         protected void Parameter11_Value_CheckChanged([NotNull] object sender, [NotNull] EventArgs e)
         {
-            this.DBUsernamePasswordHolder.Visible = !this.Parameter11_Value.Checked;
+            // this.DBUsernamePasswordHolder.Visible = ;
         }
 
         /// <summary>
@@ -457,10 +449,10 @@ namespace YAF.Install
                     }
                     else
                     {
-                        object version = this.Cache["DBVersion"] ??
-                                         CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
+                        object version = this.Cache["DBVersion"]
+                                         ?? CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                        if (((int) version) >= 30 || ((int) version) == -1)
+                        if (((int)version) >= 30 || ((int)version) == -1)
                         {
                             // migration is NOT needed...
                             this.CurrentWizardStepID = "WizFinished";
@@ -473,20 +465,20 @@ namespace YAF.Install
                     if (this.CurrentWizardStepID == "WizMigrateUsers")
                     {
                         this.lblMigrateUsersCount.Text =
-                            CommonDb.user_list(this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null,
-                                               true).Rows.Count.ToString();
+                            CommonDb.user_list(
+                                this.Session["InstallModuleID"].ToType<int?>(), this.PageBoardID, null, true).Rows.Count.ToString();
                     }
 
                     break;
                 case "WizSelectModule":
                     previousVisible = true;
                     int mid = 1;
-                    if (int.TryParse(ModuleID.Text, out mid))
+                    if (int.TryParse(this.ModuleID.Text, out mid))
                     {
-                        ModuleID.Text = "1";
+                        this.ModuleID.Text = "1";
                         this.AddLoadMessage("You should enter you YAF moduleID (1 by default)");
                     }
-                   break;
+                    break;
                 case "WizDatabaseConnection":
                     previousVisible = true;
 
@@ -570,8 +562,8 @@ namespace YAF.Install
       }
       else
       {*/
-            
-           // this.Response.Redirect(YafBuildLink.GetLinkNotEscaped(ForumPages.info, true));
+
+            // this.Response.Redirect(YafBuildLink.GetLinkNotEscaped(ForumPages.info, true));
             this.Response.Redirect("~/");
             //}
         }
@@ -593,7 +585,7 @@ namespace YAF.Install
                 case "WizSelectModule":
                     e.Cancel = false;
                     this.CurrentWizardStepID = "WizTestSettings";
-                    break; 
+                    break;
                 case "WizDatabaseConnection":
 
                     // save the database settings...
@@ -696,7 +688,7 @@ namespace YAF.Install
                     // migrate users/roles only if user does not want to skip
                     if (!this.skipMigration.Checked)
                     {
-                        RoleMembershipHelper.SyncRoles(this.PageModuleID,this.PageBoardID);
+                        RoleMembershipHelper.SyncRoles(this.PageModuleID, this.PageBoardID);
 
                         // start the background migration task...
                         this.Get<ITaskModuleManager>().Start<MigrateUsersTask>(this.PageModuleID, this.PageBoardID);
@@ -771,12 +763,12 @@ namespace YAF.Install
             {
 
                 UpdateInfoPanel(
-                       this.ManualConnectionInfoHolder,
-                       this.lblConnectionDetailsManual,
-                       "Status unknown, try to proceed anyway.",
-                       "errorinfo");
+                    this.ManualConnectionInfoHolder,
+                    this.lblConnectionDetailsManual,
+                    "Status unknown, try to proceed anyway.",
+                    "errorinfo");
             }
-          
+
         }
 
         /// <summary>
@@ -839,11 +831,12 @@ namespace YAF.Install
         {
             try
             {
-                this.Get<ISendMail>().Send(
-                    this.txtTestFromEmail.Text.Trim(),
-                    this.txtTestToEmail.Text.Trim(),
-                    "Test Email From Yet Another Forum.NET",
-                    "The email sending appears to be working from your YAF installation.");
+                this.Get<ISendMail>()
+                    .Send(
+                        this.txtTestFromEmail.Text.Trim(),
+                        this.txtTestToEmail.Text.Trim(),
+                        "Test Email From Yet Another Forum.NET",
+                        "The email sending appears to be working from your YAF installation.");
 
                 // success
                 UpdateInfoPanel(
@@ -930,7 +923,7 @@ namespace YAF.Install
         /// </returns>
         private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)
         {
-            return CommonSqlDbAccess.TestConnection(out exceptionMessage,  connectionString);
+            return CommonSqlDbAccess.TestConnection(out exceptionMessage, connectionString);
         }
 
         /// <summary>
@@ -1056,15 +1049,16 @@ namespace YAF.Install
 
                 // create the admin user...
                 MembershipCreateStatus status;
-                user = this.Get<MembershipProvider>().CreateUser(
-                    this.UserName.Text,
-                    this.Password1.Text,
-                    this.AdminEmail.Text,
-                    this.SecurityQuestion.Text,
-                    this.SecurityAnswer.Text,
-                    true,
-                    null,
-                    out status);
+                user = this.Get<MembershipProvider>()
+                           .CreateUser(
+                               this.UserName.Text,
+                               this.Password1.Text,
+                               this.AdminEmail.Text,
+                               this.SecurityQuestion.Text,
+                               this.SecurityAnswer.Text,
+                               true,
+                               null,
+                               out status);
                 if (status != MembershipCreateStatus.Success)
                 {
                     this.AddLoadMessage(
@@ -1117,7 +1111,9 @@ namespace YAF.Install
                     langFile = (string)drow["CultureFile"];
                 }
 
-                CommonDb.system_initialize(this.Session["InstallModuleID"].ToType<int?>(), this.TheForumName.Text,
+                CommonDb.system_initialize(
+                    this.Session["InstallModuleID"].ToType<int?>(),
+                    this.TheForumName.Text,
                     this.TimeZones.SelectedValue,
                     this.Culture.SelectedValue,
                     langFile,
@@ -1128,8 +1124,10 @@ namespace YAF.Install
                     user.ProviderUserKey,
                     Config.CreateDistinctRoles && Config.IsAnyPortal ? "YAF " : string.Empty);
 
-                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
-                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(
+                    this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(
+                    this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // vzrus: uncomment it to not keep install/upgrade objects in db for a place and better security
                 // YAF.Classes.Data.DB.system_deleteinstallobjects();
@@ -1204,7 +1202,8 @@ namespace YAF.Install
                 throw new IOException("Failed to read {0}".FormatWith(fileName), x);
             }
 
-            CommonDb.system_initialize_executescripts(this.Session["InstallModuleID"].ToType<int?>(), script, scriptFile, useTransactions);
+            CommonDb.system_initialize_executescripts(
+                this.Session["InstallModuleID"].ToType<int?>(), script, scriptFile, useTransactions);
         }
 
         /// <summary>
@@ -1216,40 +1215,40 @@ namespace YAF.Install
             {
                 return;
             }
-           
+
             foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
-                
+
                 this.lbConnections.Items.Add(connectionString.Name);
             }
             string con = string.Empty;
-           foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
+            foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
                 switch (connectionString.ProviderName)
                 {
-                    case "System.Data.SqlClient": 
+                    case "System.Data.SqlClient":
                         con = "yafnet_my";
                         break;
                     case "Npgsql":
                         con = "yafnet_pg";
                         break;
                     case "MySql.Data.MySqlClient":
-                       con = "yafnet_my";
+                        con = "yafnet_my";
                         break;
                     case "FirebirdSql.Data.FirebirdClient":
-                       con = "yafnet_fb";
+                        con = "yafnet_fb";
                         break;
                         // case "oracle":  con = "yafnet_or";
-                       // break;
+                        // break;
                         // case "db2":  con = "yafnet_db2";
-                      //  break;
+                        //  break;
                         // case "other": con = "yafnet_oth";
-                       // break;
+                        // break;
                     default:
                         throw new ApplicationException("No return type");
                 }
             }
-           ListItem item = this.lbConnections.Items.FindByText("con");
+            ListItem item = this.lbConnections.Items.FindByText("con");
 
             if (item != null)
             {
@@ -1301,8 +1300,8 @@ namespace YAF.Install
             if (YafContext.Current.QueryIDs != null && YafContext.Current.QueryIDs["md"] != null)
             {
                 this.Session["InstallModuleID"] = YafContext.Current.QueryIDs["md"] == null
-                                                    ? 1
-                                                    : YafContext.Current.QueryIDs["md"].ToType<int>();
+                                                      ? 1
+                                                      : YafContext.Current.QueryIDs["md"].ToType<int>();
             }
             if (this.IsPostBack)
             {
@@ -1316,7 +1315,9 @@ namespace YAF.Install
             }
             else
             {
-                this.ModuleID.Text = this.Session["InstallModuleID"] != null ? this.Session["InstallModuleID"].ToString() : "1";
+                this.ModuleID.Text = this.Session["InstallModuleID"] != null
+                                         ? this.Session["InstallModuleID"].ToString()
+                                         : "1";
                 SelectModuleLbl.Text = "Enter required module ID";
                 this.Cache["DBVersion"] = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
@@ -1329,8 +1330,9 @@ namespace YAF.Install
                     YafContext.Current.BoardSettings = new YafBoardSettings();
                 }
                 // YafContext.Current.QueryIDs = new QueryStringIDHelper("md");
-               
-                this.FullTextSupport.Visible = CommonDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
+
+                this.FullTextSupport.Visible =
+                    CommonDb.GetFullTextSupported(this.Session["InstallModuleID"].ToType<int?>());
 
                 this.TimeZones.DataSource = StaticDataHelper.TimeZones("english.xml");
 
@@ -1346,85 +1348,14 @@ namespace YAF.Install
                     this.Culture.Items.FindByValue("en-US").Selected = true;
                 }
 
-                this.DBUsernamePasswordHolder.Visible = CommonDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
+                // this.DBUsernamePasswordHolder.Visible = CommonDb.GetPasswordPlaceholderVisible(this.Session["InstallModuleID"].ToType<int?>());
+                this.PropertiesList.DataSource =
+                    CommonDb.ConnectionParameters(this.Session["InstallModuleID"].ToType<int?>());
+                this.PropertiesList.DataBind();
 
                 // Connection string parameters text boxes
-                this.Parameter1_Name.Text = CommonDb.GetParameter1_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter1_Value.Text = CommonDb.GetParameter1_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter1_Value.Visible = CommonDb.GetParameter1_Visible(this.Session["InstallModuleID"].ToType<int?>());
+                // this.Parameter1_Name.Text = CommonDb.GetParameter1_Name(this.Session["InstallModuleID"].ToType<int?>());
 
-                this.Parameter2_Name.Text = CommonDb.GetParameter2_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter2_Value.Text = CommonDb.GetParameter2_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter2_Value.Visible = CommonDb.GetParameter2_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter3_Name.Text = CommonDb.GetParameter3_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter3_Value.Text = CommonDb.GetParameter3_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter3_Value.Visible = CommonDb.GetParameter3_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter4_Name.Text = CommonDb.GetParameter4_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter4_Value.Text = CommonDb.GetParameter4_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter4_Value.Visible = CommonDb.GetParameter4_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter5_Name.Text = CommonDb.GetParameter5_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter5_Value.Text = CommonDb.GetParameter5_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter5_Value.Visible = CommonDb.GetParameter5_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter6_Name.Text = CommonDb.GetParameter6_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter6_Value.Text = CommonDb.GetParameter6_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter6_Value.Visible = CommonDb.GetParameter6_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter7_Name.Text = CommonDb.GetParameter7_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter7_Value.Text = CommonDb.GetParameter7_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter7_Value.Visible = CommonDb.GetParameter7_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter8_Name.Text = CommonDb.GetParameter8_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter8_Value.Text = CommonDb.GetParameter8_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter8_Value.Visible = CommonDb.GetParameter8_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter9_Name.Text = CommonDb.GetParameter9_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter9_Value.Text = CommonDb.GetParameter9_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter9_Value.Visible = CommonDb.GetParameter9_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter10_Name.Text = CommonDb.GetParameter10_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter10_Value.Text = CommonDb.GetParameter10_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter10_Value.Visible = CommonDb.GetParameter10_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                // Connection string parameters  check boxes
-                this.Parameter11_Value.Text = CommonDb.GetParameter11_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter11_Value.Checked = CommonDb.GetParameter11_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter11_Value.Visible = CommonDb.GetParameter11_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter12_Value.Text = CommonDb.GetParameter12_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter12_Value.Checked = CommonDb.GetParameter12_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter12_Value.Visible = CommonDb.GetParameter12_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter13_Value.Text = CommonDb.GetParameter13_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter13_Value.Checked = CommonDb.GetParameter13_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter13_Value.Visible = CommonDb.GetParameter13_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter14_Value.Text = CommonDb.GetParameter14_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter14_Value.Checked = CommonDb.GetParameter14_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter14_Value.Visible = CommonDb.GetParameter14_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter15_Value.Text = CommonDb.GetParameter15_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter15_Value.Checked = CommonDb.GetParameter15_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter15_Value.Visible = CommonDb.GetParameter15_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter16_Value.Text = CommonDb.GetParameter16_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter16_Value.Checked = CommonDb.GetParameter16_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter16_Value.Visible = CommonDb.GetParameter16_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter17_Value.Text = CommonDb.GetParameter17_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter17_Value.Checked = CommonDb.GetParameter17_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter17_Value.Visible = CommonDb.GetParameter17_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter18_Value.Text = CommonDb.GetParameter18_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter18_Value.Checked = CommonDb.GetParameter18_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter18_Value.Visible = CommonDb.GetParameter18_Visible(this.Session["InstallModuleID"].ToType<int?>());
-
-                this.Parameter19_Value.Text = CommonDb.GetParameter19_Name(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter19_Value.Checked = CommonDb.GetParameter19_Value(this.Session["InstallModuleID"].ToType<int?>());
-                this.Parameter19_Value.Visible = CommonDb.GetParameter19_Visible(this.Session["InstallModuleID"].ToType<int?>());
 
                 // Hide New User on DNN
                 if (Config.IsDotNetNuke)
@@ -1474,7 +1405,9 @@ namespace YAF.Install
                 {
                     if (
                         !this._config.WriteConnectionString(
-                            Config.ConnectionStringName, this.CurrentConnString, CommonDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
+                            Config.ConnectionStringName,
+                            this.CurrentConnString,
+                            CommonDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;
@@ -1511,7 +1444,8 @@ namespace YAF.Install
 
                 int prevVersion = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 
-                CommonDb.system_updateversion(this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
+                CommonDb.system_updateversion(
+                    this.Session["InstallModuleID"].ToType<int?>(), YafForumInfo.AppVersion, YafForumInfo.AppVersionName);
 
                 // Ederon : 9/7/2007
                 // resync all boards - necessary for propr last post bubbling
@@ -1560,7 +1494,8 @@ namespace YAF.Install
                 if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 42)
                 {
                     // un-html encode all topic subject names...
-                    CommonDb.unencode_all_topics_subjects(this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
+                    CommonDb.unencode_all_topics_subjects(
+                        this.Session["InstallModuleID"].ToType<int?>(), t => Server.HtmlDecode(t));
                 }
 
                 if (CommonDb.GetIsForumInstalled(this.Session["InstallModuleID"].ToType<int?>()) && prevVersion < 49)
@@ -1586,7 +1521,8 @@ namespace YAF.Install
             {
                 try
                 {
-                    this.ExecuteScript(CommonDb.GetFullTextScript(this.Session["InstallModuleID"].ToType<int?>()), false);
+                    this.ExecuteScript(
+                        CommonDb.GetFullTextScript(this.Session["InstallModuleID"].ToType<int?>()), false);
                 }
                 catch (Exception x)
                 {

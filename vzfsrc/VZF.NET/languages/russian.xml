@@ -530,6 +530,8 @@
     <Resource tag="THEME">Тема:</Resource>
     <Resource tag="THEME_HELP">Выберите тему, если вы хотите, чтобы форум отображался с другой темой, отличной от темы по-умолчанию.</Resource>
     <Resource tag="TITLE">Добавить/Редактировать форум</Resource>
+    <Resource tag="USERFORUM">Создал:</Resource>
+    <Resource tag="USERFORUM_HELP">Кто создал форум.</Resource>
   </page>
   <page name="ADMIN_EDITGROUP">
     <Resource tag="ALBUM_NUMBER">Число альбомов:</Resource>
@@ -677,6 +679,8 @@
     <Resource tag="ALBUMS_NUMBER_HELP">Целое положительное число для разрешённого числа альбомов.</Resource>
     <Resource tag="IMAGES_NUMBER">Число изображений:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">Целое положительное число для разрешённого числа изображений в каждом альбоме.</Resource>
+    <Resource tag="IS_GUEST">Гость:</Resource>
+    <Resource tag="IS_GUEST_HELP">Это ранг для гостей. Если вы выберите эту опцию, то он не будет отображаться в различных списках.</Resource>
     <Resource tag="IS_START">Стартовый:</Resource>
     <Resource tag="IS_START_HELP">Все новые пользователи будут иметь этот статус. Только один статус может быть стартовым.</Resource>
     <Resource tag="LADDER_GROUP">Автостатус:</Resource>
@@ -854,8 +858,9 @@
     <Resource tag="CONFIRM_DELETE">Удалить этот форум навсегда, включая темы, сообщения, вложения и другую связанную с ним информацию?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Удалить категорию?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Вы уверены, что вменяемы сегодня?</Resource>
-    <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
-    <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
+    <Resource tag="CREATEDDATE">Дата создания </Resource>
+    <Resource tag="FORUM_ADDASCHILD">Прикрепитьк выбранному узлу</Resource>
+    <Resource tag="FORUM_ADDTO">Добавить новый форум</Resource>
     <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
     <Resource tag="FORUM_MOVEAFTER">Move after a node</Resource>
     <Resource tag="FORUM_MOVEBEFORE">Move before a node</Resource>
@@ -870,6 +875,9 @@
     <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
     <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
     <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="FORUMAUTHOR">Создан </Resource>
+    <Resource tag="ISGENERALFORUM">Обычный форум</Resource>
+    <Resource tag="ISUSERFORUM">Персональный форум (блог)</Resource>
     <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">Вы не можете удалить категорию, до тех пор пока в ней есть хотя бы один форум. Чтобы переместит форум нажмите \"Изменить\"  и переместите форум в другую категорию.</Resource>
     <Resource tag="NEW_CATEGORY">Добавить категорию</Resource>
@@ -1057,6 +1065,8 @@
     <Resource tag="FLOOT_DELAY">Задержка следующего поста:</Resource>
     <Resource tag="FLOOT_DELAY_HELP">Число секунд до того, как может быть размещено следующее сообщение(Не относится к администраторам и модераторам).</Resource>
     <Resource tag="FORBIDDEN">Запрещено</Resource>
+    <Resource tag="FORUM_DESCCANBENULL">Форумы без описания.</Resource>
+    <Resource tag="FORUM_DESCCANBENULL_HELP">Описание форума может отсутствовать.</Resource>
     <Resource tag="FORUM_EDITOR">Редактор форума:</Resource>
     <Resource tag="FORUM_EDITOR_HELP">Выберите глобальный редактор для вашего форума. Чтобы использовать редакторы HTML (FCK , FreeTextBox) файл .bin должен быть в папке \bin файлы поддержки в \editors.</Resource>
     <Resource tag="FORUM_EMAIL">Email форума:</Resource>
@@ -1788,6 +1798,7 @@
     <Resource tag="ALBUMS_INFO">Сейчас у вас {0} альбомов. Вы можете создать {1} альбомов.</Resource>
     <Resource tag="ALBUMS_NOTALLOWED">Вам не разрешены альбомы.</Resource>
     <Resource tag="ALBUMS_TITLE">Альбом пользователя {0}: {1}</Resource>
+    <Resource tag="BACK_ALBUMS">Назад к альбомам</Resource>
     <Resource tag="TITLE">Изображения из альбома</Resource>
   </page>
   <page name="APPROVE">
@@ -4269,6 +4280,7 @@ Spoiler Content
   </page>
   <page name="PERSONALACCESSMASK">
     <Resource tag="CANCEL">Отмена</Resource>
+    <Resource tag="COMMONMASKS">Общие маски</Resource>
     <Resource tag="NEW_MASK">Новая маска</Resource>
     <Resource tag="TITLE">Личные маски доступа</Resource>
   </page>
@@ -5185,6 +5197,7 @@ Spoiler Content
   </page>
   <page name="TOPICS">
     <Resource tag="ALL">Всё</Resource>
+    <Resource tag="ANNOUNCEMENTS_TITLE">Объявления</Resource>
     <Resource tag="ATOMFEED">Лента Atom</Resource>
     <Resource tag="BY"> {0}</Resource>
     <Resource tag="CREATED">Создано</Resource>

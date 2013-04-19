@@ -106,10 +106,12 @@ namespace YAF.Core.Services
             // get a row with user lazy data...
             return
                 this.DataCache.GetOrSet(
-                    Constants.Cache.ActiveUserLazyData.FormatWith(userId), 
+                    Constants.Cache.ActiveUserLazyData.FormatWith(userId),
                     () =>
-                    CommonDb.user_lazydata(YafContext.Current.PageModuleID, userId, 
-                        YafContext.Current.PageBoardID, 
+                    CommonDb.user_lazydata(
+                        YafContext.Current.PageModuleID,
+                        userId,
+                        YafContext.Current.PageBoardID,
                         this.Get<YafBoardSettings>().AllowEmailSending, 
                         this.Get<YafBoardSettings>().EnableBuddyList, 
                         this.Get<YafBoardSettings>().AllowPrivateMessages, 

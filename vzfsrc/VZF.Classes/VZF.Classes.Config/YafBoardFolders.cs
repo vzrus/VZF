@@ -42,18 +42,11 @@ namespace YAF.Classes
     /// <summary>
     /// Gets BoardFolder.
     /// </summary>
-    public string BoardFolder
+    public static string BoardFolder
     {
       get
       {
-        if (Config.MultiBoardFolders)
-        {
-          return String.Format(Config.BoardRoot + "{0}/", YafControlSettings.Current.BoardID);
-        }
-        else
-        {
-          return Config.BoardRoot;
-        }
+          return Config.MultiBoardFolders ? string.Format(Config.BoardRoot + "{0}/", YafControlSettings.Current.BoardID) : Config.BoardRoot;
       }
     }
 

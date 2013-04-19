@@ -530,6 +530,8 @@
     <Resource tag="THEME">شما :</Resource>
     <Resource tag="THEME_HELP">شمایی را برای این انجمن انتخاب نمائید البته اگر با شمای کلی تابلو متفاوت است.</Resource>
     <Resource tag="TITLE">افزودن/ویرایش انجمن</Resource>
+    <Resource tag="USERFORUM">Created by:</Resource>
+    <Resource tag="USERFORUM_HELP">Who created the forum.</Resource>
   </page>
   <page name="ADMIN_EDITGROUP">
     <Resource tag="ALBUM_NUMBER">شمار آلبوم های کاربر:</Resource>
@@ -677,6 +679,8 @@
     <Resource tag="ALBUMS_NUMBER_HELP">تعداد آلبوم های مجاز کاربر. عدد صحیح.</Resource>
     <Resource tag="IMAGES_NUMBER">تعداد تصاویر هر آلبوم:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">مقدار صحیح نمایشگر تعداد تصاویر مجازی در هر آلبوم برای کاربر.</Resource>
+    <Resource tag="IS_GUEST">Is Guest:</Resource>
+    <Resource tag="IS_GUEST_HELP">This is a rank for guests. If you will check the box, the rank will not be availabel in various lists.</Resource>
     <Resource tag="IS_START">شروع شده:</Resource>
     <Resource tag="IS_START_HELP">یعنی رتبه ای که کاربران جدید به آن منتسب می شوند. فقط یک مورد باید علامت خورده باشد.</Resource>
     <Resource tag="LADDER_GROUP">گروه نردبانی است:</Resource>
@@ -857,6 +861,7 @@
     <Resource tag="CONFIRM_DELETE">آیا مایل به حذف این انجمن با تمامی موضوعات، نظرسنجی ها، ضمائم و پیام ها هستید؟</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">آیا مایل به حذف این گروه هستید؟</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">آیا مطمئن اید؟</Resource>
+    <Resource tag="CREATEDDATE">Created on </Resource>
     <Resource tag="DELETE_MSG">لطفا صفحه را تا زمان اتمام حذف ترک نکنید...</Resource>
     <Resource tag="DELETE_TITLE">در حال حذف انجمن</Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
@@ -875,6 +880,9 @@
     <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
     <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
     <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="FORUMAUTHOR">Created by </Resource>
+    <Resource tag="ISGENERALFORUM">General forum</Resource>
+    <Resource tag="ISUSERFORUM">User Forum (blog)</Resource>
     <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">شما تا زمانی که حتی یک انجمن هم به این رده منتسب است نمی تواندی آنار حذف کنید.\n برای انتقال انجمن ها روی ویرایش کلیک کرده و رده آنرا عوض کنید.</Resource>
     <Resource tag="NEW_CATEGORY">رده جدید</Resource>
@@ -1064,6 +1072,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="FLOOT_DELAY">تاخیر میان ارسال:</Resource>
     <Resource tag="FLOOT_DELAY_HELP">تعداد ثانیه های قبل از ارسالی دیگر.</Resource>
     <Resource tag="FORBIDDEN">ممنوعیت</Resource>
+    <Resource tag="FORUM_DESCCANBENULL">Forum description can be missing.</Resource>
+    <Resource tag="FORUM_DESCCANBENULL_HELP">Forum description can be missing.</Resource>
     <Resource tag="FORUM_EDITOR">ویرایشگر انجمن :</Resource>
     <Resource tag="FORUM_EDITOR_HELP">یک نوع جهانی برای ویرایشگر انجمن خود مشخص کنید. براس استفاده از ویرایشگر های HTML می بایست فایل های DLL را در شاخه bin و سایر فایل های مورد نیاز را در شاخه editors قرار دهید.</Resource>
     <Resource tag="FORUM_EMAIL">پست الکترونیک انجمن:</Resource>
@@ -1818,6 +1828,7 @@ http://wwww.IrKoo.Com/</Resource>
 شما حداکثر می توانید {1} آلبوم داشته باشید.</Resource>
     <Resource tag="ALBUMS_NOTALLOWED">شما مجاز به داشتن آلبوم نیستید.</Resource>
     <Resource tag="ALBUMS_TITLE">{0} آلبوم: {1}</Resource>
+    <Resource tag="BACK_ALBUMS">Go Back to Albums</Resource>
     <Resource tag="TITLE">تصاویر آلبوم</Resource>
   </page>
   <page name="APPROVE">
@@ -4297,6 +4308,7 @@ Spoiler Content
   </page>
   <page name="PERSONALACCESSMASK">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="COMMONMASKS">Common Masks</Resource>
     <Resource tag="NEW_MASK">New Mask</Resource>
     <Resource tag="TITLE">Personal Access Masks</Resource>
   </page>
@@ -5177,6 +5189,7 @@ The Message was posted in the {forumname} forum.
   </page>
   <page name="TOPICS">
     <Resource tag="ALL">همه</Resource>
+    <Resource tag="ANNOUNCEMENTS_TITLE">Announcements</Resource>
     <Resource tag="ATOMFEED">خوراک اتم</Resource>
     <Resource tag="BY">بوسیله {0}</Resource>
     <Resource tag="CREATED">ایجاد شده</Resource>

@@ -25,6 +25,7 @@
 namespace VZF.Data.Postgre
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Diagnostics;
@@ -32,10 +33,10 @@ namespace VZF.Data.Postgre
     using Npgsql;
 
     using VZF.Data.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Types;
-    using VZF.Utils.Helpers;
 
     /// <summary>
     /// The yaf db access for PostgreSQL.
@@ -43,31 +44,60 @@ namespace VZF.Data.Postgre
     public static class PostgreDbAccess
     {
         #region Constants and Fields
-      
+
+        /// <summary>
+        /// The _db owner.
+        /// </summary>
         static private string _dbOwner;
-        static private string _objectQualifier;
 
+        /// <summary>
+        /// The object qualifier.
+        /// </summary>
+        static private string objectQualifier;
+
+        /// <summary>
+        /// The _database encoding.
+        /// </summary>
         private static string _databaseEncoding;
+
+        /// <summary>
+        /// The _schema name.
+        /// </summary>
         private static string _schemaName;
+
+        /// <summary>
+        /// The _database name.
+        /// </summary>
         private static string _databaseName;
+
+        /// <summary>
+        /// The _grantee name.
+        /// </summary>
         private static string _granteeName;
+
+        /// <summary>
+        /// The _host name.
+        /// </summary>
         private static string _hostName;
+
+        /// <summary>
+        /// The _with oi ds.
+        /// </summary>
         private static string _withOIDs = "false";
+
+        /// <summary>
+        /// The _large forum tree.
+        /// </summary>
         private static bool _largeForumTree;
-
-
 
         /// <summary>
         ///   The _isolation level.
         /// </summary>
         private static IsolationLevel _isolationLevel = IsolationLevel.ReadUncommitted;
 
-
-
         #endregion
 
         #region Properties
-
 
         /// <summary>
         ///   Gets IsolationLevel.
@@ -80,37 +110,118 @@ namespace VZF.Data.Postgre
             }
         }
 
+        /// <summary>
+        /// Gets the connection parameters.
+        /// </summary>
+        public static List<ConnectionStringParameter> ConnectionParameters
+        {
+            get
+            {
+                var cstr = new NpgsqlConnectionStringBuilder();
+                var connectionParametersBuilder = new List<ConnectionStringParameter>
+                                                      {
+                                                          new ConnectionStringParameter(
+                                                              "Host",
+                                                              cstr.Host.GetType(),
+                                                              "localhost",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Port",
+                                                              cstr.Port.GetType(),
+                                                              "5432",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Database",
+                                                              cstr.Database.GetType(),
+                                                              "yafnet",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "CommandTimeout",
+                                                              cstr.CommandTimeout.GetType(),
+                                                              "120",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Pooling",
+                                                              cstr.Pooling.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "PreloadReader",
+                                                              cstr.PreloadReader.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Database",
+                                                              cstr.Database.GetType(),
+                                                              "5432",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "SyncNotification",
+                                                              cstr.SyncNotification.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "UseExtendedTypes",
+                                                              cstr.UseExtendedTypes.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "SSL",
+                                                              cstr.SSL.GetType(),
+                                                              "false",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "IntegratedSecurity",
+                                                              cstr.IntegratedSecurity.GetType(),
+                                                              "false",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "UserName",
+                                                              cstr.UserName.GetType(),
+                                                              "admin",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Password",
+                                                              typeof(string),
+                                                              "password",
+                                                              false)
+                                                      };
 
+                return connectionParametersBuilder;
+            }
+        }
 
-        // TODO: Move it to Config
-        static public string DatabaseOwner
+        /// <summary>
+        /// Gets the database owner.
+        /// </summary>
+        public static string DatabaseOwner
         {
             get
             {
                 if (_dbOwner == null || _dbOwner == "dbo")
                 {
                     _dbOwner = Config.DatabaseOwner;
-
                 }
 
                 return _dbOwner;
             }
         }
 
-        static public string ObjectQualifier
+        /// <summary>
+        /// Gets the object qualifier.
+        /// </summary>
+        public static string ObjectQualifier
         {
             get
             {
-                if (_objectQualifier == null)
-                {
-                    _objectQualifier = Config.DatabaseObjectQualifier;
-                }
-
-                return _objectQualifier;
+                return objectQualifier ?? (objectQualifier = Config.DatabaseObjectQualifier);
             }
         }
 
-        static public string SchemaName
+        /// <summary>
+        /// Gets the schema name.
+        /// </summary>
+        public static string SchemaName
         {
             get
             {
@@ -118,47 +229,50 @@ namespace VZF.Data.Postgre
                 {
                     _schemaName = Config.DatabaseSchemaName;
                 }
+
                 if (string.IsNullOrEmpty(_schemaName) || _schemaName == "dbo")
                 {
                     _schemaName = "public";
                 }
+
                 return _schemaName;
-
             }
         }
-        static public string DatabaseEncoding
+
+        /// <summary>
+        /// Gets the database encoding.
+        /// </summary>
+        public static string DatabaseEncoding
         {
             get
             {
-                if (_databaseEncoding == null)
-                {
-                    _databaseEncoding = Config.DatabaseEncoding;
-                }
-                return _databaseEncoding;
-
+                return _databaseEncoding ?? (_databaseEncoding = Config.DatabaseEncoding);
             }
         }
-        static public string GranteeName
+
+        /// <summary>
+        /// Gets the grantee name.
+        /// </summary>
+        public static string GranteeName
         {
             get
             {
-                if (_granteeName == null)
-                {
-                    _granteeName = ConfigurationManager.AppSettings["VZF.DatabaseGranteeName"];
-                }
-                return _granteeName;
-
+                return _granteeName ?? (_granteeName = ConfigurationManager.AppSettings["VZF.DatabaseGranteeName"]);
             }
         }
-        static public string DBName
+
+        /// <summary>
+        /// Gets the db name.
+        /// </summary>
+        public static string DBName
         {
             get
             {
                 string[] parmRows = Config.ConnectionString.Split(';');
 
-                for (int i = 0; i < parmRows.Length; i++)
+                foreach (string t in parmRows)
                 {
-                    string[] parmParams = parmRows[i].Split('=');
+                    string[] parmParams = t.Split('=');
                     for (int j = 0; j < parmRows.Length; j++)
                     {
                         if (parmParams[0].Trim().ToLower() == "database")
@@ -168,23 +282,25 @@ namespace VZF.Data.Postgre
                         }
                     }
                 }
-                return _databaseName;
 
+                return _databaseName;
             }
         }
-        static public string HostName
+
+        /// <summary>
+        /// Gets the host name.
+        /// </summary>
+        public static string HostName
         {
             get
             {
-                if (_hostName == null)
-                {
-                    _hostName = ConfigurationManager.AppSettings["VZF.DatabaseHostName"];
-                }
-                return _hostName;
-
+                return _hostName ?? (_hostName = ConfigurationManager.AppSettings["VZF.DatabaseHostName"]);
             }
         }
 
+        /// <summary>
+        /// Gets the with oi ds.
+        /// </summary>
         public static string WithOIDs
         {
             get
@@ -201,20 +317,25 @@ namespace VZF.Data.Postgre
                         _withOIDs = Config.WithOIDs;
                     }
                 }
+
                 return _withOIDs;
             }
         }
-        static public bool LargeForumTree
+
+        /// <summary>
+        /// Gets a value indicating whether large forum tree.
+        /// </summary>
+        public static bool LargeForumTree
         {
             get
             {
                 _largeForumTree = Config.LargeForumTree;
-                if (_largeForumTree == false || _largeForumTree == null)
+                if (_largeForumTree == false)
                 {
                     return false;
                 }
-                return _largeForumTree;
 
+                return _largeForumTree;
             }
         }
 
@@ -227,65 +348,34 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="name">Base name of an object</param>
         /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-        static public string GetObjectName(string name)
+        public static string GetObjectName(string name)
         {
-            return String.Format(
+            return string.Format(
                            "{0}.{1}{2}",
                            SchemaName,
                            ObjectQualifier,
-                           name
-                           );
+                name);
         }
-        public static string GetConnectionString(
-           [NotNull] string parm1,
-           [NotNull] string parm2,
-           [NotNull] string parm3,
-           [NotNull] string parm4,
-           [NotNull] string parm5,
-           [NotNull] string parm6,
-           [NotNull] string parm7,
-           [NotNull] string parm8,
-           [NotNull] string parm9,
-           [NotNull] string parm10,
-                     bool parm11,
-                     bool parm12,
-                     bool parm13,
-                     bool parm14,
-                     bool parm15,
-                     bool parm16,
-                     bool parm17,
-                     bool parm18,
-                     bool parm19,
-           [NotNull] string userId,
-           [NotNull] string userPassword)
+
+       
+        /// <summary>
+        /// The get connection string.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetConnectionString()
         {
+            var connBuilder = new NpgsqlConnectionStringBuilder();
 
-            NpgsqlConnectionStringBuilder connBuilder = new NpgsqlConnectionStringBuilder();
-
-            connBuilder.Host = parm1;
-            connBuilder.Port = Convert.ToInt32(parm2);
-            // connBuilder.Encoding = parm3;
-            connBuilder.Database = parm4;
-            connBuilder.CommandTimeout = Convert.ToInt32(parm5);
-            // connBuilder.Compatible
-            // connBuilder.ConnectionLifeTime
-            // connBuilder.Enlist
-            // connBuilder.Protocol =ProtocolVersion.Version3
-            // connBuilder.SslMode =SslMode.Allow
-            // connBuilder.SearchPath
-            // connBuilder.Timeout
-            connBuilder.Pooling = parm13;
-            connBuilder.PreloadReader = parm14;
-            connBuilder.SyncNotification = parm15;
-            connBuilder.UseExtendedTypes = parm16;
-            connBuilder.SSL = parm17;
-            connBuilder.IntegratedSecurity = parm18;
-            connBuilder.UserName = userId;
-            connBuilder.Password = userPassword;
+            foreach (var parameter in ConnectionParameters)
+            {
+                connBuilder.Add(parameter.Name, parameter.Value);
+            }
 
             return connBuilder.ConnectionString;
-
         }
+
 
         /// <summary>
         /// Test the DB Connection.
@@ -327,7 +417,7 @@ namespace VZF.Data.Postgre
         /// <param name="commandText">Command text to qualify.</param>
         /// <param name="isText">Determines whether command text is text or stored procedure.</param>
         /// <returns>New NpgsqlCommand</returns>
-        static public NpgsqlCommand GetCommand(string commandText, bool isText)
+        public static NpgsqlCommand GetCommand(string commandText, bool isText)
         {
 
             return GetCommand(commandText, isText, null);
@@ -339,7 +429,7 @@ namespace VZF.Data.Postgre
         /// <param name="isText">Determines whether command text is text or stored procedure.</param>
         /// <param name="connection">Connection to use with command.</param>
         /// <returns>New NpgsqlCommand</returns>
-        static public NpgsqlCommand GetCommand(string commandText, bool isText, NpgsqlConnection connection)
+        public static NpgsqlCommand GetCommand(string commandText, bool isText, NpgsqlConnection connection)
         {
             if (isText)
             {
@@ -364,7 +454,7 @@ namespace VZF.Data.Postgre
         /// </summary>
         /// <param name="storedProcedure">Base of stored procedure name.</param>
         /// <returns>New NpgsqlCommand</returns>
-        static public NpgsqlCommand GetCommand(string storedProcedure)
+        public static NpgsqlCommand GetCommand(string storedProcedure)
         {
             return GetCommand(storedProcedure, null);
         }
@@ -374,7 +464,7 @@ namespace VZF.Data.Postgre
         /// <param name="storedProcedure">Base of stored procedure name.</param>
         /// <param name="connection">Connection to use with command.</param>
         /// <returns>New NpgsqlCommand</returns>
-        static public NpgsqlCommand GetCommand(string storedProcedure, NpgsqlConnection connection)
+        public static NpgsqlCommand GetCommand(string storedProcedure, NpgsqlConnection connection)
         {
             NpgsqlCommand cmd = new NpgsqlCommand();
 
@@ -393,39 +483,21 @@ namespace VZF.Data.Postgre
         public static string GetCommandTextReplaced(string commandText)
         {
             // apply database owner
-            if (!String.IsNullOrEmpty(PostgreDbAccess.SchemaName))
-            { commandText = commandText.Replace("databaseSchema", PostgreDbAccess.SchemaName); }
-            else
-            { commandText = commandText.Replace("databaseSchema", "public"); }
+            commandText = commandText.Replace("databaseSchema", !string.IsNullOrEmpty(PostgreDbAccess.SchemaName) ? PostgreDbAccess.SchemaName : "public");
+            
             // apply object qualifier
-            if (!String.IsNullOrEmpty(PostgreDbAccess.ObjectQualifier))
-            { commandText = commandText.Replace("objectQualifier_", PostgreDbAccess.ObjectQualifier); }
-            else
-            { commandText = commandText.Replace("objectQualifier_", "yaf_"); }
+            commandText = commandText.Replace("objectQualifier_", !string.IsNullOrEmpty(PostgreDbAccess.ObjectQualifier) ? PostgreDbAccess.ObjectQualifier : "yaf_");
+            
             // apply grantee name
-            if (!String.IsNullOrEmpty(PostgreDbAccess.GranteeName))
-            { commandText = commandText.Replace("granteeName", PostgreDbAccess.GranteeName); }
-            else
-            { commandText = commandText.Replace("granteeName", "public"); }
+            commandText = commandText.Replace("granteeName", !string.IsNullOrEmpty(GranteeName) ? PostgreDbAccess.GranteeName : "public");
+          
             // apply host name
-            commandText = commandText.Replace("hostName", PostgreDbAccess.HostName);
+            commandText = commandText.Replace("hostName", HostName);
 
-            if (!String.IsNullOrEmpty(PostgreDbAccess.DatabaseOwner))
-            { commandText = commandText.Replace("databaseOwner", PostgreDbAccess.DatabaseOwner); }
-            else
-            { commandText = commandText.Replace("databaseOwner", "yafuser"); }
+            commandText = commandText.Replace("databaseOwner", !string.IsNullOrEmpty(DatabaseOwner) ? DatabaseOwner : "yafuser");
+           
             // apply OIDs setting
-            if (!String.IsNullOrEmpty(PostgreDbAccess.WithOIDs))
-            {
-                if (PostgreDbAccess.WithOIDs.ToLower() == "true")
-                {
-                    commandText = commandText.Replace("withOIDs", PostgreDbAccess.WithOIDs);
-                }
-                else
-                { commandText = commandText.Replace("withOIDs", "FALSE"); }
-            }
-            else
-            { commandText = commandText.Replace("withOIDs", "FALSE"); }
+            commandText = !string.IsNullOrEmpty(WithOIDs) ? commandText.Replace("withOIDs", WithOIDs.ToLower() == "true" ? WithOIDs : "FALSE") : commandText.Replace("withOIDs", "FALSE");
             return commandText;
         }
 
@@ -741,7 +813,7 @@ namespace VZF.Data.Postgre
             var qc = new QueryCounter(cmd.CommandText);
             try
             {
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
@@ -756,13 +828,13 @@ namespace VZF.Data.Postgre
                             if (currentRow == 0)
                             {
                                 firstColumnIndex = dt.Columns.Count;
+
                                 // Retrieve column schema into a DataTable.                           
                                 dt = GetTableColumns(dt, reader);
                             }
 
                             if (reader.FieldCount > 0)
                             {
-
                                 while (reader.Read())
                                 {
                                     int dd = 0;
@@ -777,17 +849,19 @@ namespace VZF.Data.Postgre
                                             dt.Rows[currentRow][column] = TypeChecker(column, reader[column.Ordinal - firstColumnIndex]);
                                         }
                                     }
-
                                 }
-
                             }
+
                             reader.Close();
                             trans.Commit();
-                            if (acceptChanges) dt.AcceptChanges();
+                            if (acceptChanges)
+                            {
+                                dt.AcceptChanges();
+                            }
+
                             return dt;
                         }
                     }
-
                     else
                     {
                         // get DataReader
@@ -796,6 +870,7 @@ namespace VZF.Data.Postgre
                         if (currentRow == 0)
                         {
                             firstColumnIndex = dt.Columns.Count;
+
                             // Retrieve column schema into a DataTable.                            
                             dt = GetTableColumns(dt, reader);
                         }
@@ -819,22 +894,21 @@ namespace VZF.Data.Postgre
                             }
 
                         }
+
                         reader.Close();
-                        if (acceptChanges) dt.AcceptChanges();
+                        if (acceptChanges)
+                        {
+                            dt.AcceptChanges();
+                        }
+
                         return dt;
                     }
-
-
                 }
             }
-
-
             finally
             {
                 qc.Dispose();
             }
-
-
         }
         #endregion
 
@@ -935,7 +1009,7 @@ namespace VZF.Data.Postgre
             foreach (DataRow myField in schemaTable.Rows)
             {
 
-                String ts = myField["DataType"].ToString();
+                string ts = myField["DataType"].ToString();
                 if (ts == "System.UInt64") ts = "System.Int32";
                 if (!dummyTable.Columns.Contains(myField["ColumnName"].ToString()))
                 {
@@ -969,7 +1043,7 @@ namespace VZF.Data.Postgre
                 {
                     if (myColumn.ColumnName == "ColumnName")
                     {
-                        String ts = myField["DataType"].ToString();
+                        string ts = myField["DataType"].ToString();
                         if (ts == "UInt64") ts = "System.Int32";
 
                         if (!dt.Columns.Contains(myField[myColumn].ToString()))

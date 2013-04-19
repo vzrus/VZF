@@ -45,7 +45,7 @@
                                         &nbsp;
                                     </td>
                                     <td valign="top" class="message">
-                                        <VZF:MessagePostData ID="MessagePostPrimary" runat="server" DataRow="<%# Container.DataItem %>"
+                                        <VZF:MessagePostData ID="MessagePostPrimary" runat="server" DataRow='<%# Container.DataItem %>'
                                             ShowAttachments="false">
                                         </VZF:MessagePostData>
                                     </td>
@@ -71,7 +71,7 @@
                                         &nbsp;
                                     </td>
                                     <td valign="top" class="message">
-                                        <VZF:MessagePostData ID="MessagePostAlt" runat="server" DataRow="<%# Container.DataItem %>"
+                                        <VZF:MessagePostData ID="MessagePostAlt" runat="server" DataRow='<%# Container.DataItem %>'
                                             ShowAttachments="false">
                                         </VZF:MessagePostData>
                                     </td>

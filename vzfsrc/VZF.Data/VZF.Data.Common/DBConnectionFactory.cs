@@ -80,7 +80,7 @@
 
 
         // TODO: Move it to Config
-        static public string DatabaseOwner
+        public static string DatabaseOwner
         {
             get
             {
@@ -107,7 +107,7 @@
             }
         }
 
-        static public string ObjectQualifier
+        public static string ObjectQualifier
         {
             get
             {
@@ -134,7 +134,7 @@
             }
         }
 
-        static public string SchemaName
+        public static string SchemaName
         {
             get
             {
@@ -161,7 +161,7 @@
                 }
             }
         }
-        static public string DatabaseEncoding
+        public static string DatabaseEncoding
         {
             get
             {
@@ -190,7 +190,7 @@
 
             }
         }
-        static public string GranteeName
+        public static string GranteeName
         {
             get
             {
@@ -219,7 +219,7 @@
 
             }
         }
-        static public string DBName
+        public static string DBName
         {
             get
             {
@@ -248,7 +248,7 @@
 
             }
         }
-        static public string HostName
+        public static string HostName
         {
             get
             {
@@ -277,7 +277,7 @@
 
             }
         }
-        static public string WithOIDs
+        public static string WithOIDs
         {
             get
             {
@@ -419,7 +419,7 @@
         /// </summary>
         /// <param name="name">Base name of an object</param>
         /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-        static public string GetObjectName(int boardOrObject, string name)
+        public static string GetObjectName(int boardOrObject, string name)
         {
 
             int boardId = 99;
@@ -450,188 +450,31 @@
 
             }
         }
+
         /// <summary>
         /// Gets qualified object name
         /// </summary>
         /// <param name="name">Base name of an object</param>
         /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-        static public string GetObjectName(string name)
+        public static string GetObjectName(string name)
         {
             return GetObjectName(0, name);
         }
-        public static string GetConnectionString(
-          [NotNull] string parm1,
-          [NotNull] string parm2,
-          [NotNull] string parm3,
-          [NotNull] string parm4,
-          [NotNull] string parm5,
-          [NotNull] string parm6,
-          [NotNull] string parm7,
-          [NotNull] string parm8,
-          [NotNull] string parm9,
-          [NotNull] string parm10,
-                    bool parm11,
-                    bool parm12,
-                    bool parm13,
-                    bool parm14,
-                    bool parm15,
-                    bool parm16,
-                    bool parm17,
-                    bool parm18,
-                    bool parm19,
-          [NotNull] string userId,
-          [NotNull] string userPassword,
-        string provName)
-        {
-            int boardId = 99;
-            switch (provName)
-            {
-                case "System.Data.SqlClient":
-                    return MsSqlDbAccess.GetConnectionString(parm1,
-                        parm2,
-                        parm3,
-                        parm4,
-                        parm5,
-                        parm6,
-                        parm7,
-                        parm8,
-                        parm9,
-                        parm10,
-                        parm11,
-                        parm12,
-                        parm13,
-                        parm14,
-                        parm15,
-                        parm16,
-                        parm17,
-                        parm18,
-                        parm19,
-                        userId,
-                        userPassword);
-                case "Npgsql":
-                    return PostgreDbAccess.GetConnectionString(parm1,
-                        parm2,
-                        parm3,
-                        parm4,
-                        parm5,
-                        parm6,
-                        parm7,
-                        parm8,
-                        parm9,
-                        parm10,
-                        parm11,
-                        parm12,
-                        parm13,
-                        parm14,
-                        parm15,
-                        parm16,
-                        parm17,
-                        parm18,
-                        parm19,
-                        userId,
-                        userPassword);
-                case "MySql.Data.MySqlClient":
-                    return MySqlDbAccess.GetConnectionString(parm1,
-                        parm2,
-                        parm3,
-                        parm4,
-                        parm5,
-                        parm6,
-                        parm7,
-                        parm8,
-                        parm9,
-                        parm10,
-                        parm11,
-                        parm12,
-                        parm13,
-                        parm14,
-                        parm15,
-                        parm16,
-                        parm17,
-                        parm18,
-                        parm19,
-                        userId,
-                        userPassword);
-                case "FirebirdSql.Data.FirebirdClient":
-                    return FbDbAccess.GetConnectionString(parm1,
-                        parm2,
-                        parm3,
-                        parm4,
-                        parm5,
-                        parm6,
-                        parm7,
-                        parm8,
-                        parm9,
-                        parm10,
-                        parm11,
-                        parm12,
-                        parm13,
-                        parm14,
-                        parm15,
-                        parm16,
-                        parm17,
-                        parm18,
-                        parm19,
-                        userId,
-                        userPassword);
-                case "oracle":
-                    return string.Empty;
-                case "db2":
-                    return string.Empty;
-                case "other":
-                    return string.Empty;
-                default:
-                    throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
-            }
-        }
-
-        public static string GetConnectionString(
-           [NotNull] string parm1,
-           [NotNull] string parm2,
-           [NotNull] string parm3,
-           [NotNull] string parm4,
-           [NotNull] string parm5,
-           [NotNull] string parm6,
-           [NotNull] string parm7,
-           [NotNull] string parm8,
-           [NotNull] string parm9,
-           [NotNull] string parm10,
-                     bool parm11,
-                     bool parm12,
-                     bool parm13,
-                     bool parm14,
-                     bool parm15,
-                     bool parm16,
-                     bool parm17,
-                     bool parm18,
-                     bool parm19,
-           [NotNull] string userId,
-           [NotNull] string userPassword)
-        {
-            return GetConnectionString(parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11,
-                                          parm12, parm13, parm14, parm15, parm16, parm17, parm18, parm19, userId,
-                                          userPassword,string.Empty);
-
-            
-
-        }
 
         /// <summary>
-        /// Test the DB Connection.
+        /// The test connection.
         /// </summary>
         /// <param name="exceptionMessage">
-        /// outbound ExceptionMessage
+        /// The exception message.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
         /// </param>
         /// <returns>
-        /// true if successfully connected
+        /// The <see cref="bool"/>.
         /// </returns>
-        public static bool TestConnection([NotNull] out string exceptionMessage)
-        {
-            return TestConnection(out exceptionMessage, null);
-        }
-    
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static bool TestConnection([NotNull] out string exceptionMessage, string connectionString)
         {
             int boardId = 1;
@@ -657,46 +500,8 @@
                     return false;
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
             }
         }
-
-        /// <summary>
-        /// Creates new NpgsqlCommand based on command text applying all qualifiers to the name.
-        /// </summary>
-        /// <param name="commandText">Command text to qualify.</param>
-        /// <param name="isText">Determines whether command text is text or stored procedure.</param>
-        /// <returns>New NpgsqlCommand</returns>
-        static public IDbCommand GetCommand(string commandText, bool isText, string connectionString)
-        {
-
-            int boardId = 99;
-            switch (GetProviderNameFromConnectionString(connectionString))
-            {
-                case "System.Data.SqlClient":
-                    return MsSqlDbAccess.GetCommand(commandText, isText);
-                case "Npgsql":
-                    return PostgreDbAccess.GetCommand(commandText,isText);
-                case "MySql.Data.MySqlClient":
-                    return MySqlDbAccess.GetCommand(commandText, isText);
-                case "FirebirdSql.Data.FirebirdClient":
-                    return FbDbAccess.GetCommand(commandText, isText);
-                case "oracle":
-                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
-                case "db2":
-                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
-                case "other":
-                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
-                default:
-                    throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
-            }
-
-          //  throw new ApplicationException("The method is not implemented!!! ");
-        }
-
 
         /// <summary>
         /// Gets command text replaced with {databaseOwner} and {objectQualifier}.

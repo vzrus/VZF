@@ -45,17 +45,6 @@ namespace YAF.Types.Interfaces
     void ClearFavoriteTopicCache();
 
     /// <summary>
-    /// The clear favorite topic cache.
-    /// </summary>
-    /// <param name="topicId">
-    /// The topic Id.
-    /// </param>
-    /// <returns>
-    /// The favorite topic count.
-    /// </returns>
-    int FavoriteTopicCount(int topicId);
-
-    /// <summary>
     /// the favorite topic details.
     /// </summary>
     /// <param name="sinceDate">

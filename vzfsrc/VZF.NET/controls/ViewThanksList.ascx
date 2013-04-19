@@ -4,6 +4,7 @@
 <%@ Import Namespace="YAF.Types.Constants" %>
 <%@ Import Namespace="VZF.Utils" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="YAF.Classes" %>
 <table class="command" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td>
@@ -33,9 +34,9 @@
                &nbsp;
             </td>
             <td width="140px" id="NameCell" valign="top" runat="server">
-                <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><b>
-                    <VZF:UserLink ID="UserLink1" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %> ' />
-                </b>
+                <a name="<%# Container.DataItemToField<int>("MessageID") %>" /><strong>
+                    <VZF:UserLink ID="PostLink" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? Container.DataItemToField<string>("DisplayName") : Container.DataItemToField<string>("UserName") %>'  BlankTarget="true" /> 
+                </strong>
                 <VZF:OnlineStatusImage ID="OnlineStatusImage" runat="server" Visible='<%# PageContext.BoardSettings.ShowUserOnlineStatus && !UserMembershipHelper.IsGuestUser( Container.DataItemToField<int>("UserID") )%>'
                     Style="vertical-align: bottom" UserID='<%# Container.DataItemToField<int>("UserID") %>' />
             </td>

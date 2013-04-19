@@ -100,24 +100,6 @@ namespace YAF.Core.Services
     }
 
     /// <summary>
-    /// The clear favorite topic cache.
-    /// </summary>
-    /// <param name="topicId">
-    /// The topic Id.
-    /// </param>
-    /// <returns>
-    /// The favorite topic count.
-    /// </returns>
-    public int FavoriteTopicCount(int topicId)
-    {
-      return
-        this.Get<IDataCache>().GetOrSet(
-          Constants.Cache.FavoriteTopicCount.FormatWith(topicId),
-          () => CommonDb.TopicFavoriteCount(YafContext.Current.PageModuleID, topicId),
-          TimeSpan.FromMilliseconds(90000)).ToType<int>();
-    }
-
-    /// <summary>
     /// the favorite topic details.
     /// </summary>
     /// <param name="sinceDate">

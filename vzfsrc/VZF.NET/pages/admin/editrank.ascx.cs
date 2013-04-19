@@ -117,6 +117,7 @@ namespace YAF.Pages.Admin
             this.Name.Text = (string)row["Name"];
             this.IsStart.Checked = flags.IsStart;
             this.IsLadder.Checked = flags.IsLadder;
+              this.IsGuest.Checked = flags.IsGuest; 
             this.MinPosts.Text = row["MinPosts"].ToString();
             this.PMLimit.Text = row["PMLimit"].ToString();
             this.Style.Text = row["Style"].ToString();
@@ -210,7 +211,8 @@ namespace YAF.Pages.Admin
         this.PageContext.PageBoardID, 
         this.Name.Text, 
         this.IsStart.Checked, 
-        this.IsLadder.Checked, 
+        this.IsLadder.Checked,
+        this.IsGuest.Checked,
         this.MinPosts.Text, 
         rankImage, 
         this.PMLimit.Text.Trim().ToType<int>(), 

@@ -596,7 +596,7 @@ namespace YAF.Core
             }
 
 #if DEBUG
-			QueryCounter.Reset();
+            QueryCounter.Reset();
 #endif
 
             // set the current translation page...

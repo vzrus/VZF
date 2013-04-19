@@ -6,9 +6,9 @@ namespace VZF.Data.Common
     using System.Text;
 
     using VZF.Tools;
+    using VZF.Utils;
 
     using YAF.Classes;
-    using VZF.Utils;
 
     /// <summary>
     /// The common sql db access.

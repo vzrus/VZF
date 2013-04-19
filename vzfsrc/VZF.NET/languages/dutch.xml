@@ -530,6 +530,8 @@
     <Resource tag="THEME">Thema:</Resource>
     <Resource tag="THEME_HELP">Kies een thema voor dit forum als het anders moet zijn dan het standaard thema.</Resource>
     <Resource tag="TITLE">Forum toevoegen/bewerken</Resource>
+    <Resource tag="USERFORUM">Created by:</Resource>
+    <Resource tag="USERFORUM_HELP">Who created the forum.</Resource>
   </page>
   <page name="ADMIN_EDITGROUP">
     <Resource tag="ALBUM_NUMBER">Aantal Albums:</Resource>
@@ -677,6 +679,8 @@
     <Resource tag="ALBUMS_NUMBER_HELP">Waarde voor het aantal Albums dat gebruikers van deze rang mogen hebben.</Resource>
     <Resource tag="IMAGES_NUMBER">Aantal Afbeeldingen per Album:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">Waarde voor het aantal Afbeeldingen dat gebruikers van deze rang per Album mogen hebben.</Resource>
+    <Resource tag="IS_GUEST">Is Guest:</Resource>
+    <Resource tag="IS_GUEST_HELP">This is a rank for guests. If you will check the box, the rank will not be availabel in various lists.</Resource>
     <Resource tag="IS_START">Is een Startrang:</Resource>
     <Resource tag="IS_START_HELP">n rang gesecteerd zijn.</Resource>
     <Resource tag="LADDER_GROUP">Is een Ladder Groep:</Resource>
@@ -854,6 +858,7 @@
     <Resource tag="CONFIRM_DELETE">Verwijder dit forum definitief, inclusief ALLE topics, polls, bijlagen en berichten?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Verwijder deze categorie?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Weet je het ZEKER?</Resource>
+    <Resource tag="CREATEDDATE">Created on </Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
     <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
     <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
@@ -870,6 +875,9 @@
     <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
     <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
     <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="FORUMAUTHOR">Created by </Resource>
+    <Resource tag="ISGENERALFORUM">General forum</Resource>
+    <Resource tag="ISUSERFORUM">User Forum (blog)</Resource>
     <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">n forum aan hangt.\nOm forums te verplaatsen, klik op \"Bewerk\" en wijzig de categorie van het forum.</Resource>
     <Resource tag="NEW_CATEGORY">Nieuwe Categorie</Resource>
@@ -1058,6 +1066,8 @@
     <Resource tag="FLOOT_DELAY">Post interval timeout:</Resource>
     <Resource tag="FLOOT_DELAY_HELP">Aantal seconden voordat een nieuwe post gemaakt kan worden. (Geldt niet voor Admins of Mods).</Resource>
     <Resource tag="FORBIDDEN">Uitgeschakeld</Resource>
+    <Resource tag="FORUM_DESCCANBENULL">Forum description can be missing.</Resource>
+    <Resource tag="FORUM_DESCCANBENULL_HELP">Forum description can be missing.</Resource>
     <Resource tag="FORUM_EDITOR">Forum Tekstverwerker:</Resource>
     <Resource tag="FORUM_EDITOR_HELP">Selecteer de globale tekstverwerker voor je forum. OM HTML tekstverwerkers (FCK and FreeTextBox) te gebruiken, moet het .bin bestand in de \bin directory staan en de support bestanden moeten in in \editors staan.</Resource>
     <Resource tag="FORUM_EMAIL">Forum E-mail:</Resource>
@@ -1804,6 +1814,7 @@
     <Resource tag="ALBUMS_INFO">Je hebt nu {0} Album(s). Je mag er maximaal {1} hebben.</Resource>
     <Resource tag="ALBUMS_NOTALLOWED">Je mag geen albums hebben.</Resource>
     <Resource tag="ALBUMS_TITLE">{0} Album: {1}</Resource>
+    <Resource tag="BACK_ALBUMS">Go Back to Albums</Resource>
     <Resource tag="TITLE">Album Plaatjes</Resource>
   </page>
   <page name="APPROVE">
@@ -4246,6 +4257,7 @@ Spoiler Inhoud
   </page>
   <page name="PERSONALACCESSMASK">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="COMMONMASKS">Common Masks</Resource>
     <Resource tag="NEW_MASK">New Mask</Resource>
     <Resource tag="TITLE">Personal Access Masks</Resource>
   </page>
@@ -5158,6 +5170,7 @@ Bezoek {forumname} op {forumlink}
   </page>
   <page name="TOPICS">
     <Resource tag="ALL">Alle</Resource>
+    <Resource tag="ANNOUNCEMENTS_TITLE">Announcements</Resource>
     <Resource tag="ATOMFEED">Atom Feed</Resource>
     <Resource tag="BY">door {0}</Resource>
     <Resource tag="CREATED">Gemaakt</Resource>

@@ -48,12 +48,10 @@
                 writer.WriteAttributeString("xmlns:image", "http://www.google.com/schemas/sitemap-image/1.1");
                 writer.WriteAttributeString("xmlns:video", "http://www.google.com/schemas/sitemap-video/1.1");
 
-                //Add home page
+                // Add home page
                 writer.WriteStartElement("url");
                 writer.WriteElementString("loc", YafForumInfo.ForumBaseUrl);
-                writer.WriteElementString("lastmod",
-                                          DateTime.Now.ToString("yyy-MM-dd",
-                                                                System.Globalization.CultureInfo.InvariantCulture));
+                writer.WriteElementString("lastmod",DateTime.Now.ToString("yyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture));
                 writer.WriteElementString("changefreq", ChangeFrequency.Always.ToString().ToLowerInvariant());
                 writer.WriteElementString("priority", "0.8");
                 writer.WriteEndElement(); // url

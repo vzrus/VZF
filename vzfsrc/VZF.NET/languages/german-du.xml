@@ -530,6 +530,8 @@
     <Resource tag="THEME">Skin:</Resource>
     <Resource tag="THEME_HELP">Wählen Sie ein Skin für das Forum das unterschiedlich zum Board Skin ist.</Resource>
     <Resource tag="TITLE">Forum Hinzufügen / Bearbeiten </Resource>
+    <Resource tag="USERFORUM">Created by:</Resource>
+    <Resource tag="USERFORUM_HELP">Who created the forum.</Resource>
   </page>
   <page name="ADMIN_EDITGROUP">
     <Resource tag="ALBUM_NUMBER">Benutzer Albenanzahl:</Resource>
@@ -677,6 +679,8 @@
     <Resource tag="ALBUMS_NUMBER_HELP">Integer-Wert für die Benutzer erlaubte Albenanzahl.</Resource>
     <Resource tag="IMAGES_NUMBER">Alben Bilderanzahl:</Resource>
     <Resource tag="IMAGES_NUMBER_HELP">Integer-Wert für die Benutzer erlaubte Bilder pro Album.</Resource>
+    <Resource tag="IS_GUEST">Is Guest:</Resource>
+    <Resource tag="IS_GUEST_HELP">This is a rank for guests. If you will check the box, the rank will not be availabel in various lists.</Resource>
     <Resource tag="IS_START">Ist Start:</Resource>
     <Resource tag="IS_START_HELP">Damit ist gemeint das neue Benutzer zu diesem Rang gehören, Nur ein Rang sollte das aktiviert haben. &lt;br /&gt;&lt;span style="color:red"&gt;[b]Warnung:[/b] Mindestens ein Rank Muss die Option aktiviert haben ansonsten können sich neue Benutzer nicht registrieren.&lt;/span&gt;</Resource>
     <Resource tag="LADDER_GROUP">Ist Aufsteigende Gruppe:</Resource>
@@ -854,6 +858,7 @@
     <Resource tag="CONFIRM_DELETE">Dieses Forum permanent löschen inkl. ALLER Themen, Umfragen, Anhänge und Beiträge die darin enthalten sind?</Resource>
     <Resource tag="CONFIRM_DELETE_CAT">Dieser Kategorie löschen?</Resource>
     <Resource tag="CONFIRM_DELETE_POSITIVE">Sie sind SICHER?</Resource>
+    <Resource tag="CREATEDDATE">Created on </Resource>
     <Resource tag="FORUM_ADDASCHILD">Attach to a selected node</Resource>
     <Resource tag="FORUM_ADDTO">Add a new forum</Resource>
     <Resource tag="FORUM_CANCOPYFORUMONLY_MSG">You can copy forums only.</Resource>
@@ -870,6 +875,9 @@
     <Resource tag="FORUM_SELECTTOCOPYNODE_MSG">You should select a node to copy.</Resource>
     <Resource tag="FORUM_SELECTTODELETENODE_MSG">You should select a node to delete.</Resource>
     <Resource tag="FORUM_SELECTTOMOVENODE_MSG">You should select a node to move.</Resource>
+    <Resource tag="FORUMAUTHOR">Created by </Resource>
+    <Resource tag="ISGENERALFORUM">General forum</Resource>
+    <Resource tag="ISUSERFORUM">User Forum (blog)</Resource>
     <Resource tag="MESSAGE_CANTADDTOBOARD">Impossible to add a forum directly to a board.</Resource>
     <Resource tag="MSG_NOT_DELETE">Sie können diese Kategorie nicht löschen da Sie mindestens ein Forum enthält.\nUm das Forum zu verschieben klicken Sie auf  \"Bearbeiten\" und ändern Sie die Kategorie.</Resource>
     <Resource tag="NEW_CATEGORY">Neue Kategorie</Resource>
@@ -1057,6 +1065,8 @@
     <Resource tag="FLOOT_DELAY">Beitrags Überschwemmungs Verzögerung</Resource>
     <Resource tag="FLOOT_DELAY_HELP">Anzahl an Sekunden, bevor ein Benutzer einen weiteren Beitrag veröffentlichen kann (Gilt nicht für Admins oder Mods).</Resource>
     <Resource tag="FORBIDDEN">Verboten</Resource>
+    <Resource tag="FORUM_DESCCANBENULL">Forum description can be missing.</Resource>
+    <Resource tag="FORUM_DESCCANBENULL_HELP">Forum description can be missing.</Resource>
     <Resource tag="FORUM_EDITOR">Forum-Editor:</Resource>
     <Resource tag="FORUM_EDITOR_HELP">Wählen Sie den Standard Editor für das Forum.</Resource>
     <Resource tag="FORUM_EMAIL">Forum E-Mail Adresse:</Resource>
@@ -1795,6 +1805,7 @@
     <Resource tag="ALBUMS_INFO">Aktuell haben Sie {0} Alben. Sie können max. {1} Alben erstellen.</Resource>
     <Resource tag="ALBUMS_NOTALLOWED">Sie dürfen keine Alben haben.</Resource>
     <Resource tag="ALBUMS_TITLE">{0} Album: {1}</Resource>
+    <Resource tag="BACK_ALBUMS">Go Back to Albums</Resource>
     <Resource tag="TITLE">Album Bilder</Resource>
   </page>
   <page name="APPROVE">
@@ -4232,6 +4243,7 @@ Spoiler Content
   </page>
   <page name="PERSONALACCESSMASK">
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="COMMONMASKS">Common Masks</Resource>
     <Resource tag="NEW_MASK">New Mask</Resource>
     <Resource tag="TITLE">Personal Access Masks</Resource>
   </page>
@@ -5149,6 +5161,7 @@ Der Bestätigungscode lautet
   </page>
   <page name="TOPICS">
     <Resource tag="ALL">Alle</Resource>
+    <Resource tag="ANNOUNCEMENTS_TITLE">Announcements</Resource>
     <Resource tag="ATOMFEED">Atom-Feed</Resource>
     <Resource tag="BY">von {0}</Resource>
     <Resource tag="CREATED">erstellt</Resource>

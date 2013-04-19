@@ -76,512 +76,6 @@ namespace VZF.Data.Postgre
             }
         }
 
-        // Parameter 1
-
-        /// <summary>
-        /// Gets the parameter 1 name.
-        /// </summary>
-        public static string Parameter1Name
-        {
-            get
-            {
-                return "Server";
-            }
-        }
-
-        /// <summary>
-        /// Gets the parameter 1 value.
-        /// </summary>
-        public static string Parameter1Value
-        {
-            get
-            {
-                return "localhost";
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether parameter 1 visible.
-        /// </summary>
-        public static bool Parameter1Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        // Parameter 2
-
-        /// <summary>
-        /// Gets the parameter 2_ name.
-        /// </summary>
-        public static string Parameter2Name
-        {
-            get
-            {
-                return "Port";
-            }
-        }
-
-        /// <summary>
-        /// Gets the parameter 2 value.
-        /// </summary>
-        public static string Parameter2Value
-        {
-            get
-            {
-                return "5432";
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether parameter 2 visible.
-        /// </summary>
-        public static bool Parameter2Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        // Parameter 3
-
-        /// <summary>
-        /// Gets the parameter 3 name.
-        /// </summary>
-        public static string Parameter3Name
-        {
-            get
-            {
-                return "Encoding";
-            }
-        }
-
-        /// <summary>
-        /// Gets the parameter 3 value.
-        /// </summary>
-        [Obsolete("UTF-8 is always used.")]
-        public static string Parameter3Value
-        {
-            get
-            {
-                return "UTF-8";
-            }
-        }
-
-        public static bool Parameter3Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        // Parameter 4
-        public static string Parameter4_Name
-        {
-            get
-            {
-                return "Database";
-            }
-        }
-
-        public static string Parameter4_Value
-        {
-            get
-            {
-                return "yafnet";
-            }
-        }
-
-        public static bool Parameter4_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 5
-        public static string Parameter5_Name
-        {
-            get
-            {
-                return "CommandTimeout";
-            }
-        }
-
-        public static string Parameter5_Value
-        {
-            get
-            {
-                return "120";
-            }
-        }
-
-        public static bool Parameter5_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 6
-        public static string Parameter6_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string Parameter6_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter6_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        //Parameter 7
-        public static string Parameter7_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string Parameter7_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter7_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        //Parameter 8
-        public static string Parameter8_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string Parameter8_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter8_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        //Parameter 9
-        public static string Parameter9_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string Parameter9_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter9_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        //Parameter 10
-        public static string Parameter10_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static string Parameter10_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter10_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        // Role=
-        //Check boxes
-
-        //Parameter 11 hides user password placeholder! 12 reserved for User Instance
-
-        public static string Parameter11_Name
-        {
-            get
-            {
-                return "Use Integrated Security";
-            }
-        }
-
-        public static bool Parameter11_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter11_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static string Parameter12_Name
-        {
-            get
-            {
-
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter12_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter12_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static string Parameter13_Name
-        {
-            get
-            {
-                return "Pooling";
-            }
-        }
-
-        public static bool Parameter13_Value
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public static bool Parameter13_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 14
-        public static string Parameter14_Name
-        {
-            get
-            {
-                return "PreloadReader";
-            }
-        }
-
-        public static bool Parameter14_Value
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public static bool Parameter14_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 15
-        public static string Parameter15_Name
-        {
-            get
-            {
-                return "SyncNotification";
-            }
-        }
-
-        public static bool Parameter15_Value
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public static bool Parameter15_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 16
-        public static string Parameter16_Name
-        {
-            get
-            {
-                return "UseExtendedTypes";
-            }
-        }
-
-        public static bool Parameter16_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter16_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 17
-        public static string Parameter17_Name
-        {
-            get
-            {
-                return "SSL";
-            }
-        }
-
-        public static bool Parameter17_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter17_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 18
-        public static string Parameter18_Name
-        {
-            get
-            {
-                return "IntegratedSecurity";
-            }
-        }
-
-        public static bool Parameter18_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter18_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        //Parameter 19
-        public static string Parameter19_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public static bool Parameter19_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static bool Parameter19_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         #endregion
 
         /// <summary>
@@ -6360,6 +5854,7 @@ namespace VZF.Data.Postgre
             object name,
             object isStart,
             object isLadder,
+            [NotNull] object isGuest,
             object minPosts,
             object rankImage,
             object pmLimit,
@@ -6389,6 +5884,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_name", NpgsqlDbType.Varchar)).Value = name;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isstart", NpgsqlDbType.Boolean)).Value = isStart;
                 cmd.Parameters.Add(new NpgsqlParameter("i_isladder", NpgsqlDbType.Boolean)).Value = isLadder;
+                cmd.Parameters.Add(new NpgsqlParameter("i_isguest", NpgsqlDbType.Boolean)).Value = isGuest;
                 cmd.Parameters.Add(new NpgsqlParameter("i_minposts", NpgsqlDbType.Integer)).Value = minPosts;
                 cmd.Parameters.Add(new NpgsqlParameter("i_rankimage", NpgsqlDbType.Varchar)).Value = rankImage;
                 cmd.Parameters.Add(new NpgsqlParameter("i_pmlimit", NpgsqlDbType.Integer)).Value = pmLimit;
@@ -7432,23 +6928,6 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicID;
 
                 PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
-            }
-        }
-
-        /// <summary>
-        /// Get the favorite count for a topic..
-        /// </summary>
-        /// <param name="topicId">
-        /// The topic Id.
-        /// </param>
-        public static int TopicFavoriteCount([NotNull] string connectionString , int topicId)
-        {
-            using (var cmd = PostgreDbAccess.GetCommand("topic_favorite_count"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_topicid", NpgsqlDbType.Integer)).Value = topicId;
-
-                return PostgreDbAccess.GetData(cmd, connectionString).GetFirstRowColumnAsValue("FavoriteCount", 0);
             }
         }
 
@@ -9714,29 +9193,46 @@ namespace VZF.Data.Postgre
 
         #region yaf_UserForum
 
-        public static DataTable userforum_list([NotNull] string connectionString , object userId, object forumID)
+        /// <summary>
+        /// The userforum_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable userforum_list([NotNull] string connectionString, object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("userforum_list"))
             {
-                if (userId == null)
-                {
-                    userId = DBNull.Value;
-                }
-                if (forumID == null)
-                {
-                    forumID = DBNull.Value;
-                }
-
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Integer)).Value = userId ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumID ?? DBNull.Value;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The userforum_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
         public static void userforum_delete([NotNull] string connectionString , object userId, object forumID)
         {
             using (var cmd = PostgreDbAccess.GetCommand("userforum_delete"))
@@ -10152,7 +9648,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        static public string db_getstats_new([NotNull] string connectionString )
+        public static string db_getstats_new([NotNull] string connectionString )
         {
             try
             {
@@ -10206,7 +9702,7 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        static public string db_reindex_new([NotNull] string connectionString )
+        public static string db_reindex_new([NotNull] string connectionString )
         {
             // VACUUM ANALYZE VERBOSE;VACUUM cannot be implemeneted within function or multiline command line string 
             try

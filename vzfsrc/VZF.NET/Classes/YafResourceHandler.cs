@@ -970,7 +970,7 @@ namespace YAF
                 location = string.Empty;
             }
 
-            DataRow pageRow = CommonDb.pageload(
+            var pageRow = CommonDb.pageload(
                 mid: YafContext.Current.PageModuleID,
                 sessionId: HttpContext.Current.Session.SessionID,
                 boardId: boardId, 
@@ -989,7 +989,7 @@ namespace YAF
                 isMobileDevice: isMobileDevice,
                 donttrack: dontTrack);
 
-            return pageRow["DownloadAccess"].ToType<bool>() || pageRow["ModeratorAccess"].ToType<bool>();
+            return pageRow.DownloadAccess || pageRow.ModeratorAccess;
         }
 
         /// <summary>

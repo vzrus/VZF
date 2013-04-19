@@ -34,15 +34,14 @@ namespace VZF.Data.MsSql
     using System.Web.Security;
 
     using VZF.Data.MsSql.Search;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    using YAF.Types;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Handlers;
     using YAF.Types.Objects;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -85,6 +84,7 @@ namespace VZF.Data.MsSql
         #endregion
 
         #region Properties
+       
 
         /// <summary>
         ///   Gets a value indicating whether IsForumInstalled.
@@ -226,667 +226,6 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
-        ///   Gets Parameter10_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter10_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter10_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter10_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter10_Visible.
-        /// </summary>
-        public static bool Parameter10_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        // Check boxes: Parameters 11-19 
-
-        // Parameter 11 hides user password placeholder! 
-
-        /// <summary>
-        ///   Gets Parameter11_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter11_Name
-        {
-            get
-            {
-                return "Use Integrated Security";
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter11_Value.
-        /// </summary>
-        public static bool Parameter11_Value
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter11_Visible.
-        /// </summary>
-        public static bool Parameter11_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter12_Name.
-        ///   (reserved for 'User Instance' in MS SQL SERVER)
-        /// </summary>
-        [NotNull]
-        public static string Parameter12_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter12_Value.
-        /// </summary>
-        public static bool Parameter12_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter12_Visible.
-        /// </summary>
-        public static bool Parameter12_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter13_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter13_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter13_Value.
-        /// </summary>
-        public static bool Parameter13_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter13_Visible.
-        /// </summary>
-        public static bool Parameter13_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter14_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter14_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter14_Value.
-        /// </summary>
-        public static bool Parameter14_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter14_Visible.
-        /// </summary>
-        public static bool Parameter14_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter15_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter15_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter15_Value.
-        /// </summary>
-        public static bool Parameter15_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter15_Visible.
-        /// </summary>
-        public static bool Parameter15_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter16_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter16_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter16_Value.
-        /// </summary>
-        public static bool Parameter16_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter16_Visible.
-        /// </summary>
-        public static bool Parameter16_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter17_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter17_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter17_Value.
-        /// </summary>
-        public static bool Parameter17_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter17_Visible.
-        /// </summary>
-        public static bool Parameter17_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter18_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter18_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter18_Value.
-        /// </summary>
-        public static bool Parameter18_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter18_Visible.
-        /// </summary>
-        public static bool Parameter18_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter19_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter19_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter19_Value.
-        /// </summary>
-        public static bool Parameter19_Value
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter19_Visible.
-        /// </summary>
-        public static bool Parameter19_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter1_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter1_Name
-        {
-            get
-            {
-                return "Data Source";
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter1_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter1_Value
-        {
-            get
-            {
-                return "(local)";
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter1_Visible.
-        /// </summary>
-        public static bool Parameter1_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter2_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter2_Name
-        {
-            get
-            {
-                return "Initial Catalog";
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter2_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter2_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter2_Visible.
-        /// </summary>
-        public static bool Parameter2_Visible
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter3_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter3_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter3_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter3_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter3_Visible.
-        /// </summary>
-        public static bool Parameter3_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter4_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter4_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter4_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter4_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter4_Visible.
-        /// </summary>
-        public static bool Parameter4_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter5_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter5_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter5_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter5_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter5_Visible.
-        /// </summary>
-        public static bool Parameter5_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter6_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter6_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter6_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter6_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter6_Visible.
-        /// </summary>
-        public static bool Parameter6_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter7_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter7_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter7_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter7_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter7_Visible.
-        /// </summary>
-        public static bool Parameter7_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter8_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter8_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter8_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter8_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter8_Visible.
-        /// </summary>
-        public static bool Parameter8_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter9_Name.
-        /// </summary>
-        [NotNull]
-        public static string Parameter9_Name
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets Parameter9_Value.
-        /// </summary>
-        [NotNull]
-        public static string Parameter9_Value
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether Parameter9_Visible.
-        /// </summary>
-        public static bool Parameter9_Visible
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         ///   Gets a value indicating whether PasswordPlaceholderVisible.
         /// </summary>
         public static bool PasswordPlaceholderVisible
@@ -937,14 +276,31 @@ namespace VZF.Data.MsSql
         /// Returns the BB Code List
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedBBCode> BBCodeList(string connectionString,int boardID, int? bbcodeID)
+        public static IEnumerable<TypedBBCode> BBCodeList([NotNull] string connectionString,int boardID, int? bbcodeID)
         {
             return bbcode_list(connectionString,boardID, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
         }
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString, int boardId, int userId)
+
+        /// <summary>
+        /// The forum list all.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
+        public static IEnumerable<TypedForumListAll> ForumListAll([NotNull] string connectionString, int boardId, int userId)
         {
             return forum_listall(connectionString, boardId, userId, 0,false).AsEnumerable().Select(r => new TypedForumListAll(r));
         }
+
         /// <summary>
         /// The forum list all.
         /// </summary>
@@ -961,7 +317,7 @@ namespace VZF.Data.MsSql
         /// The forum list all.
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedForumListAll> ForumListAll(string connectionString,int boardId, int userId, List<int> startForumId)
+        public static IEnumerable<TypedForumListAll> ForumListAll([NotNull] string connectionString,int boardId, int userId, List<int> startForumId)
         {
             var allForums = ForumListAll(connectionString, boardId, userId);
 
@@ -972,27 +328,31 @@ namespace VZF.Data.MsSql
             {
                 ftoadd = startForumId.First(f => f > -1);
             }
+
             forumIds.Add(ftoadd);
             tempForumIds.Add(ftoadd);
 
+            var typedForumListAlls = allForums as IList<TypedForumListAll> ?? allForums.ToList();
             while (true)
             {
-                var temp = allForums.Where(f => tempForumIds.Contains(f.ParentID ?? 0));
+                List<int> ids = tempForumIds;
+                var temp = typedForumListAlls.Where(f => ids.Contains(f.ParentID ?? 0));
 
-                if (!temp.Any())
+                var forumListAlls = temp as IList<TypedForumListAll> ?? temp.ToList();
+                if (!forumListAlls.Any())
                 {
                     break;
                 }
 
                 // replace temp forum ids with these...
-                tempForumIds = temp.Select(f => f.ForumID ?? 0).Distinct().ToList();
+                tempForumIds = forumListAlls.Select(f => f.ForumID ?? 0).Distinct().ToList();
 
                 // add them...
                 forumIds.AddRange(tempForumIds);
             }
 
             // return filtered forums...
-            return allForums.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
+            return typedForumListAlls.Where(f => forumIds.Contains(f.ForumID ?? 0)).Distinct();
         }
 
         /// <summary>
@@ -1031,7 +391,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Results
         /// </returns>
-        public static DataTable GetSearchResult(string connectionString,
+        public static DataTable GetSearchResult([NotNull] string connectionString,
             [NotNull] string toSearchWhat,
             [NotNull] string toSearchFromWho,
             SearchWhatFlags searchFromWhoMethod,
@@ -1083,7 +443,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedMailList> MailList(string connectionString, long processId)
+        public static IEnumerable<TypedMailList> MailList([NotNull] string connectionString, long processId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("mail_list"))
             {
@@ -1103,7 +463,7 @@ namespace VZF.Data.MsSql
         /// The message i ds.
         /// </param>
         [NotNull]
-        public static IEnumerable<TypedAllThanks> MessageGetAllThanks(string connectionString, [NotNull] string messageIdsSeparatedWithColon)
+        public static IEnumerable<TypedAllThanks> MessageGetAllThanks([NotNull] string connectionString, [NotNull] string messageIdsSeparatedWithColon)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_getallthanks"))
             {
@@ -1121,7 +481,7 @@ namespace VZF.Data.MsSql
         /// The message id.
         /// </param>
         [NotNull]
-        public static IEnumerable<TypedMessageList> MessageList(string connectionString, int messageID)
+        public static IEnumerable<TypedMessageList> MessageList([NotNull] string connectionString, int messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_list"))
             {
@@ -1145,7 +505,7 @@ namespace VZF.Data.MsSql
         /// The board id.
         /// </param>
         [NotNull]
-        public static IEnumerable<TypedPollGroup> PollGroupList(string connectionString, int userID, int? forumId, int boardId)
+        public static IEnumerable<TypedPollGroup> PollGroupList([NotNull] string connectionString, int userID, int? forumId, int boardId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pollgroup_list"))
             {
@@ -1171,7 +531,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedSmileyList> SmileyList(string connectionString, int boardID, int? smileyID)
+        public static IEnumerable<TypedSmileyList> SmileyList([NotNull] string connectionString, int boardID, int? smileyID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_list"))
             {
@@ -1201,25 +561,6 @@ namespace VZF.Data.MsSql
             }
         }
 
-        /// <summary>
-        /// Get the favorite count for a topic...
-        /// </summary>
-        /// <param name="topicId">
-        /// The topic Id.
-        /// </param>
-        /// <returns>
-        /// The topic favorite count.
-        /// </returns>
-        public static int TopicFavoriteCount(string connectionString, int topicId)
-        {
-            using (var cmd = MsSqlDbAccess.GetCommand("topic_favorite_count"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("TopicID", topicId);
-
-                return MsSqlDbAccess.GetData(cmd, connectionString).GetFirstRowColumnAsValue("FavoriteCount", 0);
-            }
-        }
 
         /// <summary>
         /// The UserFind.
@@ -1245,7 +586,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static DataTable UserFind(string connectionString,
+        public static DataTable UserFind([NotNull] string connectionString,
           int boardID,
           bool filter, [NotNull] string userName, [NotNull] string email, [NotNull] string displayName, [NotNull] object notificationType, [NotNull] object dailyDigest)
         {
@@ -1289,7 +630,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedUserList> UserList(string connectionString,
+        public static IEnumerable<TypedUserList> UserList([NotNull] string connectionString,
           int boardID, int? userID, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_list"))
@@ -1316,7 +657,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The accessmask_delete.
         /// </returns>
-        public static bool accessmask_delete(string connectionString, [NotNull] object accessMaskID)
+        public static bool accessmask_delete([NotNull] string connectionString, [NotNull] object accessMaskID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_delete"))
             {
@@ -1340,7 +681,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable accessmask_list(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        public static DataTable accessmask_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_list"))
             {
@@ -1369,7 +710,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable accessmask_pforumlist(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        public static DataTable accessmask_pforumlist([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_pforumlist"))
             {
@@ -1384,7 +725,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        public static DataTable accessmask_aforumlist(string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
+        public static DataTable accessmask_aforumlist([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object accessMaskID, [NotNull] object excludeFlags, object pageUserID, bool isUserMask, bool isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_aforumlist"))
             {
@@ -1447,7 +788,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// Sort Order?
         /// </param>
-        public static void accessmask_save(string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object userForumAccess, [NotNull] object sortOrder, [CanBeNull] object userId, [NotNull] object isUserMask, [NotNull] object isAdminMask)
+        public static void accessmask_save([NotNull] string connectionString, [NotNull] object accessMaskID, [NotNull] object boardID, [NotNull] object name, [NotNull] object readAccess, [NotNull] object postAccess, [NotNull] object replyAccess, [NotNull] object priorityAccess, [NotNull] object pollAccess, [NotNull] object voteAccess, [NotNull] object moderatorAccess, [NotNull] object editAccess, [NotNull] object deleteAccess, [NotNull] object uploadAccess, [NotNull] object downloadAccess, [NotNull] object userForumAccess, [NotNull] object sortOrder, [CanBeNull] object userId, [NotNull] object isUserMask, [NotNull] object isAdminMask)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("accessmask_save"))
             {
@@ -1497,7 +838,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns a DataTable of active users
         /// </returns>
-        public static DataTable active_list(string connectionString, [NotNull] object boardID, [NotNull] object Guests, [NotNull] object showCrawlers, int activeTime, [NotNull] object styledNicks)
+        public static DataTable active_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object Guests, [NotNull] object showCrawlers, int activeTime, [NotNull] object styledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("active_list"))
             {
@@ -1535,7 +876,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns a DataTable of active users
         /// </returns>
-        public static DataTable active_list_user(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object Guests, [NotNull] object showCrawlers, int activeTime, [NotNull] object styledNicks)
+        public static DataTable active_list_user([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object Guests, [NotNull] object showCrawlers, int activeTime, [NotNull] object styledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("active_list_user"))
             {
@@ -1562,7 +903,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable of all ative users in a forum
         /// </returns>
-        public static DataTable active_listforum(string connectionString, [NotNull] object forumID, [NotNull] object styledNicks)
+        public static DataTable active_listforum([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object styledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("active_listforum"))
             {
@@ -1585,7 +926,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable of all users that are in a topic
         /// </returns>
-        public static DataTable active_listtopic(string connectionString, [NotNull] object topicID, [NotNull] object styledNicks)
+        public static DataTable active_listtopic([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object styledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("active_listtopic"))
             {
@@ -1605,7 +946,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataRow of activity stata
         /// </returns>
-        public static DataRow active_stats(string connectionString, [NotNull] object boardID)
+        public static DataRow active_stats([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("active_stats"))
             {
@@ -1641,7 +982,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable admin_list(string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+        public static DataTable admin_list([NotNull] string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("admin_list"))
             {
@@ -1665,7 +1006,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable admin_pageaccesslist(string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+        public static DataTable admin_pageaccesslist([NotNull] string connectionString, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("admin_pageaccesslist"))
             {
@@ -1690,7 +1031,7 @@ namespace VZF.Data.MsSql
         /// <param name="readAccess">
         /// The read access. 
         /// </param>
-        public static void adminpageaccess_save(string connectionString, [NotNull] object userId, [NotNull] object pageName)
+        public static void adminpageaccess_save([NotNull] string connectionString, [NotNull] object userId, [NotNull] object pageName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("adminpageaccess_save"))
             {
@@ -1711,7 +1052,7 @@ namespace VZF.Data.MsSql
         /// <param name="pageName">
         /// The page name/
         /// </param>
-        public static void adminpageaccess_delete(string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
+        public static void adminpageaccess_delete([NotNull] string connectionString, [NotNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("adminpageaccess_delete"))
             {
@@ -1733,7 +1074,7 @@ namespace VZF.Data.MsSql
         /// The page name/
         /// </param>
         /// <returns>A DataTable with access lists for admin pages.</returns>
-        public static DataTable adminpageaccess_list(string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
+        public static DataTable adminpageaccess_list([NotNull] string connectionString, [CanBeNull] object userId, [CanBeNull] object pageName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("adminpageaccess_list"))
             {
@@ -1751,7 +1092,7 @@ namespace VZF.Data.MsSql
         /// <param name="albumID">
         /// the album id.
         /// </param>
-        public static void album_delete(string connectionString, [NotNull] object albumID)
+        public static void album_delete([NotNull] string connectionString, [NotNull] object albumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_delete"))
             {
@@ -1775,7 +1116,7 @@ namespace VZF.Data.MsSql
         ///   Otherwise, it gets the number of images in the album with AlbumID.
         /// </returns>
         [NotNull]
-        public static int[] album_getstats(string connectionString, [NotNull] object userID, [NotNull] object albumID)
+        public static int[] album_getstats([NotNull] string connectionString, [NotNull] object userID, [NotNull] object albumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_getstats"))
             {
@@ -1807,7 +1148,7 @@ namespace VZF.Data.MsSql
         /// The album_gettitle.
         /// </returns>
         [NotNull]
-        public static string album_gettitle(string connectionString, [NotNull] object albumID)
+        public static string album_gettitle([NotNull] string connectionString, [NotNull] object albumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_gettitle"))
             {
@@ -1827,7 +1168,7 @@ namespace VZF.Data.MsSql
         /// <param name="imageID">
         /// the image id.
         /// </param>
-        public static void album_image_delete(string connectionString, [NotNull] object imageID)
+        public static void album_image_delete([NotNull] string connectionString, [NotNull] object imageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_image_delete"))
             {
@@ -1843,7 +1184,7 @@ namespace VZF.Data.MsSql
         /// <param name="imageID">
         /// the image id.
         /// </param>
-        public static void album_image_download(string connectionString, [NotNull] object imageID)
+        public static void album_image_download([NotNull] string connectionString, [NotNull] object imageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_image_download"))
             {
@@ -1858,7 +1199,7 @@ namespace VZF.Data.MsSql
         /// </summary>
         /// <param name="userID">The user ID.</param>
         /// <returns>All Albbum Images of the User</returns>
-        public static DataTable album_images_by_user(string connectionString, [NotNull] object userID)
+        public static DataTable album_images_by_user([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_images_by_user"))
             {
@@ -1881,7 +1222,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// a Datatable containing the image(s).
         /// </returns>
-        public static DataTable album_image_list(string connectionString, [NotNull] object albumID, [NotNull] object imageID)
+        public static DataTable album_image_list([NotNull] string connectionString, [NotNull] object albumID, [NotNull] object imageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_image_list"))
             {
@@ -1913,7 +1254,7 @@ namespace VZF.Data.MsSql
         /// <param name="contentType">
         /// the content type.
         /// </param>
-        public static void album_image_save(string connectionString, [NotNull] object imageID, [NotNull] object albumID, [NotNull] object caption, [NotNull] object fileName, [NotNull] object bytes, [NotNull] object contentType)
+        public static void album_image_save([NotNull] string connectionString, [NotNull] object imageID, [NotNull] object albumID, [NotNull] object caption, [NotNull] object fileName, [NotNull] object bytes, [NotNull] object contentType)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_image_save"))
             {
@@ -1942,7 +1283,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// a Datatable containing the albums.
         /// </returns>
-        public static DataTable album_list(string connectionString, [NotNull] object userID, [NotNull] object albumID)
+        public static DataTable album_list([NotNull] string connectionString, [NotNull] object userID, [NotNull] object albumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_list"))
             {
@@ -1971,7 +1312,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The album_save.
         /// </returns>
-        public static int album_save(string connectionString, [NotNull] object albumID, [NotNull] object userID, [NotNull] object title, [NotNull] object coverImageID)
+        public static int album_save([NotNull] string connectionString, [NotNull] object albumID, [NotNull] object userID, [NotNull] object title, [NotNull] object coverImageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("album_save"))
             {
@@ -1995,7 +1336,7 @@ namespace VZF.Data.MsSql
         /// <param name="attachmentID">
         /// ID of attachment to delete
         /// </param>
-        public static void attachment_delete(string connectionString, [NotNull] object attachmentID)
+        public static void attachment_delete([NotNull] string connectionString, [NotNull] object attachmentID)
         {
             bool useFileTable = GetBooleanRegistryValue(connectionString,"UseFileTable");
 
@@ -2045,7 +1386,7 @@ namespace VZF.Data.MsSql
         /// <param name="attachmentID">
         /// ID of attachemnt to download
         /// </param>
-        public static void attachment_download(string connectionString, [NotNull] object attachmentID)
+        public static void attachment_download([NotNull] string connectionString, [NotNull] object attachmentID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("attachment_download"))
             {
@@ -2070,7 +1411,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with attachement list
         /// </returns>
-        public static DataTable attachment_list(string connectionString, [NotNull] object messageID, [NotNull] object attachmentID, [NotNull] object boardID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+        public static DataTable attachment_list([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object attachmentID, [NotNull] object boardID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("attachment_list"))
             {
@@ -2102,7 +1443,7 @@ namespace VZF.Data.MsSql
         /// <param name="stream">
         /// stream of bytes
         /// </param>
-        public static void attachment_save(string connectionString, [NotNull] object messageID, [NotNull] object fileName, [NotNull] object bytes, [NotNull] object contentType, [NotNull] Stream stream)
+        public static void attachment_save([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object fileName, [NotNull] object bytes, [NotNull] object contentType, [NotNull] Stream stream)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("attachment_save"))
             {
@@ -2130,7 +1471,7 @@ namespace VZF.Data.MsSql
         /// <param name="ID">
         /// ID of banned ip to delete
         /// </param>
-        public static void bannedip_delete(string connectionString, [NotNull] object ID)
+        public static void bannedip_delete([NotNull] string connectionString, [NotNull] object ID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bannedip_delete"))
             {
@@ -2158,7 +1499,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable of banned IPs
         /// </returns>
-        public static DataTable bannedip_list(string connectionString, [NotNull] object boardID, [CanBeNull] object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+        public static DataTable bannedip_list([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bannedip_list"))
             {
@@ -2189,7 +1530,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user ID.
         /// </param>
-        public static void bannedip_save(string connectionString, [NotNull] object ID, [NotNull] object boardID, [NotNull] object Mask, [NotNull] string reason, int userID)
+        public static void bannedip_save([NotNull] string connectionString, [NotNull] object ID, [NotNull] object boardID, [NotNull] object Mask, [NotNull] string reason, int userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bannedip_save"))
             {
@@ -2210,7 +1551,7 @@ namespace VZF.Data.MsSql
         /// <param name="bbcodeID">
         /// The bbcode id.
         /// </param>
-        public static void bbcode_delete(string connectionString, [NotNull] object bbcodeID)
+        public static void bbcode_delete([NotNull] string connectionString, [NotNull] object bbcodeID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bbcode_delete"))
             {
@@ -2232,7 +1573,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static DataTable bbcode_list(string connectionString, [NotNull] object boardID, [NotNull] object bbcodeID)
+        public static DataTable bbcode_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object bbcodeID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bbcode_list"))
             {
@@ -2289,7 +1630,7 @@ namespace VZF.Data.MsSql
         /// <param name="execorder">
         /// The execorder.
         /// </param>
-        public static void bbcode_save(string connectionString, [NotNull] object bbcodeID, [NotNull] object boardID, [NotNull] object name, [NotNull] object description, [NotNull] object onclickjs, [NotNull] object displayjs, [NotNull] object editjs, [NotNull] object displaycss, [NotNull] object searchregex, [NotNull] object replaceregex, [NotNull] object variables, [NotNull] object usemodule, [NotNull] object moduleclass, [NotNull] object execorder)
+        public static void bbcode_save([NotNull] string connectionString, [NotNull] object bbcodeID, [NotNull] object boardID, [NotNull] object name, [NotNull] object description, [NotNull] object onclickjs, [NotNull] object displayjs, [NotNull] object editjs, [NotNull] object displaycss, [NotNull] object searchregex, [NotNull] object replaceregex, [NotNull] object variables, [NotNull] object usemodule, [NotNull] object moduleclass, [NotNull] object execorder)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("bbcode_save"))
             {
@@ -2328,7 +1669,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The board_create.
         /// </returns>
-        public static int board_create(string connectionString, [NotNull] object adminUsername, [NotNull] object adminUserEmail, [NotNull] object adminUserKey, [NotNull] object boardName, [NotNull] object culture, [NotNull] object languageFile, [NotNull] object boardMembershipName, [NotNull] object boardRolesName, [NotNull] object rolePrefix, [NotNull] object isHostUser)
+        public static int board_create([NotNull] string connectionString, [NotNull] object adminUsername, [NotNull] object adminUserEmail, [NotNull] object adminUserKey, [NotNull] object boardName, [NotNull] object culture, [NotNull] object languageFile, [NotNull] object boardMembershipName, [NotNull] object boardRolesName, [NotNull] object rolePrefix, [NotNull] object isHostUser)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_create"))
             {
@@ -2355,7 +1696,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// ID of board to delete
         /// </param>
-        public static void board_delete(string connectionString, [NotNull] object boardID)
+        public static void board_delete([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_delete"))
             {
@@ -2374,7 +1715,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable
         /// </returns>
-        public static DataTable board_list(string connectionString, [NotNull] object boardID)
+        public static DataTable board_list([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_list"))
             {
@@ -2399,7 +1740,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataRow of Poststats
         /// </returns>
-        public static DataRow board_poststats(string connectionString, int? boardId, bool useStyledNick, bool showNoCountPosts)
+        public static DataRow board_poststats([NotNull] string connectionString, int? boardId, bool useStyledNick, bool showNoCountPosts)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_poststats"))
             {
@@ -2442,7 +1783,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// BoardID of board to do re-sync for, if null, all boards are re-synced
         /// </param>
-        public static void board_resync(string connectionString, [NotNull] object boardID)
+        public static void board_resync([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_resync"))
             {
@@ -2463,7 +1804,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the saved Board Id
         /// </returns>
-        public static int board_save(string connectionString, [NotNull] object boardID, [NotNull] object languageFile, [NotNull] object culture, [NotNull] object name, [NotNull] object allowThreaded)
+        public static int board_save([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object languageFile, [NotNull] object culture, [NotNull] object name, [NotNull] object allowThreaded)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_save"))
             {
@@ -2489,7 +1830,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the saved Board Id
         /// </returns>
-        public static int board_save(string connectionString, [NotNull] object boardID, [NotNull] object languageFile, [NotNull] object forumEmail, [NotNull] object culture, [NotNull] object name, [NotNull] object allowThreaded)
+        public static int board_save([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object languageFile, [NotNull] object forumEmail, [NotNull] object culture, [NotNull] object name, [NotNull] object allowThreaded)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_save"))
             {
@@ -2512,7 +1853,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataRow board_stats(string connectionString, [NotNull] object boardID)
+        public static DataRow board_stats([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_stats"))
             {
@@ -2533,7 +1874,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataRow of Poststats
         /// </returns>
-        public static DataRow board_userstats(string connectionString, int? boardId)
+        public static DataRow board_userstats([NotNull] string connectionString, int? boardId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("board_userstats"))
             {
@@ -2559,7 +1900,7 @@ namespace VZF.Data.MsSql
         /// The name of the second user + Whether this request is approved or not.
         /// </returns>
         [NotNull]
-        public static string[] buddy_addrequest(string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
+        public static string[] buddy_addrequest([NotNull] string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("buddy_addrequest"))
             {
@@ -2594,7 +1935,7 @@ namespace VZF.Data.MsSql
         /// the name of the second user.
         /// </returns>
         [NotNull]
-        public static string buddy_approveRequest(string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID, [NotNull] object Mutual)
+        public static string buddy_approveRequest([NotNull] string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID, [NotNull] object Mutual)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("buddy_approverequest"))
             {
@@ -2624,7 +1965,7 @@ namespace VZF.Data.MsSql
         /// the name of the second user.
         /// </returns>
         [NotNull]
-        public static string buddy_denyRequest(string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
+        public static string buddy_denyRequest([NotNull] string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("buddy_denyrequest"))
             {
@@ -2648,7 +1989,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// a Datatable containing the buddy list.
         /// </returns>
-        public static DataTable buddy_list(string connectionString, [NotNull] object FromUserID)
+        public static DataTable buddy_list([NotNull] string connectionString, [NotNull] object FromUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("buddy_list"))
             {
@@ -2671,7 +2012,7 @@ namespace VZF.Data.MsSql
         /// The name of the second user.
         /// </returns>
         [NotNull]
-        public static string buddy_remove(string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
+        public static string buddy_remove([NotNull] string connectionString, [NotNull] object FromUserID, [NotNull] object ToUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("buddy_remove"))
             {
@@ -2695,7 +2036,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Bool value indicationg if category was deleted
         /// </returns>
-        public static bool category_delete(string connectionString, [NotNull] object CategoryID)
+        public static bool category_delete([NotNull] string connectionString, [NotNull] object CategoryID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_delete"))
             {
@@ -2717,7 +2058,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with a list of forums in a category
         /// </returns>
-        public static DataTable category_list(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID)
+        public static DataTable category_list([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_list"))
             {
@@ -2741,7 +2082,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with a list of forums in a category
         /// </returns>
-        public static DataTable category_pfaccesslist(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID)
+        public static DataTable category_pfaccesslist([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_pfaccesslist"))
             {
@@ -2771,7 +2112,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable category_getadjacentforum(string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID, object userId, bool isAfter)
+        public static DataTable category_getadjacentforum([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object categoryID, object userId, bool isAfter)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_getadjacentforum"))
             {
@@ -2795,7 +2136,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable category_listread(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID)
+        public static DataTable category_listread([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_listread"))
             {
@@ -2825,7 +2166,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// The sort Order.
         /// </param>
-        public static void category_save(string connectionString, [NotNull] object boardID, [NotNull] object categoryId, [NotNull] object name, [NotNull] object categoryImage, [NotNull] object sortOrder, [NotNull] object canHavePersForums)
+        public static void category_save([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object categoryId, [NotNull] object name, [NotNull] object categoryImage, [NotNull] object sortOrder, [NotNull] object canHavePersForums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_save"))
             {
@@ -2851,7 +2192,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable category_simplelist(string connectionString, int startID, int limit)
+        public static DataTable category_simplelist([NotNull] string connectionString, int startID, int limit)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("category_simplelist"))
             {
@@ -2871,7 +2212,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with check email information
         /// </returns>
-        public static DataTable checkemail_list(string connectionString, [NotNull] object email)
+        public static DataTable checkemail_list([NotNull] string connectionString, [NotNull] object email)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("checkemail_list"))
             {
@@ -2893,7 +2234,7 @@ namespace VZF.Data.MsSql
         /// <param name="email">
         /// The email.
         /// </param>
-        public static void checkemail_save(string connectionString, [NotNull] object userID, [NotNull] object hash, [NotNull] object email)
+        public static void checkemail_save([NotNull] string connectionString, [NotNull] object userID, [NotNull] object hash, [NotNull] object email)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("checkemail_save"))
             {
@@ -2915,7 +2256,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with user information
         /// </returns>
-        public static DataTable checkemail_update(string connectionString, [NotNull] object hash)
+        public static DataTable checkemail_update([NotNull] string connectionString, [NotNull] object hash)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("checkemail_update"))
             {
@@ -2940,7 +2281,7 @@ namespace VZF.Data.MsSql
         /// <param name="mime">
         /// The mime.
         /// </param>
-        public static void choice_add(string connectionString, [NotNull] object pollID, [NotNull] object choice, [NotNull] object path, [NotNull] object mime)
+        public static void choice_add([NotNull] string connectionString, [NotNull] object pollID, [NotNull] object choice, [NotNull] object path, [NotNull] object mime)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("choice_add"))
             {
@@ -2959,7 +2300,7 @@ namespace VZF.Data.MsSql
         /// <param name="choiceID">
         /// The choice id.
         /// </param>
-        public static void choice_delete(string connectionString, [NotNull] object choiceID)
+        public static void choice_delete([NotNull] string connectionString, [NotNull] object choiceID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("choice_delete"))
             {
@@ -2984,7 +2325,7 @@ namespace VZF.Data.MsSql
         /// <param name="mime">
         /// The mime.
         /// </param>
-        public static void choice_update(string connectionString, [NotNull] object choiceID, [NotNull] object choice, [NotNull] object path, [NotNull] object mime)
+        public static void choice_update([NotNull] string connectionString, [NotNull] object choiceID, [NotNull] object choice, [NotNull] object path, [NotNull] object mime)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("choice_update"))
             {
@@ -3009,7 +2350,7 @@ namespace VZF.Data.MsSql
         /// <param name="remoteIP">
         /// The remote IP.
         /// </param>
-        public static void choice_vote(string connectionString, [NotNull] object choiceID, [NotNull] object userID, [NotNull] object remoteIP)
+        public static void choice_vote([NotNull] string connectionString, [NotNull] object choiceID, [NotNull] object userID, [NotNull] object remoteIP)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("choice_vote"))
             {
@@ -3027,7 +2368,7 @@ namespace VZF.Data.MsSql
         /// <param name="connectionManager">
         /// The conn man.
         /// </param>
-        public static void db_getstats(string connectionString, [NotNull] MsSqlDbConnectionManager connectionManager)
+        public static void db_getstats([NotNull] string connectionString, [NotNull] MsSqlDbConnectionManager connectionManager)
         {
             // create statistic getting SQL...
             var sb = new StringBuilder();
@@ -3149,7 +2490,7 @@ namespace VZF.Data.MsSql
         /// <param name="dbRecoveryMode">
         /// The db recovery mode.
         /// </param>
-        public static void db_recovery_mode(string connectionString, [NotNull] MsSqlDbConnectionManager DBName, [NotNull] string dbRecoveryMode)
+        public static void db_recovery_mode([NotNull] string connectionString, [NotNull] MsSqlDbConnectionManager DBName, [NotNull] string dbRecoveryMode)
         {
             string RecoveryMode = "ALTER DATABASE " + DBName.DBConnection(connectionString).Database + " SET RECOVERY " + dbRecoveryMode;
             var RecoveryModeConn = new SqlConnection(Config.ConnectionString);
@@ -3176,7 +2517,7 @@ namespace VZF.Data.MsSql
         /// <param name="dbRecoveryMode">
         /// The db recovery mode.
         /// </param>
-        public static string db_recovery_mode_new(string connectionString, [NotNull] string dbRecoveryMode)
+        public static string db_recovery_mode_new([NotNull] string connectionString, [NotNull] string dbRecoveryMode)
         {
             try
             {
@@ -3244,7 +2585,7 @@ namespace VZF.Data.MsSql
         /// The db_recovery_mode_warning.
         /// </returns>
         [NotNull]
-        public static string db_recovery_mode_warning(string connectionString, [NotNull] MsSqlDbConnectionManager DBName)
+        public static string db_recovery_mode_warning([NotNull] string connectionString, [NotNull] MsSqlDbConnectionManager DBName)
         {
             return string.Empty;
         }
@@ -3255,7 +2596,7 @@ namespace VZF.Data.MsSql
         /// <param name="connectionManager">
         /// The conn man.
         /// </param>
-        public static void db_reindex(string connectionString, [NotNull] MsSqlDbConnectionManager connectionManager)
+        public static void db_reindex([NotNull] string connectionString, [NotNull] MsSqlDbConnectionManager connectionManager)
         {
            
             // create statistic getting SQL...
@@ -3405,7 +2746,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The db_runsql.
         /// </returns>
-        public static string db_runsql(string connectionString, [NotNull] string sql, [NotNull] MsSqlDbConnectionManager connectionManager, bool useTransaction)
+        public static string db_runsql([NotNull] string connectionString, [NotNull] string sql, [NotNull] MsSqlDbConnectionManager connectionManager, bool useTransaction)
         {
             using (var command = new SqlCommand(sql, connectionManager.OpenDBConnection(connectionString)))
             {
@@ -3432,7 +2773,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The db_runsql.
         /// </returns>
-        public static string db_runsql_new(string connectionString, [NotNull] string sql, bool useTransaction)
+        public static string db_runsql_new([NotNull] string connectionString, [NotNull] string sql, bool useTransaction)
         {
 
             try
@@ -3479,7 +2820,7 @@ namespace VZF.Data.MsSql
         /// <param name="DBName">
         /// The db name.
         /// </param>
-        public static void db_shrink(string connectionString, [NotNull] MsSqlDbConnectionManager DBName)
+        public static void db_shrink([NotNull] string connectionString, [NotNull] MsSqlDbConnectionManager DBName)
         {
             string ShrinkSql = "DBCC SHRINKDATABASE(N'" + DBName.DBConnection(connectionString).Database + "')";
             var ShrinkConn = new SqlConnection(Config.ConnectionString);
@@ -3496,6 +2837,8 @@ namespace VZF.Data.MsSql
         }
 
         private static string dbShinkMessage;
+     
+
         /// <summary>
         /// The db_shrink.
         /// </summary>
@@ -3571,7 +2914,7 @@ namespace VZF.Data.MsSql
         /// DataSet with categories
         /// </returns>
         [NotNull]
-        public static DataSet ds_forumadmin(string connectionString, [NotNull] object boardID, object pageUserID, object isUserForum)
+        public static DataSet ds_forumadmin([NotNull] string connectionString, [NotNull] object boardID, object pageUserID, object isUserForum)
         {
             // TODO: this function is TERRIBLE. Recode or remove completely.
             using (var connMan = new MsSqlDbConnectionManager(connectionString))
@@ -3631,7 +2974,7 @@ namespace VZF.Data.MsSql
         /// <param name="type">
         /// The type.
         /// </param>
-        public static void eventlog_create(string connectionString, [NotNull] object userID, [NotNull] object source, [NotNull] object description, [NotNull] object type)
+        public static void eventlog_create([NotNull] string connectionString, [NotNull] object userID, [NotNull] object source, [NotNull] object description, [NotNull] object type)
         {
             try
             {
@@ -3692,7 +3035,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// A list of events for the pageUserID access level. 
         /// </returns>
-        public static DataTable eventlog_list(string connectionString, [NotNull] object boardID, [NotNull] object pageUserID, [NotNull] object maxRows, [NotNull] object maxDays, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object eventIDs)
+        public static DataTable eventlog_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object pageUserID, [NotNull] object maxRows, [NotNull] object maxDays, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object eventIDs)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventlog_list"))
             {
@@ -3723,7 +3066,7 @@ namespace VZF.Data.MsSql
         /// <param name="eventTypeName">
         /// The event Type Name.
         /// </param>
-        public static void eventloggroupaccess_save(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
+        public static void eventloggroupaccess_save([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName, [NotNull] object deleteAccess)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventloggroupaccess_save"))
             {
@@ -3748,7 +3091,7 @@ namespace VZF.Data.MsSql
         /// <param name="eventTypeName">
         /// The event Type Name.
         /// </param>
-        public static void eventloggroupaccess_delete(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
+        public static void eventloggroupaccess_delete([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventloggroupaccess_delete"))
             {
@@ -3770,7 +3113,7 @@ namespace VZF.Data.MsSql
         /// The event Type Id.
         /// </param>
         /// <returns>Returns a list of access entries for a group.</returns>
-        public static DataTable eventloggroupaccess_list(string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
+        public static DataTable eventloggroupaccess_list([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object eventTypeId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventloggroupaccess_list"))
             {
@@ -3789,7 +3132,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>Lists group for the board Id handy to display on the calling admin page.
         /// </returns>
-        public static DataTable group_eventlogaccesslist(string connectionString, [CanBeNull] object boardId)
+        public static DataTable group_eventlogaccesslist([NotNull] string connectionString, [CanBeNull] object boardId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_eventlogaccesslist"))
             {
@@ -3805,7 +3148,7 @@ namespace VZF.Data.MsSql
         /// <param name="extensionId">
         /// The extension id.
         /// </param>
-        public static void extension_delete(string connectionString, [NotNull] object extensionId)
+        public static void extension_delete([NotNull] string connectionString, [NotNull] object extensionId)
         {
             try
             {
@@ -3831,7 +3174,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable extension_edit(string connectionString, [NotNull] object extensionId)
+        public static DataTable extension_edit([NotNull] string connectionString, [NotNull] object extensionId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("extension_edit"))
             {
@@ -3853,7 +3196,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable extension_list(string connectionString, [NotNull] object boardID, [NotNull] object extension)
+        public static DataTable extension_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object extension)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("extension_list"))
             {
@@ -3876,7 +3219,7 @@ namespace VZF.Data.MsSql
         /// <param name="Extension">
         /// The extension.
         /// </param>
-        public static void extension_save(string connectionString, [NotNull] object extensionId, [NotNull] object boardID, [NotNull] object Extension)
+        public static void extension_save([NotNull] string connectionString, [NotNull] object extensionId, [NotNull] object boardID, [NotNull] object Extension)
         {
             try
             {
@@ -3899,7 +3242,7 @@ namespace VZF.Data.MsSql
         /// Delete a topic status.
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
-        public static void TopicStatus_Delete(string connectionString, [NotNull] object topicStatusID)
+        public static void TopicStatus_Delete([NotNull] string connectionString, [NotNull] object topicStatusID)
         {
             try
             {
@@ -3921,7 +3264,7 @@ namespace VZF.Data.MsSql
         /// </summary>
         /// <param name="topicStatusID">The topic status ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_Edit(string connectionString, [NotNull] object topicStatusID)
+        public static DataTable TopicStatus_Edit([NotNull] string connectionString, [NotNull] object topicStatusID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("TopicStatus_Edit"))
             {
@@ -3936,7 +3279,7 @@ namespace VZF.Data.MsSql
         /// </summary>
         /// <param name="boardID">The board ID.</param>
         /// <returns></returns>
-        public static DataTable TopicStatus_List(string connectionString, [NotNull] object boardID)
+        public static DataTable TopicStatus_List([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("TopicStatus_List"))
             {
@@ -3953,7 +3296,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">The board ID.</param>
         /// <param name="topicStatusName">Name of the topic status.</param>
         /// <param name="defaultDescription">The default description.</param>
-        public static void TopicStatus_Save(string connectionString, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
+        public static void TopicStatus_Save([NotNull] string connectionString, [NotNull] object topicStatusID, [NotNull] object boardID, [NotNull] object topicStatusName, [NotNull] object defaultDescription)
         {
             try
             {
@@ -3979,7 +3322,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardId">The board id.</param>
         /// <param name="userId">The user Id.</param>
         /// <returns>A <see cref="T:System.Data.DataTable"/> of categories.</returns>
-        public static DataTable forum_categoryaccess_activeuser(string connectionString, [NotNull] object boardId, [CanBeNull] object userId)
+        public static DataTable forum_categoryaccess_activeuser([NotNull] string connectionString, [NotNull] object boardId, [CanBeNull] object userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_categoryaccess_activeuser"))
             {
@@ -3998,7 +3341,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// bool to indicate that forum has been deleted
         /// </returns>
-        public static bool forum_delete(string connectionString, [NotNull] object forumID)
+        public static bool forum_delete([NotNull] string connectionString, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -4036,7 +3379,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// bool to indicate that forum has been deleted
         /// </returns>
-        public static bool forum_move(string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
+        public static bool forum_move([NotNull] string connectionString, [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listSubForums"))
             {
@@ -4077,7 +3420,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list of topics from a forum
         /// </returns>
-        public static DataTable forum_list(string connectionString, [NotNull] object boardID, [CanBeNull] object forumID)
+        public static DataTable forum_list([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_list"))
             {
@@ -4090,7 +3433,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        public static DataTable forum_byuserlist(string connectionString, [NotNull] object boardID, [CanBeNull] object forumID, object userId, object isUserForum)
+        public static DataTable forum_byuserlist([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object forumID, object userId, object isUserForum)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_byuserlist"))
             {
@@ -4116,7 +3459,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list of topics from a forum
         /// </returns>
-        public static int forum_maxid(string connectionString, [NotNull] object boardID)
+        public static int forum_maxid([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_maxid"))
             {
@@ -4142,7 +3485,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable of all accessible forums
         /// </returns>
-        public static DataTable forum_listall(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object startAt, bool returnAll)
+        public static DataTable forum_listall([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object startAt, bool returnAll)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listall"))
             {
@@ -4167,7 +3510,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable of moderated forums
         /// </returns>
-        public static DataTable forum_listallMyModerated(string connectionString, [NotNull] object boardID, [NotNull] object userID)
+        public static DataTable forum_listallMyModerated([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listallmymoderated"))
             {
@@ -4194,7 +3537,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list
         /// </returns>
-        public static DataTable forum_listall_fromCat(string connectionString, [NotNull] object boardID, [NotNull] object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
+        public static DataTable forum_listall_fromCat([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listall_fromCat"))
             {
@@ -4213,7 +3556,7 @@ namespace VZF.Data.MsSql
         }
 
 
-        static public DataTable forum_ns_getchildren_anyuser(string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        public static DataTable forum_ns_getchildren_anyuser([NotNull] string connectionString, int boardid, int categoryid, int forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_ns_getchildren_anyuser"))
             {
@@ -4261,7 +3604,7 @@ namespace VZF.Data.MsSql
         }
 
 
-        static public DataTable forum_ns_getchildren(string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
+        public static DataTable forum_ns_getchildren([NotNull] string connectionString, int? boardid, int? categoryid, int? forumid, bool notincluded, bool immediateonly, string indentchars)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_ns_getchildren"))
             {
@@ -4278,7 +3621,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        static public DataTable forum_ns_getchildren_activeuser(string connectionString, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
+        public static DataTable forum_ns_getchildren_activeuser([NotNull] string connectionString, int? boardid, int? categoryid, int? forumid, int userid, bool notincluded, bool immediateonly, string indentchars)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_ns_getchildren_activeuser"))
             {
@@ -4303,7 +3646,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forum_listpath(string connectionString, [NotNull] object forumID)
+        public static DataTable forum_listpath([NotNull] string connectionString, [NotNull] object forumID)
         {
            
 
@@ -4352,7 +3695,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with list
         /// </returns>
-        public static DataTable forum_listread(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead, [NotNull] bool showCommonForums, [NotNull]bool showPersonalForums, [CanBeNull] int? forumCreatedByUserId)
+        public static DataTable forum_listread([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead, [NotNull] bool showCommonForums, [NotNull]bool showPersonalForums, [CanBeNull] int? forumCreatedByUserId)
         {
             if (!MsSqlDbAccess.LargeForumTree)
             {
@@ -4406,7 +3749,7 @@ namespace VZF.Data.MsSql
         /// DataSet with categories
         /// </returns>
         [NotNull]
-        public static DataSet forum_moderatelist(string connectionString, [NotNull] object userID, [NotNull] object boardID)
+        public static DataSet forum_moderatelist([NotNull] string connectionString, [NotNull] object userID, [NotNull] object boardID)
         {
             using (var connMan = new MsSqlDbConnectionManager(connectionString))
             {
@@ -4500,7 +3843,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         ///  Returns Data Table with all Mods
         /// </returns>
-        public static DataTable forum_moderators(string connectionString, bool useStyledNicks)
+        public static DataTable forum_moderators([NotNull] string connectionString, bool useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_moderators"))
             {
@@ -4519,7 +3862,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         ///  Returns Data Table with all Mods
         /// </returns>
-        public static DataTable moderators_team_list(string connectionString, bool useStyledNicks)
+        public static DataTable moderators_team_list([NotNull] string connectionString, bool useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("moderators_team_list"))
             {
@@ -4538,7 +3881,7 @@ namespace VZF.Data.MsSql
         /// <param name="forumID">
         /// If null, all forums in board are updated
         /// </param>
-        public static void forum_resync(string connectionString, [NotNull] object boardID, [NotNull] object forumID)
+        public static void forum_resync([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_resync"))
             {
@@ -4603,7 +3946,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The forum_save.
         /// </returns>
-        public static long forum_save(string connectionString, [NotNull] object forumID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object name, [NotNull] object description, [NotNull] object sortOrder, [NotNull] object locked, [NotNull] object hidden, [NotNull] object isTest, [NotNull] object moderated, [NotNull] object accessMaskID, [NotNull] object remoteURL, [NotNull] object themeURL, [NotNull] object imageURL, [NotNull] object styles,
+        public static long forum_save([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object name, [NotNull] object description, [NotNull] object sortOrder, [NotNull] object locked, [NotNull] object hidden, [NotNull] object isTest, [NotNull] object moderated, [NotNull] object accessMaskID, [NotNull] object remoteURL, [NotNull] object themeURL, [NotNull] object imageURL, [NotNull] object styles,
           bool dummy, object userId, bool isUserForum, bool canhavepersforums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_save"))
@@ -4645,7 +3988,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Integer value for a found dependency
         /// </returns>
-        public static int forum_save_parentschecker(string connectionString, [NotNull] object forumID, [NotNull] object parentID)
+        public static int forum_save_parentschecker([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object parentID)
         {
             using (
               var cmd =
@@ -4668,7 +4011,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forum_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable forum_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_simplelist"))
             {
@@ -4687,7 +4030,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forumaccess_group(string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_group([NotNull] string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_group"))
             {
@@ -4708,7 +4051,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forumaccess_personalgroup(string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
+        public static DataTable forumaccess_personalgroup([NotNull] string connectionString, [NotNull] object groupID, object userId, bool includeUserForums)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_personalgroup"))
             {
@@ -4729,7 +4072,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable forumaccess_list(string connectionString, [NotNull] object forumID, object userId, bool includeUserGroups)
+        public static DataTable forumaccess_list([NotNull] string connectionString, [NotNull] object forumID, object userId, bool includeUserGroups)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_list"))
             {
@@ -4753,7 +4096,7 @@ namespace VZF.Data.MsSql
         /// <param name="accessMaskID">
         /// The access mask id.
         /// </param>
-        public static void forumaccess_save(string connectionString, [NotNull] object forumID, [NotNull] object groupID, [NotNull] object accessMaskID)
+        public static void forumaccess_save([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object groupID, [NotNull] object accessMaskID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forumaccess_save"))
             {
@@ -4777,7 +4120,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The forumpage_initdb.
         /// </returns>
-        public static bool forumpage_initdb(string connectionString, [NotNull] out string errorStr, bool debugging)
+        public static bool forumpage_initdb([NotNull] string connectionString, [NotNull] out string errorStr, bool debugging)
         {
             errorStr = string.Empty;
 
@@ -4814,7 +4157,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The forumpage_validateversion.
         /// </returns>
-        public static string forumpage_validateversion(string connectionString, int? mid, int appVersion)
+        public static string forumpage_validateversion([NotNull] string connectionString, int? mid, int appVersion)
         {
             string redirect = string.Empty;
             try
@@ -4842,7 +4185,7 @@ namespace VZF.Data.MsSql
         /// <param name="groupID">
         /// The group id.
         /// </param>
-        public static void group_delete(string connectionString, [NotNull] object groupID)
+        public static void group_delete([NotNull] string connectionString, [NotNull] object groupID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_delete"))
             {
@@ -4863,7 +4206,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable group_list(string connectionString, [NotNull] object boardID, [NotNull] object groupID)
+        public static DataTable group_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object groupID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_list"))
             {
@@ -4874,7 +4217,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        public static DataTable group_byuserlist(string connectionString, [NotNull] object boardID, [NotNull] object groupID, object userId, object isUserGroup)
+        public static DataTable group_byuserlist([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object groupID, object userId, object isUserGroup)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_byuserlist"))
             {
@@ -4896,7 +4239,7 @@ namespace VZF.Data.MsSql
         /// <param name="medalID">
         /// ID of medal.
         /// </param>
-        public static void group_medal_delete(string connectionString, [NotNull] object groupID, [NotNull] object medalID)
+        public static void group_medal_delete([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object medalID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_medal_delete"))
             {
@@ -4918,7 +4261,7 @@ namespace VZF.Data.MsSql
         /// <param name="medalID">
         /// ID of medal to list.
         /// </param>
-        public static DataTable group_medal_list(string connectionString, [NotNull] object groupID, [NotNull] object medalID)
+        public static DataTable group_medal_list([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object medalID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_medal_list"))
             {
@@ -4952,7 +4295,7 @@ namespace VZF.Data.MsSql
         /// <param name="sortOrder">
         /// Sort order in user box. Overrides medal's default sort order.
         /// </param>
-        public static void group_medal_save(string connectionString, [NotNull] object groupID, [NotNull] object medalID, [NotNull] object message, [NotNull] object hide, [NotNull] object onlyRibbon, [NotNull] object sortOrder)
+        public static void group_medal_save([NotNull] string connectionString, [NotNull] object groupID, [NotNull] object medalID, [NotNull] object message, [NotNull] object hide, [NotNull] object onlyRibbon, [NotNull] object sortOrder)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_medal_save"))
             {
@@ -4980,7 +4323,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable group_member(string connectionString, [NotNull] object boardID, [NotNull] object userID)
+        public static DataTable group_member([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_member"))
             {
@@ -4999,7 +4342,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// The board ID.
         /// </param>
-        public static DataTable group_rank_style(string connectionString, [NotNull] object boardID)
+        public static DataTable group_rank_style([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("group_rank_style"))
             {
@@ -5067,7 +4410,7 @@ namespace VZF.Data.MsSql
         /// The group_save.
         /// </returns>
         public static long group_save(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object groupID,
             [NotNull] object boardID,
             [NotNull] object name,
@@ -5148,7 +4491,7 @@ namespace VZF.Data.MsSql
         /// <param name="bodyHtml">
         /// The body html.
         /// </param>
-        public static void mail_create(string connectionString, [NotNull] object from, [NotNull] object fromName, [NotNull] object to, [NotNull] object toName, [NotNull] object subject, [NotNull] object body, [NotNull] object bodyHtml)
+        public static void mail_create([NotNull] string connectionString, [NotNull] object from, [NotNull] object fromName, [NotNull] object to, [NotNull] object toName, [NotNull] object subject, [NotNull] object body, [NotNull] object bodyHtml)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("mail_create"))
             {
@@ -5189,7 +4532,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void mail_createwatch(string connectionString, [NotNull] object topicID, [NotNull] object from, [NotNull] object fromName, [NotNull] object subject, [NotNull] object body, [NotNull] object bodyHtml, [NotNull] object userID)
+        public static void mail_createwatch([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object from, [NotNull] object fromName, [NotNull] object subject, [NotNull] object body, [NotNull] object bodyHtml, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("mail_createwatch"))
             {
@@ -5212,7 +4555,7 @@ namespace VZF.Data.MsSql
         /// <param name="mailID">
         /// The mail id.
         /// </param>
-        public static void mail_delete(string connectionString, [NotNull] object mailID)
+        public static void mail_delete([NotNull] string connectionString, [NotNull] object mailID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("mail_delete"))
             {
@@ -5231,7 +4574,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// List of users with their user id and usernames, who own this medal.
         /// </returns>
-        public static DataTable medal_listusers(string connectionString, [NotNull] object medalID)
+        public static DataTable medal_listusers([NotNull] string connectionString, [NotNull] object medalID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("medal_listusers"))
             {
@@ -5255,7 +4598,7 @@ namespace VZF.Data.MsSql
         /// <param name="move">
         /// Change of sort.
         /// </param>
-        public static void medal_resort(string connectionString, [NotNull] object boardID, [NotNull] object medalID, int move)
+        public static void medal_resort([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object medalID, int move)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("medal_resort"))
             {
@@ -5323,7 +4666,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The medal_save.
         /// </returns>
-        public static bool medal_save(string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object name, [NotNull] object description, [NotNull] object message, [NotNull] object category, [NotNull] object medalURL, [NotNull] object ribbonURL, [NotNull] object smallMedalURL, [NotNull] object smallRibbonURL, [NotNull] object smallMedalWidth, [NotNull] object smallMedalHeight, [NotNull] object smallRibbonWidth, [NotNull] object smallRibbonHeight, [NotNull] object sortOrder, [NotNull] object flags)
+        public static bool medal_save([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object name, [NotNull] object description, [NotNull] object message, [NotNull] object category, [NotNull] object medalURL, [NotNull] object ribbonURL, [NotNull] object smallMedalURL, [NotNull] object smallRibbonURL, [NotNull] object smallMedalWidth, [NotNull] object smallMedalHeight, [NotNull] object smallRibbonWidth, [NotNull] object smallRibbonHeight, [NotNull] object sortOrder, [NotNull] object flags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("medal_save"))
             {
@@ -5367,7 +4710,7 @@ namespace VZF.Data.MsSql
         /// Returns the Name of the User
         /// </returns>
         [NotNull]
-        public static string message_AddThanks(string connectionString, [NotNull] object fromUserID, [NotNull] object messageID, [NotNull] object useDisplayName)
+        public static string message_AddThanks([NotNull] string connectionString, [NotNull] object fromUserID, [NotNull] object messageID, [NotNull] object useDisplayName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_addthanks"))
             {
@@ -5399,7 +4742,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_GetTextByIds(string connectionString, [NotNull] string messageIDs)
+        public static DataTable message_GetTextByIds([NotNull] string connectionString, [NotNull] string messageIDs)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_gettextbyids"))
             {
@@ -5418,7 +4761,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_GetThanks(string connectionString, [NotNull] object MessageID)
+        public static DataTable message_GetThanks([NotNull] string connectionString, [NotNull] object MessageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_getthanks"))
             {
@@ -5438,7 +4781,7 @@ namespace VZF.Data.MsSql
         /// Returns the name of the user
         /// </returns>
         [NotNull]
-        public static string message_RemoveThanks(string connectionString, [NotNull] object FromUserID, [NotNull] object MessageID, [NotNull] object useDisplayName)
+        public static string message_RemoveThanks([NotNull] string connectionString, [NotNull] object FromUserID, [NotNull] object MessageID, [NotNull] object useDisplayName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_Removethanks"))
             {
@@ -5469,7 +4812,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The message_ thanks number.
         /// </returns>
-        public static int message_ThanksNumber(string connectionString, [NotNull] object messageID)
+        public static int message_ThanksNumber([NotNull] string connectionString, [NotNull] object messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_thanksnumber"))
             {
@@ -5489,7 +4832,7 @@ namespace VZF.Data.MsSql
         /// <param name="messageID">
         /// The message id.
         /// </param>
-        public static void message_approve(string connectionString, [NotNull] object messageID)
+        public static void message_approve([NotNull] string connectionString, [NotNull] object messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_approve"))
             {
@@ -5520,7 +4863,7 @@ namespace VZF.Data.MsSql
         /// <param name="eraseMessage">
         /// The erase message.
         /// </param>
-        public static void message_delete(string connectionString, [NotNull] object messageID,
+        public static void message_delete([NotNull] string connectionString, [NotNull] object messageID,
           bool isModeratorChanged, [NotNull] string deleteReason,
           int isDeleteAction,
           bool DeleteLinked,
@@ -5550,7 +4893,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_findunread(string connectionString, [NotNull] object topicID, [NotNull] object messageId, [NotNull] object lastRead, [NotNull] object showDeleted, [NotNull] object authorUserID)
+        public static DataTable message_findunread([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object messageId, [NotNull] object lastRead, [NotNull] object showDeleted, [NotNull] object authorUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_findunread"))
             {
@@ -5573,7 +4916,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static DataTable message_getRepliesList(string connectionString, [NotNull] object messageID)
+        public static DataTable message_getRepliesList([NotNull] string connectionString, [NotNull] object messageID)
         {
             var list = new DataTable();
             list.Columns.Add("MessageID", typeof(int));
@@ -5620,7 +4963,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list(string connectionString, [NotNull] object messageID)
+        public static DataTable message_list([NotNull] string connectionString, [NotNull] object messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_list"))
             {
@@ -5638,7 +4981,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_listreported(string connectionString, [NotNull] object forumID)
+        public static DataTable message_listreported([NotNull] string connectionString, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_listreported"))
             {
@@ -5660,7 +5003,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_listreporters(string connectionString, int messageID, [NotNull] object userID)
+        public static DataTable message_listreporters([NotNull] string connectionString, int messageID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_listreporters"))
             {
@@ -5683,7 +5026,7 @@ namespace VZF.Data.MsSql
         /// <param name="moveAll">
         /// The move all.
         /// </param>
-        public static void message_move(string connectionString, [NotNull] object messageID, [NotNull] object moveToTopic, bool moveAll)
+        public static void message_move([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object moveToTopic, bool moveAll)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_move"))
             {
@@ -5726,7 +5069,7 @@ namespace VZF.Data.MsSql
         /// <param name="reportText">
         /// The report text.
         /// </param>
-        public static void message_report(string connectionString, [NotNull] object messageID, [NotNull] object userID, [NotNull] object reportedDateTime, [NotNull] object reportText)
+        public static void message_report([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object userID, [NotNull] object reportedDateTime, [NotNull] object reportText)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_report"))
             {
@@ -5747,7 +5090,7 @@ namespace VZF.Data.MsSql
         /// <param name="messageID">
         /// The message id.
         /// </param>
-        public static void message_reportcopyover(string connectionString, [NotNull] object messageID)
+        public static void message_reportcopyover([NotNull] string connectionString, [NotNull] object messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_reportcopyover"))
             {
@@ -5770,7 +5113,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void message_reportresolve(string connectionString, [NotNull] object messageFlag, [NotNull] object messageID, [NotNull] object userID)
+        public static void message_reportresolve([NotNull] string connectionString, [NotNull] object messageFlag, [NotNull] object messageID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_reportresolve"))
             {
@@ -5816,7 +5159,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The message_save.
         /// </returns>
-        public static bool message_save(string connectionString, [NotNull] object topicID, [NotNull] object userID, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags,
+        public static bool message_save([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object userID, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags,
                                         ref long messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_save"))
@@ -5852,7 +5195,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_secdata(string connectionString, int MessageID, [NotNull] object pageUserId)
+        public static DataTable message_secdata([NotNull] string connectionString, int MessageID, [NotNull] object pageUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_secdata"))
             {
@@ -5874,7 +5217,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable message_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_simplelist"))
             {
@@ -5893,7 +5236,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable message_unapproved(string connectionString, [NotNull] object forumID)
+        public static DataTable message_unapproved([NotNull] string connectionString, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_unapproved"))
             {
@@ -5942,7 +5285,7 @@ namespace VZF.Data.MsSql
         /// <param name="editedBy">
         /// UserId of who edited the message.
         /// </param>
-        public static void message_update(string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy, string tags)
+        public static void message_update([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy, string tags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_update"))
             {
@@ -5983,7 +5326,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// List of all message changes. 
         /// </returns>
-        public static DataTable messagehistory_list(string connectionString, int messageId, int daysToClean)
+        public static DataTable messagehistory_list([NotNull] string connectionString, int messageId, int daysToClean)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("messagehistory_list"))
             {
@@ -6003,7 +5346,7 @@ namespace VZF.Data.MsSql
         /// <param name="nntpForumID">
         /// The nntp forum id.
         /// </param>
-        public static void nntpforum_delete(string connectionString, [NotNull] object nntpForumID)
+        public static void nntpforum_delete([NotNull] string connectionString, [NotNull] object nntpForumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpforum_delete"))
             {
@@ -6030,7 +5373,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable nntpforum_list(string connectionString, [NotNull] object boardID, [NotNull] object minutes, [NotNull] object nntpForumID, [NotNull] object active)
+        public static DataTable nntpforum_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object minutes, [NotNull] object nntpForumID, [NotNull] object active)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpforum_list"))
             {
@@ -6044,7 +5387,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        public static IEnumerable<TypedNntpForum> NntpForumList(string connectionString, int boardID, int? minutes, int? nntpForumID, bool? active)
+        public static IEnumerable<TypedNntpForum> NntpForumList([NotNull] string connectionString, int boardID, int? minutes, int? nntpForumID, bool? active)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpforum_list"))
             {
@@ -6080,7 +5423,7 @@ namespace VZF.Data.MsSql
         /// <param name="datecutoff">
         /// The datecutoff.
         /// </param>
-        public static void nntpforum_save(string connectionString, [NotNull] object nntpForumID, [NotNull] object nntpServerID, [NotNull] object groupName, [NotNull] object forumID, [NotNull] object active, [NotNull] object datecutoff)
+        public static void nntpforum_save([NotNull] string connectionString, [NotNull] object nntpForumID, [NotNull] object nntpServerID, [NotNull] object groupName, [NotNull] object forumID, [NotNull] object active, [NotNull] object datecutoff)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpforum_save"))
             {
@@ -6108,7 +5451,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void nntpforum_update(string connectionString, [NotNull] object nntpForumID, [NotNull] object lastMessageNo, [NotNull] object userID)
+        public static void nntpforum_update([NotNull] string connectionString, [NotNull] object nntpForumID, [NotNull] object lastMessageNo, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpforum_update"))
             {
@@ -6127,7 +5470,7 @@ namespace VZF.Data.MsSql
         /// <param name="nntpServerID">
         /// The nntp server id.
         /// </param>
-        public static void nntpserver_delete(string connectionString, [NotNull] object nntpServerID)
+        public static void nntpserver_delete([NotNull] string connectionString, [NotNull] object nntpServerID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpserver_delete"))
             {
@@ -6148,7 +5491,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable nntpserver_list(string connectionString, [NotNull] object boardID, [NotNull] object nntpServerID)
+        public static DataTable nntpserver_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object nntpServerID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpserver_list"))
             {
@@ -6183,7 +5526,7 @@ namespace VZF.Data.MsSql
         /// <param name="userPass">
         /// The user pass.
         /// </param>
-        public static void nntpserver_save(string connectionString, [NotNull] object nntpServerID, [NotNull] object boardID, [NotNull] object name, [NotNull] object address, [NotNull] object port, [NotNull] object userName, [NotNull] object userPass)
+        public static void nntpserver_save([NotNull] string connectionString, [NotNull] object nntpServerID, [NotNull] object boardID, [NotNull] object name, [NotNull] object address, [NotNull] object port, [NotNull] object userName, [NotNull] object userPass)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntpserver_save"))
             {
@@ -6209,7 +5552,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable nntptopic_list(string connectionString, [NotNull] object thread)
+        public static DataTable nntptopic_list([NotNull] string connectionString, [NotNull] object thread)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntptopic_list"))
             {
@@ -6249,7 +5592,7 @@ namespace VZF.Data.MsSql
         /// <param name="referenceMessageId">
         /// The reference Message Id.
         /// </param>
-        public static void nntptopic_savemessage(string connectionString, [NotNull] object nntpForumID, [NotNull] object topic, [NotNull] object body, [NotNull] object userID, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object externalMessageId, [NotNull] object referenceMessageId)
+        public static void nntptopic_savemessage([NotNull] string connectionString, [NotNull] object nntpForumID, [NotNull] object topic, [NotNull] object body, [NotNull] object userID, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object externalMessageId, [NotNull] object referenceMessageId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("nntptopic_savemessage"))
             {
@@ -6326,7 +5669,7 @@ namespace VZF.Data.MsSql
         /// </returns>
         /// <exception cref="ApplicationException">
         /// </exception>
-        public static DataRow pageload(string connectionString, [NotNull] object sessionID, [NotNull] object boardID,
+        public static DataRow pageload([NotNull] string connectionString, [NotNull] object sessionID, [NotNull] object boardID,
                                        [NotNull] object userKey, [NotNull] object ip, [NotNull] object location, [NotNull] object forumPage, [NotNull] object browser, [NotNull] object platform, [NotNull] object categoryID, [NotNull] object forumID, [NotNull] object topicID, [NotNull] object messageID, [NotNull] object isCrawler, [NotNull] object isMobileDevice, [NotNull] object donttrack)
         {
             int nTries = 0;
@@ -6383,7 +5726,7 @@ namespace VZF.Data.MsSql
         /// <param name="userPMessageID">
         /// The user P Message ID.
         /// </param>
-        public static void pmessage_archive(string connectionString, [NotNull] object userPMessageID)
+        public static void pmessage_archive([NotNull] string connectionString, [NotNull] object userPMessageID)
         {
             using (SqlCommand sqlCommand = MsSqlDbAccess.GetCommand("pmessage_archive"))
             {
@@ -6403,7 +5746,7 @@ namespace VZF.Data.MsSql
         /// <param name="fromOutbox">
         /// If true, removes the message from the outbox.  Otherwise deletes the message completely.
         /// </param>
-        public static void pmessage_delete(string connectionString, [NotNull] object userPMessageID, bool fromOutbox)
+        public static void pmessage_delete([NotNull] string connectionString, [NotNull] object userPMessageID, bool fromOutbox)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pmessage_delete"))
             {
@@ -6444,7 +5787,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable pmessage_list(string connectionString, [NotNull] object toUserID, [NotNull] object fromUserID, [NotNull] object userPMessageID)
+        public static DataTable pmessage_list([NotNull] string connectionString, [NotNull] object toUserID, [NotNull] object fromUserID, [NotNull] object userPMessageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pmessage_list"))
             {
@@ -6462,7 +5805,7 @@ namespace VZF.Data.MsSql
         /// <param name="userPMessageID">
         /// The user p message id.
         /// </param>
-        public static void pmessage_markread(string connectionString, [NotNull] object userPMessageID)
+        public static void pmessage_markread([NotNull] string connectionString, [NotNull] object userPMessageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pmessage_markread"))
             {
@@ -6481,7 +5824,7 @@ namespace VZF.Data.MsSql
         /// <param name="daysUnread">
         /// The days unread.
         /// </param>
-        public static void pmessage_prune(string connectionString, [NotNull] object daysRead, [NotNull] object daysUnread)
+        public static void pmessage_prune([NotNull] string connectionString, [NotNull] object daysRead, [NotNull] object daysUnread)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pmessage_prune"))
             {
@@ -6502,7 +5845,7 @@ namespace VZF.Data.MsSql
         /// <param name="body">The body.</param>
         /// <param name="flags">The flags.</param>
         /// <param name="replyTo">The reply to.</param>
-        public static void pmessage_save(string connectionString, [NotNull] object fromUserID, [NotNull] object toUserID, [NotNull] object subject, [NotNull] object body, [NotNull] object flags, [CanBeNull] object replyTo)
+        public static void pmessage_save([NotNull] string connectionString, [NotNull] object fromUserID, [NotNull] object toUserID, [NotNull] object subject, [NotNull] object body, [NotNull] object flags, [CanBeNull] object replyTo)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pmessage_save"))
             {
@@ -6537,7 +5880,7 @@ namespace VZF.Data.MsSql
         /// <param name="removeEverywhere">
         /// The remove Everywhere.
         /// </param>
-        public static void poll_remove(string connectionString, [NotNull] object pollGroupID, [NotNull] object pollID, [NotNull] object boardId, bool removeCompletely, bool removeEverywhere)
+        public static void poll_remove([NotNull] string connectionString, [NotNull] object pollGroupID, [NotNull] object pollID, [NotNull] object boardId, bool removeCompletely, bool removeEverywhere)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("poll_remove"))
             {
@@ -6560,7 +5903,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Last saved poll id.
         /// </returns>
-        public static int? poll_save(string connectionString, [NotNull] List<PollSaveList> pollList)
+        public static int? poll_save([NotNull] string connectionString, [NotNull] List<PollSaveList> pollList)
         {
             foreach (PollSaveList question in pollList)
             {
@@ -6759,7 +6102,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable poll_stats(string connectionString, int? pollId)
+        public static DataTable poll_stats([NotNull] string connectionString, int? pollId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("poll_stats"))
             {
@@ -6802,7 +6145,7 @@ namespace VZF.Data.MsSql
         /// <param name="questionMime">
         /// The question file mime type.
         /// </param>
-        public static void poll_update(string connectionString,
+        public static void poll_update([NotNull] string connectionString,
             [NotNull] object pollID,
             [NotNull] object question,
             [NotNull] object closes,
@@ -6853,7 +6196,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The pollgroup_attach.
         /// </returns>
-        public static int pollgroup_attach(string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+        public static int pollgroup_attach([NotNull] string connectionString, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pollgroup_attach"))
             {
@@ -6890,7 +6233,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <param name="removeEverywhere">
         /// </param>
-        public static void pollgroup_remove(string connectionString, [NotNull] object pollGroupID, [NotNull] object topicId, [NotNull] object forumId, [NotNull] object categoryId, [NotNull] object boardId,
+        public static void pollgroup_remove([NotNull] string connectionString, [NotNull] object pollGroupID, [NotNull] object topicId, [NotNull] object forumId, [NotNull] object categoryId, [NotNull] object boardId,
           bool removeCompletely,
           bool removeEverywhere)
         {
@@ -6916,7 +6259,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable pollgroup_stats(string connectionString, int? pollGroupId)
+        public static DataTable pollgroup_stats([NotNull] string connectionString, int? pollGroupId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pollgroup_stats"))
             {
@@ -6938,7 +6281,7 @@ namespace VZF.Data.MsSql
         /// <param name="remoteIp">
         /// The remoteip.
         /// </param>
-        public static DataTable pollgroup_votecheck(string connectionString, [NotNull] object pollGroupId, [NotNull] object userId, [NotNull] object remoteIp)
+        public static DataTable pollgroup_votecheck([NotNull] string connectionString, [NotNull] object pollGroupId, [NotNull] object userId, [NotNull] object remoteIp)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pollgroup_votecheck"))
             {
@@ -6962,7 +6305,7 @@ namespace VZF.Data.MsSql
         /// <param name="remoteip">
         /// The remoteip.
         /// </param>
-        public static DataTable pollvote_check(string connectionString, [NotNull] object pollid, [NotNull] object userid, [NotNull] object remoteip)
+        public static DataTable pollvote_check([NotNull] string connectionString, [NotNull] object pollid, [NotNull] object userid, [NotNull] object remoteip)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("pollvote_check"))
             {
@@ -6991,7 +6334,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable post_alluser(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object pageUserID, [NotNull] object topCount)
+        public static DataTable post_alluser([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object pageUserID, [NotNull] object topCount)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("post_alluser"))
             {
@@ -7019,7 +6362,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [Obsolete("Use post_alluser() instead.")]
-        public static DataTable post_last10user(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object pageUserID)
+        public static DataTable post_last10user([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object pageUserID)
         {
             // use all posts procedure to return top ten
             return post_alluser(connectionString,boardID, userID, pageUserID, 10);
@@ -7081,7 +6424,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable post_list(string connectionString,
+        public static DataTable post_list([NotNull] string connectionString,
             [NotNull] object topicId, 
             object currentUserID,
             [NotNull] object authorUserID, 
@@ -7136,7 +6479,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable post_list_reverse10(string connectionString, [NotNull] object topicID)
+        public static DataTable post_list_reverse10([NotNull] string connectionString, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("post_list_reverse10"))
             {
@@ -7152,7 +6495,7 @@ namespace VZF.Data.MsSql
         /// <param name="rankID">
         /// The rank id.
         /// </param>
-        public static void rank_delete(string connectionString, [NotNull] object rankID)
+        public static void rank_delete([NotNull] string connectionString, [NotNull] object rankID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("rank_delete"))
             {
@@ -7173,7 +6516,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable rank_list(string connectionString, [NotNull] object boardID, [NotNull] object rankID)
+        public static DataTable rank_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object rankID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("rank_list"))
             {
@@ -7235,7 +6578,7 @@ namespace VZF.Data.MsSql
         /// <param name="usrAlbumImages">
         /// The UsrAlbumImages defines number of images allowed for an album.
         /// </param>
-        public static void rank_save(string connectionString, [NotNull] object rankID, [NotNull] object boardID, [NotNull] object name, [NotNull] object isStart, [NotNull] object isLadder, [NotNull] object minPosts, [NotNull] object rankImage, [NotNull] object pmLimit, [NotNull] object style, [NotNull] object sortOrder, [NotNull] object description, [NotNull] object usrSigChars, [NotNull] object usrSigBBCodes, [NotNull] object usrSigHTMLTags, [NotNull] object usrAlbums, [NotNull] object usrAlbumImages)
+        public static void rank_save([NotNull] string connectionString, [NotNull] object rankID, [NotNull] object boardID, [NotNull] object name, [NotNull] object isStart, [NotNull] object isLadder, [NotNull] object isGuest, [NotNull] object minPosts, [NotNull] object rankImage, [NotNull] object pmLimit, [NotNull] object style, [NotNull] object sortOrder, [NotNull] object description, [NotNull] object usrSigChars, [NotNull] object usrSigBBCodes, [NotNull] object usrSigHTMLTags, [NotNull] object usrAlbums, [NotNull] object usrAlbumImages)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("rank_save"))
             {
@@ -7245,6 +6588,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("Name", name);
                 cmd.Parameters.AddWithValue("IsStart", isStart);
                 cmd.Parameters.AddWithValue("IsLadder", isLadder);
+                cmd.Parameters.AddWithValue("IsGuest", isGuest);
                 cmd.Parameters.AddWithValue("MinPosts", minPosts);
                 cmd.Parameters.AddWithValue("RankImage", rankImage);
                 cmd.Parameters.AddWithValue("PMLimit", pmLimit);
@@ -7276,7 +6620,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The list of users in Datatable format.
         /// </returns>
-        public static DataTable recent_users(string connectionString, [NotNull] object boardID, int timeSinceLastLogin, [NotNull] object styledNicks)
+        public static DataTable recent_users([NotNull] string connectionString, [NotNull] object boardID, int timeSinceLastLogin, [NotNull] object styledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("recent_users"))
             {
@@ -7300,7 +6644,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable filled will registry entries
         /// </returns>
-        public static DataTable registry_list(string connectionString, [NotNull] object name, [NotNull] object boardID)
+        public static DataTable registry_list([NotNull] string connectionString, [NotNull] object name, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("registry_list"))
             {
@@ -7323,7 +6667,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// The board ID.
         /// </param>
-        public static void registry_save(string connectionString, [NotNull] object name, [NotNull] object value, [NotNull] object boardID)
+        public static void registry_save([NotNull] string connectionString, [NotNull] object name, [NotNull] object value, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("registry_save"))
             {
@@ -7341,7 +6685,7 @@ namespace VZF.Data.MsSql
         /// <param name="ID">
         /// ID of bad/good word to delete
         /// </param>
-        public static void replace_words_delete(string connectionString, [NotNull] object ID)
+        public static void replace_words_delete([NotNull] string connectionString, [NotNull] object ID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("replace_words_delete"))
             {
@@ -7363,7 +6707,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// DataTable with replace words
         /// </returns>
-        public static DataTable replace_words_list(string connectionString, [NotNull] object boardId, [NotNull] object id)
+        public static DataTable replace_words_list([NotNull] string connectionString, [NotNull] object boardId, [NotNull] object id)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("replace_words_list"))
             {
@@ -7389,7 +6733,7 @@ namespace VZF.Data.MsSql
         /// <param name="goodword">
         /// good word
         /// </param>
-        public static void replace_words_save(string connectionString, [NotNull] object boardId, [NotNull] object id, [NotNull] object badword, [NotNull] object goodword)
+        public static void replace_words_save([NotNull] string connectionString, [NotNull] object boardId, [NotNull] object id, [NotNull] object badword, [NotNull] object goodword)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("replace_words_save"))
             {
@@ -7422,7 +6766,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable rss_topic_latest(string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId, bool useStyledNicks, bool showNoCountPosts)
+        public static DataTable rss_topic_latest([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId, bool useStyledNicks, bool showNoCountPosts)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("rss_topic_latest"))
             {
@@ -7444,7 +6788,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns a DataTable with the Topics of a Forum
         /// </returns>
-        public static DataTable rsstopic_list(string connectionString, int forumId, int topicStart, int topicCount)
+        public static DataTable rsstopic_list([NotNull] string connectionString, int forumId, int topicStart, int topicCount)
         {
             var sb = new StringBuilder();
 
@@ -7476,7 +6820,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The shoutbox_clearmessages.
         /// </returns>
-        public static bool shoutbox_clearmessages(string connectionString, int boardId)
+        public static bool shoutbox_clearmessages([NotNull] string connectionString, int boardId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("shoutbox_clearmessages"))
             {
@@ -7501,7 +6845,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable shoutbox_getmessages(string connectionString, int boardId, int numberOfMessages, [NotNull] object useStyledNicks)
+        public static DataTable shoutbox_getmessages([NotNull] string connectionString, int boardId, int numberOfMessages, [NotNull] object useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("shoutbox_getmessages"))
             {
@@ -7534,7 +6878,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The shoutbox_savemessage.
         /// </returns>
-        public static bool shoutbox_savemessage(string connectionString, int boardId, [NotNull] string message, [NotNull] string userName, int userID, [NotNull] object ip)
+        public static bool shoutbox_savemessage([NotNull] string connectionString, int boardId, [NotNull] string message, [NotNull] string userName, int userID, [NotNull] object ip)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("shoutbox_savemessage"))
             {
@@ -7556,7 +6900,7 @@ namespace VZF.Data.MsSql
         /// <param name="smileyID">
         /// The smiley id.
         /// </param>
-        public static void smiley_delete(string connectionString, [NotNull] object smileyID)
+        public static void smiley_delete([NotNull] string connectionString, [NotNull] object smileyID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_delete"))
             {
@@ -7577,7 +6921,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable smiley_list(string connectionString, [NotNull] object boardID, [NotNull] object smileyID)
+        public static DataTable smiley_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object smileyID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_list"))
             {
@@ -7596,7 +6940,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable smiley_listunique(string connectionString, [NotNull] object boardID)
+        public static DataTable smiley_listunique([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_listunique"))
             {
@@ -7618,7 +6962,7 @@ namespace VZF.Data.MsSql
         /// <param name="move">
         /// The move.
         /// </param>
-        public static void smiley_resort(string connectionString, [NotNull] object boardID, [NotNull] object smileyID, int move)
+        public static void smiley_resort([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object smileyID, int move)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_resort"))
             {
@@ -7654,7 +6998,7 @@ namespace VZF.Data.MsSql
         /// <param name="replace">
         /// The replace.
         /// </param>
-        public static void smiley_save(string connectionString, [NotNull] object smileyID, [NotNull] object boardID, [NotNull] object code, [NotNull] object icon, [NotNull] object emoticon, [NotNull] object sortOrder, [NotNull] object replace)
+        public static void smiley_save([NotNull] string connectionString, [NotNull] object smileyID, [NotNull] object boardID, [NotNull] object code, [NotNull] object icon, [NotNull] object emoticon, [NotNull] object sortOrder, [NotNull] object replace)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("smiley_save"))
             {
@@ -7716,7 +7060,7 @@ namespace VZF.Data.MsSql
         /// <param name="rolePrefix">
         /// The role Prefix.
         /// </param>
-        public static void system_initialize(string connectionString, [NotNull] string forumName, [NotNull] string timeZone, [NotNull] string culture, [NotNull] string languageFile, [NotNull] string forumEmail, [NotNull] string smtpServer, [NotNull] string userName, [NotNull] string userEmail, [NotNull] object providerUserKey, [NotNull] string rolePrefix)
+        public static void system_initialize([NotNull] string connectionString, [NotNull] string forumName, [NotNull] string timeZone, [NotNull] string culture, [NotNull] string languageFile, [NotNull] string forumEmail, [NotNull] string smtpServer, [NotNull] string userName, [NotNull] string userEmail, [NotNull] object providerUserKey, [NotNull] string rolePrefix)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("system_initialize"))
             {
@@ -7750,7 +7094,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <exception cref="Exception">
         /// </exception>
-        public static void system_initialize_executescripts(string connectionString, [NotNull] string script, [NotNull] string scriptFile, bool useTransactions)
+        public static void system_initialize_executescripts([NotNull] string connectionString, [NotNull] string script, [NotNull] string scriptFile, bool useTransactions)
         {
             script = MsSqlDbAccess.GetCommandTextReplaced(script);
 
@@ -7845,7 +7189,7 @@ namespace VZF.Data.MsSql
         /// <param name="grant">
         /// The grant.
         /// </param>
-        public static void system_initialize_fixaccess(string connectionString, bool grant)
+        public static void system_initialize_fixaccess([NotNull] string connectionString, bool grant)
         {
             using (var connMan = new MsSqlDbConnectionManager(connectionString))
             {
@@ -7948,7 +7292,7 @@ namespace VZF.Data.MsSql
         /// <param name="versionname">
         /// The versionname.
         /// </param>
-        public static void system_updateversion(string connectionString, int version, [NotNull] string versionname)
+        public static void system_updateversion([NotNull] string connectionString, int version, [NotNull] string versionname)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("system_updateversion"))
             {
@@ -7992,7 +7336,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the List with the Topics Unread be a PageUserId
         /// </returns>
-        public static DataTable topic_active(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable topic_active([NotNull] string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_active"))
             {
@@ -8044,7 +7388,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the List with the Topics Unanswered
         /// </returns>
-        public static DataTable topic_unanswered(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable topic_unanswered([NotNull] string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_unanswered"))
             {
@@ -8095,7 +7439,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the List with the Topics Unread be a PageUserId
         /// </returns>
-        public static DataTable topic_unread(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable topic_unread([NotNull] string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_unread"))
             {
@@ -8146,7 +7490,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the List with the User Topics
         /// </returns>
-        public static DataTable Topics_ByUser(string connectionString, [NotNull] object boardId, [NotNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable Topics_ByUser([NotNull] string connectionString, [NotNull] object boardId, [NotNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topics_byuser"))
             {
@@ -8179,7 +7523,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_announcements(string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId)
+        public static DataTable topic_announcements([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_announcements"))
             {
@@ -8206,7 +7550,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The topic_create_by_message.
         /// </returns>
-        public static long topic_create_by_message(string connectionString, [NotNull] object messageID, [NotNull] object forumId, [NotNull] object newTopicSubj)
+        public static long topic_create_by_message([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object forumId, [NotNull] object newTopicSubj)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_create_by_message"))
             {
@@ -8230,7 +7574,7 @@ namespace VZF.Data.MsSql
         /// <param name="eraseTopic">
         /// The erase topic.
         /// </param>
-        public static void topic_delete(string connectionString, [NotNull] object topicID, [NotNull] object eraseTopic)
+        public static void topic_delete([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object eraseTopic)
         {
             if (eraseTopic == null)
             {
@@ -8261,7 +7605,7 @@ namespace VZF.Data.MsSql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_add(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static void topic_favorite_add([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_favorite_add"))
             {
@@ -8293,7 +7637,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// a Data Table containing the current page user's favorite topics with details.
         /// </returns>
-        public static DataTable topic_favorite_details(string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
+        public static DataTable topic_favorite_details([NotNull] string connectionString, [NotNull] object boardId, [CanBeNull] object categoryId, [NotNull] object pageUserId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_favorite_details"))
             {
@@ -8320,7 +7664,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_favorite_list(string connectionString, [NotNull] object userID)
+        public static DataTable topic_favorite_list([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_favorite_list"))
             {
@@ -8339,7 +7683,7 @@ namespace VZF.Data.MsSql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void topic_favorite_remove(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static void topic_favorite_remove([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_favorite_remove"))
             {
@@ -8359,7 +7703,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The topic_findduplicate.
         /// </returns>
-        public static int topic_findduplicate(string connectionString, [NotNull] object topicName)
+        public static int topic_findduplicate([NotNull] string connectionString, [NotNull] object topicName)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_findduplicate"))
             {
@@ -8377,7 +7721,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_findnext(string connectionString, [NotNull] object topicID)
+        public static DataTable topic_findnext([NotNull] string connectionString, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_findnext"))
             {
@@ -8395,7 +7739,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_findprev(string connectionString, [NotNull] object topicID)
+        public static DataTable topic_findprev([NotNull] string connectionString, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_findprev"))
             {
@@ -8420,7 +7764,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The <see cref="DataRow"/>.
         /// </returns>
-        public static DataRow topic_info(string connectionString, [NotNull] object topicID, [NotNull] object getTags)
+        public static DataRow topic_info([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_info"))
             {
@@ -8445,7 +7789,7 @@ namespace VZF.Data.MsSql
         /// <param name="imageUrl">
         /// The image url.
         /// </param>
-        public static void topic_imagesave(string connectionString, [NotNull] object topicID, [CanBeNull] object imageUrl, Stream stream, object topicImageType)
+        public static void topic_imagesave([NotNull] string connectionString, [NotNull] object topicID, [CanBeNull] object imageUrl, Stream stream, object topicImageType)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_imagesave"))
             {
@@ -8491,7 +7835,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returnst the DataTable with the Latest Topics
         /// </returns>
-        public static DataTable topic_latest(string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId, bool useStyledNicks, bool showNoCountPosts, [CanBeNull]bool findLastRead)
+        public static DataTable topic_latest([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object numOfPostsToRetrieve, [NotNull] object pageUserId, bool useStyledNicks, bool showNoCountPosts, [CanBeNull]bool findLastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_latest"))
             {
@@ -8538,7 +7882,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull] bool getTags)
+        public static DataTable topic_list([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull] bool getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_list"))
             {
@@ -8553,11 +7897,10 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("ShowMoved", showMoved);
                 cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
                 cmd.Parameters.AddWithValue("GetTags", getTags);
-                return MsSqlDbAccess.GetData(cmd, true,connectionString);
+                return MsSqlDbAccess.GetData(cmd, true, connectionString);
             }
         }
 
-        
         /// <summary>
         /// The topic_list.
         /// </summary>
@@ -8590,7 +7933,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable announcements_list(string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull]bool getTags)
+        public static DataTable announcements_list([NotNull] string connectionString, [NotNull] object forumID, [NotNull] object userId, [NotNull] object sinceDate, [NotNull] object toDate, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object useStyledNicks, [NotNull] object showMoved, [CanBeNull]bool findLastRead, [NotNull]bool getTags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("announcements_list"))
             {
@@ -8618,7 +7961,7 @@ namespace VZF.Data.MsSql
         /// <param name="locked">
         /// The locked.
         /// </param>
-        public static void topic_lock(string connectionString, [NotNull] object topicID, [NotNull] object locked)
+        public static void topic_lock([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object locked)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_lock"))
             {
@@ -8641,7 +7984,7 @@ namespace VZF.Data.MsSql
         /// <param name="showMoved">
         /// The show moved.
         /// </param>
-        public static void topic_move(string connectionString, [NotNull] object topicID, [NotNull] object forumID, [NotNull] object showMoved, [NotNull] object linkDays)
+        public static void topic_move([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object forumID, [NotNull] object showMoved, [NotNull] object linkDays)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_move"))
             {
@@ -8673,7 +8016,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The topic_prune.
         /// </returns>
-        public static int topic_prune(string connectionString, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
+        public static int topic_prune([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object forumID, [NotNull] object days, [NotNull] object permDelete)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_prune"))
             {
@@ -8734,7 +8077,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the Topic ID
         /// </returns>
-        public static long topic_save(string connectionString,
+        public static long topic_save([NotNull] string connectionString,
             [NotNull] object forumID,
             [NotNull] object subject,
             [CanBeNull] object status,
@@ -8787,7 +8130,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable topic_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable topic_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_simplelist"))
             {
@@ -8816,7 +8159,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable topic_tags(string connectionString, int boardId, int pageUserId, int topicId)
+        public static DataTable topic_tags([NotNull] string connectionString, int boardId, int pageUserId, int topicId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_tags"))
             {
@@ -8855,7 +8198,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable topic_bytags(string connectionString, int boardId, int forumId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
+        public static DataTable topic_bytags([NotNull] string connectionString, int boardId, int forumId, object pageUserId, string tags, object sinceDate, int pageIndex, int pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_bytags"))
             {
@@ -8881,7 +8224,7 @@ namespace VZF.Data.MsSql
         /// <param name="topic">
         /// The topic.
         /// </param>
-        public static void topic_updatetopic(string connectionString, int topicId, [NotNull] string topic)
+        public static void topic_updatetopic([NotNull] string connectionString, int topicId, [NotNull] string topic)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_updatetopic"))
             {
@@ -8898,7 +8241,7 @@ namespace VZF.Data.MsSql
         /// <param name="decodeTopicFunc">
         /// The decode topic func.
         /// </param>
-        public static void unencode_all_topics_subjects(string connectionString, [NotNull] Func<string, string> decodeTopicFunc)
+        public static void unencode_all_topics_subjects([NotNull] string connectionString, [NotNull] Func<string, string> decodeTopicFunc)
         {
             var topics = topic_simplelist(connectionString,0, 99999999).SelectTypedList(r => new TypedTopicSimpleList(r)).ToList();
 
@@ -8911,7 +8254,7 @@ namespace VZF.Data.MsSql
                     if (!decodedTopic.Equals(topic.Topic))
                     {
                         // unencode it and update.
-                        topic_updatetopic(connectionString,topic.TopicID.Value, decodedTopic);
+                        topic_updatetopic(connectionString, topic.TopicID.Value, decodedTopic);
                     }
                 }
                 catch
@@ -8930,7 +8273,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the Thank Count.
         /// </returns>
-        public static int user_ThankFromCount(string connectionString, [NotNull] object userId)
+        public static int user_ThankFromCount([NotNull] string connectionString, [NotNull] object userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_thankfromcount"))
             {
@@ -8958,7 +8301,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns if true or not
         /// </returns>
-        public static bool user_RepliedTopic(string connectionString, [NotNull] object messageId, [NotNull] object userId)
+        public static bool user_RepliedTopic([NotNull] string connectionString, [NotNull] object messageId, [NotNull] object userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_repliedtopic"))
             {
@@ -8987,7 +8330,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// If the User Thanked the the Current Message
         /// </returns>
-        public static bool user_ThankedMessage(string connectionString, [NotNull] object messageId, [NotNull] object userId)
+        public static bool user_ThankedMessage([NotNull] string connectionString, [NotNull] object messageId, [NotNull] object userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_thankedmessage"))
             {
@@ -9015,7 +8358,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_accessmasks(string connectionString, [NotNull] object boardID, [NotNull] object userID)
+        public static DataTable user_accessmasks([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_accessmasks"))
             {
@@ -9039,7 +8382,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_accessmasksbyforum(string connectionString, [NotNull] object boardID, [NotNull] object userID)
+        public static DataTable user_accessmasksbyforum([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_accessmasksbyforum"))
             {
@@ -9061,7 +8404,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_accessmasksbygroup(string connectionString, [NotNull] object boardID, [NotNull] object userID)
+        public static DataTable user_accessmasksbygroup([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_accessmasksbygroup"))
             {
@@ -9085,7 +8428,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_activity_rank(string connectionString, [NotNull] object boardID, [NotNull] object startDate, [NotNull] object displayNumber)
+        public static DataTable user_activity_rank([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object startDate, [NotNull] object displayNumber)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_activity_rank"))
             {
@@ -9106,7 +8449,7 @@ namespace VZF.Data.MsSql
         /// <param name="ignoredUserId">
         /// The ignored user id.
         /// </param>
-        public static void user_addignoreduser(string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
+        public static void user_addignoreduser([NotNull] string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_addignoreduser"))
             {
@@ -9123,7 +8466,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">The user ID.</param>
         /// <param name="fromUserID">From user ID.</param>
         /// <param name="points">The points.</param>
-        public static void user_addpoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+        public static void user_addpoints([NotNull] string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_addpoints"))
             {
@@ -9142,7 +8485,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">The user ID.</param>
         /// <param name="fromUserID">From user ID.</param>
         /// <param name="points">The points.</param>
-        public static void user_removepoints(string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
+        public static void user_removepoints([NotNull] string connectionString, [NotNull] object userID, [CanBeNull] object fromUserID, [NotNull] object points)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_removepoints"))
             {
@@ -9181,7 +8524,7 @@ namespace VZF.Data.MsSql
         /// <param name="rankID">
         /// The rank id.
         /// </param>
-        public static void user_adminsave(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object name, [NotNull] object displayName, [NotNull] object email, [NotNull] object flags, [NotNull] object rankID)
+        public static void user_adminsave([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object name, [NotNull] object displayName, [NotNull] object email, [NotNull] object flags, [NotNull] object rankID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_adminsave"))
             {
@@ -9203,7 +8546,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void user_approve(string connectionString, [NotNull] object userID)
+        public static void user_approve([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_approve"))
             {
@@ -9219,7 +8562,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// The board id.
         /// </param>
-        public static void user_approveall(string connectionString, [NotNull] object boardID)
+        public static void user_approveall([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_approveall"))
             {
@@ -9253,7 +8596,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_aspnet.
         /// </returns>
-        public static int user_aspnet(string connectionString,
+        public static int user_aspnet([NotNull] string connectionString,
           int boardID, [NotNull] string userName, [NotNull] string displayName, [NotNull] string email, [NotNull] object providerUserKey, [NotNull] object isApproved)
         {
             try
@@ -9287,7 +8630,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_avatarimage(string connectionString, [NotNull] object userID)
+        public static DataTable user_avatarimage([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_avatarimage"))
             {
@@ -9312,7 +8655,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_changepassword.
         /// </returns>
-        public static bool user_changepassword(string connectionString, [NotNull] object userID, [NotNull] object oldPassword, [NotNull] object newPassword)
+        public static bool user_changepassword([NotNull] string connectionString, [NotNull] object userID, [NotNull] object oldPassword, [NotNull] object newPassword)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_changepassword"))
             {
@@ -9330,7 +8673,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void user_delete(string connectionString, [NotNull] object userID)
+        public static void user_delete([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_delete"))
             {
@@ -9346,7 +8689,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        public static void user_deleteavatar(string connectionString, [NotNull] object userID)
+        public static void user_deleteavatar([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_deleteavatar"))
             {
@@ -9365,7 +8708,7 @@ namespace VZF.Data.MsSql
         /// <param name="days">
         /// The days.
         /// </param>
-        public static void user_deleteold(string connectionString, [NotNull] object boardID, [NotNull] object days)
+        public static void user_deleteold([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object days)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_deleteold"))
             {
@@ -9388,7 +8731,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_emails(string connectionString, [NotNull] object boardID, [NotNull] object groupID)
+        public static DataTable user_emails([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object groupID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_emails"))
             {
@@ -9412,7 +8755,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_get.
         /// </returns>
-        public static int user_get(string connectionString, int boardID, [NotNull] object providerUserKey)
+        public static int user_get([NotNull] string connectionString, int boardID, [NotNull] object providerUserKey)
         {
             using (
               var cmd =
@@ -9436,7 +8779,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// The boardID
         /// </param>
-        public static DataTable user_getalbumsdata(string connectionString, [NotNull] object userID, [NotNull] object boardID)
+        public static DataTable user_getalbumsdata([NotNull] string connectionString, [NotNull] object userID, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getalbumsdata"))
             {
@@ -9456,7 +8799,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_getpoints.
         /// </returns>
-        public static int user_getpoints(string connectionString, [NotNull] object userID)
+        public static int user_getpoints([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getpoints"))
             {
@@ -9476,7 +8819,7 @@ namespace VZF.Data.MsSql
         /// The user_getsignature.
         /// </returns>
         [NotNull]
-        public static string user_getsignature(string connectionString, [NotNull] object userID)
+        public static string user_getsignature([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getsignature"))
             {
@@ -9498,7 +8841,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Data Table
         /// </returns>
-        public static DataTable user_getsignaturedata(string connectionString, [NotNull] object userID, [NotNull] object boardID)
+        public static DataTable user_getsignaturedata([NotNull] string connectionString, [NotNull] object userID, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getsignaturedata"))
             {
@@ -9521,7 +8864,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_getthanks_from.
         /// </returns>
-        public static int user_getthanks_from(string connectionString, [NotNull] object userID, [NotNull] object pageUserId)
+        public static int user_getthanks_from([NotNull] string connectionString, [NotNull] object userID, [NotNull] object pageUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getthanks_from"))
             {
@@ -9546,7 +8889,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        public static int[] user_getthanks_to(string connectionString, [NotNull] object userID, [NotNull] object pageUserId)
+        public static int[] user_getthanks_to([NotNull] string connectionString, [NotNull] object userID, [NotNull] object pageUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_getthanks_to"))
             {
@@ -9586,7 +8929,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_guest.
         /// </returns>
-        public static int? user_guest(string connectionString, [NotNull] object boardID)
+        public static int? user_guest([NotNull] string connectionString, [NotNull] object boardID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_guest"))
             {
@@ -9605,7 +8948,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_ignoredlist(string connectionString, [NotNull] object userId)
+        public static DataTable user_ignoredlist([NotNull] string connectionString, [NotNull] object userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_ignoredlist"))
             {
@@ -9628,7 +8971,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_isuserignored.
         /// </returns>
-        public static bool user_isuserignored(string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
+        public static bool user_isuserignored([NotNull] string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_isuserignored"))
             {
@@ -9672,7 +9015,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// A DataRow, it should never return a null value.
         /// </returns>
-        public static DataRow user_lazydata(string connectionString,
+        public static DataRow user_lazydata([NotNull] string connectionString,
             [NotNull] object userID,
             [NotNull] object boardID,
             bool showPendingMails,
@@ -9739,7 +9082,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_list(string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object approved, [NotNull] object groupID, [NotNull] object rankID, [CanBeNull] object useStyledNicks)
+        public static DataTable user_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object approved, [NotNull] object groupID, [NotNull] object rankID, [CanBeNull] object useStyledNicks)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_list"))
             {
@@ -9790,7 +9133,7 @@ namespace VZF.Data.MsSql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable user_pagedlist(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] object boardID,
             [NotNull] object userID,
             [NotNull] object approved,
@@ -9829,7 +9172,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_ list profiles.
         /// </returns>
-        public static DataTable User_ListProfilesByIdsList(string connectionString, [NotNull] int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
+        public static DataTable User_ListProfilesByIdsList([NotNull] string connectionString, [NotNull] int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
         {
             string stIds = userIdsList.Aggregate(string.Empty, (current, userId) => current + (',' + userId)).Trim(',');
             // Profile columns cannot yet exist when we first are gettinng data.
@@ -9871,7 +9214,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_ list with todays birthdays.
         /// </returns>
-        public static DataTable User_ListTodaysBirthdays(string connectionString, [NotNull] object boardID, [CanBeNull] object useStyledNicks)
+        public static DataTable User_ListTodaysBirthdays([NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object useStyledNicks)
         {
             // Profile columns cannot yet exist when we first are gettinng data.
             try
@@ -9913,7 +9256,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// List of medals, ribbon bar only first.
         /// </returns>
-        public static DataTable user_listmedals(string connectionString, [NotNull] object userID)
+        public static DataTable user_listmedals([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_listmedals"))
             {
@@ -9987,7 +9330,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_listmembers(string connectionString, [NotNull] object boardId, [NotNull] object userId, [NotNull] object approved, [NotNull] object groupId, [NotNull] object rankId, [NotNull] object useStyledNicks, [NotNull] object lastUserId, [NotNull] object literals, [NotNull] object exclude, [NotNull] object beginsWith, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sortName, [NotNull] object sortRank, [NotNull] object sortJoined, [NotNull] object sortPosts, [NotNull] object sortLastVisit, [NotNull] object numPosts, [NotNull] object numPostCompare)
+        public static DataTable user_listmembers([NotNull] string connectionString, [NotNull] object boardId, [NotNull] object userId, [NotNull] object approved, [NotNull] object groupId, [NotNull] object rankId, [NotNull] object useStyledNicks, [NotNull] object lastUserId, [NotNull] object literals, [NotNull] object exclude, [NotNull] object beginsWith, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object sortName, [NotNull] object sortRank, [NotNull] object sortJoined, [NotNull] object sortPosts, [NotNull] object sortLastVisit, [NotNull] object numPosts, [NotNull] object numPostCompare)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_listmembers"))
             {
@@ -10029,7 +9372,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_login.
         /// </returns>
-        public static object user_login(string connectionString, [NotNull] object boardID, [NotNull] object name, [NotNull] object password)
+        public static object user_login([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object name, [NotNull] object password)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_login"))
             {
@@ -10050,7 +9393,7 @@ namespace VZF.Data.MsSql
         /// <param name="medalID">
         /// ID of medal.
         /// </param>
-        public static void user_medal_delete(string connectionString, [NotNull] object userID, [NotNull] object medalID)
+        public static void user_medal_delete([NotNull] string connectionString, [NotNull] object userID, [NotNull] object medalID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_medal_delete"))
             {
@@ -10072,7 +9415,7 @@ namespace VZF.Data.MsSql
         /// <param name="medalID">
         /// ID of medal to list.
         /// </param>
-        public static DataTable user_medal_list(string connectionString, [NotNull] object userID, [NotNull] object medalID)
+        public static DataTable user_medal_list([NotNull] string connectionString, [NotNull] object userID, [NotNull] object medalID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_medal_list"))
             {
@@ -10109,7 +9452,7 @@ namespace VZF.Data.MsSql
         /// <param name="dateAwarded">
         /// Date when medal was awarded to a user. Is ignored when existing user-medal allocation is edited.
         /// </param>
-        public static void user_medal_save(string connectionString, [NotNull] object userID, [NotNull] object medalID, [NotNull] object message, [NotNull] object hide, [NotNull] object onlyRibbon, [NotNull] object sortOrder, [NotNull] object dateAwarded)
+        public static void user_medal_save([NotNull] string connectionString, [NotNull] object userID, [NotNull] object medalID, [NotNull] object message, [NotNull] object hide, [NotNull] object onlyRibbon, [NotNull] object sortOrder, [NotNull] object dateAwarded)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_medal_save"))
             {
@@ -10140,7 +9483,7 @@ namespace VZF.Data.MsSql
         /// <param name="updateProvider">
         /// The update provider.
         /// </param>
-        public static void user_migrate(string connectionString, [NotNull] object userID, [NotNull] object providerUserKey, [NotNull] object updateProvider)
+        public static void user_migrate([NotNull] string connectionString, [NotNull] object userID, [NotNull] object providerUserKey, [NotNull] object updateProvider)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_migrate"))
             {
@@ -10170,7 +9513,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_nntp.
         /// </returns>
-        public static int user_nntp(string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object email, int? timeZone)
+        public static int user_nntp([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object email, int? timeZone)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_nntp"))
             {
@@ -10193,7 +9536,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_pmcount(string connectionString, [NotNull] object userID)
+        public static DataTable user_pmcount([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_pmcount"))
             {
@@ -10218,7 +9561,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_recoverpassword.
         /// </returns>
-        public static object user_recoverpassword(string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object email)
+        public static object user_recoverpassword([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object email)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_recoverpassword"))
             {
@@ -10263,7 +9606,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The user_register.
         /// </returns>
-        public static bool user_register(string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object password, [NotNull] object hash, [NotNull] object email, [NotNull] object location, [NotNull] object homePage, [NotNull] object timeZone,
+        public static bool user_register([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userName, [NotNull] object password, [NotNull] object hash, [NotNull] object email, [NotNull] object location, [NotNull] object homePage, [NotNull] object timeZone,
                                          bool approved)
         {
             using (var connMan = new MsSqlDbConnectionManager(connectionString))
@@ -10316,7 +9659,7 @@ namespace VZF.Data.MsSql
         /// <param name="ignoredUserId">
         /// The ignored user id.
         /// </param>
-        public static void user_removeignoreduser(string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
+        public static void user_removeignoreduser([NotNull] string connectionString, [NotNull] object userId, [NotNull] object ignoredUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_removeignoreduser"))
             {
@@ -10459,7 +9802,7 @@ namespace VZF.Data.MsSql
         /// <param name="avatarImageType">
         /// The avatar image type.
         /// </param>
-        public static void user_saveavatar(string connectionString, [NotNull] object userID, [NotNull] object avatar, [NotNull] Stream stream, [NotNull] object avatarImageType)
+        public static void user_saveavatar([NotNull] string connectionString, [NotNull] object userID, [NotNull] object avatar, [NotNull] Stream stream, [NotNull] object avatarImageType)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_saveavatar"))
             {
@@ -10499,7 +9842,7 @@ namespace VZF.Data.MsSql
         /// <param name="dailyDigest">
         /// The daily Digest.
         /// </param>
-        public static void user_savenotification(string connectionString, [NotNull] object userID, [NotNull] object pmNotification, [NotNull] object autoWatchTopics, [NotNull] object notificationType, [NotNull] object dailyDigest)
+        public static void user_savenotification([NotNull] string connectionString, [NotNull] object userID, [NotNull] object pmNotification, [NotNull] object autoWatchTopics, [NotNull] object notificationType, [NotNull] object dailyDigest)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_savenotification"))
             {
@@ -10522,7 +9865,7 @@ namespace VZF.Data.MsSql
         /// <param name="password">
         /// The password.
         /// </param>
-        public static void user_savepassword(string connectionString, [NotNull] object userID, [NotNull] object password)
+        public static void user_savepassword([NotNull] string connectionString, [NotNull] object userID, [NotNull] object password)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_savepassword"))
             {
@@ -10546,7 +9889,7 @@ namespace VZF.Data.MsSql
         /// <param name="isTwitterUser">
         /// The is Twitter User.
         /// </param>
-        public static void user_update_single_sign_on_status(string connectionString, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
+        public static void user_update_single_sign_on_status([NotNull] string connectionString, [NotNull] object userID, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_update_single_sign_on_status"))
             {
@@ -10567,7 +9910,7 @@ namespace VZF.Data.MsSql
         /// <param name="signature">
         /// The signature.
         /// </param>
-        public static void user_savesignature(string connectionString, [NotNull] object userID, [NotNull] object signature)
+        public static void user_savesignature([NotNull] string connectionString, [NotNull] object userID, [NotNull] object signature)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_savesignature"))
             {
@@ -10587,7 +9930,7 @@ namespace VZF.Data.MsSql
         /// <param name="user">
         /// The user.
         /// </param>
-        public static void user_setinfo(string connectionString, int boardID, [NotNull] MembershipUser user)
+        public static void user_setinfo([NotNull] string connectionString, int boardID, [NotNull] MembershipUser user)
         {
             using (
               var cmd =
@@ -10613,7 +9956,7 @@ namespace VZF.Data.MsSql
         /// <param name="points">
         /// The points.
         /// </param>
-        public static void user_setpoints(string connectionString, [NotNull] object userID, [NotNull] object points)
+        public static void user_setpoints([NotNull] string connectionString, [NotNull] object userID, [NotNull] object points)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_setpoints"))
             {
@@ -10636,7 +9979,7 @@ namespace VZF.Data.MsSql
         /// <param name="role">
         /// The role.
         /// </param>
-        public static void user_setrole(string connectionString, int boardID, [NotNull] object providerUserKey, [NotNull] object role)
+        public static void user_setrole([NotNull] string connectionString, int boardID, [NotNull] object providerUserKey, [NotNull] object role)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_setrole"))
             {
@@ -10657,7 +10000,7 @@ namespace VZF.Data.MsSql
         /// <param name="userId">
         /// The userId key.
         /// </param>
-        public static void user_setnotdirty(string connectionString, int boardId, int userId)
+        public static void user_setnotdirty([NotNull] string connectionString, int boardId, int userId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_setnotdirty"))
             {
@@ -10676,7 +10019,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_simplelist(string connectionString, int StartID, int Limit)
+        public static DataTable user_simplelist([NotNull] string connectionString, int StartID, int Limit)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_simplelist"))
             {
@@ -10696,7 +10039,7 @@ namespace VZF.Data.MsSql
         /// <param name="suspend">
         /// The suspend.
         /// </param>
-        public static void user_suspend(string connectionString, [NotNull] object userID, [NotNull] object suspend)
+        public static void user_suspend([NotNull] string connectionString, [NotNull] object userID, [NotNull] object suspend)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_suspend"))
             {
@@ -10720,7 +10063,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_viewthanksfrom(string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
+        public static DataTable user_viewthanksfrom([NotNull] string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_viewthanksfrom"))
             {
@@ -10746,7 +10089,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable user_viewthanksto(string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
+        public static DataTable user_viewthanksto([NotNull] string connectionString, [NotNull] object UserID, [NotNull] object pageUserID, int pageIndex, int pageSize)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_viewthanksto"))
             {
@@ -10768,7 +10111,7 @@ namespace VZF.Data.MsSql
         /// <param name="forumID">
         /// The forum id.
         /// </param>
-        public static void userforum_delete(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static void userforum_delete([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("userforum_delete"))
             {
@@ -10790,7 +10133,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable userforum_list(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static DataTable userforum_list([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("userforum_list"))
             {
@@ -10813,7 +10156,7 @@ namespace VZF.Data.MsSql
         /// <param name="accessMaskID">
         /// The access mask id.
         /// </param>
-        public static void userforum_save(string connectionString, [NotNull] object userID, [NotNull] object forumID, [NotNull] object accessMaskID)
+        public static void userforum_save([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID, [NotNull] object accessMaskID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("userforum_save"))
             {
@@ -10834,7 +10177,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable usergroup_list(string connectionString, [NotNull] object userID)
+        public static DataTable usergroup_list([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("usergroup_list"))
             {
@@ -10856,7 +10199,7 @@ namespace VZF.Data.MsSql
         /// <param name="member">
         /// The member.
         /// </param>
-        public static void usergroup_save(string connectionString, [NotNull] object userID, [NotNull] object groupID, [NotNull] object member)
+        public static void usergroup_save([NotNull] string connectionString, [NotNull] object userID, [NotNull] object groupID, [NotNull] object member)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("usergroup_save"))
             {
@@ -10877,7 +10220,7 @@ namespace VZF.Data.MsSql
         /// <param name="forumID">
         /// The forum id.
         /// </param>
-        public static void watchforum_add(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static void watchforum_add([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchforum_add"))
             {
@@ -10900,7 +10243,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable watchforum_check(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static DataTable watchforum_check([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchforum_check"))
             {
@@ -10917,7 +10260,7 @@ namespace VZF.Data.MsSql
         /// <param name="watchForumID">
         /// The watch forum id.
         /// </param>
-        public static void watchforum_delete(string connectionString, [NotNull] object watchForumID)
+        public static void watchforum_delete([NotNull] string connectionString, [NotNull] object watchForumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchforum_delete"))
             {
@@ -10935,7 +10278,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable watchforum_list(string connectionString, [NotNull] object userID)
+        public static DataTable watchforum_list([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchforum_list"))
             {
@@ -10954,7 +10297,7 @@ namespace VZF.Data.MsSql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void watchtopic_add(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static void watchtopic_add([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchtopic_add"))
             {
@@ -10977,7 +10320,7 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable watchtopic_check(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static DataTable watchtopic_check([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchtopic_check"))
             {
@@ -10994,7 +10337,7 @@ namespace VZF.Data.MsSql
         /// <param name="watchTopicID">
         /// The watch topic id.
         /// </param>
-        public static void watchtopic_delete(string connectionString, [NotNull] object watchTopicID)
+        public static void watchtopic_delete([NotNull] string connectionString, [NotNull] object watchTopicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchtopic_delete"))
             {
@@ -11013,7 +10356,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the List of Topics
         /// </returns>
-        public static DataTable watchtopic_list(string connectionString, [NotNull] object userID)
+        public static DataTable watchtopic_list([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("watchtopic_list"))
             {
@@ -11032,7 +10375,7 @@ namespace VZF.Data.MsSql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        public static void Readtopic_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static void Readtopic_AddOrUpdate([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("readtopic_addorupdate"))
             {
@@ -11049,7 +10392,7 @@ namespace VZF.Data.MsSql
         /// </summary>
         /// <param name="userID">The user id</param>
         /// <returns>Returns the Global Last Read DateTime</returns>
-        public static DateTime? User_LastRead(string connectionString, [NotNull] object userID)
+        public static DateTime? User_LastRead([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("user_lastread"))
             {
@@ -11074,7 +10417,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the Last Read DateTime
         /// </returns>
-        public static DateTime? Readtopic_lastread(string connectionString, [NotNull] object userID, [NotNull] object topicID)
+        public static DateTime? Readtopic_lastread([NotNull] string connectionString, [NotNull] object userID, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("readtopic_lastread"))
             {
@@ -11097,7 +10440,7 @@ namespace VZF.Data.MsSql
         /// <param name="forumID">
         /// The forum id.
         /// </param>
-        public static void ReadForum_AddOrUpdate(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static void ReadForum_AddOrUpdate([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("readforum_addorupdate"))
             {
@@ -11115,7 +10458,7 @@ namespace VZF.Data.MsSql
         /// <param name="userID">
         /// The user id.
         /// </param>
-        /*public static void ReadForum_delete(string connectionString, [NotNull] object userID)
+        /*public static void ReadForum_delete([NotNull] string connectionString, [NotNull] object userID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("readforum_delete"))
             {
@@ -11137,7 +10480,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the Last Read DateTime
         /// </returns>
-        public static DateTime? ReadForum_lastread(string connectionString, [NotNull] object userID, [NotNull] object forumID)
+        public static DateTime? ReadForum_lastread([NotNull] string connectionString, [NotNull] object userID, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("readforum_lastread"))
             {
@@ -11177,7 +10520,7 @@ namespace VZF.Data.MsSql
         /// <param name="dirtyOnly">
         /// The dirty only.
         /// </param>
-        public static void SetPropertyValues(string connectionString, int boardId, string appname, int userId, string userName, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
+        public static void SetPropertyValues([NotNull] string connectionString, int boardId, string appname, int userId, string userName, SettingsPropertyValueCollection collection, bool dirtyOnly = true)
         {
             // guest should not be in profile
             int? userIdG = Db.user_guest(connectionString, boardId);
@@ -11236,7 +10579,7 @@ namespace VZF.Data.MsSql
         /// The dirty only.
         /// </param>
         public static void SetProfileProperties(
-            string connectionString,
+            [NotNull] string connectionString,
             [NotNull] int boardId,
             [NotNull] object appName,
             [NotNull] int userId,
@@ -11358,7 +10701,7 @@ namespace VZF.Data.MsSql
         /// <param name="size">
         /// The size.
         /// </param>
-        public static void AddProfileColumn(string connectionString, [NotNull] string name, SqlDbType columnType, int size)
+        public static void AddProfileColumn([NotNull] string connectionString, [NotNull] string name, SqlDbType columnType, int size)
         {
             // get column type...
             string type = columnType.ToString();
@@ -11430,7 +10773,7 @@ namespace VZF.Data.MsSql
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <returns></returns>
-        static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(string connectionString, SettingsPropertyValueCollection collection)
+        static List<SettingsPropertyColumn> LoadFromPropertyValueCollection([NotNull] string connectionString, SettingsPropertyValueCollection collection)
         {
             // clear it out just in case something is still in there...
             List<SettingsPropertyColumn> settingsColumnsList = new List<SettingsPropertyColumn>();
@@ -11491,7 +10834,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The get boolean registry value.
         /// </returns>
-        private static bool GetBooleanRegistryValue(string connectionString, [NotNull] string name)
+        private static bool GetBooleanRegistryValue([NotNull] string connectionString, [NotNull] string name)
         {
             using (DataTable dt = registry_list(connectionString,name,null))
             {
@@ -11518,7 +10861,7 @@ namespace VZF.Data.MsSql
         /// The inner run sql execute reader.
         /// </returns>
         [NotNull]
-        private static string InnerRunSqlExecuteReader(string connectionString, [NotNull] SqlCommand command, bool useTransaction)
+        private static string InnerRunSqlExecuteReader([NotNull] string connectionString, [NotNull] SqlCommand command, bool useTransaction)
         {
             SqlDataReader reader = null;
             var results = new StringBuilder();
@@ -11618,7 +10961,7 @@ namespace VZF.Data.MsSql
         /// <param name="boardID">
         /// Specifies board. It is ignored if eventLogID parameter is not null.
         /// </param>
-        public static void eventlog_delete(string connectionString, [NotNull] object eventLogID, [NotNull] object boardID, [NotNull] object pageUserID)
+        public static void eventlog_delete([NotNull] string connectionString, [NotNull] object eventLogID, [NotNull] object boardID, [NotNull] object pageUserID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventlog_delete"))
             {
@@ -11639,7 +10982,7 @@ namespace VZF.Data.MsSql
         /// <param name="pageUserId">
         /// The page User Id.
         /// </param>
-        public static void eventlog_deletebyuser(string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
+        public static void eventlog_deletebyuser([NotNull] string connectionString, [NotNull] object boardId, [NotNull] object pageUserId)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("eventlog_deletebyuser"))
             {
@@ -11657,7 +11000,7 @@ namespace VZF.Data.MsSql
         /// <param name="forumID">
         /// The forum ID.
         /// </param>
-        private static void forum_deleteAttachments(string connectionString, [NotNull] object forumID)
+        private static void forum_deleteAttachments([NotNull] string connectionString, [NotNull] object forumID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_listtopics"))
             {
@@ -11700,7 +11043,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable forum_tags(string connectionString, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
+        public static DataTable forum_tags([NotNull] string connectionString, int boardId, int pageUserId, int forumId, int pageIndex, int pageSize, string searchText, bool beginsWith)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("forum_tags"))
             {
@@ -11732,7 +11075,7 @@ namespace VZF.Data.MsSql
         /// <param name="currentLvl">
         /// The current lvl.
         /// </param>
-        private static void forum_list_sort_basic(string connectionString, [NotNull] DataTable listsource, [NotNull] DataTable list, int parentid, int currentLvl)
+        private static void forum_list_sort_basic([NotNull] string connectionString, [NotNull] DataTable listsource, [NotNull] DataTable list, int parentid, int currentLvl)
         {
             for (int i = 0; i < listsource.Rows.Count; i++)
             {
@@ -11782,7 +11125,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        private static DataTable forum_sort_list(string connectionString, [NotNull] DataTable listSource,
+        private static DataTable forum_sort_list([NotNull] string connectionString, [NotNull] DataTable listSource,
                                                  int parentID,
                                                  int categoryID,
                                                  int startingIndent, [NotNull] int[] forumidExclusions,
@@ -11837,7 +11180,7 @@ namespace VZF.Data.MsSql
         /// <param name="currentIndent">
         /// The current indent.
         /// </param>
-        private static void forum_sort_list_recursive(string connectionString, [NotNull] DataTable listSource, [NotNull] DataTable listDestination, int parentID, int categoryID, int currentIndent)
+        private static void forum_sort_list_recursive([NotNull] string connectionString, [NotNull] DataTable listSource, [NotNull] DataTable listDestination, int parentID, int categoryID, int currentIndent)
         {
             DataRow newRow;
 
@@ -11896,7 +11239,7 @@ namespace VZF.Data.MsSql
         /// <param name="category">
         /// Cateogry of medals to delete. Must be complemented with not-null boardID parameter.
         /// </param>
-        public static void medal_delete(string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object category)
+        public static void medal_delete([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object category)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("medal_delete"))
             {
@@ -11925,7 +11268,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// Returns the Lists medals.
         /// </returns>
-        public static DataTable medal_list(string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object category)
+        public static DataTable medal_list([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object medalID, [NotNull] object category)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("medal_list"))
             {
@@ -11960,7 +11303,7 @@ namespace VZF.Data.MsSql
         /// <param name="isLinked">
         /// The is linked.
         /// </param>
-        private static void message_deleteRecursively(string connectionString, [NotNull] object messageID,
+        private static void message_deleteRecursively([NotNull] string connectionString, [NotNull] object messageID,
                                                       bool isModeratorChanged, [NotNull] string deleteReason,
                                                       int isDeleteAction,
                                                       bool DeleteLinked,
@@ -11994,7 +11337,7 @@ namespace VZF.Data.MsSql
         /// <param name="eraseMessages">
         /// The erase messages.
         /// </param>
-        private static void message_deleteRecursively(string connectionString, [NotNull] object messageID,
+        private static void message_deleteRecursively([NotNull] string connectionString, [NotNull] object messageID,
                                                       bool isModeratorChanged, [NotNull] string deleteReason,
                                                       int isDeleteAction,
                                                       bool deleteLinked,
@@ -12089,7 +11432,7 @@ namespace VZF.Data.MsSql
         /// <param name="messageID">
         /// The message id.
         /// </param>
-        private static void message_getRepliesList_populate(string connectionString, [NotNull] DataTable listsource, [NotNull] DataTable list, int messageID)
+        private static void message_getRepliesList_populate([NotNull] string connectionString, [NotNull] DataTable listsource, [NotNull] DataTable list, int messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_reply_list"))
             {
@@ -12124,7 +11467,7 @@ namespace VZF.Data.MsSql
         /// <param name="moveToTopic">
         /// The move to topic.
         /// </param>
-        private static void message_moveRecursively(string connectionString, [NotNull] object messageID, [NotNull] object moveToTopic)
+        private static void message_moveRecursively([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object moveToTopic)
         {
             bool UseFileTable = GetBooleanRegistryValue(connectionString,"UseFileTable");
 
@@ -12155,7 +11498,7 @@ namespace VZF.Data.MsSql
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        private static void topic_deleteAttachments(string connectionString, [NotNull] object topicID)
+        private static void topic_deleteAttachments([NotNull] string connectionString, [NotNull] object topicID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_listmessages"))
             {
@@ -12171,7 +11514,7 @@ namespace VZF.Data.MsSql
             }
         }
 
-        private static void topic_deleteimages(string connectionString, int topicID)
+        private static void topic_deleteimages([NotNull] string connectionString, int topicID)
         {
            
                 string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
@@ -12222,7 +11565,7 @@ namespace VZF.Data.MsSql
         /// <returns>
         /// </returns>
         [NotNull]
-        private static DataTable userforumaccess_sort_list(string connectionString, [NotNull] DataTable listSource, int parentID, int categoryID, int startingIndent)
+        private static DataTable userforumaccess_sort_list([NotNull] string connectionString, [NotNull] DataTable listSource, int parentID, int categoryID, int startingIndent)
         {
             var listDestination = new DataTable();
 
@@ -12265,7 +11608,7 @@ namespace VZF.Data.MsSql
         /// <param name="currentIndent">
         /// The current indent.
         /// </param>
-        private static void userforumaccess_sort_list_recursive(string connectionString, [NotNull] DataTable listSource, [NotNull] DataTable listDestination, int parentID, int categoryID, int currentIndent)
+        private static void userforumaccess_sort_list_recursive([NotNull] string connectionString, [NotNull] DataTable listSource, [NotNull] DataTable listDestination, int parentID, int categoryID, int currentIndent)
         {
             foreach (DataRow row in listSource.Rows)
             {

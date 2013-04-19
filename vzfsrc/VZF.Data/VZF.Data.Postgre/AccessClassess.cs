@@ -156,15 +156,14 @@ namespace VZF.Data.Postgre
         {
             this._accessMaskID.Value = accessMaskID;
             return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(this.cmd,connectionString)) != 0;
-      
         }
     }
+
     /// <summary>
     /// The class creates an accessmask stored procedure data access functionality.
     /// </summary>
     public sealed class accessmask_save
     {
-
         #region Common Properties & Fields
         private static volatile accessmask_save instance;
         private string connectionString;

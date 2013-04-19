@@ -273,19 +273,19 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK,
-			a.CREATEDBYUSERID,
-			a.CREATEDBYUSERNAME,
-			a.CREATEDBYUSERDISPLAYNAME	 
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME	 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0
-			AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
-			-- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
-			AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
+            AND (:I_ISUSERMASK = 0 OR ISUSERMASK = 1) 
+            -- AND (:I_ISADMINMASK = 0 OR a.ISADMINMASK = 1) 
+            AND (:I_PAGEUSERID IS NULL OR :I_PAGEUSERID = a.CREATEDBYUSERID)
         order by 
             a.SORTORDER ASC
             INTO
@@ -294,11 +294,11 @@ begin
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask",
-			:"CreatedByUserID",
-			:"CreatedByUserName",
-			:"CreatedByUserDisplayName"
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
              DO SUSPEND;
     else
         FOR select FIRST 1
@@ -307,11 +307,11 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK,
-			a.CREATEDBYUSERID,
-			a.CREATEDBYUSERNAME,
-			a.CREATEDBYUSERDISPLAYNAME			 
+            a.ISUSERMASK,
+            a.ISADMINMASK,
+            a.CREATEDBYUSERID,
+            a.CREATEDBYUSERNAME,
+            a.CREATEDBYUSERDISPLAYNAME			 
         from 
             objQual_ACCESSMASK a 
         where
@@ -325,11 +325,11 @@ begin
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask",
-			:"CreatedByUserID",
-			:"CreatedByUserName",
-			:"CreatedByUserDisplayName"
+            :"CreatedByUserID",
+            :"CreatedByUserName",
+            :"CreatedByUserDisplayName"
             DO SUSPEND;
 end
 --GO
@@ -354,17 +354,17 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK 
+            a.ISUSERMASK,
+            a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-			AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-			AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))
+            AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))
         order by 
-		    a.ISUSERMASK DESC,
+            a.ISUSERMASK DESC,
             a.SORTORDER ASC
             INTO
             :"AccessMaskID" ,
@@ -372,7 +372,7 @@ begin
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask"
              DO SUSPEND;
     else
@@ -382,22 +382,22 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK 
+            a.ISUSERMASK,
+            a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
-			AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-			AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))       
+            AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))       
             INTO
             :"AccessMaskID",
             :"BoardID",
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask"
             DO SUSPEND;
 end
@@ -424,14 +424,14 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK 
+            a.ISUSERMASK,
+            a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
-			and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
         order by 
             a.SORTORDER ASC
             INTO
@@ -440,7 +440,7 @@ begin
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask"
              DO SUSPEND;
     else
@@ -450,14 +450,14 @@ begin
             a.NAME,
             a.FLAGS,
             a.SORTORDER,
-			a.ISUSERMASK,
-			a.ISADMINMASK 
+            a.ISUSERMASK,
+            a.ISADMINMASK 
         from 
             objQual_ACCESSMASK a 
         where
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
-			and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
+            and (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
         order by 
             a.SORTORDER ASC
             INTO
@@ -466,7 +466,7 @@ begin
             :"Name",
             :"Flags",
             :"SortOrder",
-			:"IsUserMask",
+            :"IsUserMask",
             :"IsAdminMask"
             DO SUSPEND;
 end
@@ -492,7 +492,7 @@ CREATE PROCEDURE  objQual_ACCESSMASK_SAVE(
     I_SORTORDER         INTEGER,
     I_USERID            INTEGER,
     I_ISUSERMASK        BOOL,
-	I_ISADMINMASK      BOOL,
+    I_ISADMINMASK      BOOL,
     I_UTCTIMESTAMP      TIMESTAMP 
 ) 
 as
@@ -515,8 +515,8 @@ begin
     if (I_UPLOADACCESS<>0) then I_FLAGS = BIN_OR(:I_FLAGS, 512);
     if (I_DOWNLOADACCESS<>0) then I_FLAGS = BIN_OR(I_FLAGS, 1024);
     if (I_USERFORUMACCESS<>0) then I_FLAGS = BIN_OR(I_FLAGS, 32768);
-	
-	if (:I_USERID is not null) THEN
+    
+    if (:I_USERID is not null) THEN
     begin
     SELECT FIRST 1 NAME, DISPLAYNAME 
     FROM objQual_USER where USERID = :I_USERID
@@ -1838,7 +1838,7 @@ begin
                    CATEGORYIMAGE,
                    SORTORDER,
                    POLLGROUPID,
-				   CANHAVEPERSFORUMS 
+                   CANHAVEPERSFORUMS 
                    from objQual_CATEGORY 
         where BOARDID = :I_BOARDID 
         order by SORTORDER
@@ -1848,7 +1848,7 @@ begin
              :"CategoryImage",
              :"SortOrder",
              :"PollGroupID",
-			 :"CanHavePersForums"
+             :"CanHavePersForums"
              DO
              SUSPEND;
     else
@@ -1858,8 +1858,8 @@ begin
                    CATEGORYIMAGE,
                    SORTORDER,
                    POLLGROUPID,
-				   CANHAVEPERSFORUMS 
-				   from objQual_CATEGORY 
+                   CANHAVEPERSFORUMS 
+                   from objQual_CATEGORY 
         where BOARDID = :I_BOARDID 
         and CATEGORYID = :I_CATEGORYID
         INTO :"CategoryID",
@@ -1868,7 +1868,7 @@ begin
              :"CategoryImage",
              :"SortOrder",
              :"PollGroupID",
-			 :"CanHavePersForums"
+             :"CanHavePersForums"
              DO
              SUSPEND;
 end;
@@ -1893,8 +1893,8 @@ begin
                    c.CATEGORYIMAGE,
                    c.SORTORDER,
                    c.POLLGROUPID,
-				   c.CANHAVEPERSFORUMS,
-				   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+                   c.CANHAVEPERSFORUMS,
+                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
                    from objQual_CATEGORY c 
         where c.BOARDID = :I_BOARDID 
         order by c.SORTORDER
@@ -1904,8 +1904,8 @@ begin
              :"CategoryImage",
              :"SortOrder",
              :"PollGroupID",
-			 :"CanHavePersForums",
-			 :"HasForumsForPersForums"
+             :"CanHavePersForums",
+             :"HasForumsForPersForums"
              DO
              SUSPEND;
     else
@@ -1915,9 +1915,9 @@ begin
                    c.CATEGORYIMAGE,
                    c.SORTORDER,
                    c.POLLGROUPID,
-				   c.CANHAVEPERSFORUMS,
-				   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
-				   from objQual_CATEGORY c
+                   c.CANHAVEPERSFORUMS,
+                   COALESCE((SELECT FIRST 1 SIGN(f.FORUMID) FROM objQual_FORUM f where f.CATEGORYID = c.CATEGORYID and f.CANHAVEPERSFORUMS  = 1),0)
+                   from objQual_CATEGORY c
         where c.BOARDID = :I_BOARDID 
         and c.CATEGORYID = :I_CATEGORYID
         INTO :"CategoryID",
@@ -1926,8 +1926,8 @@ begin
              :"CategoryImage",
              :"SortOrder",
              :"PollGroupID",
-			 :"CanHavePersForums",
-			 :"HasForumsForPersForums"
+             :"CanHavePersForums",
+             :"HasForumsForPersForums"
              DO
              SUSPEND;
 end;
@@ -2373,15 +2373,15 @@ CREATE PROCEDURE  objQual_EXTENSION_DELETE (I_EXTENSIONID INTEGER)
                a.FORUMID, 
                a.NAME AS "Forum", 
                a.PARENTID,
-			   a.POLLGROUPID,
-			   a.CANHAVEPERSFORUMS
-			   FROM  objQual_FORUM a 
+               a.POLLGROUPID,
+               a.CANHAVEPERSFORUMS
+               FROM  objQual_FORUM a 
         INNER JOIN
              objQual_CATEGORY b ON b.CATEGORYID = a.CATEGORYID
         WHERE
             b.CATEGORYID=:I_CATEGORYID and
             b.BOARDID=:I_BOARDID
-			AND (:I_ALLOWUSERFORUMSONLY = 0 OR a.ISUSERFORUM = 1)
+            AND (:I_ALLOWUSERFORUMSONLY = 0 OR a.ISUSERFORUM = 1)
         ORDER BY
             b.SORTORDER,
             a.SORTORDER
@@ -2647,7 +2647,7 @@ CREATE PROCEDURE  objQual_FORUM_MODERATELIST(I_BOARDID INTEGER,I_USERID INTEGER,
             ON c.FORUMID=b.FORUMID 
             WHERE
         a.BOARDID=:I_BOARDID AND
-		b.ISUSERFORUM =:I_ISUSERFORUM AND
+        b.ISUSERFORUM =:I_ISUSERFORUM AND
         c.MODERATORACCESS>0 AND
         c.USERID=:I_USERID
             ORDER BY
@@ -2702,7 +2702,7 @@ CREATE PROCEDURE  objQual_FORUM_SAVE(
     I_ACCESSMASKID	INTEGER,
     I_USERID	    INTEGER,
     I_ISUSERFORUM   BOOL,
-	I_CANHAVEPERSFORUMS BOOL,
+    I_CANHAVEPERSFORUMS BOOL,
     I_UTCTIMESTAMP  TIMESTAMP
  )
  RETURNS (o_ForumID INTEGER)
@@ -2721,7 +2721,7 @@ BEGIN
     IF (:I_FORUMID IS NULL) THEN I_FORUMID = 0;
     IF (:I_PARENTID = 0) THEN I_PARENTID = null;
 
-	   IF (:I_USERID IS NOT NULL) THEN
+       IF (:I_USERID IS NOT NULL) THEN
     BEGIN	
     SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
     INTO :l_UserName, :l_UserDisplayName;
@@ -2857,8 +2857,8 @@ AS
         on brd.BOARDID=c.BOARDID
     WHERE 
         (a.GROUPID = :I_GROUPID 
-		and (:I_INCLUDEUSERFORUMS = 0 
-		or  (b.ISUSERFORUM = 1 and b.CREATEDBYUSERID = :I_USERID)))
+        and (:I_INCLUDEUSERFORUMS = 0 
+        or  (b.ISUSERFORUM = 1 and b.CREATEDBYUSERID = :I_USERID)))
     ORDER BY 
         brd.NAME,
         c.SORTORDER,
@@ -2903,8 +2903,8 @@ BEGIN
         :"AccessMaskID",
         :"GroupName"
         DO SUSPEND; 
-		ELSE
-		     FOR  SELECT a.GROUPID,
+        ELSE
+             FOR  SELECT a.GROUPID,
                   a.FORUMID,
                   a.ACCESSMASKID,
                b.NAME AS "GroupName"
@@ -2918,7 +2918,7 @@ BEGIN
         :"AccessMaskID",
         :"GroupName"
         DO SUSPEND; 
-		    
+            
 END;
 --GO
 
@@ -2993,10 +2993,10 @@ BEGIN
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
-				   ISUSERGROUP,
-				   USRPERSONALFORUMS,
-				   USRPERSONALMASKS,
-				   USRPERSONALGROUPS
+                   ISUSERGROUP,
+                   USRPERSONALFORUMS,
+                   USRPERSONALMASKS,
+                   USRPERSONALGROUPS
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID ORDER BY SORTORDER
         INTO
@@ -3013,10 +3013,10 @@ BEGIN
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
-		:"IsUserGroup",
-		:"UsrPersonalForums",
-		:"UsrPersonalMasks", 
-		:"UsrPersonalGroups"        
+        :"IsUserGroup",
+        :"UsrPersonalForums",
+        :"UsrPersonalMasks", 
+        :"UsrPersonalGroups"        
         DO SUSPEND;
         ELSE
         FOR SELECT GROUPID,
@@ -3032,10 +3032,10 @@ BEGIN
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
-				   ISUSERGROUP,
-				   USRPERSONALFORUMS,
-				   USRPERSONALMASKS,
-				   USRPERSONALGROUPS
+                   ISUSERGROUP,
+                   USRPERSONALFORUMS,
+                   USRPERSONALMASKS,
+                   USRPERSONALGROUPS
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
@@ -3053,10 +3053,10 @@ BEGIN
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
-		:"IsUserGroup",
-		:"UsrPersonalForums",
-		:"UsrPersonalMasks", 
-		:"UsrPersonalGroups"		  
+        :"IsUserGroup",
+        :"UsrPersonalForums",
+        :"UsrPersonalMasks", 
+        :"UsrPersonalGroups"		  
         DO SUSPEND;
         END;
 --GO
@@ -3064,8 +3064,8 @@ BEGIN
 CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
         I_BOARDID INTEGER,
         I_GROUPID INTEGER,
-		I_USERID INTEGER,
-		I_ISUSERGROUP BOOL        
+        I_USERID INTEGER,
+        I_ISUSERGROUP BOOL        
         )
         RETURNS
         (
@@ -3105,15 +3105,15 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
-				   ISUSERGROUP,
-				   CREATEDBYUSERID,
-				   USRPERSONALFORUMS,
-				   USRPERSONALMASKS,
-				   USRPERSONALGROUPS
+                   ISUSERGROUP,
+                   CREATEDBYUSERID,
+                   USRPERSONALFORUMS,
+                   USRPERSONALMASKS,
+                   USRPERSONALGROUPS
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID 
-		AND CREATEDBYUSERID = :I_USERID 
-		ORDER BY SORTORDER
+        AND CREATEDBYUSERID = :I_USERID 
+        ORDER BY SORTORDER
         INTO
         :"GroupID",
         :"BoardID",
@@ -3128,11 +3128,11 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
-		:"IsUserGroup",
-		:"CreatedByUserID",
-		:"UsrPersonalForums",
-		:"UsrPersonalMasks", 
-		:"UsrPersonalGroups"
+        :"IsUserGroup",
+        :"CreatedByUserID",
+        :"UsrPersonalForums",
+        :"UsrPersonalMasks", 
+        :"UsrPersonalGroups"
         DO SUSPEND;
         ELSE
         FOR SELECT GROUPID,
@@ -3148,15 +3148,15 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
                    USRSIGHTMLTAGS,
                    USRALBUMS,
                    USRALBUMIMAGES,
-				   ISUSERGROUP,
-				   CREATEDBYUSERID,
-				   USRPERSONALFORUMS,
-				   USRPERSONALMASKS,
-				   USRPERSONALGROUPS
+                   ISUSERGROUP,
+                   CREATEDBYUSERID,
+                   USRPERSONALFORUMS,
+                   USRPERSONALMASKS,
+                   USRPERSONALGROUPS
         FROM   objQual_GROUP
         WHERE  BOARDID = :I_BOARDID
         AND GROUPID = :I_GROUPID
-		AND CREATEDBYUSERID = :I_USERID 
+        AND CREATEDBYUSERID = :I_USERID 
         INTO
         :"GroupID",
         :"BoardID",
@@ -3171,11 +3171,11 @@ CREATE  PROCEDURE objQual_GROUP_BYUSERLIST(
         :"UsrSigHTMLTags",
         :"UsrAlbums",
         :"UsrAlbumImages",
-		:"IsUserGroup",
-		:"CreatedByUserID",
-		:"UsrPersonalForums",
-		:"UsrPersonalMasks", 
-		:"UsrPersonalGroups"     
+        :"IsUserGroup",
+        :"CreatedByUserID",
+        :"UsrPersonalForums",
+        :"UsrPersonalMasks", 
+        :"UsrPersonalGroups"     
         DO SUSPEND;
         END;
 --GO
@@ -3321,8 +3321,8 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         (
         "GroupID" integer,
         "Name" varchar(128),
-		"IsHidden" bool,
-		"Style" varchar(255),
+        "IsHidden" bool,
+        "Style" varchar(255),
         "Member" integer
         )
         AS
@@ -3330,8 +3330,8 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         FOR SELECT   
         a.GROUPID,
         a.NAME,
-		SIGN(BIN_AND(FLAGS,16)),
-		a.Style, 
+        SIGN(BIN_AND(FLAGS,16)),
+        a.Style, 
         (SELECT COUNT(1)
         FROM   objQual_USERGROUP x
         WHERE  x.USERID = :I_USERID
@@ -3342,8 +3342,8 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         INTO
         :"GroupID",
         :"Name",
-		:"IsHidden",
-		:"Style",
+        :"IsHidden",
+        :"Style",
         :"Member"
         DO SUSPEND;
         END;
@@ -3357,7 +3357,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         I_ISGUEST      BOOL,
         I_ISSTART      BOOL,
         I_ISMODERATOR  BOOL,
-		I_ISHIDDEN  BOOL,
+        I_ISHIDDEN  BOOL,
         I_ACCESSMASKID INTEGER, 
         I_PMLIMIT INTEGER, 
         I_STYLE VARCHAR(255), 
@@ -3370,9 +3370,9 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         I_USRALBUMIMAGES INTEGER,
         I_USERID INTEGER,
         I_ISUSERGROUP BOOL,
-		I_PERSONALACCESSMASKSNUMBER INTEGER,
-		I_PERSONALGROUPSNUMBER INTEGER,
-		I_PERSONALFORUMSNUMBER INTEGER,
+        I_PERSONALACCESSMASKSNUMBER INTEGER,
+        I_PERSONALGROUPSNUMBER INTEGER,
+        I_PERSONALFORUMSNUMBER INTEGER,
         I_UTCTIMESTAMP TIMESTAMP)
         RETURNS (o_GroupID INTEGER)
         AS
@@ -3389,12 +3389,12 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         iciFlags = BIN_OR(iciFlags, 4); 
         IF (:I_ISMODERATOR <> 0) THEN
         iciFlags = BIN_OR(iciFlags, 8); 
-		IF (:I_ISHIDDEN <> 0) THEN
+        IF (:I_ISHIDDEN <> 0) THEN
         iciFlags = BIN_OR(iciFlags, 16);
 
-		 IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+         IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
          I_STYLE = NULL; 
-	
+    
           IF (:I_USERID IS NOT NULL) THEN
     BEGIN	
     SELECT FIRST 1 Name,  DisplayName FROM objQual_USER where USERID = :i_UserID
@@ -3421,9 +3421,9 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                    USRALBUMS = :I_USRALBUMS,
                    USRALBUMIMAGES = :I_USRALBUMIMAGES,
                    ISUSERGROUP =:I_ISUSERGROUP,
-				   USRPERSONALFORUMS =:I_PERSONALFORUMSNUMBER,
-				   USRPERSONALMASKS =:I_PERSONALACCESSMASKSNUMBER,
-				   USRPERSONALGROUPS =:I_PERSONALGROUPSNUMBER
+                   USRPERSONALFORUMS =:I_PERSONALFORUMSNUMBER,
+                   USRPERSONALMASKS =:I_PERSONALACCESSMASKSNUMBER,
+                   USRPERSONALGROUPS =:I_PERSONALGROUPSNUMBER
             WHERE  GROUPID = :I_GROUPID;        
         ELSE 
         BEGIN
@@ -3444,13 +3444,13 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         USRALBUMS,
                         USRALBUMIMAGES,
                         ISUSERGROUP,
-						CREATEDBYUSERID,
-						CREATEDBYUSERNAME,
-						CREATEDBYUSERDISPLAYNAME,
-						CREATEDDATE,
-						USRPERSONALFORUMS,
-				        USRPERSONALMASKS,
-				        USRPERSONALGROUPS)
+                        CREATEDBYUSERID,
+                        CREATEDBYUSERNAME,
+                        CREATEDBYUSERDISPLAYNAME,
+                        CREATEDDATE,
+                        USRPERSONALFORUMS,
+                        USRPERSONALMASKS,
+                        USRPERSONALGROUPS)
             VALUES     (:I_GROUPID,
                         :I_NAME,
                         :I_BOARDID,
@@ -3465,13 +3465,13 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
                         :I_USRALBUMS,
                         :I_USRALBUMIMAGES,
                         :I_ISUSERGROUP,
-						:I_USERID,
-						:l_UserName,
-						:l_UserDisplayName,
-						:I_UTCTIMESTAMP,
-						:I_PERSONALFORUMSNUMBER,
-				        :I_PERSONALACCESSMASKSNUMBER,
-				        :I_PERSONALGROUPSNUMBER) RETURNING GROUPID INTO :I_GROUPID;            
+                        :I_USERID,
+                        :l_UserName,
+                        :l_UserDisplayName,
+                        :I_UTCTIMESTAMP,
+                        :I_PERSONALFORUMSNUMBER,
+                        :I_PERSONALACCESSMASKSNUMBER,
+                        :I_PERSONALGROUPSNUMBER) RETURNING GROUPID INTO :I_GROUPID;            
             INSERT INTO objQual_FORUMACCESS
                        (GROUPID,
                         FORUMID,
@@ -3485,8 +3485,8 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
             WHERE  b.BOARDID = :I_BOARDID;
          END
           -- save new user style    
-		  IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN
-		        EXECUTE PROCEDURE objQual_USER_SAVESTYLE :I_GROUPID, NULL ;	
+          IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN
+                EXECUTE PROCEDURE objQual_USER_SAVESTYLE :I_GROUPID, NULL ;	
       
     if (exists (select first 1 1 from objQual_GROUPHISTORY where GROUPID = :I_GROUPID AND CHANGEDDATE = :I_UTCTIMESTAMP)) THEN
     begin
@@ -6410,7 +6410,7 @@ RETURNS
         "ForumID" integer,
         "RankName" VARCHAR(128),
         "RankImage" varchar(128),
-		"RankStyle" varchar(255),
+        "RankStyle" varchar(255),
         "Style" varchar(255),
         "Edited" timestamp,
         "HasAttachments" integer,
@@ -6591,7 +6591,7 @@ ici_pageindex = :I_PAGEINDEX;
         d.FORUMID,
         c.NAME AS "RankName",
         c.RANKIMAGE,
-		c.STYLE,	
+        c.STYLE,	
         (case when (:I_STYLEDNICKS = 1)
             then b.USERSTYLE
             else ''	 end), 
@@ -6687,7 +6687,7 @@ ici_pageindex = :I_PAGEINDEX;
         :"ForumID",
         :"RankName",
         :"RankImage",
-		:"RankStyle",		
+        :"RankStyle",		
         :"Style",
         :"Edited",
         :"HasAttachments",
@@ -6986,6 +6986,7 @@ CREATE PROCEDURE  objQual_RANK_SAVE(
     I_NAME		VARCHAR(128),
     I_ISSTART	BOOL,
     I_ISLADDER	BOOL,
+    I_ISGUEST	BOOL,
     I_MINPOSTS	INTEGER,
     I_RANKIMAGE	VARCHAR(128), 
     I_PMLIMIT INTEGER, 
@@ -7007,12 +7008,13 @@ BEGIN
     IF (I_ISLADDER=1 AND I_MINPOSTS IS NULL) THEN I_MINPOSTS = 0; 
     
     
-    IF (I_ISSTART<>0) THEN  ICI_FLAGS = BIN_OR(ICI_FLAGS, 1); 
+    IF (I_ISSTART<>0) THEN  ICI_FLAGS = BIN_OR(ICI_FLAGS, 1);
     IF (I_ISLADDER<>0) THEN ICI_FLAGS = BIN_OR(ICI_FLAGS, 2); 
+    IF (I_ISGUEST<>0) THEN ICI_FLAGS = BIN_OR(ICI_FLAGS, 4); 
 
-	IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+    IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
     I_STYLE = NULL; 
-	
+    
     
     IF (I_RANKID>0) THEN
     BEGIN
@@ -7059,7 +7061,7 @@ BEGIN
                         :I_USRALBUMS,
                         :I_USRALBUMIMAGES);
                         END  
-	IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN					  
+    IF (:I_STYLE IS NOT NULL AND CHAR_LENGTH(:I_STYLE) > 2) THEN					  
     EXECUTE PROCEDURE objQual_USER_SAVESTYLE NULL, :ICI_RANKID ;					        
           
 END;
@@ -7510,10 +7512,10 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
     "AnswerMessageID" INTEGER,
     "LastMessageFlags" INTEGER,
     "TopicImage" varchar(255),
-	"TopicImageType" varchar(50),
-	"TopicImageBin" BLOB SUB_TYPE 0,
+    "TopicImageType" varchar(50),
+    "TopicImageBin" BLOB SUB_TYPE 0,
     "TopicTags" varchar(4000),
-	"FirstMessage" BLOB SUB_TYPE 1
+    "FirstMessage" BLOB SUB_TYPE 1
     )
  AS
  BEGIN
@@ -7545,10 +7547,10 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-				   t.TOPICIMAGETYPE,
-				   t.TOPICIMAGEBIN,
+                   t.TOPICIMAGETYPE,
+                   t.TOPICIMAGEBIN,
                    (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t
             INTO
@@ -7576,9 +7578,9 @@ CREATE PROCEDURE  objQual_TOPIC_INFO
                :"LastMessageFlags",
                :"TopicImage",
                :"TopicImageType",
-	           :"TopicImageBin",
+               :"TopicImageBin",
                :"TopicTags",
-	           :"FirstMessage"
+               :"FirstMessage"
                DO SUSPEND;
         ELSE
 FOR	SELECT t.TOPICID,
@@ -7604,10 +7606,10 @@ FOR	SELECT t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-				   t.TOPICIMAGETYPE,
-				   t.TOPICIMAGEBIN,
+                   t.TOPICIMAGETYPE,
+                   t.TOPICIMAGEBIN,
                    (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t WHERE BIN_AND(FLAGS,8) = 0
             INTO
@@ -7635,9 +7637,9 @@ FOR	SELECT t.TOPICID,
                :"LastMessageFlags",
                :"TopicImage",
                :"TopicImageType",
-	           :"TopicImageBin",
+               :"TopicImageBin",
                :"TopicTags",
-	           :"FirstMessage"
+               :"FirstMessage"
                DO SUSPEND; 
     END 		
     ELSE
@@ -7666,10 +7668,10 @@ FOR	SELECT         t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-				   t.TOPICIMAGETYPE,
-				   t.TOPICIMAGEBIN,
+                   t.TOPICIMAGETYPE,
+                   t.TOPICIMAGEBIN,
                    (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t 
             WHERE TOPICID = :I_TOPICID
@@ -7698,9 +7700,9 @@ FOR	SELECT         t.TOPICID,
                :"LastMessageFlags",
                :"TopicImage",
                :"TopicImageType",
-	           :"TopicImageBin",
+               :"TopicImageBin",
                :"TopicTags",
-			   :"FirstMessage"
+               :"FirstMessage"
                DO SUSPEND;
         ELSE
 FOR	SELECT t.TOPICID,
@@ -7726,10 +7728,10 @@ FOR	SELECT t.TOPICID,
                    t.ANSWERMESSAGEID,
                    t.LASTMESSAGEFLAGS,	
                    t.TOPICIMAGE,
-				   t.TOPICIMAGETYPE,
-				   t.TOPICIMAGEBIN,
+                   t.TOPICIMAGETYPE,
+                   t.TOPICIMAGEBIN,
                    (CASE WHEN :I_GETTAGS=1 THEN (SELECT * FROM objQual_TOPIC_GETTAGS_STR(t.TOPICID)) ELSE (SELECT '' FROM RDB$DATABASE) END),
-				   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
+                   (SELECT FIRST 1 mes2.MESSAGE FROM objQual_MESSAGE mes2 WHERE mes2.TOPICID = COALESCE(t.TOPICMOVEDID,t.TOPICID) 
                    AND mes2."POSITION" = 0 ORDER BY mes2.TOPICID) AS "FirstMessage"
                    FROM objQual_TOPIC t
             WHERE TOPICID = :I_TOPICID AND BIN_AND(FLAGS, 8) = 0
@@ -7758,9 +7760,9 @@ FOR	SELECT t.TOPICID,
                :"LastMessageFlags",
                :"TopicImage",
                :"TopicImageType",
-	           :"TopicImageBin",
+               :"TopicImageBin",
                :"TopicTags",
-			   :"FirstMessage"
+               :"FirstMessage"
                DO SUSPEND;		
     END 
         
@@ -8046,10 +8048,10 @@ CREATE PROCEDURE  objQual_TOPIC_IMAGESAVE(
      AS    
      BEGIN 
      UPDATE objQual_TOPIC 
-	 SET TOPICIMAGE = :I_IMAGEURL, 
-	 TOPICIMAGETYPE = :I_TOPICIMAGETYPE, 
-	 TOPICIMAGEBIN = :I_STREAM 
-	 WHERE TOPICID = :I_TOPICID;      
+     SET TOPICIMAGE = :I_IMAGEURL, 
+     TOPICIMAGETYPE = :I_TOPICIMAGETYPE, 
+     TOPICIMAGEBIN = :I_STREAM 
+     WHERE TOPICID = :I_TOPICID;      
      END;
 --GO
 
@@ -8957,7 +8959,7 @@ INTO
            :"Suspended",
            :"LanguageFile",
            :"ThemeFile",
-		   :"TextEditor",
+           :"TextEditor",
            :"OverrideDefaultThemes",
            :"PMNotification",
            :"NotificationType",
@@ -8981,8 +8983,8 @@ INTO
            :"IsHostAdmin",
            :"IsForumModerator",
            :"IsModerator",
-		   :"TopicsPerPage",
-		   :"PostsPerPage"
+           :"TopicsPerPage",
+           :"PostsPerPage"
  DO
  BEGIN
  EXECUTE PROCEDURE objQual_vaccess_ul(:"UserID", 0) 
@@ -9097,8 +9099,8 @@ INTO
            :"IsHostAdmin",
            :"IsForumModerator",
            :"IsModerator",
-		   :"TopicsPerPage",
-		   :"PostsPerPage"
+           :"TopicsPerPage",
+           :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
  /*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
@@ -9219,8 +9221,8 @@ INTO
            :"IsHostAdmin",
            :"IsForumModerator",
            :"IsModerator",
-		   :"TopicsPerPage",
-		   :"PostsPerPage"
+           :"TopicsPerPage",
+           :"PostsPerPage"
 DO BEGIN
  "NumDays"=COALESCE(current_date-CAST("Joined" AS DATE),0)+1;
 /*  EXECUTE PROCEDURE objQual_vaccess_ul :"UserID", 0 
@@ -10188,9 +10190,9 @@ CREATE PROCEDURE  objQual_USER_SAVE(
                  I_PROVIDERUSERKEY	    VARCHAR(64),
                  I_DSTUSER              BOOL,                 
                  I_HIDEUSER             BOOL,
-				 I_TOPICSPERPAGE        INTEGER,
-				 I_POSTSPERPAGE         INTEGER,
-				 I_UTCTIMESTAMP         TIMESTAMP)
+                 I_TOPICSPERPAGE        INTEGER,
+                 I_POSTSPERPAGE         INTEGER,
+                 I_UTCTIMESTAMP         TIMESTAMP)
         RETURNS
         ("UserID" INTEGER)
 AS
@@ -10256,8 +10258,8 @@ BEGIN
             THEN :ICI_FLAGS ELSE FLAGS END),
     EMAIL = (CASE WHEN  (:I_EMAIL is not null) THEN :I_EMAIL ELSE EMAIL END),
     DISPLAYNAME = (CASE WHEN  (:I_DISPLAYNAME is not null) THEN :I_DISPLAYNAME ELSE DISPLAYNAME END),
-	TOPICSPERPAGE = :I_TOPICSPERPAGE,
-	POSTSPERPAGE = :I_POSTSPERPAGE
+    TOPICSPERPAGE = :I_TOPICSPERPAGE,
+    POSTSPERPAGE = :I_POSTSPERPAGE
     WHERE USERID = :I_USERID;
    if (:I_DISPLAYNAME IS NOT NULL AND COALESCE(:ICI_OLDDISPLAYNAME,'') != COALESCE(:I_DISPLAYNAME,'')) THEN
         begin
@@ -12462,6 +12464,8 @@ RETURNS
 "TopicID" INTEGER,
 "Topic" VARCHAR(128),
 "UserID" INTEGER,
+"DisplayName" VARCHAR(255),
+"UserName" VARCHAR(255),
 "Posted" TIMESTAMP,
 "Message" BLOB SUB_TYPE 1,
 "Flags" INTEGER,
@@ -12498,7 +12502,9 @@ select count(1)
                 a.FORUMID,
                 a.TOPICID,
                 a.TOPIC,
-                b.USERID,             
+                b.USERID, 
+                b.DISPLAYNAME,
+                b.NAME,             
                 c.POSTED,
                 c.MESSAGE,
                 c.FLAGS,
@@ -12523,7 +12529,9 @@ select count(1)
         :"ForumID",
         :"TopicID",
         :"Topic",
-        :"UserID",       
+        :"UserID",
+        :"DisplayName",
+        :"UserName",         
         :"Posted",
         :"Message",
         :"Flags",
@@ -12542,8 +12550,10 @@ RETURNS
 "MessageID" INTEGER,
 "ForumID" INTEGER,
 "TopicID" INTEGER,
-"Topic" VARCHAR(128),
+"Topic" VARCHAR(255),
 "UserID" INTEGER,
+"DisplayName" VARCHAR(255),
+"UserName" VARCHAR(255),
 "Posted" TIMESTAMP,
 "Message" BLOB SUB_TYPE 1,
 "Flags" INTEGER,
@@ -12580,7 +12590,9 @@ select count(1)
                 a.FORUMID,
                 a.TOPICID,
                 a.TOPIC,
-                b.USERID,             
+                b.USERID, 
+                b.DISPLAYNAME,
+                b.NAME,            
                 c.POSTED,
                 c.MESSAGE,
                 c.FLAGS,
@@ -12605,23 +12617,15 @@ select count(1)
         :"ForumID",
         :"TopicID",
         :"Topic",
-        :"UserID",       
+        :"UserID", 
+        :"DisplayName",
+        :"UserName",  
         :"Posted",
         :"Message",
         :"Flags",
         :"TotalRows"
         DO SUSPEND;	 
     END;
---GO
-
-CREATE PROCEDURE  objQual_TOPIC_FAVORITE_COUNT(I_TOPICID INTEGER)
-RETURNS("FavoriteCount" INTEGER) 
-AS
-BEGIN
-    SELECT COUNT(1) as FAVORITECOUNT FROM  objQual_FAVORITETOPIC WHERE TOPICID = :I_TOPICID
-    INTO :"FavoriteCount";
-    SUSPEND;
-END;
 --GO
 
 CREATE PROCEDURE  objQual_USER_THANKEDMESSAGE
@@ -12966,7 +12970,7 @@ RETURNS
     "LastForumAccess" timestamp,
     "LastTopicAccess" timestamp,
     "Tags" varchar(4000),
-	"TopicImage" varchar(255),
+    "TopicImage" varchar(255),
     "TopicImageType" varchar(50),
     "TopicImageBin" blob sub_type 0,
     "HasAttachments" integer,
@@ -13055,9 +13059,9 @@ FOR SELECT		c.FORUMID,
              else (select dateadd(1 day to current_timestamp)  FROM RDB$DATABASE)  end) AS  "LastTopicAccess",	
         (SELECT FIRST 1 TAG FROM objQual_TAGS where TagID = CAST(:I_TAGS AS INTEGER)),
         c.TOPICIMAGE,
-	    c.TOPICIMAGETYPE,
-	    c.TOPICIMAGEBIN,
-	    (SELECT 0 FROM RDB$DATABASE),		
+        c.TOPICIMAGETYPE,
+        c.TOPICIMAGEBIN,
+        (SELECT 0 FROM RDB$DATABASE),		
         (SELECT :ICI_TOTALROWS FROM RDB$DATABASE) AS "TotalRows",
         (SELECT :i_PageIndex  FROM RDB$DATABASE) AS  "PageIndex"
 FROM   objQual_TOPIC c 
@@ -13104,10 +13108,10 @@ INTO
     :"LastForumAccess",
     :"LastTopicAccess",
     :"Tags",
-	:"TopicImage",
-	:"TopicImageType",
-	:"TopicImageBin",
-	:"HasAttachments",
+    :"TopicImage",
+    :"TopicImageType",
+    :"TopicImageBin",
+    :"HasAttachments",
     :"TotalRows",
     :"PageIndex"
 DO SUSPEND;

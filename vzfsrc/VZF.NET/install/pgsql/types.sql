@@ -2682,14 +2682,15 @@ SELECT databaseSchema.objectQualifier_drop_type('databaseSchema','objectQualifie
  --GO
 
 CREATE TYPE databaseSchema.objectQualifier_user_viewthankstofrom_return_type AS
-(
-  "ThanksFromUserID" integer,
+( 
   "ThanksToUserID"	 integer,
   "MessageID"		 integer,
   "ForumID"		     integer,
   "TopicID"		     integer,
-  "Topic"		     varchar(128),
+  "Topic"		     varchar(255),
   "UserID"		     integer, 
+  "DisplayName"      varchar(255),
+  "UserName"         varchar(255),
   "Posted"		     timestampTZ,  	
   "Message"          text, 
   "Flags"            integer,

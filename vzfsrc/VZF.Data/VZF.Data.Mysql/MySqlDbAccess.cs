@@ -29,6 +29,7 @@ namespace VZF.Data.Mysql
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Reflection;
     using System.Web;
 
@@ -83,6 +84,129 @@ namespace VZF.Data.Mysql
                 return ServiceLocatorAccess.CurrentServiceProvider.Get<IDbAccess>();
             }
         }
+
+        /// <summary>
+        /// Gets the connection parameters.
+        /// </summary>
+        public static List<ConnectionStringParameter> ConnectionParameters
+        {
+            get
+            {
+                var cstr = new MySqlConnectionStringBuilder();
+
+                var connectionParametersBuilder = new List<ConnectionStringParameter>
+                                                      {
+                                                          new ConnectionStringParameter(
+                                                              "OldGuids",
+                                                              cstr.OldGuids.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "AllowBatch",
+                                                              cstr.AllowBatch.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "Server",
+                                                              cstr.Server.GetType(),
+                                                              "localhost",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Database",
+                                                              cstr.Database.GetType(),
+                                                              "yafnet",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "CharacterSet",
+                                                              cstr.CharacterSet.GetType(),
+                                                              "utf8",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Port",
+                                                              cstr.Port.GetType(),
+                                                              "3306",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "TreatTinyAsBoolean",
+                                                              cstr.TreatTinyAsBoolean.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "TreatBlobsAsUTF8",
+                                                              cstr.TreatBlobsAsUTF8.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "DefaultCommandTimeout",
+                                                              cstr.DefaultCommandTimeout.GetType(),
+                                                              "120",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "CheckParameters",
+                                                              cstr.CheckParameters.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Pooling",
+                                                              cstr.Pooling.GetType(),
+                                                              "true",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "UseCompression",
+                                                              cstr.UseCompression.GetType(),
+                                                              "false",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "UseAffectedRows",
+                                                              cstr.UseAffectedRows.GetType(),
+                                                              "false",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "PersistSecurityInfo",
+                                                              cstr.PersistSecurityInfo.GetType(),
+                                                              "false",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "AllowBatch",
+                                                              cstr.AllowBatch.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "AllowUserVariables",
+                                                              cstr.AllowUserVariables.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "AllowZeroDateTime",
+                                                              cstr.AllowZeroDateTime.GetType(),
+                                                              "true",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "IgnorePrepare",
+                                                              cstr.IgnorePrepare.GetType(),
+                                                              "false",
+                                                              true),
+                                                          new ConnectionStringParameter(
+                                                              "ProcedureCacheSize",
+                                                              cstr.ProcedureCacheSize.GetType(),
+                                                              "50",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "UserID",
+                                                              cstr.UserID.GetType(),
+                                                              "admin",
+                                                              false),
+                                                          new ConnectionStringParameter(
+                                                              "Password",
+                                                              cstr.Password.GetType(),
+                                                              "password",
+                                                              false)
+                                                      };
+
+                return connectionParametersBuilder;
+            }
+        }
+
 
         /// <summary>
         ///   Gets IsolationLevel.
@@ -181,119 +305,17 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// The get connection string.
         /// </summary>
-        /// <param name="parm1">
-        /// The parm 1.
-        /// </param>
-        /// <param name="parm2">
-        /// The parm 2.
-        /// </param>
-        /// <param name="parm3">
-        /// The parm 3.
-        /// </param>
-        /// <param name="parm4">
-        /// The parm 4.
-        /// </param>
-        /// <param name="parm5">
-        /// The parm 5.
-        /// </param>
-        /// <param name="parm6">
-        /// The parm 6.
-        /// </param>
-        /// <param name="parm7">
-        /// The parm 7.
-        /// </param>
-        /// <param name="parm8">
-        /// The parm 8.
-        /// </param>
-        /// <param name="parm9">
-        /// The parm 9.
-        /// </param>
-        /// <param name="parm10">
-        /// The parm 10.
-        /// </param>
-        /// <param name="parm11">
-        /// The parm 11.
-        /// </param>
-        /// <param name="parm12">
-        /// The parm 12.
-        /// </param>
-        /// <param name="parm13">
-        /// The parm 13.
-        /// </param>
-        /// <param name="parm14">
-        /// The parm 14.
-        /// </param>
-        /// <param name="parm15">
-        /// The parm 15.
-        /// </param>
-        /// <param name="parm16">
-        /// The parm 16.
-        /// </param>
-        /// <param name="parm17">
-        /// The parm 17.
-        /// </param>
-        /// <param name="parm18">
-        /// The parm 18.
-        /// </param>
-        /// <param name="parm19">
-        /// The parm 19.
-        /// </param>
-        /// <param name="userID">
-        /// The user id.
-        /// </param>
-        /// <param name="userPassword">
-        /// The user password.
-        /// </param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string GetConnectionString(
-            string parm1,
-            string parm2,
-            string parm3,
-            string parm4,
-            string parm5,
-            string parm6,
-            string parm7,
-            string parm8,
-            string parm9,
-            string parm10,
-            bool parm11,
-            bool parm12,
-            bool parm13,
-            bool parm14,
-            bool parm15,
-            bool parm16,
-            bool parm17,
-            bool parm18,
-            bool parm19,
-            string userID,
-            string userPassword)
+        public static string GetConnectionString()
         {
-            var connBuilder = new MySqlConnectionStringBuilder
-                                  {
-                                      OldGuids = true,
-                                      AllowBatch = true,
-                                      Server = parm1,
-                                      Database = parm2,
-                                      CharacterSet = parm3,
-                                      Port = Convert.ToUInt32(parm4),
-                                      TreatTinyAsBoolean = true,
-                                      AllowUserVariables = true,
-                                      DefaultCommandTimeout = Convert.ToUInt32(parm5),
-                                      CheckParameters = parm13,
-                                      Pooling = parm14,
-                                      UseCompression = parm15,
-                                      UseAffectedRows = parm16,
-                                      PersistSecurityInfo = parm17,
-                                      UserID = userID,
-                                      Password = userPassword
-                                  };
+            var connBuilder = new MySqlConnectionStringBuilder();
 
-            // List<MySqlParameter> conParams = new List<MySqlParameter>();
-            //  conParams.Add(new MySqlParameter())
-
-            // connBuilder.AllowBatch = parm18;
+            foreach (var parameter in ConnectionParameters)
+            {
+                connBuilder.Add(parameter.Name, parameter.Value);
+            }
 
             return connBuilder.ConnectionString;
         }
@@ -368,10 +390,18 @@ namespace VZF.Data.Mysql
 
             try
             {
-                using (var connection = Current.GetConnectionManager(connectionString))
+                try
                 {
-                    // attempt to connect to the db...
-                    var conn = connection.OpenDBConnection;
+                    using (var connMan = new MySqlDbConnectionManager(connectionString))
+                    {
+                        // just attempt to open the connection to test if a DB is available.
+                        MySqlConnection getConn = connMan.OpenDBConnection(connectionString);
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                       // errorStr = "Unable to connect to the Database. Exception Message: " + ex.Message + " (" + ex.Number + ")";
+                        return false;
                 }
 
                 // success
@@ -598,12 +628,39 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The execute scalar.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
         public static object ExecuteScalar(IDbCommand cmd, string connectionString)
         {
             // default to using a transaction for scaler commands
             return ExecuteScalar(cmd, true, connectionString);
         }
 
+        /// <summary>
+        /// The execute scalar.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
         public static object ExecuteScalar(IDbCommand cmd, bool transaction, string connectionString)
         {
             QueryCounter qc = new QueryCounter(cmd.CommandText);
@@ -631,127 +688,6 @@ namespace VZF.Data.Mysql
                             trans.Commit();
                             return results;
                         }
-                    }
-                }
-            }
-            finally
-            {
-                qc.Dispose();
-            }
-        }
-
-        //vzrus addons - to make casts workarounds
-
-        public static DataTable AddValuesToDataTableFromReader(
-            IDbCommand cmd,
-            DataTable dt,
-            bool transaction,
-            bool acceptChanges,
-            int firstColumnIndex,
-            string connectionString)
-        {
-            return AddValuesToDataTableFromReader(
-                cmd, dt, transaction, acceptChanges, firstColumnIndex, 0, connectionString);
-        }
-
-        public static DataTable AddValuesToDataTableFromReader(
-            IDbCommand cmd,
-            DataTable dt,
-            bool transaction,
-            bool acceptChanges,
-            int firstColumnIndex,
-            int currentRow,
-            string connectionString)
-        {
-            var qc = new QueryCounter(cmd.CommandText);
-            try
-            {
-                using (var connMan = new MySqlDbConnectionManager(connectionString))
-                {
-                    // get an open connection
-                    cmd.Connection = connMan.OpenDBConnection(connectionString);
-
-                    if (transaction)
-                    {
-                        // get scalar using a transaction
-                        using (
-                            IDbTransaction trans =
-                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
-                        {
-                            cmd.Transaction = trans;
-                            IDataReader reader = cmd.ExecuteReader();
-                            if (currentRow == 0)
-                            {
-                                firstColumnIndex = dt.Columns.Count;
-                                // Retrieve column schema into a DataTable.                           
-                                dt = GetTableColumns(dt, reader);
-                            }
-
-                            if (reader.FieldCount > 0)
-                            {
-                                while (reader.Read())
-                                {
-                                    int dd;
-
-                                    foreach (DataColumn column in dt.Columns)
-                                    {
-                                        dd = column.Ordinal;
-                                        if (dd >= firstColumnIndex && dd <= dt.Columns.Count - 1)
-                                        {
-                                            dt.Rows[currentRow][column] = ReaderValueConverter(
-                                                column, reader[column.Ordinal - firstColumnIndex]);
-                                        }
-                                    }
-                                }
-                            }
-
-                            reader.Close();
-                            trans.Commit();
-                            if (acceptChanges)
-                            {
-                                dt.AcceptChanges();
-                            }
-
-                            return dt;
-                        }
-                    }
-                    else
-                    {
-                        // get DataReader
-                        IDataReader reader = cmd.ExecuteReader();
-
-                        if (currentRow == 0)
-                        {
-                            firstColumnIndex = dt.Columns.Count;
-
-                            // Retrieve column schema into a DataTable.                            
-                            dt = GetTableColumns(dt, reader);
-                        }
-
-                        if (reader.FieldCount > 0)
-                        {
-                            while (reader.Read())
-                            {
-                                int dd;
-                                foreach (DataColumn column in dt.Columns)
-                                {
-                                    dd = column.Ordinal;
-                                    if (dd >= firstColumnIndex && dd <= dt.Columns.Count - 1)
-                                    {
-                                        dt.Rows[currentRow][column] = ReaderValueConverter(
-                                            column, reader[column.Ordinal - firstColumnIndex]);
-                                    }
-                                }
-                            }
-                        }
-
-                        reader.Close();
-                        if (acceptChanges)
-                        {
-                            dt.AcceptChanges();
-                        }
-
-                        return dt;
                     }
                 }
             }

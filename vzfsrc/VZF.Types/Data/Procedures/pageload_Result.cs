@@ -10,10 +10,51 @@
 namespace VZF.Types.Data
 {
     using System;
-    
+    using System.Data;
+
     public partial class pageload_Result
     {
-        public byte ActiveUpdate { get; set; }
+
+        public pageload_Result()
+        {
+        }
+
+        public pageload_Result(DataRow dr)
+        {
+            ActiveUpdate = dr.Field<bool>("ActiveUpdate");
+            PreviousVisit = dr.Field<DateTime?>("PreviousVisit");
+            UserID = dr.Field<int>("UserID");
+            BoardID = dr.Field<int>("BoardID");
+            ForumID = dr.Field<int>("ForumID");
+            IsAdmin = dr.Field<bool>("IsAdmin");
+            IsForumModerator = dr.Field<bool>("IsForumModerator");
+            IsGuestX = dr.Field<bool>("IsGuestX");
+            LastActive = dr.Field<DateTime?>("LastActive");
+            ReadAccess = dr.Field<bool>("ReadAccess");
+            PostAccess = dr.Field<bool>("PostAccess");
+            ReplyAccess = dr.Field<bool>("ReplyAccess");
+            PriorityAccess = dr.Field<bool>("PriorityAccess");
+            PollAccess = dr.Field<bool>("PollAccess");
+            VoteAccess = dr.Field<bool>("VoteAccess");
+            ModeratorAccess = dr.Field<bool>("ModeratorAccess");
+            EditAccess = dr.Field<bool>("EditAccess");
+            DeleteAccess = dr.Field<bool>("DeleteAccess");
+            ReplyAccess = dr.Field<bool>("ReplyAccess");
+            UploadAccess = dr.Field<bool>("UploadAccess");
+            DownloadAccess = dr.Field<bool>("DownloadAccess");
+            UserForumAccess = dr.Field<bool>("UserForumAccess");
+            IsGuest = dr.Field<bool>("IsGuest");
+            IsCrawler = dr.Field<bool>("IsCrawler");
+            IsMobileDevice = dr.Field<bool>("IsMobileDevice");
+            CategoryID = dr.Field<int?>("CategoryID");
+            CategoryName = dr.Field<string>("CategoryName");
+            ForumName = dr.Field<string>("ForumName");
+            TopicID = dr.Field<int?>("TopicID");
+            TopicName = dr.Field<string>("TopicName");
+            ForumTheme = dr.Field<string>("ForumTheme");
+        }
+
+        public bool ActiveUpdate { get; set; }
         public Nullable<System.DateTime> PreviousVisit { get; set; }
         public int UserID { get; set; }
         public int BoardID { get; set; }
@@ -22,6 +63,7 @@ namespace VZF.Types.Data
         public bool IsForumModerator { get; set; }
         public bool IsModerator { get; set; }
         public bool IsGuestX { get; set; }
+        public bool IsGuest { get; set; }
         public Nullable<System.DateTime> LastActive { get; set; }
         public bool ReadAccess { get; set; }
         public bool PostAccess { get; set; }
@@ -34,12 +76,13 @@ namespace VZF.Types.Data
         public bool DeleteAccess { get; set; }
         public bool UploadAccess { get; set; }
         public bool DownloadAccess { get; set; }
+        public bool UserForumAccess { get; set; }
         public Nullable<bool> IsCrawler { get; set; }
         public Nullable<bool> IsMobileDevice { get; set; }
-        public Nullable<int> CategoryID { get; set; }
+        public int? CategoryID { get; set; }
         public string CategoryName { get; set; }
         public string ForumName { get; set; }
-        public Nullable<int> TopicID { get; set; }
+        public int? TopicID { get; set; }
         public string TopicName { get; set; }
         public string ForumTheme { get; set; }
     }

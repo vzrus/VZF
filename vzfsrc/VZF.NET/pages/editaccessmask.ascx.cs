@@ -28,6 +28,8 @@ namespace YAF.pages
     using System.Web;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Core;
@@ -35,9 +37,10 @@ namespace YAF.pages
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
+    /// <summary>
+    /// The edit access mask.
+    /// </summary>
     public partial class editaccessmask : ForumPage
     {
         #region Methods
@@ -141,10 +144,10 @@ namespace YAF.pages
         protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // retrieve access mask ID from parameter (if applicable)
-            object accessMaskID = null;
+            object accessMaskId = null;
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                accessMaskID = this.Request.QueryString.GetFirstOrDefault("i");
+                accessMaskId = this.Request.QueryString.GetFirstOrDefault("i");
             }
 
             if (this.Name.Text.Trim().Length <= 0)
@@ -168,8 +171,9 @@ namespace YAF.pages
             }
 
             // User mask is always an adminmask because it's not available to other users but owner
-            CommonDb.accessmask_save(this.PageContext.PageModuleID,
-                accessMaskID,
+            CommonDb.accessmask_save(
+                this.PageContext.PageModuleID,
+                accessMaskId,
                 this.PageContext.PageBoardID,
                 this.Name.Text,
                 this.ReadAccess.Checked,

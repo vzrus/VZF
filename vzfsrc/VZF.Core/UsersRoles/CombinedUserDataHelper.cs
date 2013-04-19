@@ -22,6 +22,7 @@ namespace YAF.Core
 
     using System;
     using System.Data;
+    using System.Web;
     using System.Web.Security;
 
     using VZF.Data.Common;
@@ -165,7 +166,19 @@ namespace YAF.Core
     {
       get
       {
-        return this.RowConvert.AsString("CultureUser");
+
+          // Get the user's preferred language
+         // var userLanguages = YafContext.Current.Get<HttpRequestBase>().UserLanguages;
+         // if (userLanguages != null && userLanguages[0] != null)
+         // {
+        //      string sLang = YafContext.Current.Get<HttpRequestBase>().UserLanguages[0];
+
+              //Get the first two characters of the language
+        //      // sLang = sLang.Substring(0, 2);
+        //      return sLang;
+        //  }
+
+          return this.RowConvert.AsString("CultureUser");
       }
     }
 

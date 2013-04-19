@@ -23,6 +23,7 @@ namespace VZF.Utils.Extensions
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Data.Common;
     using System.Linq;
 
     using YAF.Classes;
@@ -54,7 +55,8 @@ namespace VZF.Utils.Extensions
         /// <param name="reader"> The reader. </param>
         /// <param name="comparer"> The comparer. </param>
         /// <returns> </returns>
-        public static IEnumerable<IDictionary<string, object>> ToDictionary([NotNull] this IDataReader reader, [CanBeNull] IEqualityComparer<string> comparer = null)
+        public static IEnumerable<IDictionary<string, object>> ToDictionary(
+            [NotNull] this IDataReader reader, [CanBeNull] IEqualityComparer<string> comparer = null)
         {
             CodeContracts.ArgumentNotNull(reader, "reader");
 
@@ -85,10 +87,12 @@ namespace VZF.Utils.Extensions
         {
             CodeContracts.ArgumentNotNull(dataRow, "dataRow");
 
-            return dataRow.Table.Columns
-                    .OfType<DataColumn>()
-                    .Select(c => c.ColumnName)
-                    .ToDictionary(k => k, v => dataRow[v] == DBNull.Value ? null : dataRow[v], comparer ?? StringComparer.OrdinalIgnoreCase);
+            return dataRow.Table.Columns.OfType<DataColumn>()
+                          .Select(c => c.ColumnName)
+                          .ToDictionary(
+                              k => k,
+                              v => dataRow[v] == DBNull.Value ? null : dataRow[v],
+                              comparer ?? StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -106,11 +110,14 @@ namespace VZF.Utils.Extensions
             var columns = dataTable.Columns.OfType<DataColumn>().Select(c => c.ColumnName);
 
             return
-                dataTable
-                    .AsEnumerable()
-                    .Select(dataRow => columns
-                        .ToDictionary(k => k, v => dataRow[v] == DBNull.Value ? null : dataRow[v], comparer ?? StringComparer.OrdinalIgnoreCase))
-                    .Cast<IDictionary<string, object>>();
+                dataTable.AsEnumerable()
+                         .Select(
+                             dataRow =>
+                             columns.ToDictionary(
+                                 k => k,
+                                 v => dataRow[v] == DBNull.Value ? null : dataRow[v],
+                                 comparer ?? StringComparer.OrdinalIgnoreCase))
+                         .Cast<IDictionary<string, object>>();
         }
 
         /// <summary>
@@ -132,6 +139,51 @@ namespace VZF.Utils.Extensions
                         newObj.LoadFromDictionary(d);
                         return newObj;
                     });
+
+            // var customers = new SqlCommand("SELECT ID, Name FROM Customer", connection).As(r => new Customer { CustomerID = r.GetInt32(0), Name = r.GetString(1) }).ToList();
+        }
+
+        /// <summary>
+        /// The to list.
+        /// </summary>
+        /// <param name="enumerable">
+        /// The enumerable.
+        /// </param>
+        /// <typeparam name="T">
+        /// The generic type.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        public static List<T> ToList<T>(this IEnumerable<T> enumerable)
+        {
+            return new List<T>(enumerable);
+        }
+
+        /// <summary>
+        /// The as.
+        /// </summary>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        /// <param name="map">
+        /// The map.
+        /// </param>
+        /// <typeparam name="T">
+        /// The generic type.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
+        public static IEnumerable<T> As<T>(this DbCommand command, Func<IDataRecord, T> map)
+        {
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    yield return map(reader);
+                }
+            }
         }
 
         #endregion

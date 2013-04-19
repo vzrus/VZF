@@ -202,130 +202,130 @@
     <Compile Include="Classes\YafWebService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="controls\EditObjectImage.ascx.cs">
+    <Compile Include="Controls\EditObjectImage.ascx.cs">
       <DependentUpon>EditObjectImage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditObjectImage.ascx.designer.cs">
+    <Compile Include="Controls\EditObjectImage.ascx.designer.cs">
       <DependentUpon>EditObjectImage.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\DialogBox.ascx.cs">
+    <Compile Include="Controls\DialogBox.ascx.cs">
       <DependentUpon>DialogBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\DialogBox.ascx.designer.cs">
+    <Compile Include="Controls\DialogBox.ascx.designer.cs">
       <DependentUpon>DialogBox.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumJumper.ascx.cs">
+    <Compile Include="Controls\ForumJumper.ascx.cs">
       <DependentUpon>ForumJumper.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumJumper.ascx.designer.cs">
+    <Compile Include="Controls\ForumJumper.ascx.designer.cs">
       <DependentUpon>ForumJumper.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumsAdminTree.ascx.cs">
+    <Compile Include="Controls\ForumsAdminTree.ascx.cs">
       <DependentUpon>ForumsAdminTree.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumsAdminTree.ascx.designer.cs">
+    <Compile Include="Controls\ForumsAdminTree.ascx.designer.cs">
       <DependentUpon>ForumsAdminTree.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\PollChoiceList.ascx.cs">
+    <Compile Include="Controls\PollChoiceList.ascx.cs">
       <DependentUpon>PollChoiceList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\PollChoiceList.ascx.designer.cs">
+    <Compile Include="Controls\PollChoiceList.ascx.designer.cs">
       <DependentUpon>PollChoiceList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\DisplayAd.ascx.designer.cs">
+    <Compile Include="Controls\DisplayAd.ascx.designer.cs">
       <DependentUpon>DisplayAd.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\DisplayPost.ascx.designer.cs">
+    <Compile Include="Controls\DisplayPost.ascx.designer.cs">
       <DependentUpon>DisplayPost.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersAvatar.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersAvatar.ascx.designer.cs">
       <DependentUpon>EditUsersAvatar.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersGroups.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersGroups.ascx.designer.cs">
       <DependentUpon>EditUsersGroups.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersInfo.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersInfo.ascx.designer.cs">
       <DependentUpon>EditUsersInfo.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersPoints.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersPoints.ascx.designer.cs">
       <DependentUpon>EditUsersPoints.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersProfile.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersProfile.ascx.designer.cs">
       <DependentUpon>EditUsersProfile.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersResetPass.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersResetPass.ascx.designer.cs">
       <DependentUpon>EditUsersResetPass.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersSignature.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersSignature.ascx.designer.cs">
       <DependentUpon>EditUsersSignature.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersSuspend.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersSuspend.ascx.designer.cs">
       <DependentUpon>EditUsersSuspend.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumActiveDiscussion.ascx.designer.cs">
+    <Compile Include="Controls\ForumActiveDiscussion.ascx.designer.cs">
       <DependentUpon>ForumActiveDiscussion.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumIconLegend.ascx.designer.cs">
+    <Compile Include="Controls\ForumIconLegend.ascx.designer.cs">
       <DependentUpon>ForumIconLegend.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumLastPost.ascx.designer.cs">
+    <Compile Include="Controls\ForumLastPost.ascx.designer.cs">
       <DependentUpon>ForumLastPost.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumList.ascx.designer.cs">
+    <Compile Include="Controls\ForumList.ascx.designer.cs">
       <DependentUpon>ForumList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumModeratorList.ascx.designer.cs">
+    <Compile Include="Controls\ForumModeratorList.ascx.designer.cs">
       <DependentUpon>ForumModeratorList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumStatistics.ascx.designer.cs">
+    <Compile Include="Controls\ForumStatistics.ascx.designer.cs">
       <DependentUpon>ForumStatistics.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumSubForumList.ascx.designer.cs">
+    <Compile Include="Controls\ForumSubForumList.ascx.designer.cs">
       <DependentUpon>ForumSubForumList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumWelcome.ascx.designer.cs">
+    <Compile Include="Controls\ForumWelcome.ascx.designer.cs">
       <DependentUpon>ForumWelcome.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\PMList.ascx.designer.cs">
+    <Compile Include="Controls\PMList.ascx.designer.cs">
       <DependentUpon>PMList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\PollList.ascx.cs">
+    <Compile Include="Controls\PollList.ascx.cs">
       <DependentUpon>PollList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\PollList.ascx.designer.cs">
+    <Compile Include="Controls\PollList.ascx.designer.cs">
       <DependentUpon>PollList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ProfileYourAccount.ascx.designer.cs">
+    <Compile Include="Controls\ProfileYourAccount.ascx.designer.cs">
       <DependentUpon>ProfileYourAccount.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\smileys.ascx.designer.cs">
+    <Compile Include="Controls\smileys.ascx.designer.cs">
       <DependentUpon>smileys.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\TopicLine.ascx.cs">
+    <Compile Include="Controls\TopicLine.ascx.cs">
       <DependentUpon>TopicLine.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\TopicLine.ascx.designer.cs">
+    <Compile Include="Controls\TopicLine.ascx.designer.cs">
       <DependentUpon>TopicLine.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\UserNickStyleEditor.ascx.cs">
+    <Compile Include="Controls\UserNickStyleEditor.ascx.cs">
       <DependentUpon>UserNickStyleEditor.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\UserNickStyleEditor.ascx.designer.cs">
+    <Compile Include="Controls\UserNickStyleEditor.ascx.designer.cs">
       <DependentUpon>UserNickStyleEditor.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\YafHeader.ascx.cs">
+    <Compile Include="Controls\YafHeader.ascx.cs">
       <DependentUpon>YafHeader.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\YafHeader.ascx.designer.cs">
+    <Compile Include="Controls\YafHeader.ascx.designer.cs">
       <DependentUpon>YafHeader.ascx</DependentUpon>
     </Compile>
     <Compile Include="error.aspx.designer.cs">
@@ -769,11 +769,11 @@
     <Compile Include="pages\emailtopic.ascx.designer.cs">
       <DependentUpon>emailtopic.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\emaildigest.ascx.cs">
+    <Compile Include="Controls\emaildigest.ascx.cs">
       <DependentUpon>emaildigest.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\emaildigest.ascx.designer.cs">
+    <Compile Include="Controls\emaildigest.ascx.designer.cs">
       <DependentUpon>emaildigest.ascx</DependentUpon>
     </Compile>
     <Compile Include="pages\error.ascx.designer.cs">
@@ -996,56 +996,56 @@
     <Content Include="Bin\VZF.Types.pdb" />
     <Content Include="Bin\VZF.Utils.dll" />
     <Content Include="Bin\VZF.Utils.pdb" />
-    <Content Include="controls\AlbumImageList.ascx" />
-    <Content Include="controls\AlbumList.ascx" />
-    <Content Include="controls\BuddyList.ascx" />
-    <Content Include="controls\EditObjectImage.ascx" />
-    <Content Include="controls\DialogBox.ascx" />
-    <Content Include="controls\ForumJumper.ascx" />
-    <Content Include="controls\ForumsAdminTree.ascx" />
-    <Content Include="controls\PollChoiceList.ascx" />
-    <Content Include="controls\DisplayAd.ascx" />
-    <Content Include="controls\DisplayPost.ascx">
+    <Content Include="Controls\AlbumImageList.ascx" />
+    <Content Include="Controls\AlbumList.ascx" />
+    <Content Include="Controls\BuddyList.ascx" />
+    <Content Include="Controls\EditObjectImage.ascx" />
+    <Content Include="Controls\DialogBox.ascx" />
+    <Content Include="Controls\ForumJumper.ascx" />
+    <Content Include="Controls\ForumsAdminTree.ascx" />
+    <Content Include="Controls\PollChoiceList.ascx" />
+    <Content Include="Controls\DisplayAd.ascx" />
+    <Content Include="Controls\DisplayPost.ascx">
       <SubType>UserControl</SubType>
     </Content>
-    <Content Include="controls\DisplayPostFooter.ascx" />
-    <Content Include="controls\EditUsersAvatar.ascx" />
-    <Content Include="controls\EditUsersGroups.ascx" />
-    <Content Include="controls\EditUsersInfo.ascx" />
-    <Content Include="controls\EditUsersKill.ascx" />
-    <Content Include="controls\EditUsersPoints.ascx" />
-    <Content Include="controls\EditUsersProfile.ascx" />
-    <Content Include="controls\EditUsersResetPass.ascx" />
-    <Content Include="controls\EditUsersSignature.ascx" />
-    <Content Include="controls\EditUsersSuspend.ascx" />
-    <Content Include="controls\ForumActiveDiscussion.ascx" />
-    <Content Include="controls\ForumCategoryList.ascx" />
-    <Content Include="controls\ForumIconLegend.ascx" />
-    <Content Include="controls\ForumLastPost.ascx" />
-    <Content Include="controls\ForumList.ascx">
+    <Content Include="Controls\DisplayPostFooter.ascx" />
+    <Content Include="Controls\EditUsersAvatar.ascx" />
+    <Content Include="Controls\EditUsersGroups.ascx" />
+    <Content Include="Controls\EditUsersInfo.ascx" />
+    <Content Include="Controls\EditUsersKill.ascx" />
+    <Content Include="Controls\EditUsersPoints.ascx" />
+    <Content Include="Controls\EditUsersProfile.ascx" />
+    <Content Include="Controls\EditUsersResetPass.ascx" />
+    <Content Include="Controls\EditUsersSignature.ascx" />
+    <Content Include="Controls\EditUsersSuspend.ascx" />
+    <Content Include="Controls\ForumActiveDiscussion.ascx" />
+    <Content Include="Controls\ForumCategoryList.ascx" />
+    <Content Include="Controls\ForumIconLegend.ascx" />
+    <Content Include="Controls\ForumLastPost.ascx" />
+    <Content Include="Controls\ForumList.ascx">
       <SubType>UserControl</SubType>
     </Content>
-    <Content Include="controls\ForumModeratorList.ascx" />
-    <Content Include="controls\ForumProfileAccess.ascx" />
-    <Content Include="controls\ForumStatistics.ascx" />
-    <Content Include="controls\ForumSubForumList.ascx" />
-    <Content Include="controls\ForumWelcome.ascx" />
-    <Content Include="controls\LastPosts.ascx" />
-    <Content Include="controls\LoginBox.ascx" />
-    <Content Include="controls\MyTopicsList.ascx" />
-    <Content Include="controls\PMList.ascx" />
-    <Content Include="controls\PollList.ascx" />
-    <Content Include="controls\PostOptions.ascx" />
-    <Content Include="controls\ProfileYourAccount.ascx" />
-    <Content Include="controls\ReportedPosts.ascx" />
-    <Content Include="controls\ShoutBox.ascx" />
-    <Content Include="controls\smileys.ascx">
+    <Content Include="Controls\ForumModeratorList.ascx" />
+    <Content Include="Controls\ForumProfileAccess.ascx" />
+    <Content Include="Controls\ForumStatistics.ascx" />
+    <Content Include="Controls\ForumSubForumList.ascx" />
+    <Content Include="Controls\ForumWelcome.ascx" />
+    <Content Include="Controls\LastPosts.ascx" />
+    <Content Include="Controls\LoginBox.ascx" />
+    <Content Include="Controls\MyTopicsList.ascx" />
+    <Content Include="Controls\PMList.ascx" />
+    <Content Include="Controls\PollList.ascx" />
+    <Content Include="Controls\PostOptions.ascx" />
+    <Content Include="Controls\ProfileYourAccount.ascx" />
+    <Content Include="Controls\ReportedPosts.ascx" />
+    <Content Include="Controls\ShoutBox.ascx" />
+    <Content Include="Controls\smileys.ascx">
       <SubType>UserControl</SubType>
     </Content>
-    <Content Include="controls\TopicLine.ascx" />
-    <Content Include="controls\UserNickStyleEditor.ascx" />
-    <Content Include="controls\ViewThanksList.ascx" />
-    <Content Include="controls\YafHeader.ascx" />
+    <Content Include="Controls\TopicLine.ascx" />
+    <Content Include="Controls\UserNickStyleEditor.ascx" />
+    <Content Include="Controls\ViewThanksList.ascx" />
+    <Content Include="Controls\YafHeader.ascx" />
     <Content Include="db.config">
       <SubType>Designer</SubType>
     </Content>
@@ -3880,7 +3880,7 @@
     <Content Include="pages\cp_subscriptions.ascx" />
     <Content Include="pages\deletemessage.ascx" />
     <Content Include="pages\emailtopic.ascx" />
-    <Content Include="controls\emaildigest.ascx" />
+    <Content Include="Controls\emaildigest.ascx" />
     <Content Include="pages\error.ascx" />
     <Content Include="pages\forum.ascx" />
     <Content Include="pages\help\index.ascx" />
@@ -4619,186 +4619,186 @@
     <Content Include="resources\js\yaf.js" />
     <Content Include="resources\js\_src\ui.core.js" />
     <Content Include="resources\ProviderExceptions.xml" />
-    <Compile Include="controls\AlbumImageList.ascx.cs">
+    <Compile Include="Controls\AlbumImageList.ascx.cs">
       <DependentUpon>AlbumImageList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\AlbumImageList.ascx.designer.cs">
+    <Compile Include="Controls\AlbumImageList.ascx.designer.cs">
       <DependentUpon>AlbumImageList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\AlbumList.ascx.cs">
+    <Compile Include="Controls\AlbumList.ascx.cs">
       <DependentUpon>AlbumList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\AlbumList.ascx.designer.cs">
+    <Compile Include="Controls\AlbumList.ascx.designer.cs">
       <DependentUpon>AlbumList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\BuddyList.ascx.cs">
+    <Compile Include="Controls\BuddyList.ascx.cs">
       <DependentUpon>BuddyList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\BuddyList.ascx.designer.cs">
+    <Compile Include="Controls\BuddyList.ascx.designer.cs">
       <DependentUpon>BuddyList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\DisplayAd.ascx.cs">
+    <Compile Include="Controls\DisplayAd.ascx.cs">
       <DependentUpon>DisplayAd.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\DisplayPost.ascx.cs">
+    <Compile Include="Controls\DisplayPost.ascx.cs">
       <DependentUpon>DisplayPost.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\DisplayPostFooter.ascx.cs">
+    <Compile Include="Controls\DisplayPostFooter.ascx.cs">
       <DependentUpon>DisplayPostFooter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\DisplayPostFooter.ascx.designer.cs">
+    <Compile Include="Controls\DisplayPostFooter.ascx.designer.cs">
       <DependentUpon>DisplayPostFooter.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersAvatar.ascx.cs">
+    <Compile Include="Controls\EditUsersAvatar.ascx.cs">
       <DependentUpon>EditUsersAvatar.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersGroups.ascx.cs">
+    <Compile Include="Controls\EditUsersGroups.ascx.cs">
       <DependentUpon>EditUsersGroups.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersInfo.ascx.cs">
+    <Compile Include="Controls\EditUsersInfo.ascx.cs">
       <DependentUpon>EditUsersInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersKill.ascx.cs">
+    <Compile Include="Controls\EditUsersKill.ascx.cs">
       <DependentUpon>EditUsersKill.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersKill.ascx.designer.cs">
+    <Compile Include="Controls\EditUsersKill.ascx.designer.cs">
       <DependentUpon>EditUsersKill.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\EditUsersPoints.ascx.cs">
+    <Compile Include="Controls\EditUsersPoints.ascx.cs">
       <DependentUpon>EditUsersPoints.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersProfile.ascx.cs">
+    <Compile Include="Controls\EditUsersProfile.ascx.cs">
       <DependentUpon>EditUsersProfile.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersResetPass.ascx.cs">
+    <Compile Include="Controls\EditUsersResetPass.ascx.cs">
       <DependentUpon>EditUsersResetPass.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersSignature.ascx.cs">
+    <Compile Include="Controls\EditUsersSignature.ascx.cs">
       <DependentUpon>EditUsersSignature.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\EditUsersSuspend.ascx.cs">
+    <Compile Include="Controls\EditUsersSuspend.ascx.cs">
       <DependentUpon>EditUsersSuspend.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumActiveDiscussion.ascx.cs">
+    <Compile Include="Controls\ForumActiveDiscussion.ascx.cs">
       <DependentUpon>ForumActiveDiscussion.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumCategoryList.ascx.cs">
+    <Compile Include="Controls\ForumCategoryList.ascx.cs">
       <DependentUpon>ForumCategoryList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumCategoryList.ascx.designer.cs">
+    <Compile Include="Controls\ForumCategoryList.ascx.designer.cs">
       <DependentUpon>ForumCategoryList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumIconLegend.ascx.cs">
+    <Compile Include="Controls\ForumIconLegend.ascx.cs">
       <DependentUpon>ForumIconLegend.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumLastPost.ascx.cs">
+    <Compile Include="Controls\ForumLastPost.ascx.cs">
       <DependentUpon>ForumLastPost.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumList.ascx.cs">
+    <Compile Include="Controls\ForumList.ascx.cs">
       <DependentUpon>ForumList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumModeratorList.ascx.cs">
+    <Compile Include="Controls\ForumModeratorList.ascx.cs">
       <DependentUpon>ForumModeratorList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumProfileAccess.ascx.cs">
+    <Compile Include="Controls\ForumProfileAccess.ascx.cs">
       <DependentUpon>ForumProfileAccess.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumProfileAccess.ascx.designer.cs">
+    <Compile Include="Controls\ForumProfileAccess.ascx.designer.cs">
       <DependentUpon>ForumProfileAccess.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ForumStatistics.ascx.cs">
+    <Compile Include="Controls\ForumStatistics.ascx.cs">
       <DependentUpon>ForumStatistics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumSubForumList.ascx.cs">
+    <Compile Include="Controls\ForumSubForumList.ascx.cs">
       <DependentUpon>ForumSubForumList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ForumWelcome.ascx.cs">
+    <Compile Include="Controls\ForumWelcome.ascx.cs">
       <DependentUpon>ForumWelcome.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\LastPosts.ascx.cs">
+    <Compile Include="Controls\LastPosts.ascx.cs">
       <DependentUpon>LastPosts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\LastPosts.ascx.designer.cs">
+    <Compile Include="Controls\LastPosts.ascx.designer.cs">
       <DependentUpon>LastPosts.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\LoginBox.ascx.cs">
+    <Compile Include="Controls\LoginBox.ascx.cs">
       <DependentUpon>LoginBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\LoginBox.ascx.designer.cs">
+    <Compile Include="Controls\LoginBox.ascx.designer.cs">
       <DependentUpon>LoginBox.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\MyTopicsList.ascx.cs">
+    <Compile Include="Controls\MyTopicsList.ascx.cs">
       <DependentUpon>MyTopicsList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\MyTopicsList.ascx.designer.cs">
+    <Compile Include="Controls\MyTopicsList.ascx.designer.cs">
       <DependentUpon>MyTopicsList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\PMList.ascx.cs">
+    <Compile Include="Controls\PMList.ascx.cs">
       <DependentUpon>PMList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\PostOptions.ascx.cs">
+    <Compile Include="Controls\PostOptions.ascx.cs">
       <DependentUpon>PostOptions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\PostOptions.ascx.designer.cs">
+    <Compile Include="Controls\PostOptions.ascx.designer.cs">
       <DependentUpon>PostOptions.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ProfileYourAccount.ascx.cs">
+    <Compile Include="Controls\ProfileYourAccount.ascx.cs">
       <DependentUpon>ProfileYourAccount.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ReportedPosts.ascx.cs">
+    <Compile Include="Controls\ReportedPosts.ascx.cs">
       <DependentUpon>ReportedPosts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ReportedPosts.ascx.designer.cs">
+    <Compile Include="Controls\ReportedPosts.ascx.designer.cs">
       <DependentUpon>ReportedPosts.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\ShoutBox.ascx.cs">
+    <Compile Include="Controls\ShoutBox.ascx.cs">
       <DependentUpon>ShoutBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ShoutBox.ascx.designer.cs">
+    <Compile Include="Controls\ShoutBox.ascx.designer.cs">
       <DependentUpon>ShoutBox.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controls\smileys.ascx.cs">
+    <Compile Include="Controls\smileys.ascx.cs">
       <DependentUpon>smileys.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ViewThanksList.ascx.cs">
+    <Compile Include="Controls\ViewThanksList.ascx.cs">
       <DependentUpon>ViewThanksList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controls\ViewThanksList.ascx.designer.cs">
+    <Compile Include="Controls\ViewThanksList.ascx.designer.cs">
       <DependentUpon>ViewThanksList.ascx</DependentUpon>
     </Compile>
     <Compile Include="error.aspx.cs">
@@ -6562,6 +6562,10 @@
       <Project>{80f590ea-cc91-4286-b8ed-b173fecf0d90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Kernel\VZF.Kernel.csproj">
       <Project>{7c5bb2bf-c385-49d2-937f-f4ce8e368cc3}</Project>
       <Name>VZF.Kernel</Name>
@@ -6611,7 +6615,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>12127</DevelopmentServerPort>
+          <DevelopmentServerPort>2946</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/yetanotherforum.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

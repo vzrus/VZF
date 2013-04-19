@@ -126,7 +126,7 @@ namespace YAF.Providers.Profile
             return count;
         }
 
-        static public void DecodeProfileData(DataRow profileRow, SettingsPropertyValueCollection values)
+        public static void DecodeProfileData(DataRow profileRow, SettingsPropertyValueCollection values)
         {
             byte[] binaryData = null;
             string indexData = null;

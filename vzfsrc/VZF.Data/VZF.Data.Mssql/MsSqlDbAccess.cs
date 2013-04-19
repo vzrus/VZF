@@ -64,7 +64,10 @@ namespace VZF.Data.MsSql
 
     #region Properties
 
-    public static bool LargeForumTree 
+      /// <summary>
+      /// Gets a value indicating whether large forum tree.
+      /// </summary>
+      public static bool LargeForumTree 
     {
         get
         {
@@ -72,7 +75,47 @@ namespace VZF.Data.MsSql
         }
     }
 
-    /// <summary>
+      /// <summary>
+      /// Gets the connection parameters.
+      /// </summary>
+      public static List<ConnectionStringParameter> ConnectionParameters
+      {
+          get
+          {
+              var cstr = new SqlConnectionStringBuilder();
+              var connectionParametersBuilder = new List<ConnectionStringParameter>();
+              bool locals = false;
+
+              if (locals)
+              {
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("DataSource", cstr.DataSource.GetType(), @".\SQLExpress", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("IntegratedSecurity", cstr.IntegratedSecurity.GetType(), "true", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("UserInstance", cstr.UserInstance.GetType(), "True", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("AttachDBFilename", cstr.AttachDBFilename.GetType(), @"|DataDirectory|Database1.mdf", false));
+              }
+              else
+              {
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("DataSource", cstr.DataSource.GetType(), "(local)", false));
+                 
+                  // connectionParametersBuilder.Add(new ConnectionStringParameter("DataSource", cstr.DataSource.GetType(), "190.190.200.100,1433", false));
+
+                  //connectionParametersBuilder.Add(new ConnectionStringParameter("NetworkLibrary", cstr.NetworkLibrary.GetType(), "DBMSSOCN", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("InitialCatalog", cstr.InitialCatalog.GetType(), "yafnet", false));
+                  //connectionParametersBuilder.Add(new ConnectionStringParameter("IntegratedSecurity", cstr.IntegratedSecurity.GetType(), "True", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("UserID", cstr.UserID.GetType(), "admin", false));
+                  connectionParametersBuilder.Add(new ConnectionStringParameter("Password", cstr.Password.GetType(), "password", false));
+              }
+
+              connectionParametersBuilder.Add(new ConnectionStringParameter("Pooling", cstr.Pooling.GetType(), "True", false));
+              connectionParametersBuilder.Add(new ConnectionStringParameter("ApplicationName", cstr.DataSource.GetType(), string.Empty, false));
+             // connectionParametersBuilder.Add(new ConnectionStringParameter("MultipleActiveResultSets", cstr.MultipleActiveResultSets.GetType(), "false", false));
+             // connectionParametersBuilder.Add(new ConnectionStringParameter("TrustServerCertificate", cstr.TrustServerCertificate.GetType(), "true", false));
+
+              return connectionParametersBuilder;
+          }
+      }
+
+      /// <summary>
     ///   Gets IsolationLevel.
     /// </summary>
     public static IsolationLevel IsolationLevel
@@ -145,7 +188,7 @@ namespace VZF.Data.MsSql
           }
         }
 
-        return string.Empty;
+        return String.Empty;
       }
     }
 
@@ -228,7 +271,7 @@ namespace VZF.Data.MsSql
           CommandType = CommandType.StoredProcedure, 
           CommandText = GetObjectName(storedProcedure), 
           Connection = connection, 
-          CommandTimeout = int.Parse(Config.SqlCommandTimeout)
+          CommandTimeout = Int32.Parse(Config.SqlCommandTimeout)
         };
 
       return cmd;
@@ -251,92 +294,23 @@ namespace VZF.Data.MsSql
 
       return commandText;
     }
-
-    /// <summary>
-    /// Creates a Connection String from the parameters.
-    /// </summary>
-    /// <param name="parm1">
-    /// </param>
-    /// <param name="parm2">
-    /// </param>
-    /// <param name="parm3">
-    /// </param>
-    /// <param name="parm4">
-    /// </param>
-    /// <param name="parm5">
-    /// </param>
-    /// <param name="parm6">
-    /// </param>
-    /// <param name="parm7">
-    /// </param>
-    /// <param name="parm8">
-    /// </param>
-    /// <param name="parm9">
-    /// </param>
-    /// <param name="parm10">
-    /// </param>
-    /// <param name="parm11">
-    /// </param>
-    /// <param name="parm12">
-    /// </param>
-    /// <param name="parm13">
-    /// </param>
-    /// <param name="parm14">
-    /// </param>
-    /// <param name="parm15">
-    /// </param>
-    /// <param name="parm16">
-    /// </param>
-    /// <param name="parm17">
-    /// </param>
-    /// <param name="parm18">
-    /// </param>
-    /// <param name="parm19">
-    /// </param>
-    /// <param name="userID">
-    /// </param>
-    /// <param name="userPassword">
-    /// </param>
-    /// <returns>
-    /// The get connection string.
-    /// </returns>
-    public static string GetConnectionString(
-      [NotNull] string parm1, 
-      [NotNull] string parm2, 
-      [NotNull] string parm3, 
-      [NotNull] string parm4, 
-      [NotNull] string parm5, 
-      [NotNull] string parm6, 
-      [NotNull] string parm7, 
-      [NotNull] string parm8, 
-      [NotNull] string parm9, 
-      [NotNull] string parm10, 
-      bool parm11, 
-      bool parm12, 
-      bool parm13, 
-      bool parm14, 
-      bool parm15, 
-      bool parm16, 
-      bool parm17, 
-      bool parm18, 
-      bool parm19, 
-      [NotNull] string userID, 
-      [NotNull] string userPassword)
+   
+      /// <summary>
+      /// The get connection string.
+      /// </summary>
+      /// <returns>
+      /// The <see cref="string"/>.
+      /// </returns>
+      public static string GetConnectionString()
     {
-      // TODO: Parameters should be in a List<ConnectionParameters>
-      var connBuilder = new SqlConnectionStringBuilder { DataSource = parm1, InitialCatalog = parm2 };
+        var connBuilder = new SqlConnectionStringBuilder();
 
-      if (parm11)
-      {
-        connBuilder.IntegratedSecurity = true;
-      }
-      else
-      {
-        connBuilder.UserID = userID;
-        connBuilder.Password = userPassword;
-      }
+        foreach (var parameter in ConnectionParameters)
+        {
+            connBuilder.Add(parameter.Name, parameter.Value);
+        }
 
-      return connBuilder.ConnectionString;
+        return connBuilder.ConnectionString;
     }
 
     /// <summary>
@@ -696,7 +670,7 @@ namespace VZF.Data.MsSql
     /// </returns>
     public static bool TestConnection(string connectionString, [NotNull] out string exceptionMessage)
     {
-        exceptionMessage = string.Empty;
+        exceptionMessage = String.Empty;
         bool success = false;
 
         try

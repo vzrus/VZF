@@ -18,10 +18,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Classes;
-
-using VZF.Utils;
-
 namespace VZF.Controls
 {
     #region Using
@@ -34,7 +30,9 @@ namespace VZF.Controls
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Utils;
 
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Interfaces;
@@ -63,6 +61,7 @@ namespace VZF.Controls
     public partial class ViewThanksList : BaseUserControl
     {
         /* Data Fields */
+
         /// <summary>
         ///   Gets or sets a value indicating whether Auto Databind.
         /// </summary>
@@ -75,6 +74,9 @@ namespace VZF.Controls
         /// </summary>
         private int _count;
 
+        /// <summary>
+        /// The user id.
+        /// </summary>
         private int userID;
 
         #endregion

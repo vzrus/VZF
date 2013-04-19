@@ -129,7 +129,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
             return count;
         }
 
-        static public void UnpackProfileData(DataRow profileRow, SettingsPropertyValueCollection values)
+        public static void UnpackProfileData(DataRow profileRow, SettingsPropertyValueCollection values)
         {
             byte[] binaryData = null;
             string indexData = null;

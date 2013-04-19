@@ -263,9 +263,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_list
                            i_board integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
-						   i_pageuserid integer,
-						   i_isusermask boolean,
-						   i_isadminmask boolean
+                           i_pageuserid integer,
+                           i_isusermask boolean,
+                           i_isadminmask boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type AS
 $BODY$
@@ -280,17 +280,17 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask,
-			  a.createdbyuserid,
-			  a.createdbyusername,
-			  a.createdbyuserdisplayname
+              a.isusermask,
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0
-			and (not i_isusermask or isusermask) 
-			-- and (not i_isadminmask or isadminmask) 
-			and (i_pageuserid is null or createdbyuserid = i_pageuserid) 
+            and (not i_isusermask or isusermask) 
+            -- and (not i_isadminmask or isadminmask) 
+            and (i_pageuserid is null or createdbyuserid = i_pageuserid) 
            ORDER BY a.sortorder
        LOOP
              RETURN NEXT _rec;
@@ -303,11 +303,11 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask,
-			  a.createdbyuserid,
-			  a.createdbyusername,
-			  a.createdbyuserdisplayname
+              a.isusermask,
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
@@ -324,9 +324,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_pforumlist
                            i_board integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
-						   i_pageuserid integer,
-						   i_isusermask boolean,
-						   i_isadminmask boolean
+                           i_pageuserid integer,
+                           i_isusermask boolean,
+                           i_isadminmask boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type AS
 $BODY$
@@ -341,14 +341,14 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask
+              a.isusermask,
+              a.isadminmask
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0
-			and (i_isadminmask or not a.isadminmask)
-			and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
-			ORDER BY a.isusermask desc,a.sortorder;
+            and (i_isadminmask or not a.isadminmask)
+            and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
+            ORDER BY a.isusermask desc,a.sortorder;
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -360,13 +360,13 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask
+              a.isusermask,
+              a.isadminmask
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
-			and (i_isadminmask or not a.isadminmask)
-			and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
+            and (i_isadminmask or not a.isadminmask)
+            and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
             LIMIT 1
       LOOP
              RETURN NEXT _rec;
@@ -381,9 +381,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_aforumlist
                            i_board integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
-						   i_pageuserid integer,
-						   i_isusermask boolean,
-						   i_isadminmask boolean
+                           i_pageuserid integer,
+                           i_isusermask boolean,
+                           i_isadminmask boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type AS
 $BODY$
@@ -398,12 +398,12 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask
+              a.isusermask,
+              a.isadminmask
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_board  and
             (a.flags & i_excludeflags) = 0		
-			and (i_isadminmask or not a.isadminmask)
+            and (i_isadminmask or not a.isadminmask)
            ORDER BY a.sortorder
        LOOP
              RETURN NEXT _rec;
@@ -416,12 +416,12 @@ BEGIN
               a.name,
               a.flags,
               a.sortorder,
-			  a.isusermask,
-			  a.isadminmask
+              a.isusermask,
+              a.isadminmask
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_board
           AND a.accessmaskid = i_accessmaskid
-			and (i_isadminmask or not a.isadminmask)
+            and (i_isadminmask or not a.isadminmask)
       LIMIT 1
       LOOP
              RETURN NEXT _rec;
@@ -455,7 +455,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_save
                            i_sortorder smallint,
                            i_userid integer,
                            i_isusermask boolean,
-						   i_isadminmask boolean,
+                           i_isadminmask boolean,
                            i_utctimestamp timestampTZ)
                   RETURNS void AS
 $BODY$DECLARE
@@ -506,7 +506,7 @@ IF i_accessmaskid IS NULL THEN
        INSERT INTO databaseSchema.objectQualifier_accessmask
          (name,boardid,flags,sortorder,isusermask,createdbyuserid,createdbyusername,createdbyuserdisplayname, createddate)
        VALUES(substr(i_name,1,128),i_boardid,ici_flags, i_sortorder,i_isusermask,i_userid,ici_UserName,ici_UserDisplayName,i_utctimestamp)
-	   returning accessmaskid into i_accessmaskid;
+       returning accessmaskid into i_accessmaskid;
 ELSE
        UPDATE databaseSchema.objectQualifier_accessmask
        SET    name = substr(i_name,1,128), flags = ici_flags, sortorder = i_sortorder, isusermask = i_isusermask 
@@ -2136,7 +2136,7 @@ BEGIN
              categoryimage,
              sortorder,
              pollgroupid,	
-			 canhavepersforums
+             canhavepersforums
        FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid ORDER BY sortorder
        LOOP
     RETURN NEXT _rec;
@@ -2149,7 +2149,7 @@ END LOOP;
              categoryimage,
              sortorder,
              pollgroupid,	
-			 canhavepersforums
+             canhavepersforums
         FROM databaseSchema.objectQualifier_category WHERE boardid = i_boardid AND categoryid = i_categoryid LIMIT 1
          LOOP
     RETURN NEXT _rec;
@@ -2175,8 +2175,8 @@ BEGIN
              c.categoryimage,
              c.sortorder,
              c.pollgroupid,	
-			 c.canhavepersforums,
-			 COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
+             c.canhavepersforums,
+             COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
        FROM databaseSchema.objectQualifier_category c WHERE boardid = i_boardid ORDER BY c.sortorder
        LOOP
     RETURN NEXT _rec;
@@ -2189,8 +2189,8 @@ END LOOP;
              c.categoryimage,
              c.sortorder,
              c.pollgroupid,	
-			 c.canhavepersforums,
-			 COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
+             c.canhavepersforums,
+             COALESCE((SELECT CAST(SIGN(f.forumid) AS varchar)::boolean FROM databaseSchema.objectQualifier_forum f where f.categoryid = c.categoryid and f.canhavepersforums LIMIT 1),false)  AS HasForumsForPersForums
         FROM databaseSchema.objectQualifier_category c WHERE boardid = i_boardid AND c.categoryid = i_categoryid LIMIT 1
          LOOP
     RETURN NEXT _rec;
@@ -2315,7 +2315,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_category_save(
                            i_name varchar, 
                            i_sortorder integer, 
                            i_categoryimage varchar,
-						   i_canhavepersforums boolean)
+                           i_canhavepersforums boolean)
                   RETURNS integer AS
 $BODY$DECLARE
              ici_sortorder smallint:=i_sortorder;
@@ -2996,8 +2996,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_list
                            (
                            i_boardid integer, 
                            i_forumid integer,
-						   i_userid integer,
-						   i_isuserforum boolean
+                           i_userid integer,
+                           i_isuserforum boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_forum_list_return_type  AS
 $BODY$DECLARE
@@ -3024,9 +3024,9 @@ BEGIN
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.isuserforum,
-							 a.createdbyuserid,
-							 a.canhavepersforums 
+                             a.isuserforum,
+                             a.createdbyuserid,
+                             a.canhavepersforums 
                     FROM databaseSchema.objectQualifier_forum a 
                                   JOIN databaseSchema.objectQualifier_category b 
                                      ON b.categoryid=a.categoryid 
@@ -3056,9 +3056,9 @@ END LOOP;
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.isuserforum,
-							 a.createdbyuserid,
-							 a.canhavepersforums
+                             a.isuserforum,
+                             a.createdbyuserid,
+                             a.canhavepersforums
         FROM databaseSchema.objectQualifier_forum a 
                    JOIN databaseSchema.objectQualifier_category b 
                     ON b.categoryid=a.categoryid 
@@ -3077,8 +3077,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_byuserlist
                            (
                            i_boardid integer, 
                            i_forumid integer,
-						   i_userid integer,
-						   i_isuserforum boolean
+                           i_userid integer,
+                           i_isuserforum boolean
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_forum_list_return_type  AS
 $BODY$DECLARE
@@ -3105,14 +3105,14 @@ BEGIN
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.createdbyuserid,
-							 a.canhavepersforums  
+                             a.createdbyuserid,
+                             a.canhavepersforums  
                     FROM databaseSchema.objectQualifier_forum a 
                                   JOIN databaseSchema.objectQualifier_category b 
                                      ON b.categoryid=a.categoryid 
                                         WHERE b.boardid=i_boardid 
-										and  a.isuserforum = i_isuserforum
-										and (i_userid is null or a.createdbyuserid = i_userid)
+                                        and  a.isuserforum = i_isuserforum
+                                        and (i_userid is null or a.createdbyuserid = i_userid)
                                           ORDER BY a.sortorder
 LOOP
 RETURN NEXT _rec;
@@ -3138,15 +3138,15 @@ END LOOP;
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
-							 a.createdbyuserid,
-							 a.canhavepersforums  
+                             a.createdbyuserid,
+                             a.canhavepersforums  
         FROM databaseSchema.objectQualifier_forum a 
                    JOIN databaseSchema.objectQualifier_category b 
                     ON b.categoryid=a.categoryid 
                      WHERE b.boardid=i_boardid 
                       AND a.forumid = i_forumid
-					  and  a.isuserforum = i_isuserforum
-					  and (i_userid is null or a.createdbyuserid = i_userid)
+                      and  a.isuserforum = i_isuserforum
+                      and (i_userid is null or a.createdbyuserid = i_userid)
                       LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -3278,7 +3278,7 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listall_fromcat(
                            i_boardid integer, 
                            i_categoryid integer,
-						   i_allowuserforumsonly boolean)
+                           i_allowuserforumsonly boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_listall_fromcat_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_forum_listall_fromcat_return_type%ROWTYPE;
@@ -3290,14 +3290,14 @@ FOR _rec IN
                a.name AS Forum, 
                a.parentid,
                a.pollgroupid,
-			   a.canhavepersforums                  
+               a.canhavepersforums                  
     FROM       databaseSchema.objectQualifier_forum a 
         INNER JOIN
              databaseSchema.objectQualifier_category b ON b.categoryid = a.categoryid
         WHERE
             b.categoryid=i_categoryid AND
             b.boardid=i_boardid
-			AND (not i_allowuserforumsonly or a.isuserforum) 
+            AND (not i_allowuserforumsonly or a.isuserforum) 
         ORDER BY
             b.sortorder,
             a.sortorder
@@ -3519,10 +3519,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listread(
                            i_parentid integer,
                            i_stylednicks boolean,
                            i_findlastunread boolean,
-						   i_showcommonforums boolean,
-						   i_showpersonalforums boolean,
-						   i_forumcreatedbyuserid integer,
-						   i_UTCTIMESTAMP timestamptz)
+                           i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamptz)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_listread_return_type AS
 $BODY$DECLARE
 -- ici_lasttopicid integer;
@@ -3609,7 +3609,7 @@ FOR _rec IN
         b.description, 		
         b.imageurl,		
         b.pollgroupid, 
-		b.isuserforum,		
+        b.isuserforum,		
         databaseSchema.objectQualifier_forum_topics(b.forumid) AS Topics,
         databaseSchema.objectQualifier_forum_posts(b.forumid) AS Posts, 	
         b.lasttopicid,
@@ -3746,7 +3746,7 @@ FOR _rec IN
         b.description, 		
         b.imageurl,		
         b.pollgroupid, 
-		b.isuserforum,		
+        b.isuserforum,		
         databaseSchema.objectQualifier_forum_topics(b.forumid) AS Topics,
         databaseSchema.objectQualifier_forum_posts(b.forumid) AS Posts,
         b.lasttopicid,
@@ -3907,7 +3907,7 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_moderatelist(
                            i_boardid integer, 
                            i_userid integer,
-						   i_isuserforum boolean)
+                           i_isuserforum boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_moderatelist_return_type AS
 $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_moderatelist_return_type%ROWTYPE;
@@ -3956,8 +3956,8 @@ BEGIN
           /*  JOIN databaseSchema.objectQualifier_vaccess c ON c.forumid=b.forumid  */
             WHERE
         a.boardid=i_boardid AND
-		b.isuserforum = i_isuserforum		
-		 /* AND
+        b.isuserforum = i_isuserforum		
+         /* AND
         c.moderatoraccess>0 AND
         c.userid=i_userid */
             ORDER BY
@@ -4315,7 +4315,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_accessmaskid integer,
                            i_userid integer,
                            i_isuserforum boolean,
-						   i_canhavepersforums boolean,
+                           i_canhavepersforums boolean,
                            i_utctimestamp timestampTZ)
                    RETURNS integer AS
 $BODY$DECLARE 
@@ -4918,13 +4918,13 @@ FOR _rec IN
         FROM   databaseSchema.objectQualifier_forumaccess a
                INNER JOIN databaseSchema.objectQualifier_group b ON b.groupid=a.groupid
         WHERE  a.forumid = i_forumid   
-		AND (NOT b.isusergroup  OR (b.isusergroup  AND b.createdbyuserid = i_userid)) 
+        AND (NOT b.isusergroup  OR (b.isusergroup  AND b.createdbyuserid = i_userid)) 
        LOOP
     RETURN NEXT _rec;
-	END LOOP;
-	ELSE
-	FOR _rec IN
-	SELECT 
+    END LOOP;
+    ELSE
+    FOR _rec IN
+    SELECT 
                a.groupid,
                a.forumid,
                a.accessmaskid,
@@ -4934,8 +4934,8 @@ FOR _rec IN
         WHERE  a.forumid = i_forumid  AND NOT b.isusergroup 
        LOOP
     RETURN NEXT _rec;
-	END LOOP;
-	END IF; 
+    END LOOP;
+    END IF; 
 END;
 $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
@@ -5007,11 +5007,11 @@ BEGIN
              usrsightmltags,
              usralbums,
              usralbumimages,
-			 isusergroup,
-			 createdbyuserid,
-			 usrpersonalmasks,
-			 usrpersonalgroups,
-			 usrpersonalforums
+             isusergroup,
+             createdbyuserid,
+             usrpersonalmasks,
+             usrpersonalgroups,
+             usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
          LOOP
@@ -5033,11 +5033,11 @@ END LOOP;
              usrsightmltags,
              usralbums,
              usralbumimages,
-			 isusergroup,
-			 createdbyuserid,
-			 usrpersonalmasks,
-			 usrpersonalgroups,
-			 usrpersonalforums
+             isusergroup,
+             createdbyuserid,
+             usrpersonalmasks,
+             usrpersonalgroups,
+             usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
         AND groupid = i_groupid LIMIT 1
@@ -5055,8 +5055,8 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_byuserlist(
                            i_boardid integer, 
                            i_groupid integer,
-						   i_userid integer,
-						   i_isusergroup boolean)
+                           i_userid integer,
+                           i_isusergroup boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_group_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_group_list_return_type%ROWTYPE;
@@ -5078,11 +5078,11 @@ BEGIN
              usrsightmltags,
              usralbums,
              usralbumimages,
-			 isusergroup,
-			 createdbyuserid,
-			 usrpersonalmasks,
-			 usrpersonalgroups,
-			 usrpersonalforums
+             isusergroup,
+             createdbyuserid,
+             usrpersonalmasks,
+             usrpersonalgroups,
+             usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
          LOOP
@@ -5104,11 +5104,11 @@ END LOOP;
              usrsightmltags,
              usralbums,
              usralbumimages,
-			 isusergroup,
-			 createdbyuserid,
-			 usrpersonalmasks,
-			 usrpersonalgroups,
-			 usrpersonalforums
+             isusergroup,
+             createdbyuserid,
+             usrpersonalmasks,
+             usrpersonalgroups,
+             usrpersonalforums
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
         AND groupid = i_groupid LIMIT 1
@@ -5263,8 +5263,8 @@ BEGIN
 FOR _rec IN
         SELECT   a.groupid,
         a.name,
-		(a.flags & 16 = 16),
-		a.style,
+        (a.flags & 16 = 16),
+        a.style,
         (SELECT COUNT(1)
         FROM   databaseSchema.objectQualifier_usergroup x
         WHERE  x.userid = i_userid
@@ -5294,7 +5294,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_isguest boolean,
                            i_isstart boolean,
                            i_ismoderator boolean,
-						   i_ishidden boolean,
+                           i_ishidden boolean,
                            i_accessmaskid integer,
                            i_pmlimit integer,
                            i_style varchar(255),
@@ -5307,9 +5307,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_usralbumimages integer,
                            i_userid integer,
                            i_isusergroup boolean,
-						   i_personalaccessmasksnumber integer,
-						   i_personalgroupsnumber integer,
-						   i_personalforumsnumber integer,
+                           i_personalaccessmasksnumber integer,
+                           i_personalgroupsnumber integer,
+                           i_personalforumsnumber integer,
                            i_utctimestamp timestampTZ)
                   RETURNS int AS
 $BODY$DECLARE
@@ -5327,14 +5327,14 @@ BEGIN
         iciFlags := iciFlags | 4; END IF;
         IF i_ismoderator IS NOT FALSE THEN
         iciFlags := iciFlags | 8; END IF;
-		 IF i_ishidden IS NOT FALSE THEN
+         IF i_ishidden IS NOT FALSE THEN
         iciFlags := iciFlags | 16; END IF;
-		IF char_length(style) <= 2 THEN  
+        IF char_length(style) <= 2 THEN  
     style := null; 
     END IF;
         
-		SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
-				  IF i_UserID IS NOT NULL THEN   
+        SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
+                  IF i_UserID IS NOT NULL THEN   
     SELECT name,displayname INTO ici_UserName, ici_UserDisplayName FROM databaseSchema.objectQualifier_user where userid = i_userid LIMIT  1;
        -- guests should not create forums
     ELSE    
@@ -5354,9 +5354,9 @@ BEGIN
                    usralbums = i_usralbums,
                    usralbumimages = i_usralbumimages,
                    isusergroup = i_isusergroup,
-				   usrpersonalmasks = i_personalaccessmasksnumber,
-				   usrpersonalgroups = i_personalgroupsnumber,
-				   usrpersonalforums = i_personalforumsnumber
+                   usrpersonalmasks = i_personalaccessmasksnumber,
+                   usrpersonalgroups = i_personalgroupsnumber,
+                   usrpersonalforums = i_personalforumsnumber
             WHERE  groupid = i_groupid;
            -- SELECT i_groupid INTO ici_groupid;        
         ELSE        
@@ -5374,13 +5374,13 @@ BEGIN
                         usralbums,
                         usralbumimages,
                         isusergroup,
-				        createdbyuserid,
-				        createdbyusername,
-						createdbyuserdisplayname,
-						createddate,
-				        usrpersonalmasks,
-				        usrpersonalgroups,
-				        usrpersonalforums)
+                        createdbyuserid,
+                        createdbyusername,
+                        createdbyuserdisplayname,
+                        createddate,
+                        usrpersonalmasks,
+                        usrpersonalgroups,
+                        usrpersonalforums)
             VALUES     (i_name,
                         i_boardid,
                         iciFlags,
@@ -5394,13 +5394,13 @@ BEGIN
                         i_usralbums,
                         i_usralbumimages,
                         i_isusergroup,
-						i_userid,
-						ici_UserName,
-						ici_UserDisplayName,
-						i_utctimestamp,
-						i_personalaccessmasksnumber,
-						i_personalgroupsnumber,
-						i_personalforumsnumber)
+                        i_userid,
+                        ici_UserName,
+                        ici_UserDisplayName,
+                        i_utctimestamp,
+                        i_personalaccessmasksnumber,
+                        i_personalgroupsnumber,
+                        i_personalforumsnumber)
                         RETURNING groupid INTO ici_groupid;            
             
             INSERT INTO databaseSchema.objectQualifier_forumaccess
@@ -5417,7 +5417,7 @@ BEGIN
         --    SELECT ici_groupid INTO _rec; 
          END IF;
 
-	/* if exists (select 1 from databaseSchema.objectQualifier_grouphistory where groupid = ici_groupid and changeddate = i_utctimestamp  LIMIT 1) THEN
+    /* if exists (select 1 from databaseSchema.objectQualifier_grouphistory where groupid = ici_groupid and changeddate = i_utctimestamp  LIMIT 1) THEN
     update databaseSchema.objectQualifier_grouphistory set 
            ChangedUserID = i_UserID,	
            ChangedUserName = ici_UserName,
@@ -5427,9 +5427,9 @@ BEGIN
     INSERT INTO databaseSchema.objectQualifier_grouphistory(GroupID,ChangedUserID,ChangedUserName,ChangedDisplayName,ChangedDate)
     VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
     end IF; */
-	-- group styles override user styles, don't sync if style is not present here
+    -- group styles override user styles, don't sync if style is not present here
     IF (i_style is not null and char_length(i_style) > 2) THEN
-	        PERFORM databaseSchema.objectQualifier_user_savestyle(
+            PERFORM databaseSchema.objectQualifier_user_savestyle(
                            ici_groupid, null);
       END IF;
                            return ici_groupid;
@@ -8432,7 +8432,7 @@ END IF;
         d.forumid,
         c.name AS RankName,		
         c.rankimage,
-		c.style AS RankStyle,
+        c.style AS RankStyle,
         (case(i_stylednicks)
             when true THEN  b.userstyle
             else ''	 end), 
@@ -8642,6 +8642,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_rank_save(
                            i_name varchar,
                            i_isstart boolean,
                            i_isladder boolean,
+                           i_isguest boolean,
                            i_minposts integer,
                            i_rankimage varchar,
                            i_pmlimit integer,
@@ -8673,8 +8674,11 @@ BEGIN
     IF i_isladder IS NOT FALSE THEN  
     ici_flags := ici_flags | 2; 
     END IF;
+    IF i_isguest IS NOT FALSE THEN  
+    ici_flags := ici_flags | 4; 
+    END IF;
 
-	IF char_length(style) <= 2 THEN  
+    IF char_length(style) <= 2 THEN  
     style := null; 
     END IF;
     
@@ -8729,7 +8733,7 @@ BEGIN
     END IF;
 -- group styles override user styles, don't sync if style is not present here
     IF (i_style is not null and char_length(i_style) > 2) THEN
-	         PERFORM databaseSchema.objectQualifier_user_savestyle(
+             PERFORM databaseSchema.objectQualifier_user_savestyle(
                            null, i_rankid);
       END IF;
     
@@ -9294,10 +9298,10 @@ BEGIN
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid LIMIT 1), i_utctimestamp)
              else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
-		c.topicimage,
-		c.topicimagetype,
-		c.topicimagebin,
-		0 as HasAttachments,	
+        c.topicimage,
+        c.topicimagetype,
+        c.topicimagebin,
+        0 as HasAttachments,	
         ici_topics_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex	  	     
     FROM
@@ -9818,14 +9822,14 @@ FOR _rec IN
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),				  	  
                   t.styles,
-				  t.topicimage,
-				  t.topicimagetype,
-				  t.topicimagebin,
-				  (SELECT mes2.message 
+                  t.topicimage,
+                  t.topicimagetype,
+                  t.topicimagebin,
+                  (SELECT mes2.message 
                  FROM databaseSchema.objectQualifier_message mes2 
                  WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
                  AND mes2.position = 0 ORDER BY mes2.topicid LIMIT 1),
-				  t.islocked,
+                  t.islocked,
                   t.isdeleted,
                   t.ispersistent,
                   t.isquestion 			 
@@ -9856,17 +9860,17 @@ SELECT
                   t.lastmessageflags,
                   t.description,
                   t.status,
-				  t.styles,
+                  t.styles,
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
-             	  t.topicimage,
-				  t.topicimagetype,
-				  t.topicimagebin,
-				  (SELECT mes2.message 
+                  t.topicimage,
+                  t.topicimagetype,
+                  t.topicimagebin,
+                  (SELECT mes2.message 
                  FROM databaseSchema.objectQualifier_message mes2 
                  WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
                  AND mes2.position = 0 LIMIT 1),
-				  t.islocked,
+                  t.islocked,
                   t.isdeleted,
                   t.ispersistent,
                   t.isquestion 			 
@@ -9903,10 +9907,10 @@ SELECT
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
                   t.styles,
-				  t.topicimage,
-				  t.topicimagetype,
-				  t.topicimagebin,
-				  (SELECT mes2.message 
+                  t.topicimage,
+                  t.topicimagetype,
+                  t.topicimagebin,
+                  (SELECT mes2.message 
                  FROM databaseSchema.objectQualifier_message mes2 
                  WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
                  AND mes2.position = 0 LIMIT 1),
@@ -9944,10 +9948,10 @@ FOR _rec IN SELECT
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
                   t.styles,
-				  t.topicimage,
-				  t.topicimagetype,
-				  t.topicimagebin,
-				  (SELECT mes2.message 
+                  t.topicimage,
+                  t.topicimagetype,
+                  t.topicimagebin,
+                  (SELECT mes2.message 
                  FROM databaseSchema.objectQualifier_message mes2 
                  WHERE mes2.topicid = COALESCE(t.topicmovedid,t.topicid) 
                  AND mes2.position = 0 LIMIT 1),
@@ -10173,10 +10177,10 @@ varchar(4000)) AS FirstMessage,
              when true THEN
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid)
          else '' end),	
-		t.topicimage,
-		t.topicimagetype,
-		t.topicimagebin,
-		0 as HasAttachments, 
+        t.topicimage,
+        t.topicimagetype,
+        t.topicimagebin,
+        0 as HasAttachments, 
         ici_post_priorityrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -10365,10 +10369,10 @@ varchar(4000)) AS FirstMessage,
              when true THEN
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = t.topicid)
          else '' end),	
-		t.topicimage,
-		t.topicimagetype,
-		t.topicimagebin,
-		0 as HasAttachments,
+        t.topicimage,
+        t.topicimagetype,
+        t.topicimagebin,
+        0 as HasAttachments,
         ici_post_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -10747,10 +10751,10 @@ varchar(4000)) AS FirstMessage,
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_pageuserid), current_timestamp)
              else TIMESTAMP '-infinity' end) AS LastTopicAccess,		
         (SELECT tag FROM databaseSchema.objectQualifier_tags where tagid = i_tags::integer limit 1),
-		t.topicimage,
-		t.topicimagebin,
-		t.topicimagetype,
-		0 as HasAttachments, 	
+        t.topicimage,
+        t.topicimagebin,
+        t.topicimagetype,
+        0 as HasAttachments, 	
         ici_post_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex
         FROM
@@ -11813,8 +11817,8 @@ FOR _rec IN
             a.usesinglesignon,
             a.isapproved,
             a.isactiveexcluded,
-			a.topicsperpage,
-			a.postsperpage,
+            a.topicsperpage,
+            a.postsperpage,
             b.name AS RankName,
             (case(i_stylednicks)
             when true THEN  a.userstyle 
@@ -11891,8 +11895,8 @@ FOR _rec IN
             a.usesinglesignon,
             a.isapproved,
             a.isactiveexcluded,
-			a.topicsperpage,
-			a.postsperpage,
+            a.topicsperpage,
+            a.postsperpage,
             b.name AS RankName,
             case(i_stylednicks)
             when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = a.userid)  
@@ -11961,8 +11965,8 @@ FOR _rec IN
             a.usesinglesignon, 
             a.isapproved,
             a.isactiveexcluded,
-			a.topicsperpage,
-			a.postsperpage,
+            a.topicsperpage,
+            a.postsperpage,
             b.name AS RankName,
             case(i_stylednicks)
             when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = a.userid)  
@@ -12748,8 +12752,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_save(
                            i_autowatchtopics boolean,
                            i_dstuser boolean,
                            i_hideuser boolean,
-						   i_topicsperpage integer,
-						   i_postsperpage integer,
+                           i_topicsperpage integer,
+                           i_postsperpage integer,
                            i_utctimestamp timestampTZ)
                  RETURNS integer AS
 $BODY$DECLARE
@@ -12832,8 +12836,8 @@ BEGIN
                    displayname = (CASE WHEN (i_displayname  is not null) THEN  i_displayname ELSE displayname END),
                    email = (CASE WHEN (ici_email IS NOT NULL) THEN  ici_email ELSE email END),
                    usesinglesignon = i_usesinglesignon,
-				   topicsperpage = i_topicsperpage,
-				   postsperpage = i_postsperpage
+                   topicsperpage = i_topicsperpage,
+                   postsperpage = i_postsperpage
             WHERE userid = ici_userid;
 
             if (i_DisplayName IS NOT NULL AND COALESCE(ici_OldDisplayName,'') != COALESCE(i_DisplayName,'')) then
@@ -13627,22 +13631,8 @@ BEGIN
              WHERE topicid=i_topicid LIMIT 1) THEN
         i_topicid := NULL;
     END IF;
-    
-    
-    
 
-    -- get previous visit
-    IF NOT ici_isguest THEN
-        select  lastvisit  into ici_previousvisit from databaseSchema.objectQualifier_user where userid = ici_userid;
-    END IF;
-    
-    /*update last visit*/
-    UPDATE databaseSchema.objectQualifier_user SET 
-        lastvisit = i_currenttime,
-        ip = i_ip
-    WHERE userid = ici_userid;
-
-    /*find missing ForumID/TopicID*/
+    -- find missing ForumID/TopicID
     IF i_messageid IS NOT NULL and i_messageid > 0 THEN
         SELECT
             c.categoryid,
@@ -13686,9 +13676,153 @@ BEGIN
         WHERE
             a.forumid = i_forumid and
             b.boardid = i_boardid;
+    END IF;   
+
+        
+            IF not exists (select
+            1	
+            from databaseSchema.objectQualifier_activeaccess 
+            where userid = ici_userid limit 1) THEN				
+            insert into databaseSchema.objectQualifier_activeaccess(
+            userid,
+            boardid,
+            forumid,
+            isadmin, 
+            isforummoderator,
+            ismoderator, 
+            isguestx,
+            lastactive,
+            readaccess,
+            postaccess,
+            replyaccess,
+            priorityaccess,
+            pollaccess,
+            voteaccess,	
+            moderatoraccess,
+            editaccess,
+            deleteaccess,
+            uploadaccess,
+            downloadaccess,
+            userforumaccess)
+            select
+            /* userid,
+            ici_boardid,
+            forumid,
+            isadmin::boolean, 
+            isforummoderator::boolean,
+            ismoderator::boolean, 
+            (readaccess & 1 = 1)::boolean,
+            (postaccess & 2  = 2)::boolean,
+            (replyaccess & 4 = 4)::boolean,
+            (priorityaccess & 8 = 8)::boolean,
+            (pollaccess & 16 = 16)::boolean,
+            (voteaccess & 32 = 32)::boolean,	
+            (moderatoraccess & 64 = 64)::boolean,
+            (editaccess & 128 = 128)::boolean,
+            (deleteaccess & 256 = 256)::boolean,
+            (uploadaccess & 512 = 512)::boolean,
+            (downloadaccess & 1024 = 1024)::boolean */			
+            "UserID",
+            ici_userboardid,
+            "ForumID",
+            "IsAdmin"::boolean,
+            "IsForumModerator"::boolean,
+            "IsModerator"::boolean,
+            ici_isguest,
+            i_currenttime,
+            "ReadAccess"::boolean,
+            "PostAccess"::boolean,
+            "ReplyAccess"::boolean,
+            "PriorityAccess"::boolean,
+            "PollAccess"::boolean,
+            "VoteAccess"::boolean,
+            "ModeratorAccess"::boolean,
+            "EditAccess"::boolean,
+            "DeleteAccess"::boolean,
+            "UploadAccess"::boolean,
+            "DownloadAccess"::boolean,
+            "UserForumAccess"::boolean 			
+            from databaseSchema.objectQualifier_vaccess_combo_rows(ici_userid);
+            END IF;
+
+            IF ici_guestid != ici_userid 
+            and not exists (select 1 from databaseSchema.objectQualifier_activeaccess 
+            where userid = ici_guestid limit 1) THEN				
+            insert into databaseSchema.objectQualifier_activeaccess(
+            userid,
+            boardid,
+            forumid,
+            isadmin, 
+            isforummoderator,
+            ismoderator, 
+            isguestx,
+            lastactive,
+            readaccess,
+            postaccess,
+            replyaccess,
+            priorityaccess,
+            pollaccess,
+            voteaccess,	
+            moderatoraccess,
+            editaccess,
+            deleteaccess,
+            uploadaccess,
+            downloadaccess,
+            userforumaccess)
+            select
+            /* userid,
+            ici_boardid,
+            forumid,
+            isadmin::boolean, 
+            isforummoderator::boolean,
+            ismoderator::boolean, 
+            (readaccess & 1 = 1)::boolean,
+            (postaccess & 2  = 2)::boolean,
+            (replyaccess & 4 = 4)::boolean,
+            (priorityaccess & 8 = 8)::boolean,
+            (pollaccess & 16 = 16)::boolean,
+            (voteaccess & 32 = 32)::boolean,	
+            (moderatoraccess & 64 = 64)::boolean,
+            (editaccess & 128 = 128)::boolean,
+            (deleteaccess & 256 = 256)::boolean,
+            (uploadaccess & 512 = 512)::boolean,
+            (downloadaccess & 1024 = 1024)::boolean */			
+            "UserID",
+            ici_userboardid,
+            "ForumID",
+            "IsAdmin"::boolean,
+            "IsForumModerator"::boolean,
+            "IsModerator"::boolean,
+            ici_isguest,
+            i_currenttime,
+            "ReadAccess"::boolean,
+            "PostAccess"::boolean,
+            "ReplyAccess"::boolean,
+            "PriorityAccess"::boolean,
+            "PollAccess"::boolean,
+            "VoteAccess"::boolean,
+            "ModeratorAccess"::boolean,
+            "EditAccess"::boolean,
+            "DeleteAccess"::boolean,
+            "UploadAccess"::boolean,
+            "DownloadAccess"::boolean,
+            "UserForumAccess"::boolean 			
+            from databaseSchema.objectQualifier_vaccess_combo_rows(ici_guestid);
+            END IF;
+ IF exists (select
+            1	
+            from databaseSchema.objectQualifier_activeaccess 
+            where userid = ici_userid and forumid = COALESCE(i_forumid,0) and (COALESCE(i_forumid,0) = 0 or readaccess limit 1) THEN		
+ -- get previous visit
+    IF NOT ici_isguest THEN
+        select  lastvisit  into ici_previousvisit from databaseSchema.objectQualifier_user where userid = ici_userid;
     END IF;
-        
-        
+    
+    /*update last visit*/
+    UPDATE databaseSchema.objectQualifier_user SET 
+        lastvisit = i_currenttime,
+        ip = i_ip
+    WHERE userid = ici_userid; 
              DELETE FROM databaseSchema.objectQualifier_active
              WHERE  userid<>ici_userid  
              AND boardid=ici_boardid 
@@ -13791,7 +13925,7 @@ AND name = 'maxuserswhen';
             -- see notes to the function
             PERFORM databaseSchema.objectQualifier_active_updatemaxstats(i_boardid, i_utctimestamp);
         END IF;
-        /*remove duplicate users*/
+        -- remove duplicate users
         IF ici_isguest IS FALSE THEN
             DELETE FROM databaseSchema.objectQualifier_active
              WHERE userid=ici_userid 
@@ -13799,139 +13933,7 @@ AND name = 'maxuserswhen';
              AND sessionid<>i_sessionid; 
         END IF;	
     END IF;	
-
-        IF not exists (select
-            1	
-            from databaseSchema.objectQualifier_activeaccess 
-            where userid = ici_guestid limit 1) THEN				
-            insert into databaseSchema.objectQualifier_activeaccess(
-            userid,
-            boardid,
-            forumid,
-            isadmin, 
-            isforummoderator,
-            ismoderator, 
-            isguestx,
-            lastactive,
-            readaccess,
-            postaccess,
-            replyaccess,
-            priorityaccess,
-            pollaccess,
-            voteaccess,	
-            moderatoraccess,
-            editaccess,
-            deleteaccess,
-            uploadaccess,
-            downloadaccess,
-            userforumaccess)
-            select
-            /* userid,
-            ici_boardid,
-            forumid,
-            isadmin::boolean, 
-            isforummoderator::boolean,
-            ismoderator::boolean, 
-            (readaccess & 1 = 1)::boolean,
-            (postaccess & 2  = 2)::boolean,
-            (replyaccess & 4 = 4)::boolean,
-            (priorityaccess & 8 = 8)::boolean,
-            (pollaccess & 16 = 16)::boolean,
-            (voteaccess & 32 = 32)::boolean,	
-            (moderatoraccess & 64 = 64)::boolean,
-            (editaccess & 128 = 128)::boolean,
-            (deleteaccess & 256 = 256)::boolean,
-            (uploadaccess & 512 = 512)::boolean,
-            (downloadaccess & 1024 = 1024)::boolean */			
-            "UserID",
-            ici_userboardid,
-            "ForumID",
-            "IsAdmin"::boolean,
-            "IsForumModerator"::boolean,
-            "IsModerator"::boolean,
-            ici_isguest,
-            i_currenttime,
-            "ReadAccess"::boolean,
-            "PostAccess"::boolean,
-            "ReplyAccess"::boolean,
-            "PriorityAccess"::boolean,
-            "PollAccess"::boolean,
-            "VoteAccess"::boolean,
-            "ModeratorAccess"::boolean,
-            "EditAccess"::boolean,
-            "DeleteAccess"::boolean,
-            "UploadAccess"::boolean,
-            "DownloadAccess"::boolean,
-            "UserForumAccess"::boolean 			
-            from databaseSchema.objectQualifier_vaccess_combo_rows(ici_guestid);
-            END IF;
-            IF not exists (select
-            1	
-            from databaseSchema.objectQualifier_activeaccess 
-            where userid = ici_userid limit 1) THEN				
-            insert into databaseSchema.objectQualifier_activeaccess(
-            userid,
-            boardid,
-            forumid,
-            isadmin, 
-            isforummoderator,
-            ismoderator, 
-            isguestx,
-            lastactive,
-            readaccess,
-            postaccess,
-            replyaccess,
-            priorityaccess,
-            pollaccess,
-            voteaccess,	
-            moderatoraccess,
-            editaccess,
-            deleteaccess,
-            uploadaccess,
-            downloadaccess,
-            userforumaccess)
-            select
-            /* userid,
-            ici_boardid,
-            forumid,
-            isadmin::boolean, 
-            isforummoderator::boolean,
-            ismoderator::boolean, 
-            (readaccess & 1 = 1)::boolean,
-            (postaccess & 2  = 2)::boolean,
-            (replyaccess & 4 = 4)::boolean,
-            (priorityaccess & 8 = 8)::boolean,
-            (pollaccess & 16 = 16)::boolean,
-            (voteaccess & 32 = 32)::boolean,	
-            (moderatoraccess & 64 = 64)::boolean,
-            (editaccess & 128 = 128)::boolean,
-            (deleteaccess & 256 = 256)::boolean,
-            (uploadaccess & 512 = 512)::boolean,
-            (downloadaccess & 1024 = 1024)::boolean */			
-            "UserID",
-            ici_userboardid,
-            "ForumID",
-            "IsAdmin"::boolean,
-            "IsForumModerator"::boolean,
-            "IsModerator"::boolean,
-            ici_isguest,
-            i_currenttime,
-            "ReadAccess"::boolean,
-            "PostAccess"::boolean,
-            "ReplyAccess"::boolean,
-            "PriorityAccess"::boolean,
-            "PollAccess"::boolean,
-            "VoteAccess"::boolean,
-            "ModeratorAccess"::boolean,
-            "EditAccess"::boolean,
-            "DeleteAccess"::boolean,
-            "UploadAccess"::boolean,
-            "DownloadAccess"::boolean,
-            "UserForumAccess"::boolean 			
-            from databaseSchema.objectQualifier_vaccess_combo_rows(ici_userid);
-            END IF;
-
-            
+    END IF;	         
     FOR  _rec1 IN SELECT
      COALESCE(ici_activeupdate,false),
     /* get previous visit */
@@ -14138,17 +14140,6 @@ AS
    LANGUAGE 'sql' VOLATILE SECURITY DEFINER;
 --GO
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_favorite_count(
-                           i_topicid integer) 
-                  RETURNS integer
-AS
-$BODY$
-BEGIN
-    RETURN (SELECT COUNT(ID) as favoritecount FROM databaseSchema.objectQualifier_favoritetopic WHERE topicid = i_topicid);
-END;
-$BODY$
-  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER;
---GO
 
 /* Functions for "Thanks" Mod */
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_addthanks
@@ -14314,13 +14305,14 @@ BEGIN
             
         ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize; 
 FOR _rec in
-    SELECT  t.thanksfromuserid,    
-                t.thankstouserid,
+    SELECT 	    t.thankstouserid,
                 c.messageid,
                 a.forumid,
                 a.topicid,
                 a.topic,
-                b.userid,               
+                b.userid,
+                b.displayname,
+                b.name,               
                 c.posted,
                 c.message,
                 c.flags,
@@ -14395,7 +14387,9 @@ FOR _rec in
                 a.forumid,
                 a.topicid,
                 a.topic,
-                b.userid,               
+                b.userid, 
+                b.displayName,
+                b.name,         
                 c.posted,
                 c.message,
                 c.flags,
@@ -14408,7 +14402,7 @@ FOR _rec in
         join databaseSchema.objectQualifier_activeaccess ac on (ac.forumid = a.forumid and ac.userid = i_pageuserid)
         where 
              ac.readaccess and
-            -- is apploved	
+            -- is approved	
                 (c.flags & 2) = 2
                 AND a.topicmovedid IS NULL
                 -- not deleted
@@ -14779,10 +14773,10 @@ FOR _rec IN
                COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid limit 1), i_utctimestamp)
              else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
-		c.topicimage,
-		c.topicimagetype,
-		c.topicimagebin,
-		0 as HasAttachments,	 	
+        c.topicimage,
+        c.topicimagetype,
+        c.topicimagebin,
+        0 as HasAttachments,	 	
         ici_topics_totalrowsnumber AS TotalRows,
         ici_pageindex	AS 	PageIndex	  	     
     from
@@ -15549,9 +15543,9 @@ CREATE OR REPLACE FUNCTION  databaseSchema.objectQualifier_user_lazydata(
 $BODY$DECLARE
              G_UsrAlbums integer :=0;
              R_UsrAlbums integer :=0;         
-			 ici_grouppersonalforums integer :=0;
-			 ici_grouppersonalmasks integer :=0;
-			 ici_grouppersonalgroups integer :=0;
+             ici_grouppersonalforums integer :=0;
+             ici_grouppersonalmasks integer :=0;
+             ici_grouppersonalgroups integer :=0;
              _rec databaseSchema.objectQualifier_user_lazydata_return_type%ROWTYPE;
 BEGIN 
 
@@ -15604,7 +15598,7 @@ BEGIN
         (CASE WHEN i_showunreadpms  is true THEN (SELECT created FROM databaseSchema.objectQualifier_pmessage pm INNER JOIN databaseSchema.objectQualifier_userpmessage upm ON pm.pmessageid = upm.pmessageid WHERE upm.userid=i_userid and upm.isread is false  and upm.isdeleted  is false and upm.isarchived  is false ORDER BY pm.created DESC LIMIT 1) ELSE NULL END) as LastUnreadPm,		
         (CASE WHEN i_showpendingbuddies  is true THEN (SELECT COUNT(1) FROM databaseSchema.objectQualifier_buddy WHERE touserid = i_userid AND approved is false) ELSE 0 END) as PendingBuddies,
         (CASE WHEN i_showpendingbuddies  is true THEN (SELECT Requested FROM databaseSchema.objectQualifier_buddy WHERE touserID=i_userid and approved is false ORDER BY requested LIMIT 1) ELSE NULL END) as LastPendingBuddies,       
-	    (case(i_showuserstyle)
+        (case(i_showuserstyle)
             when true THEN  coalesce((select userstyle from databaseSchema.objectQualifier_user where userid = i_userid),'')  
             else ''	 end) as UserStyle,
        (SELECT COUNT(ua.albumid) FROM databaseSchema.objectQualifier_useralbum ua
@@ -15616,16 +15610,16 @@ BEGIN
            -- Guest can't vote in polls attached to boards, we need some temporary access check by a criteria 
         (CASE WHEN a.Flags & 4 > 0 THEN 0 ELSE 1 END) AS BoardVoteAccess,
         a.points,
-		(SELECT COUNT(1) FROM databaseSchema.objectQualifier_forum f   WHERE f.createdbyuserid = i_userid and f.isuserforum),
-		(SELECT COUNT(1) FROM databaseSchema.objectQualifier_accessmask am   WHERE am.createdbyuserid = i_userid and am.isusermask),
+        (SELECT COUNT(1) FROM databaseSchema.objectQualifier_forum f   WHERE f.createdbyuserid = i_userid and f.isuserforum),
+        (SELECT COUNT(1) FROM databaseSchema.objectQualifier_accessmask am   WHERE am.createdbyuserid = i_userid and am.isusermask),
         (SELECT COUNT(1) FROM databaseSchema.objectQualifier_group gr   WHERE gr.createdbyuserid = i_userid and gr.isusergroup),
-		ici_grouppersonalgroups,
-		ici_grouppersonalmasks,
-		ici_grouppersonalforums,
-		a.commonviewtype,
-		a.topicsperpage,
-		a.postsperpage
-		from
+        ici_grouppersonalgroups,
+        ici_grouppersonalmasks,
+        ici_grouppersonalforums,
+        a.commonviewtype,
+        a.topicsperpage,
+        a.postsperpage
+        from
            databaseSchema.objectQualifier_user a		
         where
         a.userid = i_userid LIMIT 1
@@ -15746,7 +15740,7 @@ $BODY$
               ici_pageindex integer := i_pageindex;
               ici_retcount integer := 0;
               ici_counter integer := 0;
-			  i_gettags boolean :=true;
+              i_gettags boolean :=true;
               _rec databaseSchema.objectQualifier_topics_byuser_return_type%ROWTYPE;
 BEGIN  
         -- find total returned count
@@ -15853,10 +15847,10 @@ BEGIN
              when true THEN
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid)
          else '' end),	
-		c.topicimage,
-		c.topicimagetype,
-		c.topicimagebin,
-		0 as HasAttachments, 
+        c.topicimage,
+        c.topicimagetype,
+        c.topicimagebin,
+        0 as HasAttachments, 
         ici_topics_totalrowsnumber  AS TotalRows,
         ici_pageindex	AS 	PageIndex			 	 
     from
@@ -16150,10 +16144,10 @@ BEGIN
                (SELECT lastaccessdate FROM databaseSchema.objectQualifier_TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = i_pageuserid LIMIT 1 )
              else i_utctimestamp	 end) as LastTopicAccess,
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
-		c.topicimage,
-		c.topicimagetype,
-		c.topicimagebin,
-		0 as HasAttachments,	
+        c.topicimage,
+        c.topicimagetype,
+        c.topicimagebin,
+        0 as HasAttachments,	
         ici_topics_totalrowsnumber  AS TotalRows,
         ici_pageindex	AS 	PageIndex			 	 
     from
@@ -16311,10 +16305,10 @@ BEGIN
                        COALESCE((SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE c.topicid=c.topicid AND y.userid = i_pageuserid), i_utctimestamp)
                                                else TIMESTAMP '-infinity'	 end) AS LastTopicAccess,
         (SELECT string_agg(tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where 	  tt.topicid = c.topicid),	
-		c.topicimage,
-		c.topicimagetype,
-		c.topicimagebin,
-		0 as HasAttachments,	 	
+        c.topicimage,
+        c.topicimagetype,
+        c.topicimagebin,
+        0 as HasAttachments,	 	
                        ici_topics_totalrowsnumber AS TotalRows,
                        ici_pageindex	AS 	PageIndex	  	     
     FROM
@@ -16763,14 +16757,14 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_imagesave(
                            i_topicid integer,
                            i_imageurl varchar(255),
                            i_stream bytea,
-						   i_topicimagetype varchar(255))
+                           i_topicimagetype varchar(255))
                   RETURNS void AS
 $BODY$
 begin
         update databaseSchema.objectQualifier_topic
         set topicimage = i_imageurl,
             topicimagetype = i_topicimagetype,
-			topicimagebin = i_stream
+            topicimagebin = i_stream
         where topicid = i_topicid;
     
 END;$BODY$

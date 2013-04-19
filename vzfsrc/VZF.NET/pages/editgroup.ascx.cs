@@ -34,16 +34,15 @@ namespace YAF.Pages
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Core;
-    using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -54,13 +53,28 @@ namespace YAF.Pages
     {
         #region Methods
 
-        public DataTable AccessMasksList { get; set; }
-        public int PersonalGroupsNumber { get; set; }
-        public int PersonalForumsNumber { get; set; }
-        public int PersonalAccessMasksNumber { get; set; }
-        
         /// <summary>
-        /// Handles databinding event of initial access maks dropdown control.
+        /// Gets or sets the access masks list.
+        /// </summary>
+        public DataTable AccessMasksList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the personal groups number.
+        /// </summary>
+        public int PersonalGroupsNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the personal forums number.
+        /// </summary>
+        public int PersonalForumsNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the personal access masks number.
+        /// </summary>
+        public int PersonalAccessMasksNumber { get; set; }
+
+        /// <summary>
+        /// Handles data binding event of initial access masks dropdown control.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -71,15 +85,16 @@ namespace YAF.Pages
         protected void BindData_AccessMaskID([NotNull] object sender, [NotNull] EventArgs e)
         {
             // We don't change access masks if it's a guest
-        
-                // get sender object as dropdown list
-                var c = (DropDownList) sender;
 
-                // list all access masks as data source
-                c.DataSource = this.AccessMasksList;
-                // set value and text field names
-                c.DataValueField = "AccessMaskID";
-                c.DataTextField = "Name";
+            // get sender object as dropdown list
+            var c = (DropDownList)sender;
+
+            // list all access masks as data source
+            c.DataSource = this.AccessMasksList;
+
+            // set value and text field names
+            c.DataValueField = "AccessMaskID";
+            c.DataTextField = "Name";
         }
 
         /// <summary>
@@ -106,7 +121,7 @@ namespace YAF.Pages
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));
 
             // profile
-            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID))); ;
+            this.PageLinks.AddLink(this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName, YafBuildLink.GetLink(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID))); 
 
             this.PageLinks.AddLink(this.GetText("PERSONALGROUP", "TITLE"), YafBuildLink.GetLink(ForumPages.personalgroup, "u={0}".FormatWith(PageContext.PageUserID)));
 
@@ -219,8 +234,6 @@ namespace YAF.Pages
         /// </param>
         protected void Save_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-         
-
             if (!ValidationHelper.IsValidInt(this.Priority.Text.Trim()))
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITGROUP", "MSG_INTEGER"));
@@ -228,12 +241,12 @@ namespace YAF.Pages
             }
 
             // Role
-            long roleID = 0;
+            long roleId = 0;
 
             // get role ID from page's parameter
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                roleID = long.Parse(this.Request.QueryString.GetFirstOrDefault("i"));
+                roleId = long.Parse(this.Request.QueryString.GetFirstOrDefault("i"));
             }
 
             // get new and old name
@@ -241,7 +254,7 @@ namespace YAF.Pages
             string oldRoleName = string.Empty;
 
             // if we are editing exising role, get it's original name
-            if (roleID != 0)
+            if (roleId != 0)
             {
                 // get the current role name in the DB
                 using (DataTable dt = CommonDb.group_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, true))
@@ -254,9 +267,9 @@ namespace YAF.Pages
             }
            
             // save role and get its ID if it's new (if it's old role, we get it anyway)
-            roleID = CommonDb.group_save(
+            roleId = CommonDb.group_save(
                 PageContext.PageModuleID,
-                roleID,
+                roleId,
                 this.PageContext.PageBoardID,
                 roleName,
               false,
@@ -304,8 +317,6 @@ namespace YAF.Pages
             else if (!RoleMembershipHelper.RoleExists(roleName))
             {
                 // if role doesn't exist in provider's data source, create it
-
-                // simply create it
                 RoleMembershipHelper.CreateRole(roleName);
             }
 
@@ -328,7 +339,7 @@ namespace YAF.Pages
                         CommonDb.forumaccess_save(
                             PageContext.PageModuleID,
                             forumId,
-                            roleID,
+                            roleId,
                             ((DropDownList)item.FindControl("AccessmaskID")).SelectedValue);
                     }
 
@@ -342,7 +353,7 @@ namespace YAF.Pages
             this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(string.Empty)));
 
             // Done, redirect to role editing page
-            YafBuildLink.Redirect(ForumPages.editgroup, "i={0}&u={1}", roleID, this.PageContext.PageUserID);
+            YafBuildLink.Redirect(ForumPages.editgroup, "i={0}&u={1}", roleId, this.PageContext.PageUserID);
         }
 
         /// <summary>
@@ -377,7 +388,7 @@ namespace YAF.Pages
             // set datasource of access list (list of forums and role's access masks) if we are editing existing mask
             if (this.Request.QueryString.GetFirstOrDefault("i") != null)
             {
-                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"),PageContext.PageUserID,true);
+                this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, true);
             }
 
             this.AccessMasksList = CommonDb.accessmask_pforumlist(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false);

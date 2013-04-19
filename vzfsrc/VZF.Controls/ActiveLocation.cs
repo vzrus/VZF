@@ -17,29 +17,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Text;
-
 namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Data;
-  using System.Web;
-  using System.Web.UI;
+    using System;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
-  using YAF.Classes;
-  using YAF.Core; 
-  
-  using VZF.Utils;
-  using VZF.Utils.Helpers;
-  using YAF.Types;
-  using YAF.Types.Interfaces;
-  using YAF.Types.Constants;
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Provides Active Users location info
@@ -49,7 +47,7 @@ namespace VZF.Controls
     #region Properties
 
     /// <summary>
-    ///   Gets or sets the forumid of the current location
+    ///   Gets or sets the ForumID of the current location
     /// </summary>
     public int ForumID
     {

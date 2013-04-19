@@ -20,6 +20,7 @@
 namespace VZF.Data.Firebird
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Diagnostics;
@@ -72,7 +73,86 @@ namespace VZF.Data.Firebird
           }
       }
 
-      static public IsolationLevel IsolationLevel
+      /// <summary>
+      /// Gets the connection parameters.
+      /// </summary>
+      public static List<ConnectionStringParameter> ConnectionParameters
+      {
+          get
+          {
+              var cstr = new FbConnectionStringBuilder();
+
+              var connectionParametersBuilder = new List<ConnectionStringParameter>
+                                                    {
+                                                        new ConnectionStringParameter(
+                                                            "Database",
+                                                            cstr.Database.GetType(),
+                                                            "~\\App_Data\\yafnet.fdb",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "Charset",
+                                                            cstr.Charset.GetType(),
+                                                            "UTF8",
+                                                            false),
+                                                        new ConnectionStringParameter(
+                                                            "Port",
+                                                            typeof(string),
+                                                            "3050",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "ServerType",
+                                                            typeof(string),
+                                                            FbServerType.Default.ToString(),
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "PacketSize",
+                                                            typeof(string),
+                                                            "8192",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "Role",
+                                                            typeof(string),
+                                                            string.Empty,
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "ConnectionTimeout",
+                                                            typeof(string),
+                                                            "150",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "ConnectionLifeTime",
+                                                            typeof(string),
+                                                            "0",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "Pooling",
+                                                            cstr.Pooling.GetType(),
+                                                            "true",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "Dialect",
+                                                            cstr.Dialect.GetType(),
+                                                            "3",
+                                                            true),
+                                                        new ConnectionStringParameter(
+                                                            "UserID",
+                                                            typeof(string),
+                                                            "admin",
+                                                            false),
+                                                        new ConnectionStringParameter(
+                                                            "Password",
+                                                            typeof(string),
+                                                            "password",
+                                                            false)
+                                                    };
+              return connectionParametersBuilder;
+          }
+      }
+
+        /// <summary>
+        /// Gets the isolation level.
+        /// </summary>
+        public static IsolationLevel IsolationLevel
       {
           get
           {
@@ -80,7 +160,7 @@ namespace VZF.Data.Firebird
           }
       }
 
-      static public string DatabaseOwner
+      public static string DatabaseOwner
       {
           get
           {
@@ -93,32 +173,32 @@ namespace VZF.Data.Firebird
           }
       }
 
-      static public string ObjectQualifier
+      public static string ObjectQualifier
       {
           get { return _objectQualifier ?? (_objectQualifier = Config.DatabaseObjectQualifier); }
       }
      
-      static public string SchemaName
+      public static string SchemaName
       {
           get { return _schemaName ?? (_schemaName = Config.DatabaseSchemaName); }
       }
       
-      static public string DatabaseEncoding
+      public static string DatabaseEncoding
       {
           get { return _databaseEncoding ?? (_databaseEncoding = Config.DatabaseEncoding); }
       }
       
-      static public string DatabaseCollation
+      public static string DatabaseCollation
       {
           get { return _databaseCollation ?? (_databaseCollation = Config.GetConfigValueAsString("YAF.DatabaseCollation")); }
       }
       
-      static public string GranteeName
+      public static string GranteeName
       {
           get { return _granteeName ?? (_granteeName = ConfigurationManager.AppSettings["YAF.DatabaseGranteeName"]); }
       }
       
-      static public string DBName
+      public static string DBName
       {
           get
           {
@@ -141,7 +221,7 @@ namespace VZF.Data.Firebird
           }
       }
       
-      static public string HostName
+      public static string HostName
       {
           get { return _hostName ?? (_hostName = ConfigurationManager.AppSettings["YAF.DatabaseHostName"]); }
       }
@@ -155,7 +235,7 @@ namespace VZF.Data.Firebird
       /// </summary>
       /// <param name="name">Base name of an object</param>
       /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
-      static public string GetObjectName(string name)
+      public static string GetObjectName(string name)
       {
           return String.Format(
                           "{0}{1}",
@@ -163,70 +243,26 @@ namespace VZF.Data.Firebird
               name);
       }
 
-        public static string GetConnectionString(
-          string parm1,
-          string parm2,
-          string parm3,
-          string parm4,
-          string parm5,
-          string parm6,
-          string parm7,
-          string parm8,
-          string parm9,
-          string parm10,
-          bool parm11,
-          bool parm12,
-          bool parm13,
-          bool parm14,
-          bool parm15,
-          bool parm16,
-          bool parm17,
-          bool parm18,
-          bool parm19,
-          string userId,
-          string userPassword)
-      {
-          string st = parm1.Replace(@"\\", @"\");
+       
+        /// <summary>
+        /// The get connection string.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetConnectionString()
+        {
+            var connBuilder = new FbConnectionStringBuilder();
 
-          var connBuilder =
-              new FbConnectionStringBuilder("Database=" + st + ";Port=" +
-                  parm4 + ";Dialect=" + parm2 + ";Charset=" + parm3 + ";UserID=" + userId + ";userPassword=" + userPassword)
-                  {
-                      Database = parm1,
-                      ConnectionLifeTime = Convert.ToInt32(parm9),
-                      Dialect = Convert.ToInt32(parm2),
-                      Charset = parm3,
-                      Port = Convert.ToInt32(parm4),
-                      Role = parm7,
-                      ConnectionTimeout = Convert.ToInt32(parm8),
-                      Pooling = parm13,
-                      UserID = userId,
-                      Password = userPassword
-                  };
+            foreach (var parameter in ConnectionParameters)
+            {
+                connBuilder.Add(parameter.Name, parameter.Value);
+            }
 
-          /* switch (Convert.ToInt32(parm5))
-           {
-               case 0:
-                   connBuilder.ServerType = FbServerType.Context;
-                   break;
-               case 1:
-                   connBuilder.ServerType = FbServerType.Default;
-                   break;              
-               case 2:
-                   connBuilder.ServerType = FbServerType.Embedded;
-                   break;
-               default:
-                   connBuilder.ServerType = FbServerType.Context;
-                   break;
-           }*/
+            return connBuilder.ConnectionString;
+        }
 
 
-          //  connBuilder.PacketSize
-          // connBuilder.ClientLibrary = "";
-
-
-          return connBuilder.ConnectionString;
-      }
 
       /// <summary>
       /// Test the DB Connection.
@@ -285,7 +321,7 @@ namespace VZF.Data.Firebird
       /// <param name="commandText">Command text to qualify.</param>
       /// <param name="isText">Determines whether command text is text or stored procedure.</param>
       /// <returns>New FbCommand</returns>
-      static public FbCommand GetCommand(string commandText, bool isText)
+      public static FbCommand GetCommand(string commandText, bool isText)
       {
           return GetCommand(commandText, isText, null);
       }
@@ -297,7 +333,7 @@ namespace VZF.Data.Firebird
       /// <param name="isText">Determines whether command text is text or stored procedure.</param>
       /// <param name="connection">Connection to use with command.</param>
       /// <returns>New FbCommand</returns>
-      static public FbCommand GetCommand(string commandText, bool isText, FbConnection connection)
+      public static FbCommand GetCommand(string commandText, bool isText, FbConnection connection)
       {
           if (isText)
           {             
@@ -321,7 +357,7 @@ namespace VZF.Data.Firebird
       /// </summary>
       /// <param name="storedProcedure">Base of stored procedure name.</param>
       /// <returns>New FbCommand</returns>
-      static public FbCommand GetCommand(string storedProcedure)
+      public static FbCommand GetCommand(string storedProcedure)
       {
           return GetCommand(storedProcedure, null);
       }
@@ -332,7 +368,7 @@ namespace VZF.Data.Firebird
       /// <param name="storedProcedure">Base of stored procedure name.</param>
       /// <param name="connection">Connection to use with command.</param>
       /// <returns>New FbCommand</returns>
-      static public FbCommand GetCommand(string storedProcedure, FbConnection connection)
+      public static FbCommand GetCommand(string storedProcedure, FbConnection connection)
       {
           FbCommand cmd = new FbCommand();
 
