@@ -110,7 +110,7 @@ public class YafWebService : WebService, IHaveServiceLocator
             post,
             userid,
             priority,
-            this.User != null ? null : (UserMembershipHelper.FindUsersByName(username) != null) ? "GUEST_username" : username,
+            this.User != null ? null : (UserMembershipHelper.FindUsersByName(username) != null) ? "GUEST_{0}".FormatWith(username) : username,
             ip,
             DateTime.UtcNow,
             string.Empty,
