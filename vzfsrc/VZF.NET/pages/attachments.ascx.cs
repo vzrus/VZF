@@ -23,8 +23,11 @@ namespace YAF.Pages
   #region Using
 
   using System;
+  using System.Collections;
+  using System.Collections.Generic;
   using System.Data;
   using System.IO;
+  using System.Linq;
   using System.Web;
   using System.Web.UI.HtmlControls;
   using System.Web.UI.WebControls;
@@ -40,7 +43,9 @@ namespace YAF.Pages
   using YAF.Types.Interfaces;
   using VZF.Utils;
 
-  #endregion
+  using YAF.Types.Objects;
+
+    #endregion
 
   /// <summary>
   /// The attachments Page Class.
@@ -204,7 +209,12 @@ namespace YAF.Pages
       {
         return;
       }
-
+        
+        int messageId;
+        if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageId))
+        {
+            YafBuildLink.AccessDenied();
+        }
       if (!this.PageContext.ForumModeratorAccess && !this.PageContext.ForumUploadAccess)
       {
         YafBuildLink.AccessDenied();
@@ -229,13 +239,13 @@ namespace YAF.Pages
       // Check that non-moderators only edit messages they have written
       if (!this.PageContext.ForumModeratorAccess)
       {
-        using (DataTable dt = CommonDb.message_list(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m")))
-        {
-          if ((int)dt.Rows[0]["UserID"] != this.PageContext.PageUserID)
+          var dt = CommonDb.MessageList(
+              PageContext.PageModuleID, messageId).FirstOrDefault();
+       
+         if (dt == null || (dt.UserID != this.PageContext.PageUserID))
           {
             YafBuildLink.AccessDenied(/*"You didn't post this message."*/);
           }
-        }
       }
 
       if (this.PageContext.Settings.LockedForum == 0)

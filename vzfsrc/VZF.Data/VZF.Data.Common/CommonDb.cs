@@ -9849,10 +9849,11 @@ namespace VZF.Data.Common
             string namePattern = string.Empty;
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
+            pageload_Result pload;
             switch (dataEngine)
             {
                 case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.pageload(
+                    pload = VZF.Data.MsSql.Db.pageload(
                         connectionString,
                         sessionId,
                         boardId,
@@ -9869,10 +9870,12 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack).Table.AsEnumerable()
-                           .Select(r => new pageload_Result(r))
-                           .ToList()[0];
+                               .Select(r => new pageload_Result(r))
+                               .ToList()[0];
+                    pload.ModuleID = mid;
+                    return pload;
                 case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.pageload(
+                    pload = VZF.Data.Postgre.Db.pageload(
                         connectionString,
                         sessionId,
                         boardId,
@@ -9889,10 +9892,12 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack).Table.AsEnumerable()
-                           .Select(r => new pageload_Result(r))
-                           .ToList()[0];
+                               .Select(r => new pageload_Result(r))
+                               .ToList()[0];
+                     pload.ModuleID = mid;
+                    return pload;
                 case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.pageload(
+                    pload = VZF.Data.Mysql.Db.pageload(
                         connectionString,
                         sessionId,
                         boardId,
@@ -9909,10 +9914,12 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack).Table.AsEnumerable()
-                           .Select(r => new pageload_Result(r))
-                           .ToList()[0];
+                               .Select(r => new pageload_Result(r))
+                               .ToList()[0];
+                     pload.ModuleID = mid;
+                    return pload;
                 case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.pageload(
+                    pload = VZF.Data.Firebird.Db.pageload(
                         connectionString,
                         sessionId,
                         boardId,
@@ -9929,11 +9936,13 @@ namespace VZF.Data.Common
                         isCrawler,
                         isMobileDevice,
                         donttrack).Table.AsEnumerable()
-                           .Select(r => new pageload_Result(r))
-                           .ToList()[0];
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0];
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0];
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0]; 
+                               .Select(r => new pageload_Result(r))
+                               .ToList()[0];
+                     pload.ModuleID = mid;
+                    return pload;
+                // case CommonSqlDbAccess.Oracle:  var pload = VZF.Data.Oracle.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0]; pload.ModuleID = mid;return pload;
+                // case CommonSqlDbAccess.Db2:  var pload = VZF.Data.Db2.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0]; pload.ModuleID = mid;return pload;
+                // case CommonSqlDbAccess.Other:  var pload = VZF.Data.Other.Db.pageload(connectionString, sessionId, boardId, userKey, ip, location, forumPage, browser, platform,categoryId, forumId, topicId, messageId, isCrawler, isMobileDevice, donttrack).Table.AsEnumerable().Select(r => new pageload_Result()).ToList()[0]; pload.ModuleID = mid;return pload;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11192,7 +11201,7 @@ namespace VZF.Data.Common
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// </exception>
-        public static DataTable rank_list(int? mid, object boardId, object rankID)
+        public static IEnumerable<rank_list_Result> rank_list(int? mid, object boardId, object rankID)
         {
             string dataEngine;
             string connectionString;
@@ -11202,16 +11211,16 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.rank_list(connectionString, boardId, rankID);
+                    return VZF.Data.MsSql.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
                 case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.rank_list(connectionString, boardId, rankID);
+                    return VZF.Data.Postgre.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
                 case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.rank_list(connectionString, boardId, rankID);
+                    return VZF.Data.Mysql.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
                 case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.rank_list(connectionString, boardId, rankID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.rank_list(connectionString, boardId, rankID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.rank_list(connectionString, boardId, rankID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.rank_list(connectionString, boardId, rankID); 
+                    return VZF.Data.Firebird.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r));
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.rank_list(connectionString, boardId, rankID).AsEnumerable().Select(r => new rank_list_Result(r)); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

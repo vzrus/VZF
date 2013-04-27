@@ -31,11 +31,13 @@ namespace YAF.Pages
     using System;
     using System.Data;
     using System.Globalization;
+    using System.Linq;
     using System.Web;
     using System.Web.UI.WebControls;
 
     using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Types.Data;
 
     using YAF.Classes;
 
@@ -43,6 +45,7 @@ namespace YAF.Pages
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
+    using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using VZF.Utils;
     using VZF.Utils.Helpers;
@@ -404,32 +407,24 @@ namespace YAF.Pages
             this.NumPostDDL.DataBind();
 
             // get list of user ranks for filtering
-            using (DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            var rankList = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).ToList();
+
+            // add empty for for no filtering
+            rankList.Insert(0, new rank_list_Result(0, this.GetText("ALL")));
+
+            for (int index = 0; index < rankList.Count; index++)
             {
-                // add empty for for no filtering
-                DataRow newRow = dt.NewRow();
-                newRow["Name"] = this.GetText("ALL");
-                newRow["RankID"] = DBNull.Value;
-                dt.Rows.InsertAt(newRow, 0);
-
-                DataRow[] guestRows = dt.Select("Name='{0}'".FormatWith(UserMembershipHelper.GuestUserName));
-
-                if (guestRows.Length > 0)
+                var drow = rankList[index];
+                if ((drow.Flags & RankFlags.Flags.IsHidden.ToInt()) == RankFlags.Flags.IsHidden.ToInt())
                 {
-                    foreach (DataRow row in guestRows)
-                    {
-                        row.Delete();
-                    }
+                    rankList.Remove(drow);
                 }
-
-                // commits the deletes to the table
-                dt.AcceptChanges();
-
-                this.Ranks.DataSource = dt;
-                this.Ranks.DataTextField = "Name";
-                this.Ranks.DataValueField = "RankID";
-                this.Ranks.DataBind();
             }
+
+            this.Ranks.DataSource = rankList;
+            this.Ranks.DataTextField = "Name";
+            this.Ranks.DataValueField = "RankID";
+            this.Ranks.DataBind();
 
             this.BindData();
         }

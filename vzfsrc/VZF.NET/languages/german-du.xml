@@ -148,6 +148,8 @@
     <Resource tag="DELETE">Löschen</Resource>
     <Resource tag="DOWNLOAD">Herunterladen</Resource>
     <Resource tag="EDIT">Bearbeiten</Resource>
+    <Resource tag="ISCOMMONMASK">Access mask</Resource>
+    <Resource tag="ISUSERMASK">A user mask</Resource>
     <Resource tag="MODERATOR">Moderieren</Resource>
     <Resource tag="MSG_NOT_DELETE">Sie können diese Zugangsmaske nicht löschen, da sie derzeit verwendet wird!</Resource>
     <Resource tag="NAME">Name</Resource>
@@ -894,6 +896,7 @@
     <Resource tag="IS_GUEST">Ist Gast</Resource>
     <Resource tag="IS_MOD">Ist Moderator</Resource>
     <Resource tag="IS_START">Ist Start</Resource>
+    <Resource tag="ISUSERGROUP">Is User Group</Resource>
     <Resource tag="LINKED">Verlinkt</Resource>
     <Resource tag="NAME">Name</Resource>
     <Resource tag="NEW_ROLE">Neue Rolle</Resource>
@@ -1118,6 +1121,8 @@
     <Resource tag="HOST_PERMISSION">Berechtigungen</Resource>
     <Resource tag="HOST_SEARCH">Suche</Resource>
     <Resource tag="HOST_TEMPLATES">Vorlagen</Resource>
+    <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
+    <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE">Bildanhänge verkleinern aktivieren</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE_HELP">Angehängten Bilder werden zu den Thumbnails verkleinert, falls sie zu groß sind.</Resource>
     <Resource tag="IMAGE_RESIZE_HEIGHT">Bild Max. Höhe:</Resource>

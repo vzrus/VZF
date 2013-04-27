@@ -60,7 +60,7 @@ namespace VZF.Data.Utils
       {
         if (HttpContext.Current.Items["NumQueries"] == null)
         {
-          HttpContext.Current.Items["NumQueries"] = (int)1;
+          HttpContext.Current.Items["NumQueries"] = 1;
         }
         else
         {
@@ -80,30 +80,32 @@ namespace VZF.Data.Utils
 #if DEBUG
       this._stopWatch.Stop();
 
-      double duration = (double) this._stopWatch.ElapsedMilliseconds/1000.0;
+        var duration = this._stopWatch.ElapsedMilliseconds / 1000.0;
 
-      this._cmd = "{0}: {1:N3}".FormatWith(this._cmd, duration);
+        this._cmd = "{0}: {1:N3}".FormatWith(this._cmd, duration);
 
-      if (HttpContext.Current != null)
-      {
+        if (HttpContext.Current == null)
+        {
+            return;
+        }
+
         if (HttpContext.Current.Items["TimeQueries"] == null)
         {
-          HttpContext.Current.Items["TimeQueries"] = duration;
+            HttpContext.Current.Items["TimeQueries"] = duration;
         }
         else
         {
-          HttpContext.Current.Items["TimeQueries"] = duration + (double)HttpContext.Current.Items["TimeQueries"];
+            HttpContext.Current.Items["TimeQueries"] = duration + (double)HttpContext.Current.Items["TimeQueries"];
         }
 
         if (HttpContext.Current.Items["CmdQueries"] == null)
         {
-          HttpContext.Current.Items["CmdQueries"] = this._cmd;
+            HttpContext.Current.Items["CmdQueries"] = this._cmd;
         }
         else
         {
-          HttpContext.Current.Items["CmdQueries"] += "<br />" + this._cmd;
+            HttpContext.Current.Items["CmdQueries"] += "<br />" + this._cmd;
         }
-      }
 
 #endif
     }
@@ -115,12 +117,14 @@ namespace VZF.Data.Utils
     /// </summary>
     public static void Reset()
     {
-      if (HttpContext.Current != null)
-      {
+        if (HttpContext.Current == null)
+        {
+            return;
+        }
+
         HttpContext.Current.Items["NumQueries"] = 0;
-        HttpContext.Current.Items["TimeQueries"] = (double) 0;
+        HttpContext.Current.Items["TimeQueries"] = (double)0;
         HttpContext.Current.Items["CmdQueries"] = string.Empty;
-      }
     }
 
     /// <summary>
@@ -130,7 +134,7 @@ namespace VZF.Data.Utils
     {
       get
       {
-        return (int) ((HttpContext.Current == null) ? 0 : HttpContext.Current.Items["NumQueries"]);
+          return (int)((HttpContext.Current == null) ? 0 : HttpContext.Current.Items["NumQueries"]);
       }
     }
 
@@ -141,7 +145,7 @@ namespace VZF.Data.Utils
     {
       get
       {
-        return (double) ((HttpContext.Current == null) ? 0.0 : HttpContext.Current.Items["TimeQueries"]);
+          return (double)((HttpContext.Current == null) ? 0.0 : HttpContext.Current.Items["TimeQueries"]);
       }
     }
 
@@ -152,7 +156,7 @@ namespace VZF.Data.Utils
     {
       get
       {
-        return (string) ((HttpContext.Current == null) ? string.Empty : HttpContext.Current.Items["CmdQueries"]);
+          return (string)((HttpContext.Current == null) ? string.Empty : HttpContext.Current.Items["CmdQueries"]);
       }
     }
 #endif

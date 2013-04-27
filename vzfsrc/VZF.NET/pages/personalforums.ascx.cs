@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright company="Vladimir Zakharov" file="personalforum.ascx.cs">
+// <copyright company="Vladimir Zakharov" file="personalforums.ascx.cs">
 //   VZF by vzrus
 //   Copyright (C) 2006-2013 Vladimir Zakharov
 //   https://github.com/vzrus
@@ -24,40 +24,30 @@
 namespace YAF.pages
 {
     using System;
-    using System.Collections.Specialized;
-    
     using System.Drawing;
-   
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-
 
     /// <summary>
-    /// The personalforum.
+    /// The personal forums.
     /// </summary>
     public partial class personalforums : ForumPage
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   Temporary storage of un-linked provider roles.
-        /// </summary>
-        private readonly StringCollection _availableRoles = new StringCollection();
-
         #endregion
-        #region Methods
 
+        #region Methods
 
         /// <summary>
         /// Format string color.
@@ -126,7 +116,6 @@ namespace YAF.pages
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE"),
                     this.GetText("ADMIN_FORUMS", "CONFIRM_DELETE_POSITIVE"));
         }
-
 
         /// <summary>
         /// The new forum_ click.
@@ -207,13 +196,13 @@ namespace YAF.pages
         }
 
         /// <summary>
-        /// Get query string as int.
+        /// The get query string as integer.
         /// </summary>
         /// <param name="name">
         /// The name.
         /// </param>
         /// <returns>
-        /// The get query string as int.
+        /// The <see cref="int?"/>.
         /// </returns>
         protected int? GetQueryStringAsInt([NotNull] string name)
         {
@@ -229,29 +218,9 @@ namespace YAF.pages
         }
 
         /// <summary>
-        /// Bind data for this control.
+        /// The bit setting.
         /// </summary>
-        private void BindData()
-        {
-            // add forum list
-            using (var frmList = CommonDb.forum_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, PageContext.PageUserID, true))
-            {
-               // this.ForumList.DataSource = frmList;
-            }
-
-            // Hide the New Forum Button if there are no Categories.
-            // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
-            // bind data to controls
-           
-        
-
-            this.DataBind();
-        }
-
-        /// <summary>
-        /// The bit set.
-        /// </summary>
-        /// <param name="_o">
+        /// <param name="o">
         /// The _o.
         /// </param>
         /// <param name="bitmask">
@@ -260,9 +229,9 @@ namespace YAF.pages
         /// <returns>
         /// The bit set.
         /// </returns>
-        protected bool BitSet([NotNull] object _o, int bitmask)
+        protected bool BitSet([NotNull] object o, int bitmask)
         {
-            var i = (int)_o;
+            var i = (int)o;
             return (i & bitmask) != 0;
         }
 
@@ -281,6 +250,23 @@ namespace YAF.pages
         {
             // go back to personal group selection
             YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
+        }
+
+        /// <summary>
+        /// Bind data for this control.
+        /// </summary>
+        private void BindData()
+        {
+            // add forum list
+            using (var frmList = CommonDb.forum_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, PageContext.PageUserID, true))
+            {
+                this.ForumList.DataSource = frmList;
+            }
+
+            // Hide the New Forum Button if there are no Categories.
+            // this.AddForumBtn.Visible = this.AddForumBtn.Visible && this.CategoryList.Items.Count < 1;
+            // bind data to controls
+            this.DataBind();
         }
     }
 }

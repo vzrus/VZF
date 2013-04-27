@@ -2025,6 +2025,7 @@ END;
 BEGIN
 UPDATE {databaseName}.{objectQualifier}Group SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
 UPDATE {databaseName}.{objectQualifier}Rank SET Style = NULL where Style IS NOT NULL and CHAR_LENGTH(Style)<=2;
+UPDATE {databaseName}.{objectQualifier}Rank SET Flags = Flags | 4 where Name LIKE 'Guest';
 END;
 --GO
 CALL {databaseName}.{objectQualifier}tmp_updatevalues();

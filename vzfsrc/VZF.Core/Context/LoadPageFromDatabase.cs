@@ -22,15 +22,15 @@ using VZF.Utils.Helpers;
 namespace YAF.Core
 {
     using System;
-    using System.Data;
     using System.Web;
+    using System.Web.Security;
 
     using VZF.Data.Common;
     using VZF.Types.Data;
     using VZF.Utils;
     using VZF.Utils.Extensions;
 
-    using YAF.Classes;
+
     using YAF.Types;
     using YAF.Types.Attributes;
     using YAF.Types.Constants;
@@ -228,9 +228,9 @@ namespace YAF.Core
                     this.DataCache.Remove(Constants.Cache.UsersOnlineStatus);
                 }
             }
-            catch (Exception)
+            catch (Exception x)
             {
-#if !DEBUG
+ #if !DEBUG
 
     // log the exception...
 				this.Logger.Fatal(x, "Failure Initializing User/Page.");

@@ -25,11 +25,13 @@ namespace YAF.Pages.Admin
     using System;
     using System.Data;
     using System.IO;
+    using System.Linq;
     using System.Web;
     using System.Web.Security;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Types.Data;
 
     using YAF.Classes;
     
@@ -38,6 +40,7 @@ namespace YAF.Pages.Admin
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
+    using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
     using VZF.Utils;
@@ -313,19 +316,24 @@ namespace YAF.Pages.Admin
             }
 
             // get list of user ranks for filtering
-            using (DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
-            {
-                // add empty for for no filtering
-                DataRow newRow = dt.NewRow();
-                newRow["Name"] = string.Empty;
-                newRow["RankID"] = DBNull.Value;
-                dt.Rows.InsertAt(newRow, 0);
+            var rankList = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).ToList();
 
-                this.rank.DataSource = dt;
-                this.rank.DataTextField = "Name";
-                this.rank.DataValueField = "RankID";
-                this.rank.DataBind();
+            // add empty for for no filtering
+            rankList.Insert(0, new rank_list_Result(0, this.GetText("ALL")));
+
+            for (int index = 0; index < rankList.Count; index++)
+            {
+                var drow = rankList[index];
+                if ((drow.Flags & RankFlags.Flags.IsHidden.ToInt()) == RankFlags.Flags.IsHidden.ToInt())
+                {
+                    rankList.Remove(drow);
+                }
             }
+
+            this.rank.DataSource = rankList;
+            this.rank.DataTextField = "Name";
+            this.rank.DataValueField = "RankID";
+            this.rank.DataBind();
 
             // TODO : page size difinable?
             this.PagerTop.PageSize = 25;

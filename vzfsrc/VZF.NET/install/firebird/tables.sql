@@ -45,7 +45,7 @@ IF (NOT EXISTS(SELECT 1
                        CREATEDBYUSERDISPLAYNAME  VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
                        CREATEDDATE          TIMESTAMP,
                        ISUSERMASK           SMALLINT  DEFAULT 0 NOT NULL,
-                       ISADMINMASK           SMALLINT  DEFAULT 0 NOT NULL					    
+                       ISADMINMASK          SMALLINT  DEFAULT 0 NOT NULL					   					    
                        );';
 END
 --GO
@@ -110,23 +110,23 @@ IF (NOT EXISTS(SELECT 1 FROM RDB$RELATIONS a
                        USERID			    INTEGER NOT NULL ,
                        BOARDID			    INTEGER NOT NULL ,			
                        FORUMID			    INTEGER NOT NULL,
-                       ISADMIN				INTEGER DEFAULT 0 NOT NULL,
-                       ISFORUMMODERATOR	    INTEGER DEFAULT 0 NOT NULL,
-                       ISMODERATOR			INTEGER DEFAULT 0 NOT NULL,
-                       ISGUESTX			    INTEGER DEFAULT 0 NOT NULL,
+                       ISADMIN				SMALLINT DEFAULT 0 NOT NULL,
+                       ISFORUMMODERATOR	    SMALLINT DEFAULT 0 NOT NULL,
+                       ISMODERATOR			SMALLINT DEFAULT 0 NOT NULL,
+                       ISGUESTX			    SMALLINT DEFAULT 0 NOT NULL,
                        LASTACTIVE			TIMESTAMP,
-                       READACCESS			INTEGER NOT NULL ,
-                       POSTACCESS			INTEGER NOT NULL ,
-                       REPLYACCESS		    INTEGER NOT NULL,
-                       PRIORITYACCESS		INTEGER NOT NULL,
-                       POLLACCESS			INTEGER NOT NULL,
-                       VOTEACCESS			INTEGER NOT NULL,
-                       MODERATORACCESS		INTEGER NOT NULL,
-                       EDITACCESS			INTEGER NOT NULL,
-                       DELETEACCESS		    INTEGER NOT NULL,
-                       UPLOADACCESS		    INTEGER NOT NULL,		
-                       DOWNLOADACCESS		INTEGER NOT NULL,
-                       USERFORUMACCESS      INTEGER NOT NULL
+                       READACCESS			SMALLINT NOT NULL ,
+                       POSTACCESS			SMALLINT NOT NULL ,
+                       REPLYACCESS		    SMALLINT NOT NULL,
+                       PRIORITYACCESS		SMALLINT NOT NULL,
+                       POLLACCESS			SMALLINT NOT NULL,
+                       VOTEACCESS			SMALLINT NOT NULL,
+                       MODERATORACCESS		SMALLINT NOT NULL,
+                       EDITACCESS			SMALLINT NOT NULL,
+                       DELETEACCESS		    SMALLINT NOT NULL,
+                       UPLOADACCESS		    SMALLINT NOT NULL,		
+                       DOWNLOADACCESS		SMALLINT NOT NULL,
+                       USERFORUMACCESS      SMALLINT NOT NULL
                        );';
 END
 --GO
@@ -557,7 +557,7 @@ IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a
                        EXTERNALMESSAGEID    VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
                        REFERENCEMESSAGEID   VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
                        EDITEDBY             INTEGER,
-                       ISDELETED	        SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 8))),
+					   ISDELETED	        SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 8))),
                        ISAPPROVED           SMALLINT COMPUTED BY (SIGN(BIN_AND(FLAGS, 16)))
                        );';
 END
@@ -759,7 +759,7 @@ IF (NOT EXISTS( SELECT FIRST 1 1 FROM RDB$RELATIONS a
                        RANKIMAGE            VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
                        FLAGS                INTEGER DEFAULT 0 NOT NULL,
                        PMLIMIT              INTEGER DEFAULT 0 NOT NULL,
-                       STYLE                VARCHAR(255) CHARACTER SET UTF8 NOT NULL COLLATE UNICODE,
+                       STYLE                VARCHAR(255) CHARACTER SET UTF8 COLLATE UNICODE,
                        SORTORDER            INTEGER DEFAULT 0 NOT NULL,
                        DESCRIPTION          VARCHAR(128) CHARACTER SET UTF8 COLLATE UNICODE,
                        USRSIGCHARS          INTEGER DEFAULT 0 NOT NULL,
@@ -1676,7 +1676,18 @@ END
 EXECUTE BLOCK
 AS
 BEGIN
+UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = NULL
+WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = 'objQual_GROUP';
+UPDATE RDB$RELATION_FIELDS SET RDB$NULL_FLAG = NULL
+WHERE RDB$FIELD_NAME = 'STYLE' AND RDB$RELATION_NAME = 'objQual_RANK';
+END
+--GO
+
+EXECUTE BLOCK
+AS
+BEGIN
 EXECUTE STATEMENT 'UPDATE objQual_GROUP SET STYLE = NULL WHERE STYLE IS NOT NULL AND CHAR_LENGTH(STYLE) <=2;';
 EXECUTE STATEMENT 'UPDATE objQual_RANK SET STYLE = NULL WHERE STYLE IS NOT NULL AND CHAR_LENGTH(STYLE) <=2;';
+EXECUTE STATEMENT 'UPDATE objQual_RANK SET FLAGS = BIN_OR(FLAGS, 4) WHERE NAME LIKE ''Guest'';';
 END
 --GO

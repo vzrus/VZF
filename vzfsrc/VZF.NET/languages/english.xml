@@ -4346,6 +4346,8 @@ Visit {forumname} at {forumlink}
     <page name="ADMIN_ACCESSMASKS">
       <Resource tag="TITLE">Access Masks</Resource>
       <Resource tag="NEW_MASK">New Access Mask</Resource>
+      <Resource tag="ISUSERMASK">A user mask</Resource>
+      <Resource tag="ISCOMMONMASK">Access mask</Resource>
       <Resource tag="CONFIRM_DELETE">Delete this access mask?</Resource>
       <Resource tag="MSG_NOT_DELETE">You cannot delete this access mask because it is in use.</Resource>
       <Resource tag="NAME">Name</Resource>
@@ -4424,6 +4426,7 @@ Visit {forumname} at {forumlink}
      <Resource tag="IS_START">Is Start</Resource>
      <Resource tag="IS_MOD">Is Moderator</Resource>
      <Resource tag="IS_ADMIN">Is Admin</Resource>
+     <Resource tag="ISUSERGROUP">Is User Group</Resource>
      <Resource tag="PMS">PMs</Resource>
    </page>
    <page name="ADMIN_EDITGROUP">
@@ -5258,8 +5261,9 @@ Visit {forumname} at {forumlink}
      <Resource tag="MODAL_DIALOG">Modal Dialog</Resource>
      <Resource tag="NOTIFICATION_BAR">Notification Bar</Resource>
      <Resource tag="ENABLE_HOVERCARDS">Enable User Info Hover Cards:</Resource>
-     <Resource tag="ENABLE_HOVERCARDS_HELP">If enabled it shows an Hover Card (Which shows some quick info about the user) when you hover an user name. This will also show an Hover Card on the Twitter &amp; Facebook Profile Button.
-     </Resource>
+     <Resource tag="ENABLE_HOVERCARDS_HELP">If enabled it shows an Hover Card (Which shows some quick info about the user) when you hover an user name. This will also show an Hover Card on the Twitter &amp; Facebook Profile Button.</Resource>
+     <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>   
+     <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
      <Resource tag="TOPICFEED_COUNT">Max. Topics on the Forum Feed:</Resource>
      <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
    </page>

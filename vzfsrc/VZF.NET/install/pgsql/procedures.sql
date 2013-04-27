@@ -30,8 +30,7 @@ FOR _rec IN select userid,userstyle,rankid from databaseSchema.objectQualifier_u
 END;$BODY$
     LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100;  
 --GO
-SELECT databaseSchema.objectQualifier_user_savestyle(
-                           null, null);
+SELECT databaseSchema.objectQualifier_user_savestyle(null, null);
 --GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_vaccess_combo
                            (
@@ -348,7 +347,7 @@ BEGIN
             (a.flags & i_excludeflags) = 0
             and (i_isadminmask or not a.isadminmask)
             and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
-            ORDER BY a.isusermask desc,a.sortorder;
+            ORDER BY a.isusermask desc,a.sortorder
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -1600,7 +1599,7 @@ BEGIN
                     sortorder)
         VALUES     (ici_boardid,
                     'Guest',
-                    0,
+                    4,
                     NULL,
                     0,
                     1);
@@ -5329,8 +5328,8 @@ BEGIN
         iciFlags := iciFlags | 8; END IF;
          IF i_ishidden IS NOT FALSE THEN
         iciFlags := iciFlags | 16; END IF;
-        IF char_length(style) <= 2 THEN  
-    style := null; 
+        IF char_length(i_style) <= 2 THEN  
+    i_style := null; 
     END IF;
         
         SELECT name,displayname into ici_UserName,ici_UserDisplayName from databaseSchema.objectQualifier_user where userid = i_userid; 
@@ -5428,10 +5427,10 @@ BEGIN
     VALUES (i_GroupID, i_UserID,ici_UserName,ici_UserDisplayName,i_UTCTIMESTAMP);
     end IF; */
     -- group styles override user styles, don't sync if style is not present here
-    IF (i_style is not null and char_length(i_style) > 2) THEN
-            PERFORM databaseSchema.objectQualifier_user_savestyle(
-                           ici_groupid, null);
-      END IF;
+   IF (i_style is not null and char_length(i_style) > 2) THEN
+           PERFORM databaseSchema.objectQualifier_user_savestyle(
+                        ici_groupid, null);
+    END IF;
                            return ici_groupid;
     END;$BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -6572,10 +6571,13 @@ $BODY$DECLARE
              ici_ReplyToID integer;
              ici_OldTopicID integer;
              ici_OldForumID integer;
-             ici_NewForumID	integer;
-             ici_MessageCount integer;
+             ici_NewForumID	integer;          
              ici_LastMessageID integer;
-BEGIN 
+			 ici_userid integer;
+			 ici_username varchar(255);
+			 ici_userdisplayname varchar(255);
+			 ici_eraseoldtopic boolean :=false;
+BEGIN   
 
 SELECT    forumid INTO ici_NewForumID
                 FROM         databaseSchema.objectQualifier_topic
@@ -6640,11 +6642,24 @@ IF ici_Position IS NULL THEN  ici_Position := 0; END IF;
  WHERE  messageid = i_messageid;
  
      -- Delete topic IF there are no more messages
-    SELECT COUNT (1) INTO ici_MessageCount 
+  
+    IF NOT EXISTS (SELECT 1 
     FROM databaseSchema.objectQualifier_message 
-    WHERE topicid = ici_OldTopicID and (flags & 8)=0;
-    IF ici_MessageCount=0 
-    THEN PERFORM databaseSchema.objectQualifier_topic_delete (ici_OldTopicID,false,false); END IF;
+    WHERE topicid = ici_OldTopicID and (flags & 8)=0) THEN	
+ SELECT userid, username, userdisplayname INTO ici_userid,ici_username,ici_userdisplayname
+        FROM databaseSchema.objectQualifier_message WHERE messageid=i_messageid;	 
+ UPDATE databaseSchema.objectQualifier_topic SET
+    userid = ici_userid,
+    username = ici_username,
+	userdisplayname = ici_userdisplayname  
+ WHERE  topicid = i_movetotopic;
+ IF NOT EXISTS (SELECT 1 
+    FROM databaseSchema.objectQualifier_message 
+    WHERE topicid = ici_OldTopicID and (flags & 8)=8) THEN	
+ ici_eraseoldtopic = true;
+ end if;
+	PERFORM databaseSchema.objectQualifier_topic_delete (ici_OldTopicID,false,ici_eraseoldtopic); 
+	END IF;
  
      -- update lastpost
     PERFORM databaseSchema.objectQualifier_topic_updatelastpost (ici_OldForumID,ici_OldTopicID);
@@ -6872,7 +6887,7 @@ $BODY$DECLARE
              irr integer;
              ici_Posted timestamp:=i_posted;
              ici_ReplyTo int:=i_replyto;
-             ici_OverrideDisplayName boolean;
+             ici_OverrideDisplayName boolean;			
 BEGIN
  
     IF ici_Posted IS NULL THEN
@@ -6940,8 +6955,7 @@ BEGIN
  
 
  SELECT EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_user WHERE userid = i_userid and name != i_username) INTO ici_OverrideDisplayName;
-
-    INSERT INTO databaseSchema.objectQualifier_message( 
+     INSERT INTO databaseSchema.objectQualifier_message( 
                 userid, 
                 message, 
                 topicid, 
@@ -6960,7 +6974,7 @@ BEGIN
                 i_message,
                 i_topicid,
                 ici_Posted,
-                COALESCE(i_username,(SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid)),
+                (CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),
                 (CASE WHEN ici_OverrideDisplayName is true THEN i_username 
                     ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END), 
                 i_ip, 
@@ -8678,8 +8692,8 @@ BEGIN
     ici_flags := ici_flags | 4; 
     END IF;
 
-    IF char_length(style) <= 2 THEN  
-    style := null; 
+    IF char_length(i_style) <= 2 THEN  
+    i_style := null; 
     END IF;
     
     IF i_rankid > 0 THEN
@@ -10621,8 +10635,7 @@ $BODY$DECLARE
              ici_ReplyToNull integer;
              ici_blogpostid varchar:=i_blogpostid;
              _rec  databaseSchema.objectQualifier_topic_save_return_type; 
-             ici_OverrideDisplayName boolean;
-
+             ici_OverrideDisplayName boolean;				 
 BEGIN 
      
      IF ici_blogpostid = '' 
@@ -10635,9 +10648,9 @@ BEGIN
          ici_Posted := i_utctimestamp; 
      END IF;
      SELECT EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_user WHERE userid = i_userid and name != i_username) INTO ici_OverrideDisplayName;
-     -- create the topic 
+     -- create the topic	
      INSERT INTO databaseSchema.objectQualifier_topic(forumid,topic,userid,posted,views,priority,username,userdisplayname,numposts, description, status, styles, flags)
-     VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,COALESCE(i_username,(select name from databaseSchema.objectQualifier_user WHERE userid = i_userid)),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_TopicID;
+     VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_TopicID;
        
      -- add message to the topic 
      SELECT databaseSchema.objectQualifier_message_save(ici_TopicID,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null, i_flags,i_utctimestamp) INTO ici_MessageID;
@@ -12563,7 +12576,7 @@ BEGIN
    GET DIAGNOSTICS ici_Count = ROW_COUNT;
     IF ici_Count <=0 THEN  		
         SELECT databaseSchema.objectQualifier_user_save 
-(intnull,i_boardid,ici_UserName,ici_UserName,i_email,i_timezone,varcharnull,charnull,varcharnull,varcharnull, false,true,false,varcharnull,false,false,false, 0,i_utctimestamp)
+(intnull,i_boardid,ici_UserName,ici_UserName,i_email,i_timezone,varcharnull,charnull,varcharnull,varcharnull, false,true,false,varcharnull,false,false,false, 0,i_utctimestamp,0,10,10)
 INTO ici_userid; 	
     END IF;
 RETURN ici_userid;
@@ -13523,7 +13536,7 @@ $BODY$
 
 DROP FUNCTION IF EXISTS databaseSchema.objectQualifier_pageload(varchar, integer, varchar, varchar, varchar, varchar, varchar, integer, integer, integer, integer, boolean);
 --GO
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pageload(
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pageload(                 
                            i_sessionid varchar,
                            i_boardid integer,
                            i_userkey varchar,
@@ -13601,7 +13614,7 @@ BEGIN
         -- set IsRegistered ActiveFlag
         ici_activeflags = ici_activeflags | 4;
     END IF;
-    /* Check valid ForumID */
+    -- Check valid ForumID 
     IF i_forumid IS NOT NULL 
                  AND NOT EXISTS
             (SELECT 1 FROM databaseSchema.objectQualifier_forum 
@@ -13812,13 +13825,13 @@ BEGIN
  IF exists (select
             1	
             from databaseSchema.objectQualifier_activeaccess 
-            where userid = ici_userid and forumid = COALESCE(i_forumid,0) and (COALESCE(i_forumid,0) = 0 or readaccess limit 1) THEN		
+            where userid = ici_userid and forumid = COALESCE(i_forumid,0) and (COALESCE(i_forumid,0) = 0 or readaccess) limit 1) THEN		
  -- get previous visit
     IF NOT ici_isguest THEN
         select  lastvisit  into ici_previousvisit from databaseSchema.objectQualifier_user where userid = ici_userid;
     END IF;
     
-    /*update last visit*/
+    -- update last visit
     UPDATE databaseSchema.objectQualifier_user SET 
         lastvisit = i_currenttime,
         ip = i_ip
@@ -13882,7 +13895,7 @@ BEGIN
                   ici_activeupdate := true;
             END IF;
           
-            /*returning COUNT(DISTINCT ip) INTO ici_active_return;
+            /* returning COUNT(DISTINCT ip) INTO ici_active_return;
             IF NOT EXISTS ( SELECT 1 FROM databaseSchema.objectQualifier_registry 
     WHERE boardid = i_boardid and name = 'maxusers' ) THEN
     INSERT INTO databaseSchema.objectQualifier_registry
@@ -13944,21 +13957,20 @@ AND name = 'maxuserswhen';
         x.forumid,
         x.isadmin::boolean AS IsAdmin,       
         x.isforummoderator::boolean AS IsForumModerator,
-        x.ismoderator::boolean AS IsModerator,
-        x.isguestx,
+        x.ismoderator::boolean AS IsModerator,     
         x.lastactive,
-x.readaccess::integer,			
-x.postaccess::integer,
-x.replyaccess::integer,
-x.priorityaccess::integer,
-x.pollaccess::integer,
-x.voteaccess::integer,
-x.moderatoraccess::integer,
-x.editaccess::integer,
-x.deleteaccess::integer,
-x.uploadaccess::integer,		
-x.downloadaccess::integer,
-x.userforumaccess::integer, 
+x.readaccess,			
+x.postaccess,
+x.replyaccess,
+x.priorityaccess,
+x.pollaccess,
+x.voteaccess,
+x.moderatoraccess,
+x.editaccess,
+x.deleteaccess,
+x.uploadaccess,		
+x.downloadaccess,
+x.userforumaccess, 
 ici_crawler,
 i_ismobiledevice,		
         COALESCE(i_categoryid,0) AS CategoryID,

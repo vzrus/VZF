@@ -1489,6 +1489,24 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.TextBox TagForbiddenSymbols;
         
         /// <summary>
+        /// HelpLabel230 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel230;
+        
+        /// <summary>
+        /// HoverCardOpenDelay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox HoverCardOpenDelay;
+        
+        /// <summary>
         /// LocalizedLabel23 control.
         /// </summary>
         /// <remarks>

@@ -148,6 +148,8 @@
     <Resource tag="DELETE">Удаление</Resource>
     <Resource tag="DOWNLOAD">Загрузка</Resource>
     <Resource tag="EDIT">Редактирование</Resource>
+    <Resource tag="ISCOMMONMASK">Access mask</Resource>
+    <Resource tag="ISUSERMASK">A user mask</Resource>
     <Resource tag="MODERATOR">Модерирование</Resource>
     <Resource tag="MSG_NOT_DELETE">Вы не можете удалить эту маску доступа, так как она используется.</Resource>
     <Resource tag="NAME">Название</Resource>
@@ -894,6 +896,7 @@
     <Resource tag="IS_GUEST">Гость</Resource>
     <Resource tag="IS_MOD">Модератор</Resource>
     <Resource tag="IS_START">Стартовая</Resource>
+    <Resource tag="ISUSERGROUP">Is User Group</Resource>
     <Resource tag="LINKED">Связанная</Resource>
     <Resource tag="NAME">Название</Resource>
     <Resource tag="NEW_ROLE">Новая роль</Resource>
@@ -1118,6 +1121,8 @@
     <Resource tag="HOST_PERMISSION">Разрешения</Resource>
     <Resource tag="HOST_SEARCH">Поиск</Resource>
     <Resource tag="HOST_TEMPLATES">Шаблоны</Resource>
+    <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
+    <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE">Разрешить изменение размеров вложенного изображение:</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE_HELP">Вложенные изображения будут уменьшены до thumbnails если они слишком большие.</Resource>
     <Resource tag="IMAGE_RESIZE_HEIGHT">Максимальная высота вложенного изменённого изображения:</Resource>

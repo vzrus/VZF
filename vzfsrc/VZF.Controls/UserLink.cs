@@ -147,9 +147,9 @@ namespace VZF.Controls
             // Setup Hover Card JS
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "yafhovercardtjs",
-                "{0}('.userHoverCard').hovercard({{showYafCard: true, delay: 1500, width: 350,loadingHTML: '{1}',errorHTML: '{2}'}});"
-                    .FormatWith(
+                "if (typeof(jQuery.fn.hovercard) != 'undefined'){{ {0}('.userHoverCard').hovercard({{showYafCard: true, delay: {1}, width: 350,loadingHTML: '{2}',errorHTML: '{3}'}}); }}".FormatWith(
                         Config.JQueryAlias,
+                         this.Get<YafBoardSettings>().HoverCardOpenDelay,
                         this.GetText("DEFAULT", "LOADING_HOVERCARD"),
                         this.GetText("DEFAULT", "ERROR_HOVERCARD")));
         }

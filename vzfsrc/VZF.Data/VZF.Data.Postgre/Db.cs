@@ -2128,9 +2128,17 @@ namespace VZF.Data.Postgre
         #endregion yaf_EventLog
 
         // Admin control of file extensions - MJ Hufford
-
         #region yaf_Extensions
 
+        /// <summary>
+        /// The extension_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="extensionId">
+        /// The extension id.
+        /// </param>
         public static void extension_delete([NotNull] string connectionString , object extensionId)
         {
             try
@@ -5152,6 +5160,18 @@ namespace VZF.Data.Postgre
 
         #region yaf_PMessage
 
+        /// <summary>
+        /// The pmessage_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userPMessageID">
+        /// The user p message id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable pmessage_list([NotNull] string connectionString , object userPMessageID)
         {
             return pmessage_list(connectionString, null, null, userPMessageID);
@@ -5172,25 +5192,11 @@ namespace VZF.Data.Postgre
         {
             using (var cmd = PostgreDbAccess.GetCommand("pmessage_list"))
             {
-                if (fromUserID == null)
-                {
-                    fromUserID = DBNull.Value;
-                }
-                if (toUserID == null)
-                {
-                    toUserID = DBNull.Value;
-                }
-                if (userPMessageID == null)
-                {
-                    userPMessageID = DBNull.Value;
-                }
-
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_touserid", NpgsqlDbType.Integer)).Value = toUserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid", NpgsqlDbType.Integer)).Value = fromUserID;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userpmessageid", NpgsqlDbType.Integer)).Value = userPMessageID;
+                cmd.Parameters.Add(new NpgsqlParameter("i_touserid", NpgsqlDbType.Integer)).Value = toUserID ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_fromuserid", NpgsqlDbType.Integer)).Value = fromUserID ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_userpmessageid", NpgsqlDbType.Integer)).Value = userPMessageID ?? DBNull.Value;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }

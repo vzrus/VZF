@@ -24,11 +24,9 @@ namespace VZF.Types.Data
             ActiveUpdate = dr.Field<bool>("ActiveUpdate");
             PreviousVisit = dr.Field<DateTime?>("PreviousVisit");
             UserID = dr.Field<int>("UserID");
-            BoardID = dr.Field<int>("BoardID");
             ForumID = dr.Field<int>("ForumID");
             IsAdmin = dr.Field<bool>("IsAdmin");
             IsForumModerator = dr.Field<bool>("IsForumModerator");
-            IsGuestX = dr.Field<bool>("IsGuestX");
             LastActive = dr.Field<DateTime?>("LastActive");
             ReadAccess = dr.Field<bool>("ReadAccess");
             PostAccess = dr.Field<bool>("PostAccess");
@@ -54,6 +52,7 @@ namespace VZF.Types.Data
             ForumTheme = dr.Field<string>("ForumTheme");
         }
 
+        public int? ModuleID { get; set; }
         public bool ActiveUpdate { get; set; }
         public Nullable<System.DateTime> PreviousVisit { get; set; }
         public int UserID { get; set; }
@@ -62,7 +61,6 @@ namespace VZF.Types.Data
         public bool IsAdmin { get; set; }
         public bool IsForumModerator { get; set; }
         public bool IsModerator { get; set; }
-        public bool IsGuestX { get; set; }
         public bool IsGuest { get; set; }
         public Nullable<System.DateTime> LastActive { get; set; }
         public bool ReadAccess { get; set; }

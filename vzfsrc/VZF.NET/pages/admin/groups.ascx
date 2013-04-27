@@ -72,7 +72,9 @@
 			<ItemTemplate>
 				<tr>
 					<td class="header2">
-                    <img alt="" title="" src='<%# this.Get<ITheme>().GetItem("VOTE","VOTE_USERS") %>' />&nbsp;
+                    <img alt="" title="" src='<%# this.Get<ITheme>().GetItem("VOTE","VOTE_USERS") %>' /><img id="Img1" alt='<%# this.Get<ILocalization>().GetText("ADMIN_ACCESSMASK","ISUSERMASK") %>'
+                                    title='<%# this.Get<ILocalization>().GetText("ADMIN_GROUP","ISUSERGROUP") %>'
+                                    src='<%# this.Get<ITheme>().GetItem("ICONS","USERS_ICON") %>' Visible='<%# Eval( "IsUserGroup") %>' runat="server" />&nbsp;
 						<%# Eval( "Name" ) %>
 						(<%# GetLinkedStatus( (DataRowView) Container.DataItem )%>)&nbsp;&nbsp;                        
 					</td>

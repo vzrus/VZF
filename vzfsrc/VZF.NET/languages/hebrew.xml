@@ -170,6 +170,8 @@
     <Resource tag="DELETE">Delete</Resource>
     <Resource tag="DOWNLOAD">Download</Resource>
     <Resource tag="EDIT">Edit</Resource>
+    <Resource tag="ISCOMMONMASK">Access mask</Resource>
+    <Resource tag="ISUSERMASK">A user mask</Resource>
     <Resource tag="MODERATOR">Moderate</Resource>
     <Resource tag="MSG_NOT_DELETE">You cannot delete this access mask because it is in use.</Resource>
     <Resource tag="NAME">Name</Resource>
@@ -923,6 +925,7 @@
     <Resource tag="IS_GUEST">Is Guest</Resource>
     <Resource tag="IS_MOD">Is Moderator</Resource>
     <Resource tag="IS_START">Is Start</Resource>
+    <Resource tag="ISUSERGROUP">Is User Group</Resource>
     <Resource tag="LINKED">Linked</Resource>
     <Resource tag="NAME">Name</Resource>
     <Resource tag="NEW_ROLE">New Role</Resource>
@@ -1147,6 +1150,8 @@
     <Resource tag="HOST_PERMISSION">Permission</Resource>
     <Resource tag="HOST_SEARCH">Search</Resource>
     <Resource tag="HOST_TEMPLATES">Templates</Resource>
+    <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
+    <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE">Enable Image Attachment Resize:</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE_HELP">Attached images will be resized to thumbnails if they are too large.</Resource>
     <Resource tag="IMAGE_RESIZE_HEIGHT">Image Resize Max Height:</Resource>

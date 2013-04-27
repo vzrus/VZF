@@ -17,33 +17,30 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-
-
 namespace VZF.Controls
 {
   #region Using
 
-  using System;
-  using System.Collections.Generic;
-  using System.IO;
-  using System.Linq;
-  using System.Reflection;
-  using System.Text;
-  using System.Web.UI;
-  using System.Xml.Serialization;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Web.UI;
+    using System.Xml.Serialization;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
+    using VZF.Utils;
 
-  using YAF.Core;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
-  using VZF.Utils;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// Admin Menu Class.
@@ -177,14 +174,14 @@ namespace VZF.Controls
       {
         accordianJs =
           @"jQuery(document).ready(function() {
-					jQuery('.adminMenuAccordian').accordion({ autoHeight:false,animated:'bounceslide',event:'click' });});";
+					jQuery('.adminMenuAccordian').accordion({ heightStyle:'content',event:'click' });});"; 
       }
       else
       {
         accordianJs =
           @"jQuery(document).ready(function() {{
-					jQuery('.adminMenuAccordian').accordion({{ autoHeight:false,animated:'bounceslide',event:'click',active: {0} }});}});"
-            .FormatWith(viewIndex);
+					  jQuery('.adminMenuAccordian').accordion({{ heightStyle:'content',event:'click',active: {0} }});}});"
+          .FormatWith(viewIndex);
       }
 
       YafContext.Current.PageElements.RegisterJsBlockStartup("accordianJs", accordianJs);

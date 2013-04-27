@@ -104,7 +104,7 @@ namespace YAF.Core
             get
             {
                 return
-                    CommonDb.user_list((int?) YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
+                    CommonDb.user_list(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, GuestUserId, true).GetFirstRowColumnAsValue<string>("Name", null);
             }
         }
 

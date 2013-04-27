@@ -17,29 +17,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Web;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using VZF.Kernel;
-using YAF.Classes;
-using YAF.Types.Constants;
-using YAF.Types.Flags;
-using YAF.Types.Interfaces;
-using YAF.Utilities;
-using VZF.Utils.Helpers;
-
 namespace VZF.Controls
 {
     #region Using
 
     using System;
-    using System.Data;
-    using System.Text;
+    using System.Web;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
-    
+    using VZF.Kernel;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
+
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Types;
-    using VZF.Utils;
+    using YAF.Types.Constants;
+    using YAF.Types.Flags;
+    using YAF.Types.Interfaces;
+    using YAF.Utilities;
 
     #endregion
 
@@ -50,9 +47,15 @@ namespace VZF.Controls
     {
         #region MyRegion
 
+        /// <summary>
+        /// The yes image.
+        /// </summary>
         private string yesImage;
+
+        /// <summary>
+        /// The no image.
+        /// </summary>
         private string noImage;
-      
 
         #endregion
 
@@ -70,19 +73,23 @@ namespace VZF.Controls
                 return;
             }
 
-            yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
-            noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
+            this.yesImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS");
+            this.noImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS");
             
-            var userId = (int) Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("u"));
+            var userId = (int)Security.StringToLongOrRedirect(this.Request.QueryString.GetFirstOrDefault("u"));
             
             if (Config.LargeForumTree)
             {
                 YafContext.Current.PageElements.RegisterJsResourceInclude("dynatree", "js/jquery.dynatree.min.js");
                 YafContext.Current.PageElements.RegisterCssIncludeResource("js/skin/ui.dynatree.css");
-                YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
-                    JavaScriptBlocks.DynatreeGetNodesJumpLazyJS("tree",
-                    PageContext.PageUserID,PageContext.PageBoardID,"&v=1", "{0}resource.ashx?tjl".FormatWith(
-                    YafForumInfo.ForumClientFileRoot),"&root=0","&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
+                YafContext.Current.PageElements.RegisterJsBlock(
+                    "dynatreescr",
+                    JavaScriptBlocks.DynatreeGetNodesJumpLazyJS("tree",PageContext.PageUserID,
+                        PageContext.PageBoardID,
+                        "&v=1",
+                        "{0}resource.ashx?tjl".FormatWith(YafForumInfo.ForumClientFileRoot),
+                        "&root=0",
+                        "&forumUrl={0}".FormatWith(HttpUtility.UrlDecode(YafBuildLink.GetLinkNotEscaped(ForumPages.forum).TrimEnd("&g={0}".FormatWith(ForumPages.forum).ToCharArray())))));
             }
             else
             {
@@ -95,13 +102,26 @@ namespace VZF.Controls
 
         #endregion
 
+        /// <summary>
+        /// The forum list_ on item data bound.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         protected void ForumList_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             RepeaterItem item = e.Item;
 
-            if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem) return;
+            if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
+            {
+                return;
+            }
 
-            var drowv = (UserAccessMasksResult) e.Item.DataItem;
+            var drowv = (UserAccessMasksResult)e.Item.DataItem;
+
             // string tt = string.Empty;
             var amasks = drowv.AccessMaskData;
             var imgReadAccess = item.FindControlRecursiveAs<HtmlImage>("accessTypeReadAccess");
@@ -192,7 +212,6 @@ namespace VZF.Controls
 
                 iUserForumAccess = iUserForumAccess || accessMask.AccessMaskFlags.BinaryAnd(AccessFlags.Flags.UserForumAccess);
                 iUserForumAccessLegend = iUserForumAccessLegend + (!accessMask.IsUserMask ? ("Group:" + accessMask.GroupName + ":") : " PersonalAccess:") + accessMask.AccessMaskName + ":" + "{0}".FormatWith(iUserForumAccess ? "+" : "-") + ",";
-                
             }
 
             linkForumName.InnerHtml = drowv.ForumName;
@@ -201,52 +220,54 @@ namespace VZF.Controls
 
             imgReadAccess.Alt = "{0}".FormatWith(iReadAccess ? "+" : "-");
             imgReadAccess.Attributes["Title"] = iReadAccessLegend.TrimEnd(',');
-            imgReadAccess.Src = iReadAccess ? yesImage : noImage;
+            imgReadAccess.Src = iReadAccess ? this.yesImage : this.noImage;
 
             imgPostAccess.Alt = "{0}".FormatWith(iPostAccess ? "+" : "-");
             imgPostAccess.Attributes["Title"] = iPostAccessLegend;
-            imgPostAccess.Src = iPostAccess ? yesImage : noImage;
+            imgPostAccess.Src = iPostAccess ? this.yesImage : this.noImage;
 
             imgReplyAccess.Alt = "{0}".FormatWith(iReplyAccess ? "+" : "-");
             imgReplyAccess.Attributes["Title"] = iReplyAccessLegend;
-            imgReplyAccess.Src = iReplyAccess ? yesImage : noImage;
+            imgReplyAccess.Src = iReplyAccess ? this.yesImage : this.noImage;
 
             imgPriorityAccess.Alt = "{0}".FormatWith(iPriorityAccess ? "+" : "-");
             imgPriorityAccess.Attributes["Title"] = iPriorityAccessLegend;
-            imgPriorityAccess.Src = iPriorityAccess ? yesImage : noImage;
+            imgPriorityAccess.Src = iPriorityAccess ? this.yesImage : this.noImage;
 
             imgPollAccess.Alt = "{0}".FormatWith(iPollAccess ? "+" : "-");
             imgPollAccess.Attributes["Title"] = iPollAccessLegend;
-            imgPollAccess.Src = iPollAccess ? yesImage : noImage;
+            imgPollAccess.Src = iPollAccess ? this.yesImage : this.noImage;
 
             imgVoteAccess.Alt = "{0}".FormatWith(iVoteAccess ? "+" : "-");
             imgVoteAccess.Attributes["Title"] = iVoteAccessLegend;
-            imgVoteAccess.Src = iVoteAccess ? yesImage : noImage;
+            imgVoteAccess.Src = iVoteAccess ? this.yesImage : this.noImage;
 
             imgModeratorAccess.Alt = "{0}".FormatWith(iModeratorAccess ? "+" : "-");
             imgModeratorAccess.Attributes["Title"] = iModeratorAccessLegend;
-            imgModeratorAccess.Src = iModeratorAccess ? yesImage : noImage;
+            imgModeratorAccess.Src = iModeratorAccess ? this.yesImage : this.noImage;
 
             imgEditAccess.Alt = "{0}".FormatWith(iEditAccess ? "+" : "-");
             imgEditAccess.Attributes["Title"] = iEditAccessLegend;
-            imgEditAccess.Src =  iEditAccess ? yesImage : noImage;
+            imgEditAccess.Src = iEditAccess ? this.yesImage : this.noImage;
 
             imgDeleteAccess.Alt = "{0}".FormatWith(iDeleteAccess ? "+" : "-");
             imgDeleteAccess.Attributes["Title"] = iDeleteAccessLegend;
-            imgDeleteAccess.Src = iDeleteAccess ? yesImage : noImage;
+            imgDeleteAccess.Src = iDeleteAccess ? this.yesImage : this.noImage;
 
             imgUploadAccess.Attributes["Title"] = iUploadAccessLegend;
             imgUploadAccess.Alt = "{0}".FormatWith(iUploadAccess ? "+" : "-");
-            imgUploadAccess.Src = iUploadAccess ? yesImage : noImage;
+            imgUploadAccess.Src = iUploadAccess ? this.yesImage : this.noImage;
 
             imgDownloadAccess.Attributes["Title"] = iDownloadAccessLegend;
             imgDownloadAccess.Alt = "{0}".FormatWith(iDownloadAccess ? "+" : "-");
-            imgDownloadAccess.Src = iDownloadAccess ? yesImage : noImage;
+            imgDownloadAccess.Src = iDownloadAccess ? this.yesImage : this.noImage;
 
             imgUserForumAccess.Attributes["Title"] = iUserForumAccessLegend;
             imgUserForumAccess.Alt = "{0}".FormatWith(iUserForumAccess ? "+" : "-");
-            imgUserForumAccess.Src = iUserForumAccess ? yesImage : noImage;
+            imgUserForumAccess.Src = iUserForumAccess ? this.yesImage : this.noImage;
         }
+
+/*
         private static string GetNodeTitle(string title, string path, int userid, int forumId, int access)
         {
             string img = string.Empty;
@@ -271,6 +292,6 @@ namespace VZF.Controls
 
             return title;
         }
-        
+*/
     }
 }

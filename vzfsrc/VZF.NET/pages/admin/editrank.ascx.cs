@@ -23,12 +23,14 @@ namespace YAF.Pages.Admin
   #region Using
 
   using System;
+  using System.Collections.Generic;
   using System.Data;
   using System.IO;
   using System.Linq;
   using System.Web.UI.WebControls;
 
   using VZF.Data.Common;
+  using VZF.Types.Data;
 
   using YAF.Classes;
   
@@ -109,38 +111,38 @@ namespace YAF.Pages.Admin
 
         if (this.Request.QueryString.GetFirstOrDefault("r") != null)
         {
-          using (
-            DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("r")))
-          {
-            DataRow row = dt.Rows[0];
-            var flags = new RankFlags(row["Flags"]);
-            this.Name.Text = (string)row["Name"];
+            var dt = CommonDb.rank_list(
+                PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("r")).ToList();
+
+            var res = dt[0];
+            var flags = new RankFlags(res.Flags);
+            this.Name.Text = res.Name;
+            this.Description.Text = res.Description;
             this.IsStart.Checked = flags.IsStart;
             this.IsLadder.Checked = flags.IsLadder;
               this.IsGuest.Checked = flags.IsGuest; 
-            this.MinPosts.Text = row["MinPosts"].ToString();
-            this.PMLimit.Text = row["PMLimit"].ToString();
-            this.Style.Text = row["Style"].ToString();
-            this.RankPriority.Text = row["SortOrder"].ToString();
-            this.UsrAlbums.Text = row["UsrAlbums"].ToString();
-            this.UsrAlbumImages.Text = row["UsrAlbumImages"].ToString();
-            this.UsrSigChars.Text = row["UsrSigChars"].ToString();
-            this.UsrSigBBCodes.Text = row["UsrSigBBCodes"].ToString();
-            this.UsrSigHTMLTags.Text = row["UsrSigHTMLTags"].ToString();
-            this.Description.Text = row["Description"].ToString();
+            this.MinPosts.Text = res.MinPosts.ToString();
+            this.PMLimit.Text = res.PMLimit.ToString();
+            this.Style.Text = res.Style;
+            this.RankPriority.Text = res.SortOrder.ToString();
+            this.UsrAlbums.Text = res.UsrAlbums.ToString();
+            this.UsrAlbumImages.Text = res.UsrAlbumImages.ToString();
+            this.UsrSigChars.Text = res.UsrSigChars.ToString();
+            this.UsrSigBBCodes.Text = res.UsrSigBBCodes;
+            this.UsrSigHTMLTags.Text = res.UsrSigHTMLTags;
 
-            ListItem item = this.RankImage.Items.FindByText(row["RankImage"].ToString());
+            ListItem item = this.RankImage.Items.FindByText(res.RankImage);
             if (item != null)
             {
               item.Selected = true;
               this.Preview.Src = "{0}{1}/{2}".FormatWith(
-                YafForumInfo.ForumClientFileRoot, YafBoardFolders.Current.Ranks, row["RankImage"]); // path corrected
+                YafForumInfo.ForumClientFileRoot, YafBoardFolders.Current.Ranks, res.RankImage); // path corrected
             }
             else
             {
               this.Preview.Src = "{0}images/spacer.gif".FormatWith(YafForumInfo.ForumClientFileRoot);
             }
-          }
+          
         }
         else
         {

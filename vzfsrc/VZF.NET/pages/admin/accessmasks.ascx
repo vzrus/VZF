@@ -22,10 +22,13 @@
             <ItemTemplate>
                 <tr class="postheader">
                     <td>
+                        
                       <img alt='<%# Eval( "Name") %>'
                                     title='<%# Eval( "Name") %>'
-                                    src='<%# this.Get<ITheme>().GetItem("VOTE","POLL_MASK") %>' />&nbsp;<%# Eval( "Name") %>
-                    </td>					
+                                    src='<%# this.Get<ITheme>().GetItem("VOTE","POLL_MASK") %>' /> <img id="Img1" alt='<%# this.Get<ILocalization>().GetText("ADMIN_ACCESSMASK","ISUSERMASK") %>'
+                                    title='<%# this.Get<ILocalization>().GetText("ADMIN_ACCESSMASK","ISUSERMASK") %>'
+                                    src='<%# this.Get<ITheme>().GetItem("ICONS","USERS_ICON") %>' Visible='<%# Eval( "IsUserMask") %>' runat="server" />&nbsp;<%# Eval( "Name") %>
+                     </td>					
                     <td width="15%" style="font-weight: normal">
                         <asp:LinkButton runat='server' CommandName='edit' CommandArgument='<%# Eval( "AccessMaskID") %>'>
                           <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="EDIT" />

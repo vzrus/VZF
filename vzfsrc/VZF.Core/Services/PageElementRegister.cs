@@ -240,13 +240,13 @@ namespace YAF.Core.Services
             if (YafContext.Current.Get<YafBoardSettings>().JqueryUIThemeCDNHosted)
             {
                 this.RegisterCssInclude(
-                    "http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/{0}/jquery-ui.css".FormatWith(
+                    "http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/{0}/jquery-ui.min.css".FormatWith( 
                         YafContext.Current.Get<YafBoardSettings>().JqueryUITheme));
             }
             else
             {
                 this.RegisterCssIncludeResource(
-                     "css/jquery-ui-themes/{0}/jquery-ui.css".FormatWith(
+                    "css/jquery-ui-themes/{0}/jquery-ui.min.css".FormatWith( 
                          YafContext.Current.Get<YafBoardSettings>().JqueryUITheme));
             }
         }

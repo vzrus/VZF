@@ -362,7 +362,7 @@ begin
             a.BOARDID = :I_BOARDID and
             BIN_AND(a.FLAGS,:I_EXCLUDEFLAGS) = 0			 
             AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))
+            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0)
         order by 
             a.ISUSERMASK DESC,
             a.SORTORDER ASC
@@ -390,7 +390,7 @@ begin
             a.BOARDID = :I_BOARDID and
             a.ACCESSMASKID = :I_ACCESSMASKID
             AND (:I_ISADMINMASK = 1 or a.ISADMINMASK = 0)
-            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0))       
+            AND ((:I_ISUSERMASK = 1 and a.CREATEDBYUSERID = :I_PAGEUSERID) or a.ISUSERMASK = 0)       
             INTO
             :"AccessMaskID",
             :"BoardID",
@@ -1346,8 +1346,7 @@ CREATE PROCEDURE  objQual_POLLGROUP_REMOVE(I_POLLGROUPID integer, I_TOPICID inte
 --GO
  CREATE PROCEDURE  objQual_TOPIC_DELETE (I_TOPICID INTEGER,I_UPDATELASTPOST BOOL,I_ERASETOPIC BOOL)
     AS
-    DECLARE VARIABLE ici_ForumID INTEGER;
-    DECLARE VARIABLE ici_ForumID2 INTEGER;
+    DECLARE VARIABLE ici_ForumID INTEGER;   
     DECLARE VARIABLE ici_pollID INTEGER;
     DECLARE VARIABLE ici_Deleted INTEGER;
     BEGIN
@@ -3392,7 +3391,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         IF (:I_ISHIDDEN <> 0) THEN
         iciFlags = BIN_OR(iciFlags, 16);
 
-         IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+         IF (CHAR_LENGTH(:I_STYLE) <= 2) THEN
          I_STYLE = NULL; 
     
           IF (:I_USERID IS NOT NULL) THEN
@@ -4167,7 +4166,7 @@ BEGIN
   
 
  
-    /*update Topic table with info about last post in topic*/
+   -- update Topic table with info about last post in topic
     UPDATE objQual_TOPIC set
         LASTPOSTED = :ici_Posted,
         LASTMESSAGEID = :I_MESSAGEID,
@@ -4617,18 +4616,17 @@ CREATE PROCEDURE  objQual_MESSAGE_MOVE (I_MESSAGEID INTEGER, I_MOVETOTOPIC INTEG
  AS
  DECLARE VARIABLE ici_Position INTEGER;
  DECLARE VARIABLE ici_ReplyToID INTEGER;
- DECLARE VARIABLE ici_ForumID2 INTEGER;
  DECLARE VARIABLE ici_OldTopicID INTEGER;
  DECLARE VARIABLE ici_OldForumID INTEGER;
  DECLARE VARIABLE ici_NewForumID	INTEGER;
- DECLARE VARIABLE ici_MessageCount INTEGER;
  DECLARE VARIABLE ici_LastMessageID INTEGER;
  DECLARE VARIABLE ici_Posted TIMESTAMP;
+ DECLARE VARIABLE ici_UserName varchar(255);
+ DECLARE VARIABLE ici_UserDisplayName varchar(255);
+ DECLARE VARIABLE ici_UserID INTEGER;
+ DECLARE VARIABLE ici_EraseOldTopic INTEGER;
  BEGIN
- 
-    /*Find TopicID and ForumID
- SELECT b.TopicID,b.ForumID INTO ici_ForumID,ici_OldTopicID
-        FROM objQual_MESSAGE a,objQual_TOPIC b WHERE a.MessageID=I_MESSAGEID and b.TopicID=a.TopicID;*/
+
 SELECT POSTED  
 FROM objQual_MESSAGE  
 WHERE MESSAGEID= :I_MESSAGEID
@@ -4673,7 +4671,7 @@ INTO :ici_Posted;
      WHERE     (TOPICID = :ici_OldTopicID) 
      and POSTED > :ici_Posted;
  
-     /*Update LastMessageID in Topic and Forum*/
+    -- Update LastMessageID in Topic and Forum
     UPDATE objQual_TOPIC set
         LASTPOSTED = NULL,
         LASTMESSAGEID = NULL,
@@ -4698,29 +4696,43 @@ INTO :ici_Posted;
     "POSITION" = :ici_Position
  WHERE  MESSAGEID = :I_MESSAGEID;
  
-     /*Delete topic if there are no more messages*/
-    SELECT COUNT(1)  
+    -- Delete topic if there are no more messages   
+
+    IF (NOT EXISTS (SELECT 1  
     FROM objQual_MESSAGE 
     WHERE TOPICID = :ici_OldTopicID 
-    and BIN_AND(FLAGS, 8)=0
-    INTO :ici_MessageCount;
-    IF (ici_MessageCount=0) THEN 
-    EXECUTE PROCEDURE objQual_TOPIC_DELETE(:ici_OldTopicID,0,0); 
-    
- 
-     /*update lastpost*/
+    and ISDELETED = 0)) THEN 
+	BEGIN
+		 SELECT UserID, UserName, UserDisplayName  
+ FROM objQual_MESSAGE WHERE MessageID=:I_MESSAGEID
+ INTO :ici_UserID,:ici_UserName,:ici_UserDisplayName;
+
+	UPDATE objQual_TOPIC set
+        USERID = :ici_UserID,
+        USERNAME = :ici_UserName,
+        USERDISPLAYNAME = :ici_UserDisplayName
+    WHERE TOPICID = :I_MOVETOTOPIC;	
+	IF ((SELECT COUNT (MESSAGEID)
+    FROM objQual_MESSAGE 
+    WHERE TOPICID = :ici_OldTopicID 
+    and ISDELETED = 0) = 0) THEN
+		ici_EraseOldTopic = 1;
+    EXECUTE PROCEDURE objQual_TOPIC_DELETE(:ici_OldTopicID,0,:ici_EraseOldTopic);
+	END 
+	 
+    -- update lastpost
     EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST(:ici_OldForumID,:ici_OldTopicID);
     EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_OldForumID);
     EXECUTE PROCEDURE objQual_TOPIC_UPDATELASTPOST(:ici_NewForumID,:I_MOVETOTOPIC);
     EXECUTE PROCEDURE objQual_FORUM_UPDATELASTPOST(:ici_NewForumID);
-     /*update topic numposts*/
+    -- update topic numposts
     UPDATE objQual_TOPIC SET
         NUMPOSTS = 
         (SELECT COUNT(1) from objQual_MESSAGE x 
         WHERE x.TOPICID=objQual_TOPIC.TOPICID 
         and x.ISAPPROVED = 1 and x.ISDELETED = 0)
     WHERE TOPICID = :ici_OldTopicID;
-    UPDATE objQual_TOPIC set
+    UPDATE objQual_TOPIC set	  
         NUMPOSTS = (SELECT COUNT(1) 
         from objQual_MESSAGE x 
         WHERE x.TOPICID=objQual_TOPIC.TOPICID 
@@ -4869,7 +4881,6 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
         DECLARE VARIABLE ici_Indent INTEGER;
         DECLARE VARIABLE ici_temp INTEGER;
         DECLARE VARIABLE ici_OverrideDisplayName BOOL;
-
  BEGIN
     
        
@@ -4891,7 +4902,7 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
                         :ici_Indent;
                          -- New thread
  
-    ELSE IF (I_REPLYTO<0) THEN
+    ELSE IF (:I_REPLYTO<0) THEN
         -- Find post to reply to AND indent of this post 
         SELECT FIRST 1 DISTINCT  MESSAGEID, INDENT+1                
         FROM objQual_MESSAGE
@@ -4945,13 +4956,11 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
   END 	
 
     SELECT SIGN(COUNT(Name)) FROM objQual_User WHERE UserID = :i_UserID AND  NAME != :i_UserName INTO :ici_OverrideDisplayName;	
-    
-    -- Here we set bit flag to 0
+       -- Here we set bit flag to 0
     SELECT NEXT VALUE FOR SEQ_objQual_MESSAGE_MESSAGEID FROM RDB$DATABASE INTO :I_MESSAGEID;
     INSERT INTO objQual_MESSAGE ( MESSAGEID,USERID, MESSAGE, TOPICID, POSTED, USERNAME, USERDISPLAYNAME, IP, REPLYTO, "POSITION", INDENT, FLAGS, BLOGPOSTID, EXTERNALMESSAGEID, REFERENCEMESSAGEID)
-    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE, :I_TOPICID, :I_POSTED, :I_USERNAME,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :i_UserName ELSE (SELECT DisplayName FROM objQual_User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
-    :I_REFERENCEMESSAGEID );
-    
+    VALUES ( :I_MESSAGEID, :I_USERID, :I_MESSAGE, :I_TOPICID, :I_POSTED,(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT Name FROM objQual_User WHERE UserID = :i_UserID) END),(CASE WHEN :ici_OverrideDisplayName >= 1 THEN :I_USERNAME ELSE (SELECT DisplayName FROM objQual_User WHERE UserID = :i_UserID) END), :I_IP, :I_REPLYTO, :ici_Position, :ici_Indent, BIN_AND(:I_FLAGS,BIN_XOR(16,-1)), :I_BLOGPOSTID,:I_EXTERNALMESSAGEID,
+    :I_REFERENCEMESSAGEID );    
 
     IF ((BIN_AND(:I_FLAGS, 16) = 16)) THEN
       EXECUTE PROCEDURE objQual_MESSAGE_APPROVE (:I_MESSAGEID); 
@@ -5149,8 +5158,7 @@ END;
 CREATE PROCEDURE  objQual_MESSAGE_DELETE(I_MESSAGEID INTEGER, I_ERASEMESSAGE BOOL) 
 AS
 DECLARE VARIABLE ici_TopicID		INTEGER;
-    DECLARE VARIABLE ici_ForumID		INTEGER;
-    DECLARE VARIABLE ici_ForumID2	INTEGER;
+    DECLARE VARIABLE ici_ForumID		INTEGER;   
     DECLARE VARIABLE ici_MessageCount	INTEGER;
     DECLARE VARIABLE ici_LastMessageID	INTEGER;
     DECLARE VARIABLE ICI_USERID		    INTEGER;
@@ -5251,8 +5259,7 @@ I_DELETEREASON varchar(128),
 I_ISDELETEACTION INTEGER)
 AS
     DECLARE VARIABLE ici_TopicID		INTEGER;
-    DECLARE VARIABLE ici_ForumID		INTEGER;
-    DECLARE VARIABLE ici_ForumID2       INTEGER;
+    DECLARE VARIABLE ici_ForumID		INTEGER;   
     DECLARE VARIABLE ici_MessageCount	INTEGER;
     DECLARE VARIABLE ici_LastMessageID	INTEGER;
     DECLARE VARIABLE ICI_USERID		    INTEGER;
@@ -7012,7 +7019,7 @@ BEGIN
     IF (I_ISLADDER<>0) THEN ICI_FLAGS = BIN_OR(ICI_FLAGS, 2); 
     IF (I_ISGUEST<>0) THEN ICI_FLAGS = BIN_OR(ICI_FLAGS, 4); 
 
-    IF (CHAR_LEGTH(:I_STYLE) <= 2) THEN
+    IF (CHAR_LENGTH(:I_STYLE) <= 2) THEN
     I_STYLE = NULL; 
     
     
@@ -7980,6 +7987,7 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      DECLARE ici_TopicID INTEGER;
      DECLARE ici_MessageID INTEGER DEFAULT null;
      DECLARE ici_OverrideDisplayName BOOL DEFAULT 0;
+	 DECLARE ICI_USERNAMEREAL VARCHAR(255);
      BEGIN
      
       IF (I_POSTED IS NULL) THEN
@@ -8010,7 +8018,7 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      :I_POSTED,
      0,
      :I_PRIORITY,
-     :I_USERNAME,
+     (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT NAME FROM objQual_USER WHERE USERID = :I_USERID) END),
      (CASE WHEN :ici_OverrideDisplayName = 1 THEN :I_USERNAME ELSE (SELECT DISPLAYNAME FROM objQual_USER WHERE USERID = :I_USERID) END),
      0, 
      :I_DESCRIPTION,

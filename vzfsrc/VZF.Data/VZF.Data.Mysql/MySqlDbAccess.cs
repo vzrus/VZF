@@ -27,9 +27,11 @@ namespace VZF.Data.Mysql
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+   
     using System.Data;
+   
     using System.Diagnostics;
-    using System.Globalization;
+
     using System.Reflection;
     using System.Web;
 
@@ -375,13 +377,16 @@ namespace VZF.Data.Mysql
         }
 
         /// <summary>
-        /// Test the DB Connection.
+        /// The test connection.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         /// <param name="exceptionMessage">
-        /// outbound ExceptionMessage
+        /// The exception message.
         /// </param>
         /// <returns>
-        /// true if successfully connected
+        /// The <see cref="bool"/>.
         /// </returns>
         public static bool TestConnection(string connectionString, [NotNull] out string exceptionMessage)
         {
@@ -452,28 +457,36 @@ namespace VZF.Data.Mysql
 
                 return cmd;
             }
-            else
-            {
+           
                 return GetCommand(commandText);
-            }
         }
 
         /// <summary>
-        /// Creates new MySqlCommand calling stored procedure applying all qualifiers to the name.
+        /// The get command.
         /// </summary>
-        /// <param name="storedProcedure">Base of stored procedure name.</param>
-        /// <returns>New MySqlCommand</returns>
+        /// <param name="storedProcedure">
+        /// The stored procedure.
+        /// </param>
+        /// <returns>
+        /// The <see cref="MySqlCommand"/>.
+        /// </returns>
         public static MySqlCommand GetCommand(string storedProcedure)
         {
             return GetCommand(storedProcedure, null);
         }
 
         /// <summary>
-        /// Creates new MySqlCommand calling stored procedure applying all qualifiers to the name.
+        /// The get command.
         /// </summary>
-        /// <param name="storedProcedure">Base of stored procedure name.</param>
-        /// <param name="connection">Connection to use with command.</param>
-        /// <returns>New MySqlCommand</returns>
+        /// <param name="storedProcedure">
+        /// The stored procedure.
+        /// </param>
+        /// <param name="connection">
+        /// The connection.
+        /// </param>
+        /// <returns>
+        /// The <see cref="MySqlCommand"/>.
+        /// </returns>
         public static MySqlCommand GetCommand(string storedProcedure, MySqlConnection connection)
         {
             var cmd = new MySqlCommand
@@ -487,22 +500,60 @@ namespace VZF.Data.Mysql
         }
 
         /// <summary>
-        /// Gets data out of the database
+        /// The get data.
         /// </summary>
-        /// <param name="cmd">The SQL Command</param>
-        /// <returns>DataTable with the results</returns>
-        /// <remarks>Without transaction.</remarks>
-        /// 
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(IDbCommand cmd, string connectionString)
         {
             return GetDataTableFromReader(cmd, false, true, connectionString);
         }
 
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(IDbCommand cmd, bool transaction, string connectionString)
         {
             return GetDataTableFromReader(cmd, transaction, true, connectionString);
         }
 
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(IDbCommand cmd, bool transaction, bool acceptChanges, string connectionString)
         {
             return GetDataTableFromReader(cmd, transaction, acceptChanges, connectionString);
@@ -519,12 +570,27 @@ namespace VZF.Data.Mysql
             return GetData(commandText, false, connectionString);
         }
 
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="commandText">
+        /// The command text.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(string commandText, bool transaction, string connectionString)
         {
-            QueryCounter qc = new QueryCounter(commandText);
+            var qc = new QueryCounter(commandText);
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand())
+                using (var cmd = new MySqlCommand())
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = commandText;
@@ -867,8 +933,8 @@ namespace VZF.Data.Mysql
         /// <returns></returns>
         private static object ReaderValueConverter(DataColumn column, object readerValue)
         {
-            //It's currently implemented in the methods to make work faster
-            //if (column.DataType.Name == "Guid") return GuidConverter((Guid)readerValue);
+            // It's currently implemented in the methods to make work faster
+            // if (column.DataType.Name == "Guid") return GuidConverter((Guid)readerValue);
             return readerValue;
         }
 
@@ -909,10 +975,16 @@ namespace VZF.Data.Mysql
 
             foreach (DataRow myField in schemaTable.Rows)
             {
+                string ts = myField["DataType"].ToString();
+                if ((ts == "System.UInt64" || ts == "System.Int64") && convertFromUInt64ToInt32)
+                {
+                    ts = "System.Int32";
+                }
 
-                String ts = myField["DataType"].ToString();
-                if ((ts == "System.UInt64" || ts == "System.Int64") && convertFromUInt64ToInt32) ts = "System.Int32";
-                if (ts == "System.SByte") ts = "System.Boolean";
+                if (ts == "System.SByte")
+                {
+                    ts = "System.Boolean";
+                }
 
                 if (!dummyTable.Columns.Contains(myField["ColumnName"].ToString()))
                 {
@@ -934,6 +1006,7 @@ namespace VZF.Data.Mysql
             return dummyTable;
         }
 
+/*
         /// <summary>
         /// The table schema reader.
         /// </summary>
@@ -982,6 +1055,7 @@ namespace VZF.Data.Mysql
 
             return dt;
         }
+*/
 
         /// <summary>
         /// The guid converter.
@@ -1084,6 +1158,9 @@ namespace VZF.Data.Mysql
                 }
             }
         }
+       
+
         #endregion
     }
+    
 }

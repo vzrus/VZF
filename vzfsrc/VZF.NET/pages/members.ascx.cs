@@ -27,9 +27,11 @@ namespace YAF.Pages
     using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
+    using System.Linq;
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Types.Data;
 
     using YAF.Classes;
     
@@ -245,7 +247,7 @@ namespace YAF.Pages
             this.Joined.Text = this.GetText("joined");
             this.Posts.Text = this.GetText("posts");
             this.LastVisitLB.Text = this.GetText("members", "lastvisit");
-       
+
             using (var dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
             {
                 var dtt = dt.Clone();
@@ -280,37 +282,28 @@ namespace YAF.Pages
             this.NumPostDDL.Items.Add(new ListItem(this.GetText("MEMBERS", "NUMPOSTSEQUAL"), "1"));
             this.NumPostDDL.Items.Add(new ListItem(this.GetText("MEMBERS", "NUMPOSTSLESSOREQUAL"), "2"));
             this.NumPostDDL.Items.Add(new ListItem(this.GetText("MEMBERS", "NUMPOSTSMOREOREQUAL"), "3"));
-           
+
             this.NumPostDDL.DataBind();
 
             // get list of user ranks for filtering
-            using (DataTable dt = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            var rankList = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null).ToList();
+
+            // add empty for for no filtering
+            rankList.Insert(0, new rank_list_Result(0, this.GetText("ALL")));
+
+            for (int index = 0; index < rankList.Count; index++)
             {
-                // add empty for for no filtering
-                DataRow newRow = dt.NewRow();
-                newRow["Name"] = this.GetText("ALL");
-                newRow["RankID"] = DBNull.Value;
-                dt.Rows.InsertAt(newRow, 0);
-
-                // this.GetText("COMMON", "GUEST_NAME")
-                DataRow[] guestRows = dt.Select("Name='Guest'".FormatWith());
-
-                if (guestRows.Length > 0)
+                var drow = rankList[index];
+                if ((drow.Flags & RankFlags.Flags.IsHidden.ToInt()) == RankFlags.Flags.IsHidden.ToInt())
                 {
-                    foreach (DataRow row in guestRows)
-                    {
-                        row.Delete();
-                    }
+                    rankList.Remove(drow);
                 }
-
-                // commits the deletes to the table
-                dt.AcceptChanges();
-
-                this.Ranks.DataSource = dt;
-                this.Ranks.DataTextField = "Name";
-                this.Ranks.DataValueField = "RankID";
-                this.Ranks.DataBind();
             }
+
+            this.Ranks.DataSource = rankList;
+            this.Ranks.DataTextField = "Name";
+            this.Ranks.DataValueField = "RankID";
+            this.Ranks.DataBind();
 
             this.BindData();
         }
@@ -573,25 +566,10 @@ namespace YAF.Pages
             } 
         }
 
-        /// <summary>
-        /// Get Theme Contents
-        /// </summary>
-        /// <param name="page">
-        /// The Localization Page.
-        /// </param>
-        /// <param name="tag">
-        /// The Localisation Page Tag.
-        /// </param>
-        /// <returns>
-        /// Returns Theme Content.
-        /// </returns>
-        protected string GetThemeContents([NotNull] string page, [NotNull] string tag)
-        {
-            return this.Get<ITheme>().GetItem(page, tag);
-        }
+
 
         /// <summary>
-        /// Helper function for setting up the current sort on the memberlist view
+        /// Helper function for setting up the current sort on the member list view
         /// </summary>
         /// <param name="field">
         /// The field.
@@ -620,8 +598,6 @@ namespace YAF.Pages
                    this.ViewState["SortLastVisitField"] = this.ViewState["SortLastVisitField"] == null  ? 0 :
                  (this.ViewState["SortLastVisitField"].ToType<int>() == 1 ? 2 : 1);
                  break;
-                default:
-                    break;
             }
         }
         #endregion

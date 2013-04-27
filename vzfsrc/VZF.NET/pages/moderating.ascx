@@ -30,10 +30,7 @@
                     <%# this.Get<YafBoardSettings>().EnableDisplayName ? Eval("DisplayName") : Eval("DisplayName") %>
                 </td>
                 <td align="center">
-                    <%# Eval("Accepted") %>
-                </td>
-                <td>
-                    <%# Eval("Access") %>
+                     <img id="AccessYesNo" alt="?" src='<%#  (bool)Eval("Accepted") ? YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASACCESS") : YafContext.Current.Get<ITheme>().GetItem("ICONS", "FORUM_HASNOACCESS") %>' runat="server" /> 
                 </td>
                 <td>
                      <VZF:ThemeButton ID="ThemeButtonEdit" CssClass="yaflittlebutton" CommandName='edit' CommandArgument='<%# Eval("UserID") %>' TitleLocalizedTag="EDIT" ImageThemePage="ICONS" ImageThemeTag="EDIT_SMALL_ICON" runat="server"></VZF:ThemeButton>

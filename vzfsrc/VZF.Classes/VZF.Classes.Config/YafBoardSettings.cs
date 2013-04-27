@@ -1868,6 +1868,25 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        ///  Gets or sets the hover card open delay.   
+        /// </summary>   
+        /// <value>   
+        /// The hover card open delay.   
+        /// </value>
+        public int HoverCardOpenDelay
+        {
+            get
+            {
+                return this._reg.GetValue("HoverCardOpenDelay", 2000);
+            }
+
+            set
+            {
+                this._reg.SetValue("HoverCardOpenDelay", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets Event Log Max Messages.
         /// </summary>
         public int EventLogMaxMessages

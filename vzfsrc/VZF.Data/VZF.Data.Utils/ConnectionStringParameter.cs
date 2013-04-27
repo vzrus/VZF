@@ -32,58 +32,22 @@ namespace VZF.Data.Utils
         /// <summary>
         /// The _name.
         /// </summary>
-        private string _name;
+        private string name;
 
         /// <summary>
         /// The _type.
         /// </summary>
-        private Type _type;
+        private Type type;
 
         /// <summary>
         /// The _value.
         /// </summary>
-        private string _value;
+        private string value;
 
         /// <summary>
         /// The _fixed Value.
         /// </summary>
-        private bool _fixedValue;
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        public Type Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public string Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public bool FixedValue
-        {
-            get { return _fixedValue; }
-            set { _fixedValue = value; }
-        }
+        private bool fixedValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionStringParameter"/> class.
@@ -106,6 +70,42 @@ namespace VZF.Data.Utils
             this.Type = type;
             this.Value = value;
             this.FixedValue = fixedValue;
+        }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        public Type Type
+        {
+            get { return this.type; }
+            set { this.type = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        public string Value
+        {
+            get { return this.value; }
+            set { this.value = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether fixed value.
+        /// </summary>
+        public bool FixedValue
+        {
+            get { return this.fixedValue; }
+            set { this.fixedValue = value; }
         }
     }
 }

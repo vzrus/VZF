@@ -22,7 +22,9 @@ namespace YAF.Pages
   #region Using
 
   using System;
+  using System.Collections.Generic;
   using System.Data;
+  using System.Linq;
   using System.Web;
   using System.Web.UI.WebControls;
 
@@ -38,7 +40,9 @@ namespace YAF.Pages
   using VZF.Utils;
   using VZF.Utils.Helpers;
 
-  #endregion
+  using YAF.Types.Objects;
+
+    #endregion
 
   /// <summary>
   /// The Delete Message Page.
@@ -60,7 +64,7 @@ namespace YAF.Pages
     /// <summary>
     ///   The _message row.
     /// </summary>
-    protected DataRow _messageRow;
+    protected TypedMessageList _messageRow;
 
     /// <summary>
     ///   The _owner user id.
@@ -97,7 +101,7 @@ namespace YAF.Pages
       {
         // Ederon : 9/9/2007 - moderators can delete in locked topics
         return ((!this.PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked &&
-                 (int)this._messageRow["UserID"] == this.PageContext.PageUserID) ||
+                 (int)this._messageRow.UserID == this.PageContext.PageUserID) ||
                 this.PageContext.ForumModeratorAccess) && this.PageContext.ForumDeleteAccess;
       }
     }
@@ -120,9 +124,7 @@ namespace YAF.Pages
     {
       get
       {
-        int deleted = (int)this._messageRow["Flags"] & 8;
-
-        return deleted == 8;
+        return this._messageRow.Flags.IsDeleted;
       }
     }
 
@@ -134,15 +136,19 @@ namespace YAF.Pages
       get
       {
           if (!this.PageContext.IsAdmin && this.Get<YafBoardSettings>().LockPosts > 0)
-        {
-          var edited = (DateTime)this._messageRow["Edited"];
-          if (edited.AddDays(this.Get<YafBoardSettings>().LockPosts) < DateTime.UtcNow)
           {
-            return true;
+              var dateTime = this._messageRow.Edited;
+              if (dateTime != null)
+            {
+                var edited = (DateTime)dateTime;
+                if (edited.AddDays(this.Get<YafBoardSettings>().LockPosts) < DateTime.UtcNow)
+                {
+                    return true;
+                }
+            }
           }
-        }
 
-        return false;
+          return false;
       }
     }
 
@@ -250,19 +256,28 @@ namespace YAF.Pages
 
       if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m") != null)
       {
-          this._messageRow =
-              CommonDb.message_list(PageContext.PageModuleID, Security.StringToLongOrRedirect(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"))).
-                  GetFirstRowOrInvalid();
+          int messageID;
+          if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageID))
+          {
+              YafBuildLink.RedirectInfoPage(InfoMessage.Invalid);
+          }
 
-          if (!this.PageContext.ForumModeratorAccess && this.PageContext.PageUserID != (int)this._messageRow["UserID"])
+          this._messageRow =
+              CommonDb.MessageList(PageContext.PageModuleID, messageID).FirstOrDefault();
+          if (this._messageRow == null)
+          {
+              YafBuildLink.RedirectInfoPage(InfoMessage.Invalid);
+          }
+
+          if (!this.PageContext.ForumModeratorAccess && this.PageContext.PageUserID != this._messageRow.UserID)
         {
           YafBuildLink.AccessDenied();
         }
       }
 
-      this._forumFlags = new ForumFlags(this._messageRow["ForumFlags"]);
-      this._topicFlags = new TopicFlags(this._messageRow["TopicFlags"]);
-      this._ownerUserId = (int)this._messageRow["UserID"];
+      this._forumFlags = new ForumFlags(this._messageRow.ForumFlags);
+      this._topicFlags = new TopicFlags(this._messageRow.TopicFlags);
+      this._ownerUserId = (int)this._messageRow.UserID;
       this._isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
 
       if (this.PageContext.PageForumID == 0)
@@ -333,13 +348,13 @@ namespace YAF.Pages
             this.Delete.Text = this.GetText("UNDELETE"); // "GetText("Save");
         }
 
-        this.Subject.Text = Convert.ToString(this._messageRow["Topic"]);
+        this.Subject.Text = Convert.ToString(this._messageRow.Topic);
         this.DeleteReasonRow.Visible = true;
-        this.ReasonEditor.Text = Convert.ToString(this._messageRow["DeleteReason"]);
+        this.ReasonEditor.Text = Convert.ToString(this._messageRow.DeleteReason);
 
         // populate the message preview with the message datarow...
-        this.MessagePreview.Message = this._messageRow["message"].ToString();
-        this.MessagePreview.MessageFlags = new MessageFlags(this._messageRow["Flags"]);
+        this.MessagePreview.Message = this._messageRow.Message;
+        this.MessagePreview.MessageFlags = new MessageFlags(this._messageRow.Flags);
     }
 
     /// <summary>
@@ -359,31 +374,33 @@ namespace YAF.Pages
       }
 
       // Create objects for easy access
-      object tmpMessageID = this._messageRow["MessageID"];
-      object tmpForumID = this._messageRow["ForumID"];
-      object tmpTopicID = this._messageRow["TopicID"];
+      object tmpMessageId = this._messageRow.MessageID;
+      object tmpForumId = this._messageRow.ForumID;
+      object tmpTopicId = this._messageRow.TopicID;
 
       // Toogle delete message -- if the message is currently deleted it will be undeleted.
       // If it's not deleted it will be marked deleted.
-      // If it is the last message of the topic, the topic is also deleted
-      CommonDb.message_delete(PageContext.PageModuleID, tmpMessageID, 
-        this._isModeratorChanged, 
-        HttpUtility.HtmlEncode(this.ReasonEditor.Text), 
+        // If it is the last message of the topic, the topic is also deleted
+        CommonDb.message_delete(
+            PageContext.PageModuleID,
+            tmpMessageId,
+            this._isModeratorChanged,
+            HttpUtility.HtmlEncode(this.ReasonEditor.Text), 
         this.PostDeleted ? 0 : 1, 
         (bool)this.ViewState["delAll"], 
         this.EraseMessage.Checked);
 
       // retrieve topic information.
-      DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, tmpTopicID, true);
+      DataRow topic = CommonDb.topic_info(this.PageContext.PageModuleID, tmpTopicId, true);
 
       // If topic has been deleted, redirect to topic list for active forum, else show remaining posts for topic
       if (topic == null)
       {
-        YafBuildLink.Redirect(ForumPages.topics, "f={0}", tmpForumID);
+        YafBuildLink.Redirect(ForumPages.topics, "f={0}", tmpForumId);
       }
       else
       {
-        YafBuildLink.Redirect(ForumPages.posts, "t={0}", tmpTopicID);
+        YafBuildLink.Redirect(ForumPages.posts, "t={0}", tmpTopicId);
       }
     }
 

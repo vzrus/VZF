@@ -63,7 +63,7 @@ namespace YAF.Classes
             if (HttpContext.Current != null)
             {
                 // urlKey requires SERVER_NAME in case of systems that use HostNames for seperate sites or in our cases Boards as well as FilePath for multiboards in seperate folders.
-                var urlKey = String.Format(
+                var urlKey = string.Format(
                     "{0}{1}",
                     HttpContext.Current.Request.ServerVariables["SERVER_NAME"],
                     HttpContext.Current.Request.FilePath);
@@ -71,10 +71,10 @@ namespace YAF.Classes
                 // Lookup the AppRoot based on the current host + path. 
                 baseUrl = _baseUrls[urlKey];
 
-                if (String.IsNullOrEmpty(baseUrl))
+                if (string.IsNullOrEmpty(baseUrl))
                 {
                     // Each different filepath (multiboard) will specify a AppRoot key in their own web.config in their directory.
-                    baseUrl = !String.IsNullOrEmpty(Config.BaseUrlMask)
+                    baseUrl = !string.IsNullOrEmpty(Config.BaseUrlMask)
                                   ? TreatBaseUrl(Config.BaseUrlMask)
                                   : GetBaseUrlFromVariables();
 
@@ -84,7 +84,7 @@ namespace YAF.Classes
             }
             else
             {
-                if (String.IsNullOrEmpty(Config.BaseUrlMask))
+                if (string.IsNullOrEmpty(Config.BaseUrlMask))
                 {
                     throw new BaseUrlMaskRequiredException(
                       "Since there is no active context, a base url mask is required. Please specify in the AppSettings in your web.config: YAF.BaseUrlMask");
@@ -111,7 +111,7 @@ namespace YAF.Classes
       {
         string altRoot = Config.ClientFileRoot;
 
-        if (String.IsNullOrEmpty(altRoot) && !String.IsNullOrEmpty(Config.AppRoot))
+        if (string.IsNullOrEmpty(altRoot) && !string.IsNullOrEmpty(Config.AppRoot))
         {
           // default to "AppRoot" if no file root specified and AppRoot specified...
           altRoot = Config.AppRoot;
@@ -130,7 +130,7 @@ namespace YAF.Classes
       {
         string altRoot = Config.ServerFileRoot;
 
-        if (String.IsNullOrEmpty(altRoot) && !String.IsNullOrEmpty(Config.AppRoot))
+        if (string.IsNullOrEmpty(altRoot) && !string.IsNullOrEmpty(Config.AppRoot))
         {
           // default to "AppRoot" if no file root specified and AppRoot specified...
           altRoot = Config.AppRoot;
@@ -183,7 +183,7 @@ namespace YAF.Classes
     /// The get base url from variables.
     /// </summary>
     /// <returns>
-    /// The get base url from variables.
+    /// The base url from variables.
     /// </returns>
     [NotNull]
     public static string GetBaseUrlFromVariables()

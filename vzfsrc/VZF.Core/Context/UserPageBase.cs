@@ -370,6 +370,17 @@ namespace YAF.Core
         }
 
         /// <summary>
+        /// Gets the module id.
+        /// </summary>
+        public int ModuleID
+        {
+            get
+            {
+                return this.Page["ModuleID"].ToType<int>();
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets Page.
         /// </summary>
         public virtual IDictionary<string, object> Page

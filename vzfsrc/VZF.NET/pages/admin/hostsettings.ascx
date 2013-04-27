@@ -634,7 +634,14 @@
                             <asp:TextBox ID="TagForbiddenSymbols" runat="server"></asp:TextBox>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel230" runat="server" LocalizedTag="HOVERCARD_DELAY" LocalizedPage="ADMIN_HOSTSETTINGS" />   
+                        </td>
+                        <td class="post">
+                            <asp:TextBox Style="width:350px" ID="HoverCardOpenDelay" runat="server"></asp:TextBox>
+                        </td>   
+                    </tr>
                     <tr>
                         <td class="header1" colspan="2">
                             <VZF:LocalizedLabel ID="LocalizedLabel23" runat="server" LocalizedTag="HEADER_POLL" LocalizedPage="ADMIN_HOSTSETTINGS" />

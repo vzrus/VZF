@@ -597,7 +597,7 @@
     background:url(tab.png) no-repeat right top;
     border-color:#666;
     color:#666;
-    padding:3px 10px 2px 0px;
+    padding:3px 10px 2px 0;
 }
 .yafnet .ajax__tab_yaf .ajax__tab_hover .ajax__tab_inner 
 {
@@ -781,7 +781,7 @@
 
 .ModalDialog input, .ModalDialog select
 {
-    padding: 0px;
+    padding: 0;
 }
 
 .ModalDialog hr

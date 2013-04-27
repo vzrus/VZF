@@ -1882,7 +1882,7 @@ MODIFIES SQL DATA
                     SortOrder)
         VALUES     (l_BoardID,
                     'Guest',
-                    0,
+                    4,
                     NULL,
                     0,
                     '',
@@ -5296,14 +5296,14 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}message_move (i_MessageID INT, 
  DECLARE ici_OldTopicID INT;
  DECLARE ici_OldForumID INT;
  DECLARE ici_NewForumID	INT;
- DECLARE ici_MessageCount INT;
  DECLARE ici_LastMessageID INT;
  DECLARE ici_Posted DATETIME;
+ DECLARE ici_UserID INT;
+ DECLARE ici_UserName VARCHAR(255);
+ DECLARE ici_UserDisplayName VARCHAR(255);
+ DECLARE ici_EraseOldTopic TINYINT(1) DEFAULT 0;
  
-    /*Find TopicID and ForumID
- SELECT b.TopicID,b.ForumID INTO ici_ForumID,ici_OldTopicID
-        FROM {databaseName}.{objectQualifier}Message a,{databaseName}.{objectQualifier}Topic b WHERE a.MessageID=i_MessageID and b.TopicID=a.TopicID;*/
-SELECT Posted INTO ici_Posted 
+ SELECT Posted INTO ici_Posted 
 FROM {databaseName}.{objectQualifier}Message  
 WHERE MessageID= i_MessageID;
  SET 	ici_NewForumID = (SELECT     ForumID
@@ -5331,13 +5331,13 @@ IF ici_Position IS NULL THEN set ici_Position = 0; END IF;
  
  update {databaseName}.{objectQualifier}Message SET
         `Position` = `Position`+1
-     WHERE     (TopicID = i_MoveToTopic) and UNIX_TIMESTAMP(Posted) > UNIX_TIMESTAMP(ici_Posted);
+     WHERE     (TopicID = i_MoveToTopic) and Posted > ici_Posted;
  
  update {databaseName}.{objectQualifier}Message set
         `Position` = `Position`-1
-     WHERE (TopicID = ici_OldTopicID) and UNIX_TIMESTAMP(Posted) > UNIX_TIMESTAMP(ici_Posted);
+     WHERE (TopicID = ici_OldTopicID) and Posted > ici_Posted;
  
-     /*Update LastMessageID in Topic and Forum*/
+    -- Update LastMessageID in Topic and Forum
     UPDATE {databaseName}.{objectQualifier}Topic set
         LastPosted = NULL,
         LastMessageID = NULL,
@@ -5362,20 +5362,33 @@ IF ici_Position IS NULL THEN set ici_Position = 0; END IF;
     `Position` = ici_Position
  WHERE  MessageID = i_MessageID;
  
-     /*Delete topic if there are no more messages*/
-    SELECT COUNT(1) INTO ici_MessageCount 
+    -- Delete topic if there are no more messages 
+    IF NOT EXISTS(SELECT 1 
     FROM {databaseName}.{objectQualifier}Message 
-    WHERE TopicID = ici_OldTopicID and (Flags & 8)=0;
-    IF ici_MessageCount=0 THEN 
-    CALL {databaseName}.{objectQualifier}topic_delete(ici_OldTopicID,0,0); 
+    WHERE TopicID = ici_OldTopicID and (Flags & 8)=0) THEN 
+			
+	 SELECT  UserID, UserName, UserDisplayName INTO ici_UserID,ici_UserName,ici_UserDisplayName
+    FROM {databaseName}.{objectQualifier}Message WHERE MessageID=i_MessageID;
+
+	UPDATE {databaseName}.{objectQualifier}Topic set
+        UserID = ici_UserID,
+        UserName = ici_UserName,
+        DisplayName = ici_UserDisplayName
+    WHERE TopicID = i_MoveToTopic;	
+	 IF (SELECT COUNT(MessageID) 
+    FROM {databaseName}.{objectQualifier}Message 
+    WHERE TopicID = ici_OldTopicID and (Flags & 8)=8) = 0 THEN 
+	ici_EraseOldTopic = 1
+	END IF;
+    CALL {databaseName}.{objectQualifier}topic_delete(ici_OldTopicID,0,ici_EraseOldTopic); 
     END IF;
  
-     /*update lastpost*/
+    -- update lastpost
     CALL {databaseName}.{objectQualifier}topic_updatelastpost(ici_OldForumID,ici_OldTopicID);
     CALL {databaseName}.{objectQualifier}forum_updatelastpost(ici_OldForumID);
     CALL {databaseName}.{objectQualifier}topic_updatelastpost(ici_NewForumID,i_MoveToTopic);
     CALL {databaseName}.{objectQualifier}forum_updatelastpost(ici_NewForumID);
-     /*update topic numposts*/
+    -- update topic numposts
     UPDATE {databaseName}.{objectQualifier}Topic SET
         NumPosts = (SELECT COUNT(1) from {databaseName}.{objectQualifier}Message x 
         WHERE x.TopicID={databaseName}.{objectQualifier}Topic.TopicID 
@@ -5583,10 +5596,10 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}message_reportresolve(i_Message
          END IF;
   END IF;
     SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID AND Name != i_UserName;	
-    /* Add points to Users total points */
+   -- Add points to Users total points 
     UPDATE {databaseName}.{objectQualifier}User SET Points = Points + 3  WHERE UserID = i_UserID;       
     INSERT {databaseName}.{objectQualifier}Message ( UserID, Message, TopicID, Posted, UserName,UserDisplayName, IP, ReplyTo, `Position`, Indent, Flags, BlogPostID, ExternalMessageId, ReferenceMessageId)
-    VALUES ( i_UserID, CONVERT(i_Message USING {databaseEncoding}), i_TopicID, i_Posted, i_UserName,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END) ,i_IP, i_ReplyTo, ici_Position, ici_Indent, i_Flags & ~16, i_BlogPostID, i_ExternalMessageId, i_ReferenceMessageId);
+    VALUES ( i_UserID, CONVERT(i_Message USING {databaseEncoding}), i_TopicID, i_Posted,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT Name FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END),(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END) ,i_IP, i_ReplyTo, ici_Position, ici_Indent, i_Flags & ~16, i_BlogPostID, i_ExternalMessageId, i_ReferenceMessageId);
 
     SET i_MessageID = LAST_INSERT_ID();
 
@@ -6039,7 +6052,7 @@ delete from {databaseName}.{objectQualifier}ActiveAccess;
 END;
 --GO
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
-CREATE PROCEDURE {databaseName}.{objectQualifier}pageload(
+CREATE PROCEDURE {databaseName}.{objectQualifier}pageload(   
     i_SessionID 	 VARCHAR(24),
     i_BoardID	     INT,	
     i_UserKey	     VARCHAR(64),
@@ -6321,7 +6334,7 @@ BEGIN
                 Platform = i_Platform
             WHERE Browser = i_Browser AND IP = i_IP and BoardID=i_BoardID;
             -- trace crawler: the cache is reset every time crawler moves to next page ? Disabled as cache reset will overload server 
-            -- set @ActiveUpdate = 1		 ;	
+            -- set @ActiveUpdate = 1;	
             END IF;	
             else
             UPDATE {databaseName}.{objectQualifier}Active SET
@@ -6342,14 +6355,14 @@ BEGIN
              CALL {databaseName}.{objectQualifier}active_updatemaxstats (i_BoardID, i_CurrentTime); 
             END IF; 
         END IF;
-        /*remove duplicate users*/
+        -- remove duplicate users
         IF ici_IsGuest = 0 THEN
             DELETE FROM {databaseName}.{objectQualifier}Active WHERE UserID=ici_UserID AND BoardID=i_BoardID AND SessionID<>i_SessionID; END IF;
         END IF;
      END IF;
-    /*return information*/
+    -- return information
       --  SELECT count(1) INTO ici_Incoming FROM {databaseName}.{objectQualifier}UserPMessageSelectView b  where b.UserID=ici_UserID and b.IsRead=0;
-     SELECT
+     SELECT	
         x.*,		
         ici_IsGuest AS IsGuest,
         i_IsCrawler AS IsCrawler,
@@ -8904,7 +8917,7 @@ BEGIN
 SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID AND Name != i_UserName;	
      /* create the topic */
      INSERT INTO {databaseName}.{objectQualifier}Topic(ForumID,Topic,UserID,Posted,Views,Priority,UserName,UserDisplayName,NumPosts, Description, Status, Styles)
-     VALUES(i_ForumID,CONVERT(i_Subject USING {databaseEncoding}),i_UserID,i_Posted,0,i_Priority,i_UserName,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END) ,0, i_Description, i_status, i_Styles);
+     VALUES(i_ForumID,CONVERT(i_Subject USING {databaseEncoding}),i_UserID,i_Posted,0,i_Priority,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT Name FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END),(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END) ,0, i_Description, i_status, i_Styles);
 
      /* get its id*/
      SET ici_TopicID = LAST_INSERT_ID();
@@ -10437,7 +10450,7 @@ SELECT
         
  IF icic_cntr < 1 OR icic_cntr IS NULL THEN 		
 
-        CALL {databaseName}.{objectQualifier}user_save(null,i_BoardID,i_UserName,i_UserName,i_Email,i_TimeZone,null,null,null,null, null, 1, null, null, null,i_UTCTIMESTAMP); 		
+        CALL {databaseName}.{objectQualifier}user_save(null,i_BoardID,i_UserName,i_UserName,i_Email,i_TimeZone,null,null,null,null, null, 1, null, null, null,i_UTCTIMESTAMP,0,10,10); 		
         SELECT MAX(UserID) INTO icic_UserID FROM {databaseName}.{objectQualifier}User;
 END IF;		
     SELECT icic_UserID AS UserID;		
@@ -12929,7 +12942,7 @@ SELECT IFNULL(MAX(c.UsrPersonalMasks),0),IFNULL(MAX(c.UsrPersonalForums),0)
         a.IsTwitterUser,
         a.Culture AS CultureUser,
         SIGN(a.Flags & 64) AS IsDirty,		
-        -- a.Flags & 4 AS IsGuest, 
+        SIGN(a.Flags & 4) AS IsGuest, 
         (select count(1) from {databaseName}.{objectQualifier}Mail) AS MailsPending,
         /* IsRead and IsDeleted bits */
         (CASE WHEN i_ShowUnreadPMs > 0 THEN (SELECT count(1) FROM {databaseName}.{objectQualifier}UserPMessage b  where

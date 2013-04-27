@@ -190,7 +190,7 @@ CREATE PROCEDURE objQual_BOARD_CREATE(
         VALUES     (:l_RankIDGuest,
                     :L_BOARDID,
                     'Guest',                   
-                    0,
+                    4,
                     NULL,
                     0,
                     '',
@@ -865,20 +865,19 @@ I_UTCTIMESTAMP TIMESTAMP)
 "IsGuest"	SMALLINT,
 "IsForumModerator" SMALLINT,
 "IsModerator"  SMALLINT,
-"IsGuestX"  SMALLINT,
 "LastActive" TIMESTAMP,
-"ReadAccess" INTEGER,			
-"PostAccess" INTEGER,
-"ReplyAccess" INTEGER,
-"PriorityAccess" INTEGER,
-"PollAccess" INTEGER,
-"VoteAccess" INTEGER,
-"ModeratorAccess" INTEGER,
-"EditAccess" INTEGER,
-"DeleteAccess" INTEGER,
-"UploadAccess" INTEGER,		
-"DownloadAccess" INTEGER, 
-"UserForumAccess" INTEGER,
+"ReadAccess" SMALLINT,			
+"PostAccess" SMALLINT,
+"ReplyAccess" SMALLINT,
+"PriorityAccess" SMALLINT,
+"PollAccess" SMALLINT,
+"VoteAccess" SMALLINT,
+"ModeratorAccess" SMALLINT,
+"EditAccess" SMALLINT,
+"DeleteAccess" SMALLINT,
+"UploadAccess" SMALLINT,		
+"DownloadAccess" SMALLINT, 
+"UserForumAccess" SMALLINT,
 "IsCrawler" SMALLINT,
 "IsMobileDevice" SMALLINT,			
 "CategoryID" INTEGER,
@@ -891,10 +890,8 @@ I_UTCTIMESTAMP TIMESTAMP)
 AS
 DECLARE VARIABLE ici_userid		INTEGER;
 DECLARE VARIABLE ici_userboardid	INTEGER;
-DECLARE VARIABLE ici_isguest	BOOL DEFAULT 1;
 DECLARE VARIABLE ici_rowcount	INTEGER;
 DECLARE VARIABLE ici_previousvisit	timestamp;
-DECLARE VARIABLE ici_incoming	INTEGER;
 DECLARE VARIABLE ici_ActiveUpdate	BOOL DEFAULT 0;
 DECLARE VARIABLE ici_IsCrawler BOOL;
 DECLARE VARIABLE ici_ActiveFlags INTEGER DEFAULT 1;
@@ -920,11 +917,10 @@ ici_IsCrawler = :I_ISCRAWLER;
     EXCEPTION TOO_MANY_GUESTS;  
     END 
  
-    IF (I_USERKEY IS NULL) THEN
+    IF (:I_USERKEY IS NULL) THEN
     BEGIN       
  
-        ici_userid = ICI_GUESTID;
-        ici_isguest = 1;
+        ici_userid = :ICI_GUESTID;       
         ici_userboardid = :I_BOARDID;
         -- set IsGuest ActiveFlag  1 | 2
         ici_ActiveFlags = 3;		
@@ -940,37 +936,35 @@ ici_IsCrawler = :I_ISCRAWLER;
         SELECT USERID, BOARDID   
         FROM objQual_USER 
         where BOARDID=:I_BOARDID AND PROVIDERUSERKEY=CHAR_TO_UUID(:I_USERKEY)
-        INTO :ICI_USERID,:ici_UserBoardID;
-        ici_isguest = 0;
+        INTO :ICI_USERID,:ici_UserBoardID;      
         -- make sure that registered users are not crawlers
         ici_IsCrawler = 0;
         -- set IsRegistered ActiveFlag
-        ici_ActiveFlags = BIN_OR(ici_ActiveFlags, 4);
-        
+        ici_ActiveFlags = BIN_OR(ici_ActiveFlags, 4);        
     END
     
     /* Check valid ForumID */
-    IF (I_FORUMID IS NOT NULL 
+    IF (:I_FORUMID IS NOT NULL 
             AND NOT EXISTS
             (SELECT 1 FROM objQual_FORUM WHERE FORUMID=:I_FORUMID))
                 THEN 
         I_FORUMID = NULL;             
     
     /* Check valid CategoryID*/
-    IF (I_CATEGORYID IS NOT NULL 
+    IF (:I_CATEGORYID IS NOT NULL 
     AND NOT EXISTS
     (SELECT 1 FROM objQual_CATEGORY WHERE CATEGORYID=:I_CATEGORYID))  THEN 
         I_CATEGORYID = NULL;
         
     -- Check valid MessageID
-    IF (i_messageid IS NOT NULL 
+    IF (:i_messageid IS NOT NULL 
     AND NOT EXISTS
     (SELECT 1 FROM objQual_MESSAGE WHERE MESSAGEID=:i_messageid)) 
            THEN
         i_messageid = NULL;
        
    -- Check valid TopicID
-    IF (I_TOPICID IS NOT NULL 
+    IF (:I_TOPICID IS NOT NULL 
     AND NOT EXISTS
     (SELECT 1 FROM objQual_TOPIC WHERE TOPICID=:I_TOPICID)) 
            THEN
@@ -978,7 +972,7 @@ ici_IsCrawler = :I_ISCRAWLER;
 
 
     -- find missing ForumID/TopicID
-    IF (i_messageid IS NOT NULL) THEN
+    IF (:i_messageid IS NOT NULL) THEN
         SELECT
             c.CATEGORYID,
             b.FORUMID,
@@ -995,7 +989,7 @@ ici_IsCrawler = :I_ISCRAWLER;
             a.MESSAGEID = :i_messageid AND
             BOARDID = :I_BOARDID
              INTO :I_CATEGORYID,:I_FORUMID,:I_TOPICID;
-    ELSE IF (I_TOPICID IS NOT NULL) THEN
+    ELSE IF (:I_TOPICID IS NOT NULL) THEN
         SELECT 
             b.CATEGORYID,
             a.FORUMID                 
@@ -1010,7 +1004,7 @@ ici_IsCrawler = :I_ISCRAWLER;
             c.BOARDID = :I_BOARDID
             INTO :I_CATEGORYID,:I_FORUMID;
     
-    ELSE IF (I_FORUMID IS NOT NULL) THEN
+    ELSE IF (:I_FORUMID IS NOT NULL) THEN
         SELECT
              a.CATEGORYID	                    
         FROM	objQual_FORUM a
@@ -1019,8 +1013,7 @@ ici_IsCrawler = :I_ISCRAWLER;
         WHERE
             a.FORUMID = :I_FORUMID and
             b.BOARDID = :I_BOARDID
-            INTO     :I_CATEGORYID;	
- 
+            INTO     :I_CATEGORYID;	 
 
     -- ensure that access right are in place		
      if (NOT EXISTS (SELECT FIRST 1
@@ -1056,29 +1049,29 @@ ici_IsCrawler = :I_ISCRAWLER;
             SIGN(ISADMIN), 
             SIGN(ISFORUMMODERATOR),
             SIGN(ISMODERATOR),			
-            (SELECT SIGN(:ici_isguest) FROM RDB$DATABASE),
+            (CASE WHEN (:I_USERKEY IS NULL) THEN (SELECT 1 FROM RDB$DATABASE) ELSE (SELECT 0 FROM RDB$DATABASE)  END),
             (SELECT :I_UTCTIMESTAMP FROM RDB$DATABASE),
-            READACCESS,
-            POSTACCESS,
-            REPLYACCESS,
-            PRIORITYACCESS,
-            POLLACCESS,
-            VOTEACCESS,
-            MODERATORACCESS,
-            EDITACCESS,
-            DELETEACCESS,
-            UPLOADACCESS,
-            DOWNLOADACCESS,
-            USERFORUMACCESS			
+            SIGN(READACCESS),
+            SIGN(POSTACCESS),
+            SIGN(REPLYACCESS),
+            SIGN(PRIORITYACCESS),
+            SIGN(POLLACCESS),
+            SIGN(VOTEACCESS),
+            SIGN(MODERATORACCESS),
+            SIGN(EDITACCESS),
+            SIGN(DELETEACCESS),
+            SIGN(UPLOADACCESS),
+            SIGN(DOWNLOADACCESS),
+            SIGN(USERFORUMACCESS)			
             from objQual_VACCESS
             where USERID = :ICI_USERID;
         END	
 
         -- ensure that guest access right are in place		
-     if (:ICI_USERID != :ICI_GUESTID and NOT EXISTS (SELECT FIRST 1
+     if (:ICI_USERID != :ICI_GUESTID and (NOT EXISTS (SELECT FIRST 1
             USERID	
             from objQual_ACTIVEACCESS 
-            where USERID = :ICI_GUESTID)) THEN
+            where USERID = :ICI_GUESTID))) THEN
             BEGIN				
             insert into objQual_ACTIVEACCESS(
             USERID,
@@ -1108,39 +1101,39 @@ ici_IsCrawler = :I_ISCRAWLER;
             SIGN(ISADMIN), 
             SIGN(ISFORUMMODERATOR),
             SIGN(ISMODERATOR),
-            (SELECT SIGN(:ici_isguest) FROM RDB$DATABASE),
+            (CASE WHEN (:I_USERKEY IS NULL) THEN (SELECT CAST(1 AS BOOL)  FROM RDB$DATABASE) ELSE (SELECT CAST(0 AS BOOL) FROM RDB$DATABASE)  END),
             (SELECT :I_UTCTIMESTAMP FROM RDB$DATABASE),
-            READACCESS,
-            POSTACCESS,
-            REPLYACCESS,
-            PRIORITYACCESS,
-            POLLACCESS,
-            VOTEACCESS,
-            MODERATORACCESS,
-            EDITACCESS,
-            DELETEACCESS,
-            UPLOADACCESS,
-            DOWNLOADACCESS,
-            USERFORUMACCESS			
+            SIGN(READACCESS),
+            SIGN(POSTACCESS),
+            SIGN(REPLYACCESS),
+            SIGN(PRIORITYACCESS),
+            SIGN(POLLACCESS),
+            SIGN(VOTEACCESS),
+            SIGN(MODERATORACCESS),
+            SIGN(EDITACCESS),
+            SIGN(DELETEACCESS),
+            SIGN(UPLOADACCESS),
+            SIGN(DOWNLOADACCESS),
+            SIGN(USERFORUMACCESS)			
             from objQual_VACCESS
             where USERID = :ICI_GUESTID;
         END	
   if (EXISTS (SELECT FIRST 1
             USERID	
             from objQual_ACTIVEACCESS 
-            where USERID = :ICI_USERID and FORUMID = COALESCE(:ici_ForumID,0) and (COALESCE(:ici_ForumID,0) = 0 OR READACCESS = 1))) THEN
+            where USERID = :ICI_USERID and FORUMID = COALESCE(:I_FORUMID,0) and (COALESCE(:I_FORUMID,0) = 0 OR READACCESS = 1))) THEN
             BEGIN
    -- update active
 
          DELETE FROM objQual_ACTIVE WHERE SESSIONID = :I_SESSIONID AND BOARDID <> :I_BOARDID;
-            -- get previous visit
-    if (ici_isguest = 0) THEN
+            -- get previous visit if not a guest
+    if (:I_USERKEY IS NULL) THEN
      begin
          select LastVisit from objQual_USER where UserID = :ici_userid
          INTO :ici_previousvisit;
     end
 
-    /*update last visit*/
+    -- update last visit
     UPDATE objQual_USER SET 
         LASTVISIT = :I_UTCTIMESTAMP,
         IP = :I_IP
@@ -1185,7 +1178,8 @@ ici_IsCrawler = :I_ISCRAWLER;
                 FLAGS = :ici_ActiveFlags
             WHERE BROWSER = :I_BROWSER AND IP = :I_IP;
             -- trace crawler: the cache is reset every time crawler moves to next page ? Disabled as cache reset will overload server 
-               if (:ici_isguest = 0) then	
+             -- we not update cache for a guest
+			   if (:I_USERKEY IS NULL) then	
                 BEGIN	
                  ici_ActiveUpdate = 1;
                 END	
@@ -1227,16 +1221,16 @@ ici_IsCrawler = :I_ISCRAWLER;
             :ici_ActiveFlags);
             
             -- parameter to update active users cache if this is a new user			
-                if (:ici_isguest = 0) then	
+                if (:I_USERKEY IS NULL) then	
                 BEGIN	
                  ici_ActiveUpdate = 1;
                 END
         
-            /*update max user stats*/
+            -- update max user stats
             EXECUTE PROCEDURE objQual_ACTIVE_UPDATEMAXSTATS :I_BOARDID, :I_UTCTIMESTAMP;			
         END
-        /*remove duplicate users but it happens with regular users TODO: */
-        IF (:ici_isguest <> 0) THEN
+        -- remove duplicate users but it happens with regular users TODO:
+        IF (:I_USERKEY IS NOT NULL) THEN
             DELETE FROM objQual_ACTIVE
              WHERE USERID=:ici_userid 
              AND BOARDID=:I_BOARDID 
@@ -1248,16 +1242,15 @@ ici_IsCrawler = :I_ISCRAWLER;
     FOR 
     SELECT FIRST 1 	-- get previous visit 
     (SELECT :ici_ActiveUpdate FROM RDB$DATABASE),	 
-(CASE WHEN (:ici_isguest = 0) THEN
+(CASE WHEN (:I_USERKEY IS NOT NULL) THEN
         (SELECT  LASTVISIT 
         FROM objQual_USER WHERE USERID = :ici_userid) ELSE NULL END) AS "PreviousVisit",		
 x.USERID AS "UserID",
 x.FORUMID AS "ForumID",
 x.ISADMIN AS "IsAdmin",
-(SELECT :ici_isguest FROM RDB$DATABASE) AS "IsGuest",
+(CASE WHEN (:I_USERKEY IS NULL) THEN (SELECT 1 FROM RDB$DATABASE) ELSE (SELECT 0 FROM RDB$DATABASE)  END) AS "IsGuest",
 x.ISFORUMMODERATOR AS "IsForumModerator",
 x.ISMODERATOR AS "IsModerator",
-x.ISGUESTX AS "IsGuestX",
 x.LASTACTIVE,
 x.READACCESS,			
 x.POSTACCESS,
@@ -1296,8 +1289,7 @@ x.USERFORUMACCESS,
         :"IsAdmin",
         :"IsGuest",
         :"IsForumModerator",
-        :"IsModerator",
-        :"IsGuestX",
+        :"IsModerator",    
         :"LastActive",
         :"ReadAccess",			
         :"PostAccess",
@@ -1785,8 +1777,8 @@ select
         t.LastMessageID AS LastMessageID,
         t.LASTMESSAGEFLAGS AS LastMessageFlags,
         t.LASTUSERID AS LastUserID,
-        (SELECT :ici_LastUserName FROM RDB$DATABASE),
-        (SELECT :ici_LastUserDisplayName FROM RDB$DATABASE),
+        b.LastUserName,
+        b.LastUserDisplayName,
         t.TOPICID AS LastTopicID,
         t.TOPICMOVEDID AS TopicMovedID,
         t.TOPIC AS LastTopicName,
@@ -1852,7 +1844,7 @@ select
          :"LastTopicAccess"
          DO 
          BEGIN
-         IF (:"LastUser" IS NULL) THEN
+         IF (:"LastUser" IS NULL OR CHAR_LENGTH(:"LastUser") < 2) THEN
          select x.NAME, x.DISPLAYNAME from objQual_USER x 
          where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		
          SUSPEND; 
@@ -2034,7 +2026,7 @@ BEGIN
         COALESCE(t.LASTUSERNAME,
         (select x.NAME from objQual_USER x 
         where x.USERID = t.LASTUSERID)) AS "LastUserName",
-        COALESCE(t.LASTUSERNAME,
+        COALESCE(t.LASTUSERDISPLAYNAME,
         (select x.DISPLAYNAME from objQual_USER x 
         where x.USERID = t.LASTUSERID)) AS "LastUserDisplayName",		
         (select x.ISGUEST from objQual_USER x 
@@ -3239,7 +3231,9 @@ BEGIN
         null,
         0,
         :I_UTCTIMESTAMP,
-        0) RETURNING_VALUES :icic_UserID; 			
+        0,
+		10,
+		10) RETURNING_VALUES :icic_UserID; 			
         
 END		
     SELECT :icic_UserID FROM RDB$DATABASE INTO :"UserID" ;
@@ -3857,6 +3851,7 @@ returns
 "CultureUser"	VARCHAR(10),
 "IsFacebookUser" BOOL,
 "IsTwitterUser" BOOL,
+"IsGuest" BOOL,
 "MailsPending" INTEGER,
 "UnreadPrivate" INTEGER,
 "LastUnreadPm" TIMESTAMP,
@@ -3919,7 +3914,7 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
                                   INTO :R_UsrAlbums;
     END	
                                
-
+  
     -- return information
     for select FIRST 1		
         UUID_TO_CHAR(a.PROVIDERUSERKEY) AS "ProviderUserKey",
@@ -3935,7 +3930,8 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
         a.TIMEZONE AS "TimeZoneUser",
         a.CULTURE AS "CultureUser",	
         a.ISFACEBOOKUSER,
-        a.ISTWITTERUSER,	
+        a.ISTWITTERUSER,
+		(CASE WHEN BIN_AND(a.Flags,4) <> 4 THEN CAST(0 AS SMALLINT) ELSE CAST(1 AS SMALLINT)  END),
         (CASE WHEN :I_SHOWPENDINGMAILS > 0 THEN (select count(1) from objQual_MAIL WHERE TOUSERNAME = a.NAME) ELSE 0 END) AS "MailsPending",
         (CASE WHEN (:I_SHOWUNREADPMS > 0) THEN (SELECT count(1)  
         FROM objQual_USERPMESSAGE b  
@@ -3955,7 +3951,7 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
         (CASE WHEN (:G_UsrAlbums > :R_UsrAlbums) THEN :G_UsrAlbums ELSE :R_UsrAlbums END),
         (CASE WHEN (:I_SHOWPENDINGBUDDIES > 0) THEN (SELECT COALESCE((SELECT SIGN(COUNT(1)) FROM objQual_BUDDY WHERE FROMUSERID = :I_USERID OR TOUSERID = :I_USERID),0) FROM RDB$DATABASE) ELSE 0 END) as UserHasBuddies,
           -- Guest can't vote in polls attached to boards, we need some temporary access check by a criteria 
-        (CASE WHEN BIN_AND(a.Flags,4) > 0 THEN 0 ELSE 1 END),	
+        (CASE WHEN BIN_AND(a.Flags,4) <> 4 THEN CAST(0 AS SMALLINT)  ELSE CAST(1 AS SMALLINT)  END),	
         a.Points,
         (SELECT COUNT(1) FROM objQual_FORUM WHERE CREATEDBYUSERID = :I_USERID AND ISUSERFORUM = 1),
         (SELECT COUNT(1) FROM objQual_ACCESSMASK WHERE CREATEDBYUSERID = :I_USERID AND ISUSERMASK = 1),
@@ -3985,6 +3981,7 @@ IF (:I_SHOWUSERULBUMS	> 0) THEN
         :"CultureUser",
         :"IsFacebookUser",
         :"IsTwitterUser",
+		:"IsGuest",
         :"MailsPending",
         :"UnreadPrivate" ,
         :"LastUnreadPm" ,
@@ -4770,84 +4767,4 @@ BEGIN
 END;
 --GO
 
-CREATE  PROCEDURE objQual_USERFORUM_ACCESS(
-I_USERID  INTEGER, 
-I_FORUMID INTEGER)
-  RETURNS 
-  (
-"UserID" INTEGER,
-"ForumID" INTEGER,
-"IsAdmin"	SMALLINT,
-"IsGuest"	SMALLINT,
-"IsForumModerator" SMALLINT,
-"IsModerator"  SMALLINT,
-"ReadAccess" INTEGER,			
-"PostAccess" INTEGER,
-"ReplyAccess" INTEGER,
-"PriorityAccess" INTEGER,
-"PollAccess" INTEGER,
-"VoteAccess" INTEGER,
-"ModeratorAccess" INTEGER,
-"EditAccess" INTEGER,
-"DeleteAccess" INTEGER,
-"UploadAccess" INTEGER,		
-"DownloadAccess" INTEGER, 
-"UserForumAccess" INTEGER
-) 
-AS
-DECLARE VARIABLE ici_userid		INTEGER;
-BEGIN
-I_FORUMID    =coalesce(:I_FORUMID,0);	
-    -- Check valid ForumID 
-    IF (I_FORUMID IS NOT NULL 
-            AND NOT EXISTS
-            (SELECT 1 FROM objQual_FORUM WHERE FORUMID=:I_FORUMID))
-                THEN 
-        I_FORUMID = NULL; 
-    
-    -- get access right if forum 
-    FOR	select 
-            USERID, 
-            (SELECT :I_BOARDID FROM RDB$DATABASE), 
-            FORUMID, 
-            SIGN(ISADMIN), 
-            SIGN(ISFORUMMODERATOR),
-            SIGN(ISMODERATOR),
-            READACCESS,
-            POSTACCESS,
-            REPLYACCESS,
-            PRIORITYACCESS,
-            POLLACCESS,
-            VOTEACCESS,
-            MODERATORACCESS,
-            EDITACCESS,
-            DELETEACCESS,
-            UPLOADACCESS,
-            DOWNLOADACCESS,
-            USERFORUMACCESS			
-            from objQual_VACCESS
-            where USERID = :ICI_USERID and FORUMID = :I_FORUMID)	
-        INTO	
-        :"UserID", 
-        :"ForumID", 
-        :"IsAdmin",
-        :"IsGuest",
-        :"IsForumModerator",
-        :"IsModerator",
-        :"ReadAccess",			
-        :"PostAccess",
-        :"ReplyAccess",
-        :"PriorityAccess",
-        :"PollAccess",
-        :"VoteAccess",
-        :"ModeratorAccess",
-        :"EditAccess",
-        :"DeleteAccess",
-        :"UploadAccess",		
-        :"DownloadAccess",
-        :"UserForumAccess"
-DO SUSPEND;	
-
-END;
---GO
 

@@ -85,8 +85,9 @@
   <PropertyGroup>
     <PreBuildEvent>xcopy $(SolutionDir)\packages\firebird\FirebirdSql.Data.FirebirdClient.dll $(SolutionDir)\VZF.NET\Bin\  /d /y
 xcopy $(SolutionDir)\packages\mysql\MySql.Data.dll $(SolutionDir)\VZF.NET\Bin\   /d /y
-xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\
-xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y</PreBuildEvent>
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y
+xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\  /d /y
+</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

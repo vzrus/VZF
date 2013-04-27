@@ -10,9 +10,34 @@
 namespace VZF.Types.Data
 {
     using System;
-    
+    using System.Data;
+
     public partial class rank_list_Result
     {
+        public rank_list_Result(DataRow dr)
+        {
+            RankID = dr.Field<int>("RankID");
+            BoardID = dr.Field<int>("BoardID");
+            Name = dr.Field<string>("Name");
+            MinPosts = dr.Field<int?>("MinPosts");
+            RankImage = dr.Field<string>("RankImage");
+            Flags = dr.Field<int>("Flags");
+            PMLimit = dr.Field<int>("PMLimit");
+            Style = dr.Field<string>("Style");
+            SortOrder = dr.Field<int>("SortOrder");
+            Description = dr.Field<string>("Description");
+            UsrSigChars = dr.Field<int>("UsrSigChars");
+            UsrSigBBCodes = dr.Field<string>("UsrSigBBCodes");
+            UsrSigHTMLTags = dr.Field<string>("UsrSigHTMLTags");
+            UsrAlbums = dr.Field<int>("UsrAlbums");
+            UsrAlbumImages = dr.Field<int>("UsrAlbumImages");
+        }
+        public rank_list_Result(int rankID, string name)
+        {
+            RankID = rankID;
+            Name = name;
+        }
+
         public int RankID { get; set; }
         public int BoardID { get; set; }
         public string Name { get; set; }
@@ -21,7 +46,7 @@ namespace VZF.Types.Data
         public int Flags { get; set; }
         public int PMLimit { get; set; }
         public string Style { get; set; }
-        public short SortOrder { get; set; }
+        public int SortOrder { get; set; }
         public string Description { get; set; }
         public int UsrSigChars { get; set; }
         public string UsrSigBBCodes { get; set; }

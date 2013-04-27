@@ -148,6 +148,8 @@
     <Resource tag="DELETE">Verwijderen</Resource>
     <Resource tag="DOWNLOAD">Downloaden</Resource>
     <Resource tag="EDIT">Bewerken</Resource>
+    <Resource tag="ISCOMMONMASK">Access mask</Resource>
+    <Resource tag="ISUSERMASK">A user mask</Resource>
     <Resource tag="MODERATOR">Modereren</Resource>
     <Resource tag="MSG_NOT_DELETE">Je kunt dit Toegangsmasker niet verwijderen omdat het nog in gebruik is.</Resource>
     <Resource tag="NAME">Naam</Resource>
@@ -894,6 +896,7 @@
     <Resource tag="IS_GUEST">Is Gast</Resource>
     <Resource tag="IS_MOD">Is Moderator</Resource>
     <Resource tag="IS_START">Is Start</Resource>
+    <Resource tag="ISUSERGROUP">Is User Group</Resource>
     <Resource tag="LINKED">Gekoppeld</Resource>
     <Resource tag="NAME">Naam</Resource>
     <Resource tag="NEW_ROLE">Nieuwe Rol</Resource>
@@ -1119,6 +1122,8 @@
     <Resource tag="HOST_PERMISSION">Goedkeuring</Resource>
     <Resource tag="HOST_SEARCH">Zoeken</Resource>
     <Resource tag="HOST_TEMPLATES">Sjablonen</Resource>
+    <Resource tag="HOVERCARD_DELAY">Hover Card opening Delay (Milliseconds):</Resource>
+    <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE">Activeer automatisch vergroten/verkleinen van foto-bijlagen:</Resource>
     <Resource tag="IMAGE_ATTACH_RESIZE_HELP">Foto-bijlagen worden verkleind naar miniatuurweergaven als ze te groot zijn.</Resource>
     <Resource tag="IMAGE_RESIZE_HEIGHT">Maximale hoogte van de verkleinde foto-bijlagen:</Resource>

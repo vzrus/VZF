@@ -136,12 +136,11 @@ namespace YAF.Types.Flags
             IsLadder = 2,
 
             /// <summary>
-            /// The is guest.
+            /// The is hidden(like guest).
             /// </summary>
-            IsGuest = 4
+            IsHidden = 4
 
-            /* for future use
-                  xxxxx = 4,
+            /* for future use                  
                   xxxxx = 8,
                   xxxxx = 16,
                   xxxxx = 32,

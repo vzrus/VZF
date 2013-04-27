@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db.cs" />
-    <Compile Include="DbAccess.cs" />
+    <Compile Include="FbDbAccess.cs" />
     <Compile Include="SettingsPropertyColumn.cs" />
     <Compile Include="DbConnManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
