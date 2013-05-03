@@ -9926,14 +9926,13 @@ namespace VZF.Data.Postgre
 
                                 results.Append("RowNumber");
                                 int gg = 0;
-                                var columnNames = new string[reader.GetSchemaTable().Rows.Count - 1];
+                                var columnNames = new string[reader.GetSchemaTable().Rows.Count];
                                 foreach (DataRow drd in reader.GetSchemaTable().Rows)
                                 {
                                     columnNames[gg] = drd["ColumnName"].ToString();
                                     results.Append(",");
-                                    results.Append(drd["ColumnName"].ToString());
+                                    results.Append(drd["ColumnName"]);
                                     gg++;
-
                                 }
                                 
                                 //   var columnNames = reader.GetSchemaTable().Rows.Cast<DataRow>().Select(r => r["ColumnName"].ToString()).ToList();

@@ -340,6 +340,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}post_list_result;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}post_list;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}post_listbyposition;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}post_list_reverse10;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}rank_delete;
@@ -5119,7 +5121,8 @@ select
     where
         m.TopicID = i_TopicID			
         AND (m.Flags & 16)  = 16
-        AND ((m.Flags & 8)  <> 8 OR ((i_ShowDeleted = 1 AND (m.Flags & 8)  = 8) OR (i_AuthorUserID > 0 AND m.UserID = i_AuthorUserID)))
+       -- deleted
+		AND (i_ShowDeleted = 1 OR m.Flags & 8 <> 8 OR (i_AuthorUserID > 0 AND m.UserID =i_AuthorUserID))  
          AND UNIX_TIMESTAMP(m.Posted) >	 UNIX_TIMESTAMP(i_LastRead)
     order by		
         m.Posted DESC;		
@@ -5138,8 +5141,9 @@ select
         -- approved 			
         AND (m.Flags & 16)  = 16
         -- deleted
-        AND ((m.Flags & 8)  <> 8 OR ((i_ShowDeleted = 1 AND (m.Flags & 8)  = 8) OR (i_AuthorUserID > 0 AND m.UserID = i_AuthorUserID)))
-        AND UNIX_TIMESTAMP(m.Posted) >	UNIX_TIMESTAMP(i_LastRead)
+       -- deleted
+		AND (i_ShowDeleted = 1 OR m.Flags & 8 <> 8 OR (i_AuthorUserID > 0 AND m.UserID =i_AuthorUserID))  
+        AND m.Posted >	i_LastRead
     order by		
         m.Posted DESC LIMIT 100;
     END IF;
@@ -5160,7 +5164,7 @@ select
          -- simply return last post if no unread message is found
            select  MessageID, {databaseName}.{objectQualifier}biginttoint(1) AS MessagePosition, ici_firstmessageid  AS FirstMessageID
            from tbl_msglunr
-           where TopicID=i_TopicID and UNIX_TIMESTAMP(Posted)> UNIX_TIMESTAMP(i_LastRead)
+           where TopicID=i_TopicID and Posted> i_LastRead
            order by Posted DESC LIMIT 1;
         end if;
     
@@ -5188,8 +5192,8 @@ select
         m.TopicID = i_TopicID			
         -- approved 			
         AND (m.Flags & 16)  = 16
-        -- deleted
-        AND ((m.Flags & 8)  <> 8 OR ((i_ShowDeleted = 1 AND (m.Flags & 8)  = 8) OR (i_AuthorUserID > 0 AND m.UserID = i_AuthorUserID)))
+       -- deleted
+		AND (i_ShowDeleted = 1 OR m.Flags & 8 <> 8 OR (i_AuthorUserID > 0 AND m.UserID =i_AuthorUserID))  
     order by		
         m.Posted DESC LIMIT 1;
 end if;
@@ -5374,12 +5378,14 @@ IF ici_Position IS NULL THEN set ici_Position = 0; END IF;
         UserID = ici_UserID,
         UserName = ici_UserName,
         DisplayName = ici_UserDisplayName
-    WHERE TopicID = i_MoveToTopic;	
-	 IF (SELECT COUNT(MessageID) 
+    WHERE TopicID = i_MoveToTopic;
+		
+	IF (SELECT COUNT(MessageID) 
     FROM {databaseName}.{objectQualifier}Message 
     WHERE TopicID = ici_OldTopicID and (Flags & 8)=8) = 0 THEN 
-	ici_EraseOldTopic = 1
+	SET ici_EraseOldTopic = 1;
 	END IF;
+
     CALL {databaseName}.{objectQualifier}topic_delete(ici_OldTopicID,0,ici_EraseOldTopic); 
     END IF;
  
@@ -6893,7 +6899,6 @@ BEGIN
 END;
 --GO
 
-
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}post_list
                  (i_TopicID INT,				
@@ -7158,10 +7163,8 @@ INTO  	@PostTotalRowsNumber,
 
         PREPARE plist1 FROM  @pplr;		
     
-        EXECUTE plist1;
-         
-        DEALLOCATE PREPARE plist1;
-        
+        EXECUTE plist1;         
+        DEALLOCATE PREPARE plist1;      
 
 END;
 --GO
@@ -8516,7 +8519,7 @@ BEGIN
  if (ici_post_priorityrowsnumber_pages < i_PageIndex)
      then	
       select ici_firstselectrownum - ici_post_priorityrowsnumber into ici_firstselectrownum;
-     else -- if (@post_priorityrowsnumber_pages >= @PageIndex)
+     else -- if (@post_priorityrowsnumber_pages >= i_PageIndex)
      select ici_post_priorityrowsnumber into ici_post_priorityrowsnumber_shift;
      select 1 into ici_shiftsticky;
      if (ici_firstselectrownum > 0)
@@ -9349,7 +9352,7 @@ BEGIN
     DELETE FROM {databaseName}.{objectQualifier}PMessage
     WHERE FromUserID=i_UserID;
     END IF;
-    /*set messages as from guest so the User can be deleted*/
+    -- set messages as from guest so the User can be deleted
     UPDATE {databaseName}.{objectQualifier}PMessage 
     SET FromUserID = ici_GuestUserID WHERE FromUserID = i_UserID;
     DELETE FROM {databaseName}.{objectQualifier}CheckEmail WHERE UserID = i_UserID;

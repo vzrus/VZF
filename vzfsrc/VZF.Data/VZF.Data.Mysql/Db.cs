@@ -10877,7 +10877,7 @@ namespace VZF.Data.Mysql
                         command.CommandTimeout = 9999;
                         command.Connection = connMan.OpenDBConnection(connectionString);
 
-                        return InnerRunSqlExecuteReader(connectionString, command, useTransaction);
+                        return InnerRunSqlExecuteReader(command, useTransaction);
                     }
                 }
             }
@@ -10907,20 +10907,16 @@ namespace VZF.Data.Mysql
         /// <param name="command"></param>
         /// <param name="useTransaction"></param>
         /// <returns></returns>
-        private static string InnerRunSqlExecuteReader(
-            [NotNull] string connectionString, MySqlCommand command, bool useTransaction)
+        private static string InnerRunSqlExecuteReader(MySqlCommand command, bool useTransaction)
         {
-            MySqlDataReader reader = null;
-            var results = new System.Text.StringBuilder();
+            var results = new StringBuilder();
 
             try
             {
-                try
-                {
-                    command.Transaction = useTransaction
+                   command.Transaction = useTransaction
                                               ? command.Connection.BeginTransaction(MySqlDbAccess.IsolationLevel)
                                               : null;
-                    reader = command.ExecuteReader();
+                    MySqlDataReader reader = command.ExecuteReader();
 
                     if (reader != null)
                     {
@@ -10973,26 +10969,25 @@ namespace VZF.Data.Mysql
                         }
 
                         reader.Close();
-
-                        if (command.Transaction != null)
-                        {
-                            command.Transaction.Commit();
-                        }
+                      
                     }
-                }
-                finally
-                {
-                    if (command.Transaction != null)
-                    {
-                        command.Transaction.Rollback();
-                    }
-                }
             }
             catch (Exception x)
             {
                 results.AppendLine();
                 results.AppendFormat("SQL ERROR: {0}", x);
+                if (command.Transaction != null)
+                {
+                    command.Transaction.Rollback();
+                }
             }
+           finally
+                {
+                    if (command.Transaction != null)
+                    {
+                        command.Transaction.Commit();
+                    }
+                } 
 
             return results.ToString();
         }

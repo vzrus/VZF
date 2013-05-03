@@ -74,6 +74,7 @@ namespace VZF.Controls
     /// <summary>
     /// My Topics List Control.
     /// </summary>
+    [System.Runtime.InteropServices.GuidAttribute("EA541535-1C5D-4324-90A4-03F62CBE8DF7")]
     public partial class MyTopicsList : BaseUserControl
     {
         /* Data Fields */
@@ -217,7 +218,7 @@ namespace VZF.Controls
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
-                        DateTime.UtcNow,
+                        DateTime.UtcNow.ToUniversalTime(),
                         nCurrentPageIndex,
                         basePageSize,
                         this.Get<YafBoardSettings>().UseStyledNicks,
@@ -242,7 +243,7 @@ namespace VZF.Controls
                        categoryIdObject,
                        this.PageContext.PageUserID,
                        this.sinceDate,
-                       DateTime.UtcNow,
+                       DateTime.UtcNow.ToUniversalTime(),
                        nCurrentPageIndex,
                        basePageSize,
                        this.Get<YafBoardSettings>().UseStyledNicks,
@@ -255,7 +256,7 @@ namespace VZF.Controls
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
-                        DateTime.UtcNow,
+                        DateTime.UtcNow.ToUniversalTime(),
                         nCurrentPageIndex,
                         basePageSize,
                         this.Get<YafBoardSettings>().UseStyledNicks,
@@ -268,7 +269,7 @@ namespace VZF.Controls
                             : (object)YafContext.Current.Settings.CategoryID,
                         this.PageContext.PageUserID,
                         this.sinceDate,
-                        DateTime.UtcNow,
+                        DateTime.UtcNow.ToUniversalTime(),
                         nCurrentPageIndex,
                         basePageSize,
                         this.Get<YafBoardSettings>().UseStyledNicks,
@@ -339,7 +340,7 @@ namespace VZF.Controls
                         "last_visit",
                         !this.PageContext.IsMobileDevice
                             ? this.Get<IDateTime>().FormatDateTime(
-                                lastVisit.HasValue && lastVisit.Value != DateTime.MinValue
+                                lastVisit.HasValue && lastVisit.Value > DateTimeHelper.SqlDbMinTime()
                                     ? lastVisit.Value
                                     : DateTime.UtcNow)
                             : string.Empty),

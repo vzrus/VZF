@@ -106,10 +106,11 @@ namespace VZF.Controls
                 if (this.PageCache != null && this.DataRow != null)
                 {
                     // get cache for user boxes
+              
                     object cache = this.PageCache[Constants.Cache.UserBoxes];
 
                     // is it hashtable?
-                    if (cache != null && cache is Hashtable)
+                    if (cache is Hashtable)
                     {
                         // get only record for user who made message being
                         cache = ((Hashtable)cache)[this.UserId];

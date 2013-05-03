@@ -40,5 +40,4 @@ using System.Security;
 
 #if !NCRUNCH
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\YetAnotherForum.NET.snk")]
 #endif

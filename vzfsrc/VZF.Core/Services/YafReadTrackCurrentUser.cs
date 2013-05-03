@@ -100,7 +100,12 @@ namespace YAF.Core.Services
                     lastRead = this._yafSession.LastVisit;
                 }
 
-                return lastRead ?? DateTimeHelper.SqlDbMinTime();
+                if (lastRead != null && lastRead > DateTimeHelper.SqlDbMinTime())
+                {
+                    return lastRead.ToType<DateTime>();
+                }
+
+                return DateTimeHelper.SqlDbMinTime();
             }
         }
 

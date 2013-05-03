@@ -6,6 +6,81 @@
 -- CREATE FUNCTION plpgsql_call_handler () RETURNS OPAQUE AS '/usr/local/pgsql/lib/plpgsql' LANGUAGE C;
 -- CREATE TRUSTED LANGUAGE plpgsql HANDLER plpgsql_call_handler;
 
+CREATE OR REPLACE FUNCTION public.f_delfunc(_schema text, _del text)
+ RETURNS text AS
+$BODY$
+DECLARE
+    _sql   text;
+    _ct    text;
+
+BEGIN
+   SELECT INTO _sql, _ct
+          string_agg('DROP '
+                   || CASE p.proisagg WHEN true THEN 'AGGREGATE '
+                                                ELSE 'FUNCTION ' END
+                   || quote_ident(n.nspname) || '.' || quote_ident(p.proname)
+                   || '('
+                   || pg_catalog.pg_get_function_identity_arguments(p.oid)
+                   || ') CASCADE;'
+                  ,E'\n'
+          )
+          ,count(*)::text
+   FROM   pg_catalog.pg_proc p
+   LEFT   JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+   WHERE  n.nspname = _schema;
+   -- AND p.proname ~~* 'f_%';                     -- Only selected funcs?
+   -- AND pg_catalog.pg_function_is_visible(p.oid) -- Only visible funcs?
+IF  _sql is not null THEN   
+IF lower(_del) = 'del' THEN                        -- Actually delete!
+   EXECUTE _sql;
+   RETURN _ct || E' functions deleted:\n' || _sql;
+ELSE                                               -- Else only show SQL.
+   RETURN _ct || E' functions to delete:\n' || _sql;
+END IF;
+END IF;
+RETURN NULL;
+END;
+$BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
+--GO
+SELECT f_delfunc('databaseSchema','del');
+--GO
+
+CREATE OR REPLACE FUNCTION public.f_deltype(_schema text, _del text)
+ RETURNS text AS
+$BODY$
+DECLARE
+    _sql   text;
+    _ct    text;
+
+BEGIN
+   SELECT INTO _sql, _ct
+          string_agg('DROP TYPE '   
+                   || quote_ident(n.nspname) || '.' || quote_ident(t.typname)
+                   || ';'                  
+                  ,E'\n'
+          )
+          ,count(*)::text
+FROM        pg_type t 
+LEFT JOIN   pg_catalog.pg_namespace n ON n.oid = t.typnamespace 
+WHERE       (t.typrelid = 0 OR (SELECT c.relkind = 'c' FROM pg_catalog.pg_class c WHERE c.oid = t.typrelid)) 
+AND     NOT EXISTS(SELECT 1 FROM pg_catalog.pg_type el WHERE el.oid = t.typelem AND el.typarray = t.oid)
+AND     n.nspname NOT IN ('pg_catalog', 'information_schema');
+IF  _sql is not null THEN   
+IF lower(_del) = 'del' THEN                        -- Actually delete!
+   EXECUTE _sql;
+   RETURN _ct || E' functions deleted:\n' || _sql;
+ELSE                                               -- Else only show SQL.
+   RETURN _ct || E' functions to delete:\n' || _sql;
+END IF;
+END IF;
+RETURN NULL;
+END;
+$BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
+--GO
+SELECT f_deltype('databaseSchema','del');
+--GO
+
+
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_int_to_bool_helper(reqvalue double precision)
   RETURNS boolean AS

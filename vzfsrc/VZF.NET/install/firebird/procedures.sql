@@ -4309,10 +4309,7 @@ FOR
         WHERE    TOPICID = :I_TOPICID	
         AND POSTED > :I_LASTREAD
          AND ISAPPROVED = 1
-              AND (ISDELETED = 0  
-                     OR ((:I_SHOWDELETED = 1 AND ISDELETED = 1) 
-                     OR (:I_AUTHORUSERID > 0 AND USERID = :I_AUTHORUSERID))
-                  )
+         AND (:I_SHOWDELETED = 1  OR ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND USERID = :I_AUTHORUSERID ))
         ORDER BY POSTED DESC 
         INTO
         :"MessageID"
@@ -4340,10 +4337,7 @@ FOR
         WHERE    TOPICID = :I_TOPICID	
         AND POSTED > :I_LASTREAD
          AND ISAPPROVED = 1
-              AND (ISDELETED = 0  
-                     OR ((:I_SHOWDELETED = 1 AND ISDELETED = 1) 
-                     OR (:I_AUTHORUSERID > 0 AND USERID = :I_AUTHORUSERID))
-                  )
+          AND (:I_SHOWDELETED = 1  OR ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND USERID = :I_AUTHORUSERID ))
         ORDER BY POSTED DESC 
         INTO
         :"MessageID"
@@ -4372,11 +4366,8 @@ END
               from objQual_MESSAGE m
               where
               m.TOPICID = :I_TOPICID	
-              AND BIN_AND(m.FLAGS,16) = 16
-              AND (BIN_AND(m.FLAGS, 8) <> 8  
-                     OR ((:i_showdeleted = 1 AND BIN_AND(m.FLAGS, 8) = 8) 
-                     OR (:i_authoruserid > 0 AND m.userid = :i_authoruserid))
-                  )
+              AND m.ISAPPROVED = 1
+               AND (:I_SHOWDELETED = 1  OR m.ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID ))
                   order by
                   m.POSTED DESC
                   INTO
@@ -6353,6 +6344,7 @@ DO SUSPEND;
 END;
 --GO
 
+
 CREATE PROCEDURE  objQual_POST_LIST
 (
 I_TOPICID INTEGER,
@@ -6442,12 +6434,7 @@ AS
   DECLARE VARIABLE ici_pageindex INTEGER DEFAULT 1;
 BEGIN
 ici_sortposted = :I_SORTPOSTED;
-ici_pageindex = :I_PAGEINDEX; 
-       IF (:I_UPDATEVIEWCOUNT>0) THEN
-       BEGIN
-       UPDATE objQual_TOPIC 
-        SET VIEWS = VIEWS + 1 WHERE TOPICID = :I_TOPICID;
-       END	
+ici_pageindex = :I_PAGEINDEX;       
 
        if (ici_sortposted IS NULL) THEN ici_sortposted = 0;
        if (ici_pageindex IS NULL) THEN ici_pageindex = 0;
@@ -6467,12 +6454,10 @@ ici_pageindex = :I_PAGEINDEX;
         objQual_MESSAGE m
     WHERE
         m.TOPICID = :I_TOPICID
-        -- is approved
-        AND m.ISDELETED = 0
-        -- is deleted
-        AND (m.ISAPPROVED = 1 
-        OR ((:I_SHOWDELETED = 1 AND ISDELETED = 1) 
-        OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID)))
+        -- is approved      
+        AND m.ISAPPROVED = 1 
+		-- is deleted
+        AND (:I_SHOWDELETED = 1  OR m.ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID ))
         AND m.POSTED BETWEEN
          :I_SINCEPOSTEDDATE AND :I_TOPOSTEDDATE
          
@@ -6532,9 +6517,7 @@ ici_pageindex = :I_PAGEINDEX;
         -- is approved
         AND m.ISAPPROVED = 1		
         -- is deleted
-        AND (m.ISDELETED = 0
-        OR ((:I_SHOWDELETED= 1 AND m.ISDELETED = 1) 
-        OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID)))
+        AND (:I_SHOWDELETED = 1  OR m.ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID ))
         AND m.POSTED BETWEEN
          :I_SINCEPOSTEDDATE AND :I_TOPOSTEDDATE
         ORDER BY 		
@@ -6626,9 +6609,7 @@ ici_pageindex = :I_PAGEINDEX;
         -- is approved
         AND m.ISAPPROVED = 1 
         -- is deleted
-        AND (m.ISDELETED = 0 
-                  OR ((:I_SHOWDELETED = 1 AND m.ISDELETED = 1)
-                  OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID)))
+         AND (:I_SHOWDELETED = 1  OR m.ISDELETED = 0 OR (:I_AUTHORUSERID > 0 AND m.USERID = :I_AUTHORUSERID ))
         AND (m.POSTED is null OR (m.POSTED is not null
              AND
              (m.POSTED >= (case 
@@ -6712,9 +6693,15 @@ end
 if (:ici_counter >= :I_PAGESIZE) then
 LEAVE;		
              
-             END			
+             END	
+ IF (:I_UPDATEVIEWCOUNT>0) THEN
+       BEGIN
+       UPDATE objQual_TOPIC 
+        SET VIEWS = VIEWS + 1 WHERE TOPICID = :I_TOPICID;
+       END				 		
 END;
 --GO
+
 
 CREATE PROCEDURE  objQual_POLLGROUP_STATS(
 I_POLLGROUPID INTEGER)
@@ -10223,7 +10210,7 @@ BEGIN
         SELECT RANKID  FROM objQual_RANK 
         WHERE BIN_AND(FLAGS, 1)<>0 AND BOARDID=:I_BOARDID
         INTO :ici_RankID;
-     SELECT NEXT VALUE FOR SEQ_YAF_USER_USERID  
+     SELECT NEXT VALUE FOR SEQ_objQual_USER_USERID  
      FROM RDB$DATABASE INTO :I_USERID;
         INSERT INTO objQual_USER(USERID,BOARDID,RANKID,"NAME",DISPLAYNAME,"PASSWORD","EMAIL",JOINED,LASTVISIT,NUMPOSTS,TIMEZONE,FLAGS,PMNOTIFICATION,PROVIDERUSERKEY, AUTOWATCHTOPICS, CULTURE,TOPICSPERPAGE,POSTSPERPAGE) 
         VALUES(:I_USERID,:I_BOARDID,:ici_RankID,:I_USERNAME,:I_DISPLAYNAME,'-',:I_EMAIL, :I_UTCTIMESTAMP,:I_UTCTIMESTAMP,0,:I_TIMEZONE,:ICI_FLAGS,:I_PMNOTIFICATION,CHAR_TO_UUID(:I_PROVIDERUSERKEY),:I_AUTOWATCHTOPICS, :I_CULTURE,:I_TOPICSPERPAGE,:I_POSTSPERPAGE); 		

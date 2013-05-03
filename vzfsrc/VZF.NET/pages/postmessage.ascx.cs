@@ -469,21 +469,7 @@ namespace YAF.Pages
             TypedMessageList currentMessage = null;
 
             DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
-            if (PageContext.PageTopicID != 0)
-            {
-                this.ImageRow.Visible = this.Get<YafBoardSettings>().AllowTopicImages
-                                        && (topicInfo["UserID"].ToType<int>() == PageContext.PageUserID
-                                            || PageContext.IsForumModerator);
-
-                if (this.ImageRow.Visible)
-                {
-                    this.TopicImageAncor.HRef = YafBuildLink.GetLink(
-                        ForumPages.imageadd, "ti={0}&u={1}", topicInfo["TopicID"], PageContext.PageUserID);
-                    this.TopicImageAncor.Visible = true;
-                    this.TopicImage.Src = this.Get<ITheme>().GetItem("ICONS", "TOPIC_NEW"); /* "{0}{1}/{2}".FormatWith(
-                       YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, topicInfo["TopicImage"].ToString()); */
-                }
-            }
+            
 
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
@@ -578,6 +564,22 @@ namespace YAF.Pages
                 if (topicInfo == null || (currentMessage != null  && currentMessage.Position == 0))
                 {
                     this.TagsRow.Visible = true;
+                }
+            }
+
+            if (topicInfo == null || (currentMessage != null && currentMessage.Position == 0))
+            {
+                this.ImageRow.Visible = this.Get<YafBoardSettings>().AllowTopicImages
+                                        && (topicInfo["UserID"].ToType<int>() == PageContext.PageUserID
+                                            || PageContext.IsForumModerator);
+
+                if (this.ImageRow.Visible)
+                {
+                    this.TopicImageAncor.HRef = YafBuildLink.GetLink(
+                        ForumPages.imageadd, "ti={0}&u={1}", topicInfo["TopicID"], PageContext.PageUserID);
+                    this.TopicImageAncor.Visible = true;
+                    this.TopicImage.Src = this.Get<ITheme>().GetItem("ICONS", "TOPIC_NEW"); /* "{0}{1}/{2}".FormatWith(
+                       YafForumInfo.ForumServerFileRoot, YafBoardFolders.Current.Forums, topicInfo["TopicImage"].ToString()); */
                 }
             }
 
@@ -932,11 +934,11 @@ namespace YAF.Pages
            
             string tags = this.Tags.Text.Trim();
             // Save to Db
-            topicId = CommonDb.topic_save(PageContext.PageModuleID, this.PageContext.PageForumID,
+            topicId = CommonDb.topic_save(
+                PageContext.PageModuleID,
+                this.PageContext.PageForumID,
                 this.TopicSubjectTextBox.Text.Trim(),
-                this.TopicStatus.SelectedValue.Equals("-1") || this.TopicStatus.SelectedIndex.Equals(0)
-                    ? string.Empty
-                    : this.TopicStatus.SelectedValue,
+                this.TopicStatus.SelectedValue.Equals("-1") || this.TopicStatus.SelectedIndex.Equals(0) ? string.Empty : this.TopicStatus.SelectedValue,
                 this.TopicStylesTextBox.Text.Trim(),
                 this.TopicDescriptionTextBox.Text.Trim(),
                 this._forumEditor.Text,
@@ -1170,9 +1172,10 @@ namespace YAF.Pages
                 }
                 else
                 {
-                    if (attachp.IsNotSet() || (!this.PostOptions1.PollChecked))
+                    if (attachp.IsNotSet() || (!this.PostOptions1.PollChecked)) 
                     {
                         // regular redirect...
+                        // YafBuildLink.Redirect(ForumPages.posts, "m={0}#post{0}", messageId);
                         YafBuildLink.Redirect(ForumPages.posts, "m={0}#post{0}", messageId);
                     }
                     else

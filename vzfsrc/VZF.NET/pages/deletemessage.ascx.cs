@@ -256,14 +256,14 @@ namespace YAF.Pages
 
       if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m") != null)
       {
-          int messageID;
-          if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageID))
+          int messageId;
+          if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageId))
           {
               YafBuildLink.RedirectInfoPage(InfoMessage.Invalid);
           }
 
           this._messageRow =
-              CommonDb.MessageList(PageContext.PageModuleID, messageID).FirstOrDefault();
+              CommonDb.MessageList(PageContext.PageModuleID, messageId).FirstOrDefault();
           if (this._messageRow == null)
           {
               YafBuildLink.RedirectInfoPage(InfoMessage.Invalid);
@@ -275,8 +275,8 @@ namespace YAF.Pages
         }
       }
 
-      this._forumFlags = new ForumFlags(this._messageRow.ForumFlags);
-      this._topicFlags = new TopicFlags(this._messageRow.TopicFlags);
+      this._forumFlags = this._messageRow.ForumFlags;
+      this._topicFlags = this._messageRow.TopicFlags;
       this._ownerUserId = (int)this._messageRow.UserID;
       this._isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
 
@@ -354,7 +354,7 @@ namespace YAF.Pages
 
         // populate the message preview with the message datarow...
         this.MessagePreview.Message = this._messageRow.Message;
-        this.MessagePreview.MessageFlags = new MessageFlags(this._messageRow.Flags);
+        this.MessagePreview.MessageFlags = this._messageRow.Flags;
     }
 
     /// <summary>

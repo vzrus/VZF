@@ -9515,7 +9515,7 @@ namespace VZF.Data.Firebird
                 "firebird/functions_drop.sql", "firebird/test_drop.sql",
                 "firebird/views_drop.sql", "firebird/exceptions_drop.sql",
                 "firebird/domains.sql", "firebird/sequences.sql",
-                "firebird/tables.sql", "firebird/pkeys.sql",
+                "firebird/tables.sql", "firebird/tablesupgrade.sql", "firebird/pkeys.sql",
                 "firebird/indexes.sql", "firebird/ukeys.sql",
                 "firebird/fkeys.sql", "firebird/triggers.sql",
                 "firebird/views.sql", "firebird/exceptions.sql",

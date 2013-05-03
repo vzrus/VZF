@@ -9875,23 +9875,25 @@ namespace VZF.Data.Common
                     pload.ModuleID = mid;
                     return pload;
                 case CommonSqlDbAccess.Npgsql:
-                    pload = VZF.Data.Postgre.Db.pageload(
-                        connectionString,
-                        sessionId,
-                        boardId,
-                        userKey,
-                        ip,
-                        location,
-                        forumPage,
-                        browser,
-                        platform,
-                        categoryId,
-                        forumId,
-                        topicId,
-                        messageId,
-                        isCrawler,
-                        isMobileDevice,
-                        donttrack).Table.AsEnumerable()
+                    var dt =
+    VZF.Data.Postgre.Db.pageload(
+        connectionString,
+        sessionId,
+        boardId,
+        userKey,
+        ip,
+        location,
+        forumPage,
+        browser,
+        platform,
+        categoryId,
+        forumId,
+        topicId,
+        messageId,
+        isCrawler,
+        isMobileDevice,
+        donttrack).Table;
+                    pload = dt.AsEnumerable()
                                .Select(r => new pageload_Result(r))
                                .ToList()[0];
                      pload.ModuleID = mid;
@@ -9918,24 +9920,24 @@ namespace VZF.Data.Common
                                .ToList()[0];
                      pload.ModuleID = mid;
                     return pload;
-                case CommonSqlDbAccess.Firebird:
+                case CommonSqlDbAccess.Firebird:;
                     pload = VZF.Data.Firebird.Db.pageload(
-                        connectionString,
-                        sessionId,
-                        boardId,
-                        userKey,
-                        ip,
-                        location,
-                        forumPage,
-                        browser,
-                        platform,
-                        categoryId,
-                        forumId,
-                        topicId,
-                        messageId,
-                        isCrawler,
-                        isMobileDevice,
-                        donttrack).Table.AsEnumerable()
+                            connectionString,
+                            sessionId,
+                            boardId,
+                            userKey,
+                            ip,
+                            location,
+                            forumPage,
+                            browser,
+                            platform,
+                            categoryId,
+                            forumId,
+                            topicId,
+                            messageId,
+                            isCrawler,
+                            isMobileDevice,
+                            donttrack).Table.AsEnumerable()
                                .Select(r => new pageload_Result(r))
                                .ToList()[0];
                      pload.ModuleID = mid;

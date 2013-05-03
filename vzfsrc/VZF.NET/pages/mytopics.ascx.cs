@@ -144,12 +144,8 @@ namespace YAF.Pages
                 return;
             }
 
-            this.UserTopicsTabTitle.Visible = !this.PageContext.IsGuest;
-            this.UserTopicsTabContent.Visible = !this.PageContext.IsGuest;
-
-            this.UnreadTopicsTabTitle.Visible = !this.PageContext.IsGuest &&
-                                                this.Get<YafBoardSettings>().UseReadTrackingByDatabase;
-            this.UnreadTopicsTabContent.Visible = !this.PageContext.IsGuest &&
+            this.UserTopicsTabTitle.Visible = this.UserTopicsTabContent.Visible = !this.PageContext.IsGuest;
+            this.UnreadTopicsTabTitle.Visible = this.UnreadTopicsTabContent.Visible = !this.PageContext.IsGuest &&
                                                   this.Get<YafBoardSettings>().UseReadTrackingByDatabase;
 
             this.PageLinks.AddLink(this.Get<YafBoardSettings>().Name, YafBuildLink.GetLink(ForumPages.forum));

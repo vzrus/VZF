@@ -279,7 +279,7 @@ namespace YAF.Pages
 
       guestUserName = guestUserName.IsSet() ? guestUserName.ToLower() : string.Empty;
 
-      if (userName.Contains(";") || badWord || userName.ToLower().Equals(guestUserName))
+      if (userName.Contains(";") || badWord || userName.ToLowerInvariant().Equals(guestUserName.ToLowerInvariant()) || userName.ToUpperInvariant().Contains("GUEST_"))
       {
         this.PageContext.AddLoadMessage(this.GetText("BAD_USERNAME"));
         e.Cancel = true;

@@ -713,7 +713,7 @@ BEGIN
 -- Default i_guests  boolean 0
 -- delete non-active 
 DELETE FROM databaseSchema.objectQualifier_active
-WHERE    lastactive < i_utctimestamp - (i_interval::varchar(11) || ' minute')::interval;
+WHERE   lastactive < i_utctimestamp - (i_interval::varchar(11) || ' minute')::interval;
         -- SELECT active
         IF (i_guests IS TRUE) THEN
           FOR _rec in   
@@ -4294,7 +4294,7 @@ END;$BODY$
 
 -- Function: databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, integer);
+-- DROP FUNCTION databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, varchar, varchar,integer,integer,boolean,boolean,timestampTZ);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_forumid integer, 
@@ -4302,7 +4302,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_parentid integer, 
                            i_name varchar, 
                            i_description varchar, 
-                           i_sortorder smallint, 
+                           i_sortorder integer, 
                            i_locked boolean, 
                            i_hidden boolean, 
                            i_istest boolean, 
@@ -6316,7 +6316,7 @@ FOR _rec IN
         -- approved
         AND (flags & 16) = 16
         -- not deleted
-        AND ((flags & 8) <> 8  OR ((i_showdeleted IS TRUE AND (flags & 8) = 8) OR (i_authoruserid > 0 AND userid = i_authoruserid)) ) 
+       AND (i_showdeleted IS TRUE OR (flags & 8) <> 8 OR (i_authoruserid > 0 AND userid = i_authoruserid))
         AND posted > i_lastread
         ORDER BY posted DESC 
 LOOP
@@ -6349,10 +6349,7 @@ END LOOP;
               where
         m.topicid = i_topicid			
         AND (m.flags & 16) = 16
-        AND (
-             (m.flags & 8) <> 8  OR 
-             ((i_showdeleted IS TRUE AND (m.flags & 8) = 8) OR (i_authoruserid > 0 AND m.userid = i_authoruserid)) 
-            ) 	
+        AND (i_showdeleted IS TRUE OR (m.flags & 8) <> 8 OR (i_authoruserid > 0 AND m.UserID = i_authoruserid))
     order by		
         m.posted DESC limit 1
         LOOP
@@ -8261,12 +8258,8 @@ $BODY$
   COST 100; 
 --GO
 
--- Function: databaseSchema.objectQualifier_post_list(integer, smallint, boolean)
-
--- DROP FUNCTION databaseSchema.objectQualifier_post_list(integer, smallint, boolean);
-
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_post_list(
-                           i_topicid integer,
+                           i_topicid integer,						
                            i_pageuserid integer,
                            i_authoruserid integer,
                            i_updateviewcount smallint,
@@ -8328,9 +8321,7 @@ END IF;
         -- is approved
         AND (m.flags & 16) = 16 
         -- is deleted
-        AND ((m.flags & 8) <> 8		
-        OR ((i_showdeleted IS TRUE AND (m.flags & 8) = 8) 
-        OR (i_authoruserid > 0 AND m.userid = i_authoruserid)))
+		AND (i_showdeleted IS TRUE OR (m.flags & 8) <> 8 OR (i_authoruserid > 0 AND m.UserID = i_authoruserid))
         AND m.posted BETWEEN
          i_sinceposteddate AND i_toposteddate;
          /*
@@ -8385,9 +8376,7 @@ END IF;
         -- is approved
         AND (m.flags & 16)  = 16  
         -- is deleted
-        AND ((m.flags & 8) <> 8	OR	
-        ((i_showdeleted IS TRUE AND (m.flags & 8)  =  8) 
-        OR (i_authoruserid > 0 AND m.userid = i_authoruserid)))
+       AND (i_showdeleted IS TRUE OR (m.flags & 8) <> 8 OR (i_authoruserid > 0 AND m.UserID = i_authoruserid))
         AND m.posted BETWEEN
          i_sinceposteddate AND i_toposteddate
          /*
@@ -8471,9 +8460,7 @@ END IF;
         -- is approved
         AND (m.flags & 16)  = 16  
         -- is deleted
-        AND ((m.flags & 8) <> 8	OR	
-        ((i_showdeleted IS TRUE AND (m.flags & 8)  =  8) 
-        OR (i_authoruserid > 0 AND m.userid = i_authoruserid)))
+        AND (i_showdeleted IS TRUE OR (m.flags & 8) <> 8 OR (i_authoruserid > 0 AND m.UserID = i_authoruserid))
          AND (m.posted is null OR (m.posted is not null
         AND
         (m.posted >= (case 
@@ -11413,6 +11400,7 @@ BEGIN
     UPDATE databaseSchema.objectQualifier_topic SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
     UPDATE databaseSchema.objectQualifier_forum SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
 
+	DELETE FROM databaseSchema.objectQualifier_activeaccess WHERE userid = i_userid;
     DELETE FROM databaseSchema.objectQualifier_active WHERE userid = i_userid;
     DELETE FROM databaseSchema.objectQualifier_eventlog WHERE userid = i_userid;
     DELETE FROM databaseSchema.objectQualifier_userpmessage WHERE userid = i_userid;
@@ -13955,7 +13943,8 @@ AND name = 'maxuserswhen';
         FROM databaseSchema.objectQualifier_user WHERE userid = ici_userid)  ELSE NULL END) AS PreviousVisit,
         x.userid AS UserID,
         x.forumid,
-        x.isadmin::boolean AS IsAdmin,       
+        x.isadmin::boolean AS IsAdmin,   
+		(CASE WHEN (i_userkey IS NULL) THEN true ELSE false END) AS IsGuest,    
         x.isforummoderator::boolean AS IsForumModerator,
         x.ismoderator::boolean AS IsModerator,     
         x.lastactive,
@@ -15604,7 +15593,7 @@ BEGIN
         a.culture AS CultureUser,
         a.isfacebookuser,	
         a.istwitteruser,	
-        SIGN(COALESCE(a.flags,0) & 4)::integer::boolean AS IsGuest,
+        ((flags & 4) = 4) AS IsGuest,
         (CASE WHEN i_showpendingmails  is true THEN (select count(1) from databaseSchema.objectQualifier_mail WHERE tousername = a.name) ELSE 0 END) as MailsPending,
         (CASE WHEN i_showunreadpms  is true THEN (select count(1) from databaseSchema.objectQualifier_userpmessage where userid=i_userid and isread is false and isdeleted  is false and isarchived  is false) ELSE 0 END) as UnreadPrivate,
         (CASE WHEN i_showunreadpms  is true THEN (SELECT created FROM databaseSchema.objectQualifier_pmessage pm INNER JOIN databaseSchema.objectQualifier_userpmessage upm ON pm.pmessageid = upm.pmessageid WHERE upm.userid=i_userid and upm.isread is false  and upm.isdeleted  is false and upm.isarchived  is false ORDER BY pm.created DESC LIMIT 1) ELSE NULL END) as LastUnreadPm,		
