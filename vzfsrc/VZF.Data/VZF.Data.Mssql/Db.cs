@@ -3733,7 +3733,82 @@ namespace VZF.Data.MsSql
                     return MsSqlDbAccess.GetData(cmd, connectionString);
                 }
             }
+        }
 
+        /// <summary>
+        /// The forum_listreadpersonal.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryID">
+        /// The category id.
+        /// </param>
+        /// <param name="parentID">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable forum_listreadpersonal([NotNull] string connectionString, [NotNull] object boardID, [NotNull] object userID, [NotNull] object categoryID, [NotNull] object parentID, [NotNull] object useStyledNicks, [CanBeNull]bool findLastRead, [NotNull] bool showCommonForums, [NotNull]bool showPersonalForums, [CanBeNull] int? forumCreatedByUserId)
+        {
+            if (!MsSqlDbAccess.LargeForumTree)
+            {
+                using (var cmd = MsSqlDbAccess.GetCommand("forum_listreadpersonal"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("BoardID", boardID);
+                    cmd.Parameters.AddWithValue("UserID", userID);
+                    cmd.Parameters.AddWithValue("CategoryID", categoryID);
+                    cmd.Parameters.AddWithValue("ParentID", parentID);
+                    cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
+                    cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                    cmd.Parameters.AddWithValue("ShowCommonForums", showCommonForums);
+                    cmd.Parameters.AddWithValue("ShowPersonalForums", showPersonalForums);
+                    cmd.Parameters.AddWithValue("ForumCreatedByUserId", forumCreatedByUserId);
+                    cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
+                    return MsSqlDbAccess.GetData(cmd, connectionString);
+                }
+            }
+            else
+            {
+                using (var cmd = MsSqlDbAccess.GetCommand("forum_ns_listreadpersonal"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("BoardID", boardID);
+                    cmd.Parameters.AddWithValue("UserID", userID);
+                    cmd.Parameters.AddWithValue("CategoryID", categoryID);
+                    cmd.Parameters.AddWithValue("ParentID", parentID);
+                    cmd.Parameters.AddWithValue("StyledNicks", useStyledNicks);
+                    cmd.Parameters.AddWithValue("FindLastRead", findLastRead);
+                    cmd.Parameters.AddWithValue("ShowCommonForums", showCommonForums);
+                    cmd.Parameters.AddWithValue("ShowPersonalForums", showPersonalForums);
+                    cmd.Parameters.AddWithValue("ForumCreatedByUserId", forumCreatedByUserId);
+                    cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
+                    return MsSqlDbAccess.GetData(cmd, connectionString);
+                }
+            }
         }
 
         /// <summary>
@@ -7975,22 +8050,28 @@ namespace VZF.Data.MsSql
         /// <summary>
         /// The topic_move.
         /// </summary>
-        /// <param name="topicID">
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
         /// The topic id.
         /// </param>
-        /// <param name="forumID">
+        /// <param name="forumId">
         /// The forum id.
         /// </param>
         /// <param name="showMoved">
         /// The show moved.
         /// </param>
-        public static void topic_move([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object forumID, [NotNull] object showMoved, [NotNull] object linkDays)
+        /// <param name="linkDays">
+        /// The link days.
+        /// </param>
+        public static void topic_move([NotNull] string connectionString, [NotNull] object topicId, [NotNull] object forumId, [NotNull] object showMoved, [NotNull] object linkDays)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_move"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("TopicID", topicID);
-                cmd.Parameters.AddWithValue("ForumID", forumID);
+                cmd.Parameters.AddWithValue("TopicID", topicId);
+                cmd.Parameters.AddWithValue("ForumID", forumId);
                 cmd.Parameters.AddWithValue("ShowMoved", showMoved);
                 cmd.Parameters.AddWithValue("LinkDays", linkDays);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
@@ -8035,7 +8116,7 @@ namespace VZF.Data.MsSql
         /// <summary>
         /// The topic_save.
         /// </summary>
-        /// <param name="forumID">
+        /// <param name="forumId">
         /// The forum id.
         /// </param>
         /// <param name="subject">
@@ -8044,13 +8125,14 @@ namespace VZF.Data.MsSql
         /// <param name="status">
         /// The status.
         /// </param>
+        /// <param name="styles"></param>
         /// <param name="description">
         /// The description.
         /// </param>
         /// <param name="message">
         /// The message.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user id.
         /// </param>
         /// <param name="priority">
@@ -8065,7 +8147,7 @@ namespace VZF.Data.MsSql
         /// <param name="posted">
         /// The posted.
         /// </param>
-        /// <param name="blogPostID">
+        /// <param name="blogPostId">
         /// The blog post id.
         /// </param>
         /// <param name="flags">
@@ -8074,22 +8156,25 @@ namespace VZF.Data.MsSql
         /// <param name="messageID">
         /// The message id.
         /// </param>
+        /// <param name="tags">
+        /// The tags.
+        /// </param>
         /// <returns>
         /// Returns the Topic ID
         /// </returns>
         public static long topic_save([NotNull] string connectionString,
-            [NotNull] object forumID,
+            [NotNull] object forumId,
             [NotNull] object subject,
             [CanBeNull] object status,
             [CanBeNull] object styles,
             [CanBeNull] object description,
             [NotNull] object message,
-            [NotNull] object userID,
+            [NotNull] object userId,
             [NotNull] object priority,
             [NotNull] object userName,
             [NotNull] object ip,
             [NotNull] object posted,
-            [NotNull] object blogPostID,
+            [NotNull] object blogPostId,
             [NotNull] object flags,
             ref long messageID,
             string tags)
@@ -8097,12 +8182,12 @@ namespace VZF.Data.MsSql
             using (var cmd = MsSqlDbAccess.GetCommand("topic_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("ForumID", forumID);
+                cmd.Parameters.AddWithValue("ForumID", forumId);
                 cmd.Parameters.AddWithValue("Subject", subject);
                 cmd.Parameters.AddWithValue("Description", description);
                 cmd.Parameters.AddWithValue("Status", status);
                 cmd.Parameters.AddWithValue("Styles", styles);
-                cmd.Parameters.AddWithValue("UserID", userID);
+                cmd.Parameters.AddWithValue("UserID", userId);
                 cmd.Parameters.AddWithValue("Message", message);
                 cmd.Parameters.AddWithValue("Priority", priority);
                 cmd.Parameters.AddWithValue("UserName", userName);
@@ -8110,7 +8195,7 @@ namespace VZF.Data.MsSql
 
                 // cmd.Parameters.AddWithValue("PollID", pollID);
                 cmd.Parameters.AddWithValue("Posted", posted);
-                cmd.Parameters.AddWithValue("BlogPostID", blogPostID);
+                cmd.Parameters.AddWithValue("BlogPostID", blogPostId);
                 cmd.Parameters.AddWithValue("Flags", flags);
                 cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);

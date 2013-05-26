@@ -68,7 +68,7 @@ namespace YAF.Core.Tasks
     /// </summary>
     public override void RunOnce()
     {
-      Debug.WriteLine("Running Send Mail Thread Under {0}...".FormatWith(Environment.UserName));
+     this.Logger.Debug("Running Send Mail Thread...");
 
       // send thread handles it's own exception...
       this.SendMailThreaded.SendThreaded();

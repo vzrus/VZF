@@ -320,6 +320,11 @@ namespace YAF.Types.Constants
     personalforum,
 
     /// <summary>
+    /// The personalforums.
+    /// </summary>
+    personalforums,
+
+    /// <summary>
     /// The personalgroup.
     /// </summary>
     personalgroup,

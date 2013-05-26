@@ -186,10 +186,8 @@ namespace VZF.Controls
     protected string GetMessageFormattedAndTruncated([NotNull] string lastMessage, int maxlength)
     {
       return
-        StringExtensions.Truncate(
-          StringExtensions.RemoveMultipleWhitespace(
-            BBCodeHelper.StripBBCode(HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString(lastMessage)))), 
-          maxlength);
+        StringExtensions.RemoveMultipleWhitespace(
+            BBCodeHelper.StripBBCode(HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString(lastMessage)))).Truncate(maxlength);
     }
 
     /// <summary>

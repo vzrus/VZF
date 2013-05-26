@@ -2886,6 +2886,58 @@ namespace VZF.Data.Firebird
             }
         }
 
+        public static DataTable forum_listreadpersonal(
+          [NotNull] string connectionString,
+          [NotNull] object boardId,
+          [NotNull] object userId,
+          [NotNull] object categoryId,
+          [NotNull] object parentId,
+          [NotNull] object useStyledNicks,
+          [NotNull] object findLastRead,
+          [NotNull] bool showCommonForums,
+          [NotNull] bool showPersonalForums,
+          [CanBeNull] int? forumCreatedByUserId)
+        {
+            if (!Config.LargeForumTree)
+            {
+                using (var cmd = FbDbAccess.GetCommand("FORUM_LISTREADPERSONAL"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardId;
+                    cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
+                    cmd.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryId ?? DBNull.Value;
+                    cmd.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentId ?? DBNull.Value;
+                    cmd.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
+                    cmd.Parameters.Add("@I_FINDLASTREAD", FbDbType.Boolean).Value = findLastRead;
+                    cmd.Parameters.Add("@I_SHOWCOMMONFORUMS", FbDbType.Boolean).Value = showCommonForums;
+                    cmd.Parameters.Add("@I_SHOWPERSONALFORUMS", FbDbType.Boolean).Value = showPersonalForums;
+                    cmd.Parameters.Add("@I_FORUMCREATEDBYUSERID", FbDbType.Integer).Value = forumCreatedByUserId;
+                    cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
+
+                    return FbDbAccess.GetData(cmd, false, connectionString);
+                }
+            }
+
+            using (var cmd = FbDbAccess.GetCommand("FORUM_NS_LISTREADPERSONAL"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@I_BOARDID", FbDbType.Integer).Value = boardId;
+                cmd.Parameters.Add("@I_USERID", FbDbType.Integer).Value = userId;
+                cmd.Parameters.Add("@I_CATEGORYID", FbDbType.Integer).Value = categoryId;
+                cmd.Parameters.Add("@I_PARENTID", FbDbType.Integer).Value = parentId;
+                cmd.Parameters.Add("@I_STYLEDNICKS", FbDbType.Integer).Value = useStyledNicks;
+                cmd.Parameters.Add("@I_FINDLASTREAD", FbDbType.Boolean).Value = findLastRead;
+                cmd.Parameters.Add("@I_SHOWCOMMONFORUMS", FbDbType.Boolean).Value = showCommonForums;
+                cmd.Parameters.Add("@I_SHOWPERSONALFORUMS", FbDbType.Boolean).Value = showPersonalForums;
+                cmd.Parameters.Add("@I_FORUMCREATEDBYUSERID", FbDbType.Integer).Value = forumCreatedByUserId;
+                cmd.Parameters.Add("@I_UTCTIMESTAMP", FbDbType.TimeStamp).Value = DateTime.UtcNow;
+
+                return FbDbAccess.GetData(cmd, false, connectionString);
+            }
+        }
+
         /// <summary>
         /// Return admin view of Categories with Forums/Subforums ordered accordingly.
         /// </summary>

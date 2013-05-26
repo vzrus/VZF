@@ -511,7 +511,7 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsString("YAF.JQuery") ?? "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
+                return GetConfigValueAsString("YAF.JQuery") ?? "js/jquery.min.js";
             }
         }
 
@@ -524,7 +524,7 @@ namespace YAF.Classes
             get
             {
                 return GetConfigValueAsString("YAF.JQueryUIFile") ??
-                       "http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
+                       "js/jquery-ui.min.js";
             }
         }
 
@@ -537,7 +537,7 @@ namespace YAF.Classes
             get
             {
                 return GetConfigValueAsString("YAF.JQueryUILangFile") ??
-                       "http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery-ui-i18n.min.js";
+                       "js/jquery-ui-i18n.min.js";
             }
         }
 

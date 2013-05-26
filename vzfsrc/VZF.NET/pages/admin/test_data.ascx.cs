@@ -1067,7 +1067,7 @@ namespace YAF.Pages.Admin
                     this.MessageContentPrefixTB.Text.Trim() + this.randomGuid,
                     this.PageContext.PageUserID,
                     priority,
-                    (UserMembershipHelper.FindUsersByName(this.PageContext.User.UserName) != null) ? "GUEST_{0}".FormatWith(this.PageContext.User.UserName) : this.PageContext.User.UserName,  
+                    (UserMembershipHelper.FindUsersByName(this.PageContext.User.UserName).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON", "GUEST_NAME"), this.PageContext.User.UserName) : this.PageContext.User.UserName,  
                     this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                     DateTime.UtcNow,
                     string.Empty,

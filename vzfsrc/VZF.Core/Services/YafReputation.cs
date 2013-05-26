@@ -1,5 +1,5 @@
 ﻿/* Yet Another Forum.NET
- * Copyright (C) 2006-2012 Jaben Cargman
+ * Copyright (C) 2006-2013 Jaben Cargman
  * http://www.yetanotherforum.net/
  * 
  * This program is free software; you can redistribute it and/or
@@ -71,19 +71,19 @@ namespace YAF.Core.Services
 
             float percentage = ConvertPointsToPercentage(points);
 
-                var pointsSign = string.Empty;
+            var pointsSign = string.Empty;
 
-                if (points > 0)
-                {
-                    pointsSign = "+";
-                }
-                else if (points < 0)
-                {
-                    pointsSign = "-";
-                }
+            if (points > 0)
+            {
+                pointsSign = "+";
+            }
+            else if (points < 0)
+            {
+                pointsSign = "-";
+            }
 
             return
-                "{1}({0})<div class=\"ReputationBar ReputationUser_{2}\" data-percent=\"{0}\" data-text=\"{1}\" title=\"{3}{4}\"></div>".FormatWith(
+                @"<div class=""ReputationBar ReputationUser_{2}"" data-percent=""{0}"" data-text=""{1}"" title=""{3}{4}""></div>".FormatWith(
                         percentage.ToString(formatInfo), GetReputationBarText(percentage), userId, pointsSign, points);
         }
 
@@ -95,7 +95,8 @@ namespace YAF.Core.Services
         [NotNull]
         public static string GetReputationBarText([NotNull]float percentage)
         {
-            string text;       
+            string text;
+
             if (percentage.Equals(0))
             {
                 text = YafContext.Current.Get<ILocalization>().GetText("REPUTATION_VALUES", "HATED");
@@ -180,3 +181,4 @@ namespace YAF.Core.Services
         }
     }
 }
+

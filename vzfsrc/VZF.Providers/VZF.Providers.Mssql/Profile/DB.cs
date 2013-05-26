@@ -23,25 +23,23 @@ namespace YAF.Providers.Profile
 {
   #region Using
 
-  using System;
-  using System.Collections.Generic;
-  using System.Configuration;
-  using System.Data;
-  using System.Data.SqlClient;
-  using System.Text;
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Text;
 
-  using VZF.Data.MsSql;
+    using VZF.Data.MsSql;
+    using VZF.Utils;
 
-  using YAF.Classes;
-  using YAF.Classes.Pattern;
-  using YAF.Core;
-  // using YAF.Types.Extensions;
-  using YAF.Types.Interfaces; 
-  
-  using VZF.Utils;
-  using YAF.Types;
+    using YAF.Classes;
+    using YAF.Classes.Pattern;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Interfaces;
 
-  #endregion
+    #endregion
 
   /// <summary>
   /// The yaf profile db conn manager.

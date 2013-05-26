@@ -2798,16 +2798,16 @@ namespace VZF.Data.Postgre
         /// <param name="connectionString">
         /// The connection string.
         /// </param>
-        /// <param name="boardID">
+        /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user id.
         /// </param>
-        /// <param name="categoryID">
+        /// <param name="categoryId">
         /// The category id.
         /// </param>
-        /// <param name="parentID">
+        /// <param name="parentId">
         /// The parent id.
         /// </param>
         /// <param name="useStyledNicks">
@@ -2830,10 +2830,10 @@ namespace VZF.Data.Postgre
         /// </returns>
         public static DataTable forum_listread(
             [NotNull] string connectionString,
-            object boardID,
-            object userID,
-            object categoryID,
-            object parentID,
+            object boardId,
+            object userId,
+            object categoryId,
+            object parentId,
             object useStyledNicks,
             [CanBeNull] bool findLastRead, 
             [NotNull] bool showCommonForums, 
@@ -2846,10 +2846,10 @@ namespace VZF.Data.Postgre
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                    cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                    cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID ?? DBNull.Value;
-                    cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID ?? DBNull.Value;
+                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardId;
+                    cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userId;
+                    cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryId ?? DBNull.Value;
+                    cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentId ?? DBNull.Value;
                     cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
                     cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
                     cmd.Parameters.Add("i_showcommonforums", NpgsqlDbType.Boolean).Value = showCommonForums;
@@ -2864,10 +2864,10 @@ namespace VZF.Data.Postgre
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardID;
-                cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userID;
-                cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryID;
-                cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentID;
+                cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardId;
+                cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userId;
+                cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryId;
+                cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentId;
                 cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
                 cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
                 cmd.Parameters.Add("i_ShowCommonForums", NpgsqlDbType.Boolean).Value = showCommonForums;
@@ -2877,47 +2877,94 @@ namespace VZF.Data.Postgre
                   
                 return PostgreDbAccess.GetData(cmd, false, connectionString);
             }
+        }
 
-            /*
-            //Add extra columns to data table
-            int cntr = 0;
-            int firstColumnIndex = dt1.Columns.Count;
-            int dt1rc = dt1.Rows.Count;
-            if (dt1rc != 0)
+        /// <summary>
+        /// The forum_listreadpersonal.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="parentId">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable forum_listreadpersonal(
+           [NotNull] string connectionString,
+           object boardId,
+           object userId,
+           object categoryId,
+           object parentId,
+           object useStyledNicks,
+           [CanBeNull] bool findLastRead,
+           [NotNull] bool showCommonForums,
+           [NotNull]bool showPersonalForums,
+           [CanBeNull] int? forumCreatedByUserId)
+        {
+            if (!Config.LargeForumTree)
             {
-                foreach (DataRow dr1 in dt1.Rows)
+                using (var cmd = PostgreDbAccess.GetCommand("forum_listreadpersonal"))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    using (var cmd3 = PostgreDbAccess.GetCommand("forum_listread_helper"))
-                    {
-                        cmd3.CommandType = CommandType.StoredProcedure;                      
-                       
-                        cmd3.Parameters.Add("i_forumid", NpgsqlDbType.Integer).Value = dr1["ForumID"];
+                    cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardId;
+                    cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userId;
+                    cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryId ?? DBNull.Value;
+                    cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentId ?? DBNull.Value;
+                    cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+                    cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+                    cmd.Parameters.Add("i_showcommonforums", NpgsqlDbType.Boolean).Value = showCommonForums;
+                    cmd.Parameters.Add("i_showpersonalforums", NpgsqlDbType.Boolean).Value = showPersonalForums;
+                    cmd.Parameters.Add("i_forumcreatedbyuserid", NpgsqlDbType.Integer).Value = forumCreatedByUserId;
+                    cmd.Parameters.Add("i_UTCTIMESTAMP", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
 
-                        if (cntr != dt1rc - 1 || dt1rc == 0)
-                            dt2 = PostgreDbAccess.Current.AddValuesToDataTableFromReader(cmd3, dt1, false, true, firstColumnIndex, cntr);
-                        else
-                            dt2 = PostgreDbAccess.Current.AddValuesToDataTableFromReader(cmd3, dt1, false, false, firstColumnIndex, cntr);
-                    }
-
-
-                    cntr++;
+                    return PostgreDbAccess.GetData(cmd, false, connectionString);
                 }
             }
-            else
+
+            using (var cmd = PostgreDbAccess.GetCommand("forum_ns_listreadpersonal"))
             {
-                //We simply get rows' structure
-                using (var cmd2 = PostgreDbAccess.GetCommand("forum_listread_helper"))
-                {
-                    cmd2.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd2.Parameters.Add("i_forumid", NpgsqlDbType.Integer).Value = 0;                    
+                cmd.Parameters.Add("i_boardid", NpgsqlDbType.Integer).Value = boardId;
+                cmd.Parameters.Add("i_userid", NpgsqlDbType.Integer).Value = userId;
+                cmd.Parameters.Add("i_categoryid", NpgsqlDbType.Integer).Value = categoryId;
+                cmd.Parameters.Add("i_parentid", NpgsqlDbType.Integer).Value = parentId;
+                cmd.Parameters.Add("i_stylednicks", NpgsqlDbType.Boolean).Value = useStyledNicks;
+                cmd.Parameters.Add("i_findlastunread", NpgsqlDbType.Boolean).Value = findLastRead;
+                cmd.Parameters.Add("i_ShowCommonForums", NpgsqlDbType.Boolean).Value = showCommonForums;
+                cmd.Parameters.Add("i_ShowPersonalForums", NpgsqlDbType.Boolean).Value = showPersonalForums;
+                cmd.Parameters.Add("i_ForumCreatedByUserId", NpgsqlDbType.Integer).Value = forumCreatedByUserId;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
 
-                    dt2 = PostgreDbAccess.Current.AddValuesToDataTableFromReader(cmd2, dt1, false, true, firstColumnIndex, 0);
-                }
+                return PostgreDbAccess.GetData(cmd, false, connectionString);
             }
-
-            return dt2; */
         }
 
         /// <summary>

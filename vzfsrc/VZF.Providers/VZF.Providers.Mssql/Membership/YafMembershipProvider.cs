@@ -19,23 +19,24 @@
  */
 namespace YAF.Providers.Membership
 {
-  using System;
-  using System.Collections.Specialized;
-  using System.Configuration;
-  using System.Data;
-  using System.Linq;
-  using System.Security.Cryptography;
-  using System.Text;
-  using System.Text.RegularExpressions;
-  using System.Web.Security;
+    using System;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Data;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web.Security;
 
-  using YAF.Core;
-  // using YAF.Types.Extensions;
-  using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using VZF.Utils;
-  using YAF.Providers.Utils;
+    using VZF.Utils;
 
-  /// <summary>
+    using YAF.Core;
+    using YAF.Providers.Utils;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+
+    /// <summary>
   /// The yaf membership provider.
   /// </summary>
   public class YafMembershipProvider : MembershipProvider

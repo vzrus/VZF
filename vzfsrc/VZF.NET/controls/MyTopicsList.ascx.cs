@@ -203,7 +203,9 @@ namespace VZF.Controls
             switch (this.CurrentMode)
             {
                 case TopicListMode.Active:
-                    topicList = CommonDb.topic_active(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                    topicList = CommonDb.topic_active(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -214,7 +216,9 @@ namespace VZF.Controls
                         this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     break;
                 case TopicListMode.Unanswered:
-                    topicList = CommonDb.topic_unanswered(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                    topicList = CommonDb.topic_unanswered(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -239,9 +243,11 @@ namespace VZF.Controls
                     }
                     else
                     { */
-                        topicList = CommonDb.topic_unread(PageContext.PageModuleID, this.PageContext.PageBoardID,
-                       categoryIdObject,
-                       this.PageContext.PageUserID,
+                    topicList = CommonDb.topic_unread(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
+                        categoryIdObject,
+                        this.PageContext.PageUserID,
                        this.sinceDate,
                        DateTime.UtcNow.ToUniversalTime(),
                        nCurrentPageIndex,
@@ -252,7 +258,9 @@ namespace VZF.Controls
                    // }
                     break;
                 case TopicListMode.User:
-                    topicList = CommonDb.Topics_ByUser(PageContext.PageModuleID, this.PageContext.PageBoardID,
+                    topicList = CommonDb.Topics_ByUser(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
                         categoryIdObject,
                         this.PageContext.PageUserID,
                         this.sinceDate,
@@ -263,10 +271,10 @@ namespace VZF.Controls
                         this.Get<YafBoardSettings>().UseReadTrackingByDatabase);
                     break;
                 case TopicListMode.Favorite:
-                    topicList = CommonDb.topic_favorite_details(PageContext.PageModuleID, this.PageContext.PageBoardID,
-                        (YafContext.Current.Settings.CategoryID == 0)
-                            ? null
-                            : (object)YafContext.Current.Settings.CategoryID,
+                    topicList = CommonDb.topic_favorite_details(
+                        PageContext.PageModuleID,
+                        this.PageContext.PageBoardID,
+                        YafContext.Current.Settings.CategoryID == 0 ? null : (object)YafContext.Current.Settings.CategoryID,
                         this.PageContext.PageUserID,
                         this.sinceDate,
                         DateTime.UtcNow.ToUniversalTime(),

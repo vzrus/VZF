@@ -29,7 +29,9 @@ using System.Security;
 [assembly: AssemblyTitle("Farsi Library")]
 [assembly: CLSCompliant(true)]
 
+#if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]
+#endif
 
 #if !NCRUNCH
 [assembly: AssemblyDelaySign(false)]

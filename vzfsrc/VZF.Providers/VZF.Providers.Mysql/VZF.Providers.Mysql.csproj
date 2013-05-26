@@ -73,14 +73,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mysql\Membership\DB.cs" />
-    <Compile Include="mysql\Membership\UserPasswordInfo.cs" />
-    <Compile Include="mysql\Membership\VzfMySqlMembershipProvider.cs" />
-    <Compile Include="mysql\Profile\DB.cs" />
-    <Compile Include="mysql\Profile\SettingsPropertyColumn.cs" />
-    <Compile Include="mysql\Profile\YafProfileProvider.cs" />
-    <Compile Include="mysql\Roles\DB.cs" />
-    <Compile Include="mysql\Roles\YafRoleProvider.cs" />
+    <Compile Include="Membership\DB.cs" />
+    <Compile Include="Membership\UserPasswordInfo.cs" />
+    <Compile Include="Membership\VzfMySqlMembershipProvider.cs" />
+    <Compile Include="Profile\DB.cs" />
+    <Compile Include="Profile\SettingsPropertyColumn.cs" />
+    <Compile Include="Profile\YafProfileProvider.cs" />
+    <Compile Include="Roles\DB.cs" />
+    <Compile Include="Roles\YafRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

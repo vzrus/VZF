@@ -101,8 +101,10 @@ public class YafWebService : WebService, IHaveServiceLocator
 
         long messageId = 0;
         string subjectEncoded = this.Server.HtmlEncode(subject);
-      
-        return CommonDb.topic_save(YafContext.Current.PageModuleID, forumid,
+
+        return CommonDb.topic_save(
+            YafContext.Current.PageModuleID,
+            forumid,
             subjectEncoded,
             status,
             styles,
@@ -110,7 +112,7 @@ public class YafWebService : WebService, IHaveServiceLocator
             post,
             userid,
             priority,
-            this.User != null ? null : (UserMembershipHelper.FindUsersByName(username) != null) ? "GUEST_{0}".FormatWith(username) : username,
+            this.User != null ? null : (UserMembershipHelper.FindUsersByName(username).Count > 0) ? "{0}_{1}".FormatWith(this.Get<ILocalization>().GetText("COMMON", "GUEST_NAME"), username) : username,
             ip,
             DateTime.UtcNow,
             string.Empty,

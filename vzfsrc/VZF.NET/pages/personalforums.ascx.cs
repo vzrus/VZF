@@ -155,14 +155,7 @@ namespace YAF.pages
 
             // create page links
             this.CreatePageLinks();
-            
-            // sync roles just in case...
-            RoleMembershipHelper.SyncRoles(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID);
-            if (PageContext.PersonalForumsNumber < PageContext.UsrPersonalForums)
-            {
-                this.NewForum.Visible = true;
-            }
-            
+
             // bind data
             this.BindData();
         }
@@ -249,7 +242,7 @@ namespace YAF.pages
         protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // go back to personal group selection
-            YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
+            YafBuildLink.Redirect(ForumPages.posts, "m={0}#post{0}".FormatWith(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m")));
         }
 
         /// <summary>
@@ -258,7 +251,18 @@ namespace YAF.pages
         private void BindData()
         {
             // add forum list
-            using (var frmList = CommonDb.forum_byuserlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, PageContext.PageUserID, true))
+            using (
+                var frmList = CommonDb.forum_listreadpersonal(
+                    PageContext.PageModuleID,
+                    this.PageContext.PageBoardID,
+                    PageContext.PageUserID,
+                    null,
+                    null,
+                    this.Get<YafBoardSettings>().UseStyledNicks,
+                    this.Get<YafBoardSettings>().UseReadTrackingByDatabase,
+                    false,
+                    true,
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>()))
             {
                 this.ForumList.DataSource = frmList;
             }

@@ -440,7 +440,7 @@ RETURNS (
     "TotalRows" integer,
     "PageIndex" integer )
 AS
-DECLARE VARIABLE ici_RowTotalCount INTEGER DEFAULT 0; 
+ DECLARE VARIABLE ici_RowTotalCount INTEGER DEFAULT 0; 
  DECLARE VARIABLE cnt INTEGER DEFAULT 1; 
  DECLARE VARIABLE ici_shiftsticky INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_post_totalrowsnumber INTEGER DEFAULT 0; 
@@ -480,7 +480,7 @@ SELECT
         objQual_TOPIC c1 
     WHERE
         c1.FORUMID = :I_FORUMID	
-        AND	((c1."PRIORITY">0 AND c1."PRIORITY"<>2) OR (c1."PRIORITY" <=0 AND c1.LASTPOSTED >= :I_SINCEDATE )) 
+        AND	(c1."PRIORITY" = 1 OR (c1."PRIORITY" <=0 AND c1.LASTPOSTED >= :I_SINCEDATE )) 
         AND	c1.ISDELETED = 0
         AND	(c1.TOPICMOVEDID IS NOT NULL OR c1.NUMPOSTS > 0) 
         AND
@@ -514,7 +514,7 @@ SELECT
         objQual_TOPIC t 
     where
             t.FORUMID = :I_FORUMID	
-        AND	(((:ici_shiftsticky = 1) and (t."PRIORITY">0 AND t."PRIORITY"<>2)) OR (t."PRIORITY" <=0 AND t.LASTPOSTED >= :I_SINCEDATE )) 
+        AND	((:ici_shiftsticky = 1 and t."PRIORITY"=1) OR (t."PRIORITY" <=0 AND t.LASTPOSTED >= :I_SINCEDATE )) 
         AND	t.ISDELETED = 0
         AND	(t.TOPICMOVEDID IS NOT NULL OR t.NUMPOSTS > 0) 
         AND
@@ -600,7 +600,7 @@ FOR
         JOIN YAF_USER b ON b.USERID=c.USERID
         JOIN YAF_FORUM d ON d.FORUMID=c.FORUMID  		
     WHERE c.FORUMID = :I_FORUMID
-        AND	(( c."PRIORITY">0 AND c."PRIORITY"<>2) OR (c."PRIORITY" <=0 AND c.LASTPOSTED <= :ici_firstselectposted )) 
+        AND	(c."PRIORITY"=1 OR (c."PRIORITY" <=0 AND c.LASTPOSTED <= :ici_firstselectposted )) 
         AND	c.ISDELETED = 0
         AND	((c.TOPICMOVEDID IS NOT NULL) OR (c.NUMPOSTS > 0)) 
         AND

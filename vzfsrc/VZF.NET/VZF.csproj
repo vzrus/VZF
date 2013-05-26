@@ -2975,6 +2975,7 @@
     <Content Include="images\medals\medal_small.png" />
     <Content Include="images\twitter_signin.png" />
     <Content Include="images\YafLogo.png" />
+    <Content Include="install\firebird\custom.sql" />
     <Content Include="install\firebird\domains.sql" />
     <Content Include="install\firebird\exceptions.sql" />
     <Content Include="install\firebird\exceptions_drop.sql" />
@@ -3010,6 +3011,7 @@
     <Content Include="install\firebird\views.sql" />
     <Content Include="install\firebird\views_drop.sql" />
     <Content Include="install\mysql\constraints.sql" />
+    <Content Include="install\mysql\custom.sql" />
     <Content Include="install\mysql\fkeys.sql" />
     <Content Include="install\mysql\functions.sql" />
     <Content Include="install\mysql\indexes.sql" />
@@ -3025,6 +3027,7 @@
     <Content Include="install\mysql\upgrade.sql" />
     <Content Include="install\mysql\views.sql" />
     <Content Include="install\pgsql\Copy of nestedsets.sql" />
+    <Content Include="install\pgsql\custom.sql" />
     <Content Include="install\pgsql\domains.sql" />
     <Content Include="install\pgsql\fkeys.sql" />
     <Content Include="install\pgsql\fulltext.sql" />
@@ -3953,6 +3956,7 @@
     <Content Include="resources\js\jquery.spellchecker.min.js" />
     <Content Include="resources\js\jquery.syntaxhighligher.js" />
     <Content Include="resources\js\jquery.pagemethod.readme.txt" />
+    <Content Include="resources\js\jquery.tablesorter.js" />
     <Content Include="resources\js\jquery.timeago.js" />
     <Content Include="resources\js\jquery.ui.datepicker-farsi.js" />
     <Content Include="resources\js\jquery.yafmodaldialog.js" />

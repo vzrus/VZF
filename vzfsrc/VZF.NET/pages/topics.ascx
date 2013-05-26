@@ -10,8 +10,7 @@
 <%@ Register TagPrefix="VZF" Namespace="VZF.Controls" Assembly="VZF.Controls" %>
 
 <VZF:PageLinks runat="server" ID="PageLinks" />
-<div class="DivTopSeparator">
-</div>  
+<div class="DivTopSeparator"></div>
 <asp:PlaceHolder runat="server" ID="SubForums" Visible="false">
     <table class="content subForum"  width="100%">
         <tr class="topicTitle">
@@ -19,14 +18,14 @@
                 <%= GetSubForumTitle()%>
             </th>
         </tr>
-            <tr class="topicSubTitle">
+        <tr class="topicSubTitle">
             <th width="1%" class="header2">
                 &nbsp;
             </th>
             <th class="header2 headerForum">
                 <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
             </th>
-            <th width="15%"  runat="server" class="header2 headerModerators" visible="<%# PageContext.BoardSettings.ShowModeratorList  && PageContext.BoardSettings.ShowModeratorListAsColumn %>">
+            <th width="15%"  runat="server" class="header2 headerModerators" visible='<%# PageContext.BoardSettings.ShowModeratorList  && PageContext.BoardSettings.ShowModeratorListAsColumn %>'>
                 <VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="moderators" />
             </th>
             <th width="4%" class="header2 headerTopics">
@@ -40,48 +39,52 @@
             </th>
         </tr>
         <VZF:ForumList AltLastPost="<%# this.LastPostImageTT %>" runat="server" ID="ForumList" />
+        <tfoot visible="false">
+            <tr>
+                <td colspan="6" class="header2"></td>
+            </tr>
+        </tfoot>
     </table>
 </asp:PlaceHolder>
-  <table class="content" width="100%">
-   <asp:Repeater ID="Announcements" runat="server">
-       <HeaderTemplate>
-           <tr class="topicTitle">
-        <th class="header1" colspan="6">
-            <VZF:ThemeImage ID="ai" ThemePage="ICONS" ThemeTag="ANOUNCEMENT_T_SICON" LocalizedTitlePage="TOPICS" LocalizedTitleTag="ANNOUNCEMENTS_TITLE"  runat="server"/>
-            <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="ANNOUNCEMENTS_TITLE" />
-        </th>
-    </tr>
-    <tr class="topicSubTitle">
-        <th class="header2" width="1%">
-            &nbsp;
-        </th>
-        <th class="header2 headerTopic" align="left">
-            <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="topics" />
-        </th>
-        <th class="header2 headerReplies" align="right" width="7%">
-            <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="replies" />
-        </th>
-        <th class="header2 headerViews" align="right" width="7%">
-            <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="views" />
-        </th>
-        <th class="header2 headerLastPost" align="left" width="15%">
-            <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="lastpost" />
-        </th>
-    </tr>
-       </HeaderTemplate>
+<table class="content" width="100%">
+    <asp:Repeater ID="Announcements" runat="server">
+        <HeaderTemplate>
+            <tr class="topicTitle">
+                <th class="header1" colspan="6">
+                    <VZF:ThemeImage ID="ai" ThemePage="ICONS" ThemeTag="ANOUNCEMENT_T_SICON" LocalizedTitlePage="TOPICS" LocalizedTitleTag="ANNOUNCEMENTS_TITLE"  runat="server"/>
+                    <VZF:LocalizedLabel ID="LocalizedLabel16" runat="server" LocalizedTag="ANNOUNCEMENTS_TITLE" />
+                </th>
+            </tr>
+            <tr class="topicSubTitle">
+                <th class="header2" width="1%">
+                    &nbsp;
+                </th>
+                <th class="header2 headerTopic" align="left">
+                    <VZF:LocalizedLabel ID="LocalizedLabel12" runat="server" LocalizedTag="topics" />
+                </th>
+                <th class="header2 headerReplies" align="right" width="7%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel13" runat="server" LocalizedTag="replies" />
+                </th>
+                <th class="header2 headerViews" align="right" width="7%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel14" runat="server" LocalizedTag="views" />
+                </th>
+                <th class="header2 headerLastPost" align="left" width="15%">
+                    <VZF:LocalizedLabel ID="LocalizedLabel15" runat="server" LocalizedTag="lastpost" />
+                </th>
+            </tr>
+        </HeaderTemplate>
         <ItemTemplate>
             <VZF:TopicLine ID="TopicLine1" runat="server" AltLastPost="<%# this.LastPostImageTT %>" DataRow="<%# Container.DataItem %>" />
         </ItemTemplate>
        <FooterTemplate>
-       <tfoot visible="false">
-        <tr>
-        <td colspan="6" class="header2"></td>
-        </tr>
-    </tfoot>
+           <tfoot visible="false">
+               <tr>
+                   <td colspan="6" class="header2"></td>
+               </tr>
+           </tfoot>
        </FooterTemplate>
-           
     </asp:Repeater>
-      </table>
+</table>
 <table class="command" width="100%">
     <tr>
         <td>
@@ -132,7 +135,7 @@
     <VZF:ForumUsers runat="server" />
     <tr>
         <td align="center" colspan="6" class="footer1">
-             <VZF:SimpleTagCloud ID="Stc1" runat="server"/>  
+             <VZF:SimpleTagCloud ID="Stc1" runat="server"/>
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                     <td width="1%" style="white-space: nowrap">

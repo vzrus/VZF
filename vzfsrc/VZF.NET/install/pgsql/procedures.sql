@@ -3704,6 +3704,149 @@ $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
   COST 100
   ROWS 1000; 
+  --GO
+  
+   CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listreadpersonal(
+                           i_boardid integer,
+                           i_userid integer,
+                           i_categoryid integer,
+                           i_parentid integer,
+                           i_stylednicks boolean,
+                           i_findlastunread boolean,
+                           i_showcommonforums boolean,
+                           i_showpersonalforums boolean,
+                           i_forumcreatedbyuserid integer,
+                           i_UTCTIMESTAMP timestamptz)
+                  RETURNS SETOF databaseSchema.objectQualifier_forum_listread_return_type AS
+$BODY$DECLARE
+-- ici_lasttopicid integer;
+ici_topicmovedid integer;
+ici_lastposted timestampTZ ;
+ici_lastmessageid integer;
+ici_lastmessageflags integer;
+ici_lastuserid integer;
+ici_lasttopicname varchar(255);
+ici_lastuserdisplayname varchar(255);
+ici_lasttopicstyles varchar(255);
+ici_lastuser varchar(255);
+ici_pollgroupid integer; 
+ici_style varchar(255):='';
+ici_lasttopicstatus  varchar(255):='';
+ici_lasttopicaccess  timestampTZ ;
+ici_forumids int array; 
+ici_forumids1 int array; 
+intcnt integer:=0; 
+_rectemp databaseSchema.objectQualifier_forum_listread_tmp%ROWTYPE;
+_rec databaseSchema.objectQualifier_forum_listread_return_type%ROWTYPE; 
+BEGIN   
+
+
+FOR _rec IN
+    SELECT 
+        a.categoryid, 
+        a.name AS Category, 
+        b.forumid AS ForumID,
+        b.parentid,
+        b.name AS Forum, 
+        b.description, 		
+        b.imageurl,		
+        b.pollgroupid, 
+        b.isuserforum,		
+        databaseSchema.objectQualifier_forum_topics(b.forumid) AS Topics,
+        databaseSchema.objectQualifier_forum_posts(b.forumid) AS Posts, 	
+        b.lasttopicid,
+        ici_lasttopicstatus,
+        ici_lasttopicstyles,
+        ici_topicmovedid,
+        b.lastposted,
+        ici_lastmessageid,
+        ici_lastmessageflags,
+        ici_lastuserid,
+        ici_lasttopicname,
+        ici_lastuser,
+        ici_lastuserdisplayname,
+        b.flags,
+        ici_style AS "Style",
+    (SELECT COUNT(1) FROM databaseSchema.objectQualifier_active xz 
+    JOIN databaseSchema.objectQualifier_user usr 
+    ON xz.userid = usr.userid 
+    WHERE xz.forumid=b.forumid 
+    AND usr.isactiveexcluded IS FALSE) AS Viewing, 
+        b.remoteurl,
+        x.readaccess::integer,
+        (case(i_findlastunread)
+             when true THEN
+               (SELECT LastAccessDate FROM databaseSchema.objectQualifier_forumreadtracking x WHERE x.forumid=b.forumid AND x.userid = i_userid LIMIT 1)
+             else null	 end) AS LastForumAccess,
+             ici_lasttopicaccess  AS LastTopicAccess		
+    FROM 
+        databaseSchema.objectQualifier_category a
+        JOIN databaseSchema.objectQualifier_forum b on b.categoryid=a.categoryid
+        JOIN databaseSchema.objectQualifier_activeaccess x on x.forumid=b.forumid
+    --	JOIN databaseSchema.objectQualifier_forum_ns_getsubtree(i_parentid, true) q ON q."ForumID" = b.forumid
+    WHERE
+        (i_categoryid IS NULL OR a.categoryid=i_categoryid) AND
+         x.userid = i_userid  and		
+         b.createdbyuserid = i_forumcreatedbyuserid and b.isuserforum 	
+         and ((b.flags & 2)=0 OR x.readaccess) 	
+    ORDER BY 
+        a.sortorder,
+        b.sortorder 		
+    LOOP 	 
+                    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL) THEN	 
+                     _rec."LastTopicID" := databaseSchema.objectQualifier_forum_lasttopic(_rec."ForumID",i_userid,_rec."LastTopicID",_rec."LastPosted");
+    END IF;
+    IF  (_rec."LastTopicID" IS NULL OR _rec."LastPosted"	IS NULL AND _rec."TopicMovedID" IS NOT NULL) THEN	 
+     _rec."LastTopicID":=databaseSchema.objectQualifier_forum_lasttopic(_rec."ForumID",i_userid,_rec."TopicMovedID",_rec."LastPosted");
+    END IF;	  	
+     SELECT    t.lastposted , 
+               t.lastmessageid, 
+               t.lastmessageflags, 
+               t.lastuserid,
+               t.topicmovedid,
+               t.topic,
+               t.status,
+               t.styles,
+               (case when (i_findlastunread IS TRUE)
+               THEN
+               (SELECT lastaccessdate FROM databaseSchema.objectQualifier_topicreadtracking y WHERE y.topicid=t.topicid AND y.userid = i_userid)
+               else null	 end)
+    INTO
+    _rec."LastPosted" , 
+    _rec."LastMessageID" , 
+    _rec."LastMessageFlags",
+    _rec."LastUserID",
+    _rec."TopicMovedID",
+    _rec."LastTopicName", 
+    _rec."LastTopicStatus",
+    _rec."LastTopicStyles",
+    _rec."LastTopicAccess"
+     FROM 
+        databaseSchema.objectQualifier_topic t
+        WHERE   t.topicid=_rec."LastTopicID" LIMIT 1; 		
+      
+       _rec."LastUser" = COALESCE((SELECT t.lastusername FROM 
+        databaseSchema.objectQualifier_topic t
+        WHERE  t.topicid=_rec."LastTopicID" LIMIT 1),(SELECT u2.name
+             FROM   databaseSchema.objectQualifier_user u2
+             WHERE  u2.userid = _rec."LastUserID" LIMIT 1));
+       _rec."LastUserDisplayName" = COALESCE((SELECT t.lastuserdisplayname FROM 
+        databaseSchema.objectQualifier_topic t
+        WHERE  t.topicid=_rec."LastTopicID"  LIMIT 1),(SELECT u2.displayname
+             FROM   databaseSchema.objectQualifier_user u2
+             WHERE  u2.userid = _rec."LastUserID" LIMIT 1));
+    _rec."Style" := (case(i_stylednicks)
+            when true THEN  (SELECT us.userstyle FROM databaseSchema.objectQualifier_user us where us.userid = _rec."LastUserID")   
+            else ''	 end); 
+    RETURN NEXT _rec;	
+END LOOP;
+
+END;
+
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
+  COST 100
+  ROWS 1000; 
   --GO 
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_listread(
@@ -5263,6 +5406,7 @@ FOR _rec IN
         SELECT   a.groupid,
         a.name,
         (a.flags & 16 = 16),
+		a.isusergroup,
         a.style,
         (SELECT COUNT(1)
         FROM   databaseSchema.objectQualifier_usergroup x

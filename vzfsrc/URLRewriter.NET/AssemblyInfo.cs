@@ -5,12 +5,16 @@
 // Copyright 2007 Seth Yates
 // 
 
-using System.Reflection;
 using System;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
+
+#if (!COMPACT_FRAMEWORK)
+[assembly: AllowPartiallyTrustedCallers]
+#endif
 
 [assembly: AssemblyTitle("UrlRewriter 2.0 RC1")]
 [assembly: AssemblyDescription("An extendible, rule-based URL Rewriter for .NET")]
@@ -23,6 +27,5 @@ using System.Security.Permissions;
 [assembly: AssemblyVersion("2.0.0.6")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyName("")]
-[assembly: AllowPartiallyTrustedCallers]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

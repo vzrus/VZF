@@ -169,8 +169,9 @@ namespace YAF.Utilities
                 return
                     @"function multiQuoteSuccess(res){{
                   var multiQuoteButton = {0}('#' + res.d.Id).parent('span');
-                  multiQuoteButton.removeClass(multiQuoteButton.attr('class')).addClass(res.d.NewTitle);}}"
-                        .FormatWith(Config.JQueryAlias);
+                   multiQuoteButton.removeClass(multiQuoteButton.attr('class')).addClass(res.d.NewTitle);
+                 {0}(document).scrollTop(multiQuoteButton.offset().top - 20);
+                      }}".FormatWith(Config.JQueryAlias);
             }
         }
 
@@ -639,7 +640,7 @@ namespace YAF.Utilities
             bool hightTransition,
             bool addSelectedFunction)
         {
-            string heightTransitionJs = hightTransition ? ", fx:{height:'toggle'}" : string.Empty;
+            string heightTransitionJs = hightTransition ? ", show:{height:'toggle'}, hide:{height:'toggle'}" : string.Empty;
 
             string selectFunctionJs = addSelectedFunction
                                             ? ", beforeActivate: function(event, ui) {{ {0}('#{1}').val(ui.newTab.index());{0}('#{2}').val(ui.newPanel.selector.replace('#', ''));{3} }}"
@@ -650,7 +651,7 @@ namespace YAF.Utilities
                 @"{3}(document).ready(function() {{
 					{3}('#{0}').tabs(
                     {{
-            show: function() {{
+            activate: function() {{
                 var sel = {3}('#{0}').tabs('option', 'active'); 
                 {3}('#{1}').val(sel);
             }},

@@ -26,14 +26,13 @@ namespace YAF.Providers.Roles
     using System.Linq;
     using System.Web.Security;
 
-  
-    using YAF.Core;
-    using YAF.Types.Interfaces;
-    // using YAF.Types.Extensions;
-    using YAF.Types.Constants;
-    using YAF.Types;
     using VZF.Utils;
+
+    using YAF.Core;
     using YAF.Providers.Utils;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
 
     /// <summary>
     /// The yaf role provider.

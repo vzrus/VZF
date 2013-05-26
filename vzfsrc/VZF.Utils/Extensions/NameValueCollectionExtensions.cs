@@ -18,54 +18,120 @@
  */
 namespace VZF.Utils
 {
-  using System.Collections;
-  using System.Collections.Generic;
-  using System.Collections.Specialized;
-  using System.Linq;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
 
-  using YAF.Types;
-
-  public static class NameValueCollectionExtensions
-  {
-    /// <summary>
-    /// Flattens a <see cref="NameValueCollection"/> to a simple string <see cref="IDictionary{TKey,TValue}"/>.
-    /// </summary>
-    /// <param name="collection">
-    /// </param>
-    /// <returns>
-    /// </returns>
-    [NotNull]
-    public static IDictionary<string, string> ToSimpleDictionary([NotNull] this NameValueCollection collection)
-    {
-      CodeContracts.ArgumentNotNull(collection, "collection");
-
-      return collection.AllKeys.ToDictionary(key => key, key => collection[key]);
-    }
+    using YAF.Types;
 
     /// <summary>
-    /// Gets the value as an <see cref="IEnumerable"/> handling splitting the string if needed.
+    /// The name value collection extensions.
     /// </summary>
-    /// <param name="collection"></param>
-    /// <returns>Does not return null.</returns>
-    public static IEnumerable<string> GetValueList([NotNull] this NameValueCollection collection, [NotNull] string paramName)
+    public static class NameValueCollectionExtensions
     {
-      CodeContracts.ArgumentNotNull(collection, "collection");
-      CodeContracts.ArgumentNotNull(paramName, "paramName");
+        #region Public Methods and Operators
 
-    	return collection[paramName] == null ? Enumerable.Empty<string>() : collection[paramName].Split(',').AsEnumerable();
+        /// <summary>
+        /// The get first or default.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <param name="paramName">
+        /// The param name.
+        /// </param>
+        /// <param name="comparer">
+        /// The comparer.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetFirstOrDefault(
+            [NotNull] this NameValueCollection collection,
+            [NotNull] string paramName,
+            IEqualityComparer<string> comparer = null)
+        {
+            CodeContracts.ArgumentNotNull(collection, "collection");
+            CodeContracts.ArgumentNotNull(paramName, "paramName");
+
+            return collection.ToLookup(comparer)[paramName].FirstOrDefault();
+        }
+
+        /// <summary>
+        /// The get first or default as.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <param name="paramName">
+        /// The param name.
+        /// </param>
+        /// <param name="comparer">
+        /// The comparer.
+        /// </param>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        public static T GetFirstOrDefaultAs<T>(
+            [NotNull] this NameValueCollection collection,
+            [NotNull] string paramName,
+            IEqualityComparer<string> comparer = null)
+        {
+            CodeContracts.ArgumentNotNull(collection, "collection");
+            CodeContracts.ArgumentNotNull(paramName, "paramName");
+
+            return collection.GetFirstOrDefault(paramName, comparer).ToType<T>();
+        }
+
+        /// <summary>
+        /// The get value list.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <param name="paramName">
+        /// The param name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
+        public static IEnumerable<string> GetValueList(
+            [NotNull] this NameValueCollection collection, [NotNull] string paramName)
+        {
+            CodeContracts.ArgumentNotNull(collection, "collection");
+            CodeContracts.ArgumentNotNull(paramName, "paramName");
+
+            return collection[paramName] == null
+                       ? Enumerable.Empty<string>()
+                       : collection[paramName].Split(',').AsEnumerable();
+        }
+
+        /// <summary>
+        /// The to lookup.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <param name="comparer">
+        /// The comparer.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IDictionary{TKey,TValue}"/>.
+        /// </returns>
+        [NotNull]
+        public static ILookup<string, string> ToLookup(
+            [NotNull] this NameValueCollection collection, IEqualityComparer<string> comparer = null)
+        {
+            CodeContracts.ArgumentNotNull(collection, "collection");
+
+            return collection.Cast<string>()
+                             .ToLookup(key => key, key => collection[key], comparer ?? StringComparer.OrdinalIgnoreCase);
+        }
+
+        #endregion
     }
-
-    /// <summary>
-    /// Gets the first value of <paramref name="paramName"/> in the collection or default (Null).
-    /// </summary>
-    /// <param name="collection"></param>
-    /// <returns></returns>
-    public static string GetFirstOrDefault([NotNull] this NameValueCollection collection, [NotNull] string paramName)
-    {
-      CodeContracts.ArgumentNotNull(collection, "collection");
-      CodeContracts.ArgumentNotNull(paramName, "paramName");
-
-      return collection.GetValueList(paramName).FirstOrDefault();
-    }
-  }
 }

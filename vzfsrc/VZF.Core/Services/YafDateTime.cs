@@ -303,15 +303,7 @@ namespace YAF.Core.Services
         /// </returns>
         private DateTime AccountForDST(DateTime dtCurrent)
         {
-            if (YafContext.Current.CurrentUserData.DSTUser)
-            {
-                if (TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time").IsDaylightSavingTime(dtCurrent))
-                {
-                    return dtCurrent.AddHours(1);
-                }
-            }
-
-            return dtCurrent;
+            return YafContext.Current.CurrentUserData.DSTUser ? dtCurrent.AddHours(1) : dtCurrent;
         }
 
         #endregion

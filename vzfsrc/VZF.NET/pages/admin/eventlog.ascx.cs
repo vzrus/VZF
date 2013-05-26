@@ -27,20 +27,20 @@ namespace YAF.Pages.Admin
     using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
+
     using FarsiLibrary;
 
+    using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -58,7 +58,8 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void DeleteAll_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
-            CommonDb.eventlog_deletebyuser(PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
+            CommonDb.eventlog_deletebyuser(
+                PageContext.PageModuleID, this.PageContext.PageBoardID, this.PageContext.PageUserID);
 
             // re-bind controls
             this.BindData();
@@ -207,16 +208,17 @@ namespace YAF.Pages.Admin
 
                 if (ci.IsFarsiCulture())
                 {
-                    YafContext.Current.PageElements.RegisterJsResourceInclude("datepicker-farsi", "js/jquery.ui.datepicker-farsi.js");
+                    YafContext.Current.PageElements.RegisterJsResourceInclude(
+                        "datepicker-farsi", "js/jquery.ui.datepicker-farsi.js");
                 }
             }
 
-           YafContext.Current.PageElements.RegisterJsBlockStartup(
-              "DatePickerJs",
-              JavaScriptBlocks.DatePickerLoadJs(
-                  "{0}, #{1}".FormatWith(this.ToDate.ClientID, this.SinceDate.ClientID),
-                  this.GetText("COMMON", "CAL_JQ_CULTURE_DFORMAT"),
-                  this.GetText("COMMON", "CAL_JQ_CULTURE")));
+            YafContext.Current.PageElements.RegisterJsBlockStartup(
+                "DatePickerJs",
+                JavaScriptBlocks.DatePickerLoadJs(
+                    "{0}, #{1}".FormatWith(this.ToDate.ClientID, this.SinceDate.ClientID),
+                    this.GetText("COMMON", "CAL_JQ_CULTURE_DFORMAT"),
+                    this.GetText("COMMON", "CAL_JQ_CULTURE")));
 
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "ToggleEventLogItemJs",
@@ -262,14 +264,14 @@ namespace YAF.Pages.Admin
                     "ADMIN_EVENTLOGROUPACCESS",
                     "LT_{0}".FormatWith(Enum.GetName(typeof(EventLogTypes), eventTypeId).ToUpperInvariant()));
 
-                this.Types.Items.Add(
-                    new ListItem(eventTypeName, eventTypeId.ToString()));
+                this.Types.Items.Add(new ListItem(eventTypeName, eventTypeId.ToString(CultureInfo.InvariantCulture)));
             }
 
             var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
 
-            if (this.Get<YafBoardSettings>().EnableDNACalendar) // <-- Should be removed legacy settting not needed anymore.
+            if (this.Get<YafBoardSettings>().EnableDNACalendar)
             {
+                // <-- Should be removed legacy settting not needed anymore.
                 if (this.Get<YafBoardSettings>().UseFarsiCalender && ci.IsFarsiCulture())
                 {
                     this.SinceDate.Text = PersianDateConverter.ToPersianDate(PersianDate.MinValue).ToString("d");
@@ -277,10 +279,11 @@ namespace YAF.Pages.Admin
                 }
                 else
                 {
-                    this.SinceDate.Text = DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays).ToString(
-                                                 ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
+                    this.SinceDate.Text =
+                        DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays)
+                                .ToString(ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
                     this.ToDate.Text = DateTime.UtcNow.Date.ToString(
-                                                 ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
+                        ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
                 }
 
                 this.ToDate.ToolTip = this.SinceDate.ToolTip = this.GetText("COMMON", "CAL_JQ_TT");
@@ -328,7 +331,8 @@ namespace YAF.Pages.Admin
             this.PagerTop.PageSize = baseSize;
 
             var sinceDate = DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays);
-            var toDate = DateTime.UtcNow.AddMinutes((double)PageContext.CurrentUserData.TimeZone);
+            var timeZone = this.PageContext.CurrentUserData.TimeZone ?? this.PageContext.TimeZoneUser;
+            var toDate = DateTime.UtcNow.AddMinutes(timeZone);
 
             var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
 
@@ -362,7 +366,7 @@ namespace YAF.Pages.Admin
 
             // list event for this board
             DataTable dt = CommonDb.eventlog_list(
-                PageContext.PageModuleID,
+                this.PageContext.PageModuleID,
                 this.PageContext.PageBoardID,
                 this.PageContext.PageUserID,
                 this.Get<YafBoardSettings>().EventLogMaxMessages,
@@ -429,9 +433,7 @@ namespace YAF.Pages.Admin
 
             // Get first default full culture from a language file tag.
             string langFileCulture = StaticDataHelper.CultureDefaultFromFile(languageFile);
-            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2)
-                                          ? culture4Tag
-                                          : langFileCulture;
+            return langFileCulture.Substring(0, 2) == culture4Tag.Substring(0, 2) ? culture4Tag : langFileCulture;
         }
 
         #endregion

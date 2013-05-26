@@ -18,13 +18,12 @@
  */
 namespace YAF.Editors
 {
-    using System.Web.UI;
+   using VZF.Utils;
 
     using YAF.Classes;
     using YAF.Core;
-  using YAF.Types;
+    using YAF.Types;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
     /// <summary>
   /// The tiny mce html editor.

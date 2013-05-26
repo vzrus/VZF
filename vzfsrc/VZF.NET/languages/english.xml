@@ -4676,6 +4676,7 @@ Visit {forumname} at {forumlink}
      <Resource tag="DELETE_POSTS_USER">Delete all Posts for User?</Resource>
      <Resource tag="CURRENT_POINTS">Current Points:</Resource>
      <Resource tag="SET_POINTS">Set Points:</Resource>
+     <Resource tag="SUSPEND_ACCOUNT_USER">Suspend this account for 5 years?</Resource>
      <Resource tag="ADD_POINTS">Add Points:</Resource>
      <Resource tag="REMOVE_POINTS">Remove Points:</Resource>
      <Resource tag="PASS_REQUIREMENT">{0} minimum length. {1} minimum non-alphanumeric characters ($#@!).</Resource>

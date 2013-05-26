@@ -24,6 +24,7 @@ namespace VZF.Controls
 
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Text;
     using System.Web;
 
@@ -145,8 +146,7 @@ namespace VZF.Controls
                     sb.Append(",&nbsp;");
                 }
 
-                // Get the username related to this User ID
-                string displayName = this.Get<IUserDisplayName>().GetName(userId);
+                string displayName = this.Get<YafBoardSettings>().EnableDisplayName ? this.DataRow["DisplayName"].ToString() : this.DataRow["UserName"].ToString();
 
                 sb.AppendFormat(
                     @"<a id=""{0}"" href=""{1}""><u>{2}</u></a>",
@@ -325,7 +325,8 @@ namespace VZF.Controls
                 "reputationprogressjs",
                 JavaScriptBlocks.ReputationProgressChangeJs(
                     YafReputation.GenerateReputationBar(this.DataRow["Points"].ToType<int>(), this.PostData.UserId),
-                    this.PostData.UserId.ToString()));
+                    this.PostData.UserId.ToString(CultureInfo.InvariantCulture)));
+            this.UserBox1.PageCache = null;
         }
 
         /// <summary>
@@ -368,7 +369,9 @@ namespace VZF.Controls
                 "reputationprogressjs",
                 JavaScriptBlocks.ReputationProgressChangeJs(
                     YafReputation.GenerateReputationBar(this.DataRow["Points"].ToType<int>(), this.PostData.UserId),
-                    this.PostData.UserId.ToString()));
+                    this.PostData.UserId.ToString(CultureInfo.InvariantCulture)));
+
+            this.UserBox1.PageCache = null;
         }
 
         /// <summary>
@@ -437,8 +440,6 @@ namespace VZF.Controls
                 this.IPLink1.Title = this.GetText("COMMON", "TT_IPDETAILS");
                 this.IPLink1.InnerText = this.HtmlEncode(ip);
             }
-
-            
         }
 
         /// <summary>
@@ -551,6 +552,17 @@ namespace VZF.Controls
                 this.PageContext.PageForumID,
                 this.PostData.MessageId,
                 this.CurrentPage);
+
+                this.UserProfileLink.ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
+                                               && (!DataRow["IsGuest"].ToType<bool>()
+                                                   || (DataRow["IsGuest"].ToType<bool>()
+                                                       && DataRow["DisplayName"].ToString()
+                                                       == DataRow["UserName"].ToString()))
+                                                   ? DataRow["DisplayName"].ToString()
+                                                   : DataRow["UserName"].ToString();
+               this.UserProfileLink.PostfixText = DataRow["IP"].ToString() == "NNTP"
+                                                   ? this.GetText("EXTERNALUSER")
+                                                   : string.Empty;
 
             // setup jQuery and YAF JS...
             YafContext.Current.PageElements.RegisterJQuery();

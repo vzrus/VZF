@@ -3155,12 +3155,48 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The forum_listread.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="parentId">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable forum_listread(
             [NotNull] string connectionString,
-            object boardID,
-            object userID,
-            object categoryID,
-            object parentID,
+            object boardId,
+            object userId,
+            object categoryId,
+            object parentId,
             object useStyledNicks,
             object findLastRead, 
             [NotNull] bool showCommonForums, 
@@ -3172,10 +3208,10 @@ namespace VZF.Data.Mysql
                 using (var cmd = MySqlDbAccess.GetCommand("forum_listread"))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardID;
-                    cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
-                    cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID;
-                    cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentID;
+                    cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                    cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                    cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
+                    cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentId;
                     cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
                     cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
                     cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;
@@ -3186,13 +3222,99 @@ namespace VZF.Data.Mysql
                     return MySqlDbAccess.GetData(cmd, connectionString);
                 }
             }
+
             using (var cmd = MySqlDbAccess.GetCommand("forum_ns_listread"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardID;
-                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userID;
-                cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryID;
-                cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentID;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
+                cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentId;
+                cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
+                cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;
+                cmd.Parameters.Add("i_ShowPersonalForums", MySqlDbType.Byte).Value = showPersonalForums;
+                cmd.Parameters.Add("i_ForumCreatedByUserId", MySqlDbType.Int32).Value = forumCreatedByUserId;
+                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        /// <summary>
+        /// The forum_listreadpersonal.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="parentId">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable forum_listreadpersonal(
+            [NotNull] string connectionString,
+            object boardId,
+            object userId,
+            object categoryId,
+            object parentId,
+            object useStyledNicks,
+            object findLastRead,
+            [NotNull] bool showCommonForums,
+            [NotNull]bool showPersonalForums,
+            [CanBeNull] int? forumCreatedByUserId)
+        {
+            if (!Config.LargeForumTree)
+            {
+                using (var cmd = MySqlDbAccess.GetCommand("forum_listreadpersonal"))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                    cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                    cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
+                    cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentId;
+                    cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
+                    cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
+                    cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;
+                    cmd.Parameters.Add("i_ShowPersonalForums", MySqlDbType.Byte).Value = showPersonalForums;
+                    cmd.Parameters.Add("i_ForumCreatedByUserId", MySqlDbType.Int32).Value = forumCreatedByUserId;
+                    cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+
+                    return MySqlDbAccess.GetData(cmd, connectionString);
+                }
+            }
+
+            using (var cmd = MySqlDbAccess.GetCommand("forum_ns_listreadpersonal"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
+                cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("i_CategoryID", MySqlDbType.Int32).Value = categoryId;
+                cmd.Parameters.Add("i_ParentID", MySqlDbType.Int32).Value = parentId;
                 cmd.Parameters.Add("i_StyledNicks", MySqlDbType.Byte).Value = useStyledNicks;
                 cmd.Parameters.Add("i_FindLastRead", MySqlDbType.Byte).Value = findLastRead;
                 cmd.Parameters.Add("i_ShowCommonForums", MySqlDbType.Byte).Value = showCommonForums;

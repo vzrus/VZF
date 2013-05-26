@@ -282,8 +282,15 @@ namespace YAF.Core
       return this.GetText(this.TransPage, text);
     }
 
-		private static readonly Regex _rgxBegin = new Regex(@"(?<!\[noparse\])(?<inner>\[b\])", RegexOptions.Compiled);
-		private static readonly Regex _rgxEnd = new Regex(@"(?<inner>\[/b\])(?!\[/noparse\])", RegexOptions.Compiled);
+      /// <summary>
+      /// The _rgx begin.
+      /// </summary>
+      private static readonly Regex _rgxBegin = new Regex(@"(?<!\[noparse\])(?<inner>\[b\])", RegexOptions.Compiled);
+
+      /// <summary>
+      /// The _rgx end.
+      /// </summary>
+      private static readonly Regex _rgxEnd = new Regex(@"(?<inner>\[/b\])(?!\[/noparse\])", RegexOptions.Compiled);
 
     /// <summary>
     /// The get text.

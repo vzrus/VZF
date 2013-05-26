@@ -178,7 +178,7 @@ namespace YAF.pages
             }
 
             // A new forum case
-            if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") == null)
+            if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
             {
                 YafBuildLink.AccessDenied();
             }
@@ -190,9 +190,9 @@ namespace YAF.pages
             }
 
             string ftitle = null;
-            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") != null)
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") != null)
             {
-                if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f")))
+                if (!ValidationHelper.IsValidInt(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa")))
                 {
                     YafBuildLink.AccessDenied();
                 }
@@ -200,7 +200,7 @@ namespace YAF.pages
                 DataTable dt = CommonDb.forum_byuserlist(
                     PageContext.PageModuleID,
                     PageContext.PageBoardID,
-                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f").ToType<int>(),
+                    this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa").ToType<int>(),
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
                     true);
                 if (dt != null && dt.Rows.Count > 0)
@@ -222,7 +222,7 @@ namespace YAF.pages
             this.PageLinks.AddLink(this.GetText("PERSONALFORUM", "TITLE"), YafBuildLink.GetLink(ForumPages.personalforum, "u={0}".FormatWith(PageContext.PageUserID)));
 
             // this page link
-            this.PageLinks.AddLink(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("f") == null ? this.GetText("ADMIN_FORUMS", "NEW_FORUM") : this.HtmlEncode(ftitle), string.Empty);
+            this.PageLinks.AddLink(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null ? this.GetText("ADMIN_FORUMS", "NEW_FORUM") : this.HtmlEncode(ftitle), string.Empty);
 
             this.Page.Header.Title = "{0} - {1}".FormatWith(
                 this.Get<YafBoardSettings>().EnableDisplayName ? this.PageContext.CurrentUserData.DisplayName : this.PageContext.PageUserName,
@@ -237,7 +237,7 @@ namespace YAF.pages
 
             this.BindData();
 
-            var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
+            var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
 
 
             if (!forumId.HasValue)
@@ -336,7 +336,7 @@ namespace YAF.pages
         /// </summary>
         private void BindData()
         {
-            var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
+            var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
 
             DataTable dataCat = CommonDb.category_pfaccesslist(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
             DataTable dataCatNew = dataCat.Clone();
@@ -505,7 +505,7 @@ namespace YAF.pages
 
             // Forum
             // vzrus: it's stored in the DB as int
-            int? forumId = this.GetQueryStringAsInt("f");
+            int? forumId = this.GetQueryStringAsInt("fa");
             int? forumCopyId = this.GetQueryStringAsInt("copy");
 
             object parentID = null;
@@ -516,7 +516,7 @@ namespace YAF.pages
             }
 
             // parent selection check.
-            if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("f"))
+            if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
             {
                 this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
                 return;

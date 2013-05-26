@@ -45,7 +45,6 @@ using YAF.Types.Attributes;
 [assembly: AssemblyFileVersion("1.9.6.2")]
 
 #if (!COMPACT_FRAMEWORK)
-
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 

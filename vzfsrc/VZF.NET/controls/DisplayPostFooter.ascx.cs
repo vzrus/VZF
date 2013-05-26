@@ -86,6 +86,26 @@ namespace VZF.Controls
         }
 
         /// <summary>
+        /// The has blogs.
+        /// </summary>
+        private bool hasBlogs;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether has blogs.
+        /// </summary>
+        public bool HasBlogs
+        {
+            set
+            {
+                this.hasBlogs = value;
+            }
+            get
+            {
+                return this.hasBlogs;
+            }
+        }
+
+        /// <summary>
         ///   Gets access Post Data helper functions.
         /// </summary>
         public PostDataHelperWrapper PostData
@@ -229,8 +249,12 @@ namespace VZF.Controls
 
             // blog page
             this.Blog.Visible = !this.PostData.PostDeleted && this.PostData.UserProfile.Blog.IsSet();
-            this.SetupThemeButtonWithLink(this.Blog, this.PostData.UserProfile.Blog);
-            this.Blog.ParamTitle0 = userName;
+            if (this.Blog.Visible)
+            {
+                this.Blog.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.personalforums, "u={0}&m={1}", this.PostData.UserId, this.PostData.DataRow["MessageID"]);
+                this.Blog.ParamTitle0 = userName;
+            }
 
             if (!this.PostData.PostDeleted && this.PageContext.User != null
                 && (this.PostData.UserId != this.PageContext.PageUserID))

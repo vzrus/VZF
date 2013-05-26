@@ -106,7 +106,6 @@ namespace VZF.Controls
                 if (this.PageCache != null && this.DataRow != null)
                 {
                     // get cache for user boxes
-              
                     object cache = this.PageCache[Constants.Cache.UserBoxes];
 
                     // is it hashtable?
@@ -296,7 +295,7 @@ namespace VZF.Controls
             if (!this.UserBoxRegex.TryGetValue(search, out thisRegex))
             {
                 thisRegex = new Regex(search, RegexOptions.Compiled);
-                this.UserBoxRegex.AddOrUpdate(search, (k) => thisRegex, (k, v) => thisRegex);
+                this.UserBoxRegex.AddOrUpdate(search, k => thisRegex, (k, v) => thisRegex);
             }
 
             return thisRegex;
@@ -479,7 +478,7 @@ namespace VZF.Controls
                     foreach (DataRow role in CommonDb.group_member(PageContext.PageModuleID, PageContext.PageBoardID, this.DataRow["UserID"]).Rows)
                     {
                         // CommonDb.eventlog_create(PageContext.PageModuleID,this.DataRow["UserId"], this, ">>>>>>>>>>userName =" + userName + " group = " + role, EventLogTypes.Warning);
-                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || role["IsHidden"].ToType<bool>())
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || role["IsHidden"].ToType<bool>() || role["IsUserGroup"].ToType<bool>())
                         {
                             continue;
                         }
@@ -516,7 +515,7 @@ namespace VZF.Controls
 
                     foreach (DataRow role in dt.Rows)
                     {
-                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || !role["IsHidden"].ToType<bool>())
+                        if (role["Name"].ToString().IsNotSet() || role["Member"].ToType<int>() == 0 || role["IsHidden"].ToType<bool>() || role["IsUserGroup"].ToType<bool>())
                         {
                             continue;
                         }
@@ -638,8 +637,6 @@ namespace VZF.Controls
              userBox = rx.Replace(userBox, filler);
              return userBox;
          }*/
-
-
 
         /// <summary>
         /// The match user box joined date.
@@ -862,11 +859,8 @@ namespace VZF.Controls
         /// <param name="userBox">
         /// The user box.
         /// </param>
-        /// <param name="roleStyleTable">
-        /// The role Style Table.
-        /// </param>
         /// <returns>
-        /// Returns the Rank Userbox string.
+        /// Returns the Rank Userbox <see cref="string"/>.
         /// </returns>
         [NotNull]
         private string MatchUserBoxRank([NotNull] string userBox)
@@ -875,7 +869,11 @@ namespace VZF.Controls
 
             string filler = this.Get<YafBoardSettings>().UserBoxRank.FormatWith(
                 this.GetText("rank"),
-                this.Get<YafBoardSettings>().UseStyledNicks ? "<span class=\"YafRank_{0}\" style=\"{1}\">{0}</span>".FormatWith(this.DataRow["RankName"], this.TransformStyle.DecodeStyleByString(this.DataRow["RankStyle"].ToString(),true)) : this.DataRow["RankName"]);
+                this.Get<YafBoardSettings>().UseStyledNicks
+                    ? "<span class=\"YafRank_{0}\" style=\"{1}\">{0}</span>".FormatWith(
+                        this.DataRow["RankName"], 
+                        this.TransformStyle.DecodeStyleByString(this.DataRow["RankStyle"].ToString(), true))
+                    : this.DataRow["RankName"]);
 
             // replaces template placeholder with actual rank
             userBox = rx.Replace(userBox, filler);

@@ -592,10 +592,23 @@ namespace YAF.Core.Services
 
                 // add topics
                 var topics =
-                    CommonDb.topic_list(YafContext.Current.PageModuleID, forum.ForumID, userId, timeFrame, DateTime.UtcNow, 0, maxCount, false, false, false, this.Get<YafBoardSettings>().AllowTopicTags).
-                        SelectTypedList(x => this.LoadSimpleTopic(x, forum1)).Where(x => x.LastPostDate >= timeFrame).ToList();
+                    CommonDb.topic_list(
+                        YafContext.Current.PageModuleID,
+                        forum.ForumID,
+                        userId,
+                        timeFrame,
+                        DateTime.UtcNow,
+                        0,
+                        maxCount,
+                        false,
+                        false,
+                        false,
+                        this.Get<YafBoardSettings>().AllowTopicTags).AsEnumerable();
 
-                forum.Topics = topics;
+                // filter first...   
+                forum.Topics = topics.Where(x => x.Field<DateTime>("LastPosted") >= timeFrame)   
+                                      .Select(x => this.LoadSimpleTopic(x, forum1))   
+                                        .ToList(); 
             }
 
             return forumData;

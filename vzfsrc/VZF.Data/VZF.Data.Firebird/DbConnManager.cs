@@ -37,7 +37,6 @@ namespace VZF.Data.Firebird
 [SecuritySafeCritical]
   public class FbDbConnectionManager : IDisposable
   {
-    
     /// <summary>
     /// The _connection.
     /// </summary>

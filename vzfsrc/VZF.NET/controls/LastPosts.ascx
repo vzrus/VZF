@@ -28,9 +28,17 @@
                                 <tr class="postheader">
                                     <td width="20%">
                                         <strong>
-                      <VZF:UserLink ID="ProfileLink" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' 
-                      ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? Container.DataItemToField<string>("DisplayName") : Container.DataItemToField<string>("UserName") %>' 
-                                               BlankTarget="true" />
+                      <VZF:UserLink 
+                          ID="ProfileLink" runat="server" 
+                          UserID='<%# Container.DataItemToField<int>("UserID") %>' 
+                          ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName.ToType<bool>() 
+                      && (!Container.DataItemToField<bool>("IsGuest") || (Container.DataItemToField<bool>("IsGuest") && Container.DataItemToField<string>("DisplayName") == Container.DataItemToField<string>("UserName")))
+                    ? Container.DataItemToField<string>("DisplayName")
+                    : Container.DataItemToField<string>("UserName") %>' 
+                          PostfixText='<%# Container.DataItemToField<string>("IP") == "NNTP" ? this.GetText(
+                                                                                                        "EXTERNALUSER")
+                                                                                                    : string.Empty  %>'
+                          BlankTarget="true" />
                                         </strong>
                                     </td>
                                     <td width="80%" class="small" align="left">
@@ -55,8 +63,17 @@
                                 <tr class="postheader">
                                     <td width="20%">
                                         <strong>
-                                            <VZF:UserLink ID="ProfileLink" runat="server" UserID='<%# Container.DataItemToField<int>("UserID") %>' ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName ? Container.DataItemToField<string>("DisplayName") : Container.DataItemToField<string>("UserName") %>' 
-                                                 BlankTarget="true" />
+                                        <VZF:UserLink 
+                          ID="ProfileLink" runat="server" 
+                          UserID='<%# Container.DataItemToField<int>("UserID") %>' 
+                          ReplaceName='<%# this.Get<YafBoardSettings>().EnableDisplayName.ToType<bool>() 
+                      && (!Container.DataItemToField<bool>("IsGuest") || (Container.DataItemToField<bool>("IsGuest") && Container.DataItemToField<string>("DisplayName") == Container.DataItemToField<string>("UserName")))
+                    ? Container.DataItemToField<string>("DisplayName")
+                    : Container.DataItemToField<string>("UserName") %>' 
+                          PostfixText='<%# Container.DataItemToField<string>("IP") == "NNTP" ? this.GetText(
+                                                                                                        "EXTERNALUSER")
+                                                                                                    : string.Empty  %>'
+                          BlankTarget="true" />
                                         </strong>
                                     </td>
                                     <td width="80%" class="small" align="left">

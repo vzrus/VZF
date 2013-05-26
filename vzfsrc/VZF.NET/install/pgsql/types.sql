@@ -629,6 +629,7 @@ CREATE TYPE databaseSchema.objectQualifier_group_member_return_type AS
 "GroupID" integer,
 "Name" varchar(128),
 "IsHidden" boolean,
+"IsUserGroup" boolean,
 "Style" varchar(1024),
 "Member" integer
 );

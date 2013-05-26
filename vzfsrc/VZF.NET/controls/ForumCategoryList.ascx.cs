@@ -84,14 +84,14 @@ namespace VZF.Controls
 
             DataTable dt = CommonDb.forum_listread(
                 mid: PageContext.PageModuleID,
-                boardID: this.PageContext.PageBoardID,
-                userID: this.PageContext.PageUserID,
-                categoryID: categoryId,
-                parentID: null,
+                boardId: this.PageContext.PageBoardID,
+                userId: this.PageContext.PageUserID,
+                categoryId: categoryId,
+                parentId: null,
                 useStyledNicks: false,
                 findLastRead: false,
                 showPersonalForums: true,
-                showCommonForums: false,
+                showCommonForums: true,
                 forumCreatedByUserId: null);
 
             this.Get<IReadTrackCurrentUser>().SetForumRead(dt.AsEnumerable().Select(r => r["ForumID"].ToType<int>()));

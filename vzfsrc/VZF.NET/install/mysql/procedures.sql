@@ -162,6 +162,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listpath;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listreadpersonal;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread1;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_listread_old;
@@ -3518,6 +3520,125 @@ END;
 --GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
+ CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listreadpersonal(
+ i_BoardID INT,
+ i_UserID INT,
+ i_CategoryID INT,
+ i_ParentID INT, 
+ i_StyledNicks TINYINT(1),
+ i_FindLastRead TINYINT(1), 
+ i_ShowCommonForums TINYINT(1), 
+ i_ShowPersonalForums  TINYINT(1), 
+ i_ForumCreatedByUserId INT, 
+ i_UTCTIMESTAMP DATETIME
+ ) 
+ BEGIN
+   CREATE TEMPORARY TABLE IF NOT EXISTS  tmp_flr
+    SELECT 
+        a.CategoryID, 
+        a.Name AS Category, 
+        b.ForumID AS ForumID,
+        b.Name AS Forum, 
+        b.Description,
+        b.ImageURL AS ImageUrl,
+        b.Styles, 
+        b.ParentID,
+        b.PollGroupID,  
+        b.IsUserForum,        
+        b.Flags,
+    (SELECT CAST(COUNT(a1.SessionID)AS UNSIGNED)  FROM {databaseName}.{objectQualifier}Active a1 
+    JOIN {databaseName}.{objectQualifier}User usr 
+    ON a1.UserID = usr.UserID     
+    WHERE a1.ForumID=b.ForumID    
+    AND SIGN(usr.Flags & 16) = 0)  AS Viewing,   
+        b.RemoteURL, 		
+        {databaseName}.{objectQualifier}forum_topics(b.ForumID) AS Topics,
+        {databaseName}.{objectQualifier}forum_posts(b.ForumID) AS Posts, 				
+        CAST(x.ReadAccess AS signed) AS ReadAccess,
+        b.LastTopicID AS LTID,
+        b.LastPosted AS LP,		
+        {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+        a.SortOrder AS CategoryOrder,
+        b.SortOrder AS ForumOrder  
+        /* {databaseName}.{objectQualifier}forum_lasttopic(b.ForumID,i_UserID,b.LastTopicID,b.LastPosted) AS LastTopicID,
+        (SELECT t.LastPosted  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastPosted, 
+         (SELECT t.LastMessageID  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1) AS LastMessageID,
+         (SELECT t.LastUserID  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastUserID, 	 
+        (SELECT t.Topic  FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE   t.TopicID=LastTopicID LIMIT 1) AS LastTopicName,
+        COALESCE((SELECT t.LastUserName FROM 
+        {databaseName}.{objectQualifier}Topic t
+        WHERE  t.TopicID=LastTopicID LIMIT 1),(SELECT u2.Name
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = b.LastUserID LIMIT 1)) AS LastUser */
+    FROM 
+        {databaseName}.{objectQualifier}Category a
+        JOIN {databaseName}.{objectQualifier}Forum b 
+        ON b.CategoryID=a.CategoryID 
+        JOIN {databaseName}.{objectQualifier}ActiveAccess x 
+        ON x.ForumID=b.ForumID
+
+    WHERE 
+        a.BoardID = i_BoardID and
+        ((b.Flags & 2)=0 or x.ReadAccess<>0) and 
+        a.BoardID = i_BoardID
+        AND
+        (i_CategoryID IS NULL OR a.CategoryID=i_CategoryID) AND 
+        --	(b.ForumID IN (SELECT aa.ForumID FROM tbl aa  UNION SELECT ab.ForumID FROM tbl_1 ab)) and		
+        b.CreatedByUserID = i_ForumCreatedByUserId and b.IsUserForum = 1 and
+        x.UserID = i_UserID
+    ORDER BY
+        a.SortOrder,
+        b.SortOrder;
+
+            DROP TEMPORARY TABLE IF EXISTS tbl_1;
+    DROP TEMPORARY TABLE IF EXISTS tbl;
+        
+        SELECT tf.*, 		
+        t.LastPosted AS LastPosted,
+        t.LastMessageID AS LastMessageID,
+        t.LastMessageFlags,
+        t.TopicMovedID,
+        t.LastUserID AS LastUserID,		
+        t.Topic AS LastTopicName,
+        t.Status AS LastTopicStatus,
+        t.Styles AS LastTopicStyles,
+                (case(i_StyledNicks)
+            when 1 then (select usr.UserStyle from {databaseName}.{objectQualifier}User usr where usr.UserID = t.LastUserID LIMIT 1)
+            else ''	 end)  AS 	Style,		
+        COALESCE(t.LastUserName,(SELECT u2.Name
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUser,
+        COALESCE(t.LastUserDisplayName,(SELECT u2.DisplayName
+             FROM   {databaseName}.{objectQualifier}User u2
+             WHERE  u2.UserID = t.LastUserID LIMIT 1)) AS LastUserDisplayName,
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}ForumReadTracking y WHERE y.ForumID=t.ForumID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastForumAccess,  
+        (case(i_FindLastRead)
+             when 1 then
+               (SELECT LastAccessDate FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = i_UserID limit 1)
+             else CAST(NULL AS DATETIME)	end) AS  LastTopicAccess    
+         FROM tmp_flr tf 
+         LEFT JOIN {databaseName}.{objectQualifier}Topic t 
+         ON t.TopicID = tf.LastTopicID 
+        ORDER BY
+        tf.CategoryOrder,
+        tf.ForumOrder;
+
+         DROP TEMPORARY TABLE IF EXISTS tmp_flr;
+END;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listtopics(i_ForumID INT) 
 BEGIN
 SELECT t.*,IFNULL(a.Flags,0) AS Flags,
@@ -4307,13 +4428,14 @@ END;
         SELECT   a.GroupID,
         a.Name,
         (a.Flags & 16 = 16) as IsHidden,
+		a.IsUserGroup,
         a.Style, 
         (SELECT COUNT(1)
         FROM   {databaseName}.{objectQualifier}UserGroup x
         WHERE  x.UserID = i_UserID
         AND x.GroupID = a.GroupID) AS Member
         FROM     {databaseName}.{objectQualifier}Group a
-        WHERE    a.BoardID = i_BoardID AND a.Name !='Guests'
+        WHERE    a.BoardID = i_BoardID
         ORDER BY a.Name;
         END;
 --GO

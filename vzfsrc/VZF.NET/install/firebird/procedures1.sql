@@ -1851,6 +1851,160 @@ select
 end;
 --GO
 
+create procedure objQual_FORUM_LISTREADPERSONAL(
+I_BOARDID INTEGER,
+I_USERID INTEGER,
+I_CATEGORYID INTEGER,
+I_PARENTID INTEGER,
+I_STYLEDNICKS INTEGER,
+I_FINDLASTUNREAD BOOL,
+I_SHOWCOMMONFORUMS BOOL,
+I_SHOWPERSONALFORUMS BOOL,
+I_FORUMCREATEDBYUSERID INTEGER,
+I_UTCTIMESTAMP TIMESTAMP) 
+RETURNS
+(
+"CategoryID" INTEGER,
+"Category" varchar(255) CHARACTER SET UTF8,
+"ForumID" INTEGER,
+"Forum" varchar(255) CHARACTER SET UTF8,
+"Description" varchar(255) CHARACTER SET UTF8,
+"ImageUrl" varchar(128),
+"Styles" varchar(255),
+"ParentID" INTEGER,
+"PollGroupID" INTEGER,
+"IsUserForum" BOOL,
+"Topics" INTEGER,
+"Posts" INTEGER,
+"Flags" INTEGER,
+"Viewing" INTEGER,
+"RemoteURL" varchar(255) CHARACTER SET UTF8,
+"ReadAccess" INTEGER,
+"LastTopicID" INTEGER,
+"LastPosted" timestamp,
+"LastMessageID" INTEGER,
+"LastMessageFlags" INTEGER,
+"LastTopicName" varchar(255) CHARACTER SET UTF8,
+"LastTopicStatus" varchar(255) CHARACTER SET UTF8,
+"LastTopicStyles" varchar(255),
+"TopicMovedID" INTEGER,
+"LastUserID" INTEGER, 
+"LastUser" varchar(128) CHARACTER SET UTF8,
+"LastUserDisplayName" varchar(128) CHARACTER SET UTF8,
+"Style" varchar(255) CHARACTER SET UTF8,
+"LastForumAccess" timestamp,
+"LastTopicAccess" timestamp
+)
+as
+DECLARE VARIABLE ici_LastPosted timestamp;
+DECLARE VARIABLE ici_LastMessageID integer default 2;
+DECLARE VARIABLE ici_LastMessageFlags integer default 23;
+DECLARE VARIABLE ici_LastTopicName varchar(128) default '';
+DECLARE VARIABLE ici_LastUserID integer default 2; 
+DECLARE VARIABLE ici_LastTopicID integer default 2;
+DECLARE VARIABLE ici_LastUserName varchar(128) default '';
+DECLARE VARIABLE ici_LastUserDisplayName varchar(128) default '';
+DECLARE VARIABLE ici_TopicMovedID integer default 0;
+
+
+begin
+ici_LastPosted = :I_UTCTIMESTAMP;
+
+
+    for	select 
+        a.CategoryID, 
+        a.NAME AS Category, 
+        b.ForumID AS ForumID,
+        b.NAME AS Forum, 
+        b.Description,
+        b.ImageUrl,
+        b.Styles,
+        b.ParentID,
+        b.PollGroupID,
+        b.IsUserForum,
+        (SELECT I_NUMTOPICS FROM objQual_FORUM_TOPICS(b.FORUMID)),
+        (SELECT I_NUMPOSTS FROM objQual_FORUM_POSTS(b.FORUMID)),			
+        t.LastPosted AS LastPosted,
+        t.LastMessageID AS LastMessageID,
+        t.LASTMESSAGEFLAGS AS LastMessageFlags,
+        t.LASTUSERID AS LastUserID,
+        b.LastUserName,
+        b.LastUserDisplayName,
+        t.TOPICID AS LastTopicID,
+        t.TOPICMOVEDID AS TopicMovedID,
+        t.TOPIC AS LastTopicName,
+        t.STATUS,
+        t.STYLES,
+        b.FLAGS,
+        (select count(1) from objQual_ACTIVE x JOIN objQual_USER usr ON x.USERID = usr.USERID where x.FORUMID=b.FORUMID AND usr.ISACTIVEEXCLUDED = 0) AS Viewing,
+        b.REMOTEURL,		
+        (CAST(x.READACCESS as INTEGER)),
+        (case(:I_STYLEDNICKS)
+            when 1 then  (SELECT FIRST 1 usr.USERSTYLE FROM objQual_USER usr WHERE usr.USERID = t.LASTUSERID)  
+            else (select '' from rdb$database)	 end),
+        (case(:I_FINDLASTUNREAD)
+             when 1 then
+               (SELECT FIRST 1 LASTACCESSDATE FROM objQual_FORUMREADTRACKING x WHERE x.FORUMID=b.FORUMID AND x.USERID = x.USERID)
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE) end) AS "LastForumAccess",
+        (case(:I_FINDLASTUNREAD)
+             when 1 then
+               (SELECT FIRST 1 LASTACCESSDATE FROM objQual_TOPICREADTRACKING y WHERE y.TOPICID=t.TOPICID AND y.USERID = x.USERID)
+             else (select :I_UTCTIMESTAMP  FROM RDB$DATABASE)  end) AS  "LastTopicAccess"    				
+    from 
+        objQual_CATEGORY a
+        join objQual_FORUM b on b.CATEGORYID=a.CATEGORYID
+        join objQual_ACTIVEACCESS x on x.FORUMID=b.FORUMID
+        left outer join objQual_TOPIC t ON t.TopicID = (select * from objQual_FORUM_LASTTOPIC(b.ForumID, :I_USERID,b.LastTopicID,b.LastPosted))
+    where 
+		a.BOARDID = :I_BOARDID and
+        (b.ISHIDDEN=0 or x.READACCESS<>0) and	
+        (:I_CATEGORYID is null or a.CATEGORYID=:I_CATEGORYID) and		
+         x.USERID = :I_USERID and		
+         b.CREATEDBYUSERID = :I_FORUMCREATEDBYUSERID AND b.ISUSERFORUM = 1 
+    order by
+        a.SORTORDER,
+        b.SORTORDER
+        INTO		
+         :"CategoryID",
+         :"Category",
+         :"ForumID",
+         :"Forum",
+         :"Description",		
+         :"ImageUrl",
+         :"Styles",
+         :"ParentID",
+         :"PollGroupID",
+         :"IsUserForum",
+         :"Topics",
+         :"Posts", 
+         :"LastPosted",
+         :"LastMessageID",
+         :"LastMessageFlags",
+         :"LastUserID",
+         :"LastUser",
+         :"LastUserDisplayName",
+         :"LastTopicID",
+         :"TopicMovedID",
+         :"LastTopicName",
+         :"LastTopicStatus",
+         :"LastTopicStyles",
+         :"Flags",
+         :"Viewing",
+         :"RemoteURL",
+         :"ReadAccess",
+         :"Style",
+         :"LastForumAccess",
+         :"LastTopicAccess"
+         DO 
+         BEGIN
+         IF (:"LastUser" IS NULL OR CHAR_LENGTH(:"LastUser") < 2) THEN
+         select x.NAME, x.DISPLAYNAME from objQual_USER x 
+         where x.USERID=:"LastUserID" INTO :"LastUser",:"LastUserDisplayName";		
+         SUSPEND; 
+         END
+end;
+--GO
+
 CREATE PROCEDURE objQual_TOPIC_LATEST
 (
     I_BOARDID INTEGER,

@@ -183,7 +183,7 @@ namespace YAF.pages
             switch (e.CommandName)
             {
                 case "edit":
-                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&f={1}", PageContext.PageUserID, e.CommandArgument);
+                    YafBuildLink.Redirect(ForumPages.editforum, "u={0}&fa={1}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "delete":
                     var errorMessage = string.Empty;
@@ -192,7 +192,7 @@ namespace YAF.pages
                     ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument.ToType<int>(), out errorMessage);
                     break;
                 case "moderate":
-                  YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
+                  YafBuildLink.Redirect(ForumPages.moderating, "fa={0}", e.CommandArgument);
                     break;
             }
         }

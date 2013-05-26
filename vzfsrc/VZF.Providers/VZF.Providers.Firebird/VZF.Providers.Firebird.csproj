@@ -38,7 +38,7 @@
     <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VZF.NET\Bin\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
@@ -70,14 +70,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="firebird\Membership\DB.cs" />
-    <Compile Include="firebird\Membership\UserPasswordInfo.cs" />
-    <Compile Include="firebird\Membership\VzfFirebirdMembershipProvider.cs" />
-    <Compile Include="firebird\Profile\DB.cs" />
-    <Compile Include="firebird\Profile\SettingsPropertyColumn.cs" />
-    <Compile Include="firebird\Profile\YafProfileProvider.cs" />
-    <Compile Include="firebird\Roles\DB.cs" />
-    <Compile Include="firebird\Roles\YafRoleProvider.cs" />
+    <Compile Include="Membership\DB.cs" />
+    <Compile Include="Membership\UserPasswordInfo.cs" />
+    <Compile Include="Membership\VzfFirebirdMembershipProvider.cs" />
+    <Compile Include="Profile\DB.cs" />
+    <Compile Include="Profile\SettingsPropertyColumn.cs" />
+    <Compile Include="Profile\YafProfileProvider.cs" />
+    <Compile Include="Roles\DB.cs" />
+    <Compile Include="Roles\YafRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

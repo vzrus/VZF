@@ -25,6 +25,17 @@
  */
 
 
+ EXECUTE BLOCK
+ AS
+ DECLARE trName varchar(100);
+ BEGIN
+ FOR SELECT rdb$trigger_name from rdb$triggers
+  where (rdb$system_flag = 0 or rdb$system_flag is null 
+ INTO :trName    
+ DO    
+ EXECUTE STATEMENT 'DROP TRIGGER ' || :trName;    
+ END
+--GO
 
 EXECUTE PROCEDURE DP_DROP_TRIGGER_PROC('objQual_ACCESSMASK','TR_AI_objQual_ACCESS_ACCESSMASKID','AccessMaskID','SEQ_objQual_ACCESSMASK_ACCESSMASKID','ACTIVE','BEFORE INSERT',0,1);
 --GO

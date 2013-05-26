@@ -3321,6 +3321,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         "GroupID" integer,
         "Name" varchar(128),
         "IsHidden" bool,
+		"IsUserGroup" bool,
         "Style" varchar(255),
         "Member" integer
         )
@@ -3329,8 +3330,9 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         FOR SELECT   
         a.GROUPID,
         a.NAME,
-        SIGN(BIN_AND(FLAGS,16)),
-        a.Style, 
+        a.ISHIDDEN,
+		a.ISUSERGROUP,
+        a.STYLE, 
         (SELECT COUNT(1)
         FROM   objQual_USERGROUP x
         WHERE  x.USERID = :I_USERID
@@ -3342,6 +3344,7 @@ CREATE  PROCEDURE objQual_GROUP_MEMBER(
         :"GroupID",
         :"Name",
         :"IsHidden",
+		:"IsUserGroup",
         :"Style",
         :"Member"
         DO SUSPEND;

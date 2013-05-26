@@ -30,14 +30,12 @@ namespace YAF.Providers.Profile
     using System.Web.Profile;
 
     using VZF.Data.MsSql;
+    using VZF.Utils;
 
-    
     using YAF.Classes.Pattern;
     using YAF.Core;
-    // using YAF.Types.Extensions;
-    using YAF.Types.Interfaces;
-    using VZF.Utils;
     using YAF.Providers.Utils;
+    using YAF.Types.Interfaces;
 
     /// <summary>
     /// YAF Custom Profile Provider

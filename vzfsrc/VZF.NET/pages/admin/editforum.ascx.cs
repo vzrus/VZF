@@ -203,7 +203,7 @@ namespace YAF.Pages.Admin
 
       this.BindData();
 
-      var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
+      var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
 
         if (!forumId.HasValue)
         {
@@ -305,7 +305,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      var forumId = this.GetQueryStringAsInt("f") ?? this.GetQueryStringAsInt("copy");
+      var forumId = this.GetQueryStringAsInt("fa") ?? this.GetQueryStringAsInt("copy");
 
       this.CategoryList.DataSource = CommonDb.category_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
       this.CategoryList.DataBind();
@@ -434,7 +434,7 @@ namespace YAF.Pages.Admin
 
       // Forum
       // vzrus: it's stored in the DB as int
-      int? forumId = this.GetQueryStringAsInt("f");
+      int? forumId = this.GetQueryStringAsInt("fa");
       int? forumCopyId = this.GetQueryStringAsInt("copy");
 
       object parentID = null;
@@ -445,7 +445,7 @@ namespace YAF.Pages.Admin
       }
 
       // parent selection check.
-      if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("f"))
+      if (parentID != null && parentID.ToString() == this.Request.QueryString.GetFirstOrDefault("fa"))
       {
         this.PageContext.AddLoadMessage(this.GetText("ADMIN_EDITFORUM", "MSG_PARENT_SELF"));
         return;

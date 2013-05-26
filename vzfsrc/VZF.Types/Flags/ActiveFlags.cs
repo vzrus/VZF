@@ -43,7 +43,7 @@ namespace YAF.Types.Flags
     /// The flags.
     /// </param>
     public ActiveFlags(Flags flags)
-      : this((int) flags)
+        : this((int)flags)
     {
     }
 

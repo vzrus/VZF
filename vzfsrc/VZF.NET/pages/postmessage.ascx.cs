@@ -617,6 +617,7 @@ namespace YAF.Pages
                 this.Priority.Items.Add(new ListItem(this.GetText("sticky"), "1"));
                 this.Priority.Items.Add(new ListItem(this.GetText("announcement"), "2"));
                 this.Priority.SelectedIndex = 0;
+               
 
                 if (this.Get<YafBoardSettings>().EnableTopicStatus)
                 {
@@ -787,7 +788,7 @@ namespace YAF.Pages
                 }
 
                 // form user is only for "Guest"
-                this.From.Text = this.Get<IUserDisplayName>().GetName(this.PageContext.PageUserID);
+                this.From.Text = this.GetText("COMMON", "GUEST_NAME");
                 if (this.User != null)
                 {
                     this.FromRow.Visible = false;
@@ -944,7 +945,7 @@ namespace YAF.Pages
                 this._forumEditor.Text,
                 this.PageContext.PageUserID,
                 this.Priority.SelectedValue,
-                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()) != null) ? "GUEST_{0}".FormatWith(this.From.Text.Trim()) : this.From.Text.Trim(), 
+                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON","GUEST_NAME"), this.From.Text.Trim()) : this.From.Text.Trim(), 
                  this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                 DateTime.UtcNow,
                 blogPostID,
@@ -1022,7 +1023,7 @@ namespace YAF.Pages
             CommonDb.message_save(PageContext.PageModuleID, this.TopicID.Value,
                 this.PageContext.PageUserID,
                 this._forumEditor.Text,
-                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()) != null) ? "GUEST_{0}".FormatWith(this.From.Text.Trim()) : this.From.Text.Trim(),
+                this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON", "GUEST_NAME"), this.From.Text.Trim()) : this.From.Text.Trim(),
                 this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                 DateTime.UtcNow,
                 replyTo,
@@ -1084,21 +1085,24 @@ namespace YAF.Pages
             bool tagCountIsAllowed = false;
             bool forbiddenSymbols = false;
 
-            if (!CheckTagLength(this.Tags.Text.Trim(), this.Get<YafBoardSettings>().TagMaxLength, this.Get<YafBoardSettings>().TagTopicMaxCount, this.Get<YafBoardSettings>().TagForbiddenSymbols, out tagCountIsAllowed, out forbiddenSymbols))
+            if (!this.CheckTagLength(this.Tags.Text.Trim(), this.Get<YafBoardSettings>().TagMaxLength, this.Get<YafBoardSettings>().TagTopicMaxCount, this.Get<YafBoardSettings>().TagForbiddenSymbols, out tagCountIsAllowed, out forbiddenSymbols))
             {
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOLONG", this.Get<YafBoardSettings>().TagMaxLength));
                 return;
             }
+
             if (!tagCountIsAllowed)
             {
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_TOOMANY", this.Get<YafBoardSettings>().TagTopicMaxCount));
                 return;
             }
+
             if (forbiddenSymbols)
             {
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("TAG_FORBIDDENSYMBOLS", this.Get<YafBoardSettings>().TagForbiddenSymbols));
                 return;
             }
+
             // vzrus: automatically strip html tags from Topic Titles and Description
             // this.TopicSubjectTextBox.Text = HtmlHelper.StripHtml(this.TopicSubjectTextBox.Text);
             // this.TopicDescriptionTextBox.Text = HtmlHelper.StripHtml(this.TopicDescriptionTextBox.Text);

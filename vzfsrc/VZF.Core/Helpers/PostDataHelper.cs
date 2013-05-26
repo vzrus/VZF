@@ -18,19 +18,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using System.Web;
-using YAF.Types.Interfaces;
-using VZF.Utils.Helpers;
-
 namespace YAF.Core
 {
-  using System;
-  using System.Data;
+    using System;
+    using System.Data;
+    using System.Web;
 
-  using VZF.Utils;
-  using YAF.Types.Flags;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
-  /// <summary>
+    using YAF.Types.Flags;
+    using YAF.Types.Interfaces;
+
+    /// <summary>
   /// The post data helper wrapper.
   /// </summary>
   public class PostDataHelperWrapper

@@ -70,32 +70,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="postgre\Membership\DB.cs" />
-    <Compile Include="postgre\Membership\PgMembershipProvider.cs" />
-    <Compile Include="postgre\Membership\UserPasswordInfo.cs" />
-    <Compile Include="postgre\Profile\DataAccess\DataAccess_Helpers\SchemaManager.cs">
+    <Compile Include="Membership\DB.cs" />
+    <Compile Include="Membership\PgMembershipProvider.cs" />
+    <Compile Include="Membership\UserPasswordInfo.cs" />
+    <Compile Include="Profile\DataAccess\DataAccess_Helpers\SchemaManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\DataAccess\DB.cs">
+    <Compile Include="Profile\DataAccess\DB.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProvider.cs">
+    <Compile Include="Profile\ProfileProvider_Class\ProfileProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProviderOverridenMethods.cs">
+    <Compile Include="Profile\ProfileProvider_Class\ProfileProviderOverridenMethods.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\ProfileProvider_Class\ProfileProvider_Helpers\SettingsPropertyColumn.cs">
+    <Compile Include="Profile\ProfileProvider_Class\ProfileProvider_Helpers\SettingsPropertyColumn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\ProfileProvider_Class\ProviderBase.cs">
+    <Compile Include="Profile\ProfileProvider_Class\ProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Profile\ProfileProvider_Class\SettingsProvider.cs">
+    <Compile Include="Profile\ProfileProvider_Class\SettingsProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="postgre\Roles\DB.cs" />
-    <Compile Include="postgre\Roles\PgRoleProvider.cs" />
+    <Compile Include="Roles\DB.cs" />
+    <Compile Include="Roles\PgRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

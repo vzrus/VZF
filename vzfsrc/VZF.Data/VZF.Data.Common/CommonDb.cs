@@ -5415,16 +5415,16 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="boardID">
+        /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user id.
         /// </param>
-        /// <param name="categoryID">
+        /// <param name="categoryId">
         /// The category id.
         /// </param>
-        /// <param name="parentID">
+        /// <param name="parentId">
         /// The parent id.
         /// </param>
         /// <param name="useStyledNicks">
@@ -5449,10 +5449,10 @@ namespace VZF.Data.Common
         /// </exception>
         public static DataTable forum_listread(
             int? mid,
-            object boardID,
-            object userID,
-            object categoryID,
-            object parentID,
+            object boardId,
+            object userId,
+            object categoryId,
+            object parentId,
             object useStyledNicks,
             bool findLastRead,
             [NotNull] bool showCommonForums,
@@ -5469,10 +5469,10 @@ namespace VZF.Data.Common
                 case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.forum_listread(
                         connectionString,
-                        boardID,
-                        userID,
-                        categoryID,
-                        parentID,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
                         useStyledNicks,
                         findLastRead,
                         showCommonForums,
@@ -5481,10 +5481,10 @@ namespace VZF.Data.Common
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.forum_listread(
                         connectionString,
-                        boardID,
-                        userID,
-                        categoryID,
-                        parentID,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
                         useStyledNicks,
                         findLastRead,
                         showCommonForums,
@@ -5493,10 +5493,10 @@ namespace VZF.Data.Common
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.forum_listread(
                         connectionString,
-                        boardID,
-                        userID,
-                        categoryID,
-                        parentID,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
                         useStyledNicks,
                         findLastRead,
                         showCommonForums,
@@ -5505,10 +5505,10 @@ namespace VZF.Data.Common
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.forum_listread(
                         connectionString,
-                        boardID,
-                        userID,
-                        categoryID,
-                        parentID,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
                         useStyledNicks,
                         findLastRead,
                         showCommonForums,
@@ -5517,6 +5517,119 @@ namespace VZF.Data.Common
                     // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
                     // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
                     // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listread(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId); 
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
+        /// <summary>
+        /// The forum_listreadpersonal.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="parentId">
+        /// The parent id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <param name="showCommonForums">
+        /// The show common forums.
+        /// </param>
+        /// <param name="showPersonalForums">
+        /// The show personal forums.
+        /// </param>
+        /// <param name="forumCreatedByUserId">
+        /// The forum created by user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static DataTable forum_listreadpersonal(
+            int? mid,
+            object boardId,
+            object userId,
+            object categoryId,
+            object parentId,
+            object useStyledNicks,
+            bool findLastRead,
+            [NotNull] bool showCommonForums,
+            [NotNull] bool showPersonalForums,
+            [CanBeNull] int? forumCreatedByUserId)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case CommonSqlDbAccess.MsSql:
+                    return VZF.Data.MsSql.Db.forum_listreadpersonal(
+                        connectionString,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
+                        useStyledNicks,
+                        findLastRead,
+                        showCommonForums,
+                        showPersonalForums,
+                        forumCreatedByUserId);
+                case CommonSqlDbAccess.Npgsql:
+                    return VZF.Data.Postgre.Db.forum_listreadpersonal(
+                        connectionString,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
+                        useStyledNicks,
+                        findLastRead,
+                        showCommonForums,
+                        showPersonalForums,
+                        forumCreatedByUserId);
+                case CommonSqlDbAccess.MySql:
+                    return VZF.Data.Mysql.Db.forum_listreadpersonal(
+                        connectionString,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
+                        useStyledNicks,
+                        findLastRead,
+                        showCommonForums,
+                        showPersonalForums,
+                        forumCreatedByUserId);
+                case CommonSqlDbAccess.Firebird:
+                    return VZF.Data.Firebird.Db.forum_listreadpersonal(
+                        connectionString,
+                        boardId,
+                        userId,
+                        categoryId,
+                        parentId,
+                        useStyledNicks,
+                        findLastRead,
+                        showCommonForums,
+                        showPersonalForums,
+                        forumCreatedByUserId);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forum_listreadpersonal(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forum_listreadpersonal(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forum_listreadpersonal(connectionString,boardId,userId, categoryID, parentID, useStyledNicks, findLastRead, showCommonForums, showPersonalForums, forumCreatedByUserId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

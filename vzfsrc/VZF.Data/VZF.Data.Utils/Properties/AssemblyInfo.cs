@@ -11,7 +11,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("VZF.Data.Utils")]
-[assembly: AssemblyCopyright("Copyright © vzrus 2011")]
+[assembly: AssemblyCopyright("Copyright © vzrus 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,7 +37,6 @@ using System.Security;
 [assembly: AssemblyFileVersion("1.9.6.2")]
 
 #if (!COMPACT_FRAMEWORK)
-
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
