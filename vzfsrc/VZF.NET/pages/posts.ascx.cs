@@ -1029,17 +1029,18 @@ namespace YAF.Pages
                 showDeleted = true;
             }
 
+            DateTime lastRead; 
             int messagePosition;
-            int findMessageId = this.GetFindMessageId(showDeleted, userId, out messagePosition);
-            if (findMessageId > 0)
-            {
-                this.CurrentMessage = findMessageId;
-            }
-
             if (!this.Get<YafBoardSettings>().ShowDeletedMessages || !this.Get<YafBoardSettings>().ShowDeletedMessagesToAll)
             {
                 // normally, users can always see own deleted topics or stubs we set a false id to hide them.
                 userId = -1;
+            }
+
+            int findMessageId = this.GetFindMessageId(showDeleted, userId, out messagePosition, out lastRead);
+            if (findMessageId > 0)
+            {
+                this.CurrentMessage = findMessageId;
             }
 
             // Mark topic read
@@ -1065,7 +1066,9 @@ namespace YAF.Pages
                 0,
                 this.IsThreaded ? 1 : 0,
                 this.Get<YafBoardSettings>().EnableThanksMod,
-                messagePosition);
+                messagePosition,
+                findMessageId,
+                lastRead);
             if (postListDataTable == null || postListDataTable.Rows.Count <= 0)
             {
                 string ex = "this.PageContext.PageUserID={0},messagePosition={1},this.PageContext.PageTopicID={2}".FormatWith(this.PageContext.PageUserID, messagePosition, PageContext.PageTopicID);
@@ -1194,15 +1197,15 @@ namespace YAF.Pages
 
             if (this._topic["LastPosted"] != DBNull.Value)
             {
-                DateTime lastRead =
+                DateTime lastPosted =
                     this.Get<IReadTrackCurrentUser>().GetForumTopicRead(
                         forumId: this.PageContext.PageForumID, topicId: this.PageContext.PageTopicID);
 
-                this.LastUnreadImage.ThemeTag = (DateTime.Parse(this._topic["LastPosted"].ToString()) > lastRead)
+                this.LastUnreadImage.ThemeTag = (DateTime.Parse(this._topic["LastPosted"].ToString()) > lastPosted)
                                                     ? "ICON_NEWEST_UNREAD"
                                                     : "ICON_LATEST_UNREAD";
 
-                this.LastPostedImage.ThemeTag = (DateTime.Parse(this._topic["LastPosted"].ToString()) > lastRead)
+                this.LastPostedImage.ThemeTag = (DateTime.Parse(this._topic["LastPosted"].ToString()) > lastPosted)
                                                     ? "ICON_NEWEST"
                                                     : "ICON_LATEST";
             }
@@ -1225,64 +1228,62 @@ namespace YAF.Pages
         /// <returns>
         /// The get find message id.
         /// </returns>
-        private int GetFindMessageId(bool showDeleted, int userId, out int messagePosition)
+        private int GetFindMessageId(bool showDeleted, int userId, out int messagePosition, out DateTime lastRead)
         {
             int findMessageId = 0;
             messagePosition = -1;
             int messageId = 0;
-            DateTime lastRead = DateTimeHelper.SqlDbMinTime();
+            lastRead = DateTimeHelper.SqlDbMinTime();
 
             if (!this._ignoreQueryString && this.Get<HttpRequestBase>().QueryString != null)
+            {
+                // temporary find=lastpost code until all last/unread post links are find=lastpost and find=unread
+                if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find") == null)
                 {
-                    // temporary find=lastpost code until all last/unread post links are find=lastpost and find=unread
-                    if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find") == null)
+                    if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageId))
                     {
-                        if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageId))
-                        {
-                            return messageId;
-                        }
-                    }
-                    else
-                    {
-                        // find first unread message
-                        if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find").ToLower() == "unread")
-                        {
-                             lastRead = !this.PageContext.IsCrawler
-                                                    ? this.Get<IReadTrackCurrentUser>().GetForumTopicRead(
-                                                        forumId: this.PageContext.PageForumID,
-                                                        topicId: this.PageContext.PageTopicID)
-                                                    : DateTime.UtcNow;
-                        }
-
-                        // find last post
-                        if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find").ToLower() == "lastpost")
-                        {
-                            messageId = 0;
-                            lastRead = DateTime.UtcNow;
-                        }
-                    }
-
-                    // we have parameters to handle 
-                    if (lastRead > DateTimeHelper.SqlDbMinTime() || messageId > 0)
-                    {
-                        using (
-                            DataTable unread = CommonDb.message_findunread(
-                                PageContext.PageModuleID,
-                                topicID: this.PageContext.PageTopicID,
-                                messageId: messageId,
-                                lastRead: lastRead,
-                                showDeleted: showDeleted,
-                                authorUserID: userId))
-                        {
-                            var unreadFirst = unread.AsEnumerable().FirstOrDefault();
-                            if (unreadFirst != null)
-                            {
-                                findMessageId = unreadFirst.Field<int>("MessageID");
-                                messagePosition = unreadFirst.Field<int>("MessagePosition");
-                            }
-                        }
+                        return messageId;
                     }
                 }
+                else
+                {
+                    // find first unread message
+                    if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find").ToLower() == "unread")
+                    {
+                        lastRead = !this.PageContext.IsCrawler
+                                       ? this.Get<IReadTrackCurrentUser>()
+                                             .GetForumTopicRead(
+                                                 forumId: this.PageContext.PageForumID,
+                                                 topicId: this.PageContext.PageTopicID)
+                                       : DateTime.UtcNow;
+                    }
+
+                    // find last post
+                    if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find").ToLower() == "lastpost")
+                    {
+                        messageId = 0;
+                        lastRead = DateTime.UtcNow;
+                    }
+                }
+
+                // we have parameters to handle
+                using (
+                    DataTable unread = CommonDb.message_findunread(
+                        PageContext.PageModuleID,
+                        topicID: this.PageContext.PageTopicID,
+                        messageId: messageId,
+                        lastRead: lastRead,
+                        showDeleted: showDeleted,
+                        authorUserID: userId))
+                {
+                    var unreadFirst = unread.AsEnumerable().FirstOrDefault();
+                    if (unreadFirst != null)
+                    {
+                        findMessageId = unreadFirst.Field<int>("MessageID");
+                        messagePosition = unreadFirst.Field<int>("MessagePosition");
+                    }
+                }
+            }
 
             return findMessageId;
         }

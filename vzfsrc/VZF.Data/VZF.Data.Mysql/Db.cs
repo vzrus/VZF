@@ -4043,7 +4043,9 @@ namespace VZF.Data.Mysql
             int sortEdited,
             int sortPosition,
             bool showThanks,
-            int messagePosition)
+            int messagePosition,
+            int messageId,
+            DateTime lastRead)
         {
 
             using (var cmd = MySqlDbAccess.GetCommand("post_list"))
@@ -4074,6 +4076,8 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_ShowThanks", MySqlDbType.Byte).Value = showThanks;
                 cmd.Parameters.Add("i_ShowReputation", MySqlDbType.Byte).Value = showReputation;
                 cmd.Parameters.Add("i_MessagePosition", MySqlDbType.Int32).Value = messagePosition;
+                cmd.Parameters.Add("i_MessageID", MySqlDbType.Int32).Value = messageId;
+                cmd.Parameters.Add("i_LastRead", MySqlDbType.DateTime).Value = lastRead;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);

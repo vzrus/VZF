@@ -3243,20 +3243,18 @@ namespace YAF.Classes
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether EnableDNACalendar.
-        /// This is temporary feature to disable calendar 
-        /// if it causes troubles with different cultures
+        /// Gets or sets a value indicating whether to Use BotScout.com Service.
         /// </summary>
-        public bool EnableDNACalendar
+        public string BotScoutApiKey
         {
             get
             {
-                return this._reg.GetValue("EnableDNACalendar", true);
+                return this._reg.GetValue("BotScoutApiKey", string.Empty);
             }
 
             set
             {
-                this._reg.SetValue("EnableDNACalendar", value);
+                this._reg.SetValue("BotScoutApiKey", value);
             }
         }
 

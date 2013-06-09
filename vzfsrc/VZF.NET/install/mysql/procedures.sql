@@ -7041,6 +7041,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}post_list
                  i_ShowThanks TINYINT(1),
                  i_ShowReputation TINYINT(1),
                  i_MessagePosition int,
+				 i_MessageID int,
+				 i_LastRead datetime,
                  i_UTCTIMESTAMP datetime
                  )
 BEGIN

@@ -6499,25 +6499,28 @@ namespace VZF.Data.MsSql
         /// </param>
         /// <returns>
         /// </returns>
-        public static DataTable post_list([NotNull] string connectionString,
-            [NotNull] object topicId, 
+        public static DataTable post_list(
+            [NotNull] string connectionString,
+            [NotNull] object topicId,
             object currentUserID,
-            [NotNull] object authorUserID, 
+            [NotNull] object authorUserID,
             [NotNull] object updateViewCount,
-                                          bool showDeleted,
-                                          bool styledNicks,
-                                          bool showReputation,
-                                          DateTime sincePostedDate,
-                                          DateTime toPostedDate,
-                                          DateTime sinceEditedDate,
-                                          DateTime toEditedDate,
-                                          int pageIndex,
-                                          int pageSize,
-                                          int sortPosted,
-                                          int sortEdited,
-                                          int sortPosition,
-                                          bool showThanks,
-                                          int messagePosition)
+            bool showDeleted,
+            bool styledNicks,
+            bool showReputation,
+            DateTime sincePostedDate,
+            DateTime toPostedDate,
+            DateTime sinceEditedDate,
+            DateTime toEditedDate,
+            int pageIndex,
+            int pageSize,
+            int sortPosted,
+            int sortEdited,
+            int sortPosition,
+            bool showThanks,
+            int messagePosition,
+            int messageId,
+            DateTime lastRead)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("post_list"))
             {
@@ -6540,6 +6543,8 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("SortPosition", sortPosition);
                 cmd.Parameters.AddWithValue("ShowThanks", showThanks);
                 cmd.Parameters.AddWithValue("MessagePosition", messagePosition);
+                cmd.Parameters.AddWithValue("MessageID", messageId);
+                cmd.Parameters.AddWithValue("LastRead", lastRead);
                 cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
 
                 return MsSqlDbAccess.GetData(cmd, connectionString);

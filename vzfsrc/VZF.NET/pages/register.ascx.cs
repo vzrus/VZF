@@ -534,9 +534,13 @@ namespace YAF.Pages
         {
             var location = new StringBuilder();
 
-            if (this._UserIpLocator["CountryName"].IsSet())
+            if (this._UserIpLocator["CountryCode"].IsSet())
             {
-                country.Items.FindByValue(this.Get<ILocalization>().Culture.Name.Substring(2, 2)).Selected = true;
+                var cc = country.Items.FindByValue(this._UserIpLocator["CountryCode"]);
+                if (cc != null)
+                {
+                    cc.Selected = true;
+                }
             }
 
             if (this._UserIpLocator["RegionName"].IsSet())
@@ -549,13 +553,16 @@ namespace YAF.Pages
                 location.AppendFormat(", {0}", this._UserIpLocator["CityName"]);
             }
 
-            this.CreateUserWizard1.FindControlRecursiveAs<TextBox>("Location").Text = location.ToString();
-       
-            if (this._UserIpLocator["TimeZone"].IsSet())
+            this.CreateUserWizard1.FindControlRecursiveAs<TextBox>("Location").Text = location.ToString().Trim().Trim(',');
+
+            if (this._UserIpLocator["TimeZone"].IsSet() && this._UserIpLocator["TimeZone"].Length > 2)
             {
                 try
                 {
-                    hours = this._UserIpLocator["TimeZone"].ToType<decimal>() * 60;
+                    var hour = this._UserIpLocator["TimeZone"].Substring(1, 2).ToType<decimal>() * 60;
+                    var minute = this._UserIpLocator["TimeZone"].Substring(4, 2).ToType<decimal>();
+                    var sign = this._UserIpLocator["TimeZone"].Substring(0, 1) == "+" ? 1 : -1;
+                    hours = sign * (hour + minute);
                 }
                 catch (FormatException)
                 {

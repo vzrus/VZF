@@ -3548,7 +3548,9 @@ namespace VZF.Data.Postgre
             int sortEdited,
             int sortPosition,
             bool showThanks,
-            int messagePosition)
+            int messagePosition,
+            int messageId, 
+            DateTime lastRead)
         {
             using (var cmd = PostgreDbAccess.GetCommand("post_list"))
             {
@@ -3582,6 +3584,8 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_showthanks", NpgsqlDbType.Boolean)).Value = showThanks;
                 cmd.Parameters.Add(new NpgsqlParameter("i_messageposition", NpgsqlDbType.Integer)).Value =
                     messagePosition;
+                cmd.Parameters.Add("i_messsageid", NpgsqlDbType.Integer).Value = messageId;
+                cmd.Parameters.Add("i_lastread", NpgsqlDbType.TimestampTZ).Value = lastRead;
                 cmd.Parameters.Add("i_utctimestamp", NpgsqlDbType.TimestampTZ).Value = DateTime.UtcNow;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);

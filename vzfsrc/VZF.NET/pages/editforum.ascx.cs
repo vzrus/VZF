@@ -34,6 +34,8 @@ namespace YAF.pages
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Core;
@@ -41,8 +43,6 @@ namespace YAF.pages
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     public partial class editforum : ForumPage
     {
@@ -606,7 +606,7 @@ namespace YAF.pages
             }
             else
             {
-                YafBuildLink.Redirect(ForumPages.editforum, "f={0}&u={1}", newForumId, this.PageContext.PageUserID);
+                YafBuildLink.Redirect(ForumPages.editforum, "fa={0}&u={1}", newForumId, this.PageContext.PageUserID);
             }
         }
 

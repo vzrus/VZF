@@ -153,7 +153,9 @@ namespace VZF.Controls
                     0,
                     0,
                     false,
-                    -1);
+                    -1,
+                    -1,
+                    DateTimeHelper.SqlDbMinTime());
 
                 this.repLastPosts.DataSource = dt.AsEnumerable();
             }

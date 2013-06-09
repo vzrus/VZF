@@ -5953,7 +5953,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>42016</DevelopmentServerPort>
+          <DevelopmentServerPort>52287</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/mamacenter.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

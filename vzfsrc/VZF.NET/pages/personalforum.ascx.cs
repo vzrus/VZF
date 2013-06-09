@@ -31,6 +31,7 @@ namespace YAF.pages
 
     using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
     using YAF.Core;
@@ -38,7 +39,6 @@ namespace YAF.pages
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
     /// <summary>
     /// The personalforum.
@@ -110,7 +110,8 @@ namespace YAF.pages
         protected void DeleteForum_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             // number of current forums changed
-            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
+            // Clearing cache with old Active User Lazy Data ...
+            YafContext.Current.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(PageContext.PageUserID));
 
             ((ThemeButton)sender).Attributes["onclick"] =
                 "return (confirm('{0}') && confirm('{1}'))".FormatWith(
@@ -190,6 +191,10 @@ namespace YAF.pages
 
                     // schedule...
                     ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument.ToType<int>(), out errorMessage);
+                    
+                    // Clearing cache with old Active User Lazy Data as it contains number of forums info...
+                    YafContext.Current.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(this.PageContext.PageUserID));
+                    YafBuildLink.Redirect(ForumPages.personalforum, "u={0}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "moderate":
                   YafBuildLink.Redirect(ForumPages.moderating, "fa={0}", e.CommandArgument);

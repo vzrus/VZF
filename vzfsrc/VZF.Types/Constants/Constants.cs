@@ -308,10 +308,15 @@ namespace YAF.Types.Constants
             #endregion
         }
 
+        /// <summary>
+        /// The forum rebuild.
+        /// </summary>
         public struct ForumRebuild
         {
+            /// <summary>
+            /// The blocking task names.
+            /// </summary>
             public static readonly string[] BlockingTaskNames = new[] { "BoardDeleteTask", "BoardCreateTask", "ForumDeleteTask", "ForumSaveTask", "CategoryDeleteTask", "CategorySaveTask" };
         }
-
     }
 }

@@ -8421,6 +8421,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_post_list(
                            i_sortposition  integer,
                            i_showthanks boolean,
                            i_messageposition integer,
+						   i_messageid integer,
+						   i_lastread timestampTZ,
                            i_utctimestamp timestampTZ)
                   RETURNS SETOF databaseSchema.objectQualifier_post_list_type AS
 $BODY$DECLARE

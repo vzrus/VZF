@@ -533,8 +533,7 @@ namespace VZF.Controls
             this.DataBind();
 
             var ci = CultureInfo.CreateSpecificCulture(currentCultureLocal);
-            if (this.Get<YafBoardSettings>().EnableDNACalendar)
-            {
+           
                 if (this.Get<YafBoardSettings>().UseFarsiCalender && ci.IsFarsiCulture())
                 {
                     this.Birthday.Text = this.UserData.Profile.Birthday > DateTime.MinValue ||
@@ -553,12 +552,9 @@ namespace VZF.Controls
                 }
 
                 this.Birthday.ToolTip = this.GetText("COMMON", "CAL_JQ_TT");
-            }
-            else
-            {
-                this.Birthday.Visible = false;
-                this.BirthdayLabel.Visible = false;
-            }
+          
+              // this.Birthday.Visible = false;
+              // this.BirthdayLabel.Visible = false;
 
             this.DisplayName.Text = this.UserData.DisplayName;
             this.City.Text = this.UserData.Profile.City;
@@ -788,8 +784,7 @@ namespace VZF.Controls
             userProfile.Gender = this.Gender.SelectedIndex;
             userProfile.Blog = this.Weblog.Text.Trim();
 
-            if (this.Get<YafBoardSettings>().EnableDNACalendar && this.Birthday.Text.IsSet())
-            {
+          
                 DateTime userBirthdate;
                 var ci = CultureInfo.CreateSpecificCulture(this.GetCulture(true));
 
@@ -813,8 +808,7 @@ namespace VZF.Controls
                         userProfile.Birthday = userBirthdate.Date;
                     }
                 }
-            }
-
+            
             userProfile.BlogServiceUrl = this.WeblogUrl.Text.Trim();
             userProfile.BlogServiceUsername = this.WeblogUsername.Text.Trim();
             userProfile.BlogServicePassword = this.WeblogID.Text.Trim();

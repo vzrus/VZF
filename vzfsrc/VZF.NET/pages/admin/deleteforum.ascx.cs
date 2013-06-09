@@ -120,7 +120,7 @@ namespace YAF.Pages.Admin
 
             this.BindData();
 
-            var forumId = this.GetQueryStringAsInt("f");
+            var forumId = this.GetQueryStringAsInt("fa");
 
             using (DataTable dt = CommonDb.forum_list(PageContext.PageModuleID, this.PageContext.PageBoardID, forumId.Value))
             {
@@ -240,7 +240,7 @@ namespace YAF.Pages.Admin
             if (this.MoveTopics.Checked)
             {
                 // Simply Delete the Forum with all of its Content
-                var forumId = this.GetQueryStringAsInt("f");
+                var forumId = this.GetQueryStringAsInt("fa");
 
                 // schedule...
                 ForumDeleteTask.Start(
@@ -258,7 +258,7 @@ namespace YAF.Pages.Admin
             else
             {
                 // Simply Delete the Forum with all of its Content
-                var forumId = this.GetQueryStringAsInt("f");
+                var forumId = this.GetQueryStringAsInt("fa");
 
                 // schedule...
                 ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, forumId.Value, out errorMessage);

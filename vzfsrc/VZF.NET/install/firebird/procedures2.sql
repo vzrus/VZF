@@ -200,15 +200,14 @@ end;
  DECLARE VARIABLE cnt INTEGER DEFAULT 1; 
  DECLARE VARIABLE ici_shiftsticky INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_post_totalrowsnumber INTEGER; 
- DECLARE VARIABLE ici_post_priorityrowsnumber_pages INTEGER DEFAULT 0;
- DECLARE VARIABLE ici_post_priorityrowsnumber INTEGER DEFAULT 0;
- DECLARE VARIABLE ici_post_priorityrowsnumber_shift INTEGER DEFAULT 0;
  DECLARE VARIABLE ici_firstselectrownum INTEGER DEFAULT 0; 
  DECLARE VARIABLE ici_sortsincelatest INTEGER DEFAULT 0;  
  DECLARE VARIABLE ici_firstselectposted timestamp; 
  DECLARE VARIABLE ici_ceiling decimal;
  DECLARE VARIABLE ici_retcount INTEGER DEFAULT 0; 
  DECLARE VARIABLE ici_counter INTEGER DEFAULT 0; 
+ DECLARE ici_firstrow INTEGER;
+ DECLARE ici_lastrow INTEGER;
 BEGIN		
     -- find total returned count
         SELECT 		
@@ -228,7 +227,7 @@ BEGIN
 
      -- I_PAGEINDEX = :I_PAGEINDEX+1;
      -- ici_firstselectrownum = (:I_PAGEINDEX - 1) * :I_PAGESIZE + 1 ;
-      ici_firstselectrownum = ((:I_PAGEINDEX-1)*:i_pagesize) + 1;
+      ici_firstselectrownum = (:I_PAGEINDEX*:i_pagesize) + 1;
     
                     
  /*  FOR SELECT FIRST 1
@@ -253,6 +252,8 @@ BEGIN
                 END
     SELECT :ici_firstselectposted from RDB$DATABASE
     INTO :ici_firstselectposted; */
+	 ici_firstrow = :ici_firstselectrownum;
+     ici_lastrow = :ici_firstselectrownum + :I_PAGESIZE - 1;
 
 FOR  
     SELECT 		
@@ -333,6 +334,7 @@ FOR
         (:I_SHOWMOVED <> 1 AND  c.TOPICMOVEDID IS NULL))
     ORDER BY
         c."PRIORITY" DESC,c.LASTPOSTED DESC
+    ROWS (:ici_firstrow) TO (:ici_lastrow)
     INTO 
     :"ForumID",
     :"TopicID",
@@ -372,18 +374,7 @@ FOR
 	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
-DO	BEGIN
-        
-ici_retcount = :ici_retcount +1; 
-       if (:ici_retcount between  :ici_firstselectrownum and :ici_firstselectrownum + :I_PAGESIZE) then
-        begin
-         SUSPEND;
-          ici_counter = :ici_counter + 1; 
-        end 
-if (:ici_counter >= :I_PAGESIZE) then
-LEAVE;			 
-                        
-    END
+DO	SUSPEND;
 
 END;
 --GO 
@@ -453,6 +444,8 @@ AS
  DECLARE VARIABLE ici_ceiling decimal;
  DECLARE VARIABLE ici_retcount INTEGER DEFAULT 0; 
  DECLARE VARIABLE ici_counter INTEGER DEFAULT 0; 
+ DECLARE ici_firstrow INTEGER;
+ DECLARE ici_lastrow INTEGER;
 BEGIN  
 
     -- find priority returned count
@@ -523,12 +516,9 @@ SELECT
         (:I_SHOWMOVED <> 1 AND  t.TOPICMOVEDID IS NULL))
         ORDER BY
         t."PRIORITY" DESC,t.LASTPOSTED DESC
-        into :ici_firstselectposted;
-            
-    SELECT :ici_firstselectposted from RDB$DATABASE
-    INTO :ici_firstselectposted;
-    
-
+        into :ici_firstselectposted;           
+ ici_firstrow = :ici_firstselectrownum + :Ici_post_priorityrowsnumber;
+ ici_lastrow = :ici_firstselectrownum + :I_PAGESIZE + :Ici_post_priorityrowsnumber - 1;
 FOR  
     SELECT 		
         c.FORUMID,
@@ -609,6 +599,7 @@ FOR
         (:I_SHOWMOVED <> 1 AND  c.TOPICMOVEDID IS NULL))
     ORDER BY
         c."PRIORITY" DESC,c.LASTPOSTED DESC
+		ROWS (:ici_firstrow) TO (:ici_lastrow)
     INTO 
     :"ForumID",
     :"TopicID",
@@ -649,18 +640,7 @@ FOR
 	:"HasAttachments",
     :"TotalRows",
     :"PageIndex" 
-DO	
-  BEGIN
-   ici_retcount = :ici_retcount +1;
-   if (:ici_retcount between  :ici_firstselectrownum + :Ici_post_priorityrowsnumber and :ici_firstselectrownum + :I_PAGESIZE + :Ici_post_priorityrowsnumber) then
-    begin
-    SUSPEND;
-    ici_counter = :ici_counter + 1; 
-    end 
-if (:ici_counter >= :I_PAGESIZE) then
-LEAVE;						
-  END
-
+DO	SUSPEND;
 END;
 --GO
 

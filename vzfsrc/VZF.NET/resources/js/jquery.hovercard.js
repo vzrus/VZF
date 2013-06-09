@@ -14,7 +14,7 @@
             openOnTop: false,
             cardImgSrc: "",
             detailsHTML: "",
-            loadingHTML: "Loading1...",
+            loadingHTML: "Loading...",
             errorHTML: "Sorry, no data found.",
             twitterScreenName: '',
             showTwitterCard: false,
@@ -128,14 +128,29 @@
 
                         LoadSocialProfile("facebook", "", fbUsername, curHCDetails);
                     }
+                    
+                    $("body").on("keydown", function (event) {
+                        if (event.keyCode === 27) {
+                            closeHoverCard($this);
+                        }
+                    });
+					
+					var closeButton = curHCDetails.find(".s-close").eq(0);
+					
+					closeButton.click(function() {
+						closeHoverCard($this);
+					});
 
                     //Callback function                    
                     options.onHoverIn.call(this);
                 }
 
-            }, function() {
-                var $this = $(this);
-                $this.find(".hc-details").eq(0).stop(true, true).fadeOut(300, function() {
+            }, function () {
+                 closeHoverCard($(this));
+            });
+
+            function closeHoverCard(card) {
+                card.find(".hc-details").eq(0).stop(true, true).fadeOut(300, function () {
 
                     //Undo the z indices 
                     obj.css("zIndex", "50");
@@ -144,7 +159,9 @@
                         options.onHoverOut.call(this);
                     }
                 });
-            });
+                
+                $("body").off("keydown");
+            }
 
             //Opening Directions adjustment
 
@@ -212,8 +229,9 @@
                             $('body').append(script);
                         }
                         curHCDetails.append('<span class="s-action"><a href="https://twitter.com/' + username + '" class="twitter-follow-button" data-show-count="false" data-show-name="false" data-button="grey" data-width="65px" class="twitter-follow-button">Follow</a></span>');
-
+						curHCDetails.append('<span class="s-action s-close"><a href="javascript:void(0)"></a></span>');
                     }
+					
                     break;
                 case "facebook":
                     {
@@ -244,6 +262,7 @@
                                 curHCDetails.append('<span class="s-action">' + $('#fb-like' + profileData.id).html() + '</span>');
                             } else {
                                 curHCDetails.append('<span class="s-action"><div class="fb-like" id="fb-like' + profileData.id + '"><iframe src="//www.facebook.com/plugins/like.php?href=' + profileData.link + ';send=false&amp;layout=standard&amp;width=90&amp;show_faces=false&amp;action=like&amp;layout=button_count&amp;font&amp;height=21&amp" scrolling="no" frameborder="0" style="border:none; overflow:hidden;width:77px;height:21px" allowTransparency="true"></iframe></div></span>');
+								curHCDetails.append('<span class="s-action s-close"><a href="javascript:void(0)"></a></span>');
                             }
                         };
                     }
@@ -297,6 +316,8 @@
                         errorHTML = options.errorHTML;
                         customCallback = function() {
                         };
+						
+						curHCDetails.append('<span class="s-action s-close"><a href="javascript:void(0)"></a></span>');
                     }
                     break;
                 default:
@@ -306,7 +327,7 @@
                 }
 
                 if ($.isEmptyObject(customCardJSON)) {
-                    $.ajax({
+					$.ajax({
                         url: urlToRequest,
                         type: 'GET',
                         dataType: dataType, //jsonp for cross domain request

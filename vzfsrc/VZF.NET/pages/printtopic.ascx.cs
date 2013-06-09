@@ -174,7 +174,9 @@ namespace YAF.Pages
                 0,
                 0,
                 false,
-                -1);
+                -1,
+                -1,
+                DateTimeHelper.SqlDbMinTime());
 
             this.Posts.DataSource = dt.AsEnumerable();
 

@@ -1421,10 +1421,10 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="attachmentID">
+        /// <param name="attachmentId">
         /// The attachmentId
         /// </param>
-        public static void attachment_download(int? mid, object attachmentID)
+        public static void attachment_download(int? mid, object attachmentId)
         {
             string dataEngine;
             string namePattern = string.Empty;
@@ -1434,20 +1434,20 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.attachment_delete(connectionString, attachmentID);
+                    VZF.Data.MsSql.Db.attachment_download(connectionString, attachmentId);
                     break;
                 case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.attachment_delete(connectionString, attachmentID);
+                    VZF.Data.Postgre.Db.attachment_download(connectionString, attachmentId);
                     break;
                 case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.attachment_delete(connectionString, attachmentID);
+                    VZF.Data.Mysql.Db.attachment_download(connectionString, attachmentId);
                     break;
                 case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.attachment_delete(connectionString, attachmentID);
+                    VZF.Data.Firebird.Db.attachment_download(connectionString, attachmentId);
                     break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_delete(connectionString, attachmentID); break;
+                // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_download(connectionString, attachmentID); break;
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_download(connectionString, attachmentID); break;
+                // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_download(connectionString, attachmentID); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -11095,6 +11095,9 @@ namespace VZF.Data.Common
         /// <param name="messagePosition">
         /// The message position.
         /// </param>
+        /// <param name="messageId">
+        /// The message id.
+        /// </param>
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
@@ -11119,7 +11122,9 @@ namespace VZF.Data.Common
             int sortEdited,
             int sortPosition,
             bool showThanks,
-            int messagePosition)
+            int messagePosition,
+            int messageId,
+            DateTime lastRead)
         {
             string dataEngine;
             string connectionString;
@@ -11148,7 +11153,9 @@ namespace VZF.Data.Common
                         sortEdited,
                         sortPosition,
                         showThanks,
-                        messagePosition);
+                        messagePosition,
+                        messageId,
+                        lastRead);
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.post_list(
                         connectionString,
@@ -11169,7 +11176,9 @@ namespace VZF.Data.Common
                         sortEdited,
                         sortPosition,
                         showThanks,
-                        messagePosition);
+                        messagePosition,
+                        messageId,
+                        lastRead);
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.post_list(
                         connectionString,
@@ -11190,7 +11199,9 @@ namespace VZF.Data.Common
                         sortEdited,
                         sortPosition,
                         showThanks,
-                        messagePosition);
+                        messagePosition,
+                        messageId,
+                        lastRead);
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.post_list(
                         connectionString,
@@ -11211,10 +11222,12 @@ namespace VZF.Data.Common
                         sortEdited,
                         sortPosition,
                         showThanks,
-                        messagePosition);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition); 
+                        messagePosition,
+                        messageId,
+                        lastRead);
+                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition,messageId,lastRead);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition,messageId,lastRead);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.post_list(connectionString, topicId, currentUserID, authoruserId, updateViewCount, showDeleted, styledNicks, showReputation, sincePostedDate, toPostedDate, sinceEditedDate, toEditedDate, pageIndex, pageSize, sortPosted, sortEdited, sortPosition, showThanks, messagePosition,messageId,lastRead); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

@@ -282,15 +282,22 @@ namespace VZF.Controls
 
                 if (twitterHolder.Visible)
                 {
-                    // Redirect the user to Twitter for authorization.
-                    twitterLogin.Attributes.Add(
-                        "onclick",
-                        YafSingleSignOnUser.GenerateTwitterLoginUrl(true));
+                    try
+                    {
+                        var twitterLoginUrl = YafSingleSignOnUser.GenerateTwitterLoginUrl(true);
 
-                    twitterLogin.InnerHtml =
-                        "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" style=\"margin:0;\">".FormatWith(
-                            "{0}images/twitter_signin.png".FormatWith(YafForumInfo.ForumClientFileRoot),
-                            this.GetText("LOGIN", "TWITTER_LOGIN"));
+                        // Redirect the user to Twitter for authorization.
+                        twitterLogin.Attributes.Add("onclick", twitterLoginUrl);
+
+                        twitterLogin.InnerHtml =
+                            "<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" style=\"margin:0;\">".FormatWith(
+                                "{0}images/twitter_signin.png".FormatWith(YafForumInfo.ForumClientFileRoot),
+                                this.GetText("LOGIN", "TWITTER_LOGIN"));
+                    }
+                    catch (Exception)
+                    {
+                        twitterHolder.Visible = false;
+                    }
                 }
             }
 

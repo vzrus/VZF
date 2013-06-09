@@ -746,7 +746,9 @@ namespace YAF.Pages
                                 0,
                                 0,
                                 false,
-                                0);
+                                0,
+                                -1,
+                                DateTimeHelper.SqlDbMinTime());
 
                             // quoting a reply to a topic...
                             foreach (var msg in
@@ -1416,13 +1418,14 @@ namespace YAF.Pages
             // editing..
             this.PageLinks.AddLink(this.GetText("EDIT"));
 
-            string blogPostID = currentMessage.BlogPostID;
-            if (blogPostID != string.Empty)
+            string blogPostId = currentMessage.BlogPostID;
+            if (blogPostId != string.Empty)
             {
                 // The user used this post to blog
-                this.BlogPostID.Value = blogPostID;
+                this.BlogPostID.Value = blogPostId;
                 this.PostToBlog.Checked = true;
-                this.BlogRow.Visible = true;
+
+                // this.BlogRow.Visible = true;
             }
 
             this.TopicSubjectTextBox.Text = this.Server.HtmlDecode(currentMessage.Topic);

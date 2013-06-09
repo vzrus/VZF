@@ -3690,7 +3690,9 @@ namespace VZF.Data.Firebird
             int sortEdited,
             int sortPosition,
             bool showThanks,
-            int messagePosition)
+            int messagePosition,
+            int messageId,
+            DateTime lastRead)
         {
             using (var cmd = FbDbAccess.GetCommand("POST_LIST"))
             {
@@ -3715,6 +3717,8 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_SORTPOSITION", FbDbType.Integer)).Value = sortPosition;
                 cmd.Parameters.Add(new FbParameter("@I_SHOWTHANKS", FbDbType.Boolean)).Value = showThanks;
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGEPOSITION", FbDbType.Integer)).Value = messagePosition;
+                cmd.Parameters.Add(new FbParameter("@I_MESSAGEID", FbDbType.Integer)).Value = messageId;
+                cmd.Parameters.Add(new FbParameter("@I_LASTREAD", FbDbType.TimeStamp)).Value = lastRead;
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
                 return FbDbAccess.GetData(cmd, connectionString);

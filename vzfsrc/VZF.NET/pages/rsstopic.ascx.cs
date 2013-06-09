@@ -944,7 +944,9 @@ namespace YAF.Pages
                     0,
                     0,
                     false,
-                    -1))
+                    -1,
+                    -1,
+                    DateTimeHelper.SqlDbMinTime()))
             {
                 // convert to linq...
                 var rowList = dt.AsEnumerable();

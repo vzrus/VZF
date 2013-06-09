@@ -27,23 +27,20 @@ namespace VZF.Data.Mysql
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-   
     using System.Data;
-   
     using System.Diagnostics;
-
     using System.Reflection;
     using System.Web;
 
     using MySql.Data.MySqlClient;
 
     using VZF.Data.Utils;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     /// <summary>
     /// Provides open/close management for DB Connections
