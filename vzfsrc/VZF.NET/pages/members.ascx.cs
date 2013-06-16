@@ -224,12 +224,12 @@ namespace YAF.Pages
         {
             this.Page.Form.DefaultButton = this.SearchByUserName.UniqueID;
 
-            this.SearchByUserName.Focus();
-
             if (this.IsPostBack)
             {
                 return;
             }
+
+            this.SearchByUserName.Focus();
 
             this.ViewState["SortNameField"] = 1;
             this.ViewState["SortRankNameField"] = 0;

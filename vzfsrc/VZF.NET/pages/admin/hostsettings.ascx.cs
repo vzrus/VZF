@@ -24,8 +24,12 @@ namespace YAF.Pages.Admin
 
     using System;
     using System.Linq;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Core;
@@ -33,8 +37,6 @@ namespace YAF.Pages.Admin
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Utilities;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -480,6 +482,33 @@ namespace YAF.Pages.Admin
                                         : string.Empty;
 
             this.SQLVersion.Text = this.HtmlEncode(this.Get<YafBoardSettings>().SQLVersion);
+
+            if (General.GetCurrentTrustLevel() <= AspNetHostingPermissionLevel.Medium)
+            {
+                return;
+            }
+
+            this.AppCores.Text = Platform.Processors;
+            try
+            {
+                var cpuUsage =
+                           new System.Diagnostics.PerformanceCounter
+                               {
+                                   CategoryName = "Processor",
+                                   CounterName = "% Processor Time",
+                                   InstanceName = "_Total"
+                               };
+                float f = cpuUsage.NextValue();
+                this.AppCores.Text += " cores, used : " + f.ToType<string>() + "%";
+            }
+            catch (Exception)
+            {
+            }
+
+            this.AppMemory.Text = "{0} MB".FormatWith(Platform.AllocatedMemory.ToType<int>() / 1000000);
+            this.AppOSName.Text = Platform.VersionString;
+            this.AppRuntime.Text = "{0} {1}".FormatWith(Platform.RuntimeName, Platform.RuntimeString);
+
         }
 
         /// <summary>

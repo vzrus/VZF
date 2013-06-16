@@ -1232,7 +1232,6 @@ namespace YAF.Pages
         {
             int findMessageId = 0;
             messagePosition = -1;
-            int messageId = 0;
             lastRead = DateTimeHelper.SqlDbMinTime();
 
             if (!this._ignoreQueryString && this.Get<HttpRequestBase>().QueryString != null)
@@ -1240,9 +1239,9 @@ namespace YAF.Pages
                 // temporary find=lastpost code until all last/unread post links are find=lastpost and find=unread
                 if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find") == null)
                 {
-                    if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out messageId))
+                    if (!int.TryParse(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"), out findMessageId))
                     {
-                        return messageId;
+                        return findMessageId;
                     }
                 }
                 else
@@ -1261,7 +1260,6 @@ namespace YAF.Pages
                     // find last post
                     if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("find").ToLower() == "lastpost")
                     {
-                        messageId = 0;
                         lastRead = DateTime.UtcNow;
                     }
                 }
@@ -1271,7 +1269,7 @@ namespace YAF.Pages
                     DataTable unread = CommonDb.message_findunread(
                         PageContext.PageModuleID,
                         topicID: this.PageContext.PageTopicID,
-                        messageId: messageId,
+                        messageId: findMessageId,
                         lastRead: lastRead,
                         showDeleted: showDeleted,
                         authorUserID: userId))

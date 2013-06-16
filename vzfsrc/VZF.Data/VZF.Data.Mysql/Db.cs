@@ -1721,36 +1721,20 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Gets a list of information about a board
         /// </summary>
-        /// <param name="boardId">board id</param>
-        /// <returns>DataTable</returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <returns>The DataTable.</returns>
         public static DataTable board_list([NotNull] string connectionString, object boardId)
         {
-
             using (var cmd = MySqlDbAccess.GetCommand("board_list"))
             {
-                String _systemInfo = String.Concat(
-                    " OS: ",
-                    Platform.VersionString,
-                    " - Runtime: ",
-                    Platform.RuntimeName,
-                    " ",
-                    Platform.RuntimeString,
-                    " - Number of processors: ",
-                    Platform.Processors,
-                    " - Allocated memory:",
-                    (Platform.AllocatedMemory / 1024 / 1024).ToString(),
-                    " Mb.");
-
-                if (boardId == null)
-                {
-                    boardId = DBNull.Value;
-                }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_OSString", MySqlDbType.VarChar).Value = _systemInfo;
-                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+                cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId ?? DBNull.Value;
 
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }

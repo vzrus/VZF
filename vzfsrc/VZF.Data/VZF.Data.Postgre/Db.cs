@@ -1363,25 +1363,12 @@ namespace VZF.Data.Postgre
         /// <returns>DataTable</returns>
         public static DataTable board_list([NotNull] string connectionString , object boardId)
         {
-            String _systemInfo = String.Concat(
-                " OS: ",
-                Platform.VersionString,
-                " - Runtime: ",
-                Platform.RuntimeName,
-                " ",
-                Platform.RuntimeString,
-                " - Number of processors: ",
-                Platform.Processors,
-                " - Allocated memory:",
-                (Platform.AllocatedMemory / 1024 / 1024).ToString(),
-                " Mb.");
-
+            
             using (var cmd = PostgreDbAccess.GetCommand("board_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_boardid", NpgsqlDbType.Integer)).Value = boardId;
-                cmd.Parameters.Add(new NpgsqlParameter("i_sysinfo", NpgsqlDbType.Varchar)).Value = _systemInfo;
 
                 return PostgreDbAccess.GetData(cmd, connectionString);
             }

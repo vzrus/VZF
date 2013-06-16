@@ -557,15 +557,15 @@
                 case "Npgsql":
                     throw new ApplicationException("Not implemented for the data layer.");
                 case "MySql.Data.MySqlClient":
-                //  return PostgreDbAccess.GetCommandTextReplaced(commandText)
+                    throw new ApplicationException("Not implemented for the data layer.");
                 case "FirebirdSql.Data.FirebirdClient":
-                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);;
+                    throw new ApplicationException("Not implemented for the data layer.");
                 case "oracle":
-                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
+                    throw new ApplicationException("Not implemented for the data layer.");
                 case "db2":
-                //   return PostgreDbAccess.GetCommandTextReplaced(commandText);
+                    throw new ApplicationException("Not implemented for the data layer.");
                 case "other":
-                //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
+                    throw new ApplicationException("Not implemented for the data layer.");
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
                     break;

@@ -1676,6 +1676,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether RestartApplicationLimit.
+        /// </summary>
+        public int RestartApplicationLimit
+        {
+            get
+            {
+                return this._reg.GetValue("RestartApplicationLimit", 0);
+            }
+
+            set
+            {
+                this._reg.SetValue("RestartApplicationLimit", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets FirstPostCacheTimeout.
         /// </summary>
         public int FirstPostCacheTimeout

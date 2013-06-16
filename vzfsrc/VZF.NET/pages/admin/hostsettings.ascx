@@ -21,7 +21,7 @@
         <table class="content" cellspacing="2" width="100%" cellpadding="2" align="center">
                     <tr>
                         <td class="header1" colspan="2">
-                           <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="HEADER_SETUP" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                           <VZF:LocalizedLabel ID="LocalizedLabel11" runat="server" LocalizedTag="HEADER_SETUP" LocalizedPage="ADMIN_HOSTSETTINGS" />                           
                         </td>
                     </tr>
                     <tr>
@@ -30,6 +30,38 @@
                         </td>
                         <td class="post">
                             <asp:Label ID="SQLVersion" runat="server" CssClass="smallfont"></asp:Label>
+                        </td>
+                    </tr>
+                   <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel231" runat="server" LocalizedTag="APP_OS_NAME" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:Label ID="AppOSName" runat="server" CssClass="smallfont"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel232" runat="server" LocalizedTag="APP_RUNTIME" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:Label ID="AppRuntime" runat="server" CssClass="smallfont"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel233" runat="server" LocalizedTag="APP_CORES" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:Label ID="AppCores" runat="server" CssClass="smallfont"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader" style="width:50%">
+                            <VZF:HelpLabel ID="HelpLabel234" runat="server" LocalizedTag="APP_MEMORY" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:Label ID="AppMemory" runat="server" CssClass="smallfont"></asp:Label>
                         </td>
                     </tr>
                     <tr>
@@ -47,6 +79,14 @@
                         </td>
                         <td class="post">
                             <asp:CheckBox ID="EmailVerification" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="HelpLabel235" runat="server" LocalizedTag="RESTART_APP_LIMIT" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:TextBox ID="RestartApplicationLimit" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>

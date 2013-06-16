@@ -20,12 +20,13 @@ namespace YAF.Core
 {
     using System.Data;
 
+    using VZF.Utils.Extensions;
+
     using YAF.Types;
     using YAF.Types.Attributes;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Extensions;
-    using VZF.Utils.Extensions;
 
     /// <summary>
     /// The load page lazy user data.

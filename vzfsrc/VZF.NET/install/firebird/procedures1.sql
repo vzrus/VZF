@@ -1316,7 +1316,7 @@ END;
 --GO
 
 
-CREATE PROCEDURE objQual_BOARD_LIST(I_BOARDID INTEGER, I_SYSINFO VARCHAR(500))
+CREATE PROCEDURE objQual_BOARD_LIST(I_BOARDID INTEGER)
   RETURNS (
     "BoardID" INTEGER,
     "Name" VARCHAR(128),
@@ -1334,26 +1334,11 @@ BEGIN
   SELECT mon$creation_date FROM mon$database
   INTO :ici_db_creation_date;
   
-  IF (I_BOARDID IS NULL) THEN  
-  FOR 
-  SELECT a.*,
-  ( 'Firebird-' || :ici_engine_version || '.' || ' The current database created on '|| :ici_db_creation_date ||  '.') AS "SQLVersion"
-  FROM   objQual_BOARD a
-  INTO
-  :"BoardID",
-  :"Name",
-  :"AllowThreaded",
-  :"MembershipAppName",
-  :"RolesAppName",
-  :"SQLVersion"  
-  DO
-    SUSPEND;
-  ELSE
   FOR  
   SELECT a.*,
-   ( 'Firebird-' || :ici_engine_version || '.' || ' The current database created on '|| :ici_db_creation_date || ' - ' || :I_SYSINFO || '.') AS "SQLVersion"
+   ( 'Firebird-' || :ici_engine_version || '.' || ' The current database created on '|| :ici_db_creation_date || '.') AS "SQLVersion"
   FROM   objQual_BOARD a
-  WHERE  a.BOARDID = :I_BOARDID
+  WHERE  (:I_BOARDID is null or a.BOARDID = :I_BOARDID)
   INTO
   :"BoardID",
   :"Name",

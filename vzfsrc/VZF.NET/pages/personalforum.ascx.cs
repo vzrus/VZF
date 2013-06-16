@@ -197,7 +197,7 @@ namespace YAF.pages
                     YafBuildLink.Redirect(ForumPages.personalforum, "u={0}", PageContext.PageUserID, e.CommandArgument);
                     break;
                 case "moderate":
-                  YafBuildLink.Redirect(ForumPages.moderating, "fa={0}", e.CommandArgument);
+                  YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);
                     break;
             }
         }

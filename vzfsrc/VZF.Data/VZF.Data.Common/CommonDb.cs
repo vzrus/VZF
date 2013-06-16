@@ -41,6 +41,8 @@ namespace VZF.Data.Common
     using YAF.Types.Constants;
     using YAF.Types.Objects;
 
+    using Platform = VZF.Utils.Platform;
+
     /// <summary>
     /// The common DB.
     /// </summary>
@@ -2184,6 +2186,7 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
+
         }
 
         /// <summary>
@@ -3625,19 +3628,15 @@ namespace VZF.Data.Common
             {
                 case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_shrink_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_shrink_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_shrink_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_shrink_new(connectionString);
-                    break;
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_shrink(connectionString); break;
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_shrink(connectionString); break;
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_shrink(connectionString); break;
+                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_shrink(connectionString); 
+                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_shrink(connectionString); 
+                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_shrink(connectionString); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -6927,7 +6926,6 @@ namespace VZF.Data.Common
                     // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.group_rank_style(connectionString, boardID); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
-                    break;
             }
         }
 

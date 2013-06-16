@@ -2096,7 +2096,7 @@ MODIFIES SQL DATA
   /* STORED PROCEDURE CREATED BY VZ-TEAM */
 
   CREATE  PROCEDURE {databaseName}.{objectQualifier}board_list(
-  i_BoardID INT,i_OSString VARCHAR(255))
+  i_BoardID INT)
   READS SQL DATA
   BEGIN
   DECLARE ici_BoardID INT DEFAULT NULL;
@@ -2108,7 +2108,7 @@ MODIFIES SQL DATA
   FROM   {databaseName}.{objectQualifier}Board a;
   ELSE
   SELECT a.*,
-  CONCAT('Database: MySQL', ' ',VERSION(), ' - ', i_OSString) AS SQLVersion
+  CONCAT('Database: MySQL', ' ',VERSION()) AS SQLVersion
   FROM   {databaseName}.{objectQualifier}Board a
   WHERE  a.BoardID = ici_BoardID;
   END IF;

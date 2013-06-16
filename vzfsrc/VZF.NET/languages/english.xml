@@ -4791,6 +4791,14 @@ Visit {forumname} at {forumlink}
      <Resource tag="ALL_USERS">All Users</Resource>
      <Resource tag="SERVER_VERSION">SQL Server Version:</Resource>
        <Resource tag="SERVER_VERSION_HELP">What version of SQL Server is running.</Resource>
+     <Resource tag="APP_OS_NAME">Operating System:</Resource>
+       <Resource tag="APP_OS_NAME_HELP">What version of operating system is running.</Resource>
+     <Resource tag="APP_RUNTIME">.NET Runtime Version:</Resource>
+       <Resource tag="APP_RUNTIME_HELP">What .NET Runtime is running.</Resource>
+     <Resource tag="APP_CORES">Processor Cores:</Resource>
+       <Resource tag="APP_CORES_HELP">Number of Processor cores.</Resource>
+     <Resource tag="APP_MEMORY">Application memory:</Resource>
+       <Resource tag="APP_MEMORY_HELP">Application memory used.</Resource>
      <Resource tag="SERVERTIME_CORRECT">Server Time Zone Correction:</Resource>
        <Resource tag="SERVERTIME_CORRECT_HELP">Enter a positive or a negative value in minutes between -720 and 720, if the server UTC time value is incorrect: </Resource>
      <Resource tag="FORUM_EMAIL">Forum Email:</Resource>
@@ -4801,6 +4809,8 @@ Visit {forumname} at {forumlink}
        <Resource tag="EMAIL_VERIFICATION_HELP">If unchecked users will not need to verify their email address.</Resource>
      <Resource tag="FILE_TABLE">Use File Table:</Resource>
        <Resource tag="FILE_TABLE_HELP">Uploaded files will be saved in the database instead of the file system.</Resource>
+      <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+       <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
      <Resource tag="ABANDON_TRACKUSR">Abandon Sessions for "Don't Track" Users:</Resource>
        <Resource tag="ABANDON_TRACKUSR_HELP">Automatically abandon sessions for users who are marked as "Don't Track" such as Search Engines and Bots. Enable if you're having any session issues.</Resource>
      <Resource tag="MAX_ATTACHMENTS">Maximum Number of Attachments per Post:</Resource>

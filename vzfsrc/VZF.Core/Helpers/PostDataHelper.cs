@@ -232,7 +232,7 @@ namespace YAF.Core
         // there is auto-lock period defined
         if (!YafContext.Current.IsAdmin && YafContext.Current.BoardSettings.LockPosts > 0)
         {
-          var edited = (DateTime) DataRow["Edited"];
+          var edited = (DateTime)DataRow["Edited"];
 
           // check if post is locked according to this rule
           if (edited.AddDays(YafContext.Current.BoardSettings.LockPosts) < DateTime.UtcNow)

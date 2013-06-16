@@ -20,16 +20,18 @@ namespace YAF.Pages
 {
   #region Using
 
-  using System;
+    using System;
+    using System.Web;
 
-  using YAF.Classes;
-  using YAF.Core;
-  using YAF.Types;
-  using YAF.Types.Constants;
-  using YAF.Types.Interfaces;
-  using VZF.Utils;
+    using VZF.Utils;
 
-  #endregion
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Types;
+    using YAF.Types.Constants;
+    using YAF.Types.Interfaces;
+
+    #endregion
 
   /// <summary>
   /// The Main Forum Page.
@@ -121,6 +123,22 @@ namespace YAF.Pages
                 this.Welcome.Visible = false;
             }
         }
+
+        int rl = this.Get<YafBoardSettings>().RestartApplicationLimit;
+        if (rl <= 0 || General.GetCurrentTrustLevel() <= AspNetHostingPermissionLevel.Medium)
+        {
+            return;
+        }
+
+        if (Platform.AllocatedMemory <= rl * 1000000)
+        {
+            return;
+        }
+    
+        HttpRuntime.UnloadAppDomain();
+        this.Logger.Info(
+            "Application allocated memory is {0}. This exceeds limit set and application is restarting. Please, find the reason or reset limit. ",
+            Platform.AllocatedMemory);
     }
 
     #endregion

@@ -630,35 +630,49 @@ namespace VZF.Data.Firebird
         #region DataSets
 
         /// <summary>
-        /// Gets a list of categories????
+        /// Gets a DataSet with forums and categories list for admin.
         /// </summary>
-        /// <param name="boardID">BoardID</param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The BoardID.</param>
+        /// <param name="pageUserId">
+        /// The pageUserId.
+        /// </param>
+        /// <param name="isUserForum">
+        /// The isUserForum.
+        /// </param>
         /// <returns>DataSet with categories</returns>
-        public static DataSet ds_forumadmin([NotNull] string connectionString, [NotNull] object boardID, object pageUserID, object isUserForum)
+        public static DataSet ds_forumadmin(
+            [NotNull] string connectionString, [NotNull] object boardId, object pageUserId, object isUserForum)
         {
-            using (FbDbConnectionManager connMan = new FbDbConnectionManager(connectionString))
+            using (var connMan = new FbDbConnectionManager(connectionString))
             {
-                using (DataSet ds = new DataSet())
+                using (var ds = new DataSet())
                 {
                     using (
-                        FbTransaction trans =
-                             connMan.OpenDBConnection(connectionString).BeginTransaction(FbDbAccess.IsolationLevel))
-                    {
+                        var trans =
+                            connMan.OpenDBConnection(connectionString).BeginTransaction(FbDbAccess.IsolationLevel))
+                            {
                         using (
                             var da = new FbDataAdapter(
-                                  FbDbAccess.GetObjectName("category_list"), connMan.DBConnection(connectionString)))
+                                FbDbAccess.GetObjectName("category_list"), connMan.DBConnection(connectionString)))
                         {
                             da.SelectCommand.Transaction = trans;
 
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value = DBNull.Value;
-                          
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value =
+                                boardId;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_CATEGORYID", FbDbType.Integer)).Value =
+                                DBNull.Value;
 
                             da.SelectCommand.CommandType = CommandType.StoredProcedure;
                             da.Fill(ds, FbDbAccess.GetObjectName("Category"));
                             da.SelectCommand.CommandText = FbDbAccess.GetObjectName("forum_list");
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = pageUserID;
-                            da.SelectCommand.Parameters.Add(new FbParameter("@I_ISUSERFORUM", FbDbType.Boolean)).Value = isUserForum;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value =
+                                pageUserId;
+                            da.SelectCommand.Parameters.Add(new FbParameter("@I_ISUSERFORUM", FbDbType.Boolean)).Value =
+                                isUserForum;
                             da.Fill(ds, FbDbAccess.GetObjectName("ForumUnsorted"));
                             DataTable dtForumListSorted = ds.Tables[FbDbAccess.GetObjectName("ForumUnsorted")].Clone();
                             dtForumListSorted.TableName = FbDbAccess.GetObjectName("Forum");
@@ -676,7 +690,6 @@ namespace VZF.Data.Firebird
                                 ds.Tables[FbDbAccess.GetObjectName("Category")].Columns["CategoryID"],
                                 ds.Tables[FbDbAccess.GetObjectName("Forum")].Columns["CategoryID"]);
                             trans.Commit();
-
                         }
 
                         return ds;
@@ -1249,26 +1262,12 @@ namespace VZF.Data.Firebird
         /// <returns>DataTable</returns>
         public static DataTable board_list([NotNull] string connectionString, object boardID)
         {
-            String _systemInfo = String.Concat(
-                " OS: ",
-                Platform.VersionString,
-                " - Runtime: ",
-                Platform.RuntimeName,
-                " ",
-                Platform.RuntimeString,
-                " - Number of processors: ",
-                Platform.Processors,
-                " - Allocated memory:",
-                (Platform.AllocatedMemory / 1024 / 1024).ToString(),
-                " Mb.");
-
             using (var cmd = FbDbAccess.GetCommand("board_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer));
-                cmd.Parameters[0].Value = boardID;
-                cmd.Parameters.AddWithValue("@I_SYSINFO", _systemInfo);
+                cmd.Parameters.Add(new FbParameter("@I_BOARDID", FbDbType.Integer)).Value = boardID;
+              
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -9293,7 +9292,6 @@ namespace VZF.Data.Firebird
             DataTable indexList = Db.db_index_simplelist(connectionString);
             foreach (DataRow indexName in indexList.Rows)
             {
-
                 // using (var cmd = new FbCommand(String.Format("EXECUTE BLOCK AS BEGIN EXECUTE STATEMENT 'ALTER INDEX {0} INACTIVE'; EXECUTE STATEMENT 'ALTER INDEX {0} ACTIVE';END", indexName[0])))
                 try
                 {
@@ -9303,11 +9301,12 @@ namespace VZF.Data.Firebird
                         using (
                             var cmd =
                                 new FbCommand(
-                                    String.Format(
+                                    string.Format(
                                         "EXECUTE BLOCK AS BEGIN EXECUTE STATEMENT 'ALTER INDEX {0} INACTIVE'; END",
                                         indexName[0])))
                         {
                             cmd.CommandType = CommandType.Text;
+
                             // up the command timeout...
                             cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
 
@@ -9398,7 +9397,6 @@ namespace VZF.Data.Firebird
                                         results.Append(",");
                                         results.Append(drd["ColumnName"].ToString());
                                         gg++;
-
                                     }
 
                                     results.AppendLine();
@@ -9431,8 +9429,6 @@ namespace VZF.Data.Firebird
                                     }
                                     results.AppendLine("No Results Returned.");
                                 }
-
-                                reader.Close();
                                 trans.Commit();
                             }
                             catch (Exception x)
@@ -9443,10 +9439,12 @@ namespace VZF.Data.Firebird
                                 results.AppendLine();
                                 results.AppendFormat("SQL ERROR: {0}", x);
                             }
+
                             if (reader != null)
                             {
                                 reader.Close();
                             }
+
                             return results.ToString();
                         }
                     }

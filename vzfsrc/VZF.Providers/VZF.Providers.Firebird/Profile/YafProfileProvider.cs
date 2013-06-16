@@ -134,6 +134,7 @@ namespace YAF.Providers.Profile
             {
                 string connStr = ConfigurationManager.ConnectionStrings[_connStrName].ConnectionString;
                 ConnectionString = connStr;
+
                 // set the app variable...
                 if (YafContext.Application[_connStrAppKeyName] == null)
                 {

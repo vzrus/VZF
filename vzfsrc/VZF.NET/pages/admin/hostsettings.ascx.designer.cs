@@ -166,6 +166,78 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.Label SQLVersion;
         
         /// <summary>
+        /// HelpLabel231 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel231;
+        
+        /// <summary>
+        /// AppOSName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AppOSName;
+        
+        /// <summary>
+        /// HelpLabel232 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel232;
+        
+        /// <summary>
+        /// AppRuntime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AppRuntime;
+        
+        /// <summary>
+        /// HelpLabel233 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel233;
+        
+        /// <summary>
+        /// AppCores control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AppCores;
+        
+        /// <summary>
+        /// HelpLabel234 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel234;
+        
+        /// <summary>
+        /// AppMemory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label AppMemory;
+        
+        /// <summary>
         /// HelpLabel2 control.
         /// </summary>
         /// <remarks>
@@ -200,6 +272,24 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox EmailVerification;
+        
+        /// <summary>
+        /// HelpLabel235 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel235;
+        
+        /// <summary>
+        /// RestartApplicationLimit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox RestartApplicationLimit;
         
         /// <summary>
         /// HelpLabel5 control.

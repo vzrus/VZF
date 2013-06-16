@@ -1807,8 +1807,7 @@ END;$BODY$
   --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_list(
-                           i_boardid integer,
-                           i_sysinfo varchar(1000))
+                           i_boardid integer)
                   RETURNS SETOF databaseSchema.objectQualifier_board_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_board_list_return_type%ROWTYPE;
@@ -1832,7 +1831,7 @@ BEGIN
          allowthreaded,
          membershipappname,
          rolesappname,
- (' ' || version()  || '.' || ' Started ' || pg_postmaster_start_time() || i_sysinfo || '.') AS SQLVersion
+ (' ' || version()  || '.' || ' Started ' || pg_postmaster_start_time() || '.') AS SQLVersion
   INTO _rec
   FROM   databaseSchema.objectQualifier_board 
   WHERE  boardid = i_boardid;
