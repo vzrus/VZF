@@ -35,6 +35,14 @@
             <asp:TextBox ID="TopicDescriptionTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400" />
 		</td>
 	</tr>
+     <tr id="MessageDescriptionRow" visible="false" runat="server">
+		<td class="postformheader" width="20%">
+			<VZF:LocalizedLabel ID="MessageDescriptionLabel" runat="server" LocalizedTag="message_description" />
+		</td>
+		<td class="post" width="80%">
+			<asp:TextBox ID="MessageDescriptionTextBox" runat="server" CssClass="edit" MaxLength="100" Width="400" autocomplete="off" />
+		</td>
+	</tr>
     <tr id="BlogRow" runat="server" visible="false">
         <td class="postformheader" width="20%" colspan="2">
             Post to blog?

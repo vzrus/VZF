@@ -25,6 +25,8 @@ namespace YAF.Core
     using System.Collections.Generic;
     using System.Threading;
 
+    using VZF.Utils.Helpers;
+
     using YAF.Classes;
     using YAF.Types.Flags;
     using VZF.Utils;
@@ -317,7 +319,7 @@ namespace YAF.Core
         {
             get
             {
-                return this.Page != null && this.Page["Suspended"] != null;
+                return this.Page != null && this.Page["Suspended"] is DateTime;
             }
         }
 
@@ -340,7 +342,7 @@ namespace YAF.Core
             get
             {
                 return this.Page["LastPendingBuddies"].ToString().IsNotSet()
-                           ? DateTime.MinValue
+                           ? DateTimeHelper.SqlDbMinTime()
                            : Convert.ToDateTime(this.Page["LastPendingBuddies"]);
             }
         }
@@ -353,7 +355,7 @@ namespace YAF.Core
             get
             {
                 return this.Page["LastUnreadPm"].ToString().IsNotSet()
-                           ? DateTime.MinValue
+                           ? DateTimeHelper.SqlDbMinTime()
                            : Convert.ToDateTime(this.Page["LastUnreadPm"]);
             }
         }
@@ -572,9 +574,8 @@ namespace YAF.Core
         {
             get
             {
-                return this.Page == null || this.Page["Suspended"] != null
-                           ? DateTime.UtcNow
-                           : Convert.ToDateTime(this.Page["Suspended"]);
+                return this.IsSuspended ? 
+                    Convert.ToDateTime(this.Page["Suspended"]).ToUniversalTime() : DateTime.UtcNow;
             }
         }
 

@@ -26,7 +26,7 @@ namespace YAF.Modules
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Attributes;
-  using YAF.Utilities;
+  using VZF.Utilities;
 
   #endregion
 

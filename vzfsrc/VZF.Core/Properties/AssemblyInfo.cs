@@ -20,7 +20,7 @@ using YAF.Types.Attributes;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tiny Gecko")]
-[assembly: AssemblyProduct("YAF.Core")]
+[assembly: AssemblyProduct("VZF.Core")]
 [assembly: AssemblyCopyright("Copyright © 2006-2012 Yet Another Forum.NET")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -50,5 +50,5 @@ using YAF.Types.Attributes;
 
 #if !NCRUNCH
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\vzf2013.pfx")]
 #endif

@@ -26,6 +26,7 @@ namespace YAF.Core.Tasks
     using System.Linq;
 
     using VZF.Data.Common;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     
@@ -108,7 +109,7 @@ namespace YAF.Core.Tasks
 
       if (boardSettings.AllowDigestEmail)
       {
-        DateTime lastSend = DateTime.MinValue;
+          DateTime lastSend = DateTimeHelper.SqlDbMinTime();
         bool sendDigest = false;
         int sendEveryXHours = boardSettings.DigestSendEveryXHours;
 

@@ -30,6 +30,9 @@ namespace VZF.Utils.Helpers
         /// <summary>
         /// the sql compatible DateTime Min Value
         /// </summary>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
         /// <returns>
         /// Returns the sql compatible DateTime Min Value
         /// </returns>

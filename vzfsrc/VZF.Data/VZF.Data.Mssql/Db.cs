@@ -5235,6 +5235,7 @@ namespace VZF.Data.MsSql
         /// The message_save.
         /// </returns>
         public static bool message_save([NotNull] string connectionString, [NotNull] object topicID, [NotNull] object userID, [NotNull] object message, [NotNull] object userName, [NotNull] object ip, [NotNull] object posted, [NotNull] object replyTo, [NotNull] object flags,
+            [CanBeNull] object messageDescription,
                                         ref long messageID)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_save"))
@@ -5251,6 +5252,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("ReplyTo", replyTo);
                 cmd.Parameters.AddWithValue("BlogPostID", null); // Ederon : 6/16/2007
                 cmd.Parameters.AddWithValue("Flags", flags);
+                cmd.Parameters.AddWithValue("MessageDescription", messageDescription);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
                 cmd.Parameters.Add(paramMessageID);
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
@@ -5360,7 +5362,8 @@ namespace VZF.Data.MsSql
         /// <param name="editedBy">
         /// UserId of who edited the message.
         /// </param>
-        public static void message_update([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy, string tags)
+        public static void message_update([NotNull] string connectionString, [NotNull] object messageID, [NotNull] object priority, [NotNull] object message, [NotNull] object description, [CanBeNull] object status, [CanBeNull] object styles, [NotNull] object subject, [NotNull] object flags, [NotNull] object reasonOfEdit, [NotNull] object isModeratorChanged, [NotNull] object overrideApproval, [NotNull] object originalMessage, [NotNull] object editedBy, 
+            object messageDescription, string tags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("message_update"))
             {
@@ -5378,9 +5381,9 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("IsModeratorChanged", isModeratorChanged);
                 cmd.Parameters.AddWithValue("OverrideApproval", overrideApproval);
                 cmd.Parameters.AddWithValue("OriginalMessage", originalMessage);
+                cmd.Parameters.AddWithValue("MessageDescription", messageDescription);
                 cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("CurrentUtcTimestamp", DateTime.UtcNow);
-                
                 
                 MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -6012,7 +6015,7 @@ namespace VZF.Data.MsSql
                 sb.Append("INSERT INTO ");
                 sb.Append(MsSqlDbAccess.GetObjectName("Poll"));
 
-                if (question.Closes > DateTime.MinValue)
+                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                 {
                     sb.Append("(Question,Closes, UserID,PollGroupID,ObjectPath,MimeType,Flags) ");
                 }
@@ -6024,7 +6027,7 @@ namespace VZF.Data.MsSql
                 sb.Append(" VALUES(");
                 sb.Append("@Question");
 
-                if (question.Closes > DateTime.MinValue)
+                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                 {
                     sb.Append(",@Closes");
                 }
@@ -6099,7 +6102,7 @@ namespace VZF.Data.MsSql
 
                     cmd.Parameters.AddWithValue("@Question", question.Question);
 
-                    if (question.Closes > DateTime.MinValue)
+                    if (question.Closes > DateTimeHelper.SqlDbMinTime())
                     {
                         cmd.Parameters.AddWithValue("@Closes", question.Closes);
                     }
@@ -7661,7 +7664,7 @@ namespace VZF.Data.MsSql
                 eraseTopic = 0;
             }
 
-            if ((int)eraseTopic == 0)
+            if (eraseTopic.ToType<bool>())
             {
                 topic_deleteAttachments(connectionString, topicID);
 
@@ -8181,6 +8184,7 @@ namespace VZF.Data.MsSql
             [NotNull] object posted,
             [NotNull] object blogPostId,
             [NotNull] object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID,
             string tags)
         {
@@ -8202,6 +8206,7 @@ namespace VZF.Data.MsSql
                 cmd.Parameters.AddWithValue("Posted", posted);
                 cmd.Parameters.AddWithValue("BlogPostID", blogPostId);
                 cmd.Parameters.AddWithValue("Flags", flags);
+                cmd.Parameters.AddWithValue("MessageDescription", messageDescription);
                 cmd.Parameters.AddWithValue("Tags", tags);
                 cmd.Parameters.AddWithValue("UTCTIMESTAMP", DateTime.UtcNow);
 

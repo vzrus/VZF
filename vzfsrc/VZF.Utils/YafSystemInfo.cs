@@ -21,6 +21,7 @@ namespace VZF.Utils
   #region Using
 
   using System;
+  using System.Diagnostics;
 
   using YAF.Types;
 
@@ -48,14 +49,25 @@ namespace VZF.Utils
     #region Properties
 
     /// <summary>
-    /// Gets AllocatedMemory.
+    /// Gets the number of memory bytes currently thought to be allocated.
     /// </summary>
     public static long AllocatedMemory
     {
-      get
-      {
-        return Environment.WorkingSet;
-      }
+        get
+        {
+            return GC.GetTotalMemory(false);
+        }
+    }
+
+    /// <summary>
+    /// Gets the amount of physical memory mapped to the process context.
+    /// </summary>
+    public static long MappedMemory
+    {
+        get
+        {
+            return Environment.WorkingSet;
+        }
     }
 
     /// <summary>

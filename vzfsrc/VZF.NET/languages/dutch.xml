@@ -813,11 +813,13 @@
     <Resource tag="GRANTALLDELETE">Grant All Delete</Resource>
     <Resource tag="GROUPNAME">Role</Resource>
     <Resource tag="HEADER">Event Log Access For</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource>
     <Resource tag="LT_ERROR">Errors</Resource>
     <Resource tag="LT_INFORMATION">Information</Resource>
     <Resource tag="LT_IPBANLIFTED">Canceling IP ban</Resource>
     <Resource tag="LT_IPBANSET">Setting IP ban</Resource>
     <Resource tag="LT_SQLERROR">Sql Errors</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource>
     <Resource tag="LT_USERDELETED">Deleting users</Resource>
     <Resource tag="LT_USERSUSPENDED">Suspending users</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Unsuspending users</Resource>
@@ -943,6 +945,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">Als deze is aangevinkt, kunnen Gasten Uitslagen van de Polls bekijken.</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">Sta verbergen van Poll uitslagen toe:</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">Als deze is aangevinkt kan een auteur de uitslagen verbergen voordat de poll afgelopen is, of als er nog niet alle polls in een groep gestemd is.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">Sta IP zichtbaar voor Moderators toe:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">Moderators krijgen de ip-adressen van de gebruikers te zien.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">Sta Weergavenaam aanpassingen toe:</Resource>
@@ -1298,6 +1302,8 @@
     <Resource tag="REPUTATION_TEMPLATE_HELP">Sjabloon om de reputatie van de gebruiker op te maken.</Resource>
     <Resource tag="REQUIRE_LOGIN">Verplicht inloggen:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">Wanneer aangevinkt, moeten gebruikers verplicht inloggen voordat ze het forum kunnen bekijken. Ze zullen direct worden doorgestuurd naar de login pagina.</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
     <Resource tag="RULES_ONREGISTER">Laat "Reglementen" zien voor de Registratie:</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">Forceer dat de reglementen worden getoond en geaccepteerd voordat een nieuwe gebruiker zich kan registreren.</Resource>
     <Resource tag="SAVE_SETTINGS">Sla instellingen op</Resource>
@@ -4283,6 +4289,7 @@ Spoiler Inhoud
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALFORUM">
+    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
@@ -4419,6 +4426,7 @@ Spoiler Inhoud
     <Resource tag="ISQUESTION">Is dit topic in vraag-antwoord formaat?</Resource>
     <Resource tag="LAST10">Laatste 10 berichten (van nieuw naar oud)</Resource>
     <Resource tag="MESSAGE">Bericht:</Resource>
+    <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
     <Resource tag="NEED_SUBJECT">Graag een onderwerp op te geven.</Resource>
     <Resource tag="NEWPOSTOPTIONS">Opties:</Resource>
     <Resource tag="NEWTOPIC">Nieuw topic plaatsen</Resource>

@@ -1,8 +1,8 @@
 <%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" Inherits="YAF.ForumPageBase" %>
 <%@ Register TagPrefix="YAF" Assembly="VZF" Namespace="YAF" %>
 <%@ Register TagPrefix="VZF" Assembly="VZF.Controls" Namespace="VZF" %>
-<%@ Register TagPrefix="VZF" Namespace="VZF.Controls.Statistics" Assembly="VZF.Controls, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66" %>
-<%@ Register TagPrefix="VZF" Namespace="YAF" Assembly="VZF, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66" %>
+<%@ Register TagPrefix="VZF" Namespace="VZF.Controls.Statistics" Assembly="VZF.Controls" %>
+<%@ Register TagPrefix="VZF" Namespace="YAF" Assembly="VZF" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

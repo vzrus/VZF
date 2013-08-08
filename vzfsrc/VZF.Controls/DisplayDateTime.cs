@@ -23,6 +23,8 @@ namespace VZF.Controls
     using System;
     using System.Web.UI;
 
+    using VZF.Utils.Helpers;
+
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -108,7 +110,7 @@ namespace VZF.Controls
           }
         }
 
-        return System.DateTime.MinValue;
+        return DateTimeHelper.SqlDbMinTime();
       }
     }
 

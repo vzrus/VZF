@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf2013.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="YetAnotherForum.NET.snk" />
+    <None Include="vzf2013.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
@@ -86,10 +86,16 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)\VZF.NET\Bin\ /d /y 
-xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)\VZF.NET\Bin\   /d /y 
+    <PreBuildEvent>xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)VZF.NET\Bin\ /d /y 
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)VZF.NET\Bin\   /d /y 
 
 </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)\packages\npgsql\Npgsql.dll $(SolutionDir)VZF.NET\Bin\ /d /y 
+xcopy $(SolutionDir)\packages\npgsql\Mono.Security.dll $(SolutionDir)VZF.NET\Bin\   /d /y 
+
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

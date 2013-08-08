@@ -9,9 +9,9 @@ using System.Security;
 [assembly: AssemblyTitle("VZF.Data.Postgre")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Vladimir Zakharov(vzrus)")]
 [assembly: AssemblyProduct("VZF.Data.Postgre")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("Copyright ©  2008-2013 Vladimir Zakharov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,12 +33,12 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.9.6.2")]
+[assembly: AssemblyFileVersion("1.9.6.2")]
 
 #if (!COMPACT_FRAMEWORK)
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

@@ -319,7 +319,7 @@ namespace VZF.Controls
 
                 var formattedMessage =
                     this.Get<IFormatMessage>().FormatMessage(
-                        this.HighlightMessage(this.Message, true), this.MessageFlags, false, editedMessageDateTime);
+                        this.HighlightMessage(this.Message, true), this.MessageFlags, false, editedMessageDateTime.AddMinutes((double)PageContext.CurrentUserData.TimeZone * 60));
 
                 // tha_watcha : Since html message and bbcode can be mixed now, message should be always replace bbcode
                 this.RenderModulesInBBCode(

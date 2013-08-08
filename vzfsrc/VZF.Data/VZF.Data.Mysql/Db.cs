@@ -2886,6 +2886,19 @@ namespace VZF.Data.Mysql
             }
         }
 
+        public static DataTable forum_byflags(string connectionString, object forumId, object flags)
+        {
+            using (var cmd = MySqlDbAccess.GetCommand("forum_byflags"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                
+                cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumId ?? DBNull.Value;
+                cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
+
+                return MySqlDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
         public static DataTable forum_byuserlist(
             [NotNull] string connectionString, object boardId, object forumID, object userId, object isUserForum)
         {
@@ -4600,16 +4613,12 @@ namespace VZF.Data.Mysql
             object overrideApproval,
             object originalMessage,
             object editedBy,
+            object messageDescription,
             string tags)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_update"))
             {
-                if (overrideApproval == null)
-                {
-                    overrideApproval = DBNull.Value;
-                }
-
-                cmd.CommandType = CommandType.StoredProcedure;
+               cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_MessageID", MySqlDbType.Int32).Value = messageID;
                 cmd.Parameters.Add("i_Priority", MySqlDbType.Int32).Value = priority;
@@ -4622,8 +4631,9 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_Reason", MySqlDbType.VarChar).Value = reasonOfEdit;
                 cmd.Parameters.Add("i_EditedBy", MySqlDbType.Int32).Value = editedBy;
                 cmd.Parameters.Add("i_IsModeratorChanged", MySqlDbType.Byte).Value = isModeratorChanged;
-                cmd.Parameters.Add("i_OverrideApproval", MySqlDbType.Byte).Value = overrideApproval;
+                cmd.Parameters.Add("i_OverrideApproval", MySqlDbType.Byte).Value = overrideApproval ?? DBNull.Value; 
                 cmd.Parameters.Add("i_OriginalMessage", MySqlDbType.Text).Value = originalMessage;
+                cmd.Parameters.Add("i_MessageDescription", MySqlDbType.VarChar).Value = messageDescription;
                 cmd.Parameters.Add("i_Tags", MySqlDbType.VarChar).Value = tags;
                 cmd.Parameters.Add("i_UtcTimeStamp", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
@@ -4642,6 +4652,7 @@ namespace VZF.Data.Mysql
             object posted,
             object replyTo,
             object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("message_save"))
@@ -4672,6 +4683,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_ExternalMessageID", MySqlDbType.VarChar).Value = DBNull.Value;
                 cmd.Parameters.Add("i_ReferenceMessageID", MySqlDbType.VarChar).Value = DBNull.Value;
                 cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
+                cmd.Parameters.Add("i_MessageDescription", MySqlDbType.VarChar).Value = messageDescription;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 cmd.Parameters.Add(paramMessageID);
@@ -6050,7 +6062,7 @@ namespace VZF.Data.Mysql
                                 new System.Text.StringBuilder(
                                     string.Format("INSERT INTO {0}", MySqlDbAccess.GetObjectName("Poll")));
 
-                            if (question.Closes > DateTime.MinValue)
+                            if (question.Closes > DateTimeHelper.SqlDbMinTime())
                             {
                                 sb.Append("(Question,Closes, UserID,PollGroupID,ObjectPath,MimeType,Flags) ");
                             }
@@ -6062,7 +6074,7 @@ namespace VZF.Data.Mysql
                             sb.Append(" VALUES(");
                             sb.Append("?Question");
 
-                            if (question.Closes > DateTime.MinValue)
+                            if (question.Closes > DateTimeHelper.SqlDbMinTime())
                             {
                                 sb.Append(",?Closes");
                             }
@@ -6077,7 +6089,7 @@ namespace VZF.Data.Mysql
                                 cmdPoll.CommandType = CommandType.Text;
                                 cmdPoll.Parameters.Add("?Question", MySqlDbType.VarChar).Value = question.Question;
 
-                                if (question.Closes > DateTime.MinValue)
+                                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                                 {
                                     cmdPoll.Parameters.Add("?Closes", MySqlDbType.DateTime).Value = question.Closes;
                                 }
@@ -6128,7 +6140,7 @@ namespace VZF.Data.Mysql
                         cmd.Parameters.Add(ret); 
                         cmd.Parameters.Add("?Question", MySqlDbType.VarChar ).Value = question.Question;
 
-                        if (question.Closes > DateTime.MinValue)
+                        if (question.Closes > DateTimeHelper.SqlDbMinTime())
                         {
                             cmd.Parameters.Add("?Closes", MySqlDbType.DateTime ).Value = question.Closes;
                         }
@@ -7592,7 +7604,7 @@ namespace VZF.Data.Mysql
                 eraseTopic = 0;
             }
 
-            if ((int)eraseTopic == 0)
+            if (eraseTopic.ToType<bool>())
             {
                 topic_deleteAttachments(connectionString, topicID);
 
@@ -7657,6 +7669,7 @@ namespace VZF.Data.Mysql
             object posted,
             object blogPostID,
             object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID,
             string tags)
         {
@@ -7677,6 +7690,7 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_Posted", MySqlDbType.DateTime).Value = posted;
                 cmd.Parameters.Add("i_BlogPostID", MySqlDbType.VarChar).Value = blogPostID;
                 cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
+                cmd.Parameters.Add("i_MessageDescription", MySqlDbType.VarChar).Value = messageDescription;
                 cmd.Parameters.Add("i_Tags", MySqlDbType.VarChar).Value = tags;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
@@ -10515,7 +10529,7 @@ namespace VZF.Data.Mysql
 
                 return tableLastRead != null && tableLastRead != DBNull.Value
                            ? (DateTime)tableLastRead
-                           : DateTime.MinValue.AddYears(1902);
+                           : DateTimeHelper.SqlDbMinTime();
             }
         }
 

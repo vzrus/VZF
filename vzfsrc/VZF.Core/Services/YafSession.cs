@@ -256,7 +256,7 @@ namespace YAF.Core.Services
                     return (DateTime)this.SessionState["lastpendingbuddies"];
                 }
 
-                return DateTime.MinValue;
+                return DateTimeHelper.SqlDbMinTime();
             }
 
             set
@@ -277,7 +277,7 @@ namespace YAF.Core.Services
                     return (DateTime)this.SessionState["lastpm"];
                 }
 
-                return DateTime.MinValue;
+                return DateTimeHelper.SqlDbMinTime();
             }
 
             set
@@ -298,7 +298,7 @@ namespace YAF.Core.Services
                     return (DateTime)this.SessionState["lastpost"];
                 }
 
-                return DateTime.MinValue;
+                return DateTimeHelper.SqlDbMinTime();
             }
 
             set

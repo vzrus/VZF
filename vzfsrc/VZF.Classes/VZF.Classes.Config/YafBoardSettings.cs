@@ -2007,6 +2007,22 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether AllowMessageDescription.
+        /// </summary>
+        public bool AllowMessageDescription
+        {
+            get
+            {
+                return this._reg.GetValue("AllowMessageDescription", false);
+            }
+
+            set
+            {
+                this._reg.SetValue("AllowMessageDescription", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether EmailVerification.
         /// </summary>
         public bool EmailVerification

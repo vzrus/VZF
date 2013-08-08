@@ -6140,7 +6140,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_approve(
 $BODY$DECLARE
              ici_userid	    integer;
              ici_ForumID	integer;
-             ici_TopicID	integer;
+             ici_topicid	integer;
              ici_Posted	    timestamp;
              ici_UserName	varchar(128);
              ici_UserDisplayName	varchar(128);
@@ -6155,7 +6155,7 @@ BEGIN
          a.username,
          a.userdisplayname,
          a.flags
-        INTO ici_userid,ici_TopicID,ici_ForumID,ici_Posted,ici_UserName,ici_UserDisplayName,ici_NewFlag
+        INTO ici_userid,ici_topicid,ici_ForumID,ici_Posted,ici_UserName,ici_UserDisplayName,ici_NewFlag
     FROM
         databaseSchema.objectQualifier_message a
         inner join databaseSchema.objectQualifier_topic b on b.topicid=a.topicid
@@ -6193,7 +6193,7 @@ BEGIN
         from databaseSchema.objectQualifier_message x 
         WHERE x.topicid=databaseSchema.objectQualifier_topic.topicid 
         AND x.isapproved IS TRUE and x.isdeleted IS NOT TRUE)
-    WHERE topicid = ici_TopicID;
+    WHERE topicid = ici_topicid;
     
     -- update Forum table with last topic/post info
     
@@ -6204,7 +6204,7 @@ BEGIN
  
      UPDATE databaseSchema.objectQualifier_forum set
         lastposted = ici_Posted,
-        lasttopicid = ici_TopicID,
+        lasttopicid = ici_topicid,
         lastmessageid = i_messageid,
         lastuserid = ici_userid,
         lastusername = ici_UserName,
@@ -6218,7 +6218,7 @@ BEGIN
     LOOP
         UPDATE databaseSchema.objectQualifier_forum SET
                 lastposted = ici_Posted,
-                lasttopicid = ici_TopicID,
+                lasttopicid = ici_topicid,
                 lastmessageid = i_messageid,
                 lastuserid = ici_userid,
                 lastusername = ici_UserName,
@@ -6250,7 +6250,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_delete(
                            i_erasemessage boolean)
                   RETURNS void AS
 $BODY$DECLARE
-             ici_TopicID		integer;
+             ici_topicid		integer;
              ici_ForumID		integer;
              ici_MessageCount	integer;
              ici_LastMessageID	integer;
@@ -6259,7 +6259,7 @@ BEGIN
  
     -- Find TopicID and ForumID
     SELECT b.topicid,b.forumid,a.userid 
-        INTO ici_TopicID,ici_ForumID,ici_userid
+        INTO ici_topicid,ici_ForumID,ici_userid
         FROM 
             databaseSchema.objectQualifier_message a
             INNER JOIN  databaseSchema.objectQualifier_topic b 
@@ -6311,14 +6311,14 @@ BEGIN
     -- Delete topic IF there are no more messages
     SELECT COUNT(1) INTO ici_MessageCount 
     FROM databaseSchema.objectQualifier_message 
-    WHERE topicid = ici_TopicID 
+    WHERE topicid = ici_topicid 
     AND (flags & 8)=0;
     IF ici_MessageCount=0 
-    THEN PERFORM databaseSchema.objectQualifier_topic_delete (ici_TopicID, true, i_erasemessage); 
+    THEN PERFORM databaseSchema.objectQualifier_topic_delete (ici_topicid, true, i_erasemessage); 
     END IF;
  
     -- UPDATE lastpost
-    PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_TopicID);
+    PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_topicid);
     PERFORM databaseSchema.objectQualifier_forum_updatestats(ici_ForumID);
  
     -- UPDATE topic numposts
@@ -6327,7 +6327,7 @@ BEGIN
      (SELECT COUNT(1) FROM databaseSchema.objectQualifier_message x 
      WHERE x.topicid=databaseSchema.objectQualifier_topic.topicid 
      and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE)
-    WHERE topicid = ici_TopicID;
+    WHERE topicid = ici_topicid;
     RETURN;
 END; $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -6345,7 +6345,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_deleteundelete
                            i_isdeleteaction integer)
                   RETURNS void AS
 $BODY$DECLARE
-             ici_TopicID		integer;
+             ici_topicid		integer;
              ici_ForumID		integer;
              ici_MessageCount	integer;
              ici_LastMessageID	integer;
@@ -6354,7 +6354,7 @@ $BODY$DECLARE
 BEGIN
     -- Find TopicID and ForumID
     SELECT b.topicid,b.forumid,a.userid 
-        INTO ici_TopicID,ici_ForumID,ici_userid
+        INTO ici_topicid,ici_ForumID,ici_userid
     FROM 
         databaseSchema.objectQualifier_message a
         INNER JOIN databaseSchema.objectQualifier_topic b ON b.topicid=a.topicid
@@ -6401,12 +6401,12 @@ BEGIN
     -- Delete topic IF there are no more messages
     SELECT COUNT(1) INTO ici_MessageCount 
     FROM databaseSchema.objectQualifier_message 
-    WHERE topicid = ici_TopicID AND (flags & 8)=0;
+    WHERE topicid = ici_topicid AND (flags & 8)=0;
     IF ici_MessageCount=0 THEN 
-    PERFORM databaseSchema.objectQualifier_topic_delete(ici_TopicID,false,false); 
+    PERFORM databaseSchema.objectQualifier_topic_delete(ici_topicid,false,false); 
     END IF;
     -- update lastpost
-    PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_TopicID);
+    PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_topicid);
     PERFORM databaseSchema.objectQualifier_forum_updatestats(ici_ForumID);
     -- update topic numposts
     UPDATE databaseSchema.objectQualifier_topic 
@@ -6414,7 +6414,7 @@ BEGIN
     (select count(1) from databaseSchema.objectQualifier_message x 
     WHERE x.topicid=databaseSchema.objectQualifier_topic.topicid 
     and x.isapproved IS TRUE and x.isdeleted IS NOT TRUE )
-    WHERE topicid = ici_TopicID;
+    WHERE topicid = ici_topicid;
     RETURN;
 END;
 $BODY$
@@ -7230,11 +7230,12 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_update
                            i_overrideapproval boolean, 
                            i_originalmessage text,
                            i_newguid uuid,
+						   i_messagedescription varchar,
                            i_tags text,
                            i_utctimestamp timestampTZ )
                   RETURNS void AS
 $BODY$DECLARE
-             ici_TopicID	integer;
+             ici_topicid	integer;
              ici_ForumFlags	integer;
              ici_flags integer:= i_flags & ~16;
              intNull integer;
@@ -7243,7 +7244,7 @@ BEGIN
     SELECT 
     a.topicid,
     c.flags
-        INTO ici_TopicID,ici_ForumFlags
+        INTO ici_topicid,ici_ForumFlags
     FROM 
         databaseSchema.objectQualifier_message a
         INNER JOIN databaseSchema.objectQualifier_topic b ON b.topicid = a.topicid
@@ -7278,6 +7279,7 @@ BEGIN
         
     UPDATE databaseSchema.objectQualifier_message SET
         message = i_message,
+		description = i_messagedescription,
         edited = i_utctimestamp,
         editedby = i_editedby,
         flags = i_Flags, 		
@@ -7290,7 +7292,7 @@ BEGIN
         UPDATE databaseSchema.objectQualifier_topic SET
             priority = i_priority
         WHERE
-            topicid = ici_TopicID;
+            topicid = ici_topicid;
     END IF;
  
     IF NOT i_Subject = '' AND i_subject IS NOT NULL THEN
@@ -7300,10 +7302,10 @@ BEGIN
             status = i_status,
             styles = i_styles
         WHERE
-            topicid = ici_TopicID;
+            topicid = ici_topicid;
     END IF; 
 
-    PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_TopicID, i_tags);
+    PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_topicid, i_tags);
 
     -- If forum is moderated, make sure last post pointers are correct
     IF (ici_ForumFlags & 8)<>0 THEN 
@@ -7621,7 +7623,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(
                   RETURNS void AS
 $BODY$DECLARE
              ici_ForumID	integer;
-             ici_TopicID	integer := null;
+             ici_topicid	integer := null;
              ici_MessageID	integer;
              ici_ParentID integer;
           -- ici_thread char(32)=i_thread;
@@ -7635,7 +7637,7 @@ BEGIN
     IF exists(select 1 from databaseSchema.objectQualifier_message where externalmessageid = i_referencemessageid) THEN	
         -- referenced message exists
         select  topicid, messageid 
-        INTO ici_TopicID, ici_ReplyTo
+        INTO ici_topicid, ici_ReplyTo
         from 
         databaseSchema.objectQualifier_message 
         where externalmessageid = i_referencemessageid;
@@ -7645,17 +7647,17 @@ BEGIN
         IF (i_referencemessageid IS NULL) THEN
         INSERT INTO databaseSchema.objectQualifier_topic(forumid,
         userid,username,userdisplayname,posted,topic,views,priority,numposts)
-        VALUES(ici_ForumID,i_userid,i_username,i_username,i_posted,i_topic,0,0,0) returning topicid into ici_TopicID;	
+        VALUES(ici_ForumID,i_userid,i_username,i_username,i_posted,i_topic,0,0,0) returning topicid into ici_topicid;	
             
-      --  SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_topic','topicid')) INTO ici_TopicID;  		
+      --  SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_topic','topicid')) INTO ici_topicid;  		
 
         INSERT INTO databaseSchema.objectQualifier_nntptopic(nntpforumid,thread,topicid)
-        VALUES (i_nntpforumid,'',ici_TopicID);
+        VALUES (i_nntpforumid,'',ici_topicid);
         END IF;
         END IF;
     END IF;
-    IF ici_TopicID IS NOT NULL THEN
-        SELECT databaseSchema.objectQualifier_message_save(ici_TopicID, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, 17,i_utctimestamp)
+    IF ici_topicid IS NOT NULL THEN
+        SELECT databaseSchema.objectQualifier_message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, 17, NULL, i_utctimestamp)
         INTO ici_MessageID;
     END IF;
     -- update user 
@@ -7672,18 +7674,18 @@ BEGIN
         lastuserid		= i_userid,
         lastusername	= i_username,
         lastuserdisplayname	= i_username
-    WHERE topicid=ici_TopicID;	
+    WHERE topicid=ici_topicid;	
     -- update forum 
     UPDATE databaseSchema.objectQualifier_forum SET
         lastposted		= i_posted,
-        lasttopicid	= ici_TopicID,
+        lasttopicid	= ici_topicid,
         lastmessageid	= ici_MessageID,
         lastuserid		= i_userid,
         lastusername	= i_username,
         lastuserdisplayname	= i_username
     WHERE forumid=ici_ForumID AND (lastposted IS NULL OR lastposted< i_posted); 
         
-    -- PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_TopicID);
+    -- PERFORM databaseSchema.objectQualifier_topic_updatelastpost(ici_ForumID,ici_topicid);
     
     SELECT DISTINCT parentid
          INTO ici_ParentID
@@ -7694,7 +7696,7 @@ WHILE ici_ParentID > 0 LOOP
 
 UPDATE databaseSchema.objectQualifier_forum SET
         lastposted		= i_posted::timestamp,
-        lasttopicid	= ici_TopicID,
+        lasttopicid	= ici_topicid,
         lastmessageid	= ici_MessageID,
         lastuserid		= i_userid,
         lastusername	= i_username,
@@ -8554,6 +8556,7 @@ END IF;
         m.messageid AS MessageID,
         m.posted AS Posted, 	
         m.message,
+		m.description as MessageDescription,
         m.userid,
         m.position,
         m.indent,
@@ -9600,7 +9603,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_create_by_messag
 $BODY$DECLARE
              ici_userid integer;
              ici_Posted timestampTZ ;
-             ici_TopicID integer;
+             ici_topicid integer;
              varcharnull varchar;
  BEGIN    
 
@@ -9615,10 +9618,10 @@ $BODY$DECLARE
 
     INSERT INTO databaseSchema.objectQualifier_topic(forumid,topic,userid,posted,views,priority,pollid,username,numposts)
     VALUES(i_forumid,i_subject,ici_userid,ici_Posted,0,0,null,varcharnull,0);
-    SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_topic','topicid')) INTO ici_TopicID;  	
+    SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_topic','topicid')) INTO ici_topicid;  	
 
     -- PERFORM databaseSchema.objectQualifier_message_save(i_TopicID,ici_userid,i_Message,i_UserName,i_IP,ici_Posted,i_ReplyToNull,BlogPostIDNull,i_Flags);
-    RETURN ici_TopicID;
+    RETURN ici_topicid;
     END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER
@@ -9936,11 +9939,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_info(
                            i_gettags boolean)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_info_return_type AS
 $BODY$DECLARE
-             ici_TopicID integer:= i_topicid;
+             ici_topicid integer:= i_topicid;
              _rec databaseSchema.objectQualifier_topic_info_return_type%ROWTYPE;
  BEGIN 	
  
-    IF ici_TopicID IS NULL OR ici_TopicID = 0 THEN
+    IF ici_topicid IS NULL OR ici_topicid = 0 THEN
     
     IF i_showdeleted IS TRUE THEN
 FOR _rec IN
@@ -10065,7 +10068,7 @@ SELECT
                   t.ispersistent,
                   t.isquestion 			 
             FROM databaseSchema.objectQualifier_topic t
-            WHERE t.topicid = ici_TopicID
+            WHERE t.topicid = ici_topicid
 LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -10106,7 +10109,7 @@ FOR _rec IN SELECT
                   t.ispersistent,
                   t.isquestion 			 
             FROM databaseSchema.objectQualifier_topic t 
-                  WHERE t.topicid = ici_TopicID
+                  WHERE t.topicid = ici_topicid
 AND (t.flags & 8) = 0
 LOOP
 RETURN NEXT _rec;
@@ -10757,11 +10760,12 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_save(
                            i_posted timestampTZ,
                            i_blogpostid varchar,
                            i_flags integer,
+						   i_messagedescription varchar,
                            i_tags text,
                            i_utctimestamp timestampTZ)
                  RETURNS databaseSchema.objectQualifier_topic_save_return_type AS
 $BODY$DECLARE
-             ici_TopicID     integer;
+             ici_topicid     integer;
              ici_MessageID   integer;
              ici_Posted	     timestampTZ :=i_posted;
              ici_ReplyToNull integer;
@@ -10782,14 +10786,14 @@ BEGIN
      SELECT EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_user WHERE userid = i_userid and name != i_username) INTO ici_OverrideDisplayName;
      -- create the topic	
      INSERT INTO databaseSchema.objectQualifier_topic(forumid,topic,userid,posted,views,priority,username,userdisplayname,numposts, description, status, styles, flags)
-     VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_TopicID;
+     VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_topicid;
        
      -- add message to the topic 
-     SELECT databaseSchema.objectQualifier_message_save(ici_TopicID,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null, i_flags,i_utctimestamp) INTO ici_MessageID;
+     SELECT databaseSchema.objectQualifier_message_save(ici_topicid,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null, i_flags,i_messagedescription,i_utctimestamp) INTO ici_MessageID;
     
-     PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_TopicID, i_tags);
+     PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_topicid, i_tags);
     
-     SELECT   ici_TopicID AS TopicID,  ici_MessageID AS MessageID INTO _rec;
+     SELECT   ici_topicid AS TopicID,  ici_MessageID AS MessageID INTO _rec;
 
  RETURN _rec;
      END;
@@ -10971,7 +10975,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_updatelastpost(
                   RETURNS void AS
 $BODY$DECLARE
              ici_ForumID integer:=i_forumid;
-             ici_TopicID integer:=i_topicid;
+             ici_topicid integer:=i_topicid;
              ici_lastposted timestampTZ ;
              ici_LastMessageID integer;
              ici_lastmessageflags integer;
@@ -10979,14 +10983,14 @@ $BODY$DECLARE
              ici_LastUserName varchar(128);
              ici_LastUserDisplayName varchar(128);
 BEGIN                      
-IF ici_TopicID IS NOT NULL THEN
+IF ici_topicid IS NOT NULL THEN
          SELECT DISTINCT x.posted,x.messageid, x.userid, x.username, x.userdisplayname, x.flags INTO
          ici_lastposted,ici_LastMessageID,ici_LastUserID,ici_LastUserName,ici_LastUserDisplayName, ici_lastmessageflags
          FROM    databaseSchema.objectQualifier_message x 
          INNER JOIN databaseSchema.objectQualifier_topic t
          ON x.topicid = t.topicid
          WHERE  
-         (x.flags & 24) = 16 AND x.topicid = ici_TopicID
+         (x.flags & 24) = 16 AND x.topicid = ici_topicid
                              ORDER BY x.posted DESC LIMIT 1;         
             UPDATE databaseSchema.objectQualifier_topic
                SET    lastposted = ici_lastposted,
@@ -10995,7 +10999,7 @@ IF ici_TopicID IS NOT NULL THEN
                       lastusername=ici_LastUserName,
                       lastuserdisplayname=ici_LastUserDisplayName,
                       lastmessageflags=ici_lastmessageflags
-                WHERE  topicid = ici_TopicID;
+                WHERE  topicid = ici_topicid;
 ELSE
         SELECT DISTINCT x.posted,x.messageid, x.userid, x.username, x.userdisplayname, x.flags 
         INTO ici_lastposted,ici_LastMessageID,ici_LastUserID,ici_LastUserName, ici_LastUserDisplayName, ici_lastmessageflags
@@ -13021,7 +13025,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_repliedtopic(
 $BODY$DECLARE 
              ici_topicid integer;
 BEGIN       
-SELECT topicid INTO ici_topicid FROM databaseSchema.objectQualifier_message WHERE mrssageid = i_messageid;
+SELECT topicid INTO ici_topicid FROM databaseSchema.objectQualifier_message WHERE messageid = i_messageid;
 
         RETURN (SELECT COUNT(1)
         FROM databaseSchema.objectQualifier_message AS t WHERE t.topicid = ici_topicid AND t.userid = i_userid);		

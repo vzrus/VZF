@@ -504,7 +504,7 @@ namespace YAF.Core
                 row =>
                     {
                         // skip the guest user
-                        if (row.Field<int>("IsGuest") > 0)
+                        if (row.Field<bool>("IsGuest"))
                         {
                             return;
                         }

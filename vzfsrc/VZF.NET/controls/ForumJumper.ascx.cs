@@ -15,7 +15,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace YAF.Сontrols
+namespace VZF.Сontrols
 {
     using System;
     using System.Web;
@@ -24,7 +24,7 @@ namespace YAF.Сontrols
     using VZF.Controls;
     using YAF.Core;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
 
     public partial class ForumJumper : BaseUserControl
@@ -56,7 +56,7 @@ namespace YAF.Сontrols
             else
             {
                 this.jholder.Controls.Add(new ForumJump{ID="ForumJump1"});
-                this.jholder.DataBind();
+                this.DataBind();
                 /* YafContext.Current.PageElements.RegisterJsBlock("dynatreescr",
                                                                 JavaScriptBlocks.DynatreeGetNodesJumpAllJS("tree",
                                                                                                           PageContext.PageUserID, 

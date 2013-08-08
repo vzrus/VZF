@@ -37,8 +37,8 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.9.6.2")]
+[assembly: AssemblyFileVersion("1.9.6.2")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
-[assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

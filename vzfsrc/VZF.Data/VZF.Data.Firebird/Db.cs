@@ -53,7 +53,6 @@ namespace VZF.Data.Firebird
     {
         // added by vzrus
         #region ConnectionStringOptions
-  
 
         /// <summary>
         /// Gets a value indicating whether password placeholder visible.
@@ -127,7 +126,7 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
-        /// The get db version.
+        /// The get data base version.
         /// </summary>
         /// <param name="connectionString">
         /// The connection string.
@@ -3721,10 +3720,21 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
                 return FbDbAccess.GetData(cmd, connectionString);
-
             }
         }
 
+        /// <summary>
+        /// The post_list_reverse 10.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable post_list_reverse10([NotNull] string connectionString, object topicID)
         {
             using (var cmd = FbDbAccess.GetCommand("post_list_reverse10"))
@@ -4224,6 +4234,7 @@ namespace VZF.Data.Firebird
             [NotNull] object overrideApproval,
             [NotNull] object originalMessage,
             [NotNull] object editedBy,
+            object messageDescription,
             string tags)
         {
             using (var cmd = FbDbAccess.GetCommand("message_update"))
@@ -4249,6 +4260,7 @@ namespace VZF.Data.Firebird
                     isModeratorChanged;
                 cmd.Parameters.Add(new FbParameter("@I_OVERRIDEAPPROVAL", FbDbType.Boolean)).Value = overrideApproval;
                 cmd.Parameters.Add(new FbParameter("@I_ORIGINALMESSAGE", FbDbType.Text)).Value = originalMessage;
+                cmd.Parameters.Add(new FbParameter("@I_MESSAGEDESCRIPTION", FbDbType.VarChar)).Value = messageDescription;
                 cmd.Parameters.Add(new FbParameter("@I_TAGS", FbDbType.VarChar)).Value = tags;
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
@@ -4267,6 +4279,7 @@ namespace VZF.Data.Firebird
             [NotNull] object posted,
             [NotNull] object replyTo,
             [NotNull] object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID)
         {
             using (var cmd = FbDbAccess.GetCommand("message_save"))
@@ -4300,6 +4313,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_REFERENCEMESSAGEID", FbDbType.VarChar)).Value = referenceMesageId
                                                                                                        ?? DBNull.Value;
                 cmd.Parameters.Add(new FbParameter("@I_FLAGS", FbDbType.Integer)).Value = flags;
+                cmd.Parameters.Add(new FbParameter("@I_MESSAGEDESCRIPTION", FbDbType.VarChar)).Value = messageDescription;
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
                 // cmd.Parameters.Add(paramMessageID);
@@ -5562,7 +5576,7 @@ namespace VZF.Data.Firebird
                 // INSERT in poll
                 sb.Append(" INSERT INTO ");
                 sb.Append(FbDbAccess.GetObjectName("POLL"));
-                if (question.Closes > DateTime.MinValue)
+                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                 {
 
                     sb.Append("(POLLID,QUESTION, USERID, CLOSES,POLLGROUPID,FLAGS");
@@ -5592,7 +5606,7 @@ namespace VZF.Data.Firebird
                 sb.Append(",:USERID");
                 paramSb.Append("USERID INTEGER = ?,");
 
-                if (question.Closes > DateTime.MinValue)
+                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                 {
                     sb.Append(",:CLOSES");
                     paramSb.Append("CLOSES TIMESTAMP = ?,");
@@ -5702,7 +5716,7 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("QUESTION", FbDbType.VarChar)).Value = question.Question;
                 cmd.Parameters.Add(new FbParameter("USERID", FbDbType.Integer)).Value = question.UserId;
 
-                if (question.Closes > DateTime.MinValue)
+                if (question.Closes > DateTimeHelper.SqlDbMinTime())
                 {
                     cmd.Parameters.Add(new FbParameter("CLOSES", FbDbType.TimeStamp)).Value = question.Closes;
                 }
@@ -6749,7 +6763,6 @@ namespace VZF.Data.Firebird
         }
         private static void topic_deleteimages([NotNull] string connectionString, int topicID)
         {
-
             string uploadDir = HostingEnvironment.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads, "/", YafBoardFolders.Current.Topics));
 
             try
@@ -6780,18 +6793,25 @@ namespace VZF.Data.Firebird
                 // error deleting that file... 
             }
         }
-        public static void topic_delete([NotNull] string connectionString, object topicId)
-        {
-            topic_delete(connectionString, topicId, false);
-        }
 
+        /// <summary>
+        /// The topic_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <param name="eraseTopic">
+        /// The erase topic.
+        /// </param>
         public static void topic_delete([NotNull] string connectionString, object topicId, object eraseTopic)
         {
             if (eraseTopic == null)
             {
                 eraseTopic = false;
             }
-
 
             if (eraseTopic.ToType<bool>())
             {
@@ -6813,6 +6833,18 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_findprev.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable topic_findprev([NotNull] string connectionString, object topicId)
         {
             using (var cmd = FbDbAccess.GetCommand("TOPIC_FINDPREV"))
@@ -6823,6 +6855,18 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_findnext.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable topic_findnext([NotNull] string connectionString, object topicId)
         {
             using (var cmd = FbDbAccess.GetCommand("TOPIC_FINDNEXT"))
@@ -6833,6 +6877,18 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_lock.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <param name="locked">
+        /// The locked.
+        /// </param>
         public static void topic_lock([NotNull] string connectionString, object topicId, object locked)
         {
             using (var cmd = FbDbAccess.GetCommand("topic_lock"))
@@ -6846,6 +6902,63 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_save.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="forumId">
+        /// The forum id.
+        /// </param>
+        /// <param name="subject">
+        /// The subject.
+        /// </param>
+        /// <param name="status">
+        /// The status.
+        /// </param>
+        /// <param name="styles">
+        /// The styles.
+        /// </param>
+        /// <param name="description">
+        /// The description.
+        /// </param>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="priority">
+        /// The priority.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
+        /// </param>
+        /// <param name="ip">
+        /// The ip.
+        /// </param>
+        /// <param name="posted">
+        /// The posted.
+        /// </param>
+        /// <param name="blogPostId">
+        /// The blog post id.
+        /// </param>
+        /// <param name="flags">
+        /// The flags.
+        /// </param>
+        /// <param name="messageDescription">
+        /// The message description.
+        /// </param>
+        /// <param name="messageId">
+        /// The message id.
+        /// </param>
+        /// <param name="tags">
+        /// The tags.
+        /// </param>
+        /// <returns>
+        /// The <see cref="long"/>.
+        /// </returns>
         public static long topic_save(
             [NotNull] string connectionString,
             [NotNull] object forumId,
@@ -6854,14 +6967,15 @@ namespace VZF.Data.Firebird
             [NotNull] object styles,
             [NotNull] object description,
             [NotNull] object message,
-            [NotNull] object userID,
+            [NotNull] object userId,
             [NotNull] object priority,
             [NotNull] object userName,
             [NotNull] object ip,
             [NotNull] object posted,
-            [NotNull] object blogPostID,
+            [NotNull] object blogPostId,
             [NotNull] object flags,
-            ref long messageId,
+            [CanBeNull] object messageDescription,
+            out long messageId,
             string tags)
         {
             using (var cmd = FbDbAccess.GetCommand("topic_save"))
@@ -6873,14 +6987,15 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_STATUS", FbDbType.VarChar)).Value = status;
                 cmd.Parameters.Add(new FbParameter("@I_STYLES", FbDbType.VarChar)).Value = styles;
                 cmd.Parameters.Add(new FbParameter("@I_DESCRIPTION", FbDbType.VarChar)).Value = description;
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userId;
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGE", FbDbType.Text)).Value = message;
                 cmd.Parameters.Add(new FbParameter("@I_PRIORITY", FbDbType.SmallInt)).Value = Convert.ToInt16(priority);
                 cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = userName;
                 cmd.Parameters.Add(new FbParameter("@I_IP", FbDbType.VarChar)).Value = ip.ToString();
                 cmd.Parameters.Add(new FbParameter("@I_POSTED", FbDbType.TimeStamp)).Value = posted;
-                cmd.Parameters.Add(new FbParameter("@I_BLOGPOSTID", FbDbType.VarChar)).Value = blogPostID;
+                cmd.Parameters.Add(new FbParameter("@I_BLOGPOSTID", FbDbType.VarChar)).Value = blogPostId;
                 cmd.Parameters.Add(new FbParameter("@I_FLAGS", FbDbType.Integer)).Value = flags;
+                cmd.Parameters.Add(new FbParameter("@I_MESSAGEDESCRIPTION", FbDbType.VarChar)).Value = messageDescription;
                 cmd.Parameters.Add(new FbParameter("@I_TAGS", FbDbType.VarChar)).Value = tags;
                 cmd.Parameters.Add(new FbParameter("@I_UTCTIMESTAMP", FbDbType.TimeStamp)).Value = DateTime.UtcNow;
 
@@ -6890,6 +7005,21 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_info.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicId">
+        /// The topic id.
+        /// </param>
+        /// <param name="getTags">
+        /// The get tags.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataRow"/>.
+        /// </returns>
         public static DataRow topic_info([NotNull] string connectionString, object topicId, [NotNull] bool getTags)
         {
             using (var cmd = FbDbAccess.GetCommand("topic_info"))
@@ -7009,6 +7139,42 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_unread.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="sinceDate">
+        /// The since date.
+        /// </param>
+        /// <param name="toDate">
+        /// The to date.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable topic_unread(
             [NotNull] string connectionString,
             [NotNull] object boardId,
@@ -7178,6 +7344,18 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The topic_findduplicate.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="topicName">
+        /// The topic name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int topic_findduplicate([NotNull] string connectionString, object topicName)
         {
             using (var cmd = FbDbAccess.GetCommand("topic_findduplicate"))
@@ -7188,7 +7366,42 @@ namespace VZF.Data.Firebird
             }
         }
 
-
+        /// <summary>
+        /// The topic_favorite_details.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="categoryId">
+        /// The category id.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page user id.
+        /// </param>
+        /// <param name="sinceDate">
+        /// The since date.
+        /// </param>
+        /// <param name="toDate">
+        /// The to date.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="findLastRead">
+        /// The find last read.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable topic_favorite_details(
             [NotNull] string connectionString,
             [NotNull] object boardId,
@@ -8787,34 +9000,54 @@ namespace VZF.Data.Firebird
 
         #region yaf_UserGroup
 
+        /// <summary>
+        /// The usergroup_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable usergroup_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = FbDbAccess.GetCommand("usergroup_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The usergroup_save.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="groupID">
+        /// The group id.
+        /// </param>
+        /// <param name="member">
+        /// The member.
+        /// </param>
         public static void usergroup_save([NotNull] string connectionString, object userID, object groupID, object member)
         {
             using (var cmd = FbDbAccess.GetCommand("usergroup_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
-
-                cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer));
-                cmd.Parameters[1].Value = groupID;
-
-                cmd.Parameters.Add(new FbParameter("@I_MEMBER", FbDbType.Boolean));
-                cmd.Parameters[2].Value = Convert.ToBoolean(member);
-
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_GROUPID", FbDbType.Integer)).Value = groupID;
+                cmd.Parameters.Add(new FbParameter("@I_MEMBER", FbDbType.Boolean)).Value = Convert.ToBoolean(member);
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
@@ -8824,6 +9057,18 @@ namespace VZF.Data.Firebird
 
         #region yaf_WatchForum
 
+        /// <summary>
+        /// The watchforum_add.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
         public static void watchforum_add([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchforum_add"))
@@ -8838,47 +9083,75 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The watchforum_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable watchforum_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchforum_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
-
-
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The watchforum_check.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable watchforum_check([NotNull] string connectionString, object userID, object forumID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchforum_check"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
-
-                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer));
-                cmd.Parameters[1].Value = forumID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The watchforum_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="watchForumID">
+        /// The watch forum id.
+        /// </param>
         public static void watchforum_delete([NotNull] string connectionString, object watchForumID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchforum_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_WATCHFORUMID", FbDbType.Integer));
-                cmd.Parameters[0].Value = watchForumID;
+                cmd.Parameters.Add(new FbParameter("@I_WATCHFORUMID", FbDbType.Integer)).Value = watchForumID;
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
-
             }
         }
 
@@ -8886,47 +9159,90 @@ namespace VZF.Data.Firebird
 
         #region yaf_WatchTopic
 
+        /// <summary>
+        /// The watchtopic_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable watchtopic_list([NotNull] string connectionString, object userID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchtopic_list"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The watchtopic_check.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable watchtopic_check([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchtopic_check"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer));
-                cmd.Parameters[0].Value = userID;
-                cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer));
-                cmd.Parameters[1].Value = topicID;
+                cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.Integer)).Value = userID;
+                cmd.Parameters.Add(new FbParameter("@I_TOPICID", FbDbType.Integer)).Value = topicID;
 
                 return FbDbAccess.GetData(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The watchtopic_delete.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="watchTopicID">
+        /// The watch topic id.
+        /// </param>
         public static void watchtopic_delete([NotNull] string connectionString, object watchTopicID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchtopic_delete"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(new FbParameter("@I_WATCHTOPICID", FbDbType.Integer));
-                cmd.Parameters[0].Value = watchTopicID;
-
+                cmd.Parameters.Add(new FbParameter("@I_WATCHTOPICID", FbDbType.Integer)).Value = watchTopicID;
 
                 FbDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
 
+        /// <summary>
+        /// The watchtopic_add.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
         public static void watchtopic_add([NotNull] string connectionString, object userID, object topicID)
         {
             using (var cmd = FbDbAccess.GetCommand("watchtopic_add"))
@@ -9095,7 +9411,7 @@ namespace VZF.Data.Firebird
 
                 return tableLastRead != null && tableLastRead != DBNull.Value
                            ? (DateTime)tableLastRead
-                           : DateTime.MinValue.AddYears(1902);
+                           : DateTimeHelper.SqlDbMinTime();
             }
         }
 
@@ -9103,6 +9419,9 @@ namespace VZF.Data.Firebird
 
         #region vzrus addons
 
+        /// <summary>
+        /// Gets the btn get stats name.
+        /// </summary>
         public static string btnGetStatsName
         {
             get
@@ -9111,6 +9430,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether btn reindex visible.
+        /// </summary>
         public static bool btnReindexVisible
         {
             get
@@ -9119,6 +9441,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets the btn reindex name.
+        /// </summary>
         public static string btnReindexName
         {
             get
@@ -9127,8 +9452,11 @@ namespace VZF.Data.Firebird
             }
         }
 
-        //DB Maintenance page buttons name
+        // DB Maintenance page buttons name
 
+        /// <summary>
+        /// Gets the btn shrink name.
+        /// </summary>
         public static string btnShrinkName
         {
             get
@@ -9137,6 +9465,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets the btn recovery mode name.
+        /// </summary>
         public static string btnRecoveryModeName
         {
             get
@@ -9145,7 +9476,11 @@ namespace VZF.Data.Firebird
             }
         }
 
-        //DB Maintenance page panels visibility
+        // DB Maintenance page panels visibility
+
+        /// <summary>
+        /// Gets a value indicating whether panel get stats.
+        /// </summary>
         public static bool PanelGetStats
         {
             get
@@ -9154,6 +9489,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel recovery mode.
+        /// </summary>
         public static bool PanelRecoveryMode
         {
             get
@@ -9162,6 +9500,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel reindex.
+        /// </summary>
         public static bool PanelReindex
         {
             get
@@ -9170,6 +9511,9 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether panel shrink.
+        /// </summary>
         public static bool PanelShrink
         {
             get
@@ -9182,12 +9526,28 @@ namespace VZF.Data.Firebird
 
         #region reindex page controls
 
-
+        /// <summary>
+        /// The rsstopic_list.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <param name="start">
+        /// The start.
+        /// </param>
+        /// <param name="limit">
+        /// The limit.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable rsstopic_list([NotNull] string connectionString, int forumID, int start, int limit)
         {
             using (var cmd = FbDbAccess.GetCommand("rsstopic_list"))
             {
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new FbParameter("@I_FORUMID", FbDbType.Integer)).Value = forumID;
@@ -9198,9 +9558,17 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The db_index_simplelist.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         private static DataTable db_index_simplelist([NotNull] string connectionString)
         {
-
             using (
                 var cmd =
                     FbDbAccess.GetCommand(
@@ -9213,11 +9581,20 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The get stats message.
+        /// </summary>
         private static string getStatsMessage;
 
         /// <summary>
         /// The db_getstats_new.
         /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_getstats_new([NotNull] string connectionString)
         {
             try
@@ -9804,11 +10181,26 @@ namespace VZF.Data.Firebird
 
         #endregion
 
+        /// <summary>
+        /// The create database.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         public static void CreateDatabase([NotNull] string connectionString)
         {
             CreateDatabase(connectionString, true);
         }
 
+        /// <summary>
+        /// The create database.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="embeded">
+        /// The embeded.
+        /// </param>
         public static void CreateDatabase([NotNull] string connectionString, bool embeded)
         {
             //FbConnectionStringBuilder csb = new FbConnectionStringBuilder();
@@ -9889,13 +10281,28 @@ namespace VZF.Data.Firebird
         #endregion
 
         #region Touradg Mods
-
         //Shinking Operation
+
+        /// <summary>
+        /// The db_shrink_warning.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_shrink_warning()
         {
             return null;
         }
 
+        /// <summary>
+        /// The db_shrink_new.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string db_shrink_new([NotNull] string connectionString)
         {
             /* String ShrinkSql = "DBCC SHRINKDATABASE(N'" + DBName.DBConnection.Database + "')";
@@ -10094,6 +10501,18 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The get table columns info.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="tableName">
+        /// The table name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         private static DataTable GetTableColumnsInfo([NotNull] string connectionString, string tableName)
         {
             string sql = @"SELECT FIRST 1 * FROM {0}".FormatWith(FbDbAccess.GetObjectName("UserProfile"));
@@ -10107,6 +10526,21 @@ namespace VZF.Data.Firebird
             }
         }
 
+        /// <summary>
+        /// The user_ list todays birthdays.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable User_ListTodaysBirthdays(
             [NotNull] string connectionString, [NotNull] object boardID, [CanBeNull] object useStyledNicks)
         {
@@ -10114,7 +10548,8 @@ namespace VZF.Data.Firebird
             try
             {
                 var sqlBuilder = new StringBuilder(string.Empty);
-                    // @"EXECUTE BLOCK (I_STYLEDNICKS BOOL = :I_STYLEDNICKS,I_BOARDID INTEGER = :I_BOARDID, I_UTCTIMESTAMP TIMESTAMP = :I_UTCTIMESTAMP, I_UTCTIMESTAMP2 TIMESTAMP = :I_UTCTIMESTAMP) RETURNS (""Birthday"" TIMESTAMP, ""UserName"" VARCHAR(255), ""UserDisplayName"" VARCHAR(255),""Style"" VARCHAR(255)) ");
+                 
+                // @"EXECUTE BLOCK (I_STYLEDNICKS BOOL = :I_STYLEDNICKS,I_BOARDID INTEGER = :I_BOARDID, I_UTCTIMESTAMP TIMESTAMP = :I_UTCTIMESTAMP, I_UTCTIMESTAMP2 TIMESTAMP = :I_UTCTIMESTAMP) RETURNS (""Birthday"" TIMESTAMP, ""UserName"" VARCHAR(255), ""UserDisplayName"" VARCHAR(255),""Style"" VARCHAR(255)) ");
                 // objQual_DBINFO_TABLE_COLUMNS_INFO
                 var dt = GetTableColumnsInfo(connectionString, FbDbAccess.GetObjectName("USERPROFILE"));
                 /*  foreach (DataRow dr in dt.Rows)
@@ -10191,11 +10626,13 @@ namespace VZF.Data.Firebird
             [CanBeNull] object useStyledNicks)
         {
             string stIds = userIdsList.Aggregate(string.Empty, (current, userId) => current + (',' + userId)).Trim(',');
+            
             // Profile columns cannot yet exist when we first are gettinng data.
             try
             {
                 var sqlBuilder =
                     new StringBuilder("EXECUTE BLOCK (I_STYLEDNICKS BOOL = ?, I_UTCTIMESTAMP TIMESTAMP = ?) RETURNS (");
+               
                 // objQual_DBINFO_TABLE_COLUMNS_INFO
                 var dt = GetTableColumnsInfo(connectionString, FbDbAccess.GetObjectName("USERPROFILE"));
                 foreach (DataRow dr in dt.Rows)
@@ -10751,10 +11188,10 @@ namespace VZF.Data.Firebird
         /// <summary>
         /// Inserts/Saves a user album.
         /// </summary>
-        /// <param name="AlbumID">
+        /// <param name="AlbumId">
         /// AlbumID of an existing Album.
         /// </param>
-        /// <param name="UserID">
+        /// <param name="UserId">
         /// UserID of the user who wants to create a new album.
         /// </param>
         /// <param name="Title">

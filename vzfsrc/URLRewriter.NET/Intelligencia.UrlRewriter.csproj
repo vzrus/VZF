@@ -57,7 +57,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\VZF.NET\Bin</OutputPath>
@@ -318,7 +318,6 @@
     <EmbeddedResource Include="Messages.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="UrlRewriter.ndoc" />
     <None Include="UrlRewriter.snk" />
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,8 @@ namespace YAF.Pages
     using System.Linq;
 
     using VZF.Data.Common;
+    using VZF.Utils.Helpers;
+
     using YAF.Classes;
     
     using YAF.Core;
@@ -226,7 +228,7 @@ namespace YAF.Pages
                 0,
                 this.PageContext.PageUserID,
                 this.Request.QueryString.GetFirstOrDefault("tagid"),
-                                                     DateTime.MinValue.AddYears(1902),
+                                                     DateTimeHelper.SqlDbMinTime(),
                                                      this.Pager.CurrentPageIndex,
                                                      this.Pager.PageSize);
            

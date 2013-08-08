@@ -11,7 +11,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("VZF.Data.Firebird")]
-[assembly: AssemblyCopyright("Copyright ©  2011-2013")]
+[assembly: AssemblyCopyright("Copyright © Vladimir Zakharov 2011-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -41,4 +41,4 @@ using System.Security;
 
 
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

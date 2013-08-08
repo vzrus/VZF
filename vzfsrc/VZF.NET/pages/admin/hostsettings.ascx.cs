@@ -36,7 +36,7 @@ namespace YAF.Pages.Admin
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
 
     #endregion
 
@@ -505,10 +505,11 @@ namespace YAF.Pages.Admin
             {
             }
 
-            this.AppMemory.Text = "{0} MB".FormatWith(Platform.AllocatedMemory.ToType<int>() / 1000000);
+            this.AppMemory.Text = "{0} MB of {1} MB".FormatWith(Platform.AllocatedMemory.ToType<int>() / 1000000, 
+                 Platform.MappedMemory.ToType<int>() / 1000000);this.AppOSName.Text = Platform.VersionString; 
+
             this.AppOSName.Text = Platform.VersionString;
             this.AppRuntime.Text = "{0} {1}".FormatWith(Platform.RuntimeName, Platform.RuntimeString);
-
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumJumper.ascx.cs" Inherits="YAF.Сontrols.ForumJumper" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumJumper.ascx.cs" Inherits="VZF.Сontrols.ForumJumper" %>
 <%@ Import Namespace="YAF.Types.Interfaces" %>
 <table ID="TreeTable" Visible="False" runat="server">
  <tr id="forumTree" runat="server" Visible="False" >

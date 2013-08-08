@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf2013.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,8 +53,7 @@
     <Compile Include="QueryCounter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="VZFGeneralKey.pfx" />
-    <None Include="YetAnotherForum.NET.snk" />
+    <None Include="vzf2013.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">

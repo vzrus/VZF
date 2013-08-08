@@ -1,5 +1,5 @@
 ﻿/* YetAnotherForum.NET
- * Copyright (C) 2006-2012 Jaben Cargman
+ * Copyright (C) 2006-2013 Jaben Cargman
  * http://www.yetanotherforum.net/
  * 
  * This program is free software; you can redistribute it and/or
@@ -18,81 +18,86 @@
  */
 namespace YAF.Modules
 {
-  #region Using
+    #region Using
 
-  using System;
-  using System.Web;
+    using System;
 
-  using VZF.Data.Common;
+    using VZF.Data.Common;
+    using VZF.Utils;
 
-  
-  using YAF.Types;
-  using YAF.Types.Attributes;
-  using YAF.Types.EventProxies;
-  using YAF.Types.Interfaces;
-  using VZF.Utils;
-
-  #endregion
-
-  /// <summary>
-  /// Summary description for SuspendCheckModule
-  /// </summary>
-  [YafModule("Suspend Check Module", "Tiny Gecko", 1)]
-  public class SuspendCheckForumModule : SimpleBaseForumModule
-  {
-    #region Constants and Fields
-
-    /// <summary>
-    /// The _pre load page.
-    /// </summary>
-    private readonly IFireEvent<ForumPagePreLoadEvent> _preLoadPage;
+    using YAF.Types;
+    using YAF.Types.Attributes;
+    using YAF.Types.EventProxies;
+    using YAF.Types.Interfaces;
 
     #endregion
 
-    #region Constructors and Destructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="SuspendCheckForumModule"/> class.
+    /// Summary description for SuspendCheckModule
     /// </summary>
-    /// <param name="preLoadPage">
-    /// The pre load page.
-    /// </param>
-    public SuspendCheckForumModule([NotNull] IFireEvent<ForumPagePreLoadEvent> preLoadPage)
+    [YafModule("Suspend Check Module", "Tiny Gecko", 1)]
+    public class SuspendCheckForumModule : SimpleBaseForumModule
     {
-      this._preLoadPage = preLoadPage;
-      this._preLoadPage.HandleEvent += this._preLoadPage_HandleEvent;
-    }
+        #region Constants and Fields
 
-    #endregion
+        /// <summary>
+        /// The _pre load page.
+        /// </summary>
+        private readonly IFireEvent<ForumPagePreLoadEvent> _preLoadPage;
 
-    #region Methods
+        #endregion
 
-    /// <summary>
-    /// The _pre load page_ handle event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    private void _preLoadPage_HandleEvent([NotNull] object sender, [NotNull] EventConverterArgs<ForumPagePreLoadEvent> e)
-    {
-      // check for suspension if enabled...
-      if (this.PageContext.Globals.IsSuspendCheckEnabled && this.PageContext.IsSuspended)
-      {
-        if (this.PageContext.SuspendedUntil < DateTime.UtcNow)
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SuspendCheckForumModule"/> class.
+        /// </summary>
+        /// <param name="preLoadPage">
+        /// The pre load page.
+        /// </param>
+        public SuspendCheckForumModule([NotNull] IFireEvent<ForumPagePreLoadEvent> preLoadPage)
         {
-          CommonDb.user_suspend(PageContext.PageModuleID, this.PageContext.PageUserID, null);
-          HttpContext.Current.Response.Redirect(General.GetSafeRawUrl());
+            this._preLoadPage = preLoadPage;
+            this._preLoadPage.HandleEvent += this._preLoadPage_HandleEvent;
         }
-        else
-        {
-          YafBuildLink.RedirectInfoPage(InfoMessage.Suspended);
-        }
-      }
-    }
 
-    #endregion
-  }
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The _pre load page_ handle event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void _preLoadPage_HandleEvent(
+            [NotNull] object sender, [NotNull] EventConverterArgs<ForumPagePreLoadEvent> e)
+        {
+            // check for suspension if enabled...
+            if (!this.PageContext.Globals.IsSuspendCheckEnabled)
+            {
+                return;
+            }
+
+            if (!this.PageContext.IsSuspended)
+            {
+                return;
+            }
+
+            if (this.PageContext.SuspendedUntil <= DateTime.UtcNow)
+            {
+                CommonDb.user_suspend(this.PageContext.PageModuleID, this.PageContext.PageUserID, null);
+            }
+            else
+            {
+                YafBuildLink.RedirectInfoPage(InfoMessage.Suspended);
+            }
+        }
+
+        #endregion
+    }
 }

@@ -399,6 +399,7 @@ CREATE TABLE IF NOT EXISTS {databaseName}.{objectQualifier}Message
        `UserDisplayName` VARCHAR(128) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL,
        `Posted` DATETIME NOT NULL,
        `Message` LONGTEXT CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL ,
+	   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation},
        `IP` VARCHAR(39) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NOT NULL,
        `Edited` DATETIME NULL,
        `EditedBy` INT,
@@ -1389,6 +1390,15 @@ IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='UserDisplayName' LIMIT 1) THEN
          ALTER TABLE  {databaseName}.{objectQualifier}Message ADD  `UserDisplayName`	varchar(255)  CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} NULL AFTER  `UserName`;
   END IF; 
+
+             IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}Message')
+  AND COLUMN_NAME='Description' LIMIT 1) THEN
+         ALTER TABLE  {databaseName}.{objectQualifier}Message ADD   `Description` VARCHAR(255) CHARACTER SET {databaseEncoding} COLLATE {databaseEncoding}_{databaseCollation} AFTER `Message`;
+  END IF;
+
+ 
 
   -- Forum Table
       IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 

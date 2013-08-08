@@ -813,11 +813,13 @@
     <Resource tag="GRANTALLDELETE">Разрешить удалять всё</Resource>
     <Resource tag="GROUPNAME">Роль</Resource>
     <Resource tag="HEADER">Доступ к журналу событий для</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource>
     <Resource tag="LT_ERROR">Ошибки</Resource>
     <Resource tag="LT_INFORMATION">Информация</Resource>
     <Resource tag="LT_IPBANLIFTED">Отмена бана по IP</Resource>
     <Resource tag="LT_IPBANSET">Установка бана по IP </Resource>
     <Resource tag="LT_SQLERROR">Ошибки Sql</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource>
     <Resource tag="LT_USERDELETED">Удаление пользователей</Resource>
     <Resource tag="LT_USERSUSPENDED">Временное отстранение пользователей</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Возвращение временно отстранённых пользователей</Resource>
@@ -943,6 +945,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">Гости могут видеть опции опросов.</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">Разрешить пользователям скрывать результаты опросов:</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">Создатель может скрыть результаты до конца голосования или если это связанное голосование.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">Разрешить модераторам просматривать IP:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">Разрешить модераторам просматривать IP адреса.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">Разрешить изменение отображаемого имени:</Resource>
@@ -1293,6 +1297,8 @@
     <Resource tag="REPUTATION_TEMPLATE_HELP">Шаблон для отображения репутации пользователя.</Resource>
     <Resource tag="REQUIRE_LOGIN">Требовать входа на сайт:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">Требовать входа на сайт, чтобы увидеть контент. Пользователи будут перенаправляться прямо к странице логина.</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
     <Resource tag="RULES_ONREGISTER">Показывать правила форума перед регистрацией:</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">Пользователи должны будут принять правила перед регистрацией.</Resource>
     <Resource tag="SAVE_SETTINGS">Сохранить настройки</Resource>
@@ -4306,6 +4312,7 @@ Spoiler Content
     <Resource tag="UPDATE">Обновить</Resource>
   </page>
   <page name="PERSONALFORUM">
+    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">Новый форум</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">Мои личные форумы (Блоги)</Resource>
@@ -4443,6 +4450,7 @@ Spoiler Content
     <Resource tag="ISQUESTION">Эта тема в формате вопрос/ответ?</Resource>
     <Resource tag="LAST10">Последние 10 сообщений (В обратном порядке)</Resource>
     <Resource tag="MESSAGE">Текст сообщения:</Resource>
+    <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
     <Resource tag="NEED_SUBJECT">Пожалуйста введите название темы.</Resource>
     <Resource tag="NEWPOSTOPTIONS">Опции:</Resource>
     <Resource tag="NEWTOPIC">Оставить новое сообщение</Resource>

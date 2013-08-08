@@ -40,7 +40,7 @@ namespace YAF.Pages
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -469,8 +469,9 @@ namespace YAF.Pages
             TypedMessageList currentMessage = null;
 
             DataRow topicInfo = CommonDb.topic_info(this.PageContext.PageModuleID, this.PageContext.PageTopicID, true);
-            
 
+            PageContext.PageElements.RegisterJsBlockStartup(
+                      this, "GotoAnchorJs", JavaScriptBlocks.LoadGotoAnchor("topprev"));
             // we reply to a post with a quote
             if (this.QuotedMessageID != null)
             {
@@ -609,6 +610,11 @@ namespace YAF.Pages
                     this.DescriptionRow.Visible = true;
                 }
 
+                if (this.Get<YafBoardSettings>().AllowMessageDescription)
+                {
+                    this.MessageDescriptionRow.Visible = true;
+                }
+                
                 // helper bool -- true if this is a completely new topic...
                 bool isNewTopic = (this.TopicID == null) && (this.QuotedMessageID == null)
                                   && (this.EditMessageID == null);
@@ -848,9 +854,11 @@ namespace YAF.Pages
                 };
 
             bool isModeratorChanged = this.PageContext.PageUserID != this._ownerUserId;
-          
+
             string tags = this.Tags.Text.Trim();
-            CommonDb.message_update(PageContext.PageModuleID, this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
+            CommonDb.message_update(
+                PageContext.PageModuleID,
+                this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("m"),
                 this.Priority.SelectedValue,
                 this._forumEditor.Text.Trim(),
                 descriptionSave.Trim(),
@@ -865,6 +873,7 @@ namespace YAF.Pages
                 this.PageContext.IsAdmin || this.PageContext.ForumModeratorAccess,
                 this.OriginalMessage,
                 this.PageContext.PageUserID,
+                this.MessageDescriptionTextBox.Text,
                 tags);
 
             long messageId = this.EditMessageID.Value;
@@ -948,10 +957,11 @@ namespace YAF.Pages
                 this.PageContext.PageUserID,
                 this.Priority.SelectedValue,
                 this.User != null ? null : (UserMembershipHelper.FindUsersByName(this.From.Text.Trim()).Count > 0) ? "{0}_{1}".FormatWith(this.GetText("COMMON","GUEST_NAME"), this.From.Text.Trim()) : this.From.Text.Trim(), 
-                 this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
+                this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
                 DateTime.UtcNow,
                 blogPostID,
                 messageFlags.BitValue,
+                this.MessageDescriptionTextBox.Text,
                 ref messageId,
                 tags);
 
@@ -1030,6 +1040,7 @@ namespace YAF.Pages
                 DateTime.UtcNow,
                 replyTo,
                 messageFlags.BitValue,
+                this.MessageDescriptionTextBox.Text.IsSet() ? this.MessageDescriptionTextBox.Text : null,
                 ref messageId);
 
             this.UpdateWatchTopic(this.PageContext.PageUserID, this.PageContext.PageTopicID);

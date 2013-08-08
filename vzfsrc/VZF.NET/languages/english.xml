@@ -2699,6 +2699,7 @@ Spoiler Content
       <Resource tag="PREVIEW_TITLE">Get a Preview of the Message</Resource>
       <Resource tag="CANCEL_TITLE">Cancel Message editing/creating</Resource>
       <Resource tag="DESCRIPTION">Description:</Resource>
+      <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
       <Resource tag="STATUS">Status:</Resource>
       <Resource tag="GUEST_NAME_TOOLONG">Guest Username cannot be more than 100 characters.</Resource>
    </page>
@@ -3552,6 +3553,7 @@ Visit {forumname} at {forumlink}
    <page name="PERSONALFORUM">
      <Resource tag="TITLE">Personal Forums</Resource>
      <Resource tag="NEW_FORUM">New Forum</Resource>
+     <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
      <Resource tag="OK">OK</Resource>
    </page>
   <page name="PERSONALFORUM_EDIT">
@@ -3771,10 +3773,12 @@ Visit {forumname} at {forumlink}
     <Resource tag="GRANTALLDELETE">Grant All Delete</Resource>
     <Resource tag="REVOKEALLDELETE">Revoke All Delete</Resource>
     <Resource tag="CANCEL">Cancel</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource> 
     <Resource tag="LT_WARNING">Warnings</Resource>
     <Resource tag="LT_ERROR">Errors</Resource>
     <Resource tag="LT_INFORMATION">Information</Resource>
     <Resource tag="LT_SQLERROR">Sql Errors</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource> 
     <Resource tag="LT_USERSUSPENDED">Suspending users</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Unsuspending users</Resource>
     <Resource tag="LT_USERDELETED">Deleting users</Resource>
@@ -4733,6 +4737,8 @@ Visit {forumname} at {forumlink}
    <page name="ADMIN_HOSTSETTINGS">
      <Resource tag="TITLE">Host Settings</Resource>
      <Resource tag="CLEAR_CACHE">Clear Cache</Resource>
+     <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+     <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
      <Resource tag="ALLOW_USERTEXTEDITOR">Allow users to pick text editor</Resource>
      <Resource tag="ALLOW_USERTEXTEDITOR_HELP">Allow users to pick text editor in their profiles.</Resource>
      <Resource tag="ALLOW_TOPICTAGS">Allow users to add tags to topics.</Resource>

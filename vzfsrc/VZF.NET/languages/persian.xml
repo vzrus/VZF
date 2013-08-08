@@ -816,11 +816,13 @@
     <Resource tag="GRANTALLDELETE">Grant All Delete</Resource>
     <Resource tag="GROUPNAME">Role</Resource>
     <Resource tag="HEADER">Event Log Access For</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource>
     <Resource tag="LT_ERROR">Errors</Resource>
     <Resource tag="LT_INFORMATION">Information</Resource>
     <Resource tag="LT_IPBANLIFTED">Canceling IP ban</Resource>
     <Resource tag="LT_IPBANSET">Setting IP ban</Resource>
     <Resource tag="LT_SQLERROR">Sql Errors</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource>
     <Resource tag="LT_USERDELETED">Deleting users</Resource>
     <Resource tag="LT_USERSUSPENDED">Suspending users</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Unsuspending users</Resource>
@@ -948,6 +950,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">در صورت فعال شدن میهمان ها می توانند گزینه های نظر سنجی را ببینند.</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">مجوز  مخفی سازی نظرات به کاربران:</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">با انتخاب این گزینه سازندگان نظر سنجی می توانند نتایج نظر سنجی را مخفی کنند.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">مجوز نمایش آی پی به محدود کننده ها:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">به محدود کننده ها مجوز دیدن آی پی ها را بده.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">مجوز اصلاح نام نمایشی :</Resource>
@@ -1305,6 +1309,8 @@ http://wwww.IrKoo.Com/</Resource>
     <Resource tag="REPUTATION_TEMPLATE_HELP">Template for rendering user's reputation.</Resource>
     <Resource tag="REQUIRE_LOGIN">ورود کاربر الزامی است:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">اگر علامت زده شود، کاربران قبل از دیدن هرگونه محتوائی مجبور به ورود هستند. و مستقیما به صفحه ورود رهنمون می شوند.</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
     <Resource tag="RULES_ONREGISTER">نمایش "قوانین" قبل از ثبت نام :</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">قوانینی که قبل ثبت نام کاربر می بایست بپذیرد.</Resource>
     <Resource tag="SAVE_SETTINGS">ذخیره تنظیمات</Resource>
@@ -4334,6 +4340,7 @@ Spoiler Content
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALFORUM">
+    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
@@ -4469,6 +4476,7 @@ Spoiler Content
     <Resource tag="ISQUESTION">آیا این موضوع به حالت پرسش و پاسخ است؟</Resource>
     <Resource tag="LAST10">10 ارسال آخر با ترتیب برعکس</Resource>
     <Resource tag="MESSAGE">پیغام:</Resource>
+    <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
     <Resource tag="NEED_SUBJECT">موضوعی را برای این عنوان تعیین کنید.</Resource>
     <Resource tag="NEWPOSTOPTIONS">انتخابها:</Resource>
     <Resource tag="NEWTOPIC">ارسال عنوان جدید</Resource>

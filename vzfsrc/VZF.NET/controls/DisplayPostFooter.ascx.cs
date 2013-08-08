@@ -35,7 +35,7 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 

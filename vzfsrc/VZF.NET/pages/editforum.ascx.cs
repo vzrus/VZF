@@ -176,7 +176,7 @@ namespace YAF.pages
             {
                 return;
             }
-
+            
             // A new forum case
             if (PageContext.PersonalForumsNumber >= PageContext.UsrPersonalForums && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("fa") == null)
             {
@@ -270,7 +270,7 @@ namespace YAF.pages
                 DataRow row = dt.Rows[0];
                 var flags = new ForumFlags(row["Flags"]);
                 this.Name.Text = (string)row["Name"];
-                this.Description.Text = (string)row["Description"];
+                this.Description.Text = row["Description"].ToString();
                 this.SortOrder.Text = row["SortOrder"].ToString();
                 this.HideNoAccess.Checked = flags.IsHidden;
                 this.Locked.Checked = flags.IsLocked;
@@ -586,7 +586,7 @@ namespace YAF.pages
               this.CanHavePersForums.Checked);
 
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
-
+          
             // Access
             if (forumId.HasValue || forumCopyId.HasValue)
             {
@@ -602,7 +602,7 @@ namespace YAF.pages
 
             if (forumId.HasValue)
             {
-                YafBuildLink.Redirect(ForumPages.personalforum, "f={0}&u={1}".FormatWith(forumId, this.PageContext.PageUserID));
+                YafBuildLink.Redirect(ForumPages.personalforum, "fa={0}&u={1}".FormatWith(forumId, this.PageContext.PageUserID));
             }
             else
             {

@@ -18,7 +18,7 @@
                  </asp:PlaceHolder>
                  <asp:PlaceHolder ID="UserTopicsTabTitle" runat="server">
                    <li><a href="#MyTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="MyTopics" LocalizedPage="MyTopics" /></a></li>
-		           <li><a href="#FavoriteTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FavoriteTopics" LocalizedPage="MyTopics" /></a></li>
+                   <li><a href="#FavoriteTopicsTab"><VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FavoriteTopics" LocalizedPage="MyTopics" /></a></li>
                  </asp:PlaceHolder>		        
                </ul>
                 <div id="ActiveTopicsTab">

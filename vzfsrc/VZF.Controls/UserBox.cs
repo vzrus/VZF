@@ -187,7 +187,7 @@ namespace VZF.Controls
             {
                 return this._userProfile ??
                        (this._userProfile =
-                        YafUserProfile.GetProfile(UserMembershipHelper.GetUserNameFromID(this.UserId)));
+                       YafUserProfile.GetProfile(this.DataRow != null ? this.DataRow["UserName"].ToString() : string.Empty));
             }
         }
 
@@ -243,14 +243,14 @@ namespace VZF.Controls
             // Groups
             userBox = this.MatchUserBoxGroups(userBox);
 
-            // ThanksFrom
-            userBox = this.MatchUserBoxThanksFrom(userBox);
-
-            // ThanksTo
-            userBox = this.MatchUserBoxThanksTo(userBox);
-
             if (!this.PostDeleted)
             {
+                // ThanksFrom
+                userBox = this.MatchUserBoxThanksFrom(userBox);
+
+                // ThanksTo
+                userBox = this.MatchUserBoxThanksTo(userBox);
+
                 // Ederon : 02/24/2007
                 // Joined Date
                 userBox = this.MatchUserBoxJoinedDate(userBox);
@@ -292,11 +292,13 @@ namespace VZF.Controls
         {
             Regex thisRegex;
 
-            if (!this.UserBoxRegex.TryGetValue(search, out thisRegex))
+            if (this.UserBoxRegex.TryGetValue(search, out thisRegex))
             {
-                thisRegex = new Regex(search, RegexOptions.Compiled);
-                this.UserBoxRegex.AddOrUpdate(search, k => thisRegex, (k, v) => thisRegex);
+                return thisRegex;
             }
+
+            thisRegex = new Regex(search, RegexOptions.Compiled);
+            this.UserBoxRegex.AddOrUpdate(search, k => thisRegex, (k, v) => thisRegex);
 
             return thisRegex;
         }
@@ -309,16 +311,25 @@ namespace VZF.Controls
         /// </param>
         protected override void Render([NotNull] HtmlTextWriter output)
         {
-            output.WriteLine(@"<div class=""yafUserBox"" id=""{0}"">".FormatWith(this.ClientID));
+            output.WriteLine("<div class=\"yafUserBox\" id=\"{0}\">".FormatWith(this.ClientID));
 
             string userBox = this.CachedUserBox;
 
+         
             if (string.IsNullOrEmpty(userBox))
             {
                 userBox = this.CreateUserBox();
 
                 // cache...
                 this.CachedUserBox = userBox;
+            }
+            else
+            {
+                if (userBox.Contains("<span id=\"deleted\"/>") && !this.PostDeleted)
+                {
+                   userBox = userBox.Replace("<span id=\"deleted\"/>", "");
+                   userBox = this.CreateUserBox();
+                }
             }
 
             // output the user box info...
@@ -356,8 +367,8 @@ namespace VZF.Controls
                                     YafBuildLink.GetLinkNotEscaped(ForumPages.profile, "u={0}", this.UserId),
                                     Page.HtmlEncode(
                                         this.Get<YafBoardSettings>().EnableDisplayName
-                                            ? UserMembershipHelper.GetDisplayNameFromID(this.UserId)
-                                            : UserMembershipHelper.GetUserNameFromID(this.UserId))));
+                                            ? this.DataRow["UserName"]
+                                            : this.DataRow["DisplayName"])));
                 }
             }
 
@@ -394,7 +405,7 @@ namespace VZF.Controls
             userBox = rx.Replace(userBox, filler);
             rx = this.GetRegex(Constants.UserBox.ThanksTo);
             userBox = rx.Replace(userBox, filler);
-
+            userBox = "<span id=\"deleted\"/>" + userBox;
             // vzrus: to remove empty dividers  
             return this.RemoveEmptyDividers(userBox);
         }
@@ -460,7 +471,7 @@ namespace VZF.Controls
 
             string filler = string.Empty;
 
-            Regex rx = this.GetRegex(Constants.UserBox.Groups);
+            var rx = this.GetRegex(Constants.UserBox.Groups);
 
             if (this.Get<YafBoardSettings>().ShowGroups)
             {
@@ -816,9 +827,10 @@ namespace VZF.Controls
 
             if (this.Get<YafBoardSettings>().DisplayPoints && !this.DataRow["IsGuest"].ToType<bool>())
             {
-                filler = this.Get<YafBoardSettings>().UserBoxReputation.FormatWith(
-                    this.GetText("REPUTATION"),
-                    YafReputation.GenerateReputationBar(this.DataRow["Points"].ToType<int>(), this.UserId));
+                filler = this.Get<YafBoardSettings>()
+                    .UserBoxReputation.FormatWith(
+                        this.GetText("REPUTATION"),
+                        YafReputation.GenerateReputationBar(this.DataRow["Points"].ToType<int>(), this.UserId));
             }
 
             // replaces template placeholder with actual points

@@ -26,6 +26,7 @@ namespace YAF.Core.Services
     using System.Web.Security;
 
     using VZF.Data.Common;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
     
@@ -391,7 +392,7 @@ namespace YAF.Core.Services
                     var ci = CultureInfo.CreateSpecificCulture("en-US");
                     DateTime.TryParse(birthday, ci, DateTimeStyles.None, out userBirthdate);
 
-                    if (userBirthdate > DateTime.MinValue.Date)
+                    if (userBirthdate > DateTimeHelper.SqlDbMinTime().Date)
                     {
                         userProfile.Birthday = userBirthdate;
                     }

@@ -35,5 +35,5 @@ using System.Security;
 
 #if !NCRUNCH
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\vzf2013.pfx")]
 #endif

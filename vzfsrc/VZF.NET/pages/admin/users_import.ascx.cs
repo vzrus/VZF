@@ -1,5 +1,5 @@
 ﻿/* Yet Another Forum.NET
- * Copyright (C) 2006-2012 Jaben Cargman
+ * Copyright (C) 2006-2013 Jaben Cargman
  * http://www.yetanotherforum.net/
  * 
  * This program is free software; you can redistribute it and/or
@@ -30,13 +30,13 @@ namespace YAF.Pages.Admin
     using VZF.Data.Common;
 
     using YAF.Classes;
-    
     using YAF.Core;
-    using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Constants;
+
     using YAF.Types.Interfaces;
     using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -48,14 +48,10 @@ namespace YAF.Pages.Admin
         #region Methods
 
         /// <summary>
-        /// The cancel_ on click.
+        /// Cancel import and Return to the Admin Users Page.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Cancel_OnClick([NotNull] object sender, [NotNull] EventArgs e)
         {
             YafBuildLink.Redirect(ForumPages.admin_users);
@@ -64,12 +60,8 @@ namespace YAF.Pages.Admin
         /// <summary>
         /// Import the Users from the provided File
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Import_OnClick([NotNull] object sender, [NotNull] EventArgs e)
         {
             try
@@ -109,10 +101,17 @@ namespace YAF.Pages.Admin
                         }
 
                         break;
+                    case "application/vnd.ms-excel":
+                        {
+                            importedCount = this.UsersImport(this.importFile.PostedFile.InputStream, false);
+                        }
+
+                        break;
 
                     default:
                         {
-                            this.PageContext.AddLoadMessage(this.GetText("ADMIN_USERS_IMPORT", "IMPORT_FAILED_FORMAT"), MessageTypes.Error);
+                            this.PageContext.AddLoadMessage(
+                                this.GetText("ADMIN_USERS_IMPORT", "IMPORT_FAILED_FORMAT"), MessageTypes.Error);
                             return;
                         }
                 }
@@ -133,11 +132,9 @@ namespace YAF.Pages.Admin
         }
 
         /// <summary>
-        /// The on init.
+        /// Raises the <see cref="E:System.Web.UI.Control.Init" /> event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         protected override void OnInit([NotNull] EventArgs e)
         {
             base.OnInit(e);
@@ -149,14 +146,10 @@ namespace YAF.Pages.Admin
         }
 
         /// <summary>
-        /// The page_ load.
+        /// Handles the Load event of the Page control.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
             if (this.IsPostBack)
@@ -182,8 +175,8 @@ namespace YAF.Pages.Admin
         /// <summary>
         /// Import Users from the InputStream
         /// </summary>
-        /// <param name="imputStream">
-        /// The imput stream.
+        /// <param name="inputStream">
+        /// The input stream.
         /// </param>
         /// <param name="isXml">
         /// Indicates if input Stream is Xml file
@@ -194,21 +187,22 @@ namespace YAF.Pages.Admin
         /// <exception cref="Exception">
         /// Import stream is not expected format.
         /// </exception>
-        private int UsersImport(Stream imputStream, bool isXml)
+        private int UsersImport(Stream inputStream, bool isXml)
         {
             int importedCount = 0;
 
             if (isXml)
             {
                 var usersDataSet = new DataSet();
-                usersDataSet.ReadXml(imputStream);
+                usersDataSet.ReadXml(inputStream);
 
                 if (usersDataSet.Tables["YafUser"] != null)
                 {
                     importedCount =
                         usersDataSet.Tables["YafUser"].Rows.Cast<DataRow>().Where(
-                            row => this.Get<MembershipProvider>().GetUser((string)row["Name"], false) == null).Aggregate
-                            (importedCount, (current, row) => this.ImportUser(row, current));
+                            row => this.Get<MembershipProvider>().GetUser((string)row["Name"], false) == null)
+                                                      .Aggregate(
+                                                          importedCount, (current, row) => this.ImportUser(row, current));
                 }
                 else
                 {
@@ -219,7 +213,7 @@ namespace YAF.Pages.Admin
             {
                 var usersTable = new DataTable();
 
-                var streamReader = new StreamReader(imputStream);
+                var streamReader = new StreamReader(inputStream);
 
                 string[] headers = streamReader.ReadLine().Split(',');
 
@@ -230,7 +224,7 @@ namespace YAF.Pages.Admin
 
                 while (streamReader.Peek() >= 0)
                 {
-                    DataRow dr = usersTable.NewRow();
+                    var dr = usersTable.NewRow();
                     dr.ItemArray = streamReader.ReadLine().Split(',');
 
                     usersTable.Rows.Add(dr);
@@ -300,7 +294,7 @@ namespace YAF.Pages.Admin
             RoleMembershipHelper.SetupUserRoles(YafContext.Current.PageBoardID, (string)row["Name"]);
 
             // create the user in the YAF DB as well as sync roles...
-            int? userID = RoleMembershipHelper.CreateForumUser(user, YafContext.Current.PageBoardID);
+            var userID = RoleMembershipHelper.CreateForumUser(user, YafContext.Current.PageBoardID);
 
             // create empty profile just so they have one
             YafUserProfile userProfile = YafUserProfile.GetProfile((string)row["Name"]);
@@ -331,7 +325,7 @@ namespace YAF.Pages.Admin
 
                 DateTime.TryParse((string)row["Birthday"], out userBirthdate);
 
-                if (userBirthdate > DateTime.MinValue.Date)
+                if (userBirthdate > DateTimeHelper.SqlDbMinTime())
                 {
                     userProfile.Birthday = userBirthdate;
                 }
@@ -449,24 +443,22 @@ namespace YAF.Pages.Admin
             // save the time zone...
             int userId = UserMembershipHelper.GetUserIDFromProviderUserKey(user.ProviderUserKey);
 
-            bool isDST = false;
+            bool isDst = false;
 
             if (row.Table.Columns.Contains("IsDST") && !string.IsNullOrEmpty((string)row["IsDST"]))
             {
-                bool.TryParse((string)row["IsDST"], out isDST);
+                bool.TryParse((string)row["IsDST"], out isDst);
             }
 
             int timeZone = 0;
 
             if (row.Table.Columns.Contains("Timezone") && !string.IsNullOrEmpty((string)row["Timezone"]))
             {
-                if (!int.TryParse((string)row["Timezone"], out timeZone))
-                {
-                    timeZone = 0;
-                };
+                int.TryParse((string)row["Timezone"], out timeZone);
             }
 
-            CommonDb.user_save(this.PageContext.PageModuleID, userId,
+            CommonDb.user_save(PageContext.PageModuleID,
+                userId,
                 YafContext.Current.PageBoardID,
                 row["Name"],
                 row.Table.Columns.Contains("DisplayName") ? row["DisplayName"] : null,
@@ -481,17 +473,18 @@ namespace YAF.Pages.Admin
                 null,
                 null,
                 null,
-                isDST,
+                isDst,
                 null,
                 null,
-                row.Table.Columns.Contains("TopicsPerPage") ? row["TopicsPerPage"] : this.Get<YafBoardSettings>().TopicsPerPage,
-                row.Table.Columns.Contains("PostsPerPage") ? row["PostsPerPage"] : this.Get<YafBoardSettings>().PostsPerPage);
+                PageContext.TopicsPerPage,
+                PageContext.PostsPerPage);
 
             bool autoWatchTopicsEnabled = this.Get<YafBoardSettings>().DefaultNotificationSetting
                                           == UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
             // save the settings...
-            CommonDb.user_savenotification(PageContext.PageModuleID, userId,
+            CommonDb.user_savenotification(PageContext.PageModuleID,
+                userId,
                 true,
                 autoWatchTopicsEnabled,
                 this.Get<YafBoardSettings>().DefaultNotificationSetting,

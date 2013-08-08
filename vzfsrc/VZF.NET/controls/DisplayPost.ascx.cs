@@ -38,7 +38,7 @@ namespace VZF.Controls
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -146,7 +146,7 @@ namespace VZF.Controls
                     sb.Append(",&nbsp;");
                 }
 
-                string displayName = this.Get<YafBoardSettings>().EnableDisplayName ? this.DataRow["DisplayName"].ToString() : this.DataRow["UserName"].ToString();
+                string displayName = this.Get<YafBoardSettings>().EnableDisplayName ? UserMembershipHelper.GetDisplayNameFromID(userId) : UserMembershipHelper.GetUserNameFromID(userId);
 
                 sb.AppendFormat(
                     @"<a id=""{0}"" href=""{1}""><u>{2}</u></a>",
@@ -364,7 +364,7 @@ namespace VZF.Controls
                    this.Get<HttpServerUtilityBase>().HtmlEncode(
                         this.DataRow[this.Get<YafBoardSettings>().EnableDisplayName ? "DisplayName" : "UserName"].ToString())),
                 MessageTypes.Success);
-
+        
             YafContext.Current.PageElements.RegisterJsBlockStartup(
                 "reputationprogressjs",
                 JavaScriptBlocks.ReputationProgressChangeJs(

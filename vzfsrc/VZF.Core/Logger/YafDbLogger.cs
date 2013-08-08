@@ -24,8 +24,8 @@ namespace YAF.Core
   using System.Web;
 
   using VZF.Data.Common;
+  using VZF.Utils;
 
-  
   using YAF.Types;
   using YAF.Types.Attributes;
   using YAF.Types.Constants;
@@ -182,11 +182,11 @@ namespace YAF.Core
 
       if (this.Type != null)
       {
-        typeName = this.Type.FullName;
+        typeName = this.Type.FullName.Substring(0,50);
       }
 
       // TODO: come up with userid if the database is available.
-      CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, typeName, message, logTypes);
+      CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, typeName, message.IsNotSet() ? string.Empty : message, logTypes);
     }
 
       /// <summary>

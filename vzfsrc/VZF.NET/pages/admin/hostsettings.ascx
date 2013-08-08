@@ -428,6 +428,15 @@
                             <asp:CheckBox ID="AllowDisplayNameModification" runat="server"></asp:CheckBox>
                         </td>
                     </tr>
+                     <tr>
+                        <td class="postheader">
+                            <VZF:HelpLabel ID="AllowMessageDescriptionHelpLabel" runat="server" LocalizedTag="ALLOW_MESSAGEDESCRIPTION" LocalizedPage="ADMIN_HOSTSETTINGS" />
+                        </td>
+                        <td class="post">
+                            <asp:CheckBox ID="AllowMessageDescription" runat="server"></asp:CheckBox>
+                        </td>
+                    </tr>
+            
                     <tr>
                         <td class="postheader">
                             <VZF:HelpLabel ID="HelpLabel98" runat="server" LocalizedTag="MEMBERLIST_PAGE_SIZE" LocalizedPage="ADMIN_HOSTSETTINGS" />

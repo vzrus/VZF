@@ -40,4 +40,4 @@ using System.Security;
 [assembly: AssemblyVersion("1.9.6.2")]
 [assembly: AssemblyFileVersion("1.9.6.2")]
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

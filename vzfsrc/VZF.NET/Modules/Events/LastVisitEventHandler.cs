@@ -23,6 +23,8 @@ namespace YAF.Modules
     using System;
     using System.Web;
 
+    using VZF.Utils.Helpers;
+
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Attributes;
@@ -83,7 +85,7 @@ namespace YAF.Modules
         /// <param name="event">The @event.</param>
         public void Handle(ForumPageUnloadEvent @event)
         {
-            /*/if (YafContext.Current.IsGuest && (!this.YafSession.LastVisit.HasValue || this.YafSession.LastVisit.Value == DateTime.MinValue))
+            /*/if (YafContext.Current.IsGuest && (!this.YafSession.LastVisit.HasValue || this.YafSession.LastVisit.Value <= DateTimeHelper.SqlDbMinTime()))
             //{
             //  // update last visit going forward...
             //  this.YafSession.LastVisit = DateTime.UtcNow;
@@ -126,7 +128,7 @@ namespace YAF.Modules
                 }
                 else
                 {
-                    this.YafSession.LastVisit = DateTime.MinValue;
+                    this.YafSession.LastVisit = DateTimeHelper.SqlDbMinTime();
                 }
 
                 // set the last visit cookie...

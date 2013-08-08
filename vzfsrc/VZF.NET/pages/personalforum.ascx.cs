@@ -26,6 +26,7 @@ namespace YAF.pages
     using System;
     using System.Collections.Specialized;
     using System.Drawing;
+    using System.Runtime.InteropServices;
     using System.Web;
     using System.Web.UI.WebControls;
 
@@ -38,6 +39,7 @@ namespace YAF.pages
     using YAF.Core.Tasks;
     using YAF.Types;
     using YAF.Types.Constants;
+    using YAF.Types.Flags;
     using YAF.Types.Interfaces;
 
     /// <summary>
@@ -168,6 +170,11 @@ namespace YAF.pages
             
             // bind data
             this.BindData();
+
+            if (this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("del").ToType<int>() == 1)
+            {
+                this.PageContext.AddLoadMessage(this.GetText("PERSONALFORUM", "DELETINGUNDERWAY"));
+            }
         }
 
         /// <summary>
@@ -191,10 +198,36 @@ namespace YAF.pages
 
                     // schedule...
                     ForumDeleteTask.Start(YafContext.Current.PageModuleID, this.PageContext.PageBoardID, e.CommandArgument.ToType<int>(), out errorMessage);
-                    
+                   
                     // Clearing cache with old Active User Lazy Data as it contains number of forums info...
                     YafContext.Current.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData.FormatWith(this.PageContext.PageUserID));
-                    YafBuildLink.Redirect(ForumPages.personalforum, "u={0}", PageContext.PageUserID, e.CommandArgument);
+
+                    // If we have no access masks only we redirect it to profile page
+                    var dd = CommonDb.accessmask_aforumlist(
+                       this.PageContext.PageModuleID,
+                       this.PageContext.PageBoardID,
+                       null,
+                       AccessFlags.Flags.None,
+                       this.PageContext.PageUserID,
+                       false,
+                       false);
+
+                    if (dd != null && dd.Rows.Count > 0)
+                    {
+                        YafBuildLink.Redirect(
+                           ForumPages.personalforum,
+                           "u={0}&del=1",
+                           PageContext.PageUserID,
+                           e.CommandArgument);
+                    }
+                    else
+                    {
+                        YafBuildLink.Redirect(
+                             ForumPages.profile,
+                             "u={0}",
+                             PageContext.PageUserID,
+                             e.CommandArgument);
+                    }
                     break;
                 case "moderate":
                   YafBuildLink.Redirect(ForumPages.moderating, "f={0}", e.CommandArgument);

@@ -22,6 +22,8 @@ namespace VZF.Controls
 
   using System;
 
+  using VZF.Utils.Helpers;
+
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Constants;
@@ -61,7 +63,7 @@ namespace VZF.Controls
         
       var lastVisit = this.Get<IYafSession>().LastVisit;
 
-      if (lastVisit.HasValue && lastVisit.Value != DateTime.MinValue)
+      if (lastVisit.HasValue && lastVisit.Value > DateTimeHelper.SqlDbMinTime())
       {
         this.TimeLastVisit.Visible = true;
         this.TimeLastVisit.Text = this.GetTextFormatted("last_visit", this.Get<IDateTime>().FormatDateTime(lastVisit.Value));

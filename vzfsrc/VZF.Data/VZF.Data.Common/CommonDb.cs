@@ -134,6 +134,8 @@ namespace VZF.Data.Common
             }
         }
 
+       
+
         /// <summary>
         /// Gets a list of access mask properities
         /// </summary>
@@ -8546,6 +8548,9 @@ namespace VZF.Data.Common
         /// <param name="flags">
         /// The flags.
         /// </param>
+        /// <param name="messageDescription">
+        /// The message description.
+        /// </param>
         /// <param name="messageId">
         /// The message id.
         /// </param>
@@ -8564,6 +8569,7 @@ namespace VZF.Data.Common
             [NotNull] object posted,
             [NotNull] object replyTo,
             [NotNull] object flags,
+            [CanBeNull] object messageDescription,
             ref long messageId)
         {
             string dataEngine;
@@ -8575,19 +8581,19 @@ namespace VZF.Data.Common
             {
                 case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.message_save(
-                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
+                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, messageDescription, ref messageId);
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.message_save(
-                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
+                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, messageDescription, ref messageId);
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.message_save(
-                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
+                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, messageDescription, ref messageId);
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.message_save(
-                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, ref messageId);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags,ref  messageId); 
+                        connectionString, topicId, userId, message, userName, ip, posted, replyTo, flags, messageDescription, ref messageId);
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags, messageDescription,ref  messageId);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags, messageDescription,ref  messageId);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_save(connectionString, topicId,userId,message,userName,ip,posted,replyTo,flags, messageDescription,ref  messageId); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -8761,7 +8767,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="messageID">
+        /// <param name="messageId">
         /// The message id.
         /// </param>
         /// <param name="priority">
@@ -8807,7 +8813,7 @@ namespace VZF.Data.Common
         /// </exception>
         public static void message_update(
             int? mid,
-            object messageID,
+            object messageId,
             object priority,
             object message,
             object description,
@@ -8820,6 +8826,7 @@ namespace VZF.Data.Common
             object overrideApproval,
             object origMessage,
             object editedBy,
+            object messageDescription,
             string tags)
         {
             string dataEngine;
@@ -8832,7 +8839,7 @@ namespace VZF.Data.Common
                 case CommonSqlDbAccess.MsSql:
                     VZF.Data.MsSql.Db.message_update(
                         connectionString,
-                        messageID,
+                        messageId,
                         priority,
                         message,
                         description,
@@ -8845,12 +8852,13 @@ namespace VZF.Data.Common
                         overrideApproval,
                         origMessage,
                         editedBy,
+                        messageDescription,
                         tags);
                     break;
                 case CommonSqlDbAccess.Npgsql:
                     VZF.Data.Postgre.Db.message_update(
                         connectionString,
-                        messageID,
+                        messageId,
                         priority,
                         message,
                         description,
@@ -8863,12 +8871,13 @@ namespace VZF.Data.Common
                         overrideApproval,
                         origMessage,
                         editedBy,
+                        messageDescription,
                         tags);
                     break;
                 case CommonSqlDbAccess.MySql:
                     VZF.Data.Mysql.Db.message_update(
                         connectionString,
-                        messageID,
+                        messageId,
                         priority,
                         message,
                         description,
@@ -8881,12 +8890,13 @@ namespace VZF.Data.Common
                         overrideApproval,
                         origMessage,
                         editedBy,
+                        messageDescription,
                         tags);
                     break;
                 case CommonSqlDbAccess.Firebird:
                     VZF.Data.Firebird.Db.message_update(
                         connectionString,
-                        messageID,
+                        messageId,
                         priority,
                         message,
                         description,
@@ -8898,6 +8908,7 @@ namespace VZF.Data.Common
                         isModeratorChanged,
                         overrideApproval,
                         origMessage,
+                        messageDescription,
                         editedBy,
                         tags);
                     break;
@@ -14565,6 +14576,7 @@ namespace VZF.Data.Common
             object posted,
             object blogPostID,
             object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID,
             string tags)
         {
@@ -14591,6 +14603,7 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
+                        messageDescription,
                         ref messageID,
                         tags);
                 case CommonSqlDbAccess.Npgsql:
@@ -14609,6 +14622,7 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
+                        messageDescription,
                         ref messageID,
                         tags);
                 case CommonSqlDbAccess.MySql:
@@ -14620,6 +14634,7 @@ namespace VZF.Data.Common
                         styles,
                         description,
                         message,
+                        messageDescription,
                         userId,
                         priority,
                         userName,
@@ -14638,6 +14653,7 @@ namespace VZF.Data.Common
                         styles,
                         description,
                         message,
+                        messageDescription,
                         userId,
                         priority,
                         userName,
@@ -14645,11 +14661,11 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
-                        ref messageID,
+                        out messageID,
                         tags);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags,ref messageID, tags); 
+                // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags, messageDescription,ref messageID, tags);
+                // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags, messageDescription,ref messageID, tags);
+                // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.topic_save(connectionString, forumID,  subject, status,styles, description,  message,  userId, priority,  userName,  ip,  posted,  blogPostID,  flags, messageDescription,ref messageID, tags); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }

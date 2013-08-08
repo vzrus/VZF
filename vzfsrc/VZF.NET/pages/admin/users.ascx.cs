@@ -42,7 +42,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -235,7 +235,7 @@ namespace YAF.Pages.Admin
                     this.GetTextFormatted(
                         "last_visit",
                         this.Get<IDateTime>().FormatDateTime(
-                                lastVisit.HasValue && lastVisit.Value != DateTime.MinValue
+                                lastVisit.HasValue && lastVisit.Value >= DateTimeHelper.SqlDbMinTime()
                                     ? lastVisit.Value
                                     : DateTime.UtcNow)),
                     "0"));

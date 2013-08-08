@@ -83,7 +83,7 @@ namespace YAF.Core.Services
             }
             var repText = GetReputationBarText(percentage);
             return
-                "<div class=\"ReputationBar ReputationUser_{2}\" data-percent=\"{0}\" data-text=\"{1}\" title=\"{3}{4}\"></div><span>{3}{4}</span>".FormatWith(
+                "<span>{3}{4}</span><div class=\"ReputationBar ReputationUser_{2}\" data-percent=\"{0}\" data-text=\"{1}\" title=\"{3}{4}\"></div>".FormatWith(
                         percentage.ToString(formatInfo), repText, userId, pointsSign, points);
         }
 

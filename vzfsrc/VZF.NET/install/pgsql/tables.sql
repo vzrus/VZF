@@ -439,6 +439,7 @@ CREATE TABLE databaseSchema.objectQualifier_message
              userdisplayname           varchar(128),
              posted                    timestampTZ  NOT NULL,
              message                   text NOT NULL,
+			 description               varchar(255),
              ip                        varchar(39) NOT NULL,
              edited                    timestampTZ ,
              flags                     integer DEFAULT 23 NOT NULL,
@@ -1140,6 +1141,10 @@ BEGIN
      IF (NOT column_exists('databaseSchema.objectQualifier_message','ts_message')) THEN
          ALTER TABLE databaseSchema.objectQualifier_message ADD COLUMN ts_message  text;
      END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_message','description')) THEN
+         ALTER TABLE databaseSchema.objectQualifier_message ADD COLUMN description text;
+     END IF;	 
 
      IF (NOT column_exists('databaseSchema.objectQualifier_pmessage','replyto')) THEN
          ALTER TABLE databaseSchema.objectQualifier_pmessage ADD COLUMN replyto  integer;

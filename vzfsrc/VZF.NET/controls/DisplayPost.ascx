@@ -51,11 +51,13 @@
 </tr>
 <tr class="<%#GetPostClass()%>">
     <td <%# GetRowSpan() %> valign="top" height="<%# GetUserBoxHeight() %>" class="UserBox" colspan='<%# GetIndentSpan()%>'>
-        <VZF:UserBox id="UserBox1" runat="server" Visible="<%# !PostData.IsSponserMessage %>" PageCache="<%# PageContext.CurrentForumPage.PageCache %>" DataRow='<%# DataRow %>'></VZF:UserBox>
+        <VZF:UserBox id="UserBox1" runat="server" Visible='<%# !PostData.IsSponserMessage %>' PageCache="<%# PageContext.CurrentForumPage.PageCache %>" DataRow='<%# DataRow %>'></VZF:UserBox>
+  
     </td>
     <td valign="top" class="message">
         <div class="postdiv">
-            <asp:panel id="panMessage" runat="server">      
+            <asp:panel id="panMessage" runat="server">
+                <div id="mesDescr" class="messageHeader" visible='<%# PageContext.BoardSettings.AllowMessageDescription && DataRow["MessageDescription"].ToString().IsSet() %>' runat="server"><%# DataRow["MessageDescription"] %><br /><hr /></div>     
                 <VZF:MessagePostData ID="MessagePost1" runat="server" DataRow="<%# DataRow %>" IsAltMessage="<%# this.IsAlt %>" ColSpan="<%#GetIndentSpan()%>" ShowEditMessage="True"></VZF:MessagePostData>
             </asp:panel> 
         </div>

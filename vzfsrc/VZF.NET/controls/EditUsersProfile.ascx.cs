@@ -46,7 +46,7 @@ namespace VZF.Controls
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -536,18 +536,18 @@ namespace VZF.Controls
            
                 if (this.Get<YafBoardSettings>().UseFarsiCalender && ci.IsFarsiCulture())
                 {
-                    this.Birthday.Text = this.UserData.Profile.Birthday > DateTime.MinValue ||
+                    this.Birthday.Text = this.UserData.Profile.Birthday > DateTimeHelper.SqlDbMinTime() ||
                                          this.UserData.Profile.Birthday.IsNullOrEmptyDBField()
                                          ? PersianDateConverter.ToPersianDate(this.UserData.Profile.Birthday).ToString("d")
                                              : PersianDateConverter.ToPersianDate(PersianDate.MinValue).ToString("d");
                 }
                 else
                 {
-                    this.Birthday.Text = this.UserData.Profile.Birthday > DateTime.MinValue ||
+                    this.Birthday.Text = this.UserData.Profile.Birthday > DateTimeHelper.SqlDbMinTime() ||
                                          this.UserData.Profile.Birthday.IsNullOrEmptyDBField()
                                              ? this.UserData.Profile.Birthday.Date.ToString(
                                                  ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture)
-                                             : DateTime.MinValue.Date.ToString(
+                                             : DateTimeHelper.SqlDbMinTime().Date.ToString(
                                                  ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
                 }
 
@@ -793,7 +793,7 @@ namespace VZF.Controls
                     var persianDate = new PersianDate(this.Birthday.Text);
                     userBirthdate = PersianDateConverter.ToGregorianDateTime(persianDate);
 
-                    if (userBirthdate > DateTime.MinValue.Date)
+                    if (userBirthdate > DateTimeHelper.SqlDbMinTime().Date)
                     {
                         userProfile.Birthday = userBirthdate.Date;
                     }
@@ -802,7 +802,7 @@ namespace VZF.Controls
                 {
                     DateTime.TryParse(this.Birthday.Text, ci, DateTimeStyles.None, out userBirthdate);
 
-                    if (userBirthdate > DateTime.MinValue.Date)
+                    if (userBirthdate > DateTimeHelper.SqlDbMinTime().Date)
                     {
                         // Attention! This is stored in profile in the user timezone date
                         userProfile.Birthday = userBirthdate.Date;

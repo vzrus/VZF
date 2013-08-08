@@ -47,7 +47,7 @@ namespace YAF.Pages
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Types.Interfaces.Extensions;
-    using YAF.Utilities;
+    using VZF.Utilities;
 
     #endregion
 
@@ -1636,6 +1636,7 @@ namespace YAF.Pages
                 null,
                 replyTo,
                 tFlags.BitValue,
+                null,
                 ref nMessageId))
             {
                 topicID = 0;

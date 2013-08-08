@@ -41,4 +41,4 @@ using System.Security;
 #endif
 
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("..\\..\\YetAnotherForum.NET.snk")]
+// [assembly: AssemblyKeyFile("..\\..\\vzf2013.pfx")]

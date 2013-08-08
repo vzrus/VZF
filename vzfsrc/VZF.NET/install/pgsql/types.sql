@@ -952,6 +952,7 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 		"MessageID" integer,
 		"Posted" timestampTZ, 		
 		"Message" text,
+		"MessageDescription" varchar(255),
 		"UserID" integer,
 		"Position" integer,
 		"Indent" integer,

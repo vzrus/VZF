@@ -186,8 +186,8 @@ namespace VZF.Controls
 
             // we'll hold topics in this table
             DataTable topicList = null;
-            
-            if (this.sinceDate == DateTime.MinValue)
+
+            if (this.sinceDate <= DateTimeHelper.SqlDbMinTime())
             {
                 this.sinceDate = DateTimeHelper.SqlDbMinTime();
             }

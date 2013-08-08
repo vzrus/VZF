@@ -190,16 +190,77 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Classes\LatestInformationTask.cs" />
-    <Compile Include="Classes\SitemapHandler .cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks.cs" />
+    <Compile Include="Classes\Handlers\SitemapHandler .cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\AddFavoriteTopicJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\AddThanksJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\AlbumCallbackSuccessJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\AlbumEventsJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\AsynchCallFailedJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\BlockUIExecuteJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ButtonShowForumInNNTPTree.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\CeeBoxLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ChangeAlbumTitleJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ChangeImageCaptionJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DatePickerLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DisablePageManagerScrollJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DropDownLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesAdminLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesAllJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesJumpAllJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesJumpLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesSearchLazyCheckBoxesJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeSelectSingleNodeLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookInitJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookLoginJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookPostJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\HoverCardLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\JqueryUITabsLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\LoadGotoAnchor.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\LoginCallSuccessJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\MultiQuoteButtonJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\MultiQuoteCallbackSuccessJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\PaginationLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\RemoveFavoriteTopicJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\RemoveThanksJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\RepuatationProgressLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ReputationProgressChangeJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\SpellCheckerLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\SyntaxHighlightLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\TimeagoLoadJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ToggleDivider.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ToggleEventLogItemJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\ToggleMessageJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\YafModalDialogLoadJs.cs" />
     <Compile Include="Classes\Utilities\MetaWeblog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\YafAjax.cs">
+    <Compile Include="Classes\WebServices\YafAjax.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\YafResourceHandler.cs" />
-    <Compile Include="Classes\YafWebService.cs">
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\Albums\GetAlbumImage.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\Albums\GetAlbumImagePreview.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\CheckAccessRights.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\CheckETag.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\ImplementedIntefaces.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\Albums\GetAlbumCover.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\GetAlbumOrAttachmentImageResized.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\GetResource.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\ImageAttached\GetResponseAttachment.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\GetResponseCaptcha.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\GetResponseGoogleSpell.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\Avatar\GetResponseLocalAvatar.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\ImageTopic\GetResponseLocalTopicImage.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\Avatar\GetResponseRemoteAvatar.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\GetUserInfo.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\ImageAttached\GetResponseImage.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\ImageAttached\GetResponseImagePreview.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\TreeNodes\GetForumPath.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\TreeNodes\GetForumsAdminTreeNodeMove.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\TreeNodes\GetForumsJumpTreeNodesAll.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\TreeNodes\GetForumsJumpTreeNodesLevel.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Properties.cs" />
+    <Compile Include="Classes\Handlers\YafResourceHandler\Methods\ImageTopic\GetResponseRemoteTopicImage.cs" />
+    <Compile Include="Classes\WebServices\YafWebService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\EditObjectImage.ascx.cs">
@@ -5137,7 +5198,6 @@
     <Content Include="web_my.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="BuildScripts\VZF.Package.targets" />
     <Content Include="pages\app_my.config" />
     <Content Include="app_pg.config">
       <SubType>Designer</SubType>
@@ -5852,6 +5912,7 @@
     <None Include="themes\Fancy\fonts\Lobster-webfont.eot" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.ttf" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.woff" />
+    <Content Include="vzf2013.pfx" />
     <None Include="Web References\RegisterV2\LatestVersionInformation.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -5870,7 +5931,6 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="YetAnotherForum.NET.snk" />
     <Content Include="web.config" />
     <Content Include="web_fb.config" />
   </ItemGroup>
@@ -5936,7 +5996,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>YetAnotherForum.NET.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf2013.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -5953,7 +6013,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52287</DevelopmentServerPort>
+          <DevelopmentServerPort>8453</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/mamacenter.net</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>

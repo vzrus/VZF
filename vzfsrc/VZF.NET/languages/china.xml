@@ -818,11 +818,13 @@
     <Resource tag="GRANTALLDELETE">Grant All Delete</Resource>
     <Resource tag="GROUPNAME">Role</Resource>
     <Resource tag="HEADER">Event Log Access For</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource>
     <Resource tag="LT_ERROR">Errors</Resource>
     <Resource tag="LT_INFORMATION">Information</Resource>
     <Resource tag="LT_IPBANLIFTED">Canceling IP ban</Resource>
     <Resource tag="LT_IPBANSET">Setting IP ban</Resource>
     <Resource tag="LT_SQLERROR">Sql Errors</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource>
     <Resource tag="LT_USERDELETED">Deleting users</Resource>
     <Resource tag="LT_USERSUSPENDED">Suspending users</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Unsuspending users</Resource>
@@ -950,6 +952,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">If enabled Guests can see poll choices.</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">Allow Users Hide Poll Results:</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">If enabled a poll creator can hide results before voting end or if not all polls in a group are voted.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">Allow Moderators View IPs:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">Allow to view IPs to moderators.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">Allow Display Name Modification:</Resource>
@@ -1304,6 +1308,8 @@
     <Resource tag="REPUTATION_TEMPLATE_HELP">Template for rendering user's reputation.</Resource>
     <Resource tag="REQUIRE_LOGIN">Require User Login:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">If checked, users will be required to log in before they can see any content. They'll be redirected straight to login page.</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
     <Resource tag="RULES_ONREGISTER">Show "Rules" Before Registration:</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">Require that "rules" are shown and accepted before a new user can register.</Resource>
     <Resource tag="SAVE_SETTINGS">Save Settings</Resource>
@@ -4346,6 +4352,7 @@ Spoiler Content
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALFORUM">
+    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
@@ -4488,6 +4495,7 @@ Spoiler Content
     <Resource tag="ISQUESTION">Is this topic in question and answer format?</Resource>
     <Resource tag="LAST10">最后 10 个新贴（倒序）</Resource>
     <Resource tag="MESSAGE">信息:</Resource>
+    <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
     <Resource tag="NEED_SUBJECT">标题必须输入.</Resource>
     <Resource tag="NEWPOSTOPTIONS">Options:</Resource>
     <Resource tag="NEWTOPIC">发新主题</Resource>

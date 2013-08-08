@@ -41,7 +41,7 @@ namespace YAF.Pages
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -536,8 +536,15 @@ namespace YAF.Pages
 
             // blog link
             this.Blog.Visible = userData.Profile.Blog.IsSet();
-            this.SetupThemeButtonWithLink(this.Blog, userData.Profile.Blog);
-            this.Blog.ParamTitle0 = userName;
+
+            if (this.Blog.Visible)
+            {
+                // this.SetupThemeButtonWithLink(this.Blog, userData.Profile.Homepage);
+                this.Blog.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.personalforums, "u={0}&rp=profile", userData.UserID);
+                this.Blog.ParamTitle0 = userName;
+            }
+           
 
             this.Facebook.Visible = this.User != null && userData.Profile.Facebook.IsSet();
 
@@ -866,9 +873,10 @@ namespace YAF.Pages
                     "reputationprogressjs", JavaScriptBlocks.RepuatationProgressLoadJs);
             }
 
-            if (this.User != null && userData.Profile.Birthday != DateTime.MinValue)
+            if (this.User != null && userData.Profile.Birthday >= DateTimeHelper.SqlDbMinTime())
             {
                 this.BirthdayTR.Visible = true;
+
                 // time offset for the page user is already included,userData.Profile.Birthday Date is stored in the userData timezone.
                 this.Birthday.Text =
                     this.Get<IDateTime>()

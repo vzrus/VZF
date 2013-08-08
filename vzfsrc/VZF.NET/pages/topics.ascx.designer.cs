@@ -334,7 +334,7 @@ namespace YAF.Pages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Сontrols.ForumJumper fj1;
+        protected global::VZF.Сontrols.ForumJumper fj1;
         
         /// <summary>
         /// IconLegend1 control.

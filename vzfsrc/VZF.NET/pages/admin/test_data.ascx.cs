@@ -45,7 +45,7 @@ namespace YAF.Pages.Admin
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using YAF.Utilities;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -977,6 +977,7 @@ namespace YAF.Pages.Admin
                     null,
                     ReplyTo,
                     this.GetMessageFlags(),
+                    null,
                     ref messageid);
 
                 // User != null ? null : From.Text
@@ -1072,6 +1073,7 @@ namespace YAF.Pages.Admin
                     DateTime.UtcNow,
                     string.Empty,
                     this.GetMessageFlags(),
+                    null,
                     ref messageid,
                     string.Empty);
 

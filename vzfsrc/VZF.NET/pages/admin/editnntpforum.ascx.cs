@@ -21,7 +21,7 @@
 using System.Collections;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using YAF.Utilities;
+using VZF.Utilities;
 using VZF.Utils.Helpers;
 
 namespace YAF.Pages.Admin
@@ -208,7 +208,7 @@ namespace YAF.Pages.Admin
 
             if (!DateTime.TryParse(this.DateCutOff.Text, out dateCutOff))
             {
-                dateCutOff = DateTime.MinValue;
+                dateCutOff = DateTimeHelper.SqlDbMinTime();
             }
 
             CommonDb.nntpforum_save(PageContext.PageModuleID, nntpForumId,
@@ -216,7 +216,7 @@ namespace YAF.Pages.Admin
                 this.GroupName.Text,
                 !Config.LargeForumTree ? this.FindControlRecursiveAs<DropDownList>("ForumID").SelectedValue : selectedForum.ToString(),
                 this.Active.Checked,
-                dateCutOff == DateTime.MinValue ? null : (DateTime?)dateCutOff);
+                dateCutOff <= DateTimeHelper.SqlDbMinTime() ? null : (DateTime?)dateCutOff);
             this.Get<IYafSession>().NntpTreeActiveNode = null;
             YafBuildLink.Redirect(ForumPages.admin_nntpforums);
         }

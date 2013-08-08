@@ -46,7 +46,8 @@
 <tr class="<%#GetPostClass()%>">
     <td valign="top" class="message">
         <div class="postdiv">
-            <asp:panel id="panMessage" runat="server">      
+            <asp:panel id="panMessage" runat="server">
+                  <div id="mesDescr" class="messageHeader" visible='<%# PageContext.BoardSettings.AllowMessageDescription && DataRow["MessageDescription"].ToString().IsSet() %>' runat="server"><%# DataRow["MessageDescription"] %><br /><hr /></div>     
                 <VZF:MessagePostData ID="MessagePost1" runat="server" DataRow="<%# DataRow %>" IsAltMessage="<%# this.IsAlt %>" ColSpan="<%#GetIndentSpan()%>" ShowEditMessage="True"></VZF:MessagePostData>
             </asp:panel>
         </div>

@@ -184,6 +184,15 @@ namespace VZF.Controls {
         protected global::System.Web.UI.WebControls.Panel panMessage;
         
         /// <summary>
+        /// mesDescr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mesDescr;
+        
+        /// <summary>
         /// MessagePost1 control.
         /// </summary>
         /// <remarks>

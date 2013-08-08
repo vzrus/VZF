@@ -110,7 +110,7 @@ namespace VZF.Utils
     /// </summary>
     public static void AccessDenied()
     {
-      Redirect(ForumPages.info, "i=4");
+        RedirectInfoPage(InfoMessage.AccessDenied);
     }
 
     /// <summary>

@@ -813,11 +813,13 @@
     <Resource tag="GRANTALLDELETE">Alle Löschen erlauben</Resource>
     <Resource tag="GROUPNAME">Gruppe</Resource>
     <Resource tag="HEADER">Ereignisprotokoll Zugriff für</Resource>
+    <Resource tag="LT_DEBUG">Debug</Resource>
     <Resource tag="LT_ERROR">Fehler</Resource>
     <Resource tag="LT_INFORMATION">Information</Resource>
     <Resource tag="LT_IPBANLIFTED">IP-Verbot Abbrechen </Resource>
     <Resource tag="LT_IPBANSET">Festlegen von einem IP-Verbot</Resource>
     <Resource tag="LT_SQLERROR">SQL Fehler</Resource>
+    <Resource tag="LT_TRACE">Trace</Resource>
     <Resource tag="LT_USERDELETED">Löschen von Benutzern</Resource>
     <Resource tag="LT_USERSUSPENDED">Benutzer sperren</Resource>
     <Resource tag="LT_USERUNSUSPENDED">Entsperren von Benutzern</Resource>
@@ -943,6 +945,8 @@
     <Resource tag="ALLOW_GUESTS_VIEWPOLL_HELP">Wenn aktiviert Gäste können die Umfrage Optionen ansehen</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS">Benutzer erlauben Abstimmungsergebnisse zu verbergen</Resource>
     <Resource tag="ALLOW_HIDE_POLLRESULTS_HELP">Wenn diese Option aktiviert ist kann der Ersteller einer Umfrage die Ergebnisse verstecken, bevor die Abstimmung geendet hat oder nicht für jede Umfrage in der Gruppe abgestimmt wurde.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION">Allow message description.</Resource>
+    <Resource tag="ALLOW_MESSAGEDESCRIPTION_HELP">Allows user to leave a short message description.</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP">Moderatoren IP Adressen anzeigen erlauben:</Resource>
     <Resource tag="ALLOW_MOD_VIEWIP_HELP">Moderatoren können IP Adressen der Benutzer sehen wenn aktiviert.</Resource>
     <Resource tag="ALLOW_MODIFY_DISPLAYNAME">Anzeigename Ändern Erlauben:</Resource>
@@ -1297,6 +1301,8 @@
     <Resource tag="REPUTATION_TEMPLATE_HELP">Vorlage für die Darstellung der Benutzer Reputation.</Resource>
     <Resource tag="REQUIRE_LOGIN">Benutzer anmelden erfordern:</Resource>
     <Resource tag="REQUIRE_LOGIN_HELP">Wenn aktiviert, werden die Benutzer aufgefordert sich anzumelden, bevor sie den Inahalt sehen können. Sie werden direkt weitergeleitet zur Anmeldeseite.</Resource>
+    <Resource tag="RESTART_APP_LIMIT">Restart application when memory usage is higher than, Mb:</Resource>
+    <Resource tag="RESTART_APP_LIMIT_HELP">If you system runs in Full Trust application restarts when it exceeds the number. Set it to 0 to disable</Resource>
     <Resource tag="RULES_ONREGISTER">Zeige "Regeln" Vor der Registrierung:</Resource>
     <Resource tag="RULES_ONREGISTER_HELP">Verlangen, dass die "Regeln" gezeigt und akzeptiert werden müssen, bevor ein neuer Benutzer sich registrieren kann.</Resource>
     <Resource tag="SAVE_SETTINGS">Einstellungen Speichern</Resource>
@@ -4269,6 +4275,7 @@ Spoiler Content
     <Resource tag="UPDATE">Update</Resource>
   </page>
   <page name="PERSONALFORUM">
+    <Resource tag="DELETINGUNDERWAY">Forum is sheduled for deletion.</Resource>
     <Resource tag="NEW_FORUM">New Forum</Resource>
     <Resource tag="OK">OK</Resource>
     <Resource tag="PERSONALBLOGS">My Personal Forums (Blogs)</Resource>
@@ -4406,6 +4413,7 @@ Spoiler Content
     <Resource tag="ISQUESTION">Ist das Thema in Frage- und Antwortformat?</Resource>
     <Resource tag="LAST10">Letzte 10 Beiträge (in umgekehrter Reihenfolge)</Resource>
     <Resource tag="MESSAGE">Nachricht:</Resource>
+    <Resource tag="MESSAGE_DESCRIPTION">Message Description:</Resource>
     <Resource tag="NEED_SUBJECT">Bitte einen Betreff eingeben.</Resource>
     <Resource tag="NEWPOSTOPTIONS">Optionen:</Resource>
     <Resource tag="NEWTOPIC">Ein neues Thema eröffnen</Resource>

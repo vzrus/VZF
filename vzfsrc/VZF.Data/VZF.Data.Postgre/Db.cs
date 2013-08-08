@@ -2491,7 +2491,23 @@ namespace VZF.Data.Postgre
             }
         }
 
-        public static DataTable forum_byuserlist([NotNull] string connectionString , object boardId, object forumID, object userId, object isUserForum)
+        public static DataTable forum_byflags(string connectionString, object forumId, object flags)
+        {
+            using (var cmd = PostgreDbAccess.GetCommand("forum_byflags"))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new NpgsqlParameter("i_forumid", NpgsqlDbType.Integer)).Value = forumId
+                                                                                                   ?? DBNull.Value;
+                cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
+
+                return PostgreDbAccess.GetData(cmd, connectionString);
+            }
+        }
+
+        public static
+            DataTable forum_byuserlist([NotNull] string connectionString , object boardId, object forumID, object userId, object isUserForum)
         {
             using (var cmd = PostgreDbAccess.GetCommand("forum_byuserlist"))
             {
@@ -4061,15 +4077,11 @@ namespace VZF.Data.Postgre
             object overrideApproval,
             object origMessage,
             object editedBy,
+            object messageDescription,
             string tags)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_update"))
             {
-                if (overrideApproval == null)
-                {
-                    overrideApproval = DBNull.Value;
-                }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
@@ -4085,9 +4097,10 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_ismoderatorchanged", NpgsqlDbType.Boolean)).Value =
                     isModeratorChanged;
                 cmd.Parameters.Add(new NpgsqlParameter("i_overrideapproval", NpgsqlDbType.Boolean)).Value =
-                    overrideApproval;
+                    overrideApproval ?? DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_originalmessage", NpgsqlDbType.Text)).Value = origMessage;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                cmd.Parameters.Add(new NpgsqlParameter("i_messagedescription", NpgsqlDbType.Varchar)).Value = messageDescription;
                 cmd.Parameters.Add(new NpgsqlParameter("i_tags", NpgsqlDbType.Text)).Value = tags;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                     DateTime.UtcNow;
@@ -4107,6 +4120,7 @@ namespace VZF.Data.Postgre
             [NotNull] object posted,
             [NotNull] object replyTo,
             [NotNull] object flags,
+            [CanBeNull] object messageDescription,
             ref long messageId)
         {
             using (var cmd = PostgreDbAccess.GetCommand("message_save"))
@@ -4139,6 +4153,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_referencemessageid", NpgsqlDbType.Varchar)).Value =
                     DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_messagedescription", NpgsqlDbType.Varchar)).Value = messageDescription;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                     DateTime.UtcNow;
                 cmd.Parameters.Add(paramMessageID);
@@ -5507,7 +5522,7 @@ namespace VZF.Data.Postgre
                     cmd.Parameters.Add(new NpgsqlParameter("i_question", NpgsqlDbType.Varchar)).Value =
                         question.Question;
 
-                    if (question.Closes > DateTime.MinValue)
+                    if (question.Closes > DateTimeHelper.SqlDbMinTime())
                     {
                         cmd.Parameters.Add(new NpgsqlParameter("i_closes", NpgsqlDbType.TimestampTZ)).Value =
                             question.Closes;
@@ -5590,7 +5605,7 @@ namespace VZF.Data.Postgre
                     // Add parameters
                      cmd1.Parameters.Add(new NpgsqlParameter("question", NpgsqlDbType.Varchar));
 
-                    if (question.Closes > DateTime.MinValue)
+                    if (question.Closes > DateTimeHelper.SqlDbMinTime())
                     {
                         cmd1.Parameters.Add(new NpgsqlParameter("closes", NpgsqlDbType.TimestampTZ));
                     } 
@@ -6805,6 +6820,7 @@ namespace VZF.Data.Postgre
             object posted,
             object blogPostID,
             object flags,
+            [CanBeNull] object messageDescription,
             ref long messageID,
             string tags)
         {
@@ -6825,6 +6841,7 @@ namespace VZF.Data.Postgre
                 cmd.Parameters.Add(new NpgsqlParameter("i_posted", NpgsqlDbType.Timestamp)).Value = posted;
                 cmd.Parameters.Add(new NpgsqlParameter("i_blogpostid", NpgsqlDbType.Varchar)).Value = blogPostID;
                 cmd.Parameters.Add(new NpgsqlParameter("i_flags", NpgsqlDbType.Integer)).Value = flags;
+                cmd.Parameters.Add(new NpgsqlParameter("i_messagedescription", NpgsqlDbType.Varchar)).Value = messageDescription;
                 cmd.Parameters.Add(new NpgsqlParameter("i_tags", NpgsqlDbType.Text)).Value = tags;
                 cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value =
                     DateTime.UtcNow;
@@ -9607,7 +9624,7 @@ namespace VZF.Data.Postgre
 
                 return tableLastRead != null && tableLastRead != DBNull.Value
                            ? (DateTime)tableLastRead
-                           : DateTime.MinValue.AddYears(1902);
+                           : DateTimeHelper.SqlDbMinTime();
             }
         }
 

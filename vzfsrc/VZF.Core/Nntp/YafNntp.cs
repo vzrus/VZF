@@ -28,8 +28,8 @@ namespace YAF.Core.Nntp
   using System.Web;
 
   using VZF.Data.Common;
+  using VZF.Utils.Helpers;
 
-  
   using YAF.Types;
   using YAF.Types.Interfaces;
   using YAF.Types.Objects;
@@ -140,7 +140,7 @@ namespace YAF.Core.Nntp
             // start at the bottom...
             int currentMessage = lastMessageNo == 0 ? group.Low : lastMessageNo + 1;
             var nntpForumID = nntpForum.NntpForumID;
-            var cutOffDate = nntpForum.DateCutOff ?? DateTime.MinValue;
+            var cutOffDate = nntpForum.DateCutOff ?? DateTimeHelper.SqlDbMinTime();
 
             if (nntpForum.DateCutOff.HasValue)
             {
