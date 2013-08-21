@@ -102,41 +102,100 @@ namespace YAF.Types.Interfaces
         /// <param name="transaction">
         /// The transaction.
         /// </param>
+        /// <param name="connectionString">
+        /// The connection String.
+        /// </param>
         /// <returns>
-        /// The execute scalar.
-        /// </returns> 
+        /// The execute scalar object.
+        /// </returns>
         object ExecuteScalar(IDbCommand cmd, bool transaction, string connectionString);
-        /// <summary>
-        /// Returns values from data reader. 
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="dt"></param>
-        /// <param name="transaction"></param>
-        /// <param name="acceptChanges"></param>
-        /// <param name="firstColumnIndex"></param>
-        /// <returns></returns>
-        DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges,
-                                                int firstColumnIndex, string connectionString);
-        /// <summary>
-        /// Returns values from data reader.
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="dt"></param>
-        /// <param name="transaction"></param>
-        /// <param name="acceptChanges"></param>
-        /// <param name="firstColumnIndex"></param>
-        /// <param name="currentRow"></param>
-        /// <returns></returns>
 
-        DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges,
-                                                 int firstColumnIndex, int currentRow, string connectionString);
         /// <summary>
-        /// Returns values from data reader.
+        /// The add values to data table from reader.
         /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="transaction"></param>
-        /// <param name="acceptChanges"></param>
-        /// <returns></returns>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="firstColumnIndex">
+        /// The first column index.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        DataTable AddValuesToDataTableFromReader(
+            IDbCommand cmd,
+            DataTable dt,
+            bool transaction,
+            bool acceptChanges,
+            int firstColumnIndex,
+            string connectionString);
+
+        /// <summary>
+        /// The add values to data table from reader.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="firstColumnIndex">
+        /// The first column index.
+        /// </param>
+        /// <param name="currentRow">
+        /// The current row.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        DataTable AddValuesToDataTableFromReader(
+            IDbCommand cmd,
+            DataTable dt,
+            bool transaction,
+            bool acceptChanges,
+            int firstColumnIndex,
+            int currentRow,
+            string connectionString);
+
+        /// <summary>
+        /// The get data table from reader.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         DataTable GetDataTableFromReader(IDbCommand cmd, bool transaction, bool acceptChanges, string connectionString);
     }
 }

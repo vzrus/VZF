@@ -1360,8 +1360,8 @@ namespace YAF.Install
                 // Hide New User on DNN
                 if (Config.IsDotNetNuke)
                 {
-                    UserChoice.SelectedIndex = 1;
-                    UserChoice.Items[0].Enabled = false;
+                    this.UserChoice.SelectedIndex = 1;
+                    this.UserChoice.Items[0].Enabled = false;
 
                     this.ExistingUserHolder.Visible = true;
                     this.CreateAdminUserHolder.Visible = false;

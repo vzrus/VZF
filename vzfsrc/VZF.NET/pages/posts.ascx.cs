@@ -49,6 +49,8 @@ namespace YAF.Pages
     using YAF.Types.Interfaces.Extensions;
     using VZF.Utilities;
 
+    using YAF.Types.Objects;
+
     #endregion
 
     /// <summary>
@@ -370,6 +372,13 @@ namespace YAF.Pages
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void MessageList_OnItemCreated([NotNull] object sender, [NotNull] RepeaterItemEventArgs e)
         {
+            var item = e.Item;
+
+            if (item.ItemType != ListItemType.Item && item.ItemType != ListItemType.AlternatingItem)
+            {
+                return;
+            }
+
             if (this.Pager.CurrentPageIndex != 0 || e.Item.ItemIndex != 0)
             {
                 return;
@@ -527,7 +536,7 @@ namespace YAF.Pages
                 var asynchCallFailedJs =
                     this.Get<IScriptBuilder>().CreateStatement().AddFunc(
                         f => f.Name("CallFailed").WithParams("res").Func(s => s.Add("alert('Error Occurred');")));
-
+         
                 YafContext.Current.PageElements.RegisterJsBlockStartup("asynchCallFailedJs", asynchCallFailedJs);
 
                 // Has the user already tagged this topic as favorite?
@@ -1656,17 +1665,15 @@ namespace YAF.Pages
                 }
             }
 
-            bool bApproved = false;
-
-            using (DataTable dt = CommonDb.message_list(PageContext.PageModuleID, nMessageId))
+            bool isApproved = false;
+            var ml = CommonDb.MessageList(PageContext.PageModuleID, (int)nMessageId);
+            var typedMessageLists = ml as IList<TypedMessageList> ?? ml.ToList();
+            if (typedMessageLists.Any())
             {
-                foreach (DataRow row in dt.Rows)
-                {
-                    bApproved = ((int)row["Flags"] & 16) == 16;
-                }
+                isApproved = typedMessageLists.First().Flags.IsApproved;
             }
 
-            if (bApproved)
+            if (isApproved)
             {
                 // send new post notification to users watching this topic/forum
                 this.Get<ISendNotification>().ToWatchingUsers(nMessageId.ToType<int>());

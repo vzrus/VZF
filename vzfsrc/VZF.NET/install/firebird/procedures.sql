@@ -5077,7 +5077,7 @@ AS
 BEGIN
     binFlag =BIN_AND(:ici_ForumFlags, 8);
     i_FlagNot=BIN_XOR(16,-1);
- -- cleare bit for PollAccess to 0
+    -- clear the bit for PollAccess to 0
     I_FLAGS = BIN_AND(:I_FLAGS,:i_FlagNot); 	
     SELECT 
     a.TOPICID,
@@ -5118,7 +5118,7 @@ BEGIN
  
     UPDATE objQual_MESSAGE SET
         MESSAGE = :I_MESSAGE,
-		DESCRIPTION	= :I_MESSAGEDESCRIPTION,
+	    DESCRIPTION	= :I_MESSAGEDESCRIPTION,
         EDITED = :I_UTCTIMESTAMP,
         EDITEDBY = :I_EDITEDBY,
         FLAGS = :I_FLAGS,
@@ -5142,7 +5142,7 @@ BEGIN
         WHERE
             TOPICID = :ici_TopicID;
 
-    EXECUTE PROCEDURE objQual_TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
+  EXECUTE PROCEDURE objQual_TOPIC_TAGSAVE(:ici_TopicID, :I_TAGS);
     -- If forum is moderated, make sure last post pointers are correct
     
     IF (binFlag<>0) THEN 
@@ -5151,6 +5151,8 @@ BEGIN
     
 END;
 --GO
+
+
 
 CREATE PROCEDURE  objQual_MESSAGE_DELETE(I_MESSAGEID INTEGER, I_ERASEMESSAGE BOOL) 
 AS

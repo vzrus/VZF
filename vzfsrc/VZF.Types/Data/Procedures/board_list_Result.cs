@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class board_list_Result
     {
         public int BoardID { get; set; }

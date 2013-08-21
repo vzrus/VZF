@@ -44,7 +44,7 @@ namespace YAF.Types.Flags
     /// The flags.
     /// </param>
     public MessageFlags(Flags flags)
-      : this((int) flags)
+        : this((int)flags)
     {
     }
 
@@ -55,7 +55,7 @@ namespace YAF.Types.Flags
     /// The bit value.
     /// </param>
     public MessageFlags(object bitValue)
-      : this((int) bitValue)
+        : this((int)bitValue)
     {
     }
 
@@ -83,7 +83,7 @@ namespace YAF.Types.Flags
 
     #endregion
 
-    //#region Operators
+    // #region Operators
 
     ///// <summary>
     ///// The op_ implicit.
@@ -93,10 +93,10 @@ namespace YAF.Types.Flags
     ///// </param>
     ///// <returns>
     ///// </returns>
-    //public static implicit operator MessageFlags(int newBitValue)
-    //{
+    // public static implicit operator MessageFlags(int newBitValue)
+    // {
     //  return new MessageFlags(newBitValue);
-    //}
+    // }
 
     ///// <summary>
     ///// The op_ implicit.
@@ -106,12 +106,12 @@ namespace YAF.Types.Flags
     ///// </param>
     ///// <returns>
     ///// </returns>
-    //public static implicit operator MessageFlags(Flags flags)
-    //{
+    // public static implicit operator MessageFlags(Flags flags)
+    // {
     //  return new MessageFlags(flags);
-    //}
+    // }
 
-    //#endregion
+    // #endregion
 
     #region Flags Enumeration
 
@@ -192,7 +192,7 @@ namespace YAF.Types.Flags
     #region Single Flags (can be 32 of them)
 
     /// <summary>
-    /// Gets or sets whether message allows HTML.
+    /// Gets or sets a value indicating whether message allows HTML.
     /// </summary>
     public bool IsHtml
     {
@@ -210,7 +210,7 @@ namespace YAF.Types.Flags
 
 
     /// <summary>
-    /// Gets or sets whether message allows BB code.
+    /// Gets or sets a value indicating whether message allows BB code.
     /// </summary>
     public bool IsBBCode
     {
@@ -228,7 +228,7 @@ namespace YAF.Types.Flags
 
 
     /// <summary>
-    /// Gets or sets whether message allows smilies.
+    /// Gets or sets a value indicating whether message allows smilies.
     /// </summary>
     public bool IsSmilies
     {
@@ -338,7 +338,7 @@ namespace YAF.Types.Flags
     }
 
     /// <summary>
-    ///Gets or sets whether message is reported as spam.
+    /// Gets or sets whether message is reported as spam.
     /// </summary>
     [Obsolete("Legacy flag. Not in use.")] 
     public bool IsReportedSpam

@@ -10,7 +10,7 @@ using System.Security;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vladimir Zakharov(vzrus)")]
-[assembly: AssemblyProduct("VZF.Data.Postgre")]
+[assembly: AssemblyProduct("VZF")]
 [assembly: AssemblyCopyright("Copyright ©  2008-2013 Vladimir Zakharov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

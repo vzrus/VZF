@@ -455,7 +455,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_save
                            i_userid integer,
                            i_isusermask boolean,
                            i_isadminmask boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
 ici_UserName  VARCHAR(255);
@@ -547,7 +547,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list
                            i_showcrawlers boolean,
                            i_interval integer,
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_active_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_active_list_return_type%ROWTYPE;
@@ -704,7 +704,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list_user
                            i_showcrawlers boolean,
                            i_interval integer,
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ
+                           i_utctimestamp timestamp
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_active_list_user_return_type AS
 $BODY$DECLARE
@@ -1017,7 +1017,7 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_updatemaxstats
                            (
                            i_boardid integer, 
-                           i_utctimestamp timestampTZ
+                           i_utctimestamp timestamp
                            )
                   RETURNS void AS
 $BODY$DECLARE
@@ -1335,7 +1335,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_bannedip_save
                            i_mask varchar, 
                            i_reason varchar, 
                            i_userid integer,
-                           i_utctimestamp timestampTZ
+                           i_utctimestamp timestamp
                            )
                   RETURNS void AS
 $BODY$
@@ -1526,7 +1526,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_create
                            i_ishostadmin boolean, 
                            i_newguid uuid,
                            i_roleprefix varchar,
-                           i_utctimestamp timestampTZ
+                           i_utctimestamp timestamp
                            )
                   RETURNS integer AS
 $BODY$DECLARE
@@ -1846,7 +1846,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_poststats(
                            i_usestylednicks boolean, 
                            i_shownocountposts boolean, 
                            i_getdefaults boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS databaseSchema.objectQualifier_board_poststats_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_board_poststats_return_type;
@@ -2406,7 +2406,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_checkemail_save(
                            i_iserid integer, 
                            i_hash varchar, 
                            i_email varchar,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 'INSERT INTO databaseSchema.objectQualifier_checkemail
 (userid,email,created,hash)
@@ -2414,7 +2414,7 @@ VALUES
 ($1,LOWER($3),$4,$2);'
 LANGUAGE 'sql' VOLATILE SECURITY DEFINER COST 100;
 --GO
- COMMENT ON FUNCTION databaseSchema.objectQualifier_checkemail_save(integer, varchar, varchar,timestampTZ ) IS 'Saves email message data for delivering in CheckEmail table.';
+ COMMENT ON FUNCTION databaseSchema.objectQualifier_checkemail_save(integer, varchar, varchar,timestamp ) IS 'Saves email message data for delivering in CheckEmail table.';
 --GO
 
 -- Function: objectQualifier_checkemail_update(varchar)
@@ -2551,7 +2551,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_eventlog_create(
                            i_source varchar, 
                            i_description text, 
                            i_type integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
              topLogID integer;
@@ -2613,10 +2613,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_eventlog_list
                            i_maxdays integer,  
                            i_pageindex int,
                            i_pagesize int, 
-                           i_sincedate timestampTZ, 
-                           i_todate timestampTZ, 
+                           i_sincedate timestamp, 
+                           i_todate timestamp, 
                            i_eventids  varchar(8000), 
-                           i_utctimestamp timestampTZ
+                           i_utctimestamp timestamp
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_eventlog_list_return_type AS
 $BODY$DECLARE
@@ -3460,7 +3460,7 @@ END; $BODY$
                    RETURNS SETOF databaseSchema.objectQualifier_forum_listread_helper_return_type AS
  $BODY$DECLARE
 _rec databaseSchema.objectQualifier_forum_listread_helper_return_type%ROWTYPE; 
- ici_lastposted timestampTZ ;
+ ici_lastposted timestamp ;
  ici_LastMessageID integer;
  ici_lastmessageflags integer;
  ici_LastUserID integer;
@@ -3520,12 +3520,12 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_listread(
                            i_showcommonforums boolean,
                            i_showpersonalforums boolean,
                            i_forumcreatedbyuserid integer,
-                           i_UTCTIMESTAMP timestamptz)
+                           i_UTCTIMESTAMP timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_listread_return_type AS
 $BODY$DECLARE
 -- ici_lasttopicid integer;
 ici_topicmovedid integer;
-ici_lastposted timestampTZ ;
+ici_lastposted timestamp ;
 ici_lastmessageid integer;
 ici_lastmessageflags integer;
 ici_lastuserid integer;
@@ -3536,7 +3536,7 @@ ici_lastuser varchar(255);
 ici_pollgroupid integer; 
 ici_style varchar(255):='';
 ici_lasttopicstatus  varchar(255):='';
-ici_lasttopicaccess  timestampTZ ;
+ici_lasttopicaccess  timestamp ;
 ici_forumids int array; 
 ici_forumids1 int array; 
 intcnt integer:=0; 
@@ -3715,12 +3715,12 @@ $BODY$
                            i_showcommonforums boolean,
                            i_showpersonalforums boolean,
                            i_forumcreatedbyuserid integer,
-                           i_UTCTIMESTAMP timestamptz)
+                           i_UTCTIMESTAMP timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_forum_listread_return_type AS
 $BODY$DECLARE
 -- ici_lasttopicid integer;
 ici_topicmovedid integer;
-ici_lastposted timestampTZ ;
+ici_lastposted timestamp ;
 ici_lastmessageid integer;
 ici_lastmessageflags integer;
 ici_lastuserid integer;
@@ -3731,7 +3731,7 @@ ici_lastuser varchar(255);
 ici_pollgroupid integer; 
 ici_style varchar(255):='';
 ici_lasttopicstatus  varchar(255):='';
-ici_lasttopicaccess  timestampTZ ;
+ici_lasttopicaccess  timestamp ;
 ici_forumids int array; 
 ici_forumids1 int array; 
 intcnt integer:=0; 
@@ -3859,7 +3859,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_ns_listread(
 $BODY$DECLARE
 ici_lasttopicid integer;
 ici_topicmovedid integer;
-ici_lastposted timestampTZ ;
+ici_lastposted timestamp ;
 ici_lastmessageid integer;
 ici_lastmessageflags integer;
 ici_lastuserid integer;
@@ -3870,7 +3870,7 @@ ici_lastuser varchar(255);
 ici_pollgroupid integer; 
 ici_style varchar(255):='';
 ici_lasttopicstatus  varchar(255):='';
-ici_lasttopicaccess  timestampTZ ;
+ici_lasttopicaccess  timestamp ;
 intcnt integer:=0; 
 _rectemp databaseSchema.objectQualifier_forum_listread_tmp%ROWTYPE;
 _rec databaseSchema.objectQualifier_forum_listread_return_type%ROWTYPE; 
@@ -4436,7 +4436,7 @@ END;$BODY$
 
 -- Function: databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, varchar, varchar,integer,integer,boolean,boolean,timestampTZ);
+-- DROP FUNCTION databaseSchema.objectQualifier_forum_save(integer, integer, integer, varchar, varchar, smallint, boolean, boolean, boolean, boolean, varchar, varchar, varchar, varchar,integer,integer,boolean,boolean,timestamp);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_forumid integer, 
@@ -4457,7 +4457,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save(
                            i_userid integer,
                            i_isuserforum boolean,
                            i_canhavepersforums boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                    RETURNS integer AS
 $BODY$DECLARE 
 ici_ForumID integer:=i_forumid;
@@ -4594,18 +4594,18 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_updatelastpost(
 $BODY$DECLARE 
 ici_ParentID integer;
 ici_tmpParent integer;
-ici_tmpMaxPosted3 timestampTZ ;
+ici_tmpMaxPosted3 timestamp ;
 
-ici_LastPostedTmp timestampTZ ;
+ici_LastPostedTmp timestamp ;
 ici_LastTopicIDTmp integer;
 ici_LastMessageIDTmp integer;
 ici_LastUserIDTmp integer;
 ici_LastUserNameTmp varchar(128);
 ici_LastUserDisplayNameTmp varchar(128);
 
-ici_MaxTPosted timestampTZ ;
+ici_MaxTPosted timestamp ;
  
-ici_lastposted timestampTZ ;
+ici_lastposted timestamp ;
 ici_LastTopicID integer;
 ici_LastMessageID integer;
 ici_LastUserID integer;
@@ -5452,7 +5452,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_personalaccessmasksnumber integer,
                            i_personalgroupsnumber integer,
                            i_personalforumsnumber integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS int AS
 $BODY$DECLARE
              ici_UserName  VARCHAR(255);
@@ -5614,7 +5614,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_mail_create(
                            i_subject varchar, 
                            i_body text, 
                            i_bodyhtml text,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -5639,7 +5639,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_mail_createwatch(
                            i_body text, 
                            i_bodyhtml text, 
                            i_userid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                  RETURNS void AS
 $BODY$
 BEGIN
@@ -5716,11 +5716,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_mail_delete(
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_mail_listupdate(
                            i_processid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE 
              intervaladd integer :=5;
-             timesendattempt timestampTZ ;
+             timesendattempt timestamp ;
 BEGIN
 timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
 
@@ -5751,12 +5751,12 @@ timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_mail_list(
                            i_processid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_mail_list_return_type AS
 $BODY$DECLARE 
              _rec databaseSchema.objectQualifier_mail_list_return_type%ROWTYPE;
              intervaladd integer :=5;
-             timesendattempt timestampTZ ;
+             timesendattempt timestamp ;
 BEGIN
 timesendattempt:=i_utctimestamp + (intervaladd || ' minute')::interval;
 
@@ -6422,14 +6422,14 @@ $BODY$
   COST 100; 
 --GO
 
--- Function: databaseSchema.objectQualifier_message_findunread(integer, timestampTZ )
+-- Function: databaseSchema.objectQualifier_message_findunread(integer, timestamp )
 
--- DROP FUNCTION databaseSchema.objectQualifier_message_findunread(integer, timestampTZ );
+-- DROP FUNCTION databaseSchema.objectQualifier_message_findunread(integer, timestamp );
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_findunread(
                            i_topicid integer,
                            i_messageid integer,
-                           i_lastread timestampTZ,
+                           i_lastread timestamp,
                            i_showdeleted boolean,
                            i_authoruserid integer)
                  RETURNS SETOF databaseSchema.objectQualifier_message_findunread_return_type AS
@@ -6901,16 +6901,16 @@ $BODY$
   ROWS 1000;  
 --GO
 
--- Function: databaseSchema.objectQualifier_message_report(integer, integer, integer, timestampTZ )
+-- Function: databaseSchema.objectQualifier_message_report(integer, integer, integer, timestamp )
 
--- DROP FUNCTION databaseSchema.objectQualifier_message_report(integer, integer, integer, timestampTZ );
+-- DROP FUNCTION databaseSchema.objectQualifier_message_report(integer, integer, integer, timestamp );
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_report(
                            i_messageid integer, 
                            i_reporterid integer, 
-                           i_reporteddate timestampTZ, 
+                           i_reporteddate timestamp, 
                            i_reporttext varchar(4000),
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN 
@@ -6981,7 +6981,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_reportresolve(
                            i_messageflag integer, 
                            i_messageid integer, 
                            i_userid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -6998,9 +6998,9 @@ BEGIN
   COST 100; 
 --GO
 
--- Function: databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestampTZ, integer, varchar, integer)
+-- Function: databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestamp, integer, varchar, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestampTZ, integer, varchar, integer);
+-- DROP FUNCTION databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestamp, integer, varchar, integer);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_save(
                            i_topicid integer, 
@@ -7008,13 +7008,14 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_save(
                            i_message text, 
                            i_username varchar, 
                            i_ip varchar, 
-                           i_posted timestampTZ, 
+                           i_posted timestamp, 
                            i_replyto integer, 
                            i_blogpostid varchar, 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),
                            i_flags integer,
-                           i_utctimestamp timestampTZ
+						   i_messagedescription  varchar(255),
+                           i_utctimestamp timestamp
                            )
                   RETURNS integer AS
 $BODY$DECLARE
@@ -7097,7 +7098,8 @@ BEGIN
  SELECT EXISTS (SELECT 1 FROM databaseSchema.objectQualifier_user WHERE userid = i_userid and name != i_username) INTO ici_OverrideDisplayName;
      INSERT INTO databaseSchema.objectQualifier_message( 
                 userid, 
-                message, 
+                message,
+				description,
                 topicid, 
                 posted,
                 username,
@@ -7112,6 +7114,7 @@ BEGIN
                 referencemessageid)
     VALUES    ( i_userid,
                 i_message,
+				i_messagedescription,
                 i_topicid,
                 ici_Posted,
                 (CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),
@@ -7232,7 +7235,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_update
                            i_newguid uuid,
 						   i_messagedescription varchar,
                            i_tags text,
-                           i_utctimestamp timestampTZ )
+                           i_utctimestamp timestamp )
                   RETURNS void AS
 $BODY$DECLARE
              ici_topicid	integer;
@@ -7342,10 +7345,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntpforum_list(
                            i_minutes integer, 
                            i_nntpforumid integer, 
                            i_active boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_nntpforum_list_return_type AS
 $BODY$DECLARE
-             i_tmptimestmp timestampTZ ;
+             i_tmptimestmp timestamp ;
              _rec databaseSchema.objectQualifier_nntpforum_list_return_type%ROWTYPE;
 BEGIN
  FOR _rec IN	
@@ -7401,8 +7404,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntpforum_save(
                            i_groupname varchar,
                            i_forumid integer, 
                            i_active boolean,
-                           i_datecutoff timestampTZ,
-                           i_utctimestamp timestampTZ)
+                           i_datecutoff timestamp,
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -7441,7 +7444,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntpforum_update(
                            i_nntpforumid integer, 
                            i_lastmessageno integer, 
                            i_userid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE	
              ici_ForumID	integer;
@@ -7605,9 +7608,9 @@ $BODY$
   COST 100 ROWS 1000; 
 --GO
 
--- Function: databaseSchema.objectQualifier_nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestampTZ, varchar)
+-- Function: databaseSchema.objectQualifier_nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestamp, varchar)
 
--- DROP FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestampTZ, varchar);
+-- DROP FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(integer, varchar, text, integer, varchar, varchar, timestamp, varchar);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(
                            i_nntpforumid integer, 
@@ -7616,10 +7619,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_nntptopic_savemessage(
                            i_userid integer, 
                            i_username varchar, 
                            i_ip varchar, 
-                           i_posted timestampTZ, 
+                           i_posted timestamp, 
                            i_externalmessageid varchar(255),
                            i_referencemessageid varchar(255),
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
              ici_ForumID	integer;
@@ -7655,7 +7658,8 @@ BEGIN
         VALUES (i_nntpforumid,'',ici_topicid);
         END IF;
         END IF;
-    END IF;
+    END IF;  
+
     IF ici_topicid IS NOT NULL THEN
         SELECT databaseSchema.objectQualifier_message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, 17, NULL, i_utctimestamp)
         INTO ici_MessageID;
@@ -7934,7 +7938,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pmessage_save(
                            i_body text, 
                            i_flags integer,
                            i_replyto integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
              ici_PMessageID integer;
@@ -8033,11 +8037,11 @@ $BODY$
 
 -- Function: databaseSchema.objectQualifier_poll_save(varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, varchar, time with time zone)
 
--- DROP FUNCTION databaseSchema.objectQualifier_poll_save(varchar, timestampTZ );
+-- DROP FUNCTION databaseSchema.objectQualifier_poll_save(varchar, timestamp );
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_poll_save(
                            i_question varchar,
-                           i_closes timestampTZ,
+                           i_closes timestamp,
                            i_userid integer,
                            i_pollgroupid integer,
                            i_objectpath varchar,
@@ -8233,14 +8237,14 @@ END;$BODY$
   ROWS 1000;
 --GO
 
--- Function: databaseSchema.objectQualifier_poll_update(integer, varchar, timestampTZ )
+-- Function: databaseSchema.objectQualifier_poll_update(integer, varchar, timestamp )
 
--- DROP FUNCTION databaseSchema.objectQualifier_poll_update(integer, varchar, timestampTZ );
+-- DROP FUNCTION databaseSchema.objectQualifier_poll_update(integer, varchar, timestamp );
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_poll_update(
                            i_pollid integer,
                            i_question varchar,
-                           i_closes timestampTZ,
+                           i_closes timestamp,
                            i_questionobjectpath varchar,
                            i_questionmimetype varchar,
                            i_isbounded boolean,
@@ -8411,10 +8415,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_post_list(
                            i_showdeleted boolean,
                            i_stylednicks boolean,
                            i_showreputation boolean,
-                           i_sinceposteddate timestampTZ,
-                           i_toposteddate timestampTZ,
-                           i_sinceediteddate timestampTZ,
-                           i_toediteddate timestampTZ,
+                           i_sinceposteddate timestamp,
+                           i_toposteddate timestamp,
+                           i_sinceediteddate timestamp,
+                           i_toediteddate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,
                            i_sortposted integer,
@@ -8423,8 +8427,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_post_list(
                            i_showthanks boolean,
                            i_messageposition integer,
 						   i_messageid integer,
-						   i_lastread timestampTZ,
-                           i_utctimestamp timestampTZ)
+						   i_lastread timestamp,
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_post_list_type AS
 $BODY$DECLARE
              ici_sortposted integer := i_sortposted;
@@ -8432,8 +8436,8 @@ $BODY$DECLARE
              _rec databaseSchema.objectQualifier_post_list_type%ROWTYPE;
              ici_post_totalrowsnumber integer:=0;
              ici_firstselectrownum integer:= 0;
-             ici_firstselectposted timestampTZ ;
-             ici_firstselectedited timestampTZ ;
+             ici_firstselectposted timestamp ;
+             ici_firstselectedited timestamp ;
              ici_floor decimal :=0;
              ici_ceiling decimal := 0;
              ici_newpageindex integer;
@@ -8577,7 +8581,7 @@ END IF;
         b.signature,
         b.numposts AS Posts,
         b.points,
-        (CASE WHEN i_showreputation IS TRUE THEN CAST(COALESCE((select  votedate from databaseSchema.objectQualifier_reputationvote repVote where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID=i_pageuserid limit 1), TIMESTAMP '-infinity') as timestampTZ) ELSE i_utctimestamp END) AS ReputationVoteDate,		
+        (CASE WHEN i_showreputation IS TRUE THEN CAST(COALESCE((select  votedate from databaseSchema.objectQualifier_reputationvote repVote where repVote.ReputationToUserID=b.UserID and repVote.ReputationFromUserID=i_pageuserid limit 1), TIMESTAMP '-infinity') as timestamp) ELSE i_utctimestamp END) AS ReputationVoteDate,		
         COALESCE(((b.Flags & 4) = 4),FALSE),
         d.views,
         d.forumid,
@@ -9268,7 +9272,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_system_initialize(
                            i_userkey uuid,
                            i_newboardguid uuid,
                            i_roleprefix varchar,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
              ici_tmpvalue text:= CAST(i_TimeZone AS text);
@@ -9326,18 +9330,18 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_active(
                            i_boardid integer,
                            i_categoryid integer,
                            i_pageuserid integer,
-                           i_sincedate timestampTZ,
-                           i_todate timestampTZ,
+                           i_sincedate timestamp,
+                           i_todate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_findlastunread boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_active_return_type AS
 $BODY$DECLARE 
              ici_topics_totalrowsnumber  integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ ;
+             ici_firstselectposted timestamp ;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
              ici_counter integer := 0;
@@ -9598,11 +9602,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_create_by_messag
                            i_messageid integer, 
                            i_forumid integer, 
                            i_subject varchar,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$DECLARE
              ici_userid integer;
-             ici_Posted timestampTZ ;
+             ici_Posted timestamp ;
              ici_topicid integer;
              varcharnull varchar;
  BEGIN    
@@ -9884,7 +9888,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_findnext(
                            i_topicid integer)
                   RETURNS databaseSchema.objectQualifier_topic_findnext_return_type AS
 $BODY$DECLARE 
-             ici_lastposted timestampTZ;
+             ici_lastposted timestamp;
              ici_ForumID integer;
              _rec databaseSchema.objectQualifier_topic_findnext_return_type;
 BEGIN
@@ -9908,7 +9912,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_findprev(
                            i_topicid integer)
                   RETURNS databaseSchema.objectQualifier_topic_findprevnext_return_type AS
 $BODY$DECLARE
-             ici_lastposted timestampTZ;
+             ici_lastposted timestamp;
              ici_ForumID integer;			
              _rec databaseSchema.objectQualifier_topic_findprevnext_return_type;			
 BEGIN 
@@ -10130,7 +10134,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_latest(
                            i_stylednicks boolean,
                            i_shownocountposts boolean,
                            i_findlastunread boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_latest_return_type AS
 $BODY$DECLARE           
              i_StartID integer:=0;
@@ -10201,22 +10205,22 @@ END LOOP;
   ROWS 1000;
 --GO
 
--- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer)
+-- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer, boolean);
+-- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer, boolean);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_announcements_list(
                            i_forumid integer,
                            i_userid integer,
-                           i_sincedate timestampTZ,
-                           i_todate timestampTZ,
+                           i_sincedate timestamp,
+                           i_todate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_showmoved boolean,
                            i_findlastunread boolean,
                            i_gettags boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_list_return_type AS
 $BODY$DECLARE
              ici_shiftsticky integer :=0;
@@ -10225,7 +10229,7 @@ $BODY$DECLARE
              ici_post_priorityrowsnumber integer;
              ici_post_priorityrowsnumber_shift integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ ;
+             ici_firstselectposted timestamp ;
              ici_ceiling decimal;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
@@ -10370,22 +10374,22 @@ $BODY$
   ROWS 1000; 
 --GO
 
--- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer)
+-- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer, boolean);
+-- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer, boolean);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_list(
                            i_forumid integer,
                            i_userid integer,
-                           i_sincedate timestampTZ,
-                           i_todate timestampTZ,
+                           i_sincedate timestamp,
+                           i_todate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_showmoved boolean,
                            i_findlastunread boolean,
                            i_gettags boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_list_return_type AS
 $BODY$DECLARE
              ici_shiftsticky integer :=0;
@@ -10394,7 +10398,7 @@ $BODY$DECLARE
              ici_post_priorityrowsnumber integer;
              ici_post_priorityrowsnumber_shift integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ ;
+             ici_firstselectposted timestamp ;
              ici_ceiling decimal;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
@@ -10629,11 +10633,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_move(
                            i_forumid integer, 
                            i_showmoved boolean,
                            i_linkdays integer,
-                           i_utctimestamp timestamptz)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
              ici_OldForumID integer;
-             ici_newTimestamp timestamptz;
+             ici_newTimestamp timestamp;
              ici_addinterval interval := i_linkdays || ' day';
 BEGIN     
         if i_linkdays > -1 then		
@@ -10757,17 +10761,17 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_save(
                            i_priority smallint,
                            i_username varchar,
                            i_ip varchar,
-                           i_posted timestampTZ,
+                           i_posted timestamp,
                            i_blogpostid varchar,
                            i_flags integer,
 						   i_messagedescription varchar,
                            i_tags text,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                  RETURNS databaseSchema.objectQualifier_topic_save_return_type AS
 $BODY$DECLARE
              ici_topicid     integer;
              ici_MessageID   integer;
-             ici_Posted	     timestampTZ :=i_posted;
+             ici_Posted	     timestamp :=i_posted;
              ici_ReplyToNull integer;
              ici_blogpostid varchar:=i_blogpostid;
              _rec  databaseSchema.objectQualifier_topic_save_return_type; 
@@ -10802,16 +10806,16 @@ $BODY$
   COST 100; 
 --GO
 
--- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer)
+-- Function: databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestampTZ, integer, integer, boolean);
+-- DROP FUNCTION databaseSchema.objectQualifier_topic_list(integer, integer, integer, timestamp, integer, integer, boolean);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_bytags(
                            i_boardid integer,
                            i_forumid integer,
                            i_pageuserid integer,
                            i_tags varchar(1024),
-                           i_sincedate timestampTZ,						   
+                           i_sincedate timestamp,						   
                            i_pageindex integer,
                            i_pagesize integer)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_bytags_rt AS
@@ -10819,7 +10823,7 @@ $BODY$DECLARE
              ici_shiftsticky integer :=0;
              ici_post_totalrowsnumber  integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ ;
+             ici_firstselectposted timestamp ;
              ici_ceiling decimal;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
@@ -10976,7 +10980,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_updatelastpost(
 $BODY$DECLARE
              ici_ForumID integer:=i_forumid;
              ici_topicid integer:=i_topicid;
-             ici_lastposted timestampTZ ;
+             ici_lastposted timestamp ;
              ici_LastMessageID integer;
              ici_lastmessageflags integer;
              ici_LastUserID integer;
@@ -11222,7 +11226,7 @@ END LOOP;
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_activity_rank(
                            i_boardid integer, 
                            i_displaynumber integer, 
-                           i_startdate timestampTZ )
+                           i_startdate timestamp )
                   RETURNS SETOF databaseSchema.objectQualifier_user_activity_rank_return_type AS
 $BODY$DECLARE
              cntr integer:=0;
@@ -11281,11 +11285,11 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_addpoints(
                            i_userid integer,
                            i_fromuserid integer,
-                           i_utctimestamp timestampTZ,
+                           i_utctimestamp timestamp,
                            i_points integer)
                   RETURNS void AS
 $BODY$
-DECLARE _votedate timestampTZ;
+DECLARE _votedate timestamp;
 BEGIN 
 UPDATE databaseSchema.objectQualifier_user
      SET    points = points + i_points
@@ -11397,7 +11401,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_aspnet(
                            i_email varchar, 
                            i_provideruserkey varchar,
                            i_isapproved boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$DECLARE 
              ici_userid integer;
@@ -11591,10 +11595,10 @@ BEGIN
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_deleteold(
                            i_boardid integer, 
                            i_days integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE 
-             ici_Since timestampTZ :=i_utctimestamp;
+             ici_Since timestamp :=i_utctimestamp;
 BEGIN  
 
     DELETE FROM databaseSchema.objectQualifier_eventlog  
@@ -11924,7 +11928,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_list(
                            i_groupid integer,
                            i_rankid integer, 
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                  RETURNS SETOF databaseSchema.objectQualifier_user_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_user_list_return_type%ROWTYPE;
@@ -12159,7 +12163,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_admin_list(
                            i_boardid integer,                       
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_admin_list_rt AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_admin_list_rt%ROWTYPE;
@@ -12239,7 +12243,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_admin_pageaccesslist(
                            i_boardid integer,                       
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_admin_pageaccess_rt AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_admin_pageaccess_rt%ROWTYPE;
@@ -12311,8 +12315,8 @@ $BODY$DECLARE
              ici_firstselectrownum integer;
              ici_firstselectuserid varchar(255);
              ici_firstselectrankid integer;
-             ici_firstselectlastvisit timestampTZ ;
-             ici_firstselectjoined timestampTZ ;
+             ici_firstselectlastvisit timestamp ;
+             ici_firstselectjoined timestamp ;
              ici_firstselectposts integer;
 BEGIN 
    -- get total number of users in the db
@@ -12540,7 +12544,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_medal_delete(
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_medal_list(
                            i_userid integer, 
                            i_medalid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_user_medal_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_user_medal_list_return_type%ROWTYPE;
@@ -12594,11 +12598,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_medal_save(
                            i_hide boolean, 
                            i_onlyribbon boolean, 
                            i_sortorder smallint, 
-                           i_dateawarded timestampTZ,
-                           i_utctimestamp timestampTZ)
+                           i_dateawarded timestamp,
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE
-             ici_DateAwarded timestampTZ  :=i_dateawarded;
+             ici_DateAwarded timestamp  :=i_dateawarded;
 BEGIN
  
     IF EXISTS(SELECT 1 from databaseSchema.objectQualifier_usermedal 
@@ -12637,8 +12641,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_migrate(
 $BODY$DECLARE
              ici_Password varchar(255);
              ici_IsApproved boolean;
-             ici_LastActivity timestampTZ ;
-             ici_Joined timestampTZ ;
+             ici_LastActivity timestamp ;
+             ici_Joined timestamp ;
              ici_case integer;
              ici_result boolean:=false;
 BEGIN
@@ -12690,7 +12694,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_nntp(
                            i_username varchar,
                            i_email varchar, 
                            i_timezone integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$DECLARE
              ici_UserName varchar(128):=i_username;
@@ -12816,11 +12820,11 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_removepoints(
                            i_userid integer,
                            i_fromuserid integer,
-                           i_utctimestamp timestampTZ,
+                           i_utctimestamp timestamp,
                            i_points integer)
                   RETURNS void AS
 $BODY$
-DECLARE _votedate timestampTZ;
+DECLARE _votedate timestamp;
 BEGIN 
 UPDATE databaseSchema.objectQualifier_user
      SET    points = points - i_points
@@ -12904,7 +12908,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_save(
                            i_hideuser boolean,
                            i_topicsperpage integer,
                            i_postsperpage integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                  RETURNS integer AS
 $BODY$DECLARE
              ici_rankid integer;
@@ -13191,7 +13195,7 @@ BEGIN
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_suspend(
                            i_userid integer, 
-                           i_suspend timestampTZ )
+                           i_suspend timestamp )
                   RETURNS void AS
 'UPDATE databaseSchema.objectQualifier_user 
     SET suspended = $2 WHERE userid=$1;'  
@@ -13346,7 +13350,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_userforum_save(
                            i_userid integer, 
                            i_forumid integer, 
                            i_accessmaskid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -13468,7 +13472,7 @@ END;$BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_watchforum_add(
                            i_userid integer, 
                            i_forumid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$ 
 BEGIN
@@ -13570,7 +13574,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_watchtopic_add(
                            i_userid integer,
                            i_topicid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -13689,7 +13693,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pageload(
                            i_iscrawler	boolean,
                            i_ismobiledevice boolean,
                            i_donttrack boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_pageload_return_type
 AS
 $BODY$DECLARE
@@ -13699,12 +13703,12 @@ $BODY$DECLARE
              ici_isguest	boolean := true;
              ici_activeupdate	boolean := false;
              ici_rowcount	integer;
-             ici_previousvisit	timestampTZ ;
+             ici_previousvisit	timestamp ;
              i_categoryid integer :=ii_categoryid;
              i_forumid integer :=ii_forumid;
              i_topicid integer := ii_topicid;
              i_messageid integer := ii_messageid;
-             i_currenttime	timestampTZ  := i_utctimestamp;
+             i_currenttime	timestamp  := i_utctimestamp;
              ici_activeflags integer := 1;
              ici_crawler boolean := i_iscrawler;
              ici_guestid integer;
@@ -14266,9 +14270,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_shoutbox_savemessage
                            i_username		varchar(255),
                            i_boardid        integer,
                            i_message		text,
-                           i_date			timestampTZ,
+                           i_date			timestamp,
                            i_ip			    varchar(39),
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$DECLARE ici_OverrideDisplayName boolean;
  BEGIN
@@ -14282,7 +14286,7 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_shoutbox_clearmessages(
                            i_boardid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS void 
 AS
   'DELETE FROM databaseSchema.objectQualifier_shoutboxmessage WHERE boardid = $1 AND EXTRACT(DAY FROM ($2 - "date")) > 1;'
@@ -14295,7 +14299,7 @@ AS
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_addthanks
                            (i_fromuserid integer,
                            i_messageid integer,
-                           i_utctimestamp timestampTZ,
+                           i_utctimestamp timestamp,
                            i_usedisplayname boolean)
                   RETURNS varchar(128)
 AS
@@ -14628,7 +14632,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_readtopic_addorupdate(
                            i_userid integer, 
                            i_topicid integer,
-                           i_utctimestamp timestampTZ)				 
+                           i_utctimestamp timestamp)				 
                   RETURNS void AS
 $BODY$
 declare ici_lastreadaccess	timestamp;
@@ -14662,14 +14666,14 @@ $BODY$
 
  DROP FUNCTION  IF EXISTS databaseSchema.objectQualifier_user_lastread(integer) ;
   --GO
-  DROP FUNCTION  IF EXISTS databaseSchema.objectQualifier_user_lastread(integer, timestampTZ ) ;
+  DROP FUNCTION  IF EXISTS databaseSchema.objectQualifier_user_lastread(integer, timestamp ) ;
   --GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_lastread(
                            i_userid integer)				 
-                  RETURNS timestampTZ  AS
+                  RETURNS timestamp  AS
 $BODY$
-DECLARE ici_LastForumRead timestampTZ ;
-        ici_LastTopicRead timestampTZ ;	
+DECLARE ici_LastForumRead timestamp ;
+        ici_LastTopicRead timestamp ;	
 BEGIN		
         
         SELECT  lastaccessdate INTO ici_LastForumRead FROM  databaseSchema.objectQualifier_ForumReadTracking WHERE userid = i_userid ORDER BY lastaccessdate DESC LIMIT 1;
@@ -14697,8 +14701,8 @@ $BODY$
 
 
   CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_readtopic_lastread(
-                           i_userid integer, i_topicid integer,i_utctimestamp timestampTZ)				 
-                  RETURNS timestampTZ  AS
+                           i_userid integer, i_topicid integer,i_utctimestamp timestamp)				 
+                  RETURNS timestamp  AS
 $BODY$
 BEGIN
     RETURN (SELECT LastAccessDate FROM  databaseSchema.objectQualifier_topicreadtracking WHERE userid = i_userid AND topicid = i_topicid);
@@ -14707,7 +14711,7 @@ $BODY$
   LANGUAGE 'plpgsql' STABLE  SECURITY DEFINER COST 100;
   --GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_readforum_addorupdate(
-                           i_userid integer, i_forumid integer,i_utctimestamp timestampTZ)				 
+                           i_userid integer, i_forumid integer,i_utctimestamp timestamp)				 
                   RETURNS void AS
 $BODY$
 declare ici_lastreadaccess	timestamp;	
@@ -14749,7 +14753,7 @@ $BODY$
    --GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_readforum_lastread(
                            i_userid integer, i_forumid integer)				 
-                  RETURNS timestampTZ  AS
+                  RETURNS timestamp  AS
 $BODY$
 BEGIN
     RETURN (SELECT LastAccessDate FROM  databaseSchema.objectQualifier_forumreadtracking WHERE userid = i_userid AND forumid = i_forumid);
@@ -14807,18 +14811,18 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_favorite_details
 i_boardid integer, 
 i_categoryid integer, 
 i_pageuserid integer, 
-i_sincedate timestampTZ, 
-i_todate timestampTZ, 
+i_sincedate timestamp, 
+i_todate timestamp, 
 i_pageindex integer, 
 i_pagesize integer, 
 i_stylednicks boolean,
 i_findlastunread boolean,
-i_utctimestamp timestampTZ)
+i_utctimestamp timestamp)
   RETURNS SETOF databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 $BODY$DECLARE 
  ici_topics_totalrowsnumber  integer; 
  ici_firstselectrownum integer;   
- ici_firstselectposted timestampTZ ;  
+ ici_firstselectposted timestamp ;  
  ici_pageindex integer := i_pageindex;
  ici_retcount integer := 0;
  ici_counter integer := 0;
@@ -14972,7 +14976,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_addrequest(
                            i_fromuserid integer,
                            i_touserid integer,
                        out i_approved boolean,
-                           i_utctimestamp timestampTZ, 
+                           i_utctimestamp timestamp, 
                        out i_paramoutput varchar(255))
                   RETURNS RECORD AS
 $BODY$
@@ -15054,7 +15058,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_approverequest(
                            i_fromuserid integer,
                            i_touserid integer,
                            i_mutual boolean,
-                           i_utctimestamp timestampTZ,
+                           i_utctimestamp timestamp,
                        out i_paramoutput varchar(128))
                   RETURNS varchar(128) AS
 $BODY$
@@ -15192,7 +15196,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_album_save(
                            i_userid integer,
                            i_title varchar(255),
                            i_coverimageid integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS integer AS
 $BODY$ 
  DECLARE ici_albuminserted integer; 
@@ -15368,7 +15372,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_album_image_save(
                            i_filename varchar(255),
                            i_bytes integer,
                            i_contenttype varchar(50),
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                            RETURNS void AS
 $BODY$
 BEGIN  
@@ -15640,7 +15644,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_messagehistory_list(
                            i_messageid integer, 
                            i_daystoclean integer,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_messagehistory_list_return_type  AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_messagehistory_list_return_type%ROWTYPE;
@@ -15833,7 +15837,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_recent_users(
                            i_boardid integer,
                            i_timesincelastlogin integer,
                            i_stylednicks boolean,
-                           i_utctimestamp timestampTZ) 
+                           i_utctimestamp timestamp) 
                   RETURNS SETOF databaseSchema.objectQualifier_recent_users_rt AS
 $BODY$
 DECLARE  
@@ -15875,18 +15879,18 @@ $BODY$
                             i_boardid integer,
                             i_categoryid integer,
                             i_pageuserid integer,
-                            i_sincedate timestampTZ,
-                            i_todate timestampTZ,
+                            i_sincedate timestamp,
+                            i_todate timestamp,
                             i_pageindex integer,
                             i_pagesize integer,
                             i_stylednicks boolean,
                             i_findlastunread boolean,
-                            i_utctimestamp timestampTZ)
+                            i_utctimestamp timestamp)
                    RETURNS SETOF databaseSchema.objectQualifier_topics_byuser_return_type AS
  $BODY$DECLARE 
               ici_topics_totalrowsnumber  integer;
               ici_firstselectrownum integer;
-              ici_firstselectposted timestampTZ ;
+              ici_firstselectposted timestamp ;
               ici_pageindex integer := i_pageindex;
               ici_retcount integer := 0;
               ici_counter integer := 0;
@@ -16177,18 +16181,18 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_unanswered(
                            i_boardid integer,
                            i_categoryid integer,
                            i_pageuserid integer,
-                           i_sincedate timestampTZ,
-                           i_todate timestampTZ,
+                           i_sincedate timestamp,
+                           i_todate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,						   
                            i_stylednicks boolean,
                            i_findlastunread boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_unanswered_rt AS
 $BODY$DECLARE
              ici_topics_totalrowsnumber  integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ ;
+             ici_firstselectposted timestamp ;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
              ici_counter integer := 0;
@@ -16343,18 +16347,18 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_topic_unread(
                            i_boardid integer,
                            i_categoryid integer,
                            i_pageuserid integer,
-                           i_sincedate timestampTZ,
-                           i_todate timestampTZ,
+                           i_sincedate timestamp,
+                           i_todate timestamp,
                            i_pageindex integer,
                            i_pagesize integer,
                            i_stylednicks boolean,
                            i_findlastunread boolean,
-                           i_utctimestamp timestampTZ)
+                           i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_topic_unread_return_type AS
 $BODY$DECLARE
              ici_topics_totalrowsnumber  integer;
              ici_firstselectrownum integer;
-             ici_firstselectposted timestampTZ;
+             ici_firstselectposted timestamp;
              ici_pageindex integer := i_pageindex;
              ici_retcount integer := 0;
              ici_counter integer := 0;

@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class message_reply_list_Result
     {
         public int MessageID { get; set; }

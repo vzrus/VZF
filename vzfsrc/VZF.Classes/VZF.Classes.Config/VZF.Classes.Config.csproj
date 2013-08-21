@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{05E50D2F-9527-4CE8-A0F8-168281C426CB}</ProjectGuid>
+    <ProjectGuid>{753C328A-21A5-4E20-969A-6BCC36019F77}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VZF.Classes.Config</RootNamespace>
+    <RootNamespace>VZF.Classes</RootNamespace>
     <AssemblyName>VZF.Classes.Config</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\VZF.NET\Bin\</OutputPath>
+    <OutputPath>..\VZF.NET\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -64,9 +64,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseUrlBuilder.cs" />
@@ -112,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
-      <Project>{60fc8775-e129-48e0-b5ba-fe9136f9331f}</Project>
+      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
       <Name>VZF.Types</Name>
     </ProjectReference>
   </ItemGroup>

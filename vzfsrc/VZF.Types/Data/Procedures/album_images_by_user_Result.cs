@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class album_images_by_user_Result
     {
         public int ImageID { get; set; }

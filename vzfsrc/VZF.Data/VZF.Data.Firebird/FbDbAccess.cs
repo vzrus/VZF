@@ -34,6 +34,7 @@ namespace VZF.Data.Firebird
     using FirebirdSql.Data.FirebirdClient;
 
     using VZF.Data.Utils;
+    using VZF.Types.Objects;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 

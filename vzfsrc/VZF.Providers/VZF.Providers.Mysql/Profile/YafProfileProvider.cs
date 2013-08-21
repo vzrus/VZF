@@ -24,28 +24,26 @@
  * 
  */
 
-
-using System.Collections.Concurrent;
-using System.Web.Configuration;
-using YAF.Types.Interfaces;
-
 namespace YAF.Providers.Profile
-{ 
-  using System;
-  using System.Collections.Generic;
-  using System.Collections.Specialized;
-  using System.Configuration;
-  using System.Data;
-  using System.Globalization;
-  using System.Text;
-  using System.Web.Profile;
-  using YAF.Core;
-  using YAF.Classes.Pattern;
-  using YAF.Providers.Utils;
-  using MySql.Data.MySqlClient;
-	/// <summary>
-	/// YAF Custom Profile Provider
-	/// </summary>
+{
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Data;
+    using System.Text;
+    using System.Web.Profile;
+
+    using MySql.Data.MySqlClient;
+
+    using YAF.Classes;
+    using YAF.Core;
+    using YAF.Providers.Utils;
+    using YAF.Types.Interfaces;
+
+    /// <summary>
+    /// YAF Custom Profile Provider
+    /// </summary>
     public class VzfMySqlProfileProvider : ProfileProvider
     {
     #region Constants and Fields
@@ -169,10 +167,11 @@ namespace YAF.Providers.Profile
             }
 
             // is the connection string set?
-            if (!String.IsNullOrEmpty(this._connStrName))
+            if (!string.IsNullOrEmpty(this._connStrName))
             {
                 string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
                 ConnectionString = connStr;
+
                 // set the app variable...
                 if (YafContext.Application[ConnStrAppKeyName] == null)
                 {
@@ -229,9 +228,8 @@ namespace YAF.Providers.Profile
             else
             {
 
-                if (YAF.Classes.Config.GetConfigValueAsBool("YAF.OldProfileProvider", true))
+                if (Config.GetConfigValueAsBool("YAF.OldProfileProvider", true))
                 {
-
                     // load the property collection (sync profile class)
                     LoadFromPropertyCollection(collection);
 
@@ -283,7 +281,6 @@ namespace YAF.Providers.Profile
                     {
                         YAF.Providers.Profile.MySQLDB.UnpackProfileData(dt.Rows[0], settingPropertyCollection);
                     }
-
                 }
 
                 // save this collection to the cache
@@ -291,8 +288,8 @@ namespace YAF.Providers.Profile
 
                 return settingPropertyCollection;
             }
-
         }
+
         /// <summary>
         /// Takes as input a  SettingsContext and a  
         /// SettingsPropertyValueCollection object.The SettingsContext 

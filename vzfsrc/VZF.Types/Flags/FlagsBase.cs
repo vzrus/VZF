@@ -22,12 +22,11 @@ namespace YAF.Types.Flags
   #region Using
 
   using System;
-  using System.Runtime.Serialization;
-  using System.Security;
+
 
   #endregion
 
-  /// <summary>
+    /// <summary>
   /// Abstract class as a foundation for various flags implementations
   /// </summary>
   [Serializable]

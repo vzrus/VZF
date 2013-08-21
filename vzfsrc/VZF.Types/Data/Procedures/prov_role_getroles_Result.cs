@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class prov_role_getroles_Result
     {
         public System.Guid RoleID { get; set; }

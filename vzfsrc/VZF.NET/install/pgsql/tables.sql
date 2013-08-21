@@ -21,7 +21,7 @@ CREATE TABLE databaseSchema.objectQualifier_accessmask
              createdbyuserid           integer,
              createdbyusername         varchar(255),
              createdbyuserdisplayname  varchar(255),
-             createddate               timestampTZ,
+             createddate               timestamp,
              isusermask                boolean  DEFAULT false NOT NULL,
              isadminmask               boolean  DEFAULT false NOT NULL
             ) 
@@ -37,7 +37,7 @@ CREATE TABLE databaseSchema.objectQualifier_accessmaskhistory
              changeduserid             integer,
              changedusername           varchar(255) NOT NULL,
              changeddisplayname        varchar(255) NOT NULL,		
-             changeddate               timestampTZ
+             changeddate               timestamp
             ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -51,8 +51,8 @@ CREATE TABLE databaseSchema.objectQualifier_active
              boardid                   integer NOT NULL,
              userid                    integer NOT NULL,
              ip                        varchar(39) NOT NULL CHECK (ip <> ''),
-             login                     timestampTZ  NOT NULL,
-             lastactive                timestampTZ  NOT NULL,
+             login                     timestamp  NOT NULL,
+             lastactive                timestamp  NOT NULL,
              location                  varchar(1024) NOT NULL,
              forumid                   integer,
              topicid                   integer,
@@ -76,7 +76,7 @@ CREATE TABLE databaseSchema.objectQualifier_activeaccess
              isforummoderator	       boolean NOT NULL default false,
              ismoderator    	       boolean NOT NULL default false,
              isguestx			       boolean NOT NULL default false,
-             lastactive			       timestampTZ ,
+             lastactive			       timestamp ,
              readaccess			       boolean NOT NULL default false,
              postaccess			       boolean NOT NULL default false,
              replyaccess		       boolean NOT NULL default false,
@@ -142,7 +142,7 @@ CREATE TABLE databaseSchema.objectQualifier_bannedip
              id                        serial NOT NULL,
              boardid                   integer NOT NULL,
              mask                      varchar(57) NOT NULL,
-             since                     timestampTZ  NOT NULL,
+             since                     timestamp  NOT NULL,
              reason                    varchar(128),
              userid	                   integer
              ) 
@@ -209,7 +209,7 @@ CREATE TABLE databaseSchema.objectQualifier_checkemail
              checkemailid              serial NOT NULL,
              userid                    integer NOT NULL,
              email                     varchar(128) NOT NULL CHECK (email <> ''),
-             created                   timestampTZ  NOT NULL,
+             created                   timestamp  NOT NULL,
              hash                      varchar(32) NOT NULL CHECK (hash <> '') 
              ) 
         WITH (OIDS=withOIDs);
@@ -236,7 +236,7 @@ IF NOT EXISTS (select 1 from pg_tables
 CREATE TABLE databaseSchema.objectQualifier_eventlog
              (
              eventlogid                serial NOT NULL,
-             eventtime                 timestampTZ  NOT NULL DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
+             eventtime                 timestamp  NOT NULL DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
              userid                    integer,
              source                    varchar(128) NOT NULL CHECK (source <> ''),
              description               text NOT NULL CHECK (description <> ''),
@@ -268,7 +268,7 @@ CREATE TABLE databaseSchema.objectQualifier_forum
              name                      varchar(128) NOT NULL CHECK (name <> ''),
              description               varchar(255),
              sortorder                 integer NOT NULL CHECK (sortorder >= 0),
-             lastposted                timestampTZ ,
+             lastposted                timestamp ,
              lasttopicid               integer,
              lastmessageid             integer,
              lastuserid                integer,
@@ -285,7 +285,7 @@ CREATE TABLE databaseSchema.objectQualifier_forum
              createdbyuserid           integer,
              createdbyusername         varchar(255),
              createdbyuserdisplayname  varchar(255),
-             createddate               timestampTZ,
+             createddate               timestamp,
              isuserforum               boolean DEFAULT false NOT NULL,
              canhavepersforums         boolean DEFAULT false NOT NULL
              ) 
@@ -301,7 +301,7 @@ CREATE TABLE databaseSchema.objectQualifier_forumhistory
              changeduserid             integer,
              changedusername           varchar(255) NOT NULL,
              changeddisplayname        varchar(255) NOT NULL,		
-             changeddate               timestampTZ
+             changeddate               timestamp
             ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -339,7 +339,7 @@ CREATE TABLE databaseSchema.objectQualifier_group
              createdbyuserid           integer,
              createdbyusername         varchar(255),
              createdbyuserdisplayname  varchar(255),
-             createddate               timestampTZ,			
+             createddate               timestamp,			
              isusergroup               boolean  DEFAULT false NOT NULL,
              ishidden                  boolean  DEFAULT false NOT NULL,
              usrpersonalforums         integer  DEFAULT 0 NOT NULL,
@@ -358,7 +358,7 @@ CREATE TABLE databaseSchema.objectQualifier_grouphistory
              changeduserid             integer,
              changedusername           varchar(255) NOT NULL,
              changeddisplayname        varchar(255) NOT NULL,		
-             changeddate               timestampTZ
+             changeddate               timestamp
             ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -388,12 +388,12 @@ CREATE TABLE databaseSchema.objectQualifier_mail
              fromusername              varchar(128),
              touser                    varchar(128) NOT NULL,
              tousername                varchar(128),
-             created                   timestampTZ  NOT NULL,
+             created                   timestamp  NOT NULL,
              subject                   varchar(128) NOT NULL,
              body                      text NOT NULL,
              bodyhtml                  text,
              sendtries                 integer DEFAULT 0 NOT NULL,
-             sendattempt               timestampTZ ,
+             sendattempt               timestamp ,
              processid                 integer
              ) 
        WITH (OIDS=withOIDs);
@@ -437,11 +437,11 @@ CREATE TABLE databaseSchema.objectQualifier_message
              userid                    integer NOT NULL,
              username                  varchar(128),
              userdisplayname           varchar(128),
-             posted                    timestampTZ  NOT NULL,
+             posted                    timestamp  NOT NULL,
              message                   text NOT NULL,
 			 description               varchar(255),
              ip                        varchar(39) NOT NULL,
-             edited                    timestampTZ ,
+             edited                    timestamp ,
              flags                     integer DEFAULT 23 NOT NULL,
              editreason                varchar(128),
              ismoderatorchanged        boolean DEFAULT false NOT NULL,
@@ -466,7 +466,7 @@ CREATE TABLE databaseSchema.objectQualifier_messagereported
              message                   text,
              resolved                  boolean,
              resolvedby                integer,
-             resolveddate              timestampTZ
+             resolveddate              timestamp
              )
        WITH (OIDS=withOIDs);
 END IF;
@@ -479,7 +479,7 @@ CREATE TABLE databaseSchema.objectQualifier_messagereportedaudit
              logid                     serial NOT NULL,
              userid                    integer NOT NULL,
              messageid                 integer NOT NULL,
-             reported                  timestampTZ NOT NULL,
+             reported                  timestamp NOT NULL,
              reportednumber            integer,
              reporttext                varchar(4000)
              ) 
@@ -496,9 +496,9 @@ CREATE TABLE databaseSchema.objectQualifier_nntpforum
              groupname                 varchar(128) NOT NULL,
              forumid                   integer NOT NULL,
              lastmessageno             integer NOT NULL,
-             lastupdate                timestampTZ  NOT NULL,
+             lastupdate                timestamp  NOT NULL,
              active                    boolean NOT NULL,
-             datecutoff	               timestampTZ 
+             datecutoff	               timestamp 
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -540,7 +540,7 @@ CREATE TABLE databaseSchema.objectQualifier_pmessage
              pmessageid                serial NOT NULL,
              replyto                   integer,
              fromuserid                integer NOT NULL,
-             created                   timestampTZ  NOT NULL,
+             created                   timestamp  NOT NULL,
              subject                   varchar(128) NOT NULL,
              body                      text NOT NULL,
              flags                     integer DEFAULT 0 NOT NULL
@@ -566,7 +566,7 @@ CREATE TABLE databaseSchema.objectQualifier_poll
              (
              pollid                    serial NOT NULL,
              question                  varchar(128) NOT NULL,
-             closes                    timestampTZ ,
+             closes                    timestamp ,
              pollgroupid               integer,
              userid                    integer not null,
              objectpath                varchar(255),
@@ -678,13 +678,13 @@ CREATE TABLE databaseSchema.objectQualifier_topic
              userid                    integer NOT NULL,
              username                  varchar(128),
              userdisplayname           varchar(128),
-             posted                    timestampTZ  NOT NULL,
+             posted                    timestamp  NOT NULL,
              topic                     varchar(128) NOT NULL,
              views                     integer NOT NULL,
              priority                  smallint NOT NULL,
              pollid                    integer,
              topicmovedid              integer,
-             lastposted                timestampTZ ,
+             lastposted                timestamp ,
              lastmessageid             integer,
              lastuserid                integer,
              lastusername              varchar(128),
@@ -700,7 +700,7 @@ CREATE TABLE databaseSchema.objectQualifier_topic
              isdeleted                 boolean DEFAULT FALSE NOT NULL,
              ispersistent              boolean DEFAULT FALSE NOT NULL,
              isquestion                boolean DEFAULT FALSE NOT NULL,
-             linkdate                  timestampTZ,
+             linkdate                  timestamp,
              topicimage                varchar(255),  
              topicimagetype            varchar(50),  
              topicimagebin             bytea  
@@ -719,8 +719,8 @@ CREATE TABLE databaseSchema.objectQualifier_user
              name                      varchar(128) NOT NULL,
              password                  varchar(32) NOT NULL,
              email                     varchar(128),
-             joined                    timestampTZ  NOT NULL,
-             lastvisit                 timestampTZ  NOT NULL,
+             joined                    timestamp  NOT NULL,
+             lastvisit                 timestamp  NOT NULL,
              ip                        varchar(39),
              numposts                  integer NOT NULL,
              timezone                  integer NOT NULL,
@@ -729,7 +729,7 @@ CREATE TABLE databaseSchema.objectQualifier_user
              avatarimage               bytea,
              avatarimagetype           varchar(128),
              rankid                    integer NOT NULL,
-             suspended                 timestampTZ ,
+             suspended                 timestamp ,
              languagefile              varchar(128),
              themefile                 varchar(128),
              overridedefaultthemes     boolean DEFAULT false NOT NULL,
@@ -770,8 +770,8 @@ IF NOT EXISTS (select 1 from pg_tables
 CREATE TABLE databaseSchema.objectQualifier_userprofile
              (
              userid                    integer NOT NULL,
-             lastupdateddate           timestampTZ  NOT NULL,			
-             lastactivity              timestampTZ ,
+             lastupdateddate           timestamp  NOT NULL,			
+             lastactivity              timestamp ,
              applicationname           varchar(255) NOT NULL,
              isanonymous               boolean DEFAULT false NOT NULL,
              username                  varchar(255) NOT NULL
@@ -805,7 +805,7 @@ CREATE TABLE databaseSchema.objectQualifier_userforum
              userid                    serial NOT NULL,
              forumid                   integer NOT NULL,
              accessmaskid              integer NOT NULL,
-             invited                   timestampTZ  NOT NULL,
+             invited                   timestamp  NOT NULL,
              accepted                  boolean NOT NULL
              ) 
        WITH (OIDS=withOIDs);
@@ -833,7 +833,7 @@ CREATE TABLE databaseSchema.objectQualifier_usermedal
              hide                      boolean DEFAULT false NOT NULL,
              onlyribbon                boolean DEFAULT false NOT NULL,
              sortorder                 smallint DEFAULT 255 NOT NULL,
-             dateawarded               timestampTZ  NOT NULL
+             dateawarded               timestamp  NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -857,8 +857,8 @@ CREATE TABLE databaseSchema.objectQualifier_watchforum
              watchforumid              serial NOT NULL,
              forumid                   integer NOT NULL,
              userid                    integer NOT NULL,
-             created timestampTZ  NOT NULL,
-             lastmail timestampTZ
+             created timestamp  NOT NULL,
+             lastmail timestamp
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -871,8 +871,8 @@ CREATE TABLE databaseSchema.objectQualifier_watchtopic
              watchtopicid              serial NOT NULL,
              topicid                   integer NOT NULL,
              userid                    integer NOT NULL,
-             created                   timestampTZ  NOT NULL,
-             lastmail                  timestampTZ
+             created                   timestamp  NOT NULL,
+             lastmail                  timestamp
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -887,7 +887,7 @@ CREATE TABLE databaseSchema.objectQualifier_shoutboxmessage
              username                  varchar(128) NOT NULL,
              userdisplayname           varchar(128) NOT NULL,
              message                   text,
-             "date"                    timestampTZ  NOT NULL,
+             "date"                    timestamp  NOT NULL,
              "ip"                      varchar(128) NOT NULL,
              boardid integer
              ) 
@@ -903,7 +903,7 @@ CREATE TABLE databaseSchema.objectQualifier_thanks
              thanksfromuserid          integer NOT NULL,
              thankstouserid            integer NOT NULL,
              messageid                 integer NOT NULL,
-             thanksdate                timestampTZ  NOT NULL
+             thanksdate                timestamp  NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -919,7 +919,7 @@ CREATE TABLE databaseSchema.objectQualifier_buddy
              fromuserid                integer NOT NULL,
              touserid                  integer NOT NULL,
              approved                  boolean NOT NULL,
-             requested                 timestampTZ  NOT NULL
+             requested                 timestamp  NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -948,7 +948,7 @@ CREATE TABLE databaseSchema.objectQualifier_useralbum
              userid                    integer NOT NULL,
              title                     varchar(255),	
              coverimageid              integer,
-             updated                   timestampTZ  NOT NULL
+             updated                   timestamp  NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -962,7 +962,7 @@ CREATE TABLE databaseSchema.objectQualifier_useralbumimage
              filename                  varchar(255) NOT NULL,
              bytes                     integer NOT NULL,
              contenttype               varchar(50),
-             uploaded                  timestampTZ  NOT NULL,
+             uploaded                  timestamp  NOT NULL,
              downloads                 integer NOT NULL
              ) 
        WITH (OIDS=withOIDs);
@@ -976,7 +976,7 @@ CREATE TABLE databaseSchema.objectQualifier_messagehistory
              messageid		           integer NOT NULL,
              message		           text NOT NULL,
              ip				           varchar(15) NOT NULL,
-             edited			           timestampTZ  NULL,
+             edited			           timestamp  NULL,
              editreason                varchar(100) NULL,
              ismoderatorchanged        boolean DEFAULT false NOT NULL,
              flags                     integer NOT NULL DEFAULT 0,
@@ -993,7 +993,7 @@ CREATE TABLE databaseSchema.objectQualifier_topicreadtracking
              (
              userid			           int NOT NULL,
              topicid			       int NOT NULL ,
-             lastaccessdate	           timestampTZ  NOT NULL
+             lastaccessdate	           timestamp  NOT NULL
              )
        WITH (OIDS=withOIDs);
 END IF;
@@ -1007,7 +1007,7 @@ CREATE TABLE databaseSchema.objectQualifier_forumreadtracking
              (
              userid			           int NOT NULL,
              forumid			       int NOT NULL,
-             lastaccessdate	           timestampTZ  NOT NULL
+             lastaccessdate	           timestamp  NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -1056,7 +1056,7 @@ CREATE TABLE databaseSchema.objectQualifier_reputationvote
              (        
              reputationfromuserid      integer NOT NULL,
              reputationtouserid        integer NOT NULL,
-             votedate                  timestampTZ NOT NULL
+             votedate                  timestamp NOT NULL
              ) 
        WITH (OIDS=withOIDs);
 END IF;
@@ -1126,7 +1126,7 @@ BEGIN
          ALTER TABLE databaseSchema.objectQualifier_shoutboxmessage ADD COLUMN userdisplayname  varchar(128);
      END IF;
      IF (column_exists('databaseSchema.objectQualifier_topic','linkdate') IS FALSE) THEN
-         ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN linkdate  timestampTZ;
+         ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN linkdate  timestamp;
      END IF;
      IF (column_exists('databaseSchema.objectQualifier_topic','topicimage') IS FALSE) THEN
          ALTER TABLE databaseSchema.objectQualifier_topic ADD COLUMN topicimage varchar(255);
@@ -1171,7 +1171,7 @@ BEGIN
      END IF;
 
      IF (NOT column_exists('databaseSchema.objectQualifier_forum','createddate')) THEN
-         ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createddate  timestampTZ;
+         ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN createddate  timestamp;
      END IF;
 
      IF (NOT column_exists('databaseSchema.objectQualifier_forum','isuserforum')) THEN
@@ -1180,12 +1180,7 @@ BEGIN
 
          IF (NOT column_exists('databaseSchema.objectQualifier_forum','canhavepersforums')) THEN
          ALTER TABLE databaseSchema.objectQualifier_forum ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
-     END IF;
-
-     
-
-
-     
+     END IF;     
 
         if exists (select 1 from information_schema.columns where table_name='objectQualifier_forum' 
         and table_schema='databaseSchema' and column_name ='description' and is_nullable='NO') then
@@ -1225,12 +1220,7 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_add_or_change_columns1()
 RETURNS void AS
 $BODY$
-BEGIN
- 
-
-    
-
-   
+BEGIN   
       IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserid')) THEN
          ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyuserid  integer;
      END IF;
@@ -1247,7 +1237,7 @@ BEGIN
      END IF;
 
   IF (NOT column_exists('databaseSchema.objectQualifier_group','createddate')) THEN
-         ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createddate  timestampTZ;
+         ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createddate  timestamp;
      END IF;
 
      IF (NOT column_exists('databaseSchema.objectQualifier_group','isusergroup')) THEN
@@ -1282,7 +1272,7 @@ BEGIN
      END IF;
 
      IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','createddate')) THEN
-         ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createddate  timestampTZ;
+         ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN createddate  timestamp;
      END IF;
      IF (NOT column_exists('databaseSchema.objectQualifier_accessmask','isusermask')) THEN
          ALTER TABLE databaseSchema.objectQualifier_accessmask ADD COLUMN isusermask  boolean  DEFAULT false NOT NULL ;
@@ -1415,4 +1405,24 @@ $BODY$
   COST 100;   
 --GO 
     SELECT databaseSchema.objectQualifier_init_dsiplayname_launcher();
+--GO
+
+DO $$DECLARE r record; notnulll varchar(10);
+BEGIN
+    FOR r IN SELECT t.table_name, c.column_name, c.is_nullable 
+	FROM information_schema.tables t
+	         JOIN 
+			 information_schema.columns c
+			 ON t.table_name = c.table_name     
+			 WHERE t.table_type = 'BASE TABLE' 
+			 AND t.table_schema = 'databaseSchema'
+			 and c.data_type = 'timestamp with time zone'
+    LOOP		
+		 notnulll := r.is_nullable;
+         EXECUTE 'ALTER TABLE databaseSchema' || '.' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name  || ' TYPE timestamp without time zone;';
+		IF (notnulll NOT LIKE 'YES') THEN	
+		 EXECUTE 'ALTER TABLE databaseSchema' || '.' ||  r.table_name || ' ALTER COLUMN ' ||  r.column_name || ' SET NOT NULL;';
+		END IF;		
+    END LOOP;
+END$$;
 --GO

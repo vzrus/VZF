@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class nntptopic_list_Result
     {
         public int NntpTopicID { get; set; }

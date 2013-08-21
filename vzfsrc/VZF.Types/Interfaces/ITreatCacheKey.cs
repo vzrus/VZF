@@ -20,11 +20,11 @@ namespace YAF.Types.Interfaces
 {
   #region Using
 
-  using System.Collections.Generic;
+
 
   #endregion
 
-  /// <summary>
+    /// <summary>
   /// The i treat cache key.
   /// </summary>
   public interface ITreatCacheKey

@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class extension_edit_Result
     {
         public int ExtensionID { get; set; }

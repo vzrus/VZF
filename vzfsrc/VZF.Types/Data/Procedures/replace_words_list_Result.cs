@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class replace_words_list_Result
     {
         public int ID { get; set; }

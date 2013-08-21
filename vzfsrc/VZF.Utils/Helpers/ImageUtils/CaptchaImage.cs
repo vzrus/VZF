@@ -33,7 +33,7 @@ namespace VZF.Utils
   /// CaptchaImage Class
   ///   Thanks to "prujohn" on the YAF Forum for his work.
   /// </summary>
-  public class CaptchaImage : IDisposable
+  public sealed class CaptchaImage : IDisposable
   {
     #region Constants and Fields
 

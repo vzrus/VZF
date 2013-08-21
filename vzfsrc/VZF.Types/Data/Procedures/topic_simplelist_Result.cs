@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class topic_simplelist_Result
     {
         public int TopicID { get; set; }

@@ -107,7 +107,7 @@
         </td>
     </tr>
 </table>
-<asp:Repeater ID="MessageList" runat="server" OnItemCreated="MessageList_OnItemCreated">
+<asp:Repeater ID="MessageList" runat="server" OnItemCreated="MessageList_OnItemCreated" >
     <ItemTemplate>
         <table class="content postContainer" width="100%">
             <%# GetThreadedRow(Container.DataItem) %>

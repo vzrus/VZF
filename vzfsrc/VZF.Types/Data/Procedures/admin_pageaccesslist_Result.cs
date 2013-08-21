@@ -9,7 +9,6 @@
 
 namespace VZF.Types.Data
 {
-    using System;
 
     public class admin_pageaccesslist_ResultBase
     {

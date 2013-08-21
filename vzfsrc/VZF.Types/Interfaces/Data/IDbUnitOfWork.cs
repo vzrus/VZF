@@ -18,25 +18,25 @@
  */
 namespace YAF.Types.Interfaces
 {
-	#region Using
+    #region Using
 
-	using System;
-	using System.Data.Common;
+    using System;
+    using System.Data.Common;
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// The db unit of work.
-	/// </summary>
-	public interface IDbUnitOfWork : IDisposable
-	{
-		#region Properties
+    /// <summary>
+    /// The db unit of work.
+    /// </summary>
+    public interface IDbUnitOfWork : IDisposable
+    {
+        #region Properties
 
-		/// <summary>
-		/// Gets Transaction.
-		/// </summary>
-		DbTransaction Transaction { get; }
+        /// <summary>
+        /// Gets Transaction.
+        /// </summary>
+        DbTransaction Transaction { get; }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -30,6 +30,8 @@ namespace YAF.Providers.Profile
     using System.Data;
     using System.Text;
     using System.Web.Profile;
+
+    using YAF.Classes;
     using YAF.Core;
     using YAF.Classes.Pattern;
     using YAF.Providers.Utils;
@@ -432,7 +434,7 @@ namespace YAF.Providers.Profile
             }
 
             // Migration code
-            if (YAF.Classes.Config.GetConfigValueAsBool("YAF.OldProfileProvider", false))
+            if (Config.GetConfigValueAsBool("YAF.OldProfileProvider", false))
             {
                 // load the property collection (sync profile class)
                 LoadFromPropertyCollection(collection);

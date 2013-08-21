@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class medal_listusers_Result
     {
         public int UserID { get; set; }

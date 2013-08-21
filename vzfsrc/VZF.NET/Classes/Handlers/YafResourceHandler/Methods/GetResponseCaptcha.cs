@@ -21,9 +21,12 @@ namespace YAF
 {
     #region Using
 
+    using System;
     using System.Drawing.Imaging;
     using System.Web;
     using System.Web.SessionState;
+
+    using VZF.Data.Common;
 
     using YAF.Core;
     using YAF.Types;
@@ -59,14 +62,14 @@ namespace YAF
             context.Response.Clear();
             context.Response.ContentType = "image/jpeg";
             captchaImage.Image.Save(context.Response.OutputStream, ImageFormat.Jpeg);
-#if (!DEBUG)
-            }
+ #if (!DEBUG)
+           }
             catch (Exception x)
-            {
+           {
                 CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, this.GetType().ToString(), x, 1);
                 context.Response.Write(
                     "Error: Resource has been moved or is unavailable. Please contact the forum admin.");
-            }
+           }
 
 #endif
         }

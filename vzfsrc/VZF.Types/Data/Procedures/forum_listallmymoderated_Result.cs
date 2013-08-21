@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class forum_listallmymoderated_Result
     {
         public int CategoryID { get; set; }

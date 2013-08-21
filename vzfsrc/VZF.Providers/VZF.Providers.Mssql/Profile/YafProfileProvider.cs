@@ -31,8 +31,7 @@ namespace YAF.Providers.Profile
 
     using VZF.Data.MsSql;
     using VZF.Utils;
-
-    using YAF.Classes.Pattern;
+ 
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;

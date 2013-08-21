@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class message_unapproved_Result
     {
         public int MessageID { get; set; }

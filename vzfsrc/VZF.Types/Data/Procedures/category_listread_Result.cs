@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class category_listread_Result
     {
         public int CategoryID { get; set; }

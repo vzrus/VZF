@@ -15,10 +15,12 @@
         </td>
     </asp:PlaceHolder>
     <td class="topicImage">
+         <div class="attachedimg ceebox" style="display: inline; height: 50px">
         <%  string imgTitle = string.Empty;
             string imgSrc = this.GetTopicImage(this.TopicRow, ref imgTitle);
         %>
         <img src="<%=imgSrc%>" alt="<%=imgTitle%>" title="<%=imgTitle%>" />
+             </div>
     </td>
     <td class="topicMain">
         <%

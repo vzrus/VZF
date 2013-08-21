@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class post_alluser_Result
     {
         public int MessageID { get; set; }

@@ -140,13 +140,15 @@ namespace YAF.Core.Services
                         lst[cntr] = vv["Mask"].ToString().Trim();
                         cntr++;
                     }
+
                     return lst.ToList();
                 }
+
                 return null;
             });
         
         // check for this user in the list...
-        if (bannedIPs !=null && bannedIPs.Any(
+        if (this.HttpRequestBase.ServerVariables["REMOTE_ADDR"] != null && bannedIPs != null && bannedIPs.Any(
             row => IPHelper.IsBanned(row, this.HttpRequestBase.ServerVariables["REMOTE_ADDR"])))
         {
             // we're done...

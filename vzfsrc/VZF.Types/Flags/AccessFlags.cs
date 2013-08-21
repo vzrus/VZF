@@ -43,7 +43,7 @@ namespace YAF.Types.Flags
     /// The flags.
     /// </param>
     public AccessFlags(Flags flags)
-      : this((int) flags)
+        : this((int)flags)
     {
     }
 
@@ -54,7 +54,7 @@ namespace YAF.Types.Flags
     /// The bit value.
     /// </param>
     public AccessFlags(object bitValue)
-      : this((int) bitValue)
+        : this((int)bitValue)
     {
     }
 
@@ -329,7 +329,7 @@ namespace YAF.Types.Flags
     }
 
     /// <summary>
-    ///Gets or sets delete access right.
+    /// Gets or sets delete access right.
     /// </summary>
     public bool DeleteAccess
     {

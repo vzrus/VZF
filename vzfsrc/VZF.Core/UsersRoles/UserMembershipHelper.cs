@@ -30,6 +30,7 @@ namespace YAF.Core
     using YAF.Classes;
     
     using YAF.Core.Services;
+    using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using VZF.Utils;

@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class user_ignoredlist_Result
     {
         public int UserID { get; set; }

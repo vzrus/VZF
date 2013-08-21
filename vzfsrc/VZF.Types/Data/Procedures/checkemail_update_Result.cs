@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class checkemail_update_Result
     {
         public string ProviderUserKey { get; set; }

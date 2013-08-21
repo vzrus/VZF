@@ -21,8 +21,6 @@ namespace YAF.Core.Tasks
   using System.Security.Principal;
   using System.Threading;
 
-  using YAF.Core;
-
   /// <summary>
   /// The intermittent background task.
   /// </summary>
@@ -77,13 +75,11 @@ namespace YAF.Core.Tasks
       }
     }
 
-
     /// <summary>
     /// The run once.
     /// </summary>
     public override void RunOnce()
     {
-
     }
 
     /// <summary>

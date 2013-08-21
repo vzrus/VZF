@@ -5030,25 +5030,6 @@ namespace VZF.Data.MsSql
         }
 
         /// <summary>
-        /// The message_list.
-        /// </summary>
-        /// <param name="messageID">
-        /// The message id.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list([NotNull] string connectionString, [NotNull] object messageID)
-        {
-            using (var cmd = MsSqlDbAccess.GetCommand("message_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("MessageID", messageID);
-                return MsSqlDbAccess.GetData(cmd, connectionString);
-            }
-        }
-
-        /// <summary>
         /// Retrieve all reported messages with the correct forumID argument.
         /// </summary>
         /// <param name="forumID">
@@ -8177,6 +8158,7 @@ namespace VZF.Data.MsSql
             [CanBeNull] object styles,
             [CanBeNull] object description,
             [NotNull] object message,
+            [CanBeNull] object messageDescription,
             [NotNull] object userId,
             [NotNull] object priority,
             [NotNull] object userName,
@@ -8184,8 +8166,7 @@ namespace VZF.Data.MsSql
             [NotNull] object posted,
             [NotNull] object blogPostId,
             [NotNull] object flags,
-            [CanBeNull] object messageDescription,
-            ref long messageID,
+            out long messageID,
             string tags)
         {
             using (var cmd = MsSqlDbAccess.GetCommand("topic_save"))

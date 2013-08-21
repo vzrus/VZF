@@ -1255,10 +1255,17 @@ namespace VZF.Data.Firebird
         #region yaf_Board
 
         /// <summary>
-        /// Gets a list of information about a board
+        /// The board_list.
         /// </summary>
-        /// <param name="boardID">board id</param>
-        /// <returns>DataTable</returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardID">
+        /// The board id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable board_list([NotNull] string connectionString, object boardID)
         {
             using (var cmd = FbDbAccess.GetCommand("board_list"))
@@ -1272,10 +1279,23 @@ namespace VZF.Data.Firebird
         }
 
         /// <summary>
-        /// Gets posting statistics
+        /// The board_poststats.
         /// </summary>
-        /// <param name="boardId">BoardID</param>
-        /// <returns>DataRow of Poststats</returns>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="useStyledNicks">
+        /// The use styled nicks.
+        /// </param>
+        /// <param name="showNoCountPosts">
+        /// The show no count posts.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataRow"/>.
+        /// </returns>
         public static DataRow board_poststats(
             [NotNull] string connectionString, int? boardId, bool useStyledNicks, bool showNoCountPosts)
         {
@@ -1307,14 +1327,12 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_STYLEDNICKS", FbDbType.Boolean)).Value = useStyledNicks;
                 cmd.Parameters.Add(new FbParameter("@I_SHOWNOCOUNTPOSTS", FbDbType.Boolean)).Value = showNoCountPosts;
                 cmd.Parameters.Add(new FbParameter("@I_GETDEFAULTS", FbDbType.Boolean)).Value = 0;
-                cmd.Parameters[0].Value = boardId;
 
-                using (DataTable dt = FbDbAccess.GetData(cmd, connectionString))
+                using (var dt = FbDbAccess.GetData(cmd, connectionString))
                 {
                     return dt.Rows[0];
                 }
             }
-            return null;
         }
 
         /// <summary>
@@ -3862,19 +3880,6 @@ namespace VZF.Data.Firebird
             }
         }
 
-        [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list([NotNull] string connectionString, object messageID)
-        {
-            using (var cmd = FbDbAccess.GetCommand("message_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add(new FbParameter("@I_MESSAGEID", FbDbType.Integer)).Value = messageID;
-
-                return FbDbAccess.GetData(cmd, connectionString);
-            }
-        }
-
         /// <summary>
         /// The message_list.
         /// </summary>
@@ -4249,13 +4254,13 @@ namespace VZF.Data.Firebird
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGEID", FbDbType.Integer)).Value = messageID;
                 cmd.Parameters.Add(new FbParameter("@I_PRIORITY", FbDbType.Integer)).Value = priority;
                 cmd.Parameters.Add(new FbParameter("@I_SUBJECT", FbDbType.VarChar)).Value = subject;
+                cmd.Parameters.Add(new FbParameter("@I_DESCRIPTION", FbDbType.VarChar)).Value = description;
                 cmd.Parameters.Add(new FbParameter("@I_STATUS", FbDbType.VarChar)).Value = status;
                 cmd.Parameters.Add(new FbParameter("@I_STYLES", FbDbType.VarChar)).Value = styles;
-                cmd.Parameters.Add(new FbParameter("@I_DESCRIPTION", FbDbType.VarChar)).Value = description;
                 cmd.Parameters.Add(new FbParameter("@I_FLAGS", FbDbType.Integer)).Value = flags;
                 cmd.Parameters.Add(new FbParameter("@I_MESSAGE", FbDbType.Text)).Value = message;
                 cmd.Parameters.Add(new FbParameter("@I_REASON", FbDbType.VarChar)).Value = reasonOfEdit;
-                cmd.Parameters.Add(new FbParameter("@I_EDITEDBY", FbDbType.VarChar)).Value = editedBy;
+                cmd.Parameters.Add(new FbParameter("@I_EDITEDBY", FbDbType.Integer)).Value = editedBy;
                 cmd.Parameters.Add(new FbParameter("@I_ISMODERATORCHANGED", FbDbType.Boolean)).Value =
                     isModeratorChanged;
                 cmd.Parameters.Add(new FbParameter("@I_OVERRIDEAPPROVAL", FbDbType.Boolean)).Value = overrideApproval;
@@ -6967,6 +6972,7 @@ namespace VZF.Data.Firebird
             [NotNull] object styles,
             [NotNull] object description,
             [NotNull] object message,
+            [CanBeNull] object messageDescription,
             [NotNull] object userId,
             [NotNull] object priority,
             [NotNull] object userName,
@@ -6974,7 +6980,6 @@ namespace VZF.Data.Firebird
             [NotNull] object posted,
             [NotNull] object blogPostId,
             [NotNull] object flags,
-            [CanBeNull] object messageDescription,
             out long messageId,
             string tags)
         {

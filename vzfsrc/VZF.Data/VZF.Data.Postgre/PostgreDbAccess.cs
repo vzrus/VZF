@@ -33,6 +33,7 @@ namespace VZF.Data.Postgre
     using Npgsql;
 
     using VZF.Data.Utils;
+    using VZF.Types.Objects;
     using VZF.Utils.Helpers;
 
     using YAF.Classes;
@@ -48,12 +49,12 @@ namespace VZF.Data.Postgre
         /// <summary>
         /// The _db owner.
         /// </summary>
-        static private string _dbOwner;
+        private static string _dbOwner;
 
         /// <summary>
         /// The object qualifier.
         /// </summary>
-        static private string objectQualifier;
+        private static string objectQualifier;
 
         /// <summary>
         /// The _database encoding.
@@ -350,14 +351,9 @@ namespace VZF.Data.Postgre
         /// <returns>Returns qualified object name of format {databaseOwner}.{objectQualifier}name</returns>
         public static string GetObjectName(string name)
         {
-            return string.Format(
-                           "{0}.{1}{2}",
-                           SchemaName,
-                           ObjectQualifier,
-                name);
+            return string.Format("{0}.{1}{2}", SchemaName, ObjectQualifier, name);
         }
 
-       
         /// <summary>
         /// The get connection string.
         /// </summary>
@@ -393,7 +389,6 @@ namespace VZF.Data.Postgre
 
             try
             {
-
                 using (var connection = new NpgsqlConnection(connectionString))
                 {
                     // attempt to connect to the db...
@@ -411,6 +406,7 @@ namespace VZF.Data.Postgre
 
             return success;
         }
+
         /// <summary>
         /// Creates new NpgsqlCommand based on command text applying all qualifiers to the name.
         /// </summary>
@@ -422,6 +418,7 @@ namespace VZF.Data.Postgre
 
             return GetCommand(commandText, isText, null);
         }
+
         /// <summary>
         /// Creates new NpgsqlCommand based on command text applying all qualifiers to the name.
         /// </summary>
@@ -436,11 +433,13 @@ namespace VZF.Data.Postgre
                 commandText = commandText.Replace("databaseOwner", DatabaseOwner);
                 commandText = commandText.Replace("objectQualifier", ObjectQualifier);
                 commandText = commandText.Replace("databaseSchema", SchemaName);
-                NpgsqlCommand cmd = new NpgsqlCommand();
 
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = commandText;
-                cmd.Connection = connection;
+                var cmd = new NpgsqlCommand
+                              {
+                                  CommandType = CommandType.Text,
+                                  CommandText = commandText,
+                                  Connection = connection
+                              };
 
                 return cmd;
             }
@@ -449,6 +448,7 @@ namespace VZF.Data.Postgre
                 return GetCommand(commandText);
             }
         }
+
         /// <summary>
         /// Creates new NpgsqlCommand calling stored procedure applying all qualifiers to the name.
         /// </summary>
@@ -458,6 +458,7 @@ namespace VZF.Data.Postgre
         {
             return GetCommand(storedProcedure, null);
         }
+
         /// <summary>
         /// Creates new NpgsqlCommand calling stored procedure applying all qualifiers to the name.
         /// </summary>
@@ -466,11 +467,12 @@ namespace VZF.Data.Postgre
         /// <returns>New NpgsqlCommand</returns>
         public static NpgsqlCommand GetCommand(string storedProcedure, NpgsqlConnection connection)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand();
-
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = GetObjectName(storedProcedure);
-            cmd.Connection = connection;
+            var cmd = new NpgsqlCommand
+                          {
+                              CommandType = CommandType.StoredProcedure,
+                              CommandText = GetObjectName(storedProcedure),
+                              Connection = connection
+                          };
 
             return cmd;
         }
@@ -483,21 +485,31 @@ namespace VZF.Data.Postgre
         public static string GetCommandTextReplaced(string commandText)
         {
             // apply database owner
-            commandText = commandText.Replace("databaseSchema", !string.IsNullOrEmpty(PostgreDbAccess.SchemaName) ? PostgreDbAccess.SchemaName : "public");
-            
+            commandText = commandText.Replace(
+                "databaseSchema",
+                !string.IsNullOrEmpty(PostgreDbAccess.SchemaName) ? PostgreDbAccess.SchemaName : "public");
+
             // apply object qualifier
-            commandText = commandText.Replace("objectQualifier_", !string.IsNullOrEmpty(PostgreDbAccess.ObjectQualifier) ? PostgreDbAccess.ObjectQualifier : "yaf_");
-            
+            commandText = commandText.Replace(
+                "objectQualifier_",
+                !string.IsNullOrEmpty(PostgreDbAccess.ObjectQualifier) ? PostgreDbAccess.ObjectQualifier : "yaf_");
+
             // apply grantee name
-            commandText = commandText.Replace("granteeName", !string.IsNullOrEmpty(GranteeName) ? PostgreDbAccess.GranteeName : "public");
-          
+            commandText = commandText.Replace(
+                "granteeName",
+                !string.IsNullOrEmpty(GranteeName) ? PostgreDbAccess.GranteeName : "public");
+
             // apply host name
             commandText = commandText.Replace("hostName", HostName);
 
-            commandText = commandText.Replace("databaseOwner", !string.IsNullOrEmpty(DatabaseOwner) ? DatabaseOwner : "yafuser");
-           
+            commandText = commandText.Replace(
+                "databaseOwner",
+                !string.IsNullOrEmpty(DatabaseOwner) ? DatabaseOwner : "yafuser");
+
             // apply OIDs setting
-            commandText = !string.IsNullOrEmpty(WithOIDs) ? commandText.Replace("withOIDs", WithOIDs.ToLower() == "true" ? WithOIDs : "FALSE") : commandText.Replace("withOIDs", "FALSE");
+            commandText = !string.IsNullOrEmpty(WithOIDs)
+                              ? commandText.Replace("withOIDs", WithOIDs.ToLower() == "true" ? WithOIDs : "FALSE")
+                              : commandText.Replace("withOIDs", "FALSE");
             return commandText;
         }
 
@@ -520,29 +532,70 @@ namespace VZF.Data.Postgre
                 return GetDatasetBasic(cmd, transaction, connectionString);
             }
         }
-
+        
         /// <summary>
-        /// Gets data out of the database
+        /// The get data.
         /// </summary>
-        /// <param name="cmd">The SQL Command</param>
-        /// <returns>DataTable with the results</returns>
-        /// <remarks>Without transaction.</remarks>
-        /// <summary>
-        /// Gets data out of the database
-        /// </summary>
-        /// <param name="cmd">The SQL Command</param>
-        /// <returns>DataTable with the results</returns>
-        /// <remarks>Without transaction.</remarks>
-        /// 
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/> with results.
+        /// </returns>
+        /// <remarks>
+        /// Without transaction.
+        /// </remarks> 
         public static DataTable GetData(IDbCommand cmd, [NotNull] string connectionString)
         {
             return GetDataTableFromReader(cmd, false, true, connectionString);
         }
+
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(IDbCommand cmd, bool transaction, [NotNull] string connectionString)
         {
             return GetDataTableFromReader(cmd, transaction, true, connectionString);
         }
-        public static DataTable GetData(IDbCommand cmd, bool transaction, bool acceptChanges, [NotNull] string connectionString)
+
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable GetData(
+            IDbCommand cmd,
+            bool transaction,
+            bool acceptChanges,
+            [NotNull] string connectionString)
         {
             return GetDataTableFromReader(cmd, transaction, acceptChanges, connectionString);
         }
@@ -557,12 +610,28 @@ namespace VZF.Data.Postgre
         {
             return GetData(commandText, false, connectionString);
         }
+
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="commandText">
+        /// The command text.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public static DataTable GetData(string commandText, bool transaction, string connectionString)
         {
-            QueryCounter qc = new QueryCounter(commandText);
+            var qc = new QueryCounter(commandText);
             try
             {
-                using (NpgsqlCommand cmd = new NpgsqlCommand())
+                using (var cmd = new NpgsqlCommand())
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = commandText;
@@ -574,6 +643,7 @@ namespace VZF.Data.Postgre
                 qc.Dispose();
             }
         }
+
         /// <summary>
         /// Executes a NonQuery
         /// </summary>
@@ -585,6 +655,18 @@ namespace VZF.Data.Postgre
             ExecuteNonQuery(cmd, true, connectionString);
         }
 
+        /// <summary>
+        /// The execute non query.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
         public static void ExecuteNonQuery(IDbCommand cmd, bool transaction, [NotNull] string connectionString)
         {
             var qc = new QueryCounter(cmd.CommandText);
@@ -600,7 +682,7 @@ namespace VZF.Data.Postgre
                     if (transaction)
                     {
                         // execute using a transaction
-                        using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        using (var trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                         {
                             cmd.Transaction = trans;
                             cmd.ExecuteNonQuery();
@@ -619,29 +701,59 @@ namespace VZF.Data.Postgre
                 qc.Dispose();
             }
         }
+
+        /// <summary>
+        /// The execute non query int.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int ExecuteNonQueryInt(IDbCommand cmd, [NotNull] string connectionString)
         {
             // defaults to using a transaction for non-queries
             return ExecuteNonQueryInt(cmd, true, connectionString);
         }
+
+        /// <summary>
+        /// The execute non query int.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int ExecuteNonQueryInt(IDbCommand cmd, bool transaction, [NotNull] string connectionString)
         {
-            QueryCounter qc = new QueryCounter(cmd.CommandText);
+            var qc = new QueryCounter(cmd.CommandText);
             try
             {
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
                     Trace.WriteLine(cmd.ToString(), "DbAccess");
                     if (transaction)
                     {
-                        int result = -1;
                         // execute using a transaction
-                        using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        using (
+                            var trans =
+                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                         {
                             cmd.Transaction = trans;
-                            result = cmd.ExecuteNonQuery();
+                            int result = cmd.ExecuteNonQuery();
                             trans.Commit();
                             return result;
                         }
@@ -659,17 +771,30 @@ namespace VZF.Data.Postgre
             }
         }
 
+        /// <summary>
+        /// The execute scalar.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
         public static object ExecuteScalar(IDbCommand cmd, string connectionString)
         {
             // default to using a transaction for scaler commands
             return ExecuteScalar(cmd, true, connectionString);
         }
+
         public static object ExecuteScalar(IDbCommand cmd, bool transaction, string connectionString)
         {
-            QueryCounter qc = new QueryCounter(cmd.CommandText);
+            var qc = new QueryCounter(cmd.CommandText);
             try
             {
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
@@ -677,7 +802,9 @@ namespace VZF.Data.Postgre
                     if (transaction)
                     {
                         // get scalar using a transaction
-                        using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        using (
+                            NpgsqlTransaction trans =
+                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                         {
                             cmd.Transaction = trans;
                             object results = cmd.ExecuteScalar();
@@ -698,7 +825,8 @@ namespace VZF.Data.Postgre
             }
         }
 
-        //vzrus addons - to make casts workarounds
+        // vzrus addons - to make casts workarounds
+
         /// <summary>
         /// Returns DataTable from DataReader.
         /// </summary>
@@ -709,105 +837,190 @@ namespace VZF.Data.Postgre
         {
             return GetDataTableFromReader(cmd, false, true, connectionString);
         }
-        public static DataTable GetDataTableFromReader(IDbCommand cmd,
-              bool transaction, string connectionString)
+
+        /// <summary>
+        /// The get data table from reader.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable GetDataTableFromReader(IDbCommand cmd, bool transaction, string connectionString)
         {
             return GetDataTableFromReader(cmd, transaction, true, connectionString);
         }
-        public static DataTable GetDataTableFromReader(IDbCommand cmd,
-           bool transaction, bool acceptChanges, string connectionString)
+
+        /// <summary>
+        /// The get data table from reader.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable GetDataTableFromReader(
+            IDbCommand cmd,
+            bool transaction,
+            bool acceptChanges,
+            string connectionString)
         {
 
             QueryCounter qc = new QueryCounter(cmd.CommandText);
             try
             {
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
-                using (PostgreDbConnectionManager connMan = new PostgreDbConnectionManager(connectionString))
+                using (var connMan = new PostgreDbConnectionManager(connectionString))
                 {
                     // get an open connection
                     cmd.Connection = connMan.OpenDBConnection(connectionString);
                     Trace.WriteLine(cmd.ToString(), "DbAccess");
                     if (transaction)
                     {
-
-                        using (NpgsqlTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        using (
+                            var trans =
+                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                         {
-
                             cmd.Transaction = trans;
-                            IDataReader reader = cmd.ExecuteReader();
+                            var reader = cmd.ExecuteReader();
+
                             // Retrieve column schema into our DataTable.                                                  
                             dt = GetTableColumns(dt, reader);
                             if (reader.FieldCount > 0)
                             {
-
                                 while (reader.Read())
                                 {
-                                    DataRow dr = dt.NewRow();
+                                    var dr = dt.NewRow();
 
                                     foreach (DataColumn column in dt.Columns)
                                     {
                                         dr[column] = TypeChecker(column, reader[column.Ordinal]);
-                                        //dr[column] = reader[column.Ordinal];                                                                                 
+
+                                        // dr[column] = reader[column.Ordinal];                                                                                 
                                     }
 
                                     dt.Rows.Add(dr);
-
                                 }
-
                             }
+
                             reader.Close();
                             trans.Commit();
-                            if (acceptChanges) dt.AcceptChanges();
+                            if (acceptChanges)
+                            {
+                                dt.AcceptChanges();
+                            }
+
                             return dt;
                         }
                     }
-
                     else
                     {
                         // get scalar regular
                         IDataReader reader = cmd.ExecuteReader();
+
                         // Retrieve column schema into our DataTable.                       
                         dt = GetTableColumns(dt, reader);
                         if (reader.FieldCount > 0)
                         {
                             while (reader.Read())
                             {
-
-                                DataRow dr = dt.NewRow();
+                                var dr = dt.NewRow();
                                 foreach (DataColumn column in dt.Columns)
                                 {
                                     dr[column] = TypeChecker(column, reader[column.Ordinal]);
-                                    // dr[column] = reader[column.Ordinal];                                               
 
+                                    // dr[column] = reader[column.Ordinal]; 
                                 }
-                                dt.Rows.Add(dr);
 
+                                dt.Rows.Add(dr);
                             }
                         }
+
                         reader.Close();
-                        if (acceptChanges) dt.AcceptChanges();
+
+                        if (acceptChanges)
+                        {
+                            dt.AcceptChanges();
+                        }
+
                         return dt;
                     }
-
-
                 }
             }
-
-
             finally
             {
                 qc.Dispose();
             }
-
-
         }
 
-        public static DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges, int firstColumnIndex, string connectionString)
+        /// <summary>
+        /// The add values to data table from reader.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="acceptChanges">
+        /// The accept changes.
+        /// </param>
+        /// <param name="firstColumnIndex">
+        /// The first column index.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        public static DataTable AddValuesToDataTableFromReader(
+            IDbCommand cmd,
+            DataTable dt,
+            bool transaction,
+            bool acceptChanges,
+            int firstColumnIndex,
+            string connectionString)
         {
-            return AddValuesToDataTableFromReader(cmd, dt, transaction, acceptChanges, firstColumnIndex, 0, connectionString);
+            return AddValuesToDataTableFromReader(
+                cmd,
+                dt,
+                transaction,
+                acceptChanges,
+                firstColumnIndex,
+                0,
+                connectionString);
         }
-        public static DataTable AddValuesToDataTableFromReader(IDbCommand cmd, DataTable dt, bool transaction, bool acceptChanges, int firstColumnIndex, int currentRow, string connectionString)
+
+        public static DataTable AddValuesToDataTableFromReader(
+            IDbCommand cmd,
+            DataTable dt,
+            bool transaction,
+            bool acceptChanges,
+            int firstColumnIndex,
+            int currentRow,
+            string connectionString)
         {
 
             var qc = new QueryCounter(cmd.CommandText);
@@ -821,7 +1034,9 @@ namespace VZF.Data.Postgre
                     if (transaction)
                     {
                         // get scalar using a transaction
-                        using (IDbTransaction trans = connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
+                        using (
+                            IDbTransaction trans =
+                                connMan.OpenDBConnection(connectionString).BeginTransaction(_isolationLevel))
                         {
                             cmd.Transaction = trans;
                             IDataReader reader = cmd.ExecuteReader();
@@ -846,7 +1061,9 @@ namespace VZF.Data.Postgre
                                         {
                                             // dt.Rows[currentRow][column] = GetDataTableFromReaderAddValue(dt.Rows[currentRow], column, reader[column.Ordinal - firstColumnIndex]);
                                             //  dt.Rows[currentRow][column] = reader[column.Ordinal - firstColumnIndex];
-                                            dt.Rows[currentRow][column] = TypeChecker(column, reader[column.Ordinal - firstColumnIndex]);
+                                            dt.Rows[currentRow][column] = TypeChecker(
+                                                column,
+                                                reader[column.Ordinal - firstColumnIndex]);
                                         }
                                     }
                                 }
@@ -887,7 +1104,9 @@ namespace VZF.Data.Postgre
                                     {
                                         // dt.Rows[currentRow][column] = GetDataTableFromReaderAddValue(dt.Rows[currentRow], column, reader[column.Ordinal - firstColumnIndex]);
                                         //  dt.Rows[currentRow][column] = reader[column.Ordinal - firstColumnIndex];
-                                        dt.Rows[currentRow][column] = TypeChecker(column, reader[column.Ordinal - firstColumnIndex]);
+                                        dt.Rows[currentRow][column] = TypeChecker(
+                                            column,
+                                            reader[column.Ordinal - firstColumnIndex]);
                                     }
 
                                 }
@@ -910,9 +1129,11 @@ namespace VZF.Data.Postgre
                 qc.Dispose();
             }
         }
+
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Used internally to get data for all the other functions
         /// </summary>
@@ -923,7 +1144,10 @@ namespace VZF.Data.Postgre
         /// <returns>
         /// </returns>
         [NotNull]
-        private static DataSet GetDatasetBasic([NotNull] IDbCommand cmd, bool transaction, [NotNull] string connectionString)
+        private static DataSet GetDatasetBasic(
+            [NotNull] IDbCommand cmd,
+            bool transaction,
+            [NotNull] string connectionString)
         {
             using (var connectionManager = new NpgsqlConnection(connectionString))
             {
@@ -976,33 +1200,36 @@ namespace VZF.Data.Postgre
                 }
             }
         }
+
         /// <summary>
         /// We check here reader values. It's noe in use for a while
         /// </summary>
         /// <param name="column"></param>
         /// <param name="readerValue"></param>
         /// <returns></returns>
-        static private object TypeChecker(DataColumn column, object readerValue)
+        private static object TypeChecker(DataColumn column, object readerValue)
         {
             object o = readerValue;
             return o;
         }
+
         /// <summary>
         /// Returns schema from DataReader(only column "ColumnName")
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        static private DataTable GetTableColumns(IDataReader reader)
+        private static DataTable GetTableColumns(IDataReader reader)
         {
             return GetTableColumns(new DataTable(), reader);
         }
+
         /// <summary>
         /// Returns schema from DataReader(only column "ColumnName")
         /// </summary>
         /// <param name="dummyTable"></param>
         /// <param name="reader"></param>
         /// <returns></returns>
-        static private DataTable GetTableColumns(DataTable dummyTable, IDataReader reader)
+        private static DataTable GetTableColumns(DataTable dummyTable, IDataReader reader)
         {
             DataTable schemaTable = reader.GetSchemaTable();
 
@@ -1026,13 +1253,14 @@ namespace VZF.Data.Postgre
             }
             return dummyTable;
         }
+
         /// <summary>
         /// Returns schema from DataReader(looping throught all columns)
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="reader"></param>
         /// <returns></returns>
-        static private DataTable TableSchemaReader(DataTable dt, IDataReader reader)
+        private static DataTable TableSchemaReader(DataTable dt, IDataReader reader)
         {
 
 
@@ -1044,7 +1272,11 @@ namespace VZF.Data.Postgre
                     if (myColumn.ColumnName == "ColumnName")
                     {
                         string ts = myField["DataType"].ToString();
-                        if (ts == "UInt64") ts = "System.Int32";
+
+                        if (ts == "UInt64")
+                        {
+                            ts = "System.Int32";
+                        }
 
                         if (!dt.Columns.Contains(myField[myColumn].ToString()))
                         {
@@ -1055,17 +1287,16 @@ namespace VZF.Data.Postgre
                         {
                             if (!myField[myColumn].ToString().Contains("81_18"))
                             {
-                                dt.Columns.Add(myField[myColumn].ToString() + "81_18", Type.GetType(ts));
+                                dt.Columns.Add(myField[myColumn] + "81_18", Type.GetType(ts));
                             }
                         }
                     }
                 }
-
             }
+
             return dt;
         }
+
         #endregion
     }
-
-
 }

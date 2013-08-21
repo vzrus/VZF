@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class post_list_reverse10_Result
     {
         public System.DateTime Posted { get; set; }

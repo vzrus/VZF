@@ -173,7 +173,6 @@ namespace YAF.Types.Flags
             }
         }
 
-
         /// <summary>
         /// Gets or sets whether rank is ladder rank.
         /// </summary>

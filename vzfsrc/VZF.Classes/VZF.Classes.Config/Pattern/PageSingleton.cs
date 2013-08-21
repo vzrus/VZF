@@ -29,6 +29,7 @@ namespace YAF.Classes.Pattern
   /// Singleton factory implementation
   /// </summary>
   /// <typeparam name="T">
+  /// The type parameter.
   /// </typeparam>
   public static class PageSingleton<T>
     where T : class, new()

@@ -223,7 +223,7 @@ namespace VZF.Controls
         showErrors = this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("showerror").ToType<bool>();
       }
 
-      if (token.IsNotSet() || !token.Equals(YafContext.Current.BoardSettings.WebServiceToken))
+      if (token.IsNotSet() || !token.Equals(this.Get<YafBoardSettings>().WebServiceToken))
       {
         if (showErrors)
         {
@@ -272,7 +272,7 @@ namespace VZF.Controls
       }
 
       // get topic hours...
-      this._topicHours = -YafContext.Current.BoardSettings.DigestSendEveryXHours;
+      this._topicHours = -this.Get<YafBoardSettings>().DigestSendEveryXHours;
 
 
       this._forumData = this.Get<IDBBroker>().GetSimpleForumTopic(
@@ -283,7 +283,7 @@ namespace VZF.Controls
         if (showErrors)
         {
           this.OutputError(
-            "No topics for the last {0} hours.".FormatWith(YafContext.Current.BoardSettings.DigestSendEveryXHours));
+            "No topics for the last {0} hours.".FormatWith(this.Get<YafBoardSettings>().DigestSendEveryXHours));
         }
 
         this.Response.End();
@@ -293,7 +293,7 @@ namespace VZF.Controls
       this._languageFile = UserHelper.GetUserLanguageFile(this.CurrentUserID);
       this._theme = new YafTheme(UserHelper.GetUserThemeFile(this.CurrentUserID));
 
-      string subject = this.GetText("SUBJECT").FormatWith(YafContext.Current.BoardSettings.Name);
+      string subject = this.GetText("SUBJECT").FormatWith(this.Get<YafBoardSettings>().Name);
 
       string digestHead = this._theme.GetItem("THEME", "DIGESTHEAD", null);
 

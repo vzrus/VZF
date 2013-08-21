@@ -29,7 +29,7 @@ namespace YAF.Pages
 
   using VZF.Data.Common;
 
-  
+  using YAF.Classes;
   using YAF.Core;
   using YAF.Types;
   using YAF.Types.Constants;
@@ -216,12 +216,12 @@ namespace YAF.Pages
       DataTable activeUsers = CommonDb.active_list_user(PageContext.PageModuleID, this.PageContext.PageBoardID, 
         this.PageContext.PageUserID, 
         showGuests, 
-        showCrawlers, 
-        this.PageContext.BoardSettings.ActiveListTime, 
-        this.PageContext.BoardSettings.UseStyledNicks);
+        showCrawlers,
+        this.Get<YafBoardSettings>().ActiveListTime,
+        this.Get<YafBoardSettings>().UseStyledNicks);
 
       // Set colorOnly parameter to false, as we get active users style from database        
-      if (this.PageContext.BoardSettings.UseStyledNicks)
+      if (this.Get<YafBoardSettings>().UseStyledNicks)
       {
         this.Get<IStyleTransform>().DecodeStyleByTable(ref activeUsers, false);
       }

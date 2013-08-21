@@ -18,68 +18,68 @@
  */
 namespace YAF.Types.Interfaces.Data
 {
-	#region Using
+    #region Using
 
-	using System.Collections.Generic;
+    using System.Collections.Generic;
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// The db specific function.
-	/// </summary>
-	public interface IDbSpecificFunction
-	{
-		#region Properties
+    /// <summary>
+    /// The db specific function.
+    /// </summary>
+    public interface IDbSpecificFunction
+    {
+        #region Properties
 
-		/// <summary>
-		/// Gets ProviderName.
-		/// </summary>
-		string ProviderName { get; }
+        /// <summary>
+        /// Gets ProviderName.
+        /// </summary>
+        string ProviderName { get; }
 
-		/// <summary>
-		///   Gets SortOrder.
-		/// </summary>
-		int SortOrder { get; }
+        /// <summary>
+        ///   Gets SortOrder.
+        /// </summary>
+        int SortOrder { get; }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		/// <summary>
-		/// The execute.
-		/// </summary>
-		/// <param name="dbfunctionType">
-		/// The dbfunction type.
-		/// </param>
-		/// <param name="operationName">
-		/// The operation name.
-		/// </param>
-		/// <param name="parameters">
-		/// The parameters.
-		/// </param>
-		/// <param name="result">
-		/// The result.
-		/// </param>
-		/// <returns>
-		/// The execute.
-		/// </returns>
-		bool Execute(
-			DbFunctionType dbfunctionType, 
-			string operationName, 
-			IEnumerable<KeyValuePair<string, object>> parameters, 
-			out object result);
+        /// <summary>
+        /// The execute.
+        /// </summary>
+        /// <param name="dbfunctionType">
+        /// The dbfunction type.
+        /// </param>
+        /// <param name="operationName">
+        /// The operation name.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <returns>
+        /// The execute.
+        /// </returns>
+        bool Execute(
+            DbFunctionType dbfunctionType,
+            string operationName,
+            IEnumerable<KeyValuePair<string, object>> parameters,
+            out object result);
 
-		/// <summary>
-		/// The supported operation.
-		/// </summary>
-		/// <param name="operationName">
-		/// The operation name.
-		/// </param>
-		/// <returns>
-		/// True if the operation is supported.
-		/// </returns>
-		bool IsSupportedOperation(string operationName);
+        /// <summary>
+        /// The supported operation.
+        /// </summary>
+        /// <param name="operationName">
+        /// The operation name.
+        /// </param>
+        /// <returns>
+        /// True if the operation is supported.
+        /// </returns>
+        bool IsSupportedOperation(string operationName);
 
-		#endregion
-	}
+        #endregion
+    }
 }

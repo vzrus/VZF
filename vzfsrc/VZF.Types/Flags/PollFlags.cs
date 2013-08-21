@@ -21,130 +21,133 @@ namespace YAF.Types.Flags
 {
   using System;
 
-  /// <summary>
-  /// The poll flags.
-  /// </summary>
-  [Serializable]
-  public class PollFlags : FlagsBase
-  {
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="PollFlags"/> class.
+    /// The poll flags.
     /// </summary>
-    public PollFlags()
-      : this(0)
+    [Serializable]
+    public class PollFlags : FlagsBase
     {
-    }
+        #region Constructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PollFlags"/> class.
-    /// </summary>
-    /// <param name="flags">
-    /// The flags.
-    /// </param>
-    public PollFlags(Flags flags)
-      : this((int) flags)
-    {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PollFlags"/> class.
+        /// </summary>
+        public PollFlags()
+            : this(0)
+        {
+        }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PollFlags"/> class.
-    /// </summary>
-    /// <param name="bitValue">
-    /// The bit value.
-    /// </param>
-    public PollFlags(object bitValue)
-      : this((int) bitValue)
-    {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PollFlags"/> class.
+        /// </summary>
+        /// <param name="flags">
+        /// The flags.
+        /// </param>
+        public PollFlags(Flags flags)
+            : this((int)flags)
+        {
+        }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PollFlags"/> class.
-    /// </summary>
-    /// <param name="bitValue">
-    /// The bit value.
-    /// </param>
-    public PollFlags(int bitValue)
-      : base(bitValue)
-    {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PollFlags"/> class.
+        /// </summary>
+        /// <param name="bitValue">
+        /// The bit value.
+        /// </param>
+        public PollFlags(object bitValue)
+            : this((int)bitValue)
+        {
+        }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PollFlags"/> class.
-    /// </summary>
-    /// <param name="bits">
-    /// The bits.
-    /// </param>
-    public PollFlags(params bool[] bits)
-      : base(bits)
-    {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PollFlags"/> class.
+        /// </summary>
+        /// <param name="bitValue">
+        /// The bit value.
+        /// </param>
+        public PollFlags(int bitValue)
+            : base(bitValue)
+        {
+        }
 
-    #endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PollFlags"/> class.
+        /// </summary>
+        /// <param name="bits">
+        /// The bits.
+        /// </param>
+        public PollFlags(params bool[] bits)
+            : base(bits)
+        {
+        }
 
-    #region Operators
+        #endregion
 
-    /// <summary>
-    /// The op_ implicit.
-    /// </summary>
-    /// <param name="newBitValue">
-    /// The new bit value.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    public static implicit operator PollFlags(int newBitValue)
-    {
-      return new PollFlags(newBitValue);
-    }
+        #region Operators
 
-    /// <summary>
-    /// The op_ implicit.
-    /// </summary>
-    /// <param name="flags">
-    /// The flags.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    public static implicit operator PollFlags(Flags flags)
-    {
-      return new PollFlags(flags);
-    }
+        /// <summary>
+        /// The op_ implicit.
+        /// </summary>
+        /// <param name="newBitValue">
+        /// The new bit value.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static implicit operator PollFlags(int newBitValue)
+        {
+            return new PollFlags(newBitValue);
+        }
 
-    #endregion
+        /// <summary>
+        /// The op_ implicit.
+        /// </summary>
+        /// <param name="flags">
+        /// The flags.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static implicit operator PollFlags(Flags flags)
+        {
+            return new PollFlags(flags);
+        }
 
-    #region Flags Enumeration
+        #endregion
 
-    /// <summary>
-    /// Use for bit comparisons
-    /// </summary>
-    [Flags]
-    public enum Flags : int
-    {
-      None = 0,
+        #region Flags Enumeration
 
-      /// <summary>
-      /// The is admin.
-      /// </summary>
-      // = 1, 
+        /// <summary>
+        /// Use for bit comparisons
+        /// </summary>
+        [Flags]
+        public enum Flags : int
+        {
+            /// <summary>
+            /// The none.
+            /// </summary>
+            None = 0,
 
-      /// <summary>
-      /// The is guest.
-      /// </summary>
-      // = 2, 
+            /// <summary>
+            /// The is admin.
+            /// </summary>
+            // = 1, 
 
-      /// <summary>
-      /// The is start.
-      /// </summary>
-      IsClosedBound = 4,
+            /// <summary>
+            /// The is guest.
+            /// </summary>
+            // = 2, 
+
+            /// <summary>
+            /// The is start.
+            /// </summary>
+            IsClosedBound = 4,
 
 
-      /// <summary>
-      /// The allow multiple choices.
-      /// </summary>
-      AllowMultipleChoices = 8 
-   
-      /* for future use
+            /// <summary>
+            /// The allow multiple choices.
+            /// </summary>
+            AllowMultipleChoices = 8
+
+            /* for future use
           xxxxx = 1,
           xxxxx = 2,        
 		  xxxxx = 16,
@@ -154,31 +157,31 @@ namespace YAF.Types.Flags
 			xxxxx = 256,
 			xxxxx = 512
 			 */
+        }
+
+        #endregion
+
+        #region Single Flags (can be 32 of them)
+
+
+        /// <summary>
+        /// Gets or sets whether the poll is closed bound.
+        /// </summary>
+        public bool IsClosedBound
+        {
+            // int value 4
+            get
+            {
+                return this[0];
+            }
+
+            set
+            {
+                this[0] = value;
+            }
+        }
+
+
+        #endregion
     }
-
-    #endregion
-
-    #region Single Flags (can be 32 of them)
-
-
-    /// <summary>
-    /// Gets or sets whether the poll is closed bound.
-    /// </summary>
-    public bool IsClosedBound
-    {
-      // int value 4
-      get
-      {
-        return this[0];
-      }
-
-      set
-      {
-        this[0] = value;
-      }
-    }
-   
-
-    #endregion
-  }
 }

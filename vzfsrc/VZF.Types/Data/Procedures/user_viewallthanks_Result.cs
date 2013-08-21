@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class user_viewallthanks_Result
     {
         public int ThanksFromUserID { get; set; }

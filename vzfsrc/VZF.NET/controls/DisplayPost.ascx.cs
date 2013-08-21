@@ -526,34 +526,91 @@ namespace VZF.Controls
 
             this.Retweet.Visible = this.Get<IPermissions>().Check(this.Get<YafBoardSettings>().ShowRetweetMessageTo);
 
-            this.Attach.Visible = !this.PostData.PostDeleted && this.PostData.CanAttach && !this.PostData.IsLocked;
-            this.Attach.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.attachments, "m={0}", this.PostData.MessageId);
-            this.Edit.Visible = !this.PostData.PostDeleted && this.PostData.CanEditPost && !this.PostData.IsLocked;
-            this.Edit.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.postmessage, "m={0}", this.PostData.MessageId);
-            this.MovePost.Visible = this.PageContext.ForumModeratorAccess && !this.PostData.IsLocked;
-            this.MovePost.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.movemessage, "m={0}", this.PostData.MessageId);
-            this.Delete.Visible = !this.PostData.PostDeleted && this.PostData.CanDeletePost && !this.PostData.IsLocked;
-            this.Delete.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.deletemessage, "m={0}&action=delete", this.PostData.MessageId);
-            this.UnDelete.Visible = this.PostData.CanUnDeletePost && !this.PostData.IsLocked;
-            this.UnDelete.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.deletemessage, "m={0}&action=undelete", this.PostData.MessageId);
+            if (!this.PostData.PostDeleted && this.PostData.CanAttach && !this.PostData.IsLocked)
+            {
+                this.Attach.Visible = true;
+                this.Attach.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.attachments,
+                    "m={0}",
+                    this.PostData.MessageId);
+            }
+            else
+            {
+                this.Attach.Visible = false;
+            }
 
-            this.Quote.Visible = !this.PostData.PostDeleted && this.PostData.CanReply && !this.PostData.IsLocked;
-            this.MultiQuote.Visible = !this.PostData.PostDeleted && this.PostData.CanReply && !this.PostData.IsLocked;
+            if (!this.PostData.PostDeleted && this.PostData.CanEditPost && !this.PostData.IsLocked)
+            {
+                this.Edit.Visible = true;
+                this.Edit.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.postmessage,
+                    "m={0}",
+                    this.PostData.MessageId);
+            }
+            else
+            {
+                this.Edit.Visible = false; 
+            }
 
-            this.Quote.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
-                ForumPages.postmessage,
-                "t={0}&f={1}&q={2}&page={3}",
-                this.PageContext.PageTopicID,
-                this.PageContext.PageForumID,
-                this.PostData.MessageId,
-                this.CurrentPage);
+            if (this.PageContext.ForumModeratorAccess && !this.PostData.IsLocked)
+            {
+                this.MovePost.Visible = true;
+                this.MovePost.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.movemessage,
+                    "m={0}",
+                    this.PostData.MessageId);
+            }
+            else
+            {
+                this.MovePost.Visible = false;
+            }
 
-                this.UserProfileLink.ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
+            if (this.PostData.CanDeletePost && !this.PostData.PostDeleted && !this.PostData.IsLocked)
+            {
+                this.Delete.Visible = true;
+                this.Delete.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.deletemessage,
+                    "m={0}&action=delete",
+                    this.PostData.MessageId);
+            }
+            else
+            {
+                this.Delete.Visible = false; 
+            }
+
+            if (this.PostData.CanUnDeletePost && !this.PostData.IsLocked)
+            {
+                this.UnDelete.Visible = true;
+                this.UnDelete.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.deletemessage,
+                    "m={0}&action=undelete",
+                    this.PostData.MessageId);
+            }
+            else
+            {
+                this.UnDelete.Visible = false;
+            }
+
+            if (!this.PostData.PostDeleted && this.PostData.CanReply && !this.PostData.IsLocked)
+            {
+                this.Quote.Visible = true;
+                this.MultiQuote.Visible = true;
+
+                this.Quote.NavigateUrl = YafBuildLink.GetLinkNotEscaped(
+                    ForumPages.postmessage,
+                    "t={0}&f={1}&q={2}&page={3}",
+                    this.PageContext.PageTopicID,
+                    this.PageContext.PageForumID,
+                    this.PostData.MessageId,
+                    this.CurrentPage);
+            }
+            else
+            {
+                this.Quote.Visible = false;
+                this.MultiQuote.Visible = false;
+            }
+
+            this.UserProfileLink.ReplaceName = this.Get<YafBoardSettings>().EnableDisplayName
                                                && (!DataRow["IsGuest"].ToType<bool>()
                                                    || (DataRow["IsGuest"].ToType<bool>()
                                                        && DataRow["DisplayName"].ToString()

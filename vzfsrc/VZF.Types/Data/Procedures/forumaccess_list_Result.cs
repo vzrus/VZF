@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class forumaccess_list_Result
     {
         public int GroupID { get; set; }

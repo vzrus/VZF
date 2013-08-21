@@ -42,7 +42,7 @@
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>Bin\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -151,14 +151,6 @@
       <Name>System.XML</Name>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="VZF.Utils, Version=1.9.6.2, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\VZF.Utils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="auth.aspx.cs">
@@ -193,26 +185,26 @@
     <Compile Include="Classes\Handlers\SitemapHandler .cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\AddFavoriteTopicJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\AddThanksJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\AlbumCallbackSuccessJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\AlbumEventsJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\AlbumCallbackSuccessJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\AlbumEventsJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\AsynchCallFailedJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\BlockUIExecuteJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\ButtonShowForumInNNTPTree.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\ButtonShowForumInNNTPTree.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\CeeBoxLoadJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\ChangeAlbumTitleJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\ChangeImageCaptionJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\ChangeAlbumTitleJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Albums\ChangeImageCaptionJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DatePickerLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DisablePageManagerScrollJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\DropDownLoadJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesAdminLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesAllJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesJumpAllJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesJumpLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeGetNodesSearchLazyCheckBoxesJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\DynatreeSelectSingleNodeLazyJS.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookInitJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookLoginJs.cs" />
-    <Compile Include="Classes\Utilities\JavaScriptBlocks\FacebookPostJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesAdminLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesAllJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesJumpAllJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesJumpLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeGetNodesSearchLazyCheckBoxesJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Dynatree\DynatreeSelectSingleNodeLazyJS.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookInitJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookLoginJs.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\Facebook\FacebookPostJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\HoverCardLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\JqueryUITabsLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\LoadGotoAnchor.cs" />
@@ -1009,7 +1001,6 @@
     <Content Include="Bin\FirebirdSql.Data.FirebirdClient.dll" />
     <Content Include="Bin\Intelligencia.UrlRewriter.dll" />
     <Content Include="Bin\Intelligencia.UrlRewriter.pdb" />
-    <Content Include="Bin\Microsoft.QualityTools.Testing.Fakes.dll" />
     <Content Include="Bin\Mono.Security.dll" />
     <Content Include="Bin\Mono.Security.Protocol.Tls.dll" />
     <Content Include="Bin\Moq.dll" />
@@ -4596,7 +4587,7 @@
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
     <Content Include="app_my.config" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -5199,10 +5190,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="pages\app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web_pg.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -5210,6 +5201,7 @@
     <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\wsc\README.md" />
     <Content Include="editors\tiny_mce\themes\advanced\img\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\localfolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -5931,7 +5923,7 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web.config" />
+    <Content Include="web_ms.config" />
     <Content Include="web_fb.config" />
   </ItemGroup>
   <ItemGroup>
@@ -5944,32 +5936,32 @@
       <Name>Intelligencia.UrlRewriter</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
-      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
+      <Project>{753c328a-21a5-4e20-969a-6bcc36019f77}</Project>
       <Name>VZF.Classes.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Controls\VZF.Controls.csproj">
-      <Project>{c72a5fc8-4b1c-4a24-a306-fb550729dbf0}</Project>
+      <Project>{C72A5FC8-4B1C-4A24-A306-FB550729DBF0}</Project>
       <Name>VZF.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Core\VZF.Core.csproj">
-      <Project>{bcefe9be-7417-47fb-a0e8-75e0201e88e8}</Project>
+      <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
       <Name>VZF.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Data\VZF.Data.Common\VZF.Data.Common.csproj">
-      <Project>{80f590ea-cc91-4286-b8ed-b173fecf0d90}</Project>
+      <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
-      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
-      <Name>VZF.Data.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VZF.Kernel\VZF.Kernel.csproj">
-      <Project>{7c5bb2bf-c385-49d2-937f-f4ce8e368cc3}</Project>
+      <Project>{7C5BB2BF-C385-49D2-937F-F4CE8E368CC3}</Project>
       <Name>VZF.Kernel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VZF.Providers\VZF.Providers.Common\VZF.Providers.Common.csproj">
-      <Project>{e9abbe0e-2961-4d7c-a7d9-8c114747e5c1}</Project>
-      <Name>VZF.Providers.Common</Name>
+    <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
+      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
+      <Name>VZF.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Utils\VZF.Utils.csproj">
+      <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
+      <Name>VZF.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -6013,11 +6005,10 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>8453</DevelopmentServerPort>
+          <DevelopmentServerPort>18159</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/mamacenter.net</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/mamacenter.net</IISAppRootUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -21,20 +21,20 @@ using System.Collections.Concurrent;
 
 namespace YAF.Providers.Roles
 {
-  using System;
-  using System.Collections.Specialized;
-  using System.Configuration;
-  using System.Data;
-  using System.Linq;
-  using System.Web.Security;
+    using System;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Data;
+    using System.Linq;
+    using System.Web.Security;
 
-  using YAF.Classes.Pattern;
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
-  using YAF.Types;
-  using VZF.Utils;
-  using YAF.Providers.Utils;
+    using VZF.Utils;
 
-  /// <summary>
+    using YAF.Core;
+    using YAF.Providers.Utils;
+    using YAF.Types.Interfaces;
+
+    /// <summary>
   /// The yaf role provider.
   /// </summary>
   public class VzfMySqlRoleProvider : RoleProvider

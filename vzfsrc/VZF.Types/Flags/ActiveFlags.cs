@@ -54,7 +54,7 @@ namespace YAF.Types.Flags
     /// The bit value.
     /// </param>
     public ActiveFlags(object bitValue)
-      : this((int) bitValue)
+        : this((int)bitValue)
     {
     }
 

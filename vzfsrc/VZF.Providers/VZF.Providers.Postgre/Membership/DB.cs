@@ -77,6 +77,9 @@ namespace YAF.Providers.Membership
         }
     }
 
+    /// <summary>
+    /// The db.
+    /// </summary>
     public static  class Db
     {
         public static void UpgradeMembership(int previousVersion, int newVersion)
@@ -153,7 +156,7 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_isapproved", NpgsqlDbType.Boolean)).Value = isApproved;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
                 cmd.Parameters.Add(new NpgsqlParameter("i_newuserkey", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
                 // Input Output Parameters
                 var paramUserKey = new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)
                     {Direction = ParameterDirection.InputOutput, Value = providerUserKey};
@@ -263,7 +266,7 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = providerUserKey;
                 cmd.Parameters.Add(new NpgsqlParameter("i_userisonline", NpgsqlDbType.Boolean)).Value = userIsOnline;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
 
                 using (DataTable dt = PostgreDbAccess.GetData(cmd,connectionString ))
                 {
@@ -291,7 +294,7 @@ namespace YAF.Providers.Membership
                 cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = DBNull.Value;
                 cmd.Parameters.Add(new NpgsqlParameter("i_userisonline", NpgsqlDbType.Boolean)).Value = updateUser;
                 cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
+                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
 
                 return PostgreDbAccess.GetData(cmd,connectionString );
             }

@@ -158,11 +158,11 @@ namespace YAF.Types.Flags
       /// </summary>
       IsHostAdmin = 64
       /* for future use		
-			xxxxx = 64,
-			xxxxx = 128,
-			xxxxx = 256,
-			xxxxx = 512
-			 */
+            xxxxx = 64,
+            xxxxx = 128,
+            xxxxx = 256,
+            xxxxx = 512
+             */
     }
 
     #endregion
@@ -170,7 +170,7 @@ namespace YAF.Types.Flags
     #region Single Flags (can be 32 of them)
 
     /// <summary>
-    /// Gets or sets whether group/role has administrator privilegies
+    /// Gets or sets a value indicating whether a group/role has administrator privilegies
     /// </summary>
     public bool IsAdmin
     {
@@ -241,7 +241,7 @@ namespace YAF.Types.Flags
     }
 
     /// <summary>
-    /// Gets or sets whether group/role has moderator privilegies.
+    /// Gets or sets a value indicating whether group/role has moderator privilegies.
     /// </summary>
     public bool IsHidden
     {
@@ -258,7 +258,7 @@ namespace YAF.Types.Flags
     }
 
     /// <summary>
-    /// Gets or sets whether this is a user group.
+    /// Gets or sets a value indicating whether this is a user group.
     /// </summary>
     public bool IsUserGroup
     {

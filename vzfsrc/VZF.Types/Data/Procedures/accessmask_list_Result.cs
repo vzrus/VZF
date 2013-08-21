@@ -9,14 +9,13 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class accessmask_list_Result
     {
         public int AccessMaskID { get; set; }
         public int BoardID { get; set; }
         public string Name { get; set; }
         public int Flags { get; set; }
-        public short SortOrder { get; set; }
+        public int SortOrder { get; set; }
     }
 }

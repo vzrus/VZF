@@ -41,6 +41,7 @@ namespace YAF.Classes.Pattern
     /// The instance.
     /// </param>
     /// <typeparam name="T">
+    /// The type parameter.
     /// </typeparam>
     void SetInstance<T>(T instance) where T : class;
 

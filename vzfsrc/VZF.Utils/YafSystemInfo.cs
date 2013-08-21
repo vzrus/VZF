@@ -21,7 +21,7 @@ namespace VZF.Utils
   #region Using
 
   using System;
-  using System.Diagnostics;
+  using System.Globalization;
 
   using YAF.Types;
 
@@ -94,7 +94,7 @@ namespace VZF.Utils
     {
       get
       {
-        return Environment.ProcessorCount.ToString();
+        return Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture);
       }
     }
 

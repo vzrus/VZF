@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class TopicStatus_Edit_Result
     {
         public int TopicStatusID { get; set; }

@@ -27,6 +27,7 @@ namespace YAF.Core
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
+    using YAF.Classes;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
 
@@ -201,6 +202,7 @@ namespace YAF.Core
       }
     }
 
+
     /// <summary>
     /// Gets a value indicating whether CanEditPost.
     /// </summary>
@@ -210,9 +212,8 @@ namespace YAF.Core
       {
         // Ederon : 9/9/2007 - moderaotrs can edit locked posts
         // Ederon : 12/5/2007 - new flags implementation
-          return ((!PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && (((UserId == YafContext.Current.PageUserID) && !DataRow["IsGuest"].ToType<bool>()) || (DataRow["IsGuest"].ToType<bool>() && (DataRow["IP"].ToString() == YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress())))) ||
+          return ((!this.PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && (((this.UserId == YafContext.Current.PageUserID) && !DataRow["IsGuest"].ToType<bool>()) || (DataRow["IsGuest"].ToType<bool>() && (DataRow["IP"].ToString() == YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress())))) ||
                 YafContext.Current.ForumModeratorAccess) && YafContext.Current.ForumEditAccess;
-         
       }
     }
 
@@ -230,12 +231,12 @@ namespace YAF.Core
         }
 
         // there is auto-lock period defined
-        if (!YafContext.Current.IsAdmin && YafContext.Current.BoardSettings.LockPosts > 0)
+        if (!YafContext.Current.IsAdmin && YafContext.Current.Get<YafBoardSettings>().LockPosts > 0)
         {
           var edited = (DateTime)DataRow["Edited"];
 
           // check if post is locked according to this rule
-          if (edited.AddDays(YafContext.Current.BoardSettings.LockPosts) < DateTime.UtcNow)
+          if (edited.AddDays(YafContext.Current.Get<YafBoardSettings>().LockPosts) < DateTime.UtcNow)
           {
             return true;
           }
@@ -264,7 +265,7 @@ namespace YAF.Core
       get
       {
         // Ederon : 9/9/2007 - moderaotrs can attack to locked posts
-        return ((!PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && UserId == YafContext.Current.PageUserID) ||
+        return ((!this.PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && UserId == YafContext.Current.PageUserID) ||
                 YafContext.Current.ForumModeratorAccess) && YafContext.Current.ForumUploadAccess;
       }
     }
@@ -278,8 +279,11 @@ namespace YAF.Core
       {
         // Ederon : 9/9/2007 - moderators can delete in locked posts
         // vzrus : only guests with the same IP can delete guest posts 
-          return ((!PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && (((UserId == YafContext.Current.PageUserID) && !DataRow["IsGuest"].ToType<bool>()) || (DataRow["IsGuest"].ToType<bool>() && (DataRow["IP"].ToString() == YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress())))) ||
-              YafContext.Current.ForumModeratorAccess) && YafContext.Current.ForumDeleteAccess;
+          return ((!this.PostLocked && !this._forumFlags.IsLocked && !this._topicFlags.IsLocked && (((this.UserId == YafContext.Current.PageUserID) && !DataRow["IsGuest"].ToType<bool>()) || (DataRow["IsGuest"].ToType<bool>() && (DataRow["IP"].ToString() == YafContext.Current.Get<HttpRequestBase>().GetUserRealIPAddress())))) ||
+              YafContext.Current.ForumModeratorAccess) && YafContext.Current.ForumDeleteAccess
+ 
+              // first post can't be deleted
+              && (int)DataRow["Position"] > 0;
       }
     }
 

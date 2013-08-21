@@ -35,6 +35,7 @@ namespace VZF.Data.Mysql
     using MySql.Data.MySqlClient;
 
     using VZF.Data.Utils;
+    using VZF.Types.Objects;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -117,7 +118,8 @@ namespace VZF.Data.Mysql
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "CharacterSet",
-                                                              cstr.CharacterSet.GetType(),
+                                                              cstr.CharacterSet.GetType(
+                                                                  ),
                                                               "utf8",
                                                               false),
                                                           new ConnectionStringParameter(
@@ -127,22 +129,26 @@ namespace VZF.Data.Mysql
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "TreatTinyAsBoolean",
-                                                              cstr.TreatTinyAsBoolean.GetType(),
+                                                              cstr.TreatTinyAsBoolean
+                                                              .GetType(),
                                                               "true",
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "TreatBlobsAsUTF8",
-                                                              cstr.TreatBlobsAsUTF8.GetType(),
+                                                              cstr.TreatBlobsAsUTF8
+                                                              .GetType(),
                                                               "true",
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "DefaultCommandTimeout",
-                                                              cstr.DefaultCommandTimeout.GetType(),
+                                                              cstr.DefaultCommandTimeout
+                                                              .GetType(),
                                                               "120",
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "CheckParameters",
-                                                              cstr.CheckParameters.GetType(),
+                                                              cstr.CheckParameters
+                                                              .GetType(),
                                                               "true",
                                                               false),
                                                           new ConnectionStringParameter(
@@ -152,17 +158,20 @@ namespace VZF.Data.Mysql
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "UseCompression",
-                                                              cstr.UseCompression.GetType(),
+                                                              cstr.UseCompression
+                                                              .GetType(),
                                                               "false",
                                                               false),
                                                           new ConnectionStringParameter(
                                                               "UseAffectedRows",
-                                                              cstr.UseAffectedRows.GetType(),
+                                                              cstr.UseAffectedRows
+                                                              .GetType(),
                                                               "false",
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "PersistSecurityInfo",
-                                                              cstr.PersistSecurityInfo.GetType(),
+                                                              cstr.PersistSecurityInfo
+                                                              .GetType(),
                                                               "false",
                                                               false),
                                                           new ConnectionStringParameter(
@@ -172,22 +181,26 @@ namespace VZF.Data.Mysql
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "AllowUserVariables",
-                                                              cstr.AllowUserVariables.GetType(),
+                                                              cstr.AllowUserVariables
+                                                              .GetType(),
                                                               "true",
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "AllowZeroDateTime",
-                                                              cstr.AllowZeroDateTime.GetType(),
+                                                              cstr.AllowZeroDateTime
+                                                              .GetType(),
                                                               "true",
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "IgnorePrepare",
-                                                              cstr.IgnorePrepare.GetType(),
+                                                              cstr.IgnorePrepare.GetType
+                                                              (),
                                                               "false",
                                                               true),
                                                           new ConnectionStringParameter(
                                                               "ProcedureCacheSize",
-                                                              cstr.ProcedureCacheSize.GetType(),
+                                                              cstr.ProcedureCacheSize
+                                                              .GetType(),
                                                               "50",
                                                               false),
                                                           new ConnectionStringParameter(
@@ -259,7 +272,7 @@ namespace VZF.Data.Mysql
                 return _schemaName;
             }
         }
-        
+
 
         /// <summary>
         /// Gets the result filter list.
@@ -402,8 +415,8 @@ namespace VZF.Data.Mysql
                 }
                 catch (MySqlException ex)
                 {
-                       // errorStr = "Unable to connect to the Database. Exception Message: " + ex.Message + " (" + ex.Number + ")";
-                        return false;
+                    // errorStr = "Unable to connect to the Database. Exception Message: " + ex.Message + " (" + ex.Number + ")";
+                    return false;
                 }
 
                 // success
@@ -441,21 +454,21 @@ namespace VZF.Data.Mysql
         {
             if (isText)
             {
-
                 // commandText = commandText.Replace("{databaseName}", DatabaseOwner);
                 commandText = commandText.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
                 commandText = commandText.Replace("{databaseName}", Config.DatabaseSchemaName);
 
-                MySqlCommand cmd = new MySqlCommand();
-
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = commandText;
-                cmd.Connection = connection;
+                var cmd = new MySqlCommand
+                              {
+                                  CommandType = CommandType.Text,
+                                  CommandText = commandText,
+                                  Connection = connection
+                              };
 
                 return cmd;
             }
-           
-                return GetCommand(commandText);
+
+            return GetCommand(commandText);
         }
 
         /// <summary>
@@ -648,12 +661,39 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The execute non query int.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int ExecuteNonQueryInt(IDbCommand cmd, string connectionString)
         {
             // defaults to using a transaction for non-queries
             return ExecuteNonQueryInt(cmd, true, connectionString);
         }
 
+        /// <summary>
+        /// The execute non query int.
+        /// </summary>
+        /// <param name="cmd">
+        /// The cmd.
+        /// </param>
+        /// <param name="transaction">
+        /// The transaction.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int ExecuteNonQueryInt(IDbCommand cmd, bool transaction, string connectionString)
         {
             QueryCounter qc = new QueryCounter(cmd.CommandText);
@@ -816,7 +856,10 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         public static DataTable GetDataTableFromReader(
-            IDbCommand cmd, bool transaction, bool acceptChanges, string connectionString)
+            IDbCommand cmd,
+            bool transaction,
+            bool acceptChanges,
+            string connectionString)
         {
             var qc = new QueryCounter(cmd.CommandText);
             try
@@ -966,7 +1009,9 @@ namespace VZF.Data.Mysql
         /// The <see cref="DataTable"/>.
         /// </returns>
         private static DataTable GetTableColumns(
-            DataTable dummyTable, IDataReader reader, bool convertFromUInt64ToInt32)
+            DataTable dummyTable,
+            IDataReader reader,
+            bool convertFromUInt64ToInt32)
         {
             DataTable schemaTable = reader.GetSchemaTable();
 
@@ -1003,7 +1048,7 @@ namespace VZF.Data.Mysql
             return dummyTable;
         }
 
-/*
+        /*
         /// <summary>
         /// The table schema reader.
         /// </summary>
@@ -1155,9 +1200,9 @@ namespace VZF.Data.Mysql
                 }
             }
         }
-       
+
 
         #endregion
     }
-    
+
 }

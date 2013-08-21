@@ -1943,7 +1943,9 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Deletes a category
         /// </summary>
-        /// <param name="CategoryID">ID of category to delete</param>
+        /// <param name="CategoryID">
+        /// ID of category to delete
+        /// </param>
         /// <returns>Bool value indicationg if category was deleted</returns>
         public static bool category_delete([NotNull] string connectionString, object CategoryID)
         {
@@ -2716,7 +2718,9 @@ namespace VZF.Data.Mysql
         /// <summary>
         /// Deletes attachments out of a entire forum
         /// </summary>
-        /// <param name="ForumID">ID of forum to delete all attachemnts out of</param>
+        /// <param name="ForumID">
+        /// ID of forum to delete all attachemnts out of
+        /// </param>
         private static void forum_deleteAttachments([NotNull] string connectionString, object forumID)
         {
             using (var cmd = MySqlDbAccess.GetCommand("forum_listtopics"))
@@ -2724,8 +2728,8 @@ namespace VZF.Data.Mysql
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
-
-                using (DataTable dt = MySqlDbAccess.GetData(cmd, connectionString))
+                DataTable dt = MySqlDbAccess.GetData(cmd, connectionString);
+                if (dt != null)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -2751,7 +2755,10 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_ForumID", MySqlDbType.Int32).Value = forumID;
 
-                if (!(MySqlDbAccess.ExecuteScalar(cmd, connectionString) is DBNull)) return false;
+                if (!(MySqlDbAccess.ExecuteScalar(cmd, connectionString) is DBNull))
+                {
+                    return false;
+                }
 
                 forum_deleteAttachments(connectionString, forumID);
                 using (var cmd_new = MySqlDbAccess.GetCommand("forum_delete"))
@@ -4293,19 +4300,6 @@ namespace VZF.Data.Mysql
             }
         }
 
-        [Obsolete("Use MessageList(int messageId) instead")]
-        public static DataTable message_list([NotNull] string connectionString, object messageID)
-        {
-            using (var cmd = MySqlDbAccess.GetCommand("message_list"))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add("i_MessageID", MySqlDbType.Int32).Value = messageID;
-
-                return MySqlDbAccess.GetData(cmd, connectionString);
-            }
-        }
-
         /// <summary>
         /// The message_list.
         /// </summary>
@@ -4682,8 +4676,8 @@ namespace VZF.Data.Mysql
                 cmd.Parameters.Add("i_BlogPostID", MySqlDbType.VarChar).Value = DBNull.Value; // Ederon : 6/16/2007
                 cmd.Parameters.Add("i_ExternalMessageID", MySqlDbType.VarChar).Value = DBNull.Value;
                 cmd.Parameters.Add("i_ReferenceMessageID", MySqlDbType.VarChar).Value = DBNull.Value;
-                cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
                 cmd.Parameters.Add("i_MessageDescription", MySqlDbType.VarChar).Value = messageDescription;
+                cmd.Parameters.Add("i_Flags", MySqlDbType.Int32).Value = flags;
                 cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
 
                 cmd.Parameters.Add(paramMessageID);
@@ -6942,8 +6936,10 @@ namespace VZF.Data.Mysql
             using (var cmd = MySqlDbAccess.GetCommand("topic_updatetopic"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
+
                 cmd.Parameters.Add("i_TopicID", MySqlDbType.Int32).Value = topicId;
                 cmd.Parameters.Add("i_Topic", MySqlDbType.VarChar).Value = topic;
+
                 MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
             }
         }
@@ -7654,6 +7650,63 @@ namespace VZF.Data.Mysql
             }
         }
 
+        /// <summary>
+        /// The topic_save.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="forumID">
+        /// The forum id.
+        /// </param>
+        /// <param name="subject">
+        /// The subject.
+        /// </param>
+        /// <param name="status">
+        /// The status.
+        /// </param>
+        /// <param name="styles">
+        /// The styles.
+        /// </param>
+        /// <param name="description">
+        /// The description.
+        /// </param>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="messageDescription">
+        /// The message description.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="priority">
+        /// The priority.
+        /// </param>
+        /// <param name="userName">
+        /// The user name.
+        /// </param>
+        /// <param name="ip">
+        /// The ip.
+        /// </param>
+        /// <param name="posted">
+        /// The posted.
+        /// </param>
+        /// <param name="blogPostID">
+        /// The blog post id.
+        /// </param>
+        /// <param name="flags">
+        /// The flags.
+        /// </param>
+        /// <param name="messageID">
+        /// The message id.
+        /// </param>
+        /// <param name="tags">
+        /// The tags.
+        /// </param>
+        /// <returns>
+        /// The <see cref="long"/>.
+        /// </returns>
         public static long topic_save(
             [NotNull] string connectionString,
             object forumID,
@@ -7662,6 +7715,7 @@ namespace VZF.Data.Mysql
             object styles,
             object description,
             object message,
+            [CanBeNull] object messageDescription,
             object userID,
             object priority,
             object userName,
@@ -7669,11 +7723,9 @@ namespace VZF.Data.Mysql
             object posted,
             object blogPostID,
             object flags,
-            [CanBeNull] object messageDescription,
-            ref long messageID,
+            out long messageID,
             string tags)
         {
-
             using (var cmd = MySqlDbAccess.GetCommand("topic_save"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -7929,14 +7981,10 @@ namespace VZF.Data.Mysql
         {
             using (var cmd = MySqlDbAccess.GetCommand("replace_words_list"))
             {
-                if (id == null)
-                {
-                    id = DBNull.Value;
-                }
-
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_ID", MySqlDbType.Int32).Value = id;
+                cmd.Parameters.Add("i_ID", MySqlDbType.Int32).Value = id ?? DBNull.Value;
+
                 return MySqlDbAccess.GetData(cmd, connectionString);
             }
         }
@@ -7952,15 +8000,10 @@ namespace VZF.Data.Mysql
         {
             using (var cmd = MySqlDbAccess.GetCommand("replace_words_save"))
             {
-                if (id == null)
-                {
-                    id = DBNull.Value;
-                }
-
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("i_BoardID", MySqlDbType.Int32).Value = boardId;
-                cmd.Parameters.Add("i_ID", MySqlDbType.Int32).Value = id;
+                cmd.Parameters.Add("i_ID", MySqlDbType.Int32).Value = id ?? DBNull.Value; 
                 cmd.Parameters.Add("i_BadWord", MySqlDbType.VarChar).Value = badword;
                 cmd.Parameters.Add("i_GoodWord", MySqlDbType.VarChar).Value = goodword;
 
@@ -12333,7 +12376,9 @@ namespace VZF.Data.Mysql
 
                 cmd.Parameters.Add("i_MessageID", MySqlDbType.Int32).Value = messageId;
                 cmd.Parameters.Add("i_UserID", MySqlDbType.Int32).Value = userId;
+
                 cmd.CommandTimeout = int.Parse(Config.SqlCommandTimeout);
+
                 var messageCount = (int)MySqlDbAccess.ExecuteScalar(cmd, connectionString);
                 return messageCount > 0;
             }

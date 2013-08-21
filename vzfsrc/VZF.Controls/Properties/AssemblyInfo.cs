@@ -9,7 +9,7 @@ using System.Security;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tiny Gecko")]
-[assembly: AssemblyProduct("Yet Another Forum.NET")]
+[assembly: AssemblyProduct("VZF")]
 [assembly: AssemblyCopyright("Copyright © 2006-2012 Yet Another Forum.NET")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -53,7 +53,7 @@ namespace YAF.Classes
     {
       get
       {
-        return this._settings.Where(x => x.PropertyType == typeof (string)).ToDictionary(x => x.Name, x => x);
+        return this._settings.Where(x => x.PropertyType == typeof(string)).ToDictionary(x => x.Name, x => x);
       }
     }
 
@@ -64,7 +64,7 @@ namespace YAF.Classes
     {
       get
       {
-        return this._settings.Where(x => x.PropertyType == typeof (bool)).ToDictionary(x => x.Name, x => x);
+          return this._settings.Where(x => x.PropertyType == typeof(bool)).ToDictionary(x => x.Name, x => x);
       }
     }
 
@@ -75,7 +75,7 @@ namespace YAF.Classes
     {
       get
       {
-        return this._settings.Where(x => x.PropertyType == typeof (int)).ToDictionary(x => x.Name, x => x);
+          return this._settings.Where(x => x.PropertyType == typeof(int)).ToDictionary(x => x.Name, x => x);
       }
     }
 
@@ -86,7 +86,7 @@ namespace YAF.Classes
     {
       get
       {
-        return this._settings.Where(x => x.PropertyType == typeof (double)).ToDictionary(x => x.Name, x => x);
+          return this._settings.Where(x => x.PropertyType == typeof(double)).ToDictionary(x => x.Name, x => x);
       }
     }
 
@@ -98,12 +98,12 @@ namespace YAF.Classes
       get
       {
         var excludeTypes = new List<Type>()
-          {
-            typeof (string), 
-            typeof (bool), 
-            typeof (int), 
-            typeof (double)
-          };
+                               {
+                                   typeof(string),
+                                   typeof(bool),
+                                   typeof(int),
+                                   typeof(double)
+                               };
 
         return this._settings.Where(x => !excludeTypes.Contains(x.PropertyType)).ToDictionary(x => x.Name, x => x);
       }

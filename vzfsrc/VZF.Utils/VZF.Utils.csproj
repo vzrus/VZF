@@ -55,14 +55,9 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VZF.Types, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8b49dc47f4701f66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\VZF.NET\Bin\VZF.Types.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DataExtensions.cs" />
@@ -123,8 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
-      <Project>{05e50d2f-9527-4ce8-a0f8-168281c426cb}</Project>
+      <Project>{753C328A-21A5-4E20-969A-6BCC36019F77}</Project>
       <Name>VZF.Classes.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
+      <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
+      <Name>VZF.Types</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

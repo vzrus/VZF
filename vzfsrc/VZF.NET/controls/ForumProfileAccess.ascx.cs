@@ -27,6 +27,7 @@ namespace VZF.Controls
     using System.Web.UI.WebControls;
 
     using VZF.Kernel;
+    using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 
@@ -36,7 +37,6 @@ namespace VZF.Controls
     using YAF.Types.Constants;
     using YAF.Types.Flags;
     using YAF.Types.Interfaces;
-    using VZF.Utilities;
 
     #endregion
 

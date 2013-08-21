@@ -182,7 +182,7 @@ namespace YAF.Core
 
       if (this.Type != null)
       {
-        typeName = this.Type.FullName.Substring(0,50);
+          typeName = this.Type.FullName.Length > 50 ? this.Type.FullName.Substring(0, 50) : this.Type.FullName;
       }
 
       // TODO: come up with userid if the database is available.

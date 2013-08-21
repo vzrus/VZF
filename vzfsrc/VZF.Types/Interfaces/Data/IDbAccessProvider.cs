@@ -20,11 +20,11 @@ namespace YAF.Types.Interfaces
 {
 	#region Using
 
-	using System.Data.Common;
 
-	#endregion
 
-	/// <summary>
+    #endregion
+
+    /// <summary>
 	/// The db access provider.
 	/// </summary>
 	public interface IDbAccessProvider : IReadWriteProvider<IDbAccessV2>

@@ -28,17 +28,16 @@ namespace YAF.Pages
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using YAF.Types.Objects;
-    using VZF.Utils;
 
     #endregion
 

@@ -33,14 +33,13 @@ namespace VZF.Controls
     using System.Web.UI.HtmlControls;
 
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
     #endregion
 

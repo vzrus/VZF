@@ -14,8 +14,8 @@ CREATE TYPE databaseSchema.objectQualifier_user_table_type AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -24,7 +24,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_table_type AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -74,8 +74,8 @@ CREATE TYPE databaseSchema.objectQualifier_active_list_return_type AS
 "IsHidden" boolean,
 "Style" varchar(255), 
 "UserCount" integer,
-"Login" timestampTZ,
-"LastActive" timestampTZ,
+"Login" timestamp,
+"LastActive" timestamp,
 "Location" varchar(1024),
 "Active"  integer,
 "Browser" varchar(128),
@@ -102,8 +102,8 @@ CREATE TYPE databaseSchema.objectQualifier_active_list_user_return_type AS
 "IsHidden" boolean,
 "Style" varchar(1024), 
 "UserCount" integer,
-"Login" timestampTZ,
-"LastActive" timestampTZ,
+"Login" timestamp,
+"LastActive" timestamp,
 "Location" varchar(1024),
 "Active"  integer,
 "Browser" varchar(128),
@@ -160,7 +160,7 @@ CREATE TYPE databaseSchema.objectQualifier_attachment_list_return_type AS
 "Downloads" integer,
 "FileData" bytea,
 "BoardID" integer,
-"Posted" timestampTZ,
+"Posted" timestamp,
 "ForumID" integer,
 "ForumName" varchar(128),
 "TopicID" integer, 
@@ -174,7 +174,7 @@ CREATE TYPE databaseSchema.objectQualifier_bannedip_list_return_type AS
 "ID" integer,
 "BoardID" integer,
 "Mask" varchar(57),
-"Since" timestampTZ,
+"Since" timestamp,
 "Reason" varchar(128),
 "UserID" integer,
 "TotalRows" integer
@@ -219,7 +219,7 @@ CREATE TYPE databaseSchema.objectQualifier_board_poststats_return_type AS
 "Topics" integer,
 "Forums" integer,
 "LastPostInfoID" integer,
-"LastPost" timestampTZ,
+"LastPost" timestamp,
 "LastUserID" integer,
 "LastUser" varchar(255),
 "LastUserDisplayName" varchar(255),
@@ -231,7 +231,7 @@ CREATE TYPE databaseSchema.objectQualifier_board_userstats_return_type AS
 (
 "Members" integer,
 "MaxUsers" integer,
-"MaxUsersWhen" timestampTZ,
+"MaxUsersWhen" timestamp,
 "LastMemberInfoID" integer,
 "LastMemberID" integer,
 "LastMember" varchar(255),
@@ -244,7 +244,7 @@ CREATE TYPE databaseSchema.objectQualifier_board_stats_return_type AS
 "NumPosts" integer,
 "NumTopics" integer,
 "NumUsers" integer,
-"BoardStart" timestampTZ 
+"BoardStart" timestamp 
 );
 --GO
 
@@ -294,7 +294,7 @@ CREATE TYPE databaseSchema.objectQualifier_checkemail_list_return_type AS (
 	"CheckEmailID" integer,
 	"UserID" integer,
 	"Email" varchar(128),
-	"Created" timestampTZ,
+	"Created" timestamp,
 	"Hash" varchar(32)
 );
 --GO
@@ -316,7 +316,7 @@ CREATE TYPE databaseSchema.objectQualifier_extension_return_type AS
 CREATE TYPE  databaseSchema.objectQualifier_eventlog_list_return_type AS
 (
 "EventLogID" integer,
-"EventTime" timestampTZ,
+"EventTime" timestamp,
 "UserID" integer,
 "Source" varchar(128),
 "Description" text,
@@ -344,7 +344,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_list_return_type AS
 "Name" varchar(128),
 "Description" varchar(255),
 "SortOrder" integer,
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastTopicID" integer,
 "LastMessageID" integer,
 "LastUserID" integer,
@@ -415,7 +415,7 @@ CREATE TYPE databaseSchema.objectQualifier_forumid_return_type AS
 
 CREATE TYPE databaseSchema.objectQualifier_forum_listread_helper_return_type AS
 (
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastMessageID" integer,
 "LastMessageFlags" integer,
 "LastUserID" integer,
@@ -444,7 +444,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listread_return_type AS
 "LastTopicStatus" varchar(255),
 "LastTopicStyles" varchar(255),
 "TopicMovedID" integer,
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastMessageID" integer,
 "LastMessageFlags" integer,
 "LastUserID" integer,
@@ -456,8 +456,8 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listread_return_type AS
 "Viewing" integer,
 "RemoteURL" varchar(255),
 "ReadAccess" integer,
-"LastForumAccess"  timestampTZ,
-"LastTopicAccess"  timestampTZ 
+"LastForumAccess"  timestamp,
+"LastTopicAccess"  timestamp 
 );
 --GO
 
@@ -467,13 +467,13 @@ CREATE TYPE databaseSchema.objectQualifier_forum_listtopics_return_type AS
 	"ForumID" integer,
 	"UserID" integer,
 	"UserName" varchar(128),
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"Topic" varchar(128),
 	"Views" integer,
 	"Priority" smallint,
 	"PollID" integer,
 	"TopicMovedID" integer,
-	"LastPosted" timestampTZ,
+	"LastPosted" timestamp,
 	"LastMessageID" integer,    
 	"LastUserID" integer,
 	"LastUserName" varchar(128),
@@ -497,7 +497,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_moderatelist_return_type AS
 "Name" varchar(128),
 "Description" varchar(255),
 "SortOrder" integer,
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastTopicID" integer,
 "LastMessageID" integer,
 "LastUserID" integer,
@@ -550,7 +550,7 @@ CREATE TYPE databaseSchema.objectQualifier_forum_simplelist_return_type AS
 (
 "ForumID" integer,
 "Name" varchar(128),
-"LastPosted" timestampTZ
+"LastPosted" timestamp
 );
 --GO
 
@@ -641,12 +641,12 @@ CREATE TYPE databaseSchema.objectQualifier_mail_list_return_type AS (
 "FromUserName" varchar(128),
 "ToUser" varchar(128),
 "ToUserName" varchar(128),
-"Created" timestampTZ,
+"Created" timestamp,
 "Subject" varchar(255),
 "Body" text,
 "BodyHtml" text,
 "SendTries" integer,
-"SendAttempt" timestampTZ,
+"SendAttempt" timestamp,
 "ProcessID" integer
 );
 --GO
@@ -709,7 +709,7 @@ CREATE TYPE databaseSchema.objectQualifier_message_list_return_type AS
 "Description"  varchar(255),
 "Flags" integer,
 "TopicOwnerID"  integer,
-"Edited" timestampTZ,
+"Edited" timestamp,
 "TopicFlags"  integer,
 "ForumFlags"  integer,
 "EditReason" varchar(100),
@@ -731,14 +731,14 @@ CREATE TYPE databaseSchema.objectQualifier_message_listreported_return_type AS
 "Message" text,
 "Resolved" boolean,
 "ResolvedBy" integer,
-"ResolvedDate" timestampTZ,
+"ResolvedDate" timestamp,
 "OriginalMessage" text,
 "Flags" integer,
 "IsModeratorChanged" boolean,
 "UserName" varchar(128),
 "UserDisplayName" varchar(255),
 "UserID" integer,
-"Posted" timestampTZ,
+"Posted" timestamp,
 "TopicID" integer,
 "Topic" varchar(128), 
 "NumberOfReports" integer
@@ -748,7 +748,7 @@ CREATE TYPE databaseSchema.objectQualifier_message_listreported_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_message_reply_list_return_type AS 
 (
 "MessageID" integer,
-"Posted" timestampTZ,
+"Posted" timestamp,
 "Subject" varchar(128),
 "Message" text,
 "UserID" integer,
@@ -770,7 +770,7 @@ CREATE TYPE databaseSchema.objectQualifier_message_unapproved_return_type AS
 "UserID" integer, 
 "UserName" varchar(128),
 "UserDisplayName" varchar(128),
-"Posted" timestampTZ,
+"Posted" timestamp,
 "TopicID" integer, 
 "Topic" varchar(128),
 "Message" text,
@@ -791,9 +791,9 @@ CREATE TYPE databaseSchema.objectQualifier_nntpforum_list_return_type AS
 "GroupName" varchar(128),
 "ForumID" integer,
 "LastMessageNo" integer,
-"LastUpdate" timestampTZ,
+"LastUpdate" timestamp,
 "Active" boolean,
-"DateCutOff"  timestampTZ,
+"DateCutOff"  timestamp,
 "ForumName" varchar(128),
 "CategoryID" integer 
 );
@@ -841,7 +841,7 @@ CREATE TYPE databaseSchema.objectQualifier_pmessage_list_return_type AS
 "FromUser" varchar(128),
 "ToUserID" integer,
 "ToUser" varchar(128),
-"Created" timestampTZ,
+"Created" timestamp,
 "Subject" varchar(128),
 "Body" text,
 "Flags" integer,
@@ -922,7 +922,7 @@ CREATE TYPE databaseSchema.objectQualifier_pollvote_check_return_type AS
 
 CREATE TYPE databaseSchema.objectQualifier_post_alluser_type AS
 (
-"Posted" timestampTZ,
+"Posted" timestamp,
 "Subject" varchar(128),
 "MessageID" integer,
 "Message" text,
@@ -950,7 +950,7 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 		"TopicFlags" integer,
 		"ForumFlags" integer,
 		"MessageID" integer,
-		"Posted" timestampTZ, 		
+		"Posted" timestamp, 		
 		"Message" text,
 		"MessageDescription" varchar(255),
 		"UserID" integer,
@@ -967,13 +967,13 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 		"ReferenceMessageId" varchar(255),
 		"UserName" varchar(255),
 		"DisplayName" varchar(255),
-		"Suspended" timestampTZ,
-		"Joined" timestampTZ,
+		"Suspended" timestamp,
+		"Joined" timestamp,
 		"Avatar" varchar(100),
 		"Signature" text,
 		"Posts" integer,
 		"Points" integer,
-		"ReputationVoteDate" timestampTZ,
+		"ReputationVoteDate" timestamp,
 		"IsGuest" bool,
 		"Views" integer,
 		"ForumID" integer,
@@ -981,7 +981,7 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 		"RankImage" varchar(100),
 		"RankStyle"  varchar(1024),
 		"Style"  varchar(1024),
-		"Edited" timestampTZ,
+		"Edited" timestamp,
 		"HasAttachments" integer,
 		"HasAvatarImage" integer,
 		"TotalRows" integer,
@@ -992,7 +992,7 @@ CREATE TYPE databaseSchema.objectQualifier_post_list_type AS
 
 CREATE TYPE databaseSchema.post_list_reverse10_return_type AS
 (
-"Posted" timestampTZ,
+"Posted" timestamp,
 "Subject" varchar(128),
 "Message" text,
 "UserID" integer,
@@ -1089,8 +1089,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_active_return_type AS
 "FirstMessage" text,
 "StarterStyle"  varchar(255),
 "LastUserStyle"  varchar(255),
-"LastForumAccess"  timestampTZ,
-"LastTopicAccess"  timestampTZ,
+"LastForumAccess"  timestamp,
+"LastTopicAccess"  timestamp,
 "TopicTags" text,  
 "TopicImage" varchar(255),
 "TopicImageType" varchar(50),
@@ -1134,8 +1134,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unread_return_type AS
 "FirstMessage" text,
 "StarterStyle"  varchar(255),
 "LastUserStyle"  varchar(255),
-"LastForumAccess"  timestampTZ,
-"LastTopicAccess"  timestampTZ,
+"LastForumAccess"  timestamp,
+"LastTopicAccess"  timestamp,
 "TopicTags" text,  
 "TopicImage" varchar(255),
 "TopicImageType" varchar(50),
@@ -1149,8 +1149,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unread_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_topic_announcements_return_type AS
 (
 "Topic" varchar(128),
-"LastPosted" timestampTZ,
-"Posted" timestampTZ, 
+"LastPosted" timestamp,
+"Posted" timestamp, 
 "TopicID" integer,
 "LastMessageID" integer,
 "LastMessageFlags" integer,
@@ -1183,13 +1183,13 @@ CREATE TYPE databaseSchema.objectQualifier_topic_info_return_type AS (
 	"ForumID" integer,
 	"UserID" integer,
 	"UserName" varchar(128),
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"Topic" varchar(128),
 	"Views" integer,
 	"Priority" smallint,
 	"PollID" integer,
 	"TopicMovedID" integer,
-	"LastPosted" timestampTZ,
+	"LastPosted" timestamp,
 	"LastMessageID" integer,    
 	"LastUserID" integer,
 	"LastUserName" varchar(128),
@@ -1214,7 +1214,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_info_return_type AS (
 
 CREATE TYPE databaseSchema.objectQualifier_topic_latest_return_type AS
 (
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "ForumID" integer,
 "Forum" varchar(100),
 "Topic" varchar(128),
@@ -1230,20 +1230,20 @@ CREATE TYPE databaseSchema.objectQualifier_topic_latest_return_type AS
 "LastMessageFlags" integer,
 "LastUserID" integer,
 "NumPosts" integer,
-"Posted"  timestampTZ,
+"Posted"  timestamp,
 "LastUserName" varchar(128),
 "LastUserDisplayName" varchar(128),
 "LastUserStyle"  varchar(255),
 "LastUserIsGuest" boolean,
-"LastForumAccess" timestampTZ,
-"LastTopicAccess"  timestampTZ
+"LastForumAccess" timestamp,
+"LastTopicAccess"  timestamp
 );
 --GO
 
 CREATE TYPE databaseSchema.objectQualifier_rss_topic_latest_return_type AS
 (
 "LastMessage" text, 
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "ForumID" integer,
 "Forum" varchar(128),
 "Topic" varchar(128),
@@ -1256,7 +1256,7 @@ CREATE TYPE databaseSchema.objectQualifier_rss_topic_latest_return_type AS
 "LastMessageID" integer,
 "LastMessageFlags" integer,
 "LastUserID" integer,
-"Posted" timestampTZ,
+"Posted" timestamp,
 "LastUserName" varchar(255),
 "LastUserDisplayName" varchar(255),
 "LastUserIsGuest" boolean
@@ -1266,7 +1266,7 @@ CREATE TYPE databaseSchema.objectQualifier_rss_topic_latest_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (   
 	"ForumID" integer,
 	"TopicID" integer,
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"LinkTopicID" integer,
 	"TopicMovedID" integer,
 	"FavoriteCount" integer,
@@ -1280,13 +1280,13 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 	"Replies" integer,
 	"NumPostsDeleted" integer,  
 	"Views" integer,
-	"LastPosted" timestampTZ,   
+	"LastPosted" timestamp,   
 	"LastUserID" integer,
 	"LastUserName" varchar(128),
 	"LastUserDisplayName" varchar(128),
 	"LastMessageID" integer,
 	"LastTopicID" integer,
-	"LinkDate" timestampTZ, 
+	"LinkDate" timestamp, 
 	"TopicFlags" integer,
 	"Priority" smallint,
 	"PollID" integer,
@@ -1294,8 +1294,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 	"FirstMessage"   text,	
 	"StarterStyle"  varchar(255), 
 	"LastUserStyle"  varchar(255),
-	"LastForumAccess"  timestampTZ,
-	"LastTopicAccess"  timestampTZ,
+	"LastForumAccess"  timestamp,
+	"LastTopicAccess"  timestamp,
 	"TopicTags" text,  
 	"TopicImage" varchar(255),
 	"TopicImageType" varchar(50),
@@ -1309,7 +1309,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_list_return_type AS (
 CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (   
 	"ForumID" integer,
 	"TopicID" integer,
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"LinkTopicID" integer,
 	"TopicMovedID" integer,
 	"FavoriteCount" integer,
@@ -1323,13 +1323,13 @@ CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (
 	"Replies" integer,
 	"NumPostsDeleted" integer,  
 	"Views" integer,
-	"LastPosted" timestampTZ,   
+	"LastPosted" timestamp,   
 	"LastUserID" integer,
 	"LastUserName" varchar(128),
 	"LastUserDisplayName" varchar(128),
 	"LastMessageID" integer,
 	"LastTopicID" integer,
-	"LinkDate" timestampTZ, 
+	"LinkDate" timestamp, 
 	"TopicFlags" integer,
 	"Priority" smallint,
 	"PollID" integer,
@@ -1337,8 +1337,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_bytags_rt AS (
 	"FirstMessage"   text,	
 	"StarterStyle"  varchar(255), 
 	"LastUserStyle"  varchar(255),
-	"LastForumAccess"  timestampTZ,
-	"LastTopicAccess"  timestampTZ,
+	"LastForumAccess"  timestamp,
+	"LastTopicAccess"  timestamp,
 	"Tags" text,
 	"TopicImage" varchar(255),
 	"TopicImageBin" bytea,
@@ -1353,7 +1353,7 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
 	"ForumID" integer,
 	"TopicID" integer,
 	"TopicMovedID" integer,
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"LinkTopicID" integer,	
 	"Subject" varchar(255),
 	"Description" varchar(255),
@@ -1365,7 +1365,7 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
 	"NumPostsDeleted" integer,  
 	"Replies" integer,   
 	"Views" integer,
-	"LastPosted" timestampTZ,   
+	"LastPosted" timestamp,   
 	"LastUserID" integer,
 	"LastUserName" varchar(255),
 	"LastUserDisplayName" varchar(255),
@@ -1381,8 +1381,8 @@ CREATE TYPE databaseSchema.objectQualifier_topics_byuser_return_type AS (
 	"FirstMessage"  text,
 	"StarterStyle" varchar(255),
 	"LastUserStyle" varchar(255),
-	"LastForumAccess"  timestampTZ,
-	"LastTopicAccess"   timestampTZ,
+	"LastForumAccess"  timestamp,
+	"LastTopicAccess"   timestamp,
     "TopicTags" text,  
 	"TopicImage" varchar(255),
 	"TopicImageType" varchar(50),
@@ -1397,7 +1397,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 	"ForumID" integer,
 	"TopicID" integer,
 	"TopicMovedID" integer,
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"LinkTopicID" integer,	
 	"Subject" varchar(255),
 	"Description" varchar(255),
@@ -1409,7 +1409,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 	"NumPostsDeleted" integer,  
 	"Replies" integer,   
 	"Views" integer,
-	"LastPosted" timestampTZ,   
+	"LastPosted" timestamp,   
 	"LastUserID" integer,
 	"LastUserName" varchar(255),
 	"LastUserDisplayName" varchar(255),
@@ -1425,8 +1425,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_unanswered_rt AS (
 	"FirstMessage"  text,
 	"StarterStyle" varchar(255),
 	"LastUserStyle" varchar(255),
-	"LastForumAccess"  timestampTZ,
-	"LastTopicAccess"   timestampTZ,  
+	"LastForumAccess"  timestamp,
+	"LastTopicAccess"   timestamp,  
 	"TopicTags" text,
 	"TopicImage" varchar(255),
 	"TopicImageType" varchar(50),
@@ -1446,10 +1446,10 @@ CREATE TYPE databaseSchema.objectQualifier_topic_listmessages_return_type AS (
 	"UserID" integer,
 	"UserName" varchar(128),
 	"UserDisplayName" varchar(128),
-	"Posted" timestampTZ,
+	"Posted" timestamp,
 	"Message" text,
 	"IP" varchar(39),
-	"Edited" timestampTZ,
+	"Edited" timestamp,
 	"Flags" integer,
 	"EditReason" varchar(100),
 	"IsModeratorChanged" boolean,
@@ -1511,7 +1511,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_activity_rank_return_type AS
 "ID" integer,
 "Name" varchar(255),
 "DisplayName" varchar(255),
-"Joined" timestampTZ,
+"Joined" timestamp,
 "UserStyle" varchar(255),
 "IsHidden" boolean,
 "NumOfPosts" integer,
@@ -1561,8 +1561,8 @@ CREATE TYPE databaseSchema.objectQualifier_user_find_return_type AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -1571,7 +1571,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_find_return_type AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -1625,8 +1625,8 @@ CREATE TYPE databaseSchema.objectQualifier_user_list_return_type AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -1635,7 +1635,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_list_return_type AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -1679,8 +1679,8 @@ CREATE TYPE databaseSchema.objectQualifier_admin_list_rt AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -1689,7 +1689,7 @@ CREATE TYPE databaseSchema.objectQualifier_admin_list_rt AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -1740,8 +1740,8 @@ CREATE TYPE databaseSchema.objectQualifier_user_listmembers_return_type AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -1750,7 +1750,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_listmembers_return_type AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -1789,7 +1789,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_listmedals_return_type AS
 "Hide" boolean,
 "OnlyRibbon" boolean,
 "Flags" integer,
-"DateAwarded" timestampTZ 
+"DateAwarded" timestamp 
 );
 --GO    
 
@@ -1823,7 +1823,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_medal_list_return_type AS
 "Hide" boolean,
 "OnlyRibbon" boolean,
 "CurrentSortOrder" smallint,
-"DateAwarded" timestampTZ 
+"DateAwarded" timestamp 
 );
 --GO
 
@@ -1860,8 +1860,8 @@ CREATE TYPE databaseSchema.objectQualifier_userforum_list_return_type AS
   "Name" varchar(128),
   "Password" varchar(32),
   "Email" varchar(128),
-  "Joined" timestampTZ,
-  "LastVisit" timestampTZ,
+  "Joined" timestamp,
+  "LastVisit" timestamp,
   "IP" varchar(39),
   "NumPosts" integer,
   "TimeZone" integer,
@@ -1870,7 +1870,7 @@ CREATE TYPE databaseSchema.objectQualifier_userforum_list_return_type AS
   "AvatarImage" bytea,
   "AvatarImageType" varchar(128),
   "RankID" integer,  
-  "Suspended" timestampTZ,
+  "Suspended" timestamp,
   "LanguageFile" varchar(128),
   "ThemeFile" varchar(128),
   "OverrideDefaultThemes" boolean,
@@ -1907,7 +1907,7 @@ CREATE TYPE databaseSchema.objectQualifier_userpmessage_list_return_type AS
 "PMessageID" integer,
 "ReplyTo" boolean,
 "FromUserID" integer,
-"Created" timestampTZ,
+"Created" timestamp,
 "Subject" varchar(100),
 "Body" text,
 "Flags" integer,
@@ -1932,12 +1932,12 @@ CREATE TYPE databaseSchema.objectQualifier_watchforum_list_return_type AS
 "WatchForumID" integer,
 "ForumID" integer,
 "UserID" integer,
-"Created" timestampTZ,
-"LastMail" timestampTZ,
+"Created" timestamp,
+"LastMail" timestamp,
 "ForumName" varchar(128),
 "Messages" integer,
 "Topics" integer,
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastMessageID"  integer,
 "LastTopicID" integer,
 "LastUserID" integer,
@@ -1958,12 +1958,12 @@ CREATE TYPE databaseSchema.objectQualifier_watchtopic_list_return_type AS
 "WatchTopicID" integer,
 "TopicID" integer,
 "UserID" integer,
-"Created" timestampTZ,
-"LastMail" timestampTZ,
+"Created" timestamp,
+"LastMail" timestamp,
 "TopicName" varchar(128),
 "Replies" integer,
 "Views" integer,
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastMessageID" integer,
 "LastUserID" integer,
 "LastUserName" varchar(128),
@@ -1974,14 +1974,14 @@ CREATE TYPE databaseSchema.objectQualifier_watchtopic_list_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_pageload_return_type AS 
 (
 "ActiveUpdate" bool,
-"PreviousVisit" timestampTZ,
+"PreviousVisit" timestamp,
 "UserID" integer,
 "ForumID" integer,
 "IsAdmin" boolean,
 "IsGuest" boolean,
 "IsForumModerator" boolean,
 "IsModerator"  boolean,
-"LastActive" timestampTZ,
+"LastActive" timestamp,
 "ReadAccess" boolean,			
 "PostAccess" boolean,
 "ReplyAccess" boolean,
@@ -2011,7 +2011,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_lazydata_return_type AS
 "UserFlags" integer,
 "UserName" varchar(128),
 "DisplayName" varchar(128),
-"Suspended" timestampTZ,
+"Suspended" timestamp,
 "ThemeFile" varchar(128),
 "LanguageFile" varchar(128),
 "UseSingleSignOn" bool,
@@ -2024,9 +2024,9 @@ CREATE TYPE databaseSchema.objectQualifier_user_lazydata_return_type AS
 "IsGuest" boolean,
 "MailsPending" integer,
 "UnreadPrivate" integer,
-"LastUnreadPm"  timestampTZ,
+"LastUnreadPm"  timestamp,
 "PendingBuddies" integer,
-"LastPendingBuddies"   timestampTZ,
+"LastPendingBuddies"   timestamp,
 "UserStyle"  varchar(255),
 "NumAlbums" integer,
 "UsrAlbums"  integer,
@@ -2050,7 +2050,7 @@ CREATE TYPE databaseSchema.objectQualifier_rsstopic_list_return_type AS
 "Topic" varchar(128),
 "TopicID" integer, 
 "Name" varchar(128), 
-"LastPosted" timestampTZ,
+"LastPosted" timestamp,
 "LastUserID" integer,
 "LastMessageID" integer,
 "LastMessageFlags" integer
@@ -2060,7 +2060,7 @@ CREATE TYPE databaseSchema.objectQualifier_rsstopic_list_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_last_posted_return_type AS
 (
  lasttopicid integer,
- lastposted timestampTZ 
+ lastposted timestamp 
 );
 --GO
 
@@ -2100,7 +2100,7 @@ CREATE TYPE databaseSchema.objectQualifier_shoutbox_getmessages_return_type AS
 "UserName" varchar(255),
 "UserDisplayName" varchar(255),
 "Message" text,
-"Date" timestampTZ,
+"Date" timestamp,
 "Style"  varchar(255)
 );
 --GO
@@ -2108,7 +2108,7 @@ CREATE TYPE databaseSchema.objectQualifier_shoutbox_getmessages_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_message_getthanks_return_type AS
 (		
 "UserID" integer, 
-"ThanksDate" timestampTZ, 
+"ThanksDate" timestamp, 
 "Name"  varchar(128),
 "DisplayName"  varchar(128)
 );
@@ -2149,7 +2149,7 @@ CREATE TYPE databaseSchema.objectQualifier_message_listreporters_return_type AS
 CREATE TYPE databaseSchema.objectQualifier_message_getallthanks_return_type AS
 (
 	"FromUserID" integer,
-	"ThanksDate" timestampTZ,
+	"ThanksDate" timestamp,
 	"MessageID" integer,
 	"ToUserID" integer,
 		"ThanksFromUserNumber" integer,
@@ -2169,7 +2169,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 	"ForumID" integer,
 	"TopicID" integer,
 	"TopicMovedID" integer,
-	"Posted"  timestampTZ,
+	"Posted"  timestamp,
 	"LinkTopicID" integer,
 	"Subject" varchar(255),
 	"Status" varchar(255),
@@ -2181,7 +2181,7 @@ CREATE TYPE databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 	"NumPostsDeleted" integer,
 	"Replies" integer,
 	"Views" integer,
-	"LastPosted"  timestampTZ,
+	"LastPosted"  timestamp,
 	"LastUserID" integer,
 	"LastUserName"  varchar(255),
 	"LastUserDisplayName"  varchar(255),
@@ -2197,8 +2197,8 @@ CREATE TYPE databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 	"FirstMessage" text,
 	"StarterStyle"   varchar(255),
 	"LastUserStyle"   varchar(255),
-	"LastForumAccess"   timestampTZ,
-	"LastTopicAccess"   timestampTZ,
+	"LastForumAccess"   timestamp,
+	"LastTopicAccess"   timestamp,
     "TopicTags" text,  
     "TopicImage" varchar(255),
     "TopicImageType" varchar(50),
@@ -2221,12 +2221,12 @@ CREATE TYPE databaseSchema.objectQualifier_buddy_list_return_type AS
 	"UserID" integer,
 	"BoardID" integer,
 	"Name" varchar(128),
-	"Joined" timestampTZ,
+	"Joined" timestamp,
 	"NumPosts" integer,
 	"RankName" varchar(128),
 	"Approved" boolean,
 	"FromUserID" integer,
-	"Requested" timestampTZ         
+	"Requested" timestamp         
 	
 );
 --GO
@@ -2243,7 +2243,7 @@ CREATE TYPE databaseSchema.objectQualifier_album_list_return_type AS
 "UserID" integer,
 "Title" varchar(255),
 "CoverImageID" integer,
-"Updated"  timestampTZ 
+"Updated"  timestamp 
 );
 --GO
 
@@ -2262,7 +2262,7 @@ CREATE TYPE databaseSchema.objectQualifier_album_image_list_return_type AS
  "FileName"  varchar(255),
  "Bytes" integer,
  "ContentType"  varchar(50),
- "Uploaded" timestampTZ,
+ "Uploaded" timestamp,
  "Downloads" integer,
  "UserID" integer
  );
@@ -2276,7 +2276,7 @@ CREATE TYPE databaseSchema.objectQualifier_album_image_list_return_type2 AS
  "FileName"  varchar(255),
  "Bytes" integer,
  "ContentType"  varchar(50),
- "Uploaded" timestampTZ,
+ "Uploaded" timestamp,
  "Downloads" integer
  );
  --GO
@@ -2305,13 +2305,13 @@ CREATE TYPE databaseSchema.objectQualifier_message_secdata_return_type AS
  "Name" varchar(128),
  "UserDisplayName" varchar(255),
  "Message" text,
- "Posted" timestampTZ,
+ "Posted" timestamp,
  "TopicID" integer,
  "ForumID" integer,	
  "Topic"   varchar(128),
  "Priority" integer,
  "Flags" integer,
- "Edited" timestampTZ,
+ "Edited" timestamp,
  "TopicFlags" integer,
  "EditReason"   varchar(128),
  "Position" integer,
@@ -2329,7 +2329,7 @@ CREATE TYPE databaseSchema.objectQualifier_messagehistory_list_return_type AS
   "MessageID"		integer,
   "Message"			text,
   "IP"				varchar (15),
-  "Edited"			timestampTZ,  	
+  "Edited"			timestamp,  	
   "EditReason"      varchar(128),
   "IsModeratorChanged"  boolean,
   "Flags" integer,  
@@ -2340,7 +2340,7 @@ CREATE TYPE databaseSchema.objectQualifier_messagehistory_list_return_type AS
   "ForumID" integer,  
   "TopicID" integer, 
   "Topic" text,  
-  "Posted" timestampTZ 
+  "Posted" timestamp 
 );
 --GO
  
@@ -2353,7 +2353,7 @@ CREATE TYPE databaseSchema.objectQualifier_messagehistory_list_return_type AS
   "TopicID"		     integer,
   "Topic"		     varchar(128),
   "UserID"		     integer, 
-  "Posted"		     timestampTZ,  	
+  "Posted"		     timestamp,  	
   "Message"          text, 
   "Flags"            integer
 );
@@ -2369,7 +2369,7 @@ CREATE TYPE databaseSchema.objectQualifier_user_viewthankstofrom_return_type AS
   "UserID"		     integer, 
   "DisplayName"      varchar(255),
   "UserName"         varchar(255),
-  "Posted"		     timestampTZ,  	
+  "Posted"		     timestamp,  	
   "Message"          text, 
   "Flags"            integer,
   "TotalRows"        integer
@@ -2388,7 +2388,7 @@ CREATE TYPE databaseSchema.objectQualifier_recent_users_rt AS
 "UserID"  integer,
 "UserName" varchar(255),
 "UserDisplayName"  varchar(255),
-"LastVisit" timestampTZ,
+"LastVisit" timestamp,
 "IsCrawler" integer,
 "UserCount" integer,
 "IsHidden" smallint,
@@ -2432,7 +2432,7 @@ CREATE TYPE databaseSchema.objectQualifier_album_images_by_user_rt AS
 "FileName" varchar(255),
 "Bytes" integer,
 "ContentType" varchar(50),
-"Uploaded" timestampTZ,
+"Uploaded" timestamp,
 "Downloads" integer
 );
 --GO

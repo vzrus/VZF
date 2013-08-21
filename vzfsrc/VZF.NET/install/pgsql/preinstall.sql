@@ -6,7 +6,7 @@
 -- CREATE FUNCTION plpgsql_call_handler () RETURNS OPAQUE AS '/usr/local/pgsql/lib/plpgsql' LANGUAGE C;
 -- CREATE TRUSTED LANGUAGE plpgsql HANDLER plpgsql_call_handler;
 
-CREATE OR REPLACE FUNCTION public.f_delfunc(_schema text, _del text)
+CREATE OR REPLACE FUNCTION databaseSchema.f_delfunc(_schema text, _del text)
  RETURNS text AS
 $BODY$
 DECLARE
@@ -45,7 +45,7 @@ $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 SELECT f_delfunc('databaseSchema','del');
 --GO
 
-CREATE OR REPLACE FUNCTION public.f_deltype(_schema text, _del text)
+CREATE OR REPLACE FUNCTION databaseSchema.f_deltype(_schema text, _del text)
  RETURNS text AS
 $BODY$
 DECLARE
@@ -79,6 +79,7 @@ $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 --GO
 SELECT f_deltype('databaseSchema','del');
 --GO
+
 
 
 

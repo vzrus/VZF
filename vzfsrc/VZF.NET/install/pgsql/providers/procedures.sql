@@ -44,7 +44,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_upgrade
 						   (
 						   i_previousversion integer,  
 						   i_newversion  integer, 
-						   i_utctimestamp timestampTZ
+						   i_utctimestamp timestamp
 						   )
 				  RETURNS void AS
 $BODY$
@@ -140,7 +140,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_createuser
 						   IN i_isapproved boolean,
 						   IN i_newguid uuid,
 						   IN i_newuserkey uuid,
-						   i_utctimestamp timestampTZ,
+						   i_utctimestamp timestamp,
 						   INOUT i_userkey uuid
 						   )
 				 RETURNS uuid AS
@@ -342,9 +342,9 @@ $BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestampTZ)
+-- Function: objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestamp)
 
--- DROP FUNCTION objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestampTZ);
+-- DROP FUNCTION objectQualifier_prov_resetpassword(varchar, varchar, varchar, varchar, varchar, integer, integer, timestamp);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword
 						   (
@@ -355,7 +355,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_resetpassword
 						   i_passwordformat varchar,
 						   i_maxinvalidattempts integer,
 						   i_passwordattemptwindow integer,
-						   i_currenttimeutc timestampTZ,
+						   i_currenttimeutc timestamp,
 						   IN i_newguid uuid
 						   )
 				  RETURNS void AS
@@ -388,7 +388,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getuser
 						   i_userkey uuid,
 						   i_userisonline boolean,
 						   IN i_newguid uuid,
-						   i_utctimestamp timestampTZ
+						   i_utctimestamp timestamp
 						   )
 				  RETURNS SETOF databaseSchema.objectQualifier_prov_getuser_return_type AS
 $BODY$DECLARE 
@@ -431,9 +431,9 @@ END;$BODY$
 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestampTZ, timestampTZ, boolean)
+-- Function: objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestamp, timestamp, boolean)
 
--- DROP FUNCTION objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestampTZ, timestampTZ, boolean);
+-- DROP FUNCTION objectQualifier_prov_updateuser(varchar, varchar, varchar, varchar, text, boolean, timestamp, timestamp, boolean);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_updateuser
 						   (
@@ -443,8 +443,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_updateuser
 						   i_email varchar,
 						   i_comment text,
 						   i_isapproved boolean,
-						   i_lastlogin timestampTZ,
-						   i_lastactivity timestampTZ,
+						   i_lastlogin timestamp,
+						   i_lastactivity timestamp,
 						   i_uniqueemail boolean,
 						   IN i_newguid uuid
 						   )
@@ -521,20 +521,20 @@ END;$BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_getnumberofusersonline(varchar, integer, timestampTZ)
+-- Function: objectQualifier_prov_getnumberofusersonline(varchar, integer, timestamp)
 
--- DROP FUNCTION objectQualifier_prov_getnumberofusersonline(varchar, integer, timestampTZ);
+-- DROP FUNCTION objectQualifier_prov_getnumberofusersonline(varchar, integer, timestamp);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_getnumberofusersonline
 						   (
 						   i_applicationname varchar,
 						   i_timewindow integer,
-						   i_currenttimeutc timestampTZ,
+						   i_currenttimeutc timestamp,
 						   IN i_newguid uuid
 						   )
 				  RETURNS integer AS
 $BODY$DECLARE 
-			 ici_activitydate timestampTZ;
+			 ici_activitydate timestamp;
 			 ici_numberactive integer;
 			 dd interval;
 	 
@@ -894,14 +894,14 @@ END;$BODY$
 -- ################ Profiles Create Procedures ####################################
 -- #############################################################################
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
--- Function: objectQualifier_prov_profile_deleteinactive(varchar, timestampTZ)
+-- Function: objectQualifier_prov_profile_deleteinactive(varchar, timestamp)
 
--- DROP FUNCTION objectQualifier_prov_profile_deleteinactive(varchar, timestampTZ);
+-- DROP FUNCTION objectQualifier_prov_profile_deleteinactive(varchar, timestamp);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_deleteinactive
 						   (
 						   i_applicationname varchar,
-						   i_inactivesincedate timestampTZ,
+						   i_inactivesincedate timestamp,
 						   IN i_newguid uuid
 						   )
 				  RETURNS integer AS
@@ -989,9 +989,9 @@ $BODY$
 --GO
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- -- Function: objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestampTZ)
+ -- Function: objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestamp)
 
- -- DROP FUNCTION objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestampTZ);
+ -- DROP FUNCTION objectQualifier_prov_profile_getprofiles(varchar, integer, integer, varchar, timestamp);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofiles
 						   (
@@ -999,7 +999,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getprofil
 						   i_pageindex integer,
 						   i_pagesize integer,
 						   i_usernametomatch varchar,
-						   i_inactivesincedate timestampTZ,
+						   i_inactivesincedate timestamp,
 						   IN i_newguid uuid
 						   )
 				  RETURNS SETOF databaseSchema.objectQualifier_prov_profile_getprofiles_return_type AS
@@ -1050,12 +1050,12 @@ END LOOP;
 
 
 /* PROVIDER TABLE SCRIPT BY VZ_TEAM */
- -- Function: objectQualifier_prov_profile_getnumberinactiveprofiles(varchar, timestampTZ)
+ -- Function: objectQualifier_prov_profile_getnumberinactiveprofiles(varchar, timestamp)
  
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_prov_profile_getnumberinactiveprofiles
 						   (
 						   i_applicationname varchar,
-						   i_inactivesincedate timestampTZ,
+						   i_inactivesincedate timestamp,
 						   IN i_newguid uuid
 						   )
 				  RETURNS integer AS

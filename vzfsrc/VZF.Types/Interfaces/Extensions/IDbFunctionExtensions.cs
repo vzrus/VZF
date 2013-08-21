@@ -18,60 +18,62 @@
  */
 namespace YAF.Types.Interfaces
 {
-	#region Using
+    #region Using
 
-	using System;
-	using System.Data;
+    using System;
+    using System.Data;
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// The i db function extensions.
-	/// </summary>
-	public static class IDbFunctionExtensions
-	{
-		#region Public Methods
+    /// <summary>
+    /// The i db function extensions.
+    /// </summary>
+    public static class IDbFunctionExtensions
+    {
+        #region Public Methods
 
-		/// <summary>
-		/// The get data.
-		/// </summary>
-		/// <param name="dbFunction">
-		/// The db function.
-		/// </param>
-		/// <param name="function">
-		/// The function.
-		/// </param>
-		/// <returns>
-		/// </returns>
-		[CanBeNull]
-		public static DataTable GetData([NotNull] this IDbFunction dbFunction, [NotNull] Func<object, object> function)
-		{
-			CodeContracts.ArgumentNotNull(dbFunction, "dbFunction");
-			CodeContracts.ArgumentNotNull(function, "function");
+        /// <summary>
+        /// The get data.
+        /// </summary>
+        /// <param name="dbFunction">
+        /// The db function.
+        /// </param>
+        /// <param name="function">
+        /// The function.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
+        [CanBeNull]
+        public static DataTable GetData([NotNull] this IDbFunction dbFunction, [NotNull] Func<object, object> function)
+        {
+            CodeContracts.ArgumentNotNull(dbFunction, "dbFunction");
+            CodeContracts.ArgumentNotNull(function, "function");
 
-			return (DataTable)function(dbFunction.GetData);
-		}
+            return (DataTable)function(dbFunction.GetData);
+        }
 
-		/// <summary>
-		/// The get data set.
-		/// </summary>
-		/// <param name="dbFunction">
-		/// The db function.
-		/// </param>
-		/// <param name="function">
-		/// The function.
-		/// </param>
-		/// <returns>
-		/// </returns>
-		[CanBeNull]
-		public static DataSet GetDataSet([NotNull] this IDbFunction dbFunction, [NotNull] Func<object, object> function)
-		{
-			CodeContracts.ArgumentNotNull(dbFunction, "dbFunction");
-			CodeContracts.ArgumentNotNull(function, "function");
+        /// <summary>
+        /// The get data set.
+        /// </summary>
+        /// <param name="dbFunction">
+        /// The db function.
+        /// </param>
+        /// <param name="function">
+        /// The function.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataSet"/>.
+        /// </returns>
+        [CanBeNull]
+        public static DataSet GetDataSet([NotNull] this IDbFunction dbFunction, [NotNull] Func<object, object> function)
+        {
+            CodeContracts.ArgumentNotNull(dbFunction, "dbFunction");
+            CodeContracts.ArgumentNotNull(function, "function");
 
-			return (DataSet)function(dbFunction.GetDataSet);
-		}
+            return (DataSet)function(dbFunction.GetDataSet);
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

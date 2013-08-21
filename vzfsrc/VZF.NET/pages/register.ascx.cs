@@ -25,6 +25,7 @@ namespace YAF.Pages
 
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net.Mail;
     using System.Text;
@@ -34,21 +35,19 @@ namespace YAF.Pages
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using VZF.Controls;
     using VZF.Data.Common;
+    using VZF.Utilities;
+    using VZF.Utils;
+    using VZF.Utils.Helpers;
 
     using YAF.Classes;
-    
-    using YAF.Classes.Pattern;
-    using VZF.Controls;
     using YAF.Core;
     using YAF.Core.Services;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
     using YAF.Types.Interfaces;
-    using VZF.Utilities;
-    using VZF.Utils;
-    using VZF.Utils.Helpers;
 
     #endregion
 
@@ -404,8 +403,10 @@ namespace YAF.Pages
                                       UserNotificationSetting.TopicsIPostToOrSubscribeTo;
 
         // save the settings...
-        CommonDb.user_savenotification(PageContext.PageModuleID, userId, 
-            true, 
+        CommonDb.user_savenotification(
+            PageContext.PageModuleID,
+            userId,
+            true,
             autoWatchTopicsEnabled, 
             this.Get<YafBoardSettings>().DefaultNotificationSetting, 
             this.Get<YafBoardSettings>().DefaultSendDigestEmail);
@@ -577,13 +578,13 @@ namespace YAF.Pages
 
       // password requirement parameters...
       var requirementText = (LocalizedLabel)this.CreateUserStepContainer.FindControl("LocalizedLabelRequirementsText");
-      requirementText.Param0 = this.Get<MembershipProvider>().MinRequiredPasswordLength.ToString();
-      requirementText.Param1 = this.Get<MembershipProvider>().MinRequiredNonAlphanumericCharacters.ToString();
+      requirementText.Param0 = this.Get<MembershipProvider>().MinRequiredPasswordLength.ToString(CultureInfo.InvariantCulture);
+      requirementText.Param1 = this.Get<MembershipProvider>().MinRequiredNonAlphanumericCharacters.ToString(CultureInfo.InvariantCulture);
 
       // max user name length
       var usernamelehgthText =
         (LocalizedLabel)this.CreateUserStepContainer.FindControl("LocalizedLabelLohgUserNameWarnText");
-      usernamelehgthText.Param0 = this.Get<YafBoardSettings>().UserNameMaxLength.ToString();
+      usernamelehgthText.Param0 = this.Get<YafBoardSettings>().UserNameMaxLength.ToString(CultureInfo.InvariantCulture);
 
       if (this.Get<YafBoardSettings>().CaptchaTypeRegister == 2)
       {
@@ -762,7 +763,8 @@ namespace YAF.Pages
           PublicKey = this.Get<YafBoardSettings>().RecaptchaPublicKey, 
           AllowMultipleInstances = this.Get<YafBoardSettings>().RecaptureMultipleInstances, 
           Enabled = true, 
-          EnableTheming = true, 
+          EnableTheming = true,
+ 
           // 'red' , 'white', 'blackglass' , 'clean' , 'custom'	
           Theme = "blackglass", 
           OverrideSecureMode = false

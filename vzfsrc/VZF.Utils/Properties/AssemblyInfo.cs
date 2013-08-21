@@ -26,11 +26,11 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("YAF.Utils")]
+[assembly: AssemblyTitle("VZF.Utils")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tiny Gecko")]
-[assembly: AssemblyProduct("YAF.Types")]
+[assembly: AssemblyProduct("VZF.Utils")]
 [assembly: AssemblyCopyright("Copyright © 2006-2012 Yet Another Forum.NET")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

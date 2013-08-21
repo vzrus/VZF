@@ -2998,12 +2998,12 @@ WHERE ForumID = i_ForumID;
         DELETE FROM {databaseName}.{objectQualifier}ForumAccess
         WHERE       ForumID = i_ForumID;
       
-        /*Delete UserForums*/
+       -- Delete UserForums
 
         DELETE FROM {databaseName}.{objectQualifier}UserForum
         WHERE       ForumID = i_ForumID;
 
-       /*And after this we can delete Forum itself*/
+       -- And after this we can delete Forum itself
 
         DELETE FROM {databaseName}.{objectQualifier}Forum
         WHERE       ForumID = i_ForumID;
@@ -3309,6 +3309,14 @@ BEGIN
 END;
 --GO
 
+CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listSubForums(
+                            i_ForumID int) 
+							  READS SQL DATA
+
+begin
+        select Sum(1) from {databaseName}.{objectQualifier}Forum where ParentID = i_ForumID;
+end;
+--GO
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseName}.{objectQualifier}forum_listpath(
@@ -3641,9 +3649,9 @@ END;
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}forum_listtopics(i_ForumID INT) 
 BEGIN
-SELECT t.*,IFNULL(a.Flags,0) AS Flags,
-IFNULL(SIGN(a.Flags & 8)>0,false) AS IsDeleted,
-IFNULL(SIGN(a.Flags & 1024)>0,false)  AS IsQuestion from {databaseName}.{objectQualifier}Topic t
+SELECT t.*,IFNULL(t.Flags,0) AS Flags,
+IFNULL(SIGN(t.Flags & 8)>0,false) AS IsDeleted,
+IFNULL(SIGN(t.Flags & 1024)>0,false)  AS IsQuestion from {databaseName}.{objectQualifier}Topic t
 WHERE t.ForumID = i_ForumID;
 END;
 --GO
@@ -5499,7 +5507,7 @@ IF ici_Position IS NULL THEN set ici_Position = 0; END IF;
 	UPDATE {databaseName}.{objectQualifier}Topic set
         UserID = ici_UserID,
         UserName = ici_UserName,
-        DisplayName = ici_UserDisplayName
+        UserDisplayName = ici_UserDisplayName
     WHERE TopicID = i_MoveToTopic;
 		
 	IF (SELECT COUNT(MessageID) 
@@ -5638,7 +5646,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}message_reportresolve(i_Message
 --GO
 
 
-
+     
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
  CREATE PROCEDURE {databaseName}.{objectQualifier}message_save(
     i_TopicID		INT,
@@ -5650,8 +5658,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}message_reportresolve(i_Message
     i_ReplyTo		INT,
     i_BlogPostID	VARCHAR(128),
     i_ExternalMessageId VARCHAR(255),
-    i_ReferenceMessageId VARCHAR(255),
-	i_Flags			INT,
+    i_ReferenceMessageId VARCHAR(255),	
 	i_MessageDescription VARCHAR(255),
     i_Flags			INT,
     i_UTCTIMESTAMP DATETIME,
@@ -5872,7 +5879,7 @@ BEGIN
     
     UPDATE {databaseName}.{objectQualifier}Message SET
         Message = CONVERT(i_Message USING {databaseEncoding}),
-		Description = i_MessageDescription
+		Description = i_MessageDescription,
         Edited = i_UtcTimeStamp,
         EditedBy = i_EditedBy,
         Flags = i_Flags,
@@ -6116,7 +6123,8 @@ declare ici_ReplyTo	INT DEFAULT NULL;
 
     IF ici_TopicID IS NOT NULL
     then
-        CALL {databaseName}.{objectQualifier}message_save( ici_TopicID, i_UserID, i_Body, i_UserName, i_IP, i_Posted, cic_ReplyTo, NULL, i_ExternalMessageId, i_ReferenceMessageId, 17, NULL,i_UTCTIMESTAMP, ici_MessageID); 
+	 CALL {databaseName}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Message,i_UserName,i_IP,i_Posted,NULL,i_BlogPostID, null, null, i_MessageDescription,i_Flags,i_UTCTIMESTAMP,ici_MessageID);
+        CALL {databaseName}.{objectQualifier}message_save( ici_TopicID, i_UserID, i_Body, i_UserName, i_IP, i_Posted, cic_ReplyTo, NULL, i_ExternalMessageId, i_ReferenceMessageId,null, 17, NULL,i_UTCTIMESTAMP, ici_MessageID); 
     END if;	
 
  
@@ -7235,7 +7243,7 @@ INTO  	@PostTotalRowsNumber,
         where x.MessageID=m.MessageID LIMIT 1),0) AS HasAttachments,
         IFNULL((select  1 from {databaseName}.{objectQualifier}User x 
         where x.UserID=b.UserID and AvatarImage is not null LIMIT 1),0) AS HasAvatarImage,
-        ((b.Flags & 4)=4) as IsGuest, 
+        {databaseName}.{objectQualifier}biginttobool((b.Flags & 4)=4) as IsGuest, 
         -- ici_post_totalrowsnumber
         {databaseName}.{objectQualifier}biginttoint(',@PostTotalRowsNumber,') AS TotalRows,
         -- i_PageIndex
@@ -8161,7 +8169,7 @@ END;
     VALUES(i_ForumID,i_Subject,ici_UserID,ici_Posted,0,0,null,null,0);
 
     SET i_TopicID = LAST_INSERT_ID();
-  /*CALL {databaseName}.{objectQualifier}message_save (i_TopicID,ici_UserID,i_Message,i_UserName,i_IP,ici_Posted,null,null,i_Flags, i_MessageID);*/
+  /*CALL {databaseName}.{objectQualifier}message_save (i_TopicID,ici_UserID,i_Message,i_MessageDescription,i_UserName,i_IP,ici_Posted,null,null,i_Flags, i_MessageID);*/
     SELECT i_TopicID AS TopicID,i_MessageID AS MessageID;
     END;
 
@@ -9046,9 +9054,14 @@ BEGIN
 
 
      IF i_Posted IS NULL THEN
-     SET i_Posted = i_UTCTIMESTAMP; END IF;
-SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID AND Name != i_UserName;	
-     /* create the topic */
+     SET i_Posted = i_UTCTIMESTAMP; 
+	 END IF;
+
+     SELECT SIGN(COUNT(Name))  
+	 INTO ici_OverrideDisplayName 
+	 FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID AND Name != i_UserName;	
+
+     -- create the topic
      INSERT INTO {databaseName}.{objectQualifier}Topic(ForumID,Topic,UserID,Posted,Views,Priority,UserName,UserDisplayName,NumPosts, Description, Status, Styles)
      VALUES(i_ForumID,CONVERT(i_Subject USING {databaseEncoding}),i_UserID,i_Posted,0,i_Priority,(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT Name FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END),(CASE WHEN ici_OverrideDisplayName = 1 THEN i_UserName ELSE (SELECT DisplayName FROM {databaseName}.{objectQualifier}User WHERE UserID = i_UserID) END) ,0, i_Description, i_status, i_Styles);
 
@@ -9056,7 +9069,8 @@ SELECT SIGN(COUNT(Name))  INTO ici_OverrideDisplayName FROM {databaseName}.{obje
      SET ici_TopicID = LAST_INSERT_ID();
 
      /* add message to the topic*/
-     CALL {databaseName}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Message,i_UserName,i_IP,i_Posted,NULL,NULL,i_BlogPostID, null, i_Flags,i_MessageDescription,i_UTCTIMESTAMP,ici_MessageID);
+	 CALL {databaseName}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Message,i_UserName,i_IP,i_Posted,NULL,i_BlogPostID, null, null, i_MessageDescription,i_Flags,i_UTCTIMESTAMP,ici_MessageID);
+
      CALL {databaseName}.{objectQualifier}topic_tagsave(ici_TopicID, i_Tags);
 
      SELECT   ici_TopicID AS TopicID,  ici_MessageID AS MessageID;

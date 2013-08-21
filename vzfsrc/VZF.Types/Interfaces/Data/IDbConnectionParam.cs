@@ -18,33 +18,33 @@
  */
 namespace YAF.Types.Interfaces.Data
 {
-	/// <summary>
-	/// The db connection param.
-	/// </summary>
-	public interface IDbConnectionParam
-	{
-		#region Properties
+    /// <summary>
+    /// The db connection param.
+    /// </summary>
+    public interface IDbConnectionParam
+    {
+        #region Properties
 
-		/// <summary>
-		///   Gets or sets DefaultValue.
-		/// </summary>
-		string DefaultValue { get; }
+        /// <summary>
+        ///   Gets or sets DefaultValue.
+        /// </summary>
+        string DefaultValue { get; }
 
-		/// <summary>
-		///   Gets or sets ID.
-		/// </summary>
-		int ID { get; }
+        /// <summary>
+        ///   Gets or sets ID.
+        /// </summary>
+        int ID { get; }
 
-		/// <summary>
-		///   Gets or sets Label.
-		/// </summary>
-		string Label { get; }
+        /// <summary>
+        ///   Gets or sets Label.
+        /// </summary>
+        string Label { get; }
 
-		/// <summary>
-		///   Gets or sets a value indicating whether Visible.
-		/// </summary>
-		bool Visible { get; }
+        /// <summary>
+        ///   Gets a value indicating whether Visible.
+        /// </summary>
+        bool Visible { get; }
 
-		#endregion
-	}
+        #endregion
+    }
 }

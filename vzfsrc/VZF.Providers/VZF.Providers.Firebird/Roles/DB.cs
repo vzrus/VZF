@@ -30,8 +30,14 @@ namespace YAF.Providers.Roles
     using YAF.Classes.Pattern;
     using YAF.Core;
 
+    /// <summary>
+    /// The vzf firebird db conn manager.
+    /// </summary>
     public class VzfFirebirdDBConnManager : FbDbConnectionManager
     {
+        /// <summary>
+        /// Gets the connection string.
+        /// </summary>
         public override string ConnectionString
         {
             get
@@ -46,10 +52,16 @@ namespace YAF.Providers.Roles
         }
     }
 
+    /// <summary>
+    /// The fb db.
+    /// </summary>
     public class FbDB
     {
        // private FbDbAccess FbDbAccess = new FbDbAccess();
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
         public static FbDB Current
         {
             get

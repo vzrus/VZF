@@ -18,9 +18,8 @@
  */
 namespace YAF.Types.Interfaces
 {
-	using System;
 
-	public interface IAvatars
+    public interface IAvatars
 	{
 		/// <summary>
 		/// The get avatar url for current user.

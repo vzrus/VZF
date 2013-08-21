@@ -17,18 +17,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-using YAF.Providers.Utils;
-
 namespace YAF.Providers.Membership
 {
   #region Using
 
-  using System;
-  using System.Data;
+    using System;
+    using System.Data;
 
-  using VZF.Utils;
+    using VZF.Utils;
 
-  #endregion
+    using YAF.Providers.Utils;
+
+    #endregion
 
   /// <summary>
   /// The user password info.

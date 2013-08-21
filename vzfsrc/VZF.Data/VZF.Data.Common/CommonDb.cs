@@ -33,8 +33,10 @@ namespace VZF.Data.Common
     using System.Linq;
     using System.Web.Security;
 
+    using VZF.Data.Common;
     using VZF.Data.Utils;
     using VZF.Types.Data;
+    using VZF.Types.Objects;
 
     using YAF.Classes;
     using YAF.Types;
@@ -457,7 +459,7 @@ namespace VZF.Data.Common
             string dataEngine;
             string connectionString;
             CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
+           
             switch (dataEngine)
             {
                 case CommonSqlDbAccess.MsSql:
@@ -3472,16 +3474,12 @@ namespace VZF.Data.Common
             {
                 case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
-                    break;
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
-                    break;
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
-                    break;
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
-                    break;
                     // case CommonSqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
                     // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
                     // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
@@ -3512,16 +3510,12 @@ namespace VZF.Data.Common
             {
                 case CommonSqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_reindex_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.db_reindex_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_reindex_new(connectionString);
-                    break;
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_reindex_new(connectionString);
-                    break;
                     // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_reindex_new(connectionString); break;
                     // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.db_reindex_new(connectionString); break;
                     // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.db_reindex_new(connectionString); break;
@@ -8149,45 +8143,6 @@ namespace VZF.Data.Common
         }
 
         /// <summary>
-        /// The message_list.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <param name="messageID">
-        /// The message id.
-        /// </param>
-        /// <returns>
-        /// The <see cref="DataTable"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static DataTable message_list(int? mid, object messageID)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.message_list(connectionString, messageID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.message_list(connectionString, messageID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.message_list(connectionString, messageID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.message_list(connectionString, messageID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.message_list(connectionString, messageID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.message_list(connectionString, messageID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.message_list(connectionString, messageID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
-
-        /// <summary>
         /// The message_listreported.
         /// </summary>
         /// <param name="mid">
@@ -8908,8 +8863,8 @@ namespace VZF.Data.Common
                         isModeratorChanged,
                         overrideApproval,
                         origMessage,
-                        messageDescription,
                         editedBy,
+                        messageDescription,
                         tags);
                     break;
                     // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.message_update(connectionString, messageID, priority, message, description, status,subject,flags, reasonOfEdit,  isModeratorChanged,  overrideApproval,origMessage,  editedBy,tags);break;
@@ -14596,6 +14551,7 @@ namespace VZF.Data.Common
                         styles,
                         description,
                         message,
+                        messageDescription,
                         userId,
                         priority,
                         userName,
@@ -14603,8 +14559,7 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
-                        messageDescription,
-                        ref messageID,
+                        out messageID,
                         tags);
                 case CommonSqlDbAccess.Npgsql:
                     return VZF.Data.Postgre.Db.topic_save(
@@ -14615,6 +14570,7 @@ namespace VZF.Data.Common
                         styles,
                         description,
                         message,
+                        messageDescription,
                         userId,
                         priority,
                         userName,
@@ -14622,8 +14578,7 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
-                        messageDescription,
-                        ref messageID,
+                        out messageID,
                         tags);
                 case CommonSqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.topic_save(
@@ -14642,7 +14597,7 @@ namespace VZF.Data.Common
                         posted,
                         blogPostID,
                         flags,
-                        ref messageID,
+                        out messageID,
                         tags);
                 case CommonSqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.topic_save(

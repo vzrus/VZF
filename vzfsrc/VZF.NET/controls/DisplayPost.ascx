@@ -23,7 +23,7 @@
                 #<%# (CurrentPage * this.PageContext.PostsPerPage) + PostCount + 1%></a>
                 <VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="POSTED" />
                 :</strong>
-            <VZF:DisplayDateTime id="DisplayDateTime" runat="server" DateTime='<%# DataRow["Posted"] %>'></VZF:DisplayDateTime>
+            <VZF:DisplayDateTime id="DisplayDateTime" runat="server" DateTime='<%# DataRow["Posted"] %>'/>
             </div>
         <div class="rightItem postedRight">
             <VZF:ThemeButton ID="Retweet" runat="server" CssClass="yaflittlebutton" TextLocalizedTag="BUTTON_RETWEET"

@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class group_rank_style_Result
     {
         public int LegendID { get; set; }

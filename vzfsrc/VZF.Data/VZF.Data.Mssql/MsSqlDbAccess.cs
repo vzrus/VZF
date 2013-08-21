@@ -29,6 +29,7 @@ namespace VZF.Data.MsSql
     using System.Linq;
 
     using VZF.Data.Utils;
+    using VZF.Types.Objects;
     using VZF.Utils;
     using VZF.Utils.Helpers;
 

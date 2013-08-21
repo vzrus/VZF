@@ -401,10 +401,10 @@ namespace YAF.Core.Services
                 userProfile.RealName = username;
                 userProfile.Gender = userGender;
 
-                if (!string.IsNullOrEmpty(hometown))
+               /* if (!string.IsNullOrEmpty(hometown))
                 {
                     userProfile.Location = hometown;
-                }
+                } */
 
                 userProfile.Save();
 

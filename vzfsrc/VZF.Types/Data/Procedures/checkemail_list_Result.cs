@@ -9,8 +9,7 @@
 
 namespace VZF.Types.Data
 {
-    using System;
-    
+
     public partial class checkemail_list_Result
     {
         public int CheckEmailID { get; set; }

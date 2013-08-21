@@ -40,15 +40,15 @@ CREATE TABLE databaseSchema.objectQualifier_prov_membership
 			 passwordanswer            varchar(256),
 			 isapproved                boolean,
 			 islockedout               boolean,
-			 lastlogin                 timestampTZ,
-			 lastactivity              timestampTZ,
-			 lastpasswordchange        timestampTZ,
-			 lastlockout               timestampTZ,
+			 lastlogin                 timestamp,
+			 lastactivity              timestamp,
+			 lastpasswordchange        timestamp,
+			 lastlockout               timestamp,
 			 failedpasswordattempts    integer,
 			 failedanswerattempts      integer,
-			 failedpasswordwindow      timestampTZ,
-			 failedanswerwindow        timestampTZ,
-			 joined                    timestampTZ,
+			 failedpasswordwindow      timestamp,
+			 failedanswerwindow        timestamp,
+			 joined                    timestamp,
 			 comment                   text
 			 )
 	   WITH (OIDS=withOIDs);
@@ -64,8 +64,8 @@ CREATE TABLE databaseSchema.objectQualifier_prov_profile
 			 valueindex                text,
 			 stringdata                text,
 			 binarydata                bytea,
-			 lastupdateddate           timestampTZ  NOT NULL DEFAULT (current_timestamp at time zone 'UTC'),
-			 lastactivitydate          timestampTZ ,
+			 lastupdateddate           timestamp  NOT NULL DEFAULT (current_timestamp at time zone 'UTC'),
+			 lastactivitydate          timestamp ,
 			 applicationid             uuid,
 			 isanonymous               boolean default false,
 			 username varchar (255) NOT NULL
@@ -103,7 +103,7 @@ IF (column_exists('databaseSchema.objectQualifier_prov_profile','username') IS T
 END IF;
 IF (column_exists('databaseSchema.objectQualifier_prov_profile','birthday') IS TRUE) THEN
    -- used only with internal providers
-  ALTER TABLE databaseSchema.objectQualifier_prov_profile ALTER COLUMN birthday TYPE timestampTZ;
+  ALTER TABLE databaseSchema.objectQualifier_prov_profile ALTER COLUMN birthday TYPE timestamp;
 END IF;
 END ;
 $BODY$

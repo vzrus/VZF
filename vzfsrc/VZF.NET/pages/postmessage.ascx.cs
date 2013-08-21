@@ -23,6 +23,7 @@ namespace YAF.Pages
     #region Using
 
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Globalization;
     using System.Linq;
@@ -846,7 +847,7 @@ namespace YAF.Pages
             // Mek Suggestion: This should be removed, resetting flags on edit is a bit lame.
             // Ederon : now it should be better, but all this code around forum/topic/message flags needs revamp
             // retrieve message flags
-            var messageFlags = new MessageFlags(CommonDb.message_list(PageContext.PageModuleID, this.EditMessageID).Rows[0]["Flags"])
+            var messageFlags = new MessageFlags(CommonDb.MessageList(PageContext.PageModuleID, (int)this.EditMessageID).First().Flags)
                 {
                     IsHtml = this._forumEditor.UsesHTML,
                     IsBBCode = this._forumEditor.UsesBBCode,
@@ -1145,12 +1146,11 @@ namespace YAF.Pages
 
             // Check if message is approved
             bool isApproved = false;
-            using (DataTable dt = CommonDb.message_list(PageContext.PageModuleID, messageId))
+            var dt = CommonDb.MessageList(PageContext.PageModuleID, (int)messageId);
+            var typedMessageLists = dt as IList<TypedMessageList> ?? dt.ToList();
+            if (typedMessageLists.Any())
             {
-                foreach (DataRow row in dt.Rows)
-                {
-                    isApproved = row["Flags"].BinaryAnd(MessageFlags.Flags.IsApproved);
-                }
+                isApproved = typedMessageLists.First().Flags.IsApproved;
             }
 
             // vzrus^ the poll access controls are enabled and this is a new topic - we add the variables

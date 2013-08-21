@@ -134,6 +134,11 @@
             }
         }
 
+        /// <summary>
+        /// Gets the schema name.
+        /// </summary>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static string SchemaName
         {
             get
@@ -242,12 +247,10 @@
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
                 }
-
             }
         }
+
         public static string HostName
         {
             get
@@ -256,7 +259,7 @@
                 switch (GetProviderNameFromConnectionString(null))
                 {
                     case "System.Data.SqlClient":
-                    //    return MsDBAccess.DatabaseOwner;
+                    // return MsDBAccess.DatabaseOwner;
                     case "Npgsql":
                         return PostgreDbAccess.HostName;
                     case "MySql.Data.MySqlClient":
@@ -271,12 +274,10 @@
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
                         throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
                 }
-
             }
         }
+
         public static string WithOIDs
         {
             get
@@ -407,11 +408,8 @@
         [CanBeNull]
         public IDbConnectionManager GetConnectionManager(string connectionString)
         {
-
-
             this._connectionManagerType = Type.GetType(GetProviderNameFromConnectionString(connectionString));
             return Activator.CreateInstance(this._connectionManagerType).ToClass<IDbConnectionManager>();
-
         }
 
         /// <summary>
@@ -446,8 +444,6 @@
                     return string.Empty;
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
             }
         }
 
@@ -529,10 +525,7 @@
                 //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
             }
-            
         }
 
         /// <summary>
@@ -630,10 +623,9 @@
                 //    return PostgreDbAccess.GetCommandTextReplaced(commandText);
                 default:
                     throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                    break;
-
             }
         }
+
         /// <summary>
         /// Executes a NonQuery
         /// </summary>

@@ -404,8 +404,8 @@ lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,userna
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
                      cmd.Parameters.Add(new NpgsqlParameter("i_stringData", NpgsqlDbType.Varchar)).Value = stringData;
                      cmd.Parameters.Add(new NpgsqlParameter("i_binaryData", NpgsqlDbType.Bytea)).Value = binaryData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.TimestampTZ)).Value = mu.LastActivityDate;
+                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
+                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.Timestamp)).Value = mu.LastActivityDate;
                      cmd.Parameters.Add(new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid)).Value = (Guid)GetApplicationIdFromName(connectionString,appName);
                      cmd.Parameters.Add(new NpgsqlParameter("i_isanonymous", NpgsqlDbType.Boolean)).Value = false;
                      cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = mu.UserName;
@@ -448,8 +448,8 @@ VALUES (
                      cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
                      cmd.Parameters.Add(new NpgsqlParameter("i_stringData", NpgsqlDbType.Varchar)).Value = stringData;
                      cmd.Parameters.Add(new NpgsqlParameter("i_binaryData", NpgsqlDbType.Bytea)).Value = binaryData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.TimestampTZ)).Value = DateTime.UtcNow;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.TimestampTZ)).Value = mu.LastActivityDate;
+                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
+                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.Timestamp)).Value = mu.LastActivityDate;
                      cmd.Parameters.Add(new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid)).Value = GetApplicationIdFromName(connectionString,appName);
                      cmd.Parameters.Add(new NpgsqlParameter("i_isanonymous", NpgsqlDbType.Boolean)).Value = false;
                      cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = mu.UserName;

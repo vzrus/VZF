@@ -10,7 +10,7 @@ using System.Security;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VZF.Data.Utils")]
+[assembly: AssemblyProduct("VZF")]
 [assembly: AssemblyCopyright("Copyright © vzrus 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

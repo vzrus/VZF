@@ -19,159 +19,154 @@
 
 namespace VZF.Data.Firebird
 {
+    using System;
+    using System.Data;
     using System.IO;
     using System.Security;
+
+    using FirebirdSql.Data.FirebirdClient;
 
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Handlers;
 
-    using System;
-    using System.Data;
-
-    using FirebirdSql.Data.FirebirdClient;
-
     /// <summary>
-  /// Provides open/close management for DB Connections
-  /// </summary>
-[SecuritySafeCritical]
-  public class FbDbConnectionManager : IDisposable
-  {
-    /// <summary>
-    /// The _connection.
+    /// Provides open/close management for DB Connections
     /// </summary>
-    public FbConnection _connection = null;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FbDbConnectionManager"/> class.
-    /// </summary>
-    public FbDbConnectionManager(string connectionString)
+    [SecuritySafeCritical]
+    public class FbDbConnectionManager : IDisposable
     {
-      // just initalize it (not open)
-      this.InitConnection(connectionString);
-    }
+        /// <summary>
+        /// The _connection.
+        /// </summary>
+        public FbConnection _connection = null;
 
-      protected FbDbConnectionManager()
-      {
-          throw new NotImplementedException();
-      }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FbDbConnectionManager"/> class.
+        /// </summary>
+        public FbDbConnectionManager(string connectionString)
+        {
+            // just initalize it (not open)
+            this.InitConnection(connectionString);
+        }
 
-      /// <summary>
-    /// Gets ConnectionString.
-    /// </summary>
-    public virtual string ConnectionString
-    {
-      get
-      {
-        return Config.ConnectionString;
-      }
-    }
+        protected FbDbConnectionManager()
+        {
+            throw new NotImplementedException();
+        }
 
-    /// <summary>
-    /// Gets the current DB Connection in any state.
-    /// </summary>
-    public FbConnection DBConnection(string connectionString)
-    {
-   
-          this.InitConnection(connectionString);
-        return this._connection;
-     
-    }
+        /// <summary>
+        /// Gets ConnectionString.
+        /// </summary>
+        public virtual string ConnectionString
+        {
+            get
+            {
+                return Config.ConnectionString;
+            }
+        }
 
-    /// <summary>
-    /// Gets an open connection to the DB. Can be called any number of times.
-    /// </summary>
-    public FbConnection OpenDBConnection(string connectionString)
-    {
-  
-          this.InitConnection(connectionString);
+        /// <summary>
+        /// Gets the current DB Connection in any state.
+        /// </summary>
+        public FbConnection DBConnection(string connectionString)
+        {
+            this.InitConnection(connectionString);
+            return this._connection;
+        }
 
-          if (this._connection.State != ConnectionState.Open)
-          {
-              string sOriginalDirectory = Directory.GetCurrentDirectory();
-             // string sApplicationBinPath = (string)System.Web.HttpContext.Current.Request.PhysicalApplicationPath + "\\bin";
-          //    Directory.SetCurrentDirectory(sApplicationBinPath);
-              // open it up...
-              this._connection.Open();
-            //  if ((sOriginalDirectory != null) && (sOriginalDirectory.Length > 0))
-           //   {
+        /// <summary>
+        /// Gets an open connection to the DB. Can be called any number of times.
+        /// </summary>
+        public FbConnection OpenDBConnection(string connectionString)
+        {
+            this.InitConnection(connectionString);
+
+            if (this._connection.State == ConnectionState.Open)
+            {
+                return this._connection;
+            }
+
+            string sOriginalDirectory = Directory.GetCurrentDirectory();
+                
+            // string sApplicationBinPath = (string)System.Web.HttpContext.Current.Request.PhysicalApplicationPath + "\\bin";
+            //    Directory.SetCurrentDirectory(sApplicationBinPath);
+            // open it up...
+            this._connection.Open();
+
+            // if ((sOriginalDirectory != null) && (sOriginalDirectory.Length > 0))
+            // {
             //      Directory.SetCurrentDirectory(sOriginalDirectory);
-            //  }
-          }
+            // }
+            return this._connection;
+        }
 
-          return this._connection;
-      
+        #region IDisposable Members
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            // close and delete connection
+            this.CloseConnection();
+            this._connection = null;
+        }
+
+        #endregion
+
+        /// <summary>
+        ///   The info message.
+        /// </summary>
+        public event YafDBConnInfoMessageEventHandler InfoMessage;
+
+        /// <summary>
+        /// The init connection.
+        /// </summary>
+        public void InitConnection(string connectionString)
+        {
+            if (this._connection == null)
+            {
+                // create the connection
+                this._connection = new FbConnection();
+                this._connection.InfoMessage += this.Connection_InfoMessage;
+                this._connection.ConnectionString = connectionString;
+            }
+            else if (this._connection.State != ConnectionState.Open)
+            {
+                // verify the connection string is in there...
+                this._connection.ConnectionString = connectionString;
+            }
+        }
+
+        /// <summary>
+        /// The close connection.
+        /// </summary>
+        public void CloseConnection()
+        {
+            if (this._connection != null && this._connection.State != ConnectionState.Closed)
+            {
+                this._connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// The connection_ info message.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void Connection_InfoMessage([NotNull] object sender, [NotNull] FbInfoMessageEventArgs e)
+        {
+            if (this.InfoMessage != null)
+            {
+                this.InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.Message));
+            }
+        }
+
+
     }
-
-
-
-
-    #region IDisposable Members
-
-    /// <summary>
-    /// The dispose.
-    /// </summary>
-    public virtual void Dispose()
-    {
-      // close and delete connection
-      this.CloseConnection();
-      this._connection = null;
-    }
-
-    #endregion
-
-    /// <summary>
-    ///   The info message.
-    /// </summary>
-    public event YafDBConnInfoMessageEventHandler InfoMessage;
-
-    /// <summary>
-    /// The init connection.
-    /// </summary>
-    public void InitConnection(string connectionString)
-    {
-      if (this._connection == null)
-      {
-        // create the connection
-        this._connection = new FbConnection();
-        this._connection.InfoMessage += this.Connection_InfoMessage;
-        this._connection.ConnectionString = connectionString;
-      }
-      else if (this._connection.State != ConnectionState.Open)
-      {
-        // verify the connection string is in there...
-          this._connection.ConnectionString = connectionString;
-      }
-    }
-
-    /// <summary>
-    /// The close connection.
-    /// </summary>
-    public void CloseConnection()
-    {
-      if (this._connection != null && this._connection.State != ConnectionState.Closed)
-      {
-        this._connection.Close();
-      }
-    }
-
-    /// <summary>
-    /// The connection_ info message.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    protected void Connection_InfoMessage([NotNull] object sender, [NotNull] FbInfoMessageEventArgs e)
-    {
-      if (this.InfoMessage != null)
-      {
-        this.InfoMessage(this, new YafDBConnInfoMessageEventArgs(e.Message));
-      }
-    }
-
-  
-  }
 }

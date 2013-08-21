@@ -19,8 +19,6 @@
 
 namespace YAF.Types.Constants
 {
-    using System.Collections.Concurrent;
-    using System.Data;
 
     /// <summary>
     /// For globally or multiple times used constants

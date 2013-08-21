@@ -29,13 +29,12 @@ namespace YAF.Providers.Membership
     using System.Text.RegularExpressions;
     using System.Web.Security;
 
-    using YAF.Core;
-    using YAF.Types.Interfaces;
-    using YAF.Types.Constants;
     using VZF.Utils;
+
+    using YAF.Core;
     using YAF.Providers.Utils;
 
-  /// <summary>
+    /// <summary>
   /// The yaf membership provider.
   /// </summary>
   public class PgMembershipProvider : MembershipProvider
@@ -952,7 +951,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override int GetNumberOfUsersOnline()
     {
-        return Db.__GetNumberOfUsersOnline(  YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, Membership.UserIsOnlineTimeWindow);
+        return Db.__GetNumberOfUsersOnline(YafContext.Application[PgMembershipProvider.ConnStrAppKeyName].ToString(), this.ApplicationName, Membership.UserIsOnlineTimeWindow);
     }
 
     /// <summary>

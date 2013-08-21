@@ -22,7 +22,6 @@ namespace YAF.Types.EventProxies
     using System.Dynamic;
 
     using YAF.Types.Interfaces;
-    using YAF.Types.Interfaces.Extensions;
 
     /// <summary>
     /// The page load event.
