@@ -10,7 +10,7 @@
 <VZF:ForumWelcome runat="server" ID="Welcome" />
 <div class="DivTopSeparator">
 </div>
-<VZF:ShoutBox ID="ShoutBox1" Visible='<%# PageContext.BoardSettings.ShowShoutbox %>' runat="server" />
+<VZF:ShoutBox ID="ShoutBox1" runat="server" />
 <VZF:PollList ID="PollList" runat="server"/>
 <VZF:ForumCategoryList ID="ForumCategoryList" runat="server"/>
 <br />

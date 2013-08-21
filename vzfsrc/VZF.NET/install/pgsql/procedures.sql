@@ -3103,6 +3103,7 @@ BEGIN
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
+							 a.isuserforum,
                              a.createdbyuserid,
                              a.canhavepersforums  
                     FROM databaseSchema.objectQualifier_forum a 
@@ -3136,6 +3137,7 @@ END LOOP;
                              a.imageurl,
                              a.styles,
                              a.pollgroupid,
+							 a.isuserforum,
                              a.createdbyuserid,
                              a.canhavepersforums  
         FROM databaseSchema.objectQualifier_forum a 
