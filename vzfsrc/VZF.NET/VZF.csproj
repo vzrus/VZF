@@ -3037,7 +3037,6 @@
     <Content Include="install\firebird\functions_drop.sql" />
     <Content Include="install\firebird\indexes.sql" />
     <Content Include="install\firebird\maintenance.sql" />
-    <Content Include="install\firebird\nestedsets.sql" />
     <Content Include="install\firebird\pkeys.sql" />
     <Content Include="install\firebird\postinstall.sql" />
     <Content Include="install\firebird\preinstall.sql" />
@@ -3078,7 +3077,6 @@
     <Content Include="install\mysql\tests.sql" />
     <Content Include="install\mysql\upgrade.sql" />
     <Content Include="install\mysql\views.sql" />
-    <Content Include="install\pgsql\Copy of nestedsets.sql" />
     <Content Include="install\pgsql\custom.sql" />
     <Content Include="install\pgsql\domains.sql" />
     <Content Include="install\pgsql\fkeys.sql" />
@@ -3088,8 +3086,6 @@
     <Content Include="install\pgsql\fulltext_ru.sql" />
     <Content Include="install\pgsql\functions.sql" />
     <Content Include="install\pgsql\indexes.sql" />
-    <Content Include="install\pgsql\nestedsets.sql" />
-    <Content Include="install\pgsql\nestedsets_sp.sql" />
     <Content Include="install\pgsql\pkeys.sql" />
     <Content Include="install\pgsql\postinstall.sql" />
     <Content Include="install\pgsql\preinstall.sql" />
