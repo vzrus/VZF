@@ -847,7 +847,7 @@ namespace YAF.Pages
             // Mek Suggestion: This should be removed, resetting flags on edit is a bit lame.
             // Ederon : now it should be better, but all this code around forum/topic/message flags needs revamp
             // retrieve message flags
-            var messageFlags = new MessageFlags(CommonDb.MessageList(PageContext.PageModuleID, (int)this.EditMessageID).First().Flags)
+            var messageFlags = new MessageFlags(CommonDb.MessageList(PageContext.PageModuleID, (int)this.EditMessageID).First().Flags.BitValue)
                 {
                     IsHtml = this._forumEditor.UsesHTML,
                     IsBBCode = this._forumEditor.UsesBBCode,

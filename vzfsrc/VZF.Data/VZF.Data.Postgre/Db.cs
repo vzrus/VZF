@@ -3751,9 +3751,11 @@ namespace VZF.Data.Postgre
 
                 cmd.Parameters.Add(new NpgsqlParameter("i_messageid", NpgsqlDbType.Integer)).Value = messageID;
 
-                return PostgreDbAccess.GetData(cmd, connectionString)
+                var dd = PostgreDbAccess.GetData(cmd, connectionString)
                                       .AsEnumerable()
                                       .Select(t => new TypedMessageList(t));
+                return dd;
+
             }
         }
 

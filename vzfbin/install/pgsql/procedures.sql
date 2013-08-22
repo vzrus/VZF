@@ -9974,9 +9974,9 @@ FOR _rec IN
                   t.lastmessageflags,
                   t.description,
                   t.status,
+				  t.styles,
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),				  	  
-                  t.styles,
                   t.topicimage,
                   t.topicimagetype,
                   t.topicimagebin,
@@ -10059,9 +10059,9 @@ SELECT
                   t.lastmessageflags,
                   t.description,
                   t.status,
+				  t.styles,
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
-                  t.styles,
                   t.topicimage,
                   t.topicimagetype,
                   t.topicimagebin,
@@ -10100,9 +10100,9 @@ FOR _rec IN SELECT
                   t.lastmessageflags,
                   t.description,
                   t.status,
+				  t.styles,
                   (CASE WHEN i_gettags THEN
                   (SELECT string_agg(tg.tag, ',') FROM databaseSchema.objectQualifier_tags tg join databaseSchema.objectQualifier_topictags tt on tt.tagid = tg.tagid where tt.topicid = t.topicid) ELSE '' END),		  
-                  t.styles,
                   t.topicimage,
                   t.topicimagetype,
                   t.topicimagebin,
