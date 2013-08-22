@@ -1,0 +1,80 @@
+<%@ Control Language="c#" AutoEventWireup="True" Inherits="YAF.Pages.Admin.attachments" Codebehind="attachments.ascx.cs" %>
+<%@ Import Namespace="YAF.Core" %>
+<%@ Import Namespace="YAF.Types.Constants" %>
+<%@ Import Namespace="YAF.Types.Interfaces" %>
+<%@ Import Namespace="VZF.Utils" %>
+<VZF:PageLinks runat="server" ID="PageLinks" />
+<VZF:AdminMenu runat="server">
+     <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
+	<table class="content" width="100%" cellspacing="1" cellpadding="0">
+		<tr>
+			<td class="header1" colspan="8">
+				<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="TITLE" LocalizedPage="ADMIN_ATTACHMENTS" />
+			</td>
+		</tr>
+		<asp:Repeater runat="server" ID="List">
+			<HeaderTemplate>
+				<tr class="header2">
+					<td>
+						<VZF:LocalizedLabel ID="LocalizedLabel1" runat="server" LocalizedTag="FORUM" />
+					</td>
+					<td>
+						<VZF:LocalizedLabel ID="LocalizedLabel2" runat="server" LocalizedTag="TOPIC" />
+					</td>
+					<td>
+						<VZF:LocalizedLabel ID="LocalizedLabel3" runat="server" LocalizedTag="POSTED" LocalizedPage="ADMIN_ATTACHMENTS" />
+					</td>
+					<td>
+						<VZF:LocalizedLabel ID="LocalizedLabel4" runat="server" LocalizedTag="FILENAME" />
+					</td>
+					<td align="right">
+						<VZF:LocalizedLabel ID="LocalizedLabel5" runat="server" LocalizedTag="DOWNLOADS" />
+					</td>
+					<td>
+						<VZF:LocalizedLabel ID="LocalizedLabel6" runat="server" LocalizedTag="CONTENT_TYPE" />
+					</td>
+					<td align="right">
+						<VZF:LocalizedLabel ID="LocalizedLabel7" runat="server" LocalizedTag="SIZE" />
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+			</HeaderTemplate>
+			<ItemTemplate>
+				<tr class="post">
+					<td>
+						<a target="_top" href='<%# YafBuildLink.GetLink(ForumPages.topics,"f={0}",Eval("ForumID")) %>'>
+							<%# HtmlEncode(Eval("ForumName")) %>
+						</a>
+					</td>
+					<td>
+						<a target="_top" href='<%# YafBuildLink.GetLink(ForumPages.posts,"t={0}",Eval("TopicID")) %>'>
+							<%# HtmlEncode(Eval("TopicName")) %>
+						</a>
+					</td>
+					<td>
+						<%# this.Get<IDateTime>().FormatDateTimeShort(Eval( "Posted")) %>
+					</td>
+					<td>
+						<%# HtmlEncode(Eval( "FileName")) %>
+					</td>
+					<td align="right">
+						<%# Eval( "Downloads") %>
+					</td>
+					<td>
+						<%# Eval( "ContentType") %>
+					</td>
+					<td align="right">
+						<%# Eval( "Bytes") %>
+					</td>
+					<td>
+						<asp:LinkButton runat="server" OnLoad="Delete_Load" CommandName="delete" CommandArgument='<%# Eval( "AttachmentID") %>'><%# this.GetText("DELETE")%></asp:LinkButton>
+					</td>
+				</tr>
+			</ItemTemplate>
+		</asp:Repeater>
+	</table>
+     <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
+</VZF:AdminMenu>
+<VZF:SmartScroller ID="SmartScroller1" runat="server" />
