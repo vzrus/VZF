@@ -972,7 +972,7 @@
                             <VZF:HelpLabel ID="HelpLabel195" runat="server" LocalizedTag="IP_INFOSERVICE_DATAMAPPING" LocalizedPage="ADMIN_HOSTSETTINGS" />
                         </td>
                         <td class="post">
-                            <asp:TextBox Style="width:350px" ID="IPLocatorResultsMapping" runat="server"></asp:TextBox>
+                            <asp:TextBox Style="width:350px" ID="IPLocatorResultsMap" runat="server"></asp:TextBox>
                         </td>
                     </tr>       
                     <tr>

@@ -129,6 +129,9 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -3037,6 +3040,7 @@
     <Content Include="install\firebird\functions_drop.sql" />
     <Content Include="install\firebird\indexes.sql" />
     <Content Include="install\firebird\maintenance.sql" />
+    <Content Include="install\firebird\nestedsets_sp.sql" />
     <Content Include="install\firebird\pkeys.sql" />
     <Content Include="install\firebird\postinstall.sql" />
     <Content Include="install\firebird\preinstall.sql" />

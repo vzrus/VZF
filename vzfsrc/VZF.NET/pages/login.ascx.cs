@@ -23,6 +23,8 @@ namespace YAF.Pages
     #region Using
 
     using System;
+    using System.DirectoryServices;
+    using System.DirectoryServices.AccountManagement;
     using System.Web;
     using System.Web.Security;
     using System.Web.UI.HtmlControls;
@@ -90,6 +92,8 @@ namespace YAF.Pages
         {
             if (username.Contains("@") && this.Get<MembershipProvider>().RequiresUniqueEmail)
             {
+               
+
                 // attempt Email Login
                 string realUsername = this.Get<MembershipProvider>().GetUserNameByEmail(username);
 

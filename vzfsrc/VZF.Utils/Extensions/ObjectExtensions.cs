@@ -239,7 +239,7 @@ namespace VZF.Utils
 
             var d = result as IDictionary<string, object>;
 
-            if (obj.GetType() == typeof(ExpandoObject))
+            if (obj is ExpandoObject)
             {
                 return obj;
             }

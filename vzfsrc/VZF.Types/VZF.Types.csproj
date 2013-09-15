@@ -210,6 +210,7 @@
     <Compile Include="Objects\TypedSmileyList.cs" />
     <Compile Include="Objects\TypedTopicSimpleList.cs" />
     <Compile Include="Objects\TypedUserList.cs" />
+    <Compile Include="Objects\UserLdap.cs" />
     <Compile Include="Objects\YafUserInfo.cs" />
     <Compile Include="ServiceLocatorAccess.cs" />
     <Compile Include="ThemeResources.cs" />

@@ -3588,16 +3588,16 @@ namespace YAF.Classes
         /// <summary>
         /// Gets or sets IP Locator Results Mapping.
         /// </summary>
-        public string IPLocatorResultsMapping 
+        public string IPLocatorResultsMap 
         {
             get
             {
-                return this._reg.GetValue("IPLocatorResultsMapping", "StatusCode,StatusMessage, IpAddress,CountryCode,CountryName,RegionName,CityName,ZipCode,Latitude,Longitude,TimeZone");
+                return this._reg.GetValue("IPLocatorResultsMap", "StatusCode=OK:string:StatusCode=OK,StatusMessage, IpAddress,CountryCode,CountryName,RegionName,CityName,ZipCode,Latitude,Longitude,TimeZone");
             }
 
             set
             {
-                this._reg.SetValue("IPLocatorResultsMapping", value);
+                this._reg.SetValue("IPLocatorResultsMap", value);
             }
         }
 

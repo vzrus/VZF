@@ -2218,13 +2218,13 @@ namespace YAF.Pages.Admin {
         protected global::VZF.Controls.HelpLabel HelpLabel195;
         
         /// <summary>
-        /// IPLocatorResultsMapping control.
+        /// IPLocatorResultsMap control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox IPLocatorResultsMapping;
+        protected global::System.Web.UI.WebControls.TextBox IPLocatorResultsMap;
         
         /// <summary>
         /// HelpLabel110 control.

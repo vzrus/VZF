@@ -21,13 +21,20 @@ namespace YAF.Core
 {
   #region Using
 
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.Eventing.Reader;
+    using System.Linq;
     using System.Net;
     using System.Xml.Serialization;
+
+    using VZF.Data.Common;
+
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Types;
+    using YAF.Types.Constants;
     using YAF.Types.Interfaces;
     using VZF.Utils;
 
@@ -70,7 +77,7 @@ namespace YAF.Core
 
             IDictionary<string, string> res = new ConcurrentDictionary<string, string>();
 
-            if (YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMapping.IsNotSet() ||
+            if (YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMap.IsNotSet() ||
                 YafContext.Current.Get<YafBoardSettings>().IPLocatorUrlPath.IsNotSet())
             {
                 return res;
@@ -78,25 +85,55 @@ namespace YAF.Core
 
             if (YafContext.Current.Get<YafBoardSettings>().EnableIPInfoService)
             {
-                try
+                switch (format)
                 {
-                    string path = YafContext.Current.Get<YafBoardSettings>().IPLocatorUrlPath.FormatWith(VZF.Utils.Helpers.IPHelper.GetIp4Address(ip));
-                    var client = new WebClient();
-                    string[] result = client.DownloadString(path).Split(';');
-                    string[] sray = YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMapping.Trim().Split(',');
-                    if (result.Length > 0 && result.Length == sray.Length)
-                    {
-                        int i = 0;
-                        foreach (string str in result)
+                    case "raw":
+                        try
                         {
-                            res.Add(sray[i].Trim(), str);
-                            i++;
+                            string path =
+                                YafContext.Current.Get<YafBoardSettings>()
+                                    .IPLocatorUrlPath.FormatWith(VZF.Utils.Helpers.IPHelper.GetIp4Address(ip));
+                            var client = new WebClient();
+                            string[] result = client.DownloadString(path).Split(';');
+                            string[] sray =
+                                YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMap.Trim().Split(',');
+                            if (result.Length > 0 && result.Length == sray.Length)
+                            {
+                                int i = 0;
+                                bool oldproperty = false;
+                                foreach (string str in result)
+                                {
+                                    if (sray.Any(strDef => string.Equals(str, strDef, StringComparison.InvariantCultureIgnoreCase)))
+                                    {
+                                        res.Add(sray[i].Trim(), str);
+                                        i++;
+                                        oldproperty = true;
+                                    }
+
+                                    if (!oldproperty)
+                                    {
+                                        CommonDb.eventlog_create(YafContext.Current.PageModuleID, this, "Undefined property {0} in your HostSettings IP Info Geolocation Web Service arguments mapping string. Automatically added to the string.".FormatWith(str), EventLogTypes.Information);
+                                        string oldProperties =
+                                            YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMap;
+                                        YafContext.Current.Get<YafBoardSettings>().IPLocatorResultsMap = oldProperties
+                                                                                                             + ","
+                                                                                                             + str;
+                                    }
+
+                                    oldproperty = false;
+                                }
+                            }
                         }
-                    }
-                }
-                catch
-                {
-                    return res;
+                        catch
+                        {
+                            return res;
+                        }
+
+                        break;
+                    case "xml":
+                        break;
+                    case "json":
+                        break;
                 }
             }
 

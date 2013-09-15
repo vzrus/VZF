@@ -491,7 +491,7 @@ namespace YAF.Pages
           // vzrus: we should always get not null class here
             this._UserIpLocator = new IPDetails().GetData(
                  this.Get<HttpRequestBase>().GetUserRealIPAddress(), 
-                "text",
+                "raw",
                 false,
                 this.PageContext().CurrentForumPage.Localization.Culture.Name,
                 string.Empty,
