@@ -16,8 +16,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>vzf2013.pfx</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -45,6 +45,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\..\VZF.NET\Bin\</OutputPath>
@@ -57,6 +58,7 @@
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>..\..\VZF.NET\Bin\VZF.Classes.Config.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -106,7 +108,7 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="vzf2013.pfx" />
+    <None Include="vzf14.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">

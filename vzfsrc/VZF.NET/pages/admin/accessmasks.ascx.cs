@@ -165,7 +165,7 @@ namespace YAF.Pages.Admin
     protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
     {
         // go back to personal group selection
-        YafBuildLink.Redirect(ForumPages.cp_profile, "u={0}".FormatWith(PageContext.PageUserID));
+        YafBuildLink.Redirect(ForumPages.admin_admin);
     }
 
     /// <summary>

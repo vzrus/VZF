@@ -1,7 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Vladimir Zakharov" file="CommonDb.cs">
 //   VZF by vzrus
-//   Copyright (C) 2006-2013 Vladimir Zakharov
+//   Copyright (C) 2006-2014 Vladimir Zakharov
 //   https://github.com/vzrus
 //   http://sourceforge.net/projects/yaf-datalayers/
 //    This program is free software; you can redistribute it and/or
@@ -33,8 +33,7 @@ namespace VZF.Data.Common
     using System.Linq;
     using System.Web.Security;
 
-    using VZF.Data.Common;
-    using VZF.Data.Utils;
+    using VZF.Data.Common.DAL;
     using VZF.Types.Data;
     using VZF.Types.Objects;
 
@@ -43,13 +42,26 @@ namespace VZF.Data.Common
     using YAF.Types.Constants;
     using YAF.Types.Objects;
 
-    using Platform = VZF.Utils.Platform;
-
     /// <summary>
     /// The common DB.
     /// </summary>
     public static class CommonDb
     {
+        /// <summary>
+        /// The _provider name.
+        /// </summary>
+        private static string _providerName;
+
+        /// <summary>
+        /// The _connection string.
+        /// </summary>
+        private static string _connectionString;
+
+        /// <summary>
+        /// The _connection string name.
+        /// </summary>
+        private static string _connectionStringName;
+
         #region Access Masks
 
         /// <summary>
@@ -66,41 +78,49 @@ namespace VZF.Data.Common
         /// </returns>
         public static bool accessmask_delete(int? mid, object accessMaskID)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(
+                mid,
+                string.Empty,
+                out _providerName,
+                out _connectionString,
+                out _connectionStringName);
 
-            switch (dataEngine)
+            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.accessmask_delete(connectionString, accessMaskID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.accessmask_delete(connectionString, accessMaskID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.accessmask_delete(connectionString, accessMaskID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.accessmask_delete(connectionString, accessMaskID);
-                    // case CommonSqlDbAccess.Oracle: return OracleLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
-                    // case CommonSqlDbAccess.Db2: return Db2LegacyDb.Instance.accessmask_delete(connectionString,accessMaskID);
-                    // case CommonSqlDbAccess.Other: return OtherLegacyDb.Instance.accessmask_delete(connectionString,accessMaskID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_delete", _providerName));
+                return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure, 1200));
             }
         }
 
         /// <summary>
-        /// Gets a list of access mask properities
+        /// The accessmask_list.
         /// </summary>
         /// <param name="mid">
-        /// The module id.
+        /// The mid.
         /// </param>
         /// <param name="boardId">
-        /// ID of Board
+        /// The board id.
         /// </param>
         /// <param name="accessMaskID">
-        /// ID of access mask
+        /// The access mask id.
         /// </param>
-        /// <returns> A <see cref="T:System.Data.DataTable"/> of Access Masks. </returns>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        /// The <see cref="T:System.Data.DataTable"/>.
+        /// </returns>
         public static DataTable accessmask_list(
             int? mid,
             object boardId,
@@ -110,47 +130,54 @@ namespace VZF.Data.Common
             bool isUserMask,
             bool isAdminMask)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(
+                mid,
+                string.Empty,
+                out _providerName,
+                out _connectionString,
+                out _connectionStringName);
 
-            switch (dataEngine)
+            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.accessmask_list(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.accessmask_list(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.accessmask_list(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.accessmask_list(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_list(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_list", _providerName));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
-       
-
         /// <summary>
-        /// Gets a list of access mask properities
+        /// Gets a list of access mask properties for personal forums(blogs).
         /// </summary>
         /// <param name="mid">
-        /// The module id.
+        /// The mid.
         /// </param>
         /// <param name="boardId">
-        /// ID of Board
+        /// The board id.
         /// </param>
         /// <param name="accessMaskID">
-        /// ID of access mask
+        /// The access mask id.
         /// </param>
-        /// <returns> A <see cref="T:System.Data.DataTable"/> of Access Masks. </returns>
+        /// <param name="excludeFlags">
+        /// The exclude flags.
+        /// </param>
+        /// <param name="pageUserID">
+        /// The page user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
+        /// </param>
+        /// <returns>
+        ///  A <see cref="T:System.Data.DataTable"/> of Access Masks.
+        /// </returns>
         public static DataTable accessmask_pforumlist(
             int? mid,
             object boardId,
@@ -160,29 +187,24 @@ namespace VZF.Data.Common
             bool isUserMask,
             bool isAdminMask)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(
+                mid,
+                string.Empty,
+                out _providerName,
+                out _connectionString,
+                out _connectionStringName);
 
-            switch (dataEngine)
+            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.accessmask_pforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.accessmask_pforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.accessmask_pforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.accessmask_pforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_pforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_pforumlist", _providerName));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -211,10 +233,8 @@ namespace VZF.Data.Common
         /// The is admin mask.
         /// </param>
         /// <returns>
-        /// The <see cref="DataTable"/>.
+        /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable accessmask_aforumlist(
             int? mid,
             object boardId,
@@ -224,61 +244,56 @@ namespace VZF.Data.Common
             bool isUserMask,
             bool isAdminMask)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(
+                mid,
+                string.Empty,
+                out _providerName,
+                out _connectionString,
+                out _connectionStringName);
 
-            switch (dataEngine)
+            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.accessmask_aforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.accessmask_aforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.accessmask_aforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.accessmask_aforumlist(
-                        connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                    // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_aforumlist(connectionString, boardId, accessMaskID, excludeFlags, pageUserID, isUserMask, isAdminMask);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_aforumlist", _providerName));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
         /// <summary>
-        /// Saves changes to access mask.
+        /// The accessmask_save.
         /// </summary>
         /// <param name="mid">
-        /// The module id.
+        /// The mid.
         /// </param>
         /// <param name="accessMaskId">
-        /// The access mask ID.
+        /// The access mask id.
         /// </param>
         /// <param name="boardId">
-        /// The board ID.
+        /// The board id.
         /// </param>
         /// <param name="name">
-        /// The access mask name.
+        /// The name.
         /// </param>
         /// <param name="readAccess">
-        /// The post read access.
+        /// The read access.
         /// </param>
         /// <param name="postAccess">
-        /// The post write access.
+        /// The post access.
         /// </param>
         /// <param name="replyAccess">
-        /// The reply topic access.
+        /// The reply access.
         /// </param>
         /// <param name="priorityAccess">
         /// The priority access.
         /// </param>
         /// <param name="pollAccess">
-        /// The poll create access.
+        /// The poll access.
         /// </param>
         /// <param name="voteAccess">
         /// The vote access.
@@ -287,19 +302,31 @@ namespace VZF.Data.Common
         /// The moderator access.
         /// </param>
         /// <param name="editAccess">
-        /// The topic edit access.
+        /// The edit access.
         /// </param>
         /// <param name="deleteAccess">
-        /// The topic delete access.
+        /// The delete access.
         /// </param>
         /// <param name="uploadAccess">
-        /// The attachments upload access.
+        /// The upload access.
         /// </param>
         /// <param name="downloadAccess">
-        /// The attachments download access.
+        /// The download access.
+        /// </param>
+        /// <param name="userForumAccess">
+        /// The user forum access.
         /// </param>
         /// <param name="sortOrder">
-        /// The access mask sort order.
+        /// The sort order.
+        /// </param>
+        /// <param name="userId">
+        /// The user id.
+        /// </param>
+        /// <param name="isUserMask">
+        /// The is user mask.
+        /// </param>
+        /// <param name="isAdminMask">
+        /// The is admin mask.
         /// </param>
         public static void accessmask_save(
             int? mid,
@@ -323,109 +350,38 @@ namespace VZF.Data.Common
             object isUserMask,
             object isAdminMask)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
+            CommonSqlDbAccess.GetConnectionData(
+               mid,
+               string.Empty,
+               out _providerName,
+               out _connectionString,
+               out _connectionStringName);
 
-            switch (dataEngine)
+            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.accessmask_save(
-                        connectionString,
-                        accessMaskId,
-                        boardId,
-                        name,
-                        readAccess,
-                        postAccess,
-                        replyAccess,
-                        priorityAccess,
-                        pollAccess,
-                        voteAccess,
-                        moderatorAccess,
-                        editAccess,
-                        deleteAccess,
-                        uploadAccess,
-                        downloadAccess,
-                        userForumAccess,
-                        sortOrder,
-                        userId,
-                        isUserMask,
-                        isAdminMask);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.accessmask_save(
-                        connectionString,
-                        accessMaskId,
-                        boardId,
-                        name,
-                        readAccess,
-                        postAccess,
-                        replyAccess,
-                        priorityAccess,
-                        pollAccess,
-                        voteAccess,
-                        moderatorAccess,
-                        editAccess,
-                        deleteAccess,
-                        uploadAccess,
-                        downloadAccess,
-                        userForumAccess,
-                        sortOrder,
-                        userId,
-                        isUserMask,
-                        isAdminMask);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.accessmask_save(
-                        connectionString,
-                        accessMaskId,
-                        boardId,
-                        name,
-                        readAccess,
-                        postAccess,
-                        replyAccess,
-                        priorityAccess,
-                        pollAccess,
-                        voteAccess,
-                        moderatorAccess,
-                        editAccess,
-                        deleteAccess,
-                        uploadAccess,
-                        downloadAccess,
-                        userForumAccess,
-                        sortOrder,
-                        userId,
-                        isUserMask,
-                        isAdminMask);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.accessmask_save(
-                        connectionString,
-                        accessMaskId,
-                        boardId,
-                        name,
-                        readAccess,
-                        postAccess,
-                        replyAccess,
-                        priorityAccess,
-                        pollAccess,
-                        voteAccess,
-                        moderatorAccess,
-                        editAccess,
-                        deleteAccess,
-                        uploadAccess,
-                        downloadAccess,
-                        userForumAccess,
-                        sortOrder,
-                        userId,
-                        isUserMask,
-                        isAdminMask);
-                    break;
-                    // case CommonSqlDbAccess.Oracle: VZF.Data.Oracle.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess, userForumAccess,sortOrder,userId,isUserMask,isAdminMask);break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.accessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
-                    // case CommonSqlDbAccess.Other: otherPostgre.Db.accessmask_saveaccessmask_save(connectionString,accessMaskID, boardId, name, readAccess, postAccess, replyAccess, priorityAccess, pollAccess, voteAccess, moderatorAccess, editAccess, deleteAccess, uploadAccess, downloadAccess,userForumAccess, sortOrder,userId,isUserMask,isAdminMask);break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId ?? DBNull.Value));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ReadAccess", readAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PostAccess", postAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ReplyAccess", replyAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PriorityAccess", priorityAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PollAccess", pollAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_VoteAccess", voteAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ModeratorAccess", moderatorAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_EditAccess", editAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteAccess", deleteAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UploadAccess", uploadAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DownloadAccess", downloadAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UserForumAccess", userForumAccess));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortOrder", sortOrder));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_save", _providerName));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 

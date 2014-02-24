@@ -122,6 +122,84 @@ namespace VZF.Data.Common
             return true;
         }
 
+        public static bool GetConnectionData(int? mid, string namePattern, out string dataEngine, out string connectionString, out string connectionStringName)
+        {
+            // string [] patterns = new string[]{"",""};
+
+            // Look for modules special configs.
+            connectionStringName =
+                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+
+            // They were not found gte default.
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
+            }
+
+            connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            dataEngine = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            if (dataEngine.IsNotSet())
+            {
+                throw new ApplicationException("No data base engine name was supplied.");
+            }
+
+            return true;
+        }
+
+        public static string GetConnectionStringName(int? mid, string namePattern)
+        {
+            // string [] patterns = new string[]{"",""};
+
+            // Look for modules special configs.
+            string connectionStringName =
+                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+
+            // They were not found gte default.
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
+            }
+
+            return connectionStringName;
+        }
+
+        public static string GetConnectionString(int? mid, string namePattern)
+        {
+            // string [] patterns = new string[]{"",""};
+
+            // Look for modules special configs.
+            string connectionStringName =
+                Config.GetConfigValueAsString(string.Format("VZF.ConnectionStringNameModule{0}", mid));
+
+            // They were not found gte default.
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                connectionStringName = Config.GetConfigValueAsString("YAF.ConnectionStringName") ?? "yafnet";
+            }
+
+            return ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+        }
+
+        public static string GetConnectionString(string connectionStringName)
+        {
+
+            return ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+        }
+
+        public static string GetProviderName(string connectionStringName)
+        {
+
+            var providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            if (providerName.IsNotSet())
+            {
+                throw new ApplicationException("No data base engine name was supplied. Check connection data.");
+            }
+
+            return providerName;
+        }
+
+
+
         /// <summary>
         /// The get connection data.
         /// </summary>

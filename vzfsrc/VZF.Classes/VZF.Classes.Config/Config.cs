@@ -733,6 +733,17 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets the comma-delimited net adapters with which we don't close connection.
+        /// </summary>
+        public static string NetAdaptersOpenedConnection
+        {
+            get
+            {
+                return GetConfigValueAsString("VZF.NetAdaptersOpenedConnection") ?? "Npgsql";
+            }
+        }
+
+        /// <summary>
         ///     Gets TwitterConsumerKey
         /// </summary>
         public static string TwitterConsumerKey

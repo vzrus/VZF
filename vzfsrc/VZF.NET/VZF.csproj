@@ -29,7 +29,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
@@ -65,6 +65,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -90,6 +91,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -106,6 +108,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=2.6.3.862, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -988,11 +991,7 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Content Include="advanced.aspx" />
-    <Content Include="App_Data\Database1.mdf" />
-    <Content Include="App_Data\Database1_log.LDF">
-      <DependentUpon>Database1.mdf</DependentUpon>
-    </Content>
-    <Content Include="app_fb.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="auth.aspx" />
@@ -5190,10 +5189,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="pages\app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web.config">
+    <Content Include="web_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -5904,7 +5903,7 @@
     <None Include="themes\Fancy\fonts\Lobster-webfont.eot" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.ttf" />
     <None Include="themes\Fancy\fonts\Lobster-webfont.woff" />
-    <Content Include="vzf2013.pfx" />
+    <Content Include="vzf14.pfx" />
     <None Include="Web References\RegisterV2\LatestVersionInformation.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -5924,7 +5923,7 @@
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
     <Content Include="web_ms.config" />
-    <Content Include="web_fb.config" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FarsiLibrary\FarsiLibrary.csproj">
@@ -5965,6 +5964,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
     <Folder Include="install\mssql\" />
     <Folder Include="uploads\avatars\" />
@@ -5988,7 +5988,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>vzf2013.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

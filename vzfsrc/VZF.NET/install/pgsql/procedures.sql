@@ -259,7 +259,7 @@ END;$BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_list
                            (
-                           i_board integer, 
+                           i_boardid integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
                            i_pageuserid integer,
@@ -320,7 +320,7 @@ END;$BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_pforumlist
                            (
-                           i_board integer, 
+                           i_boardid integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
                            i_pageuserid integer,
@@ -377,7 +377,7 @@ END;$BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_aforumlist
                            (
-                           i_board integer, 
+                           i_boardid integer, 
                            i_accessmaskid integer,
                            i_excludeflags integer,
                            i_pageuserid integer,
