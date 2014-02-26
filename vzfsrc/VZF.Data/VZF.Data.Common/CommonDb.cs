@@ -47,21 +47,6 @@ namespace VZF.Data.Common
     /// </summary>
     public static class CommonDb
     {
-        /// <summary>
-        /// The _provider name.
-        /// </summary>
-        private static string _providerName;
-
-        /// <summary>
-        /// The _connection string.
-        /// </summary>
-        private static string _connectionString;
-
-        /// <summary>
-        /// The _connection string name.
-        /// </summary>
-        private static string _connectionStringName;
-
         #region Access Masks
 
         /// <summary>
@@ -78,19 +63,12 @@ namespace VZF.Data.Common
         /// </returns>
         public static bool accessmask_delete(int? mid, object accessMaskID)
         {
-            CommonSqlDbAccess.GetConnectionData(
-                mid,
-                string.Empty,
-                out _providerName,
-                out _connectionString,
-                out _connectionStringName);
-
-            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_delete", _providerName));
-                return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure, 1200));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_delete", mid));
+                return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
             }
         }
 
@@ -129,15 +107,8 @@ namespace VZF.Data.Common
             object pageUserID,
             bool isUserMask,
             bool isAdminMask)
-        {
-            CommonSqlDbAccess.GetConnectionData(
-                mid,
-                string.Empty,
-                out _providerName,
-                out _connectionString,
-                out _connectionStringName);
-
-            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
+        { 
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
@@ -146,7 +117,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_list", _providerName));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_list", mid));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -187,14 +158,7 @@ namespace VZF.Data.Common
             bool isUserMask,
             bool isAdminMask)
         {
-            CommonSqlDbAccess.GetConnectionData(
-                mid,
-                string.Empty,
-                out _providerName,
-                out _connectionString,
-                out _connectionStringName);
-
-            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
@@ -203,7 +167,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_pforumlist", _providerName));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_pforumlist", mid));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -244,14 +208,7 @@ namespace VZF.Data.Common
             bool isUserMask,
             bool isAdminMask)
         {
-            CommonSqlDbAccess.GetConnectionData(
-                mid,
-                string.Empty,
-                out _providerName,
-                out _connectionString,
-                out _connectionStringName);
-
-            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
@@ -260,7 +217,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_aforumlist", _providerName));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_aforumlist", mid));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -350,14 +307,7 @@ namespace VZF.Data.Common
             object isUserMask,
             object isAdminMask)
         {
-            CommonSqlDbAccess.GetConnectionData(
-               mid,
-               string.Empty,
-               out _providerName,
-               out _connectionString,
-               out _connectionStringName);
-
-            using (var sc = new SQLCommand(_connectionStringName, _connectionString, _providerName))
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskId ?? DBNull.Value));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
@@ -380,7 +330,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_save", _providerName));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_save", mid));
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -410,31 +360,24 @@ namespace VZF.Data.Common
         /// </param>
         /// <returns>Returns  a <see cref="T:System.Data.DataTable"/>  of active users</returns>  
         public static DataTable active_list(
-            int? mid, object boardId, object guests, object showCrawlers, int interval, object styledNicks)
+            int? mid,
+            object boardId,
+            object guests,
+            object showCrawlers,
+            int interval,
+            object styledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-           
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.active_list(
-                        connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.active_list(
-                        connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.active_list(
-                        connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.active_list(
-                        connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_list(connectionString, boardId, guests, showCrawlers, interval, styledNicks);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Guests", guests ?? false));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowCrawlers", showCrawlers));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ActiveTime", interval));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_list", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -472,29 +415,18 @@ namespace VZF.Data.Common
             int activeTime,
             object styledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.active_list_user(
-                        connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.active_list_user(
-                        connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.active_list_user(
-                        connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.active_list_user(
-                        connectionString, boardId, userID, guests, showCrawlers, activeTime, styledNicks);
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_list_user(connectionString, boardId, userID,  guests,  showCrawlers,  activeTime,styledNicks);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Guests", guests ?? false));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowCrawlers", showCrawlers));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ActiveTime", activeTime));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_list_user", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -515,25 +447,13 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable active_listforum(int? mid, object forumID, object styledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.active_listforum(connectionString, forumID, styledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.active_listforum(connectionString, forumID, styledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.active_listforum(connectionString, forumID, styledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.active_listforum(connectionString, forumID, styledNicks);
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_listforum(connectionString,  forumID, styledNicks);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_listforum(connectionString,  forumID, styledNicks);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_listforum(connectionString,  forumID, styledNicks);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+                
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_listforum", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -554,25 +474,13 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable active_listtopic(int? mid, object topicID, object styledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.active_listtopic(connectionString, topicID, styledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_listtopic(connectionString, topicID, styledNicks);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_listtopic(connectionString, topicID, styledNicks);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
+              
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_listtopic", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -590,25 +498,11 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataRow active_stats(int? mid, object boardId)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.active_stats(connectionString, boardId);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.active_stats(connectionString, boardId);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.active_stats(connectionString, boardId);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.active_stats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Oracle: return VZF.Data.Oracle.Db.active_stats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.active_stats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.active_stats(connectionString, boardId);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_stats", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
             }
         }
 
@@ -620,29 +514,10 @@ namespace VZF.Data.Common
         /// </param>
         public static void activeaccess_reset(int? mid)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.activeaccess_reset(connectionString);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.activeaccess_reset(connectionString);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.activeaccess_reset(connectionString);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.activeaccess_reset(connectionString);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.activeaccess_reset(connectionString); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.activeaccess_reset(connectionString); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.activeaccess_reset(connectionString); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("activeaccess_reset", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -6320,30 +6195,19 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static bool forumpage_initdb(int? mid, out string errorStr, bool debugging)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            errorStr = null;
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.forumpage_initdb(connectionString, out errorStr, debugging);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.forumpage_initdb(connectionString, out  errorStr,  debugging);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.forumpage_initdb(connectionString, out  errorStr,  debugging); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                if (sc.DataSource != null)
+                {
+                    return true;
+                }
+
+                errorStr = debugging ? "Unable to connect to the Database." : "Unable to connect to the Database.";
+
+                return false;
             }
         }
 
@@ -15562,6 +15426,7 @@ namespace VZF.Data.Common
             string namePattern = string.Empty;
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
+              
             switch (dataEngine)
             {
                 case CommonSqlDbAccess.MsSql:

@@ -545,12 +545,13 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list
                            i_boardid integer,
                            i_guests boolean,
                            i_showcrawlers boolean,
-                           i_interval integer,
+                           i_activetime integer,
                            i_stylednicks boolean,
                            i_utctimestamp timestamp)
                   RETURNS SETOF databaseSchema.objectQualifier_active_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_active_list_return_type%ROWTYPE;
+			 i_interval integer := i_activetime;
 BEGIN
   -- Default i_guests  boolean 0
 
@@ -702,13 +703,14 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_active_list_user
                            i_userid integer,
                            i_guests boolean,
                            i_showcrawlers boolean,
-                           i_interval integer,
+                           i_activetime integer,
                            i_stylednicks boolean,
                            i_utctimestamp timestamp
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_active_list_user_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_active_list_user_return_type%ROWTYPE;
+			 i_interval integer := i_activetime;
 BEGIN
 -- Default i_guests  boolean 0
 -- delete non-active 

@@ -80,8 +80,15 @@ namespace VZF.Data.Common.DAL
         /// </summary>
         private bool _trackOpenConnections;
 
-
+        /// <summary>
+        /// The _provider name.
+        /// </summary>
         private string _providerName;
+
+        /// <summary>
+        /// The _connectionError.
+        /// </summary>
+        private string _connectionError;
 
         /// <summary>
         /// The _separator.
@@ -142,9 +149,20 @@ namespace VZF.Data.Common.DAL
             get { return this._name; }
         }
 
+        /// <summary>
+        /// Gets the provider name.
+        /// </summary>
         public string ProviderName
         {
             get { return this._providerName; }
+        }
+
+        /// <summary>
+        /// Gets the connection error.
+        /// </summary>
+        public string ConnectionError
+        {
+            get { return this._connectionError; }
         }
 
         /// <summary>

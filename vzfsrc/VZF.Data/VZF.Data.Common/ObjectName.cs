@@ -136,6 +136,29 @@ namespace VZF.Data.Common
                 case "Npgsql":
                     return string.Format("{0}.{1}{2}", DatabaseSchemaName, ObjectQualifier, objectName);
                 case "MySql.Data":
+                    return string.Format(
+                        "`{0}`.`{1}{2}`",
+                        DatabaseSchemaName,
+                        Config.DatabaseObjectQualifier,
+                        objectName);
+                case "FirebirdSql.Data.FirebirdClient":
+                    return string.Format("{0}{1}", ObjectQualifier, objectName);
+                default:
+                    throw new ArgumentOutOfRangeException(providerName);
+            }
+        }
+
+        public static string GetVzfObjectName(string objectName, int? mid)
+        {
+            var providerName =
+                CommonSqlDbAccess.GetProviderName(CommonSqlDbAccess.GetConnectionStringName(mid, string.Empty));
+            switch (providerName)
+            {
+                case "System.Data.SqlClient":
+                    return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseOwner, Config.DatabaseObjectQualifier, objectName);
+                case "Npgsql":
+                    return string.Format("{0}.{1}{2}", DatabaseSchemaName, ObjectQualifier, objectName);
+                case "MySql.Data":
                     return string.Format("`{0}`.`{1}{2}`", DatabaseSchemaName, Config.DatabaseObjectQualifier, objectName);
                 case "FirebirdSql.Data.FirebirdClient":
                     return string.Format("{0}{1}", ObjectQualifier, objectName);

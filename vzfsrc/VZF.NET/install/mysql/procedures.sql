@@ -1141,10 +1141,9 @@ CREATE  PROCEDURE {databaseName}.{objectQualifier}active_list(
 END;
 --GO
 
-create procedure {databaseName}.{objectQualifier}active_list_user(i_BoardID INT, i_UserID INT, i_Guests TINYINT(1), i_ShowCrawlers TINYINT(1), i_ActiveTime INT,i_StyledNicks TINYINT(1)) 
+create procedure {databaseName}.{objectQualifier}active_list_user(i_BoardID INT, i_UserID INT, i_Guests TINYINT(1), i_ShowCrawlers TINYINT(1), i_ActiveTime INT,i_StyledNicks TINYINT(1), i_UTCTIMESTAMP datetime) 
 READS SQL DATA
-begin
-                 
+begin                 
        -- select active non-guest users
        
         IF (i_Guests <> 0 AND i_Guests IS NOT NULL) THEN

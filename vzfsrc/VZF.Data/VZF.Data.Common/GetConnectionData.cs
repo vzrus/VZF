@@ -122,6 +122,29 @@ namespace VZF.Data.Common
             return true;
         }
 
+        /// <summary>
+        /// The get connection data.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="namePattern">
+        /// The name pattern.
+        /// </param>
+        /// <param name="dataEngine">
+        /// The data engine.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static bool GetConnectionData(int? mid, string namePattern, out string dataEngine, out string connectionString, out string connectionStringName)
         {
             // string [] patterns = new string[]{"",""};
@@ -146,6 +169,18 @@ namespace VZF.Data.Common
             return true;
         }
 
+        /// <summary>
+        /// The get connection string name.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="namePattern">
+        /// The name pattern.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetConnectionStringName(int? mid, string namePattern)
         {
             // string [] patterns = new string[]{"",""};
@@ -163,6 +198,18 @@ namespace VZF.Data.Common
             return connectionStringName;
         }
 
+        /// <summary>
+        /// The get connection string.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="namePattern">
+        /// The name pattern.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetConnectionString(int? mid, string namePattern)
         {
             // string [] patterns = new string[]{"",""};
@@ -180,15 +227,34 @@ namespace VZF.Data.Common
             return ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
+        /// <summary>
+        /// The get connection string.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetConnectionString(string connectionStringName)
         {
 
             return ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
+        /// <summary>
+        /// The get provider name.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ApplicationException">
+        /// </exception>
         public static string GetProviderName(string connectionStringName)
         {
-
             var providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
             if (providerName.IsNotSet())
             {
