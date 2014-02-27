@@ -103,6 +103,7 @@
     <Compile Include="Helpers\TreeViewUtils.cs" />
     <Compile Include="Helpers\UserAgentHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
+    <Compile Include="HostingEnviromentUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="SimpleURLParameterParser.cs" />

@@ -32,6 +32,7 @@ namespace VZF.Data.Common
     using System.IO;
     using System.Linq;
     using System.Web.Security;
+    using VZF.Utils;
 
     using VZF.Data.Common.DAL;
     using VZF.Types.Data;
@@ -107,9 +108,9 @@ namespace VZF.Data.Common
             object pageUserID,
             bool isUserMask,
             bool isAdminMask)
-        { 
+        {
             using (var sc = new SQLCommand(mid))
-            {
+            { 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
@@ -501,6 +502,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+
                 sc.CommandText.Append(ObjectName.GetVzfObjectName("active_stats", mid));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
             }
@@ -522,53 +524,6 @@ namespace VZF.Data.Common
         }
 
         /// <summary>
-        /// List user profile by a comma-delimited ID list input.
-        /// </summary>
-        /// <param name="mid">
-        /// The module ID.
-        /// </param>
-        /// <param name="boardID">
-        /// The board ID.
-        /// </param>
-        /// <param name="userIdsList">
-        /// A comma-delimited id list.
-        /// </param>
-        /// <param name="useStyledNicks">
-        /// Return styled nicks string.
-        /// </param>
-        /// <returns>
-        /// Returns a <see cref="T:System.Data.DataTable"/> with profiles info. 
-        /// </returns>
-        public static DataTable User_ListProfilesByIdsList(
-            int? mid, int boardID, [NotNull] int[] userIdsList, [CanBeNull] object useStyledNicks)
-        {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.User_ListProfilesByIdsList(
-                        connectionString, boardID, userIdsList, useStyledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.User_ListProfilesByIdsList(
-                        connectionString, boardID, userIdsList, useStyledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.User_ListProfilesByIdsList(
-                        connectionString, boardID, userIdsList, useStyledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.User_ListProfilesByIdsList(
-                        connectionString, boardID, userIdsList, useStyledNicks);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);  
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.User_ListProfilesByIdsList(connectionString,boardID, userIdsList, useStyledNicks);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
-
-        /// <summary>
         /// Lists birthdays list for today.
         /// </summary>
         /// <param name="mid">
@@ -585,25 +540,30 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable User_ListTodaysBirthdays(int? mid, object boardId, object useStyledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-            switch (dataEngine)
+            try
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.User_ListTodaysBirthdays(connectionString, (int)boardId, useStyledNicks); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                using (var sc = new SQLCommand(mid))
+                {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_CurrentYear", DateTime.UtcNow.Year));
+                    sc.Parameters.Add(
+                        sc.CreateParameter(DbType.DateTime, "i_CurrentUtc", DateTime.UtcNow.Date.AddDays(-1)));
+                    sc.Parameters.Add(
+                        sc.CreateParameter(DbType.DateTime, "i_CurrentUtc1", DateTime.UtcNow.Date.AddDays(-1)));
+                    sc.Parameters.Add(
+                        sc.CreateParameter(DbType.DateTime, "i_CurrentUtc2", DateTime.UtcNow.Date.AddDays(1)));
+
+                    sc.CommandText.Append(ObjectName.GetVzfObjectName("User_ListTodaysBirthdays", mid));
+                    return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                }
             }
+            catch (Exception e)
+            {
+                eventlog_create(mid, null, e.Source, "Please, change and save your profile once : " + e.Message, EventLogTypes.Error);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -623,25 +583,14 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable admin_list(int? mid, object boardId, object useStyledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.admin_list(connectionString, (int)boardId, useStyledNicks);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("admin_list", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -663,25 +612,14 @@ namespace VZF.Data.Common
         public static DataTable admin_pageaccesslist(
             int? mid, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.admin_pageaccesslist(connectionString, (int)boardId, useStyledNicks);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.admin_pageaccesslist(connectionString, boardId, useStyledNicks); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", (int)boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("admin_pageaccesslist", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -702,25 +640,13 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable adminpageaccess_list(int? mid, [CanBeNull] object userId, [CanBeNull] object pageName)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.adminpageaccess_list(connectionString, userId, pageName);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.adminpageaccess_list(connectionString, userId, pageName);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.adminpageaccess_list(connectionString, userId, pageName); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.adminpageaccess_list(connectionString, userId, pageName);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.adminpageaccess_list(connectionString, userId, pageName); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
+                
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_list", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -738,30 +664,13 @@ namespace VZF.Data.Common
         /// </param>
         public static void adminpageaccess_delete(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.adminpageaccess_delete(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.adminpageaccess_delete(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.adminpageaccess_delete(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.adminpageaccess_delete(connectionString, userId, pageName);
-                    return;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.adminpageaccess_delete(connectionString, userId,  pageName); return;
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_delete", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -779,29 +688,13 @@ namespace VZF.Data.Common
         /// </param>
         public static void adminpageaccess_save(int? mid, [NotNull] object userId, [CanBeNull] object pageName)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.adminpageaccess_save(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.adminpageaccess_save(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.adminpageaccess_save(connectionString, userId, pageName);
-                    return;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.adminpageaccess_save(connectionString, userId, pageName);
-                    return;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.adminpageaccess_save(connectionString, userId,  pageName); return;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_save", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -816,29 +709,12 @@ namespace VZF.Data.Common
         /// </param>
         public static void album_delete(int? mid, object AlbumID)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.album_delete(connectionString, AlbumID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.album_delete(connectionString, AlbumID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.album_delete(connectionString, AlbumID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.album_delete(connectionString, AlbumID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_delete(connectionString, AlbumID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_delete(connectionString, AlbumID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_delete(connectionString, AlbumID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_delete", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -859,25 +735,15 @@ namespace VZF.Data.Common
         /// </returns>
         public static int[] album_getstats(int? mid, object UserID, object AlbumID)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_getstats(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_getstats(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_getstats(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_getstats(connectionString, UserID, AlbumID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_getstats(connectionString,  UserID,  AlbumID);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.album_getstats(connectionString,  UserID,  AlbumID);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.album_getstats(connectionString,  UserID,  AlbumID);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_getstats", mid));
+                
+                var strow = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
+                return new[] { Convert.ToInt32(strow["AlbumNumber"]), Convert.ToInt32(strow["ImageNumber"]) };
             }
         }
 
@@ -893,27 +759,14 @@ namespace VZF.Data.Common
         /// <returns>
         /// Returns a <see cref="T:System.String"/> with album title.
         /// </returns>
-        public static string album_gettitle(int? mid, object AlbumID)
+        public static string album_gettitle(int? mid, object albumId)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_gettitle(connectionString, AlbumID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_gettitle(connectionString, AlbumID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_gettitle(connectionString, AlbumID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_gettitle(connectionString, AlbumID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_gettitle(connectionString, AlbumID);
-                    // case CommonSqlDbAccess.Db2: return VZF.Data.Db2.Db.album_gettitle(connectionString, AlbumID);
-                    // case CommonSqlDbAccess.Other: return VZF.Data.Other.Db.album_gettitle(connectionString, AlbumID);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", albumId.ToString() == "0" ? null : albumId));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_gettitle", mid));
+                return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
             }
         }
 
@@ -923,34 +776,17 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="ImageID">
+        /// <param name="imageId">
         /// The image id.
         /// </param>
-        public static void album_image_delete(int? mid, object ImageID)
+        public static void album_image_delete(int? mid, object imageId)
         {
-            string dataEngine;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, string.Empty, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.album_image_delete(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.album_image_delete(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.album_image_delete(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.album_image_delete(connectionString, ImageID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_delete(connectionString, ImageID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_delete(connectionString, ImageID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_delete(connectionString, ImageID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_delete", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -960,35 +796,17 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="ImageID">
+        /// <param name="imageId">
         /// The image id.
         /// </param>
-        public static void album_image_download(int? mid, object ImageID)
+        public static void album_image_download(int? mid, object imageId)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.album_image_download(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.album_image_download(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.album_image_download(connectionString, ImageID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.album_image_download(connectionString, ImageID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_download(connectionString, ImageID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_download(connectionString, ImageID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_download(connectionString, ImageID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_download", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -998,34 +816,20 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The module ID.
         /// </param>
-        /// <param name="userID">
+        /// <param name="userId">
         /// The user ID.
         /// </param>
         /// <returns>
         /// Returns a <see cref="T:System.Data.DataTable"/> with album images for a user.
         /// </returns>
-        public static DataTable album_images_by_user(int? mid, [NotNull] object userID)
+        public static DataTable album_images_by_user(int? mid, [NotNull] object userId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_images_by_user(connectionString, userID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_images_by_user(connectionString, userID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_images_by_user(connectionString, userID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_images_by_user(connectionString, userID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_images_by_user(connectionString, userID); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_images_by_user(connectionString, userID); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_images_by_user(connectionString, userID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_images_by_user", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -1046,27 +850,24 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable album_image_list(int? mid, object AlbumID, object ImageID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_image_list(connectionString, AlbumID, ImageID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_image_list(connectionString, AlbumID, ImageID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_image_list(connectionString, AlbumID, ImageID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.admin_list(connectionString, (int)boardId, useStyledNicks); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_image_list(connectionString, AlbumID, ImageID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-                    break;
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", ImageID.ToString() == "0" ? null : ImageID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_list", mid));
+                DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                if (dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["ImageID"] == DBNull.Value)
+                    {
+                        dt.Rows.RemoveAt(0);
+                        dt.AcceptChanges();
+                    }
+                }
+
+                return dt;
+                
             }
         }
 
@@ -1095,37 +896,21 @@ namespace VZF.Data.Common
         /// The content type.
         /// </param>
         public static void album_image_save(
-            int? mid, object ImageID, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
+            int? mid, object imageId, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.album_image_save(
-                        connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.album_image_save(
-                        connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.album_image_save(
-                        connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.album_image_save(
-                        connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.album_image_save(connectionString, ImageID, AlbumID, Caption, FileName, Bytes, ContentType); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Caption", Caption));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", FileName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", Bytes));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", ContentType));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                              
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_save", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }         
         }
 
         /// <summary>
@@ -1145,26 +930,13 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable album_list(int? mid, object UserID, object AlbumID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_list(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_list(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_list(connectionString, UserID, AlbumID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_list(connectionString, UserID, AlbumID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_list(connectionString, UserID,  AlbumID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_list", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -1191,27 +963,17 @@ namespace VZF.Data.Common
         /// </returns>
         public static int album_save(int? mid, object AlbumID, object UserID, object Title, object CoverImageID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.album_list(connectionString, UserID,  AlbumID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.album_save(connectionString, AlbumID, UserID, Title, CoverImageID);
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Title", string.IsNullOrEmpty(Title.ToString()) ? null : Title));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CoverImageID", CoverImageID));                
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_save", mid));
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }            
         }
 
         /// <summary>
@@ -1225,31 +987,55 @@ namespace VZF.Data.Common
         /// </param>
         public static void attachment_delete(int? mid, object attachmentID)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            bool UseFileTable = GetBooleanRegistryValue(mid, "UseFileTable");
 
-            switch (dataEngine)
+            // If the files are actually saved in the Hard Drive
+            if (!UseFileTable)
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.attachment_delete(connectionString, attachmentID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.attachment_delete(connectionString, attachmentID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.attachment_delete(connectionString, attachmentID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.attachment_delete(connectionString, attachmentID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_delete(connectionString, attachmentID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_delete(connectionString, attachmentID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+
+                using (var sc = new SQLCommand(mid))
+                {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", null));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentID));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", null));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", 0));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", 1000));
+
+
+                    sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_list", mid));
+                    DataTable tbAttachments = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                    
+                    string uploadDir =
+                        HostingEnvironmentUtil.MapPath(
+                            String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                    
+                    foreach (DataRow row in tbAttachments.Rows)
+                    {
+                        try
+                        {
+                            string fileName = String.Format(
+                                "{0}/{1}.{2}.yafupload", uploadDir, row["MessageID"], row["FileName"]);
+                            if (File.Exists(fileName))
+                            {
+                                File.Delete(fileName);
+                            }
+                        }
+                        catch
+                        {
+                            // error deleting that file.. 
+                        }
+                    }
+                }
+            } 
+
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentID));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_delete", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }            
+           
         }
 
         /// <summary>
@@ -1263,31 +1049,14 @@ namespace VZF.Data.Common
         /// </param>
         public static void attachment_download(int? mid, object attachmentId)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.attachment_download(connectionString, attachmentId);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.attachment_download(connectionString, attachmentId);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.attachment_download(connectionString, attachmentId);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.attachment_download(connectionString, attachmentId);
-                    break;
-                // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_download(connectionString, attachmentID); break;
-                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_download(connectionString, attachmentID); break;
-                // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_download(connectionString, attachmentID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentId));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_download", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }         
+
         }
 
         /// <summary>
@@ -1318,30 +1087,16 @@ namespace VZF.Data.Common
         public static DataTable attachment_list(
             int? mid, object messageID, object attachmentID, object boardId, object pageIndex, object pageSize)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.attachment_list(
-                        connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.attachment_list(
-                        connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.attachment_list(
-                        connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.attachment_list(
-                        connectionString, messageID, attachmentID, boardId, pageIndex, pageSize);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.attachment_list(connectionString, messageID,  attachmentID,  boardId,  pageIndex,  pageSize); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageIndex));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_list", mid));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -1369,33 +1124,25 @@ namespace VZF.Data.Common
         public static void attachment_save(
             int? mid, object messageID, object fileName, object bytes, object contentType, Stream stream)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.attachment_save(connectionString, messageID, fileName, bytes, contentType, stream);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.attachment_save(
-                        connectionString, messageID, fileName, bytes, contentType, stream);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.attachment_save(connectionString, messageID, fileName, bytes, contentType, stream);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.attachment_save(
-                        connectionString, messageID, fileName, bytes, contentType, stream);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.attachment_save(connectionString, messageID,  fileName,  bytes,  contentType,stream); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                byte[] fileData = null;
+                if (stream != null)
+                {
+                    fileData = new byte[stream.Length];
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.Read(fileData, 0, (int)stream.Length);
+                }
+
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", fileName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", bytes));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", contentType));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileData", fileData));
+
+                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_save", mid));
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            } 
         }
 
         /// <summary>
@@ -19032,6 +18779,21 @@ namespace VZF.Data.Common
             CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
             return dataEngine;
+        }
+
+        private static bool GetBooleanRegistryValue(int? mid , string name)
+        {
+            using (DataTable dt = registry_list(mid, name))
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int i;
+                    return int.TryParse(dr["Value"].ToString(), out i)
+                               ? Convert.ToBoolean(i)
+                               : Convert.ToBoolean(dr["Value"]);
+                }
+            }
+            return false;
         }
     }
 }

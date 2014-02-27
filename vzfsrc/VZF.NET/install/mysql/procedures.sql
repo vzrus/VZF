@@ -498,6 +498,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_guest;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_lastread;
 --GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_listtodaysbirthdays;
+--GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_lastread;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_list_new;
@@ -12703,7 +12705,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}album_gettitle
     BEGIN
          SELECT `Title`
           FROM   {databaseName}.{objectQualifier}UserAlbum
-            WHERE  AlbumID = i_AlbumID ;
+            WHERE  AlbumID = i_AlbumID;
                            
     END;
 --GO
@@ -12734,7 +12736,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}album_getstats
                                             WHERE   UserID = i_UserID )
                                    );
          END IF;
-            SELECT i_AlbumNumber, i_ImageNumber;
+            SELECT i_AlbumNumber as AlbumNumber, i_ImageNumber as ImageNumber;
  end;
 --GO  
 CREATE PROCEDURE {databaseName}.{objectQualifier}album_image_save
@@ -14341,6 +14343,30 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
 COMMIT;
 -- SET AUTOCOMMIT=1;
 
+END;
+--GO
+
+/* STORED PROCEDURE CREATED BY VZ-TEAM */
+CREATE PROCEDURE {databaseName}.{objectQualifier}user_listtodaysbirthdays(
+    i_BoardID 	        INT,
+	i_StyledNicks       TINYINT(1),
+    i_CurrentYear	    DATETIME,
+    i_CurrentUtc	    DATETIME,
+	i_CurrentUtc1	    DATETIME,
+	i_CurrentUtc2	    DATETIME
+ )  
+ BEGIN
+        SELECT 
+		up.Birthday, 
+		up.UserID, 
+		u.TimeZone, 
+		u.Name as UserName,
+		u.DisplayName as UserDisplayName, 
+		(case(i_StyledNicks) when 1 then  u.UserStyle else '' end) AS Style  
+		FROM {databaseName}.{objectQualifier}UserProfile up 
+		JOIN {databaseName}.{objectQualifier}User u ON u.UserID = up.UserID 
+		where u.BoardID = i_BoardID 
+		AND (DATE_ADD(up.Birthday,INTERVAL (YEAR(i_CurrentDate1) - YEAR(up.Birthday)) YEAR)  BETWEEN i_CurrentDate1 and i_CurrentDate2;             
 END;
 --GO
 

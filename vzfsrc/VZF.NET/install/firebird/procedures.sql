@@ -11760,34 +11760,29 @@ CREATE PROCEDURE  objQual_ALBUM_GETSTATS
     I_ALBUMID INTEGER )
 RETURNS
 (
-I_ALBUMNUMBER INTEGER,
-I_IMAGENUMBER INTEGER 
+"AlbumNumber" INTEGER,
+"ImageNumber" INTEGER 
 )    
 AS
- BEGIN
-I_ALBUMNUMBER = 0;
-I_IMAGENUMBER = 0;
--- DECLARE VARIABLE   I_ALBUMNUMBER INTEGER DEFAULT 0;
--- DECLARE VARIABLE   I_IMAGENUMBER INTEGER DEFAULT 0; 
-      
+ BEGIN      
         IF ( :I_ALBUMID IS NOT NULL ) THEN
         SELECT COUNT(IMAGEID) 
              FROM   objQual_USERALBUMIMAGE
              WHERE  ALBUMID = :I_ALBUMID
-        INTO  :I_IMAGENUMBER;
+        INTO  :"ImageNumber";
         ELSE  
         BEGIN          
          SELECT COUNT(ALBUMID)
                 FROM   objQual_USERALBUM
                 WHERE  USERID = :I_USERID
-                INTO :I_ALBUMNUMBER ;
+                INTO :"AlbumNumber" ;
          SELECT COUNT(IMAGEID)
                 FROM   objQual_USERALBUMIMAGE
                 WHERE  ALBUMID in (
                                     SELECT  ALBUMID
                                     FROM    objQual_USERALBUM
                                     WHERE   USERID = :I_USERID) 
-                INTO  :I_IMAGENUMBER;
+                INTO  :"ImageNumber";
          END
             SUSPEND;
  end;
@@ -13126,5 +13121,47 @@ INTO
     :"TotalRows",
     :"PageIndex"
 DO SUSPEND;
+end;
+--GO
+
+CREATE PROCEDURE  objQual_USER_LISTTODAYSBIRTHDAYS(
+I_BOARDID INTEGER, 
+I_STYLEDNICKS BOOL, 
+I_CURRENTYEAR TIMESTAMP,
+I_CURRENTUTC TIMESTAMP,
+I_CURRENTUTC1 TIMESTAMP,
+I_CURRENTUTC2 TIMESTAMP)
+RETURNS 
+(    "Birthday" TIMESTAMP,
+	 "UserID" INTEGER,
+	 "TimeZone" INTEGER,
+	 "LastVisit" TIMESTAMP,
+	 "UserName" VARCHAR(255),
+	 "UserDisplayName" VARCHAR(255),
+	 "Style" VARCHAR(255)
+)
+ as
+begin
+
+ FOR SELECT up.Birthday, 
+  u.USERID , 
+  u.TimeZone ,
+   u.LastVisit , 
+   u.Name,
+   u.DisplayName,
+   (case(:I_STYLEDNICKS) when 1 then u.USERSTYLE  else '' end) as Style
+    FROM objQual_USERPROFILE up 
+	JOIN objQual_USER u ON u.USERID = up.USERID 
+	where u.BOARDID = :I_BOARDID  
+	AND DATEADD( (:I_CURRENTYEAR - EXTRACT(YEAR FROM up.Birthday)) year to up.Birthday) BETWEEN (:I_CURRENTUTC1) AND  (:I_CURRENTUTC2) 
+	 INTO 
+	 :"UserID",
+	 :"TimeZone",
+	 :"LastVisit",
+	 :"UserName",
+	 :"UserDisplayName",
+	 :"Style",
+	 :"Birthday"
+	 DO SUSPEND;      
 end;
 --GO

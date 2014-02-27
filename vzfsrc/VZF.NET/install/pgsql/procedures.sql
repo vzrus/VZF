@@ -16930,3 +16930,34 @@ END;$BODY$
   COST 100;  
  --GO
 
+ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_listtodaysbirthdays(
+    i_boardid 	        integer,
+	i_stylednicks       boolean,
+    i_currentyear	    timestamp,
+    i_currentutc	    timestamp,
+	i_currentutc1	    timestamp,
+	i_currentutc2	    timestamp
+ ) 
+                    RETURNS SETOF databaseSchema.objectQualifier_user_listtodaysbirthdays_rt
+ $BODY$DECLARE
+  _rec databaseSchema.objectQualifier_user_listtodaysbirthdays_rt%ROWTYPE;
+ BEGIN
+        FOR _rec IN  SELECT up.Birthday, 
+		          up.UserID
+				  u.TimeZone, 
+				  u.name as UserName,
+				  u.DisplayName AS UserDisplayName,
+				  (case(:i_stylednicks) when TRUE then  u.userstyle else '' end) AS Style 
+				  FROM databaseSchema.objectQualifier_userprofile up 
+				  JOIN databaseSchema.objectQualifier_user
+                  u ON u.userid = up.userid where u.boardid = :i_boardid 
+				  AND (up.birthday + (:i_currentyear - extract(year  from up.birthday))*interval '1 year' between (:i_currentutc - interval '24 hours') and (:i_currentutc + interval '24 hours'))
+				  LOOP
+RETURN NEXT _rec;
+END LOOP;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  COST 100 ROWS 1000;
+--GO
+

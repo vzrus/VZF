@@ -1911,6 +1911,13 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='UserForumAccess' LIMIT 1) THEN
  ALTER TABLE {databaseName}.{objectQualifier}ActiveAccess ADD `UserForumAccess` TINYINT(1) NOT NULL DEFAULT 0;
   END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM information_schema.COLUMNS 
+  WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
+  LOWER(TABLE_NAME)=LOWER('{objectQualifier}UserProfile')
+  AND COLUMN_NAME='Birthday' LIMIT 1) THEN
+ ALTER TABLE {databaseName}.{objectQualifier}UserProfile ADD `Birthday` DATETIME;
+  END IF;   
   
     IF EXISTS (SELECT 1 FROM information_schema.COLUMNS 
   WHERE LOWER(TABLE_SCHEMA)=LOWER('{databaseName}')  AND
@@ -1918,6 +1925,8 @@ IF EXISTS (SELECT 1 FROM information_schema.COLUMNS
   AND COLUMN_NAME='SortOrder' AND DATA_TYPE = 'smallint' LIMIT 1) THEN
   ALTER TABLE {databaseName}.{objectQualifier}Group MODIFY `SortOrder` INT;
   END IF;
+
+
 
   END;
 --GO

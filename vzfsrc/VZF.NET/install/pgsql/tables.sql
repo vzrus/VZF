@@ -1284,8 +1284,11 @@ BEGIN
 
       IF (NOT column_exists('databaseSchema.objectQualifier_category','canhavepersforums')) THEN
          ALTER TABLE databaseSchema.objectQualifier_category ADD COLUMN canhavepersforums  boolean  DEFAULT false NOT NULL ;
-     END IF;		
+     END IF;
 
+	 IF (NOT column_exists('databaseSchema.objectQualifier_userprofile','birthday')) THEN
+         ALTER TABLE databaseSchema.objectQualifier_userprofile ADD COLUMN birthday  timestamp;
+     END IF;
      /* IF (EXISTS (SELECT 1 FROM pg_indexes WHERE tablename='objectQualifier_forumreadtracking' 
                                                AND indexname='ix_objectQualifier_forumreadtracking_userid_forumid')) THEN
          DROP INDEX  ix_objectQualifier_forumreadtracking_userid_forumid;

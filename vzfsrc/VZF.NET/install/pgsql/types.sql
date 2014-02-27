@@ -2249,8 +2249,8 @@ CREATE TYPE databaseSchema.objectQualifier_album_list_return_type AS
 
 CREATE TYPE databaseSchema.objectQualifier_album_getstats_return_type AS
 (
-albumnumber integer,
-imagenumber integer
+"AlbumNumber" integer,
+"ImageNumber" integer
 );
 --GO
 
@@ -2522,5 +2522,17 @@ CREATE TYPE databaseSchema.objectQualifier_category_getadjacentforum_rt AS
 "SortOrder" integer
 );
 --GO
+
+CREATE TYPE databaseSchema.objectQualifier_user_listtodaysbirthdays_rt AS
+(
+"Birthday" timestamp,
+"UserID" integer,
+"TimeZone" integer,
+"UserName" integer,
+"UserDisplayName" integer,
+"Style" varchar(255)
+);
+--GO
+
 
 
