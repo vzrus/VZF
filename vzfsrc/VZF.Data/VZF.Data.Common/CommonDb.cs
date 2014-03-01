@@ -68,7 +68,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_delete", mid));
+                sc.CommandText.AppendQuery("accessmask_delete", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
             }
         }
@@ -117,8 +117,8 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
-
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_list", mid));
+                               
+                sc.CommandText.AppendQuery("accessmask_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -168,7 +168,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_pforumlist", mid));
+                sc.CommandText.AppendQuery("accessmask_pforumlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -218,7 +218,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_aforumlist", mid));
+                sc.CommandText.AppendQuery("accessmask_aforumlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -331,7 +331,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("accessmask_save", mid));
+                sc.CommandText.AppendQuery("accessmask_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -377,7 +377,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_list", mid));
+                sc.CommandText.AppendQuery("active_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -426,7 +426,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_list_user", mid));
+                sc.CommandText.AppendQuery("active_list_user", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -453,7 +453,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
                 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_listforum", mid));
+                sc.CommandText.AppendQuery("active_listforum", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -480,7 +480,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
               
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_listtopic", mid));
+                sc.CommandText.AppendQuery("active_listtopic", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -503,7 +503,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("active_stats", mid));
+                sc.CommandText.AppendQuery("active_stats", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
             }
         }
@@ -518,7 +518,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("activeaccess_reset", mid));
+                sc.CommandText.AppendQuery("activeaccess_reset", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -554,7 +554,7 @@ namespace VZF.Data.Common
                     sc.Parameters.Add(
                         sc.CreateParameter(DbType.DateTime, "i_CurrentUtc2", DateTime.UtcNow.Date.AddDays(1)));
 
-                    sc.CommandText.Append(ObjectName.GetVzfObjectName("User_ListTodaysBirthdays", mid));
+                    sc.CommandText.AppendQuery("User_ListTodaysBirthdays", mid);
                     return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                 }
             }
@@ -589,7 +589,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("admin_list", mid));
+                sc.CommandText.AppendQuery("admin_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -618,7 +618,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("admin_pageaccesslist", mid));
+                sc.CommandText.AppendQuery("admin_pageaccesslist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -645,7 +645,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
                 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_list", mid));
+                sc.CommandText.AppendQuery("adminpageaccess_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -669,7 +669,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_delete", mid));
+                sc.CommandText.AppendQuery("adminpageaccess_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -693,7 +693,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("adminpageaccess_save", mid));
+                sc.CommandText.AppendQuery("adminpageaccess_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -713,7 +713,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_delete", mid));
+                sc.CommandText.AppendQuery("album_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -740,8 +740,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_getstats", mid));
-                
+                sc.CommandText.AppendQuery("album_getstats", mid);                
                 var strow = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
                 return new[] { Convert.ToInt32(strow["AlbumNumber"]), Convert.ToInt32(strow["ImageNumber"]) };
             }
@@ -765,7 +764,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", albumId.ToString() == "0" ? null : albumId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_gettitle", mid));
+                sc.CommandText.AppendQuery("album_gettitle", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
             }
         }
@@ -785,7 +784,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_delete", mid));
+                sc.CommandText.AppendQuery("album_image_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -805,7 +804,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_download", mid));
+                sc.CommandText.AppendQuery("album_image_download", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
@@ -828,7 +827,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_images_by_user", mid));
+                sc.CommandText.AppendQuery("album_images_by_user", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -855,7 +854,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", ImageID.ToString() == "0" ? null : ImageID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_list", mid));
+                sc.CommandText.AppendQuery("album_image_list", mid);
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                 if (dt.Rows.Count > 0)
                 {
@@ -908,7 +907,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", ContentType));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
                               
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_image_save", mid));
+                sc.CommandText.AppendQuery("album_image_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }         
         }
@@ -935,7 +934,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_list", mid));
+                sc.CommandText.AppendQuery("album_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -971,7 +970,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CoverImageID", CoverImageID));                
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("album_save", mid));
+                sc.CommandText.AppendQuery("album_save", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
             }            
         }
@@ -1002,7 +1001,7 @@ namespace VZF.Data.Common
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", 1000));
 
 
-                    sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_list", mid));
+                    sc.CommandText.AppendQuery("attachment_list", mid);
                     DataTable tbAttachments = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                     
                     string uploadDir =
@@ -1032,7 +1031,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentID));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_delete", mid));
+                sc.CommandText.AppendQuery("attachment_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }            
            
@@ -1053,7 +1052,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentId));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_download", mid));
+                sc.CommandText.AppendQuery("attachment_download", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }         
 
@@ -1095,7 +1094,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageIndex));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_list", mid));
+                sc.CommandText.AppendQuery("attachment_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
@@ -1140,7 +1139,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", contentType));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileData", fileData));
 
-                sc.CommandText.Append(ObjectName.GetVzfObjectName("attachment_save", mid));
+                sc.CommandText.AppendQuery("attachment_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             } 
         }
@@ -1156,31 +1155,13 @@ namespace VZF.Data.Common
         /// </param>
         public static void bannedip_delete(int? mid, object ID)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.bannedip_delete(connectionString, ID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.bannedip_delete(connectionString, ID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.bannedip_delete(connectionString, ID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.bannedip_delete(connectionString, ID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bannedip_delete(connectionString, ID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bannedip_delete(connectionString, ID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bannedip_delete(connectionString, ID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", ID));
+
+                sc.CommandText.AppendQuery("bannedip_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }           
         }
 
         /// <summary>
@@ -1207,27 +1188,16 @@ namespace VZF.Data.Common
         public static DataTable bannedip_list(
             int? mid, object boardId, object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.bannedip_list(connectionString, boardId, ID, pageIndex, pageSize);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.bannedip_list(connectionString, boardId,  ID,  pageIndex,  pageSize); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", ID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageIndex));
+
+                sc.CommandText.AppendQuery("bannedip_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }          
         }
 
         /// <summary>
@@ -1250,37 +1220,21 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="userID">
         /// The user id.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
+        /// </param> 
         public static void bannedip_save(int? mid, object ID, object boardId, object Mask, string reason, int userID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.bannedip_save(connectionString, ID, boardId, Mask, reason, userID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bannedip_save(connectionString, ID,  boardId,  Mask,  reason,  userID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", ID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Mask", Mask));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Reason", reason));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("bannedip_save", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }       
         }
 
         /// <summary>
@@ -1291,37 +1245,16 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="bbcodeID">
         /// The bbcode id.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
-        public static void bbcode_delete(int? mid, object bbcodeID)
+        /// </param> 
+        public static void bbcode_delete(int? mid, object bbcodeId)
         {
-            string dataEngine;
-            string namePattern = string.Empty;
-            string connectionString;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.bbcode_delete(connectionString, bbcodeID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.bbcode_delete(connectionString, bbcodeID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.bbcode_delete(connectionString, bbcodeID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.bbcode_delete(connectionString, bbcodeID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bbcode_delete(connectionString, bbcodeID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bbcode_delete(connectionString, bbcodeID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bbcode_delete(connectionString, bbcodeID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeId));             
+
+                sc.CommandText.AppendQuery("bbcode_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            } 
         }
 
         /// <summary>
@@ -1339,32 +1272,36 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/> with list of bbcodes.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static DataTable bbcode_list(int? mid, object boardId, object bbcodeID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.bbcode_list(connectionString, boardId, bbcodeID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.bbcode_list( connectionString,  boardId,  bbcodeID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.bbcode_list( connectionString,  boardId,  bbcodeID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeID));
+           
+                sc.CommandText.AppendQuery("bbcode_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            } 
+        }
+
+        /// <summary>
+        /// The bb code list.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="bbcodeID">
+        /// The bbcode id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/> of BBCode list.
+        /// </returns>
+        public static IEnumerable<TypedBBCode> BBCodeList(int? mid, int boardId, int? bbcodeID)
+        {
+            return bbcode_list(mid, boardId, bbcodeID).AsEnumerable().Select(o => new TypedBBCode(o));
         }
 
         /// <summary>
@@ -1373,7 +1310,7 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="bbcodeID">
+        /// <param name="bbcodeId">
         /// The bbcode id.
         /// </param>
         /// <param name="boardId">
@@ -1414,13 +1351,10 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="execorder">
         /// The execorder.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
+        /// </param>      
         public static void bbcode_save(
             int? mid,
-            object bbcodeID,
+            object bbcodeId,
             object boardId,
             object name,
             object description,
@@ -1435,135 +1369,25 @@ namespace VZF.Data.Common
             object moduleclass,
             object execorder)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.bbcode_save(
-                        connectionString,
-                        bbcodeID,
-                        boardId,
-                        name,
-                        description,
-                        onclickjs,
-                        displayjs,
-                        editjs,
-                        displaycss,
-                        searchregex,
-                        replaceregex,
-                        variables,
-                        usemodule,
-                        moduleclass,
-                        execorder);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.bbcode_save(
-                        connectionString,
-                        bbcodeID,
-                        boardId,
-                        name,
-                        description,
-                        onclickjs,
-                        displayjs,
-                        editjs,
-                        displaycss,
-                        searchregex,
-                        replaceregex,
-                        variables,
-                        usemodule,
-                        moduleclass,
-                        execorder);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.bbcode_save(
-                        connectionString,
-                        bbcodeID,
-                        boardId,
-                        name,
-                        description,
-                        onclickjs,
-                        displayjs,
-                        editjs,
-                        displaycss,
-                        searchregex,
-                        replaceregex,
-                        variables,
-                        usemodule,
-                        moduleclass,
-                        execorder);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.bbcode_save(
-                        connectionString,
-                        bbcodeID,
-                        boardId,
-                        name,
-                        description,
-                        onclickjs,
-                        displayjs,
-                        editjs,
-                        displaycss,
-                        searchregex,
-                        replaceregex,
-                        variables,
-                        usemodule,
-                        moduleclass,
-                        execorder);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.bbcode_save(connectionString, bbcodeID, boardId, name, description, onclickjs, displayjs,  editjs,  displaycss,  searchregex,  replaceregex, variables,  usemodule,  moduleclass,  execorder); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-                    break;
-            }
-        }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Description", description));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_OnClickJS", onclickjs));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DisplayJS", displayjs));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_EditJS", editjs));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DisplayCSS", displaycss));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SearchRegEx", searchregex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ReplaceRegEx", replaceregex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Variables", variables));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UseModule", usemodule));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ModuleClass", moduleclass));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExecOrder", execorder ?? 1));
 
-        /// <summary>
-        /// The bb code list.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <param name="boardId">
-        /// The board id.
-        /// </param>
-        /// <param name="bbcodeID">
-        /// The bbcode id.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IEnumerable"/> of BBCode list.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
-        public static IEnumerable<TypedBBCode> BBCodeList(int? mid, int boardId, int? bbcodeID)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.BBCodeList(connectionString, boardId, bbcodeID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.BBCodeList(connectionString, boardId, bbcodeID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-                    break;
+                sc.CommandText.AppendQuery("bbcode_save", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -1606,9 +1430,6 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="int"/> id of a new board.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static int board_create(
             int? mid,
             object adminUsername,
@@ -1622,71 +1443,23 @@ namespace VZF.Data.Common
             object rolePrefix,
             object isHostUser)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.board_create(
-                        connectionString,
-                        adminUsername,
-                        adminUserEmail,
-                        adminUserKey,
-                        boardName,
-                        culture,
-                        languageFile,
-                        boardMembershipName,
-                        boardRolesName,
-                        rolePrefix,
-                        isHostUser);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.board_create(
-                        connectionString,
-                        adminUsername,
-                        adminUserEmail,
-                        adminUserKey,
-                        boardName,
-                        culture,
-                        languageFile,
-                        boardMembershipName,
-                        boardRolesName,
-                        rolePrefix,
-                        isHostUser);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.board_create(
-                        connectionString,
-                        adminUsername,
-                        adminUserEmail,
-                        adminUserKey,
-                        boardName,
-                        culture,
-                        languageFile,
-                        boardMembershipName,
-                        boardRolesName,
-                        rolePrefix,
-                        isHostUser);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.board_create(
-                        connectionString,
-                        adminUsername,
-                        adminUserEmail,
-                        adminUserKey,
-                        boardName,
-                        culture,
-                        languageFile,
-                        boardMembershipName,
-                        boardRolesName,
-                        rolePrefix,
-                        isHostUser);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_create(connectionString,  adminUsername,  adminUserEmail,  adminUserKey, boardName, culture,  languageFile,  boardMembershipName,  boardRolesName, rolePrefix, isHostUser); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_BoardName", boardName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Culture", culture));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_LanguageFile", languageFile));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MembershipAppName", boardMembershipName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RolesAppName", boardRolesName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", adminUsername));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserEmail", adminUserEmail));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", adminUserKey));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsHostAdmin", isHostUser));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RolePrefix", rolePrefix));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("board_create", mid);
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }           
         }
 
         /// <summary>
@@ -1698,35 +1471,14 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static void board_delete(int? mid, object boardId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.board_delete(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.board_delete(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.board_delete(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.board_delete(connectionString, boardId);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.board_delete(connectionString, boardId); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.board_delete(connectionString, boardId); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.board_delete(connectionString, boardId); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+
+                sc.CommandText.AppendQuery("board_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -1742,33 +1494,15 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/> of the board list.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static DataTable board_list(int? mid, object boardId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.board_list(connectionString, boardId);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.board_list(connectionString, boardId);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.board_list(connectionString, boardId);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.board_list(connectionString, boardId);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_list(connectionString, boardId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_list(connectionString, boardId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_list(connectionString, boardId); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+               
+                sc.CommandText.AppendQuery("board_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            } 
         }
 
         /// <summary>
@@ -1789,51 +1523,44 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="board_poststats_Result"/> with post statistics for a board.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static board_poststats_Result board_poststats(
             int? mid, int? boardId, bool useStyledNicks, bool showNoCountPosts)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return
-                        VZF.Data.MsSql.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
-                           .Table.AsEnumerable()
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowNoCountPosts", showNoCountPosts));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetDefaults", false));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                sc.CommandText.AppendQuery("board_poststats", mid);
+                DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                if (dt.Rows.Count > 0)
+                {
+                    return dt.Rows[0].Table.AsEnumerable()
                            .Select(r => new board_poststats_Result(r))
-                           .ToList()[0];
-                    ;
-                case CommonSqlDbAccess.Npgsql:
-                    return
-                        VZF.Data.Postgre.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_poststats_Result(r))
-                           .ToList()[0];
-                case CommonSqlDbAccess.MySql:
-                    return
-                        VZF.Data.Mysql.Db.board_poststats(connectionString, boardId, useStyledNicks, showNoCountPosts)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_poststats_Result(r))
-                           .ToList()[0];
-                case CommonSqlDbAccess.Firebird:
-                    return
-                        VZF.Data.Firebird.Db.board_poststats(
-                            connectionString, boardId, useStyledNicks, showNoCountPosts)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_poststats_Result(r))
-                           .ToList()[0];
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_poststats(connectionString, boardId,  useStyledNicks, showNoCountPosts).Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0]; 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                           .ToList()[0]; 
+                }              
             }
+
+            // TODO:  get defaults - rewrite it on sql level to not call twice
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowNoCountPosts", showNoCountPosts));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetDefaults", true));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                sc.CommandText.AppendQuery("board_poststats", mid);
+                DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                if (dt.Rows.Count > 0)
+                {
+                    return dt.Rows[0].Table.AsEnumerable()
+                           .Select(r => new board_poststats_Result(r))
+                           .ToList()[0]; 
+                }
+                return null;
+            }          
         }
 
         /// <summary>
@@ -1856,35 +1583,14 @@ namespace VZF.Data.Common
         /// <param name="boardId">
         /// The board id.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException. 
-        /// </exception>
         public static void board_resync(int? mid, object boardId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.board_resync(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.board_resync(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.board_resync(connectionString, boardId);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.board_resync(connectionString, boardId);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.board_resync(connectionString, boardId); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.board_resync(connectionString, boardId); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.board_resync(connectionString, boardId); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+
+                sc.CommandText.AppendQuery("board_resync", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -1912,37 +1618,20 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="int"/> id of a saved board.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static int board_save(
             int? mid, object boardId, object languageFile, object culture, object name, object allowThreaded)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.board_save(
-                        connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.board_save(
-                        connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.board_save(
-                        connectionString, boardId, languageFile, culture, name, allowThreaded);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.board_save(
-                        connectionString, boardId, languageFile, culture, name, allowThreaded);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_save(connectionString,  boardId, languageFile, culture,  name,  allowThreaded); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_LanguageFile", languageFile));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Culture", culture));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_AllowThreaded", allowThreaded));
+            
+                sc.CommandText.AppendQuery("board_save", mid);
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }    
         }
 
         /// <summary>
@@ -1957,47 +1646,22 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="board_stats_Result"/> class with common board statistics.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static board_stats_Result board_stats(int? mid, object boardId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return
-                        VZF.Data.MsSql.Db.board_stats(connectionString, boardId)
-                           .Table.AsEnumerable()
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+             
+                sc.CommandText.AppendQuery("board_stats", mid);
+                DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                if (dt.Rows.Count > 0)
+                {
+                    return dt.Rows[0].Table.AsEnumerable()
                            .Select(r => new board_stats_Result(r))
                            .ToList()[0];
-                case CommonSqlDbAccess.Npgsql:
-                    return
-                        VZF.Data.Postgre.Db.board_stats(connectionString, boardId)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_stats_Result(r))
-                           .ToList()[0];
-                case CommonSqlDbAccess.MySql:
-                    return
-                        VZF.Data.Mysql.Db.board_stats(connectionString, boardId)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_stats_Result(r))
-                           .ToList()[0];
-                case CommonSqlDbAccess.Firebird:
-                    return
-                        VZF.Data.Firebird.Db.board_stats(connectionString, boardId)
-                           .Table.AsEnumerable()
-                           .Select(r => new board_stats_Result(r))
-                           .ToList()[0];
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_stats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_stats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_stats(connectionString, boardId); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                }
+
+                return null;
             }
         }
 
@@ -2013,32 +1677,18 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataRow"/> with board user statistics.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static DataRow board_userstats(int? mid, int? boardId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.board_userstats(connectionString, boardId);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.board_userstats(connectionString, boardId);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.board_userstats(connectionString, boardId);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.board_userstats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.board_userstats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.board_userstats(connectionString, boardId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.board_userstats(connectionString, boardId); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+            
+                sc.CommandText.AppendQuery("board_userstats", mid);
+                using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                {
+                    return dt.Rows[0];
+                }                 
+            }          
         }
 
         /// <summary>
@@ -2056,32 +1706,21 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="string[]"/> of buddies.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static string[] buddy_addrequest(int? mid, object FromUserID, object ToUserID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.buddy_addrequest(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_addrequest(connectionString,  FromUserID, ToUserID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                             
+                sc.CommandText.AppendQuery("buddy_addrequest", mid);
+                using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                {
+                    return new[] { dt.Rows[0]["i_paramOutput"].ToString(), dt.Rows[0]["i_approved"].ToString() };
+                }
+            }          
         }
 
         /// <summary>
@@ -2102,31 +1741,18 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static string buddy_approveRequest(int? mid, object FromUserID, object ToUserID, object Mutual)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_approveRequest(connectionString, FromUserID, ToUserID, Mutual); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Mutual", Mutual));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("buddy_approveRequest", mid);
+                return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
             }
         }
 
@@ -2145,31 +1771,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static string buddy_denyRequest(int? mid, object FromUserID, object ToUserID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_denyRequest(connectionString, FromUserID, ToUserID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
+
+                sc.CommandText.AppendQuery("buddy_denyRequest", mid);
+                return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
             }
         }
 
@@ -2184,32 +1795,15 @@ namespace VZF.Data.Common
         /// </param>
         /// <returns>
         /// The <see cref="DataTable"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
+        /// </returns>        
         public static DataTable buddy_list(int? mid, object FromUserID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.buddy_list(connectionString, FromUserID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.buddy_list(connectionString, FromUserID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.buddy_list(connectionString, FromUserID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.buddy_list(connectionString, FromUserID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_list(connectionString, FromUserID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_list(connectionString, FromUserID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_list(connectionString, FromUserID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "FromUserID", FromUserID));
+
+                sc.CommandText.AppendQuery("buddy_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
         }
 
@@ -2228,31 +1822,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static string buddy_remove(int? mid, object FromUserID, object ToUserID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.buddy_remove(connectionString, FromUserID, ToUserID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.buddy_remove(connectionString, FromUserID, ToUserID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
+
+                sc.CommandText.AppendQuery("buddy_remove", mid);
+                return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
             }
         }
 
@@ -2268,31 +1847,20 @@ namespace VZF.Data.Common
         /// <returns>
         /// The<see cref="bool"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// The ArgumentOutOfRangeException.
-        /// </exception>
         public static bool category_delete(int? mid, object CategoryID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_delete(connectionString, CategoryID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_delete(connectionString, CategoryID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_delete(connectionString, CategoryID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_delete(connectionString, CategoryID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_delete(connectionString, CategoryID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_delete(connectionString, CategoryID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_delete(connectionString, CategoryID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", CategoryID));
+
+                sc.CommandText.AppendQuery("category_delete", mid);
+                bool res = Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure)) != 0;
+                if (Config.LargeForumTree)
+                {
+                    forum_ns_recreate(mid);
+                }
+
+                return res;
             }
         }
 
@@ -2311,56 +1879,27 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable category_list(int? mid, object boardId, object categoryID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_list(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_list(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_list(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_list(connectionString, boardId, categoryID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_list(connectionString,  boardId, categoryID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_list(connectionString,  boardId, categoryID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_list(connectionString,  boardId, categoryID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
+                sc.CommandText.AppendQuery("category_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
+
         }
 
         public static DataTable category_pfaccesslist(int? mid, object boardId, object categoryID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_pfaccesslist(connectionString, boardId, categoryID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_pfaccesslist(connectionString,  boardId, categoryID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_pfaccesslist(connectionString,  boardId, categoryID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
+                sc.CommandText.AppendQuery("category_pfaccesslist", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }            
         }
 
         /// <summary>
@@ -2381,36 +1920,19 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable category_getadjacentforum(
             int? mid, object boardId, object categoryID, object userId, bool isAfter)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_getadjacentforum(
-                        connectionString, boardId, categoryID, userId, isAfter);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_getadjacentforum(
-                        connectionString, boardId, categoryID, userId, isAfter);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_getadjacentforum(
-                        connectionString, boardId, categoryID, userId, isAfter);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_getadjacentforum(
-                        connectionString, boardId, categoryID, userId, isAfter);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_getadjacentforum(connectionString, boardId, categoryID, userId, isAfter); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAfter", isAfter));
+
+                sc.CommandText.AppendQuery("category_getadjacentforum", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }          
         }
 
         /// <summary>
@@ -2430,32 +1952,18 @@ namespace VZF.Data.Common
         /// </param>
         /// <returns>
         /// The <see cref="DataTable"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
+        /// </returns>        
         public static DataTable category_listread(int? mid, object boardId, object userId, object categoryID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_listread(connectionString, boardId, userId, categoryID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_listread(connectionString, boardId, userId, categoryID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_listread(connectionString, boardId, userId, categoryID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
+            
+                sc.CommandText.AppendQuery("category_listread", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }      
         }
 
         /// <summary>
@@ -2473,31 +1981,25 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable category_simplelist(int? mid, int startID, int limit)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.category_simplelist(connectionString, startID, limit);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.category_simplelist(connectionString, startID, limit);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.category_simplelist(connectionString, startID, limit);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.category_simplelist(connectionString, startID, limit);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.category_simplelist(connectionString, startID, limit);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.category_simplelist(connectionString, startID, limit);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.category_simplelist(connectionString, startID, limit); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                if (startID <= 0)
+                {
+                    startID = 0;
+                }
+                if (limit <= 0)
+                {
+                    limit = 500;
+                }
+
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_StartID", startID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", limit));
+
+                sc.CommandText.AppendQuery("category_simplelist", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }           
         }
 
         /// <summary>
@@ -2523,9 +2025,7 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="canHavePersForums">
         /// The can Have Pers Forums.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
+        /// </param>        
         public static void category_save(
             int? mid,
             object boardId,
@@ -2535,35 +2035,18 @@ namespace VZF.Data.Common
             object sortOrder,
             object canHavePersForums)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.category_save(
-                        connectionString, boardId, categoryId, name, categoryImage, sortOrder, canHavePersForums);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.category_save(connectionString, boardId,  categoryId,  name,  categoryImage, sortOrder, canHavePersForums); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortOrder", sortOrder));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_CategoryImage", categoryImage));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canHavePersForums));
+                
+                sc.CommandText.AppendQuery("category_save", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }    
         }
 
         /// <summary>
@@ -2578,31 +2061,15 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable checkemail_list(int? mid, object email)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.checkemail_list(connectionString, email);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.checkemail_list(connectionString, email);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.checkemail_list(connectionString, email);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.checkemail_list(connectionString, email);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.checkemail_list(connectionString, email);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.checkemail_list(connectionString, email);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.checkemail_list(connectionString, email); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", email));
+            
+                sc.CommandText.AppendQuery("checkemail_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }        
         }
 
         /// <summary>
@@ -2620,35 +2087,18 @@ namespace VZF.Data.Common
         /// <param name="email">
         /// The email.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void checkemail_save(int? mid, object userId, object hash, object email)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.checkemail_save(connectionString, userId, hash, email);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.checkemail_save(connectionString, userId, hash, email);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.checkemail_save(connectionString, userId, hash, email);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.checkemail_save(connectionString, userId, hash, email);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.checkemail_save(connectionString, userId,  hash,  email); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.checkemail_save(connectionString, userId,  hash,  email); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.checkemail_save(connectionString, userId,  hash,  email); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Hash", hash));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("checkemail_save", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }  
         }
 
         /// <summary>
@@ -2663,31 +2113,15 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable checkemail_update(int? mid, object hash)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.checkemail_update(connectionString, hash);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.checkemail_update(connectionString, hash);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.checkemail_update(connectionString, hash);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.checkemail_update(connectionString, hash);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.checkemail_update(connectionString, hash);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.checkemail_update(connectionString, hash);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.checkemail_update(connectionString, hash); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Hash", hash));
+
+                sc.CommandText.AppendQuery("checkemail_update", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }  
         }
 
         /// <summary>
@@ -2708,35 +2142,27 @@ namespace VZF.Data.Common
         /// <param name="mime">
         /// The mime.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void choice_add(int? mid, object pollID, object choice, object path, object mime)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.choice_add(connectionString, pollID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.choice_add(connectionString, pollID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.choice_add(connectionString, pollID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.choice_add(connectionString, pollID, choice, path, mime);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_add(connectionString, pollID, choice, path, mime); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_add(connectionString, pollID, choice, path, mime); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_add(connectionString, pollID, choice, path, mime); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PollID", pollID));
+
+                if (choice != null)
+                {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Choice", choice));
+                }
+                else
+                {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Choice", "No input value supplied"));
+                }
+
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ObjectPath", path));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MimeType", mime));
+
+                sc.CommandText.AppendQuery("choice_add", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }  
         }
 
         /// <summary>
@@ -2748,35 +2174,15 @@ namespace VZF.Data.Common
         /// <param name="choiceID">
         /// The choice id.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void choice_delete(int? mid, object choiceID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.choice_delete(connectionString, choiceID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.choice_delete(connectionString, choiceID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.choice_delete(connectionString, choiceID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.choice_delete(connectionString, choiceID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_delete(connectionString, choiceID); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_delete(connectionString, choiceID); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_delete(connectionString, choiceID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
+               
+                sc.CommandText.AppendQuery("choice_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }                      
         }
 
         /// <summary>
@@ -2796,36 +2202,19 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="mime">
         /// The mime.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
+        /// </param>        
         public static void choice_update(int? mid, object choiceID, object choice, object path, object mime)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.choice_update(connectionString, choiceID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.choice_update(connectionString, choiceID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.choice_update(connectionString, choiceID, choice, path, mime);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.choice_update(connectionString, choiceID, choice, path, mime);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_update(connectionString, choiceID, choice, path, mime); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Choice", choice));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ObjectPath", path));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_MimeType", mime));
+
+                sc.CommandText.AppendQuery("choice_update", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }  
         }
 
         /// <summary>
@@ -2843,35 +2232,17 @@ namespace VZF.Data.Common
         /// <param name="remoteIP">
         /// The remote ip.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void choice_vote(int? mid, object choiceID, object userId, object remoteIP)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.choice_vote(connectionString, choiceID, userId, remoteIP);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.choice_vote(connectionString, choiceID, userId, remoteIP); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RemoteIP", remoteIP));
+                
+                sc.CommandText.AppendQuery("choice_vote", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }          
         }
 
         /// <summary>
@@ -3784,46 +3155,6 @@ namespace VZF.Data.Common
         }
 
         /// <summary>
-        /// The extension_delete.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <param name="extensionId">
-        /// The extension id.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static void extension_delete(int? mid, object extensionId)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.extension_delete(connectionString, extensionId);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.extension_delete(connectionString, extensionId);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.extension_delete(connectionString, extensionId);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.extension_delete(connectionString, extensionId);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.extension_delete(connectionString, extensionId); break;
-                    // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.extension_delete(connectionString, extensionId); break;
-                    // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.extension_delete(connectionString, extensionId); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
-
-        /// <summary>
         /// The eventloggroupaccess_delete.
         /// </summary>
         /// <param name="mid">
@@ -3871,6 +3202,45 @@ namespace VZF.Data.Common
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
+
+        /// <summary>
+        /// The extension_delete.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="extensionId">
+        /// The extension id.
+        /// </param>     
+        public static void extension_delete(int? mid, object extensionId)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case CommonSqlDbAccess.MsSql:
+                    VZF.Data.MsSql.Db.extension_delete(connectionString, extensionId);
+                    break;
+                case CommonSqlDbAccess.Npgsql:
+                    VZF.Data.Postgre.Db.extension_delete(connectionString, extensionId);
+                    break;
+                case CommonSqlDbAccess.MySql:
+                    VZF.Data.Mysql.Db.extension_delete(connectionString, extensionId);
+                    break;
+                case CommonSqlDbAccess.Firebird:
+                    VZF.Data.Firebird.Db.extension_delete(connectionString, extensionId);
+                    break;
+                // case CommonSqlDbAccess.Oracle:  VZF.Data.Oracle.Db.extension_delete(connectionString, extensionId); break;
+                // case CommonSqlDbAccess.Db2: VZF.Data.Db2.Db.extension_delete(connectionString, extensionId); break;
+                // case CommonSqlDbAccess.Other: VZF.Data.Other.Db.extension_delete(connectionString, extensionId); break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
+
 
         /// <summary>
         /// The extension_edit.
@@ -4566,6 +3936,19 @@ namespace VZF.Data.Common
             }
 
             return dtTable;
+        }
+
+        /// <summary>
+        /// Recreate tree.
+        /// </summary>
+        public static void forum_ns_recreate([NotNull] int? mid)
+        {
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery("forum_ns_recreate", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }
+           
         }
 
         /// <summary>
@@ -17929,35 +17312,17 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="forumID">
         /// The forum id.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
+        /// </param>        
         public static void watchforum_add(int? mid, object userId, object forumID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.watchforum_add(connectionString, userId, forumID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.watchforum_add(connectionString, userId, forumID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.watchforum_add(connectionString, userId, forumID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.watchforum_add(connectionString, userId, forumID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchforum_add(connectionString, userId, forumID);break;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchforum_add(connectionString, userId, forumID); break;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchforum_add(connectionString, userId, forumID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("watchforum_add", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -17976,31 +17341,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable watchforum_check(int? mid, object userId, object forumID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.watchforum_check(connectionString, userId, forumID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.watchforum_check(connectionString, userId, forumID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.watchforum_check(connectionString, userId, forumID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.watchforum_check(connectionString, userId, forumID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchforum_check(connectionString, userId, forumID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchforum_check(connectionString, userId, forumID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchforum_check(connectionString, userId, forumID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
+
+                sc.CommandText.AppendQuery("watchforum_check", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }           
         }
 
         /// <summary>
@@ -18011,36 +17361,16 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="watchForumID">
         /// The watch forum id.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
+        /// </param>    
         public static void watchforum_delete(int? mid, object watchForumID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.watchforum_delete(connectionString, watchForumID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.watchforum_delete(connectionString, watchForumID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.watchforum_delete(connectionString, watchForumID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.watchforum_delete(connectionString, watchForumID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchforum_delete(connectionString, watchForumID);break;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchforum_delete(connectionString, watchForumID); break;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchforum_delete(connectionString, watchForumID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_WatchForumID", watchForumID));
+
+                sc.CommandText.AppendQuery("watchforum_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }            
         }
 
         /// <summary>
@@ -18055,31 +17385,15 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable watchforum_list(int? mid, object userId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.watchforum_list(connectionString, userId);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.watchforum_list(connectionString, userId);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.watchforum_list(connectionString, userId);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.watchforum_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchforum_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchforum_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchforum_list(connectionString, userId); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+
+                sc.CommandText.AppendQuery("watchforum_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }    
         }
 
         /// <summary>
@@ -18094,35 +17408,17 @@ namespace VZF.Data.Common
         /// <param name="topicID">
         /// The topic id.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void watchtopic_add(int? mid, object userId, object topicID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.watchtopic_add(connectionString, userId, topicID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.watchtopic_add(connectionString, userId, topicID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.watchtopic_add(connectionString, userId, topicID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.watchtopic_add(connectionString, userId, topicID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchtopic_add(connectionString, userId, topicID);break;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchtopic_add(connectionString, userId, topicID); break;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchtopic_add(connectionString, userId, topicID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendQuery("watchtopic_add", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }   
         }
 
         /// <summary>
@@ -18140,31 +17436,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable watchtopic_check(int? mid, object userId, object topicID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.watchtopic_check(connectionString, userId, topicID);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.watchtopic_check(connectionString, userId, topicID);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.watchtopic_check(connectionString, userId, topicID);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchtopic_check(connectionString, userId, topicID);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchtopic_check(connectionString, userId, topicID); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+
+                sc.CommandText.AppendQuery("watchtopic_check", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }         
         }
 
         /// <summary>
@@ -18176,35 +17457,15 @@ namespace VZF.Data.Common
         /// <param name="watchTopicID">
         /// The watch topic id.
         /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static void watchtopic_delete(int? mid, object watchTopicID)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.watchtopic_delete(connectionString, watchTopicID);
-                    break;
-                case CommonSqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.watchtopic_delete(connectionString, watchTopicID);
-                    break;
-                case CommonSqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.watchtopic_delete(connectionString, watchTopicID);
-                    break;
-                case CommonSqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.watchtopic_delete(connectionString, watchTopicID);
-                    break;
-                    // case CommonSqlDbAccess.Oracle:   VZF.Data.Oracle.Db.watchtopic_delete(connectionString, watchTopicID);break;
-                    // case CommonSqlDbAccess.Db2:   VZF.Data.Db2.Db.watchtopic_delete(connectionString, watchTopicID); break;
-                    // case CommonSqlDbAccess.Other:   VZF.Data.Other.Db.watchtopic_delete(connectionString, watchTopicID); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_WatchTopicID", watchTopicID));
+
+                sc.CommandText.AppendQuery("watchtopic_delete", mid);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            } 
         }
 
         /// <summary>
@@ -18219,33 +17480,16 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
         public static DataTable watchtopic_list(int? mid, object userId)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            using (var sc = new SQLCommand(mid))
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.watchtopic_list(connectionString, userId);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.watchtopic_list(connectionString, userId);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.watchtopic_list(connectionString, userId);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.watchtopic_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.watchtopic_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.watchtopic_list(connectionString, userId);
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.watchtopic_list(connectionString, userId); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
+                sc.CommandText.AppendQuery("watchtopic_list", mid);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+            }            
+        }
 
         // Properties
 
@@ -18294,31 +17538,20 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        /// <exception cref="ApplicationException">
-        /// </exception>
         public static bool GetIsForumInstalled(int? mid)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            try
             {
-                case CommonSqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.GetIsForumInstalled(connectionString);
-                case CommonSqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.GetIsForumInstalled(connectionString);
-                case CommonSqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.GetIsForumInstalled(connectionString);
-                case CommonSqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.GetIsForumInstalled(connectionString);
-                    // case CommonSqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetIsForumInstalled();
-                    // case CommonSqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetIsForumInstalled();
-                    // case CommonSqlDbAccess.Other:  return VZF.Data.Other.Db.GetIsForumInstalled(); 
-                default:
-                    throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", mid));
+                // If boards don't exists in the table nothing was installed.
+                using (var dt = board_list(mid, DBNull.Value))
+                {
+                    return dt.Rows.Count > 0;
+                }
             }
+            catch
+            {
+                return false;
+            }            
         }
 
         /// <summary>
@@ -18761,26 +17994,6 @@ namespace VZF.Data.Common
             }
         }
 
-        /// <summary>
-        /// The data engine name.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string DataEngineName(int? mid)
-        {
-            string dataEngine;
-            string connectionString;
-
-            string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            return dataEngine;
-        }
-
         private static bool GetBooleanRegistryValue(int? mid , string name)
         {
             using (DataTable dt = registry_list(mid, name))
@@ -18793,6 +18006,7 @@ namespace VZF.Data.Common
                                : Convert.ToBoolean(dr["Value"]);
                 }
             }
+
             return false;
         }
     }

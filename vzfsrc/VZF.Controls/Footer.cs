@@ -233,7 +233,7 @@ namespace VZF.Controls
                 footer.AppendFormat(@"<span id=""themecredit"" style=""color:#999999"">{0}</span>", themeCredit);
                 footer.Append("<br />");
             }
-            string s = CommonDb.DataEngineName(YafContext.Current.PageModuleID);
+            string s = CommonSqlDbAccess.DataEngineName(YafContext.Current.PageModuleID);
             switch (s)
             {
                 case Providers.MsSql:

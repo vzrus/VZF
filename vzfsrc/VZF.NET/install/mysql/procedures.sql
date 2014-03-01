@@ -12231,6 +12231,7 @@ i_PageSize int)
 CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_addrequest
     ( i_FromUserID INT,
     i_ToUserID INT,
+	i_UseDisplayName TINYINT(1),
     i_UTCTIMESTAMP DATETIME
     ) 
      MODIFIES SQL DATA
@@ -12263,7 +12264,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_addrequest
                                   0,
                                   i_UTCTIMESTAMP
                                 );
-                        SET i_paramOutput = ( SELECT `Name`
+                        SET i_paramOutput = ( SELECT (CASE WHEN i_UseDisplayName = 1 THEN `DisplayName` ELSE `Name` END)
                                              FROM   {databaseName}.{objectQualifier}User
                                              WHERE  ( UserID = i_ToUserID )
                                            );
@@ -12288,7 +12289,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_addrequest
                         WHERE   ( FromUserID = i_ToUserID
                                   AND ToUserID = i_FromUserID
                                 );
-                        SET i_paramOutput = ( SELECT `Name`
+                        SET i_paramOutput = ( SELECT (CASE WHEN i_UseDisplayName = 1 THEN `DisplayName` ELSE `Name` END)
                                              FROM   {databaseName}.{objectQualifier}User
                                              WHERE  ( UserID = i_ToUserID )
                                            );
@@ -12299,7 +12300,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_addrequest
                 SET i_paramOutput = '';
                 SET i_approved = 0;
         END IF;
-        SELECT i_paramOutput,i_approved;
+        SELECT i_approved,i_paramOutput;
     END;
 --GO
 
@@ -12307,10 +12308,11 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_approverequest
     (i_FromUserID INT,
     i_ToUserID INT,
     i_Mutual TINYINT(1),
-      i_UTCTIMESTAMP DATETIME,
-    OUT i_paramOutput VARCHAR(128))
+	i_UseDisplayName TINYINT(1),
+    i_UTCTIMESTAMP DATETIME)     
     MODIFIES SQL DATA
     BEGIN
+	DECLARE i_paramOutput VARCHAR(255);
         IF EXISTS ( SELECT  ID
                     FROM    {databaseName}.{objectQualifier}Buddy
                     WHERE   ( FromUserID = i_FromUserID
@@ -12322,7 +12324,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_approverequest
                 WHERE   ( FromUserID = i_FromUserID
                           AND ToUserID = i_ToUserID
                         );
-                SET i_paramOutput = ( SELECT `Name`
+                SET i_paramOutput = ( SELECT (CASE WHEN i_UseDisplayName = 1 THEN `DisplayName` ELSE `Name` END)
                                      FROM   {databaseName}.{objectQualifier}User
                                      WHERE  ( UserID = i_FromUserID )
                                    );                                   
@@ -12347,6 +12349,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_approverequest
                             );
             END IF;
     END IF;
+	SELECT i_paramOutput;
 END;	
 --GO
 
@@ -12356,6 +12359,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_list ( i_FromUserID INT )
         SELECT  a.UserID,
                 a.BoardID,
                 a.`Name`,
+				a.`DisplayName`,
                 a.Joined,
                 a.NumPosts,
                 b.`Name` AS RankName,
@@ -12371,6 +12375,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_list ( i_FromUserID INT )
         SELECT  i_FromUserID AS UserID,
                 a.BoardID,
                 a.`Name`,
+				a.`DisplayName`,
                 a.Joined,
                 a.NumPosts,
                 b.`Name` AS RankName,
@@ -12390,33 +12395,31 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_list ( i_FromUserID INT )
 CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_remove
 (    i_FromUserID INT,
     i_ToUserID INT,
-    OUT i_paramOutput VARCHAR(128) )
+	i_UseDisplayName TINYINT(1))
     MODIFIES SQL DATA
     BEGIN
         DELETE  FROM {databaseName}.{objectQualifier}Buddy
         WHERE   ( FromUserID = i_FromUserID
                   AND ToUserID = i_ToUserID
                 );
-        SET i_paramOutput = ( SELECT `Name`
+         SELECT (CASE WHEN i_UseDisplayName = 1 THEN `DisplayName` ELSE `Name` END)
                              FROM   {databaseName}.{objectQualifier}User
-                             WHERE  ( UserID = i_ToUserID )
-                           );
+                             WHERE  ( UserID = i_ToUserID );
     END;
     --GO    
 
 CREATE PROCEDURE {databaseName}.{objectQualifier}buddy_denyrequest
     ( i_FromUserID INT,
     i_ToUserID INT,
-    OUT i_paramOutput VARCHAR(128) )
+	i_UseDisplayName TINYINT(1))
     MODIFIES SQL DATA
     BEGIN
-        DELETE  FROM {databaseName}.{objectQualifier}Buddy
+	    DELETE  FROM {databaseName}.{objectQualifier}Buddy
         WHERE   FromUserID = i_FromUserID
                 AND ToUserID = i_ToUserID;
-        SET i_paramOutput = ( SELECT `Name`
+         SELECT (CASE WHEN i_UseDisplayName = 1 THEN `DisplayName` ELSE `Name` END)
                              FROM   {databaseName}.{objectQualifier}User
-                             WHERE  ( UserID = i_FromUserID )
-                           );
+                             WHERE  ( UserID = i_FromUserID );
     END;
 --GO   
 /* End of stored procedures for Buddy feature */

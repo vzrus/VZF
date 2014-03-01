@@ -2220,7 +2220,8 @@ CREATE TYPE databaseSchema.objectQualifier_buddy_list_return_type AS
 (
 	"UserID" integer,
 	"BoardID" integer,
-	"Name" varchar(128),
+	"Name" varchar(255),
+	"DisplayName" varchar(255)
 	"Joined" timestamp,
 	"NumPosts" integer,
 	"RankName" varchar(128),
@@ -2517,6 +2518,13 @@ CREATE TYPE databaseSchema.objectQualifier_forum_tags_rt AS
 --GO
 
 CREATE TYPE databaseSchema.objectQualifier_category_getadjacentforum_rt AS
+(
+i_approved integer,
+i_paramoutput integer
+);
+--GO
+
+CREATE TYPE databaseSchema.objectQualifier_buddy_addrequest_rt AS
 (
 "ForumID" integer,
 "SortOrder" integer

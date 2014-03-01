@@ -11236,8 +11236,9 @@ END;
 CREATE PROCEDURE  objQual_BUDDY_ADDREQUEST(
     I_FROMUSERID INTEGER,
     I_TOUSERID INT,
+	I_USEDISPLAYNAME BOOL,
     I_UTCTIMESTAMP TIMESTAMP)
-    RETURNS ( I_APPROVED SMALLINT, I_PARAMOUTPUT VARCHAR(128))
+    RETURNS ( I_APPROVED SMALLINT, I_PARAMOUTPUT VARCHAR(255))
 AS 
     BEGIN
         IF (NOT EXISTS ( SELECT  ID
@@ -11269,7 +11270,7 @@ AS
                                 );
                                 SELECT 
                                  (SELECT 0 FROM RDB$DATABASE) AS APPROVED,
-                                  NAME
+                                 (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
                                              FROM   objQual_USER
                                              WHERE  ( USERID = :I_TOUSERID ) INTO :I_APPROVED,:I_PARAMOUTPUT;
                      
@@ -11298,7 +11299,7 @@ AS
                                 );
                          SELECT 
                                  (SELECT 1 FROM RDB$DATABASE) AS APPROVED,
-                                  NAME
+                                 (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
                                              FROM   objQual_USER
                                              WHERE  ( USERID = :I_TOUSERID ) INTO :I_APPROVED,:I_PARAMOUTPUT;
                     END
@@ -11315,9 +11316,10 @@ CREATE PROCEDURE  objQual_BUDDY_APPROVEREQUEST(
     I_FROMUSERID INTEGER,
     I_TOUSERID INTEGER,
     I_MUTUAL BOOL,
+	I_USEDISPLAYNAME BOOL,
     I_UTCTIMESTAMP TIMESTAMP)
     RETURNS
-    (I_PARAMOUTPUT VARCHAR(128))
+    (I_PARAMOUTPUT VARCHAR(255))
 AS 
     BEGIN
         IF (EXISTS ( SELECT  ID
@@ -11331,7 +11333,7 @@ AS
                 WHERE   ( FROMUSERID = :I_FROMUSERID
                           AND TOUSERID = :I_TOUSERID
                         );
-                 SELECT NAME
+                 SELECT (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
                                      FROM   objQual_USER
                                      WHERE  ( USERID = :I_FROMUSERID ) INTO :I_PARAMOUTPUT;
                                   
@@ -11365,7 +11367,8 @@ END;
     RETURNS (
     "UserID" INTEGER,
     "BoardID" INTEGER,
-    "Name" VARCHAR(128),
+    "Name" VARCHAR(255),
+	"DisplayName" VARCHAR(255),
     "Joined" TIMESTAMP,
     "NumPosts" INTEGER,
     "RankName" VARCHAR(128),
@@ -11377,6 +11380,7 @@ AS
     FOR  SELECT a.USERID,
                 a.BOARDID,
                 a.NAME,
+				a.DISPLAYNAME,
                 a.JOINED,
                 a.NUMPOSTS,
                 b.NAME AS RankName,
@@ -11387,11 +11391,12 @@ AS
                 JOIN objQual_RANK b ON b.RANKID = a.RANKID
                 JOIN objQual_BUDDY c ON c.TOUSERID = a.USERID
                 WHERE c.FROMUSERID = :I_FROMUSERID
-                GROUP BY a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
+                GROUP BY a.DISPLAYNAME, a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
         UNION ALL
         SELECT  (SELECT :I_FROMUSERID FROM RDB$DATABASE) AS UserID,
                 a.BOARDID,
                 a.NAME,
+				a.DISPLAYNAME,
                 a.JOINED,
                 a.NUMPOSTS,
                 b.NAME AS RankName,
@@ -11402,11 +11407,12 @@ AS
                 JOIN objQual_RANK b ON b.RANKID = a.RANKID
                 JOIN objQual_BUDDY c ON a.USERID = c.FROMUSERID
                 WHERE c.APPROVED = 0 AND  c.TOUSERID = :I_FROMUSERID 
-                GROUP BY a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
+                GROUP BY a.DISPLAYNAME, a.NAME,a.USERID, a.BOARDID, a.NUMPOSTS, a.JOINED, b.NAME, c.APPROVED, c.FROMUSERID,c.REQUESTED
                 INTO
     :"UserID",
     :"BoardID",
     :"Name",
+	:"DisplayName",
     :"Joined",
     :"NumPosts",
     :"RankName",
@@ -11420,7 +11426,8 @@ END;
 
     CREATE PROCEDURE  objQual_BUDDY_REMOVE(
     I_FROMUSERID INTEGER,
-    I_TOUSERID INTEGER)
+    I_TOUSERID INTEGER,
+	I_USEDISPLAYNAME BOOL)
     RETURNS
     ( I_PARAMOUTPUT VARCHAR(128) )
 AS 
@@ -11428,7 +11435,7 @@ AS
         DELETE  FROM objQual_BUDDY
         WHERE   FROMUSERID = :I_FROMUSERID
                   AND TOUSERID = :I_TOUSERID;
-         SELECT NAME
+         SELECT  (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END)
          FROM   objQual_USER
          WHERE  USERID = :I_TOUSERID
          INTO :I_PARAMOUTPUT;
@@ -11438,7 +11445,8 @@ AS
     
 CREATE PROCEDURE  objQual_BUDDY_DENYREQUEST
     (I_FROMUSERID INTEGER,
-    I_TOUSERID INTEGER)
+    I_TOUSERID INTEGER,
+	I_USEDISPLAYNAME BOOL)
     RETURNS
     (
     I_PARAMOUTPUT VARCHAR(128)
@@ -11448,7 +11456,7 @@ AS
         DELETE  FROM objQual_BUDDY
         WHERE   FROMUSERID = :I_FROMUSERID
                 AND TOUSERID = :I_TOUSERID;
-        SELECT NAME FROM   objQual_USER
+        SELECT  (CASE WHEN :I_USEDISPLAYNAME = 1 THEN DISPLAYNAME ELSE NAME END) FROM   objQual_USER
                     WHERE   USERID = :I_FROMUSERID 
                     INTO :I_PARAMOUTPUT;
                     SUSPEND;

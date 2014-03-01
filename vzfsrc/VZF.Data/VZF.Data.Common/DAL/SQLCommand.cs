@@ -47,7 +47,7 @@ namespace VZF.Data.Common.DAL
         /// <summary>
         /// The _dataSourceDictionary object.
         /// </summary>
-        private static readonly Dictionary<string, DataSource> 
+        private static readonly Dictionary<string, DataSource>
                 _dataSourceDictionary = new Dictionary<string, DataSource>();
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace VZF.Data.Common.DAL
         /// <summary>
         /// The _parameters.
         /// </summary>
-        private readonly ParameterDictionary _parameters = 
+        private readonly ParameterDictionary _parameters =
                 new ParameterDictionary();
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace VZF.Data.Common.DAL
         /// </returns>
         private DataSource GetDataSource(int? mid)
         {
-          return this.GetDataSource(CommonSqlDbAccess.GetConnectionStringName(mid, string.Empty));
+            return this.GetDataSource(CommonSqlDbAccess.GetConnectionStringName(mid, string.Empty));
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace VZF.Data.Common.DAL
         /// </returns>
         public DbDataReader ExecuteReader()
         {
-            var behavior = this.InTransaction ? 
+            var behavior = this.InTransaction ?
                 CommandBehavior.Default : CommandBehavior.CloseConnection;
 
             return this.ExecuteReader(behavior, CommandType.Text, Config.SqlCommandTimeout.ToType<int>());
@@ -342,7 +342,7 @@ namespace VZF.Data.Common.DAL
                 // this is a special case even if this object
                 // is NOT part of a transaction so handle it 
                 // differently than other cases
-                if ((commandBehavior & CommandBehavior.CloseConnection) == 
+                if ((commandBehavior & CommandBehavior.CloseConnection) ==
                      CommandBehavior.CloseConnection)
                 {
                     // get rid of the connection
@@ -686,7 +686,7 @@ namespace VZF.Data.Common.DAL
                     try
                     {
                         cmd.CommandText = this._commandText.ToString();
-                        
+
                         cmd.CommandType = commandType;
                         Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
 
@@ -695,9 +695,9 @@ namespace VZF.Data.Common.DAL
                             using (var transaction = conn.BeginTransaction(isolationLevel))
                             {
                                 cmd.Transaction = transaction;
-                               
+
                                 IDataReader reader = cmd.ExecuteReader(commandBehavior);
-                                
+
                                 // Retrieve column schema into our DataTable.                          
                                 dt = this.GetTableColumns(dt, reader);
                                 if (reader.FieldCount > 0)
@@ -707,7 +707,7 @@ namespace VZF.Data.Common.DAL
                                         var dr = dt.NewRow();
 
                                         foreach (DataColumn column in dt.Columns)
-                                        {   
+                                        {
                                             dr[column] = TypeChecker(column, reader[column.Ordinal]);
                                         }
 
@@ -729,7 +729,7 @@ namespace VZF.Data.Common.DAL
 
                             // Retrieve column schema into our DataTable.                        
                             dt = this.GetTableColumns(dt, reader);
-                         
+
                             if (reader.FieldCount > 0)
                             {
                                 while (reader.Read())
@@ -759,7 +759,7 @@ namespace VZF.Data.Common.DAL
                 }
             }
             finally
-            { 
+            {
                 this.DisposeConnection();
             }
         }
@@ -871,10 +871,10 @@ namespace VZF.Data.Common.DAL
         /// <param name="isolationLevel">
         /// The isolation level.
         /// </param>
-        public void BeginTransaction( IsolationLevel isolationLevel)
-         {
-           this._transaction = this._connection.BeginTransaction(isolationLevel);
-         }
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            this._transaction = this._connection.BeginTransaction(isolationLevel);
+        }
 
         /// <summary>
         /// The commit transaction.
@@ -949,7 +949,7 @@ namespace VZF.Data.Common.DAL
             {
                 value = DBNull.Value;
             }
-   
+
             p.Value = value;
             p.DbType = dbType;
             p.Direction = direction;
@@ -1032,7 +1032,7 @@ namespace VZF.Data.Common.DAL
             {
                 this.DisposeConnection();
             }
-            
+
             this._connection = this._connection ?? this.GetNewConnection();
 
             return this._connection;
@@ -1069,7 +1069,7 @@ namespace VZF.Data.Common.DAL
                 {
                     if (this.InTransaction)
                     {
-                       // rollback 
+                        // rollback 
                     }
 
                     this.DisposeConnection();

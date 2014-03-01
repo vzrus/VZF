@@ -14822,7 +14822,7 @@ i_pagesize integer,
 i_stylednicks boolean,
 i_findlastunread boolean,
 i_utctimestamp timestamp)
-  RETURNS SETOF databaseSchema.objectQualifier_topic_favorite_details_return_type AS
+  RETURNS  SETOF databaseSchema.objectQualifier_topic_favorite_details_return_type AS
 $BODY$DECLARE 
  ici_topics_totalrowsnumber  integer; 
  ici_firstselectrownum integer;   
@@ -14979,11 +14979,14 @@ $BODY$
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_addrequest(
                            i_fromuserid integer,
                            i_touserid integer,
-                       out i_approved boolean,
-                           i_utctimestamp timestamp, 
-                       out i_paramoutput varchar(255))
-                  RETURNS RECORD AS
+						   i_usedisplayname boolean,
+					       i_utctimestamp timestamp)
+                  RETURNS  SETOF databaseSchema.objectQualifier_buddy_addrequest_rt AS
 $BODY$
+DECLARE 
+                       i_approved boolean;
+                       i_paramoutput varchar(255);
+					   _rec databaseSchema.objectQualifier_buddy_addrequest_rt%ROWTYPE;
 BEGIN 
         IF NOT EXISTS ( SELECT  id
                         FROM    databaseSchema.objectQualifier_buddy
@@ -15010,7 +15013,7 @@ BEGIN
                                   false,
                                   i_utctimestamp
                                 );
-                        SELECT name, false INTO i_paramoutput, i_approved 
+                        SELECT (case when i_usedisplayname then displayname else name end), false INTO i_paramoutput, i_approved 
                                  FROM   databaseSchema.objectQualifier_user
                                              WHERE  ( userid = i_touserid ) LIMIT 1;
                                            
@@ -15035,7 +15038,7 @@ BEGIN
                         WHERE   fromuserid = i_touserid
                                 AND touserid = i_fromuserid;
                                   
-                        SELECT  name, 
+                        SELECT   (case when i_usedisplayname then displayname else name end), 
                                 true 
                         INTO    i_paramoutput, 
                                 i_approved
@@ -15051,7 +15054,8 @@ BEGIN
                 i_approved;
                 
             END IF;
-          RETURN;
+			 SELECT i_approved, i_paramoutput INTO _rec; 
+          RETURN _rec;
     END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
@@ -15062,11 +15066,12 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_approverequest(
                            i_fromuserid integer,
                            i_touserid integer,
                            i_mutual boolean,
-                           i_utctimestamp timestamp,
-                       out i_paramoutput varchar(128))
-                  RETURNS varchar(128) AS
+						   i_usedisplayname boolean,
+                           i_utctimestamp timestamp)
+                  RETURNS varchar(255) AS
 $BODY$
--- DECLARE _rec databaseSchema.objectQualifier_buddy_approverequest_return_type%ROWTYPE;
+ DECLARE 
+                        i_paramoutput varchar(255);
     BEGIN
         IF EXISTS ( SELECT  1
                     FROM    databaseSchema.objectQualifier_buddy
@@ -15079,7 +15084,7 @@ $BODY$
                 WHERE   ( fromuserid = i_fromuserid
                           AND touserid = i_touserid
                         );
-                 SELECT name INTO i_paramoutput
+                 SELECT  (case when i_usedisplayname then displayname else name end) INTO i_paramoutput
                                      FROM   databaseSchema.objectQualifier_user
                                      WHERE  ( userid = i_fromuserid );
                 IF  i_mutual IS TRUE 
@@ -15103,7 +15108,7 @@ $BODY$
                             );
             END IF;
             END IF;
-            RETURN;
+            RETURN i_paramoutput;
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
@@ -15120,6 +15125,7 @@ BEGIN
          SELECT * FROM (SELECT a.userid,
                 a.boardid,
                 a.name,
+				a.displayname,
                 a.joined,
                 a.numposts,
                 b.name AS RankName,
@@ -15135,6 +15141,7 @@ BEGIN
         SELECT  i_fromuserid AS UserID,
                 a.boardid,
                 a.name,
+				a.displayname,
                 a.joined,
                 a.numposts,
                 b.name as RankName,
@@ -15158,37 +15165,35 @@ BEGIN
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_remove(
                            i_fromuserid integer,
                            i_touserid integer, 
-                           out i_paramoutput varchar(128))
+						   i_usedisplayname boolean)
                   RETURNS varchar(128) AS
 $BODY$
     BEGIN
         DELETE  FROM   databaseSchema.objectQualifier_buddy
         WHERE   fromuserid = i_fromuserid
                   AND touserid = i_touserid;
-        SELECT name into i_paramoutput 
+      RETURN  (SELECT  (case when i_usedisplayname then displayname else name end) into i_paramoutput 
                              FROM   databaseSchema.objectQualifier_user
-                             WHERE  userid = i_touserid ;
-                           RETURN;
+                             WHERE  userid = i_touserid );
+                           
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;
 --GO
 
-
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_denyrequest(
                            i_fromuserid integer,
-                           i_touserid integer, 
-                           out i_paramoutput varchar(128))
+                           i_touserid integer,
+						   i_usedisplayname boolean)                           
                   RETURNS varchar(255) AS
 $BODY$
      BEGIN
         DELETE  FROM   databaseSchema.objectQualifier_buddy
         WHERE   fromuserid = i_fromuserid
                 AND touserid = i_touserid;
-        SELECT name INTO i_paramoutput
+    RETURN   (SELECT  (case when i_usedisplayname then displayname else name end) INTO i_paramoutput
                              FROM   databaseSchema.objectQualifier_user
-                             WHERE   userid = i_fromuserid ;
-   RETURN ;                          
+                             WHERE   userid = i_fromuserid );
 END;
 $BODY$
   LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER;

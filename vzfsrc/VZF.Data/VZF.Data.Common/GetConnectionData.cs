@@ -311,5 +311,24 @@ namespace VZF.Data.Common
 
           return true;
         }
+        /// <summary>
+        /// The data engine name.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string DataEngineName(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+
+            string namePattern = string.Empty;
+            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            return dataEngine;
+        }
     }
 }

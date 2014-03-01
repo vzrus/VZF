@@ -22,6 +22,7 @@ namespace VZF.Data.Utils
 
     using System;
     using System.Data;
+using System.Text;
 
     #endregion
 
@@ -149,5 +150,7 @@ namespace VZF.Data.Utils
     }
 
     #endregion
+
+ 
   }
 }
