@@ -191,7 +191,7 @@ namespace YAF.Providers.Profile
             {
                 if (size > 256)
                 {
-                    type = "BLOB SUB_TYPE 0";
+                    type = "BLOB SUB_TYPE 1";
                 }
                 else
                 {
