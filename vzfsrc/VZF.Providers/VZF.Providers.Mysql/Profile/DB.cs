@@ -222,7 +222,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
 			string type = columnType.ToString();
 
             if ( type.Contains("DateTime".ToLower() ) )
-            { type = "TIMESTAMP"; }
+            { type = "DATETIME"; }
             if ( type.Contains("VarChar") )
             { type = "VARCHAR"; }
             if ( type.Contains("Int32") )

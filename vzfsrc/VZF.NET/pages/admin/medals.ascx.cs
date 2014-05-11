@@ -203,7 +203,7 @@ namespace YAF.Pages.Admin
         private void BindData()
         {
             // list medals for this board
-            this.MedalList.DataSource = CommonDb.medal_list(this.PageContext.PageBoardID, null);
+            this.MedalList.DataSource = CommonDb.medal_list(this.PageContext.ModuleID, this.PageContext.PageBoardID, null);
 
             // bind data to controls
             this.DataBind();

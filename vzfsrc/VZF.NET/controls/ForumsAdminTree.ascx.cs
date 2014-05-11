@@ -15,6 +15,7 @@
     using YAF.Types.Interfaces;
     using VZF.Utilities;
     using VZF.Utils;
+    using VZF.Data.DAL;
 
     /// <summary>
     /// The forums admin tree.
@@ -192,7 +193,7 @@
         {
             using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, PageContext.PageUserID, false))
             {
-                var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                var dd = ds.Tables[ObjectName.GetVzfObjectName("Category", PageContext.PageModuleID)];
                 this.CategoryList.DataSource = dd;
             }
 

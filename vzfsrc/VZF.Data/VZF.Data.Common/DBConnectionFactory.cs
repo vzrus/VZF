@@ -13,6 +13,7 @@
 
     using YAF.Types;
     using YAF.Types.Interfaces;
+    using VZF.Data.DAL;
 
     public partial class CommonSqlDbAccess: IDbAccess 
     { 
@@ -394,7 +395,7 @@
             string connectionString;
             string dataEngine;
             string namePattern = string.Empty;
-            GetConnectionData(boardOrObject, namePattern, out dataEngine, out connectionString);
+            SqlDbAccess.GetConnectionData(boardOrObject, namePattern, out dataEngine, out connectionString);
             this._connectionManagerType = Type.GetType(dataEngine);
             return Activator.CreateInstance(this._connectionManagerType).ToClass<IDbConnectionManager>();
 
@@ -424,7 +425,7 @@
             string connectionString;
             string dataEngine;
             string namePattern = string.Empty;
-            GetConnectionData(boardOrObject, namePattern, out dataEngine, out connectionString);
+            SqlDbAccess.GetConnectionData(boardOrObject, namePattern, out dataEngine, out connectionString);
 
             switch (GetProviderNameFromConnectionString(connectionString))
             {

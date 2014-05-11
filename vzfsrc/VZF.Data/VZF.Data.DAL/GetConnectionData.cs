@@ -1,5 +1,5 @@
 ﻿
-namespace VZF.Data.Common
+namespace VZF.Data.DAL
 {
     using System;
     using System.Configuration;
@@ -13,7 +13,7 @@ namespace VZF.Data.Common
     /// <summary>
     /// The common sql db access.
     /// </summary>
-    public partial class CommonSqlDbAccess
+    public partial class SqlDbAccess
     {
         /// <summary>
         /// The module type enum.
@@ -198,6 +198,19 @@ namespace VZF.Data.Common
             return connectionStringName;
         }
 
+        public static string GetConnectionStringNameFromConnectionString(string connectionString)
+        {
+           foreach (ConnectionStringSettings constr in  ConfigurationManager.ConnectionStrings)
+           {
+              if (constr.ConnectionString.Equals(connectionString))
+              {
+                  return constr.Name;
+              }
+           }
+
+           return null;             
+        }
+
         /// <summary>
         /// The get connection string.
         /// </summary>
@@ -238,7 +251,6 @@ namespace VZF.Data.Common
         /// </returns>
         public static string GetConnectionString(string connectionStringName)
         {
-
             return ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
@@ -326,7 +338,7 @@ namespace VZF.Data.Common
             string connectionString;
 
             string namePattern = string.Empty;
-            CommonSqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
             return dataEngine;
         }

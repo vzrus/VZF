@@ -56,8 +56,8 @@
     <Compile Include="Search\SearchBuilderExtensions.cs" />
     <Compile Include="Search\SearchCondition.cs" />
     <Compile Include="Search\SearchConditionType.cs" />
-    <Compile Include="SettingsProfilePropertyColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsProfilePropertyColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vzf14.pfx" />

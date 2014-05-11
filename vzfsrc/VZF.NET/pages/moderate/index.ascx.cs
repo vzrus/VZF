@@ -27,6 +27,7 @@ namespace YAF.Pages.moderate
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
 
     using YAF.Classes;
     

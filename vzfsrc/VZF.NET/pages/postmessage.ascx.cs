@@ -1224,9 +1224,9 @@ namespace YAF.Pages
                     YafBuildLink.Redirect(ForumPages.attachments, "m={0}&ra=1{1}{2}", messageId, attachp, retforum);
                 }
                 else
-                {
+                {                  
                     // redirect to the image page...
-                    YafBuildLink.Redirect(ForumPages.imageadd, "m={0}&ra=1{1}{2}", messageId, attachp, retforum);
+                    // YafBuildLink.Redirect(ForumPages.imageadd, "m={0}&ra=1{1}{2}", messageId, attachp, retforum);
 
                     // Tell user that his message will have to be approved by a moderator
                     string url = YafBuildLink.GetLink(ForumPages.topics, "f={0}", this.PageContext.PageForumID);

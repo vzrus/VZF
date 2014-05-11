@@ -291,6 +291,10 @@
       <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
       <Project>{3E9BE2C0-4AD7-4E58-A58A-24107CD5A7E9}</Project>
       <Name>VZF.Data.Utils</Name>

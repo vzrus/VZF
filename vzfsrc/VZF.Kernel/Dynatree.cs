@@ -37,6 +37,8 @@ namespace VZF.Kernel
     using System.Web;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
+
     using VZF.Types.Objects;
     using VZF.Utils;
 
@@ -44,6 +46,7 @@ namespace VZF.Kernel
     using YAF.Core;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
+    using VZF.Data.DAL;
 
     #endregion
 
@@ -112,7 +115,7 @@ namespace VZF.Kernel
                     YafContext.Current.PageUserID,
                     false))
             {
-                var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                var dd = ds.Tables[ObjectName.GetVzfObjectName("Category", YafContext.Current.PageModuleID)];
                 if (dd != null && dd.Rows.Count > 0)
                 {
                     deleteImage = YafContext.Current.Get<ITheme>().GetItem("ICONS", "DELETE_SMALL_ICON");

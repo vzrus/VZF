@@ -115,6 +115,10 @@
       <Project>{F42D380A-C4F3-45B5-985C-1D8185823FDD}</Project>
       <Name>VZF.Data.Mssql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
       <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
       <Name>VZF.Types</Name>

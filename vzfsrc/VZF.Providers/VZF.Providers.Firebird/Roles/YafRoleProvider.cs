@@ -33,6 +33,7 @@ namespace YAF.Providers.Roles
   using YAF.Types;
   using VZF.Utils;
   using YAF.Providers.Utils;
+    using VZF.Data.DAL;
 
   /// <summary>
   /// The yaf role provider.
@@ -71,6 +72,15 @@ namespace YAF.Providers.Roles
       {
         return _connStrAppKeyName;
       }
+    }
+
+    /// <summary>
+    /// Gets the Connection String App Key Name.
+    /// </summary>
+    public static string ConnectionStringName
+    {
+        get;
+        set;
     }
 
 
@@ -165,7 +175,7 @@ namespace YAF.Providers.Roles
           // only add user if this role actually exists...
           if (roleName.IsSet() && allRoles.Contains(roleName))
           {
-              FbDB.Current.AddUserToRole(ConnectionString, this.ApplicationName, username, roleName);
+              FbDB.Current.AddUserToRole(ConnectionStringName, this.ApplicationName, username, roleName);
           }
         }
 
@@ -186,7 +196,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      FbDB.Current.CreateRole(ConnectionString, this.ApplicationName, roleName);
+      FbDB.Current.CreateRole(ConnectionStringName, this.ApplicationName, roleName);
     }
 
     /// <summary>
@@ -201,7 +211,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
     {
-        int returnValue = FbDB.Current.DeleteRole(ConnectionString, this.ApplicationName, roleName, throwOnPopulatedRole);
+        int returnValue = FbDB.Current.DeleteRole(ConnectionStringName, this.ApplicationName, roleName, throwOnPopulatedRole);
 
       this.ClearUserRoleCache();
 
@@ -229,7 +239,7 @@ namespace YAF.Providers.Roles
       }
 
       // Roles
-      DataTable users = FbDB.Current.FindUsersInRole(ConnectionString, this.ApplicationName, roleName);
+      DataTable users = FbDB.Current.FindUsersInRole(ConnectionStringName, this.ApplicationName, roleName);
       var usernames = new StringCollection();
       foreach (DataRow user in users.Rows)
       {
@@ -247,7 +257,7 @@ namespace YAF.Providers.Roles
     public override string[] GetAllRoles()
     {
       // get all roles...
-        DataTable roles = FbDB.Current.GetRoles(ConnectionString, this.ApplicationName, null);
+        DataTable roles = FbDB.Current.GetRoles(ConnectionStringName, this.ApplicationName, null);
 
       // make a string collection to store the role list...
       var roleNames = new StringCollection();
@@ -282,7 +292,7 @@ namespace YAF.Providers.Roles
       {
         roleNames = new StringCollection();
 
-        DataTable roles = FbDB.Current.GetRoles(ConnectionString, this.ApplicationName, username);
+        DataTable roles = FbDB.Current.GetRoles(ConnectionStringName, this.ApplicationName, username);
 
         foreach (DataRow dr in roles.Rows)
         {
@@ -317,7 +327,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      DataTable users = FbDB.Current.FindUsersInRole(ConnectionString, this.ApplicationName, roleName);
+      DataTable users = FbDB.Current.FindUsersInRole(ConnectionStringName, this.ApplicationName, roleName);
 
       var userNames = new StringCollection();
 
@@ -346,7 +356,7 @@ namespace YAF.Providers.Roles
 
       // Connection String Name
       this._connStrName = config["connectionStringName"].ToStringDBNull();
-     
+   
       // is the connection string set?
       if (this._connStrName.IsSet())
       {
@@ -361,6 +371,8 @@ namespace YAF.Providers.Roles
         {
           YafContext.Application[ConnStrAppKeyName] = connStr;
         }
+
+        ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
       }
 
       base.Initialize(name, config);
@@ -388,7 +400,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool IsUserInRole(string username, string roleName)
     {
-        DataTable roles = FbDB.Current.IsUserInRole(ConnectionString, this.ApplicationName, username, roleName);
+        DataTable roles = FbDB.Current.IsUserInRole(ConnectionStringName, this.ApplicationName, username, roleName);
 
       return roles.Rows.Count > 0;
     }
@@ -410,7 +422,7 @@ namespace YAF.Providers.Roles
         // Loop through roles
         foreach (string roleName in roleNames)
         {
-            FbDB.Current.RemoveUserFromRole(ConnectionString, this.ApplicationName, username, roleName); // Remove role
+            FbDB.Current.RemoveUserFromRole(ConnectionStringName, this.ApplicationName, username, roleName); // Remove role
 
           // invalidate cache for this user...
           this.DeleteFromRoleCacheIfExists(username.ToLower());
@@ -430,7 +442,7 @@ namespace YAF.Providers.Roles
     public override bool RoleExists(string roleName)
     {
       // get this role...
-        object exists = FbDB.Current.GetRoleExists(ConnectionString, this.ApplicationName, roleName);
+        object exists = FbDB.Current.GetRoleExists(ConnectionStringName, this.ApplicationName, roleName);
 
       // if there are any rows then this role exists...
       if (Convert.ToInt32(exists) > 0)

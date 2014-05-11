@@ -7004,7 +7004,8 @@ BEGIN
 
 -- Function: databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestamp, integer, varchar, integer)
 
--- DROP FUNCTION databaseSchema.objectQualifier_message_save(integer, integer, text, varchar, varchar, timestamp, integer, varchar, integer);
+DROP FUNCTION IF EXISTS databaseSchema.objectQualifier_message_save(integer,integer,text,varchar,varchar,timestamp,integer,varchar,varchar,varchar,integer,varchar,timestamp);
+--GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_save(
                            i_topicid integer, 
@@ -7016,9 +7017,9 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_save(
                            i_replyto integer, 
                            i_blogpostid varchar, 
                            i_externalmessageid varchar(255),
-                           i_referencemessageid varchar(255),
-                           i_flags integer,
+                           i_referencemessageid varchar(255),                         
 						   i_messagedescription  varchar(255),
+						   i_flags integer,
                            i_utctimestamp timestamp
                            )
                   RETURNS integer AS
@@ -7665,7 +7666,7 @@ BEGIN
     END IF;  
 
     IF ici_topicid IS NOT NULL THEN
-        SELECT databaseSchema.objectQualifier_message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, 17, NULL, i_utctimestamp)
+        SELECT databaseSchema.objectQualifier_message_save(ici_topicid, i_userid, i_body, i_username, i_ip, i_posted, ici_replyto, NULL, i_externalmessageid, i_referencemessageid, NULL, 17, i_utctimestamp)
         INTO ici_MessageID;
     END IF;
     -- update user 
@@ -10797,11 +10798,11 @@ BEGIN
      VALUES(i_forumid,substr(i_subject, 1, 128),i_userid,ici_Posted,0,i_priority,(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT name FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),(CASE WHEN ici_OverrideDisplayName is true THEN i_username ELSE (SELECT displayname FROM databaseSchema.objectQualifier_user WHERE userid = i_userid) END),0, i_description, i_status, i_styles, 0) RETURNING topicid INTO ici_topicid;
        
      -- add message to the topic 
-     SELECT databaseSchema.objectQualifier_message_save(ici_topicid,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null, i_flags,i_messagedescription,i_utctimestamp) INTO ici_MessageID;
+     SELECT databaseSchema.objectQualifier_message_save(ici_topicid,i_userid,i_message,i_username,i_ip,ici_Posted,ici_ReplyToNull,ici_blogpostid,null, null,i_messagedescription,i_flags,i_utctimestamp) INTO ici_MessageID;
     
      PERFORM databaseSchema.objectQualifier_topic_tagsave(ici_topicid, i_tags);
     
-     SELECT   ici_topicid AS TopicID,  ici_MessageID AS MessageID INTO _rec;
+     SELECT   ici_topicid,  ici_MessageID INTO _rec;
 
  RETURN _rec;
      END;
@@ -13681,6 +13682,7 @@ $BODY$
 
 DROP FUNCTION IF EXISTS databaseSchema.objectQualifier_pageload(varchar, integer, varchar, varchar, varchar, varchar, varchar, integer, integer, integer, integer, boolean);
 --GO
+
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pageload(                 
                            i_sessionid varchar,
                            i_boardid integer,
@@ -13690,10 +13692,10 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pageload(
                            i_forumpage varchar,
                            i_browser varchar,
                            i_platform varchar,
-                           ii_categoryid integer,
-                           ii_forumid integer,
-                           ii_topicid integer,
-                           ii_messageid integer,
+                           i_categoryid integer,
+                           i_forumid integer,
+                           i_topicid integer,
+                           i_messageid integer,
                            i_iscrawler	boolean,
                            i_ismobiledevice boolean,
                            i_donttrack boolean,
@@ -13708,10 +13710,10 @@ $BODY$DECLARE
              ici_activeupdate	boolean := false;
              ici_rowcount	integer;
              ici_previousvisit	timestamp ;
-             i_categoryid integer :=ii_categoryid;
-             i_forumid integer :=ii_forumid;
-             i_topicid integer := ii_topicid;
-             i_messageid integer := ii_messageid;
+             iii_categoryid integer :=i_categoryid;
+             iii_forumid integer :=i_forumid;
+             iii_topicid integer := i_topicid;
+             iii_messageid integer := i_messageid;
              i_currenttime	timestamp  := i_utctimestamp;
              ici_activeflags integer := 1;
              ici_crawler boolean := i_iscrawler;
@@ -13760,43 +13762,43 @@ BEGIN
         ici_activeflags = ici_activeflags | 4;
     END IF;
     -- Check valid ForumID 
-    IF i_forumid IS NOT NULL 
+    IF iii_forumid IS NOT NULL 
                  AND NOT EXISTS
             (SELECT 1 FROM databaseSchema.objectQualifier_forum 
-            WHERE forumid=i_forumid)
+            WHERE forumid=iii_forumid)
                  THEN 
-       i_forumid := NULL; 
+       iii_forumid := NULL; 
     END IF;
     
     -- Check valid CategoryID
-    IF i_categoryid IS NOT NULL 
+    IF iii_categoryid IS NOT NULL 
                     AND NOT EXISTS
              (SELECT 1 FROM databaseSchema.objectQualifier_category 
-             WHERE categoryid=i_categoryid LIMIT 1) THEN 
-       i_categoryid := NULL;
+             WHERE categoryid=iii_categoryid LIMIT 1) THEN 
+       iii_categoryid := NULL;
     END IF;
     -- Check valid MessageID
-    IF i_messageid IS NOT NULL 
+    IF iii_messageid IS NOT NULL 
                    AND NOT EXISTS
              (SELECT 1 FROM databaseSchema.objectQualifier_message 
-             WHERE messageid=i_messageid LIMIT 1)  THEN
-        i_messageid := NULL;
+             WHERE messageid=iii_messageid LIMIT 1)  THEN
+        iii_messageid := NULL;
     END IF;
     -- Check valid TopicID
-    IF i_TopicID IS NOT NULL 
+    IF iii_topicid IS NOT NULL 
                  AND NOT EXISTS
              (SELECT 1 FROM databaseSchema.objectQualifier_topic 
-             WHERE topicid=i_topicid LIMIT 1) THEN
-        i_topicid := NULL;
+             WHERE topicid=iii_topicid LIMIT 1) THEN
+        iii_topicid := NULL;
     END IF;
 
     -- find missing ForumID/TopicID
-    IF i_messageid IS NOT NULL and i_messageid > 0 THEN
+    IF iii_messageid IS NOT NULL and iii_messageid > 0 THEN
         SELECT
             c.categoryid,
             b.forumid,
             b.topicid
-                INTO i_categoryid,i_forumid,i_topicid
+                INTO iii_categoryid,iii_forumid,iii_topicid
         FROM
             databaseSchema.objectQualifier_message a
             INNER JOIN databaseSchema.objectQualifier_topic b 
@@ -13806,13 +13808,13 @@ BEGIN
             INNER JOIN databaseSchema.objectQualifier_category d 
             ON d.categoryid = c.categoryid
         WHERE
-            a.messageid = i_messageid AND
+            a.messageid = iii_messageid AND
             d.boardid = i_boardid;
-    ELSEIF i_topicid IS NOT NULL AND i_topicid > 0 THEN
+    ELSEIF iii_topicid IS NOT NULL AND iii_topicid > 0 THEN
         SELECT 
             b.categoryid,
             a.forumid 
-                INTO i_categoryid,i_forumid
+                INTO iii_categoryid,iii_forumid
         FROM 
             databaseSchema.objectQualifier_topic a
             inner join databaseSchema.objectQualifier_forum b 
@@ -13820,19 +13822,19 @@ BEGIN
             inner join databaseSchema.objectQualifier_category c 
             on c.categoryid = b.categoryid
         WHERE 
-            a.topicid = i_topicid AND
+            a.topicid = iii_topicid AND
             c.boardid = i_boardid;
     
-    ELSEIF i_forumid IS NOT NULL AND i_forumid > 0 THEN
+    ELSEIF iii_forumid IS NOT NULL AND iii_forumid > 0 THEN
         SELECT
              a.categoryid
-        INTO     i_categoryid
+        INTO     iii_categoryid
                     
         FROM	databaseSchema.objectQualifier_forum a
             inner join databaseSchema.objectQualifier_category b 
             on b.categoryid = a.categoryid
         WHERE
-            a.forumid = i_forumid and
+            a.forumid = iii_forumid and
             b.boardid = i_boardid;
     END IF;   
 
@@ -13970,7 +13972,7 @@ BEGIN
  IF exists (select
             1	
             from databaseSchema.objectQualifier_activeaccess 
-            where userid = ici_userid and forumid = COALESCE(i_forumid,0) and (COALESCE(i_forumid,0) = 0 or readaccess) limit 1) THEN		
+            where userid = ici_userid and forumid = COALESCE(iii_forumid,0) and (COALESCE(iii_forumid,0) = 0 or readaccess) limit 1) THEN		
  -- get previous visit
     IF NOT ici_isguest THEN
         select  lastvisit  into ici_previousvisit from databaseSchema.objectQualifier_user where userid = ici_userid;
@@ -14000,8 +14002,8 @@ BEGIN
                 ip = i_ip,
                 lastactive = i_currenttime,
                 location = i_location,				
-                forumid = i_forumid,
-                topicid = i_topicid,
+                forumid = iii_forumid,
+                topicid = iii_topicid,
                 browser = i_browser,
                 platform = i_platform,
                 forumpage = i_forumpage
@@ -14012,8 +14014,8 @@ BEGIN
                 ip = i_ip,
                 lastactive = i_currenttime,
                 location = i_location,				
-                forumid = i_forumid,
-                topicid = i_topicid,
+                forumid = iii_forumid,
+                topicid = iii_topicid,
                 browser = i_browser,
                 platform = i_platform,
                 forumpage = i_forumpage
@@ -14034,7 +14036,7 @@ BEGIN
             forumid,topicid,browser,platform,forumpage, flags)
             VALUES(i_sessionid,ici_userboardid,
             ici_userid,i_ip,i_currenttime,i_currenttime,i_location,
-            i_forumid,i_topicid,i_browser,i_platform, i_forumpage, ici_activeflags);
+            iii_forumid,iii_topicid,i_browser,i_platform, i_forumpage, ici_activeflags);
             -- parameter to update active users cache IF this is a new user
             IF ici_isguest IS FALSE THEN		
                   ici_activeupdate := true;
@@ -14119,21 +14121,21 @@ x.downloadaccess,
 x.userforumaccess, 
 ici_crawler,
 i_ismobiledevice,		
-        COALESCE(i_categoryid,0) AS CategoryID,
+        COALESCE(iii_categoryid,0) AS CategoryID,
         (SELECT name 
         FROM databaseSchema.objectQualifier_category
-         WHERE categoryid = i_categoryid) AS CategoryName,			
+         WHERE categoryid = iii_categoryid) AS CategoryName,			
         (SELECT name from databaseSchema.objectQualifier_forum 
-        where forumid = i_forumid) AS ForumName,
+        where forumid = iii_forumid) AS ForumName,
         (SELECT themeurl from databaseSchema.objectQualifier_forum 
-        where forumid = i_forumid) AS "ForumTheme",		
-        (SELECT i_topicid) AS TopicID,
+        where forumid = iii_forumid) AS "ForumTheme",		
+        (SELECT iii_topicid) AS TopicID,
         (SELECT topic from databaseSchema.objectQualifier_topic
-         where topicid = i_topicid) AS TopicName
+         where topicid = iii_topicid) AS TopicName
         FROM
          databaseSchema.objectQualifier_activeaccess x 
     where
-        x.userid = ici_userid and x.forumid=COALESCE(i_forumid,0)	ORDER BY x.userid LIMIT 1 	
+        x.userid = ici_userid and x.forumid=COALESCE(iii_forumid,0)	ORDER BY x.userid LIMIT 1 	
         LOOP		
         RETURN NEXT _rec1;
         END LOOP;
@@ -14149,11 +14151,15 @@ END;$BODY$
  --GO   
 
 -- Function: databaseSchema.objectQualifier_rsstopic_list(integer)
-
+DROP FUNCTION IF EXISTS databaseSchema.objectQualifier_rsstopic_list(
+                            integer,
+                            integer,
+                            integer);
+--GO
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_rsstopic_list(
-                           i_forumid integer,
+                           iii_forumid integer,
                            i_start integer,
-                           i_count integer)
+                           i_limit integer)
                   RETURNS SETOF databaseSchema.objectQualifier_rsstopic_list_return_type AS
 $BODY$DECLARE
              cntr integer:=0; 
@@ -14171,7 +14177,7 @@ COALESCE(a.lastmessageid,(select m.messageID
 COALESCE(a.lastmessageflags,22) 
 FROM databaseSchema.objectQualifier_topic a,
 databaseSchema.objectQualifier_forum b 
-WHERE a.forumid = i_forumid AND b.forumid = a.forumid
+WHERE a.forumid = iii_forumid AND b.forumid = a.forumid
 AND SIGN(a.flags & 8) = 0 AND a.topicmovedid IS NULL
 ORDER BY a.posted DESC
 LOOP
@@ -14185,7 +14191,6 @@ END;$BODY$
   COST 100
   ROWS 1000;
 --GO
-
 
 -- User Ignore Procedures 
 
@@ -16169,7 +16174,7 @@ END;$BODY$
  --GO
 
 
-CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_update_single_sign_on_status(
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_update_ssn_status(
                            i_userid integer,
                            i_isfacebookuser boolean,
                            i_istwitteruser boolean)
@@ -16964,5 +16969,27 @@ END;
 $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
   COST 100 ROWS 1000;
+--GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_db_size(
+                           i_dbscheme varchar(255), i_dbname varchar(255))
+                  RETURNS integer AS
+$BODY$
+BEGIN
+RETURN (select pg_database_size(i_dbname)/1024/1024);
+END;
+$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER
+  COST 100; 
+--GO
+
+CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_forum_save_prntchck(i_forumid integer, i_parentid integer)
+  RETURNS integer AS
+$BODY$
+begin
+	return (SELECT databaseSchema.objectQualifier_forum_save_parentschecker(i_forumid, i_parentid));
+END$BODY$
+  LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
+  COST 100; 
 --GO
 

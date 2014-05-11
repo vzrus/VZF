@@ -28,6 +28,7 @@ namespace YAF.Core.Services
     using System.Web;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
 
     using YAF.Classes;
     

@@ -22,7 +22,7 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace VZF.Data.Common.DAL
+namespace VZF.Data.DAL
 {
     using System.Collections.Generic;
     using System.Data.Common;

@@ -649,7 +649,7 @@ namespace YAF.Providers.Profile
             { chunk[1] = "VarChar"; }
             if (chunk[1].IndexOf("int") >= 0)
             { chunk[1] = "Int32"; }
-            if (chunk[1].IndexOf("DateTime") >= 0)
+            if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
             { chunk[1] = "DateTime"; }
 
             // get the datatype and ignore case...

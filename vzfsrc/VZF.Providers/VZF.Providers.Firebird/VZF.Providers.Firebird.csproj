@@ -41,10 +41,6 @@
     <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.2.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\firebird\FirebirdSql.Data.FirebirdClient.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -73,9 +69,13 @@
       <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
       <Name>VZF.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Firebird\VZF.Data.Firebird.csproj">
-      <Project>{8BA564F6-EDCC-4A07-9CDC-125ABCA8160E}</Project>
-      <Name>VZF.Data.Firebird</Name>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
+      <Name>VZF.Data.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
       <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>

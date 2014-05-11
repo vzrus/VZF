@@ -22,7 +22,7 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace VZF.Data.Mysql
+namespace VZF.Data.Mysql1
 {
     using System.Configuration;
 

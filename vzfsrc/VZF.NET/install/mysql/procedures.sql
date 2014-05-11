@@ -30,7 +30,7 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_unanswered;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}topic_unanswered_result;
 --GO
-DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_update_single_sign_on_status;
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}user_update_ssn_status;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}active_list;
 --GO
@@ -187,6 +187,8 @@ DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}moderators_team_list;
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_resync;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_save;
+--GO
+DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_save_prntchck;
 --GO
 DROP PROCEDURE IF EXISTS {databaseName}.{objectQualifier}forum_updatelastpost ;
 --GO
@@ -6125,7 +6127,7 @@ declare ici_ReplyTo	INT DEFAULT NULL;
     IF ici_TopicID IS NOT NULL
     then
 	 CALL {databaseName}.{objectQualifier}message_save (ici_TopicID,i_UserID,i_Message,i_UserName,i_IP,i_Posted,NULL,i_BlogPostID, null, null, i_MessageDescription,i_Flags,i_UTCTIMESTAMP,ici_MessageID);
-        CALL {databaseName}.{objectQualifier}message_save( ici_TopicID, i_UserID, i_Body, i_UserName, i_IP, i_Posted, cic_ReplyTo, NULL, i_ExternalMessageId, i_ReferenceMessageId,null, 17, NULL,i_UTCTIMESTAMP, ici_MessageID); 
+    --    CALL {databaseName}.{objectQualifier}message_save( ici_TopicID, i_UserID, i_Body, i_UserName, i_IP, i_Posted, cic_ReplyTo, NULL, i_ExternalMessageId, i_ReferenceMessageId,null, 17, NULL,i_UTCTIMESTAMP, ici_MessageID); 
     END if;	
 
  
@@ -6209,7 +6211,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}pageload(
     i_IsCrawler      TINYINT(1),
     i_IsMobileDevice TINYINT(1),
     i_DontTrack      TINYINT(1),
-    i_CurrentTime    DATETIME
+    i_UTCTIMESTAMP    DATETIME
 )
 BEGIN
     DECLARE ici_UserID		INT;
@@ -6362,7 +6364,7 @@ BEGIN
             SIGN(IsForumModerator),
             SIGN(IsModerator),
             ici_IsGuest,
-            i_CurrentTime,
+            i_UTCTIMESTAMP,
             SIGN(ReadAccess),
             SIGN(PostAccess),
             SIGN(ReplyAccess),
@@ -6413,7 +6415,7 @@ BEGIN
             SIGN(IsForumModerator),
             SIGN(IsModerator),
             ici_IsGuest,
-            i_CurrentTime,
+            i_UTCTIMESTAMP,
             SIGN(ReadAccess),
             SIGN(PostAccess),
             SIGN(ReplyAccess),
@@ -6441,7 +6443,7 @@ BEGIN
      -- START TRANSACTION WITH CONSISTENT SNAPSHOT;
     /* update last visit */
     UPDATE {databaseName}.{objectQualifier}User SET 
-        LastVisit = i_CurrentTime,
+        LastVisit = i_UTCTIMESTAMP,
         IP = i_IP
     WHERE UserID = ici_UserID;
     -- COMMIT;
@@ -6454,7 +6456,7 @@ BEGIN
          UPDATE {databaseName}.{objectQualifier}Active SET
                 UserID = ici_UserID,
                 IP = CAST(i_IP AS CHAR(39)),
-                LastActive = i_CurrentTime,
+                LastActive = i_UTCTIMESTAMP,
                 Location = i_Location,
                 ForumPage = i_ForumPage,
                 ForumID = i_ForumID,
@@ -6466,7 +6468,7 @@ BEGIN
              UPDATE {databaseName}.{objectQualifier}Active SET
                 UserID = ici_UserID,
                 IP = i_IP,
-                LastActive = i_CurrentTime,
+                LastActive = i_UTCTIMESTAMP,
                 Location = i_Location,
                 ForumPage = i_ForumPage,
                 ForumID = i_ForumID,
@@ -6479,13 +6481,13 @@ BEGIN
             END IF;	
             else
             UPDATE {databaseName}.{objectQualifier}Active SET
-               LastActive = i_CurrentTime
+               LastActive = i_UTCTIMESTAMP
             WHERE SessionID = i_SessionID and BoardID=i_BoardID;	
             end if;
         ELSE
             -- we set ici_ActiveFlags ready flags 	
             INSERT INTO {databaseName}.{objectQualifier}Active(SessionID,BoardID,UserID,IP,Login,LastActive,Location,ForumID,TopicID,Browser,Platform,Flags)
-            VALUES(i_SessionID,i_BoardID,ici_UserID,i_IP,i_CurrentTime,i_CurrentTime,i_Location,i_ForumID,i_TopicID,i_Browser,i_Platform,ici_ActiveFlags);
+            VALUES(i_SessionID,i_BoardID,ici_UserID,i_IP,i_UTCTIMESTAMP,i_UTCTIMESTAMP,i_Location,i_ForumID,i_TopicID,i_Browser,i_Platform,ici_ActiveFlags);
             /*update max user stats*/
             if ici_IsGuest = 0 then 
             SET ici_ActiveUpdate = 1; 
@@ -6493,7 +6495,7 @@ BEGIN
             -- parameter to update active users cache if this is a new user
              if ici_IsGuest=0 THEN
     
-             CALL {databaseName}.{objectQualifier}active_updatemaxstats (i_BoardID, i_CurrentTime); 
+             CALL {databaseName}.{objectQualifier}active_updatemaxstats (i_BoardID, i_UTCTIMESTAMP); 
             END IF; 
         END IF;
         -- remove duplicate users
@@ -7607,7 +7609,7 @@ DECLARE ici_OverrideDisplayName TINYINT(1);
 END;
 --GO
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}shoutbox_clearmessages(i_BoardId int)
+CREATE PROCEDURE {databaseName}.{objectQualifier}shoutbox_clearmessages(i_BoardId int, i_UTCTIMESTAMP datetime)
 BEGIN
     DELETE FROM {databaseName}.{objectQualifier}ShoutboxMessage 
     WHERE BoardID = i_BoardId AND DATEDIFF(UTC_DATE(),LastPosted) > 1;
@@ -8444,7 +8446,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}announcements_list
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
     i_FindLastRead TINYINT(1),
-    i_GetTags TINYINT(1)
+    i_GetTags TINYINT(1),
+	i_UTCTIMESTAMP DATETIME
 )
 BEGIN
  DECLARE  ici_RowTotalCount INT DEFAULT 0; 
@@ -8598,7 +8601,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_list
     i_StyledNicks TINYINT(1),
     i_ShowMoved TINYINT(1),
     i_FindLastRead TINYINT(1),
-    i_GetTags TINYINT(1)
+    i_GetTags TINYINT(1),
+	i_UTCTIMESTAMP DATETIME
 )
 BEGIN
  DECLARE  ici_RowTotalCount INT DEFAULT 0; 
@@ -11578,7 +11582,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_latest
     i_PageUserID INT,
     i_StyledNicks TINYINT(1),
     i_ShowNoCountPosts TINYINT(1),
-    i_FindLastRead TINYINT(1)
+    i_FindLastRead TINYINT(1),
+	i_UTCTIMESTAMP DATETIME
  )
  BEGIN
  -- to boost performance
@@ -11915,12 +11920,12 @@ BEGIN
 
 /* VZRUS ADDONS - STORED PROCEDURES CREATED BY VZ-TEAM */
         CREATE  PROCEDURE {databaseName}.{objectQualifier}db_size(
-        i_TableSchema VARCHAR(128))
+        i_DbScheme VARCHAR(128), i_DbName VARCHAR(128))
         BEGIN
         SELECT 
         IFNULL((ROUND(((SUM(t.data_length)+ SUM(t.index_length))/1048576),2)),0)
         FROM INFORMATION_SCHEMA.TABLES t 
-        WHERE t.engine = 'InnoDB' AND t.TABLE_SCHEMA=i_TableSchema;
+        WHERE t.engine = 'InnoDB' AND t.TABLE_SCHEMA=i_DbName;
         END;
 --GO
 
@@ -13184,6 +13189,16 @@ begin
 end;
 --GO
 
+CREATE PROCEDURE {databaseName}.{objectQualifier}forum_save_prntchck
+(
+	i_ForumID INT,
+	i_ParentID INT
+ )
+ begin
+        SELECT {databaseName}.{objectQualifier}forum_save_parentschecker(i_ForumID,	i_ParentID);
+end;
+--GO
+
 CREATE procedure {databaseName}.{objectQualifier}user_repliedtopic
 (i_MessageID int, i_UserID int) 
 begin
@@ -13481,7 +13496,7 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
 END;
 --GO
 
-create procedure {databaseName}.{objectQualifier}user_update_single_sign_on_status(
+create procedure {databaseName}.{objectQualifier}user_update_ssn_status(
                  i_UserID int,
                  i_IsFacebookUser TINYINT(1),
                  i_IsTwitterUser  TINYINT(1)) 
@@ -14038,7 +14053,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}userforum_access(
     i_IsCrawler      TINYINT(1),
     i_IsMobileDevice TINYINT(1),
     i_DontTrack      TINYINT(1),
-    i_CurrentTime    DATETIME
+    i_UTCTIMESTAMP    DATETIME
 )
 BEGIN
     DECLARE ici_UserID		INT;
@@ -14115,7 +14130,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
     -- START TRANSACTION WITH CONSISTENT SNAPSHOT;
     /*update last visit*/
     UPDATE {databaseName}.{objectQualifier}User SET 
-        LastVisit = i_CurrentTime,
+        LastVisit = i_UTCTIMESTAMP,
         IP = i_IP
     WHERE UserID = ici_UserID;
     -- COMMIT;
@@ -14172,7 +14187,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
          UPDATE {databaseName}.{objectQualifier}Active SET
                 UserID = ici_UserID,
                 IP = CAST(i_IP AS CHAR(39)),
-                LastActive = i_CurrentTime,
+                LastActive = i_UTCTIMESTAMP,
                 Location = i_Location,
                 ForumPage = i_ForumPage,
                 ForumID = i_ForumID,
@@ -14184,7 +14199,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
              UPDATE {databaseName}.{objectQualifier}Active SET
                 UserID = ici_UserID,
                 IP = i_IP,
-                LastActive = i_CurrentTime,
+                LastActive = i_UTCTIMESTAMP,
                 Location = i_Location,
                 ForumPage = i_ForumPage,
                 ForumID = i_ForumID,
@@ -14197,13 +14212,13 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             END IF;	
             else
             UPDATE {databaseName}.{objectQualifier}Active SET
-               LastActive = i_CurrentTime
+               LastActive = i_UTCTIMESTAMP
             WHERE SessionID = i_SessionID and BoardID=i_BoardID;	
             end if;
         ELSE
             -- we set ici_ActiveFlags ready flags 	
             INSERT INTO {databaseName}.{objectQualifier}Active(SessionID,BoardID,UserID,IP,Login,LastActive,Location,ForumID,TopicID,Browser,Platform,Flags)
-            VALUES(i_SessionID,i_BoardID,ici_UserID,i_IP,i_CurrentTime,i_CurrentTime,i_Location,i_ForumID,i_TopicID,i_Browser,i_Platform,ici_ActiveFlags);
+            VALUES(i_SessionID,i_BoardID,ici_UserID,i_IP,i_UTCTIMESTAMP,i_UTCTIMESTAMP,i_Location,i_ForumID,i_TopicID,i_Browser,i_Platform,ici_ActiveFlags);
             /*update max user stats*/
             if ici_IsGuest = 0 then 
             SET ici_ActiveUpdate = 1; 
@@ -14211,7 +14226,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             -- parameter to update active users cache if this is a new user
              if ici_IsGuest=0 THEN
     
-             CALL {databaseName}.{objectQualifier}active_updatemaxstats (i_BoardID, i_CurrentTime); 
+             CALL {databaseName}.{objectQualifier}active_updatemaxstats (i_BoardID, i_UTCTIMESTAMP); 
             END IF; 
         END IF;
         /*remove duplicate users*/
@@ -14254,7 +14269,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             SIGN(IsForumModerator),
             SIGN(IsModerator),
             ici_IsGuest,
-            i_CurrentTime,
+            i_UTCTIMESTAMP,
             SIGN(ReadAccess),
             SIGN(PostAccess),
             SIGN(ReplyAccess),
@@ -14305,7 +14320,7 @@ delete from {databaseName}.{objectQualifier}Active where (SessionID = i_SessionI
             SIGN(IsForumModerator),
             SIGN(IsModerator),
             ici_IsGuest,
-            i_CurrentTime,
+            i_UTCTIMESTAMP,
             SIGN(ReadAccess),
             SIGN(PostAccess),
             SIGN(ReplyAccess),

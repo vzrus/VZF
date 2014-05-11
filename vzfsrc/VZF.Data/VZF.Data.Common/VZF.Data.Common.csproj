@@ -54,16 +54,18 @@
     <Compile Include="BaseDataTableResultFilter.cs" />
     <Compile Include="ConnectionStringsIndex.cs" />
     <Compile Include="CurrentModule.cs" />
-    <Compile Include="DAL\DataSource.cs" />
-    <Compile Include="DAL\DataSourceInformation.cs" />
-    <Compile Include="DAL\ParameterDictionary.cs" />
-    <Compile Include="DAL\SQLCommand.cs" />
     <Compile Include="DBConnectionFactory.cs" />
-    <Compile Include="GetConnectionData.cs" />
-    <Compile Include="ObjectName.cs" />
+    <Compile Include="Profile\FbProfile.cs" />
+    <Compile Include="Profile\MsProfile.cs" />
+    <Compile Include="Profile\MySqlProfile.cs" />
+    <Compile Include="Profile\PgProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonDb.cs" />
-    <Compile Include="QueryExtensions.cs" />
+    <Compile Include="Search\MsSqlSearch\SearchBuilder.cs" />
+    <Compile Include="Search\MsSqlSearch\SearchBuilderExtensions.cs" />
+    <Compile Include="Search\MsSqlSearch\SearchCondition.cs" />
+    <Compile Include="Search\MsSqlSearch\SearchConditionType.cs" />
+    <Compile Include="Search\SearchResult.cs" />
     <Compile Include="TypedUserFind.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +84,10 @@
     <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
       <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
       <Name>VZF.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\VZF.Data.Firebird\VZF.Data.Firebird.csproj">
       <Project>{8BA564F6-EDCC-4A07-9CDC-125ABCA8160E}</Project>

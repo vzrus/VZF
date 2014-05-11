@@ -75,6 +75,10 @@
       <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Types\VZF.Types.csproj">
       <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
       <Name>VZF.Types</Name>

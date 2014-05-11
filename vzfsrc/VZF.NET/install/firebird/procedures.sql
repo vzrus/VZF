@@ -4864,8 +4864,8 @@ CREATE PROCEDURE  objQual_MESSAGE_SAVE(
     I_BLOGPOSTID	VARCHAR(128),
     I_EXTERNALMESSAGEID VARCHAR(255),
     I_REFERENCEMESSAGEID VARCHAR(255),
-    I_FLAGS			INTEGER,
 	I_MESSAGEDESCRIPTION VARCHAR(255),
+    I_FLAGS			INTEGER,	
     I_UTCTIMESTAMP TIMESTAMP
  )
  RETURNS (I_MESSAGEID INTEGER)
@@ -5658,8 +5658,8 @@ CREATE PROCEDURE  objQual_NNTPTOPIC_SAVEMESSAGE(
          NULL,
          :I_EXTERNALMESSAGEID,
          :I_REFERENCEMESSAGEID,
-         17,
 		 NULL,
+         17,		
          :I_UTCTIMESTAMP
          RETURNING_VALUES :ici_MessageID;       
         
@@ -6302,7 +6302,8 @@ CREATE  PROCEDURE objQual_POST_ALLUSER(
 "UserName" varchar(128),
 "UserDisplayName" varchar(128),
 "Signature" BLOB SUB_TYPE 1,
-"TopicID" integer
+"TopicID" integer,
+"ReadAccess" bool
 )
  AS               
 BEGIN
@@ -6318,7 +6319,8 @@ BEGIN
                 COALESCE(a.USERNAME,b.NAME) AS "UserName",
                 COALESCE(a.USERDISPLAYNAME,b.DISPLAYNAME) AS "UserDisplayName",
                         b.SIGNATURE,
-                        c.TOPICID
+                        c.TOPICID,
+						x.READACCESS
         FROM     objQual_MESSAGE a
                  JOIN objQual_USER b
                    ON b.USERID = a.USERID
@@ -6348,7 +6350,8 @@ BEGIN
         :"UserName",
         :"UserDisplayName",
         :"Signature",
-        :"TopicID"
+        :"TopicID",
+		:"ReadAccess"
 DO SUSPEND;
 END;
 --GO
@@ -8037,8 +8040,8 @@ CREATE PROCEDURE  objQual_TOPIC_SAVE(
      :I_BLOGPOSTID, 
      NULL,
      NULL, 
-     :I_FLAGS, 
 	 :I_MESSAGEDESCRIPTION,
+     :I_FLAGS,	
      :I_UTCTIMESTAMP
      RETURNING_VALUES :ici_MessageID;
      -- add tags
@@ -8334,8 +8337,8 @@ END;
 CREATE PROCEDURE  objQual_USER_ACTIVITY_RANK
  (
     I_BOARDID INTEGER,
-    I_STARTDATE  TIMESTAMP,
-    I_DISPLAYNUMBER INTEGER	
+	I_DISPLAYNUMBER INTEGER	
+    I_STARTDATE  TIMESTAMP    
  )
  RETURNS
   (
@@ -10989,8 +10992,8 @@ END;
 
 CREATE PROCEDURE  objQual_SHOUTBOX_SAVEMESSAGE(
     I_BOARDID INTEGER,
-    I_USERNAME		varchar(128),
-    I_USERID		integer,
+	I_USERID		integer,
+    I_USERNAME		varchar(128),    
     I_MESSAGE		BLOB SUB_TYPE 1 SEGMENT SIZE 80,
     I_DATE			timestamp,
     I_IP			VARCHAR(39),
@@ -11017,7 +11020,7 @@ BEGIN
 END;
 --GO
 
-CREATE PROCEDURE  objQual_DB_SIZE(I_DBNAME varchar(128))
+CREATE PROCEDURE  objQual_DB_SIZE(I_DBSCHEME varchar(128), I_DBNAME varchar(128))
 RETURNS (DBSIZE integer)
 AS
 BEGIN
@@ -11090,8 +11093,8 @@ BEGIN
     ICI_MESSAGEIDSCHUNK  = SUBSTRING( :I_MESSAGEIDS FROM 1 FOR 4000 );
     
     
-    WHILE (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 0) DO	
-    BEGIN 
+   -- WHILE (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 0) DO	
+   -- BEGIN 
 
 
     IF (CHAR_LENGTH(:ICI_MESSAGEIDSCHUNK) > 3989) THEN
@@ -11175,7 +11178,7 @@ BEGIN
      END */
         
     END	
-    END    
+  --  END    
           ICI_ITR = :ICI_ITR + :ICI_MESSAGEIDSCHUNKCURRENT;            
           ICI_MESSAGEIDSCHUNK  = SUBSTRING( :I_MESSAGEIDS FROM :ICI_ITR FOR ( :ICI_ITR + 4000 ) ); 
             
@@ -11220,13 +11223,13 @@ END;
 --GO
 
 CREATE PROCEDURE  objQual_USER_GETTHANKS_TO(I_USERID integer, I_PAGEUSERID integer)
-RETURNS ("ThanksToNumber" integer,"ThanksToPostsNumber" integer)
+RETURNS ("I_ThanksToNumber" integer,"I_ThanksToPostsNumber" integer)
 AS
 BEGIN
 SELECT 
 Count(*),	
 Count(DISTINCT MESSAGEID) FROM objQual_THANKS WHERE THANKSTOUSERID=:I_USERID
-INTO :"ThanksToNumber",:"ThanksToPostsNumber";
+INTO :"I_ThanksToNumber",:"I_ThanksToPostsNumber";
 SUSPEND;	
 END;
 --GO
@@ -13135,7 +13138,7 @@ end;
 CREATE PROCEDURE  objQual_USER_LISTTODAYSBIRTHDAYS(
 I_BOARDID INTEGER, 
 I_STYLEDNICKS BOOL, 
-I_CURRENTYEAR TIMESTAMP,
+I_CURRENTYEAR INTEGER,
 I_CURRENTUTC TIMESTAMP,
 I_CURRENTUTC1 TIMESTAMP,
 I_CURRENTUTC2 TIMESTAMP)
@@ -13163,13 +13166,25 @@ begin
 	where u.BOARDID = :I_BOARDID  
 	AND DATEADD( (:I_CURRENTYEAR - EXTRACT(YEAR FROM up.Birthday)) year to up.Birthday) BETWEEN (:I_CURRENTUTC1) AND  (:I_CURRENTUTC2) 
 	 INTO 
+	 :"Birthday",
 	 :"UserID",
 	 :"TimeZone",
 	 :"LastVisit",
 	 :"UserName",
 	 :"UserDisplayName",
-	 :"Style",
-	 :"Birthday"
+	 :"Style"
 	 DO SUSPEND;      
+end;
+--GO
+
+CREATE OR ALTER PROCEDURE   objQual_FORUM_SAVE_PRNTCHCK(I_FORUMID INTEGER, I_PARENTID INTEGER)
+RETURNS (O_DEPENDENCY INTEGER) 
+as
+begin
+O_DEPENDENCY = 0;
+
+SELECT p.O_DEPENDENCY
+FROM objQual_FORUM_SAVE_PARENTSCHECKER(:I_FORUMID, :I_PARENTID) p into :O_DEPENDENCY;
+ SUSPEND;
 end;
 --GO

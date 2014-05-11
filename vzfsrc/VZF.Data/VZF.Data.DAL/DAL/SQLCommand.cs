@@ -22,7 +22,7 @@
 // 
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace VZF.Data.Common.DAL
+namespace VZF.Data.DAL
 {
     using System;
     using System.Collections.Generic;
@@ -140,7 +140,7 @@ namespace VZF.Data.Common.DAL
                     this._connectionAlwaysOpened = true;
                 }
             }
-
+            
             DataSource dataSource;
             lock (_syncObject)
             {
@@ -280,7 +280,7 @@ namespace VZF.Data.Common.DAL
         /// </returns>
         private DataSource GetDataSource(int? mid)
         {
-            return this.GetDataSource(CommonSqlDbAccess.GetConnectionStringName(mid, string.Empty));
+            return this.GetDataSource(SqlDbAccess.GetConnectionStringName(mid, string.Empty));
         }
 
         /// <summary>
@@ -672,7 +672,7 @@ namespace VZF.Data.Common.DAL
             try
             {
                 using (var cmd = conn.CreateCommand())
-                {
+                {                 
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
                     cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
@@ -682,7 +682,7 @@ namespace VZF.Data.Common.DAL
                     }
 
                     var qc = new QueryCounter(cmd.CommandText);
-
+                    IDataReader reader;
                     try
                     {
                         cmd.CommandText = this._commandText.ToString();
@@ -695,8 +695,7 @@ namespace VZF.Data.Common.DAL
                             using (var transaction = conn.BeginTransaction(isolationLevel))
                             {
                                 cmd.Transaction = transaction;
-
-                                IDataReader reader = cmd.ExecuteReader(commandBehavior);
+                                reader = cmd.ExecuteReader(commandBehavior);
 
                                 // Retrieve column schema into our DataTable.                          
                                 dt = this.GetTableColumns(dt, reader);
@@ -715,7 +714,9 @@ namespace VZF.Data.Common.DAL
                                     }
                                 }
 
-                                reader.Close();
+                    
+                                    reader.Close();
+                              
                                 transaction.Commit();
 
                                 dt.AcceptChanges();
@@ -725,8 +726,9 @@ namespace VZF.Data.Common.DAL
                         }
                         else
                         {
-                            IDataReader reader = cmd.ExecuteReader();
-
+                            cmd.Transaction = _transaction;
+                            reader = cmd.ExecuteReader();
+                        
                             // Retrieve column schema into our DataTable.                        
                             dt = this.GetTableColumns(dt, reader);
 
@@ -745,7 +747,9 @@ namespace VZF.Data.Common.DAL
                                 }
                             }
 
-                            reader.Close();
+                    
+                                reader.Close();
+                         
                             dt.AcceptChanges();
 
                             return dt;
@@ -753,6 +757,7 @@ namespace VZF.Data.Common.DAL
                     }
                     finally
                     {
+                     
                         cmd.Parameters.Clear();
                         qc.Dispose();
                     }
@@ -863,6 +868,8 @@ namespace VZF.Data.Common.DAL
         public void BeginTransaction()
         {
             this._transaction = this._connection.BeginTransaction();
+            this._inTransaction = true;
+            
         }
 
         /// <summary>
@@ -1023,7 +1030,6 @@ namespace VZF.Data.Common.DAL
         /// </returns>
         public DbConnection GetConnection()
         {
-            // While I am not going to cover it here,
             // you would get the transactions existing connection 
             // from that transaction, or if need be,
             // get a new connection for a seperate database
@@ -1091,6 +1097,7 @@ namespace VZF.Data.Common.DAL
         {
             return this._dataSource.GetNewConnection();
         }
+        
     }
 }
 

@@ -32,6 +32,7 @@ namespace YAF.Providers.Membership
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
   using VZF.Utils;
   using YAF.Providers.Utils;
+    using VZF.Data.DAL;
 
   /// <summary>
   /// The yaf membership provider.
@@ -44,7 +45,7 @@ namespace YAF.Providers.Membership
     /// The conn str app key name.
     /// </summary>
     public static string ConnStrAppKeyName = "YafMembershipConnectionString";
-
+   
     public static string _connectionString;
     
     /// <summary>
@@ -60,6 +61,14 @@ namespace YAF.Providers.Membership
         {
             _connectionString = value;
         }
+    }
+
+    /// <summary>
+    /// Gets the Connection String App Key Name.
+    /// </summary>
+    public static string ConnectionStringName
+    {
+        get; set;       
     }
     /// <summary>
     /// The _passwordsize.
@@ -493,7 +502,7 @@ namespace YAF.Providers.Membership
         return false;
       }
 
-      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -536,7 +545,7 @@ namespace YAF.Providers.Membership
 
       // Call SQL Password to Change
       FbDB.Current.ChangePassword(
-          ConnectionString,
+          ConnectionStringName,
         this.ApplicationName, 
         username, 
         newEncPassword, 
@@ -577,7 +586,7 @@ namespace YAF.Providers.Membership
         throw new ArgumentException("Username, Password, Password Question or Password Answer cannot be null");
       }
 
-      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -600,7 +609,7 @@ namespace YAF.Providers.Membership
       {
         try
         {
-            FbDB.Current.ChangePasswordQuestionAndAnswer(ConnectionString,
+            FbDB.Current.ChangePasswordQuestionAndAnswer(ConnectionStringName,
             this.ApplicationName, username, newPasswordQuestion, newPasswordAnswer);
           return true;
         }
@@ -740,7 +749,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Process database user creation request
-      FbDB.Current.CreateUser(ConnectionString,
+      FbDB.Current.CreateUser(ConnectionStringName,
         this.ApplicationName, 
         username, 
         pass, 
@@ -780,7 +789,7 @@ namespace YAF.Providers.Membership
       // Process database user deletion request
       try
       {
-          FbDB.Current.DeleteUser(ConnectionString, this.ApplicationName, username, deleteAllRelatedData);
+          FbDB.Current.DeleteUser(ConnectionStringName, this.ApplicationName, username, deleteAllRelatedData);
 
           return true;
       }
@@ -826,7 +835,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in FbDB.Current.FindUsersByEmail(ConnectionString, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in FbDB.Current.FindUsersByEmail(ConnectionStringName, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -893,7 +902,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in FbDB.Current.FindUsersByName(ConnectionString, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in FbDB.Current.FindUsersByName(ConnectionStringName, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -933,7 +942,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in FbDB.Current.GetAllUsers(ConnectionString, this.ApplicationName, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in FbDB.Current.GetAllUsers(ConnectionStringName, this.ApplicationName, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -951,7 +960,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override int GetNumberOfUsersOnline()
     {
-        return FbDB.Current.GetNumberOfUsersOnline(ConnStrAppKeyName, this.ApplicationName, Membership.UserIsOnlineTimeWindow);
+        return FbDB.Current.GetNumberOfUsersOnline(ConnectionStringName, this.ApplicationName, Membership.UserIsOnlineTimeWindow);
     }
 
     /// <summary>
@@ -979,7 +988,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgument("MEMBERSHIP", "USERNAMEPASSWORDNULL");
       }
 
-      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1022,7 +1031,7 @@ namespace YAF.Providers.Membership
         return null;
       }
 
-      DataRow dr = FbDB.Current.GetUser(ConnectionString, this.ApplicationName, null, username, userIsOnline);
+      DataRow dr = FbDB.Current.GetUser(ConnectionStringName, this.ApplicationName, null, username, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1046,7 +1055,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "USERKEYNULL");
       }
 
-      DataRow dr = FbDB.Current.GetUser(ConnectionString, this.ApplicationName, providerUserKey, null, userIsOnline);
+      DataRow dr = FbDB.Current.GetUser(ConnectionStringName, this.ApplicationName, providerUserKey, null, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1067,7 +1076,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "EMAILNULL");
       }
 
-      DataTable users = FbDB.Current.GetUserNameByEmail(ConnectionString, this.ApplicationName, email);
+      DataTable users = FbDB.Current.GetUserNameByEmail(ConnectionStringName, this.ApplicationName, email);
 
       if (this.RequiresUniqueEmail && users.Rows.Count > 1)
       {
@@ -1162,6 +1171,7 @@ namespace YAF.Providers.Membership
       {
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         ConnectionString = connStr;
+        ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {
@@ -1208,7 +1218,7 @@ namespace YAF.Providers.Membership
       }
 
       // get an instance of the current password information class
-      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      FbUserPasswordInfo currentPasswordInfo = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1255,7 +1265,7 @@ namespace YAF.Providers.Membership
           this.MSCompliant);
 
         // save to the database
-        FbDB.Current.ResetPassword(ConnectionString,
+        FbDB.Current.ResetPassword(ConnectionStringName,
           this.ApplicationName, 
           username, 
           newPasswordEnc, 
@@ -1290,7 +1300,7 @@ namespace YAF.Providers.Membership
 
       try
       {
-          FbDB.Current.UnlockUser(ConnectionString, this.ApplicationName, userName);
+          FbDB.Current.UnlockUser(ConnectionStringName, this.ApplicationName, userName);
         return true;
       }
       catch
@@ -1316,7 +1326,7 @@ namespace YAF.Providers.Membership
       }
 
       // Update User
-      int updateStatus = FbDB.Current.UpdateUser(ConnectionString, this.ApplicationName, user, this.RequiresUniqueEmail);
+      int updateStatus = FbDB.Current.UpdateUser(ConnectionStringName, this.ApplicationName, user, this.RequiresUniqueEmail);
 
       // Check update was not successful
       if (updateStatus != 0)
@@ -1349,7 +1359,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override bool ValidateUser(string username, string password)
     {
-        FbUserPasswordInfo currentUser = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+        FbUserPasswordInfo currentUser = FbUserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 

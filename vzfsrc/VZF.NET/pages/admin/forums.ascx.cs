@@ -39,6 +39,7 @@ namespace YAF.Pages.Admin
     using VZF.Utilities;
     using VZF.Utils;
     using VZF.Utils.Helpers;
+    using VZF.Data.DAL;
 
     #endregion
 
@@ -217,7 +218,7 @@ namespace YAF.Pages.Admin
             {
                 using (DataSet ds = CommonDb.ds_forumadmin(PageContext.PageModuleID, this.PageContext.PageBoardID, null, false))
                 {
-                    var dd = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                    var dd = ds.Tables[ObjectName.GetVzfObjectName("Category", PageContext.PageModuleID)];
                     this.CategoryList.DataSource = dd;
                 }
             }

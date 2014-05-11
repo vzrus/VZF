@@ -57,10 +57,10 @@
     <Compile Include="AccessClassess.cs" />
     <Compile Include="Fts\Search.cs" />
     <Compile Include="Db.cs" />
-    <Compile Include="SettingsPropertyColumn.cs" />
     <Compile Include="PostgreDbAccess.cs" />
     <Compile Include="PostgreDbConnectionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsPropertyColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">

@@ -76,6 +76,10 @@
       <Project>{41C7A2FC-480D-4F44-9D04-FD318BE5B306}</Project>
       <Name>VZF.Data.Mysql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
+      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
+      <Name>VZF.Data.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
       <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>
       <Name>VZF.Types</Name>
@@ -99,7 +103,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
-</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

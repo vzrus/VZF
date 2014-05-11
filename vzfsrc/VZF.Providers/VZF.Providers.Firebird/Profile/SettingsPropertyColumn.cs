@@ -20,7 +20,7 @@ namespace YAF.Providers.Profile
 {
   using System.Configuration;
   using System.Data;
-  using FirebirdSql.Data.FirebirdClient;
+
   /// <summary>
   /// The settings property column.
   /// </summary>
@@ -31,7 +31,7 @@ namespace YAF.Providers.Profile
     /// <summary>
     /// The data type.
     /// </summary>
-    public FbDbType DataType;
+    public DbType DataType;
 
     /// <summary>
     /// The settings.
@@ -67,7 +67,7 @@ namespace YAF.Providers.Profile
     /// <param name="size">
     /// The size.
     /// </param>
-    public FbSettingsPropertyColumn(SettingsProperty settings, FbDbType dataType, int size)
+    public FbSettingsPropertyColumn(SettingsProperty settings, DbType dataType, int size)
     {
       this.DataType = dataType;
       this.Settings = settings;

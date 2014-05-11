@@ -28,10 +28,10 @@ namespace YAF.Providers.Profile
     using System.Linq;
     using System.Text;
     using System.Web.Profile;
-
+    using VZF.Data.Common;
     using VZF.Data.MsSql;
+    using VZF.Data.Utils;
     using VZF.Utils;
- 
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -73,7 +73,7 @@ namespace YAF.Providers.Profile
         /// <summary>
         /// The _settings columns list.
         /// </summary>
-        private List<SettingsPropertyColumn> _settingsColumnsList = new List<SettingsPropertyColumn>();
+        private List<VZF.Data.MsSql.SettingsPropertyColumn> _settingsColumnsList = new List<VZF.Data.MsSql.SettingsPropertyColumn>();
 
         #endregion
 
@@ -473,6 +473,7 @@ namespace YAF.Providers.Profile
 
             // Connection String Name
             this._connStrName = config["connectionStringName"].ToStringDBNull();
+     
 
             // application name
             this._appName = config["applicationName"];
@@ -590,14 +591,14 @@ namespace YAF.Providers.Profile
                             size = 256;
                         }
 
-                        this._settingsColumnsList.Add(new SettingsPropertyColumn(property, dbType, size));
+                        this._settingsColumnsList.Add(new VZF.Data.MsSql.SettingsPropertyColumn(property, dbType, size));
                     }
 
                     // sync profile table structure with the db...
                     DataTable structure = DB.Current.GetProfileStructure(ConnectionString);
 
                     // verify all the columns are there...
-                    foreach (SettingsPropertyColumn column in this._settingsColumnsList)
+                    foreach (VZF.Data.MsSql.SettingsPropertyColumn column in this._settingsColumnsList)
                     {
                         // see if this column exists
                         if (!structure.Columns.Contains(column.Settings.Name))
@@ -642,14 +643,14 @@ namespace YAF.Providers.Profile
                         size = 256;
                     }
 
-                    this._settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
+                    this._settingsColumnsList.Add(new VZF.Data.MsSql.SettingsPropertyColumn(value.Property, dbType, size));
                 }
 
                 // sync profile table structure with the db...
                 DataTable structure = DB.Current.GetProfileStructure(ConnectionString);
 
                 // verify all the columns are there...
-                foreach (SettingsPropertyColumn column in this._settingsColumnsList)
+                foreach (VZF.Data.MsSql.SettingsPropertyColumn column in this._settingsColumnsList)
                 {
                     // see if this column exists
                     if (!structure.Columns.Contains(column.Settings.Name))

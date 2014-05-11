@@ -217,7 +217,7 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            this.RankList.DataSource = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.RankList.DataSource = CommonDb.rank_list(PageContext.PageModuleID, this.PageContext.PageBoardID);
             this.DataBind();
         }
 

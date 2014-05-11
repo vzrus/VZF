@@ -388,12 +388,12 @@ namespace YAF.Types.Flags
         // int value 32768
         get
         {
-            return this[15];
+            return this[this.EnumToIndex(Flags.UserForumAccess)];
         }
 
         set
         {
-            this[15] = value;
+            this[this.EnumToIndex(Flags.UserForumAccess)] = value;
         }
     }
 

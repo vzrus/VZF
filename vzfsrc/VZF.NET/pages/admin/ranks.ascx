@@ -34,7 +34,7 @@
                  </tr>
                  <tr>
 					<td class="post">
-                     <VZF:LocalizedLabel ID="HelpLabel6" Visible='<%# Eval("Description").ToString().IsSet() %>' runat="server" LocalizedTag="DESCRIPTION" LocalizedPage="ADMIN_EDITGROUP">
+                     <VZF:LocalizedLabel ID="HelpLabel6" Visible='<%# this.Eval("Description") != DBNull.Value && this.Eval("Description").ToString().IsSet() %>' runat="server" LocalizedTag="DESCRIPTION" LocalizedPage="ADMIN_EDITGROUP">
                          </VZF:LocalizedLabel>
                           &nbsp;<%# Eval("Description").ToString() %>&nbsp; 
                     <br />

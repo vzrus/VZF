@@ -5950,6 +5950,10 @@
       <Project>{80F590EA-CC91-4286-B8ED-B173FECF0D90}</Project>
       <Name>VZF.Data.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VZF.Kernel\VZF.Kernel.csproj">
       <Project>{7C5BB2BF-C385-49D2-937F-F4CE8E368CC3}</Project>
       <Name>VZF.Kernel</Name>

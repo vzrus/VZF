@@ -30,6 +30,7 @@ namespace VZF.Controls
     using System.Web.UI;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
     using VZF.Data.Utils;
     using VZF.Types.Constants;
     using VZF.Utils;
@@ -233,7 +234,7 @@ namespace VZF.Controls
                 footer.AppendFormat(@"<span id=""themecredit"" style=""color:#999999"">{0}</span>", themeCredit);
                 footer.Append("<br />");
             }
-            string s = CommonSqlDbAccess.DataEngineName(YafContext.Current.PageModuleID);
+            string s = SqlDbAccess.DataEngineName(YafContext.Current.PageModuleID);
             switch (s)
             {
                 case Providers.MsSql:

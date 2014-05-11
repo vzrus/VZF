@@ -7,12 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace VZF.Data.Common
+namespace VZF.Data.DAL
 {
     using System;
-
+    using System.Data.Common;
     using VZF.Utils;
-
     using YAF.Classes;
 
     public class ObjectName
@@ -151,20 +150,23 @@ namespace VZF.Data.Common
         public static string GetVzfObjectName(string objectName, int? mid)
         {
             var providerName =
-                CommonSqlDbAccess.GetProviderName(CommonSqlDbAccess.GetConnectionStringName(mid, string.Empty));
-            switch (providerName)
-            {
-                case "System.Data.SqlClient":
-                    return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseOwner, Config.DatabaseObjectQualifier, objectName);
-                case "Npgsql":
-                    return string.Format("{0}.{1}{2}", DatabaseSchemaName, ObjectQualifier, objectName);
-                case "MySql.Data":
-                    return string.Format("`{0}`.`{1}{2}`", DatabaseSchemaName, Config.DatabaseObjectQualifier, objectName);
-                case "FirebirdSql.Data.FirebirdClient":
-                    return string.Format("{0}{1}", ObjectQualifier, objectName);
-                default:
-                    throw new ArgumentOutOfRangeException(providerName);
-            }
+                SqlDbAccess.GetProviderName(SqlDbAccess.GetConnectionStringName(mid, string.Empty));
+            return GetVzfObjectName(objectName, providerName);           
         }
+
+        public static string GetVzfObjectNameFromConnectionString(string objectName, string connectionStringName)
+        {
+            var providerName =
+                SqlDbAccess.GetProviderName(connectionStringName);
+            return GetVzfObjectName(objectName, providerName);
+        }
+
+       /* public static void AddWithValue(this DbCommand command, string parameterName, object parameterValue)
+        {
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = parameterName;
+            parameter.Value = parameterValue;
+            command.Parameters.Add(parameter);
+        }   */    
     }
 }

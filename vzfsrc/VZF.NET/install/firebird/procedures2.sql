@@ -154,7 +154,8 @@ end;
     I_STYLEDNICKS BOOL, 
     I_SHOWMOVED BOOL,
     I_FINDLASTUNREAD BOOL,
-    I_GETTAGS BOOL)
+    I_GETTAGS BOOL,
+	i_UTCTIMESTAMP TIMESTAMP)
  RETURNS
  (  "ForumID" INTEGER,
     "TopicID" INTEGER,
@@ -389,7 +390,8 @@ END;
     I_STYLEDNICKS BOOL,
     I_SHOWMOVED BOOL,
     I_FINDLASTUNREAD BOOL,
-    I_GETTAGS BOOL)
+    I_GETTAGS BOOL,
+	I_UTCTIMESTAMP timestamp)
 RETURNS (
     "ForumID" integer,
     "TopicID" integer,
@@ -653,7 +655,8 @@ END;
                  I_PAGEINDEX integer,
                  I_PAGESIZE integer,
                  I_STYLEDNICKS BOOL,
-                 I_FINDLASTUNREAD BOOL)
+                 I_FINDLASTUNREAD BOOL,
+				 I_UTCTIMESTAMP timestamp)
         RETURNS (
                  "ForumID" integer,
                  "TopicID" integer,
@@ -1153,7 +1156,8 @@ END;
     I_PAGEINDEX integer,
     I_PAGESIZE integer,
     I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL  )
+    I_FINDLASTUNREAD BOOL,
+	I_UTCTIMESTAMP timestamp  )
 RETURNS (
         "ForumID" INTEGER,
         "TopicID" INTEGER,
@@ -1401,7 +1405,8 @@ CREATE PROCEDURE objQual_TOPICS_BYUSER (
     I_PAGEINDEX integer,
     I_PAGESIZE integer,
     I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL )
+    I_FINDLASTUNREAD BOOL,
+	I_UTCTIMESTAMP timestamp )
 RETURNS (
   "ForumID" INTEGER,
         "TopicID" INTEGER,
@@ -1646,7 +1651,8 @@ CREATE PROCEDURE objQual_TOPIC_FAVORITE_DETAILS (
     I_PAGEINDEX integer,
     I_PAGESIZE integer,
     I_STYLEDNICKS BOOL,
-    I_FINDLASTUNREAD BOOL )
+    I_FINDLASTUNREAD BOOL,
+	I_UTCTIMESTAMP timestamp )
 RETURNS (
   "ForumID" integer,
 "TopicID" integer,

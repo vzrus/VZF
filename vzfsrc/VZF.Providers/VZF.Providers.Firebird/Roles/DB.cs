@@ -20,44 +20,19 @@
 namespace YAF.Providers.Roles
 {
     using System;
-    using System.Data;
-
-    using FirebirdSql.Data.FirebirdClient;
-
-    using VZF.Data.Firebird;
+    using System.Data;  
 
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Core;
-
-    /// <summary>
-    /// The vzf firebird db conn manager.
-    /// </summary>
-    public class VzfFirebirdDBConnManager : FbDbConnectionManager
-    {
-        /// <summary>
-        /// Gets the connection string.
-        /// </summary>
-        public override string ConnectionString
-        {
-            get
-            {
-                if (YafContext.Application[VzfFirebirdRoleProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[VzfFirebirdRoleProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
+    using VZF.Data.DAL;
 
     /// <summary>
     /// The fb db.
     /// </summary>
     public class FbDB
     {
-       // private FbDbAccess FbDbAccess = new FbDbAccess();
+        // private FbDbAccess FbDbAccess = new FbDbAccess();
 
         /// <summary>
         /// Gets the current.
@@ -72,7 +47,7 @@ namespace YAF.Providers.Roles
 
         public FbDB()
         {
-          //  FbDbAccess.SetConnectionManagerAdapter<VzfFirebirdDBConnManager>();
+            //  FbDbAccess.SetConnectionManagerAdapter<VzfFirebirdDBConnManager>();
         }
 
         /// <summary>
@@ -82,16 +57,17 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public void AddUserToRole(string connectionString, object appName, object userName, object roleName)
+        public void AddUserToRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_addusertorole")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar)).Value = appName;
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar)).Value = userName;
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar)).Value = roleName; 
-               
-                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
+
+                sc.CommandText.AppendObjectQuery("P_role_addusertorole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -101,19 +77,16 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public void CreateRole(string connectionString, object appName, object roleName)
+        public void CreateRole(string connectionStringName, object appName, object roleName)
         {
-            using (var cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_createrole")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
 
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = roleName;
-               
-                FbDbAccess.ExecuteNonQuery(cmd, connectionString);
+                sc.CommandText.AppendObjectQuery("P_role_createrole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -123,34 +96,27 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>Status as integer</returns>
-        public int DeleteRole(string connectionString, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
+        public int DeleteRole(string connectionStringName, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
         {
-            using (FbCommand cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_deleterole")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_APPLICATIONNAME", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_deleteonlyifroleisempty", deleteOnlyIfRoleIsEmpty));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_returnvalue", ParameterDirection.ReturnValue));
 
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = roleName;
-
-                cmd.Parameters.Add(new FbParameter("@i_deleteonlyifroleisempty", FbDbType.Boolean));
-                cmd.Parameters[2].Value = deleteOnlyIfRoleIsEmpty;
-
-                FbParameter p = new FbParameter("@i_returnvalue", FbDbType.Integer);
-                p.Direction = ParameterDirection.ReturnValue;
-                cmd.Parameters.Add(p);
-
-                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
-                if (p.Value == DBNull.Value)
+                sc.CommandText.AppendObjectQuery("P_role_deleterole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+                if (sc.Parameters["@i_returnvalue"].Value == DBNull.Value)
                 {
                     return 0;
                 }
                 else
                 {
-                    return Convert.ToInt32(cmd.Parameters["@i_returnvalue"].Value);
+                    return Convert.ToInt32(sc.Parameters["@i_returnvalue"].Value);
                 }
-                }
+            }          
         }
 
         /// <summary>
@@ -159,20 +125,17 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>Datatable containing User Information</returns>
-        public DataTable FindUsersInRole(string connectionString, object appName, object roleName)
+        public DataTable FindUsersInRole(string connectionStringName, object appName, object roleName)
         {
-            using (FbCommand cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_findusersinrole")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
 
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = roleName;
-                
-                return FbDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("P_role_findusersinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }       
         }
 
         /// <summary>
@@ -181,43 +144,37 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleNames">Role Name</param>
         /// <returns>Database containing Role Information</returns>
-        public DataTable GetRoles(string connectionString, object appName, object username)
+        public DataTable GetRoles(string connectionStringName, object appName, object username)
         {
-            using (FbCommand cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_getroles")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", username));             
 
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = username;
-
-                
-                return FbDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("P_role_getroles", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }            
         }
 
-				/// <summary>
-				/// Database Action - Get Role Exists
-				/// </summary>
-				/// <param name="appName">Application Name</param>
-				/// <param name="roleName">Role Name</param>
-				/// <returns>Database containing Role Information</returns>
-        public object GetRoleExists(string connectionString, object appName, object roleName)
-				{
-					using ( FbCommand cmd = new FbCommand( FbDbAccess.GetObjectName( "P_role_exists" ) ) )
-					{
-						cmd.CommandType = CommandType.StoredProcedure;
-                        
-                        cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                        cmd.Parameters[0].Value = appName;
-                       
-                        cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                        cmd.Parameters[1].Value = roleName;
-						
-                        return FbDbAccess.ExecuteScalar(cmd,connectionString );
-					}
-				}
+        /// <summary>
+        /// Database Action - Get Role Exists
+        /// </summary>
+        /// <param name="appName">Application Name</param>
+        /// <param name="roleName">Role Name</param>
+        /// <returns>Database containing Role Information</returns>
+        public object GetRoleExists(string connectionStringName, object appName, object roleName)
+        {
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
+
+                sc.CommandText.AppendObjectQuery("P_role_exists", connectionStringName);
+                return sc.ExecuteScalar(CommandType.StoredProcedure, false);
+            }
+        }
 
         /// <summary>
         /// Database Action - Add User to Role
@@ -226,22 +183,17 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>DataTable with user information</returns>
-        public  DataTable IsUserInRole(string connectionString,object appName, object userName, object roleName)
+        public DataTable IsUserInRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (FbCommand cmd = new FbCommand(FbDbAccess.GetObjectName("P_role_isuserinrole")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-               
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
 
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = userName;
-
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                cmd.Parameters[2].Value = roleName;
-               
-                return FbDbAccess.GetData(cmd,connectionString );
+                sc.CommandText.AppendObjectQuery("P_role_isuserinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
             }
         }
 
@@ -252,24 +204,18 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public void RemoveUserFromRole(string connectionString, object appName, string userName, string roleName)
+        public void RemoveUserFromRole(string connectionStringName, object appName, string userName, string roleName)
         {
-            using (FbCommand cmd = new FbCommand(FbDbAccess.GetObjectName("P_ROLE_REMUSERFRROLE")))
+            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                               
-                cmd.Parameters.Add(new FbParameter("@i_applicationname", FbDbType.VarChar));
-                cmd.Parameters[0].Value = appName;
-                
-                cmd.Parameters.Add(new FbParameter("@I_USERNAME", FbDbType.VarChar));
-                cmd.Parameters[1].Value = userName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_ROLENAME", roleName));
 
-                cmd.Parameters.Add(new FbParameter("@I_ROLENAME", FbDbType.VarChar));
-                cmd.Parameters[2].Value = roleName;
-                
-                FbDbAccess.ExecuteNonQuery(cmd,connectionString );
+                sc.CommandText.AppendObjectQuery("P_ROLE_REMUSERFRROLE", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
-
         }
     }
 }

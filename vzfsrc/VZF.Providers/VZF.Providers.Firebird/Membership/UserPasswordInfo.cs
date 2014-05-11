@@ -390,7 +390,7 @@ namespace YAF.Providers.Membership
     /// <returns>
     /// </returns>
     public static FbUserPasswordInfo CreateInstanceFromDB(
-      string connectionString,
+      string connectionStringName,
       string appName, 
       string username, 
       bool updateUser, 
@@ -400,7 +400,7 @@ namespace YAF.Providers.Membership
       string hashRemoveChars, 
       bool msCompliant)
     {
-        DataTable userData = FbDB.Current.GetUserPasswordInfo(connectionString, appName, username, updateUser);
+        DataTable userData = FbDB.Current.GetUserPasswordInfo(connectionStringName, appName, username, updateUser);
 
       if (userData.Rows.Count > 0)
       {

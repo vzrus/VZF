@@ -280,7 +280,7 @@ namespace YAF.Providers.Profile
     /// </exception>
     public static bool GetDbTypeAndSizeFromString(string providerData, out SqlDbType dbType, out int size)
     {
-        return Db.GetDbTypeAndSizeFromString(providerData, out dbType, out size);
+        return DB.GetDbTypeAndSizeFromString(providerData, out dbType, out size);
     }
     /// <summary>
     /// The get provider user key.

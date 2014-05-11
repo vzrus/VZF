@@ -35,8 +35,8 @@ namespace YAF.Providers.Profile
     using YAF.Core;
     using YAF.Classes.Pattern;
     using YAF.Providers.Utils;
-    using FirebirdSql.Data;
-    using FirebirdSql.Data.FirebirdClient;
+    using VZF.Data.DAL;    
+ 
 	/// <summary>
 	/// YAF Custom Profile Provider
 	/// </summary>
@@ -77,6 +77,10 @@ namespace YAF.Providers.Profile
         {
             _connectionString = value;
         }
+    }
+    public static string ConnectionStringName
+    {
+        get;   set;          
     }
 		public override string ApplicationName
 		{
@@ -125,6 +129,7 @@ namespace YAF.Providers.Profile
 
             // Connection String Name
             this._connStrName = config["connectionStringName"].ToStringDBNull();
+         
            
             // application name
             _appName = config["applicationName"];
@@ -136,7 +141,7 @@ namespace YAF.Providers.Profile
             {
                 string connStr = ConfigurationManager.ConnectionStrings[_connStrName].ConnectionString;
                 ConnectionString = connStr;
-
+                ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
                 // set the app variable...
                 if (YafContext.Application[_connStrAppKeyName] == null)
                 {
@@ -162,14 +167,14 @@ namespace YAF.Providers.Profile
 				// validiate all the properties and populate the internal settings collection
 				foreach ( SettingsProperty property in collection )
 				{
-					FbDbType dbType;
+					DbType dbType;
 					int size;
 
 					// parse custom provider data...
 					GetDbTypeAndSizeFromString( property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
 
 					// default the size to 256 if no size is specified
-					if ( dbType == FbDbType.VarChar && size == -1 )
+					if ( dbType == DbType.String && size == -1 )
 					{
 						size = 256;
 					}
@@ -177,7 +182,7 @@ namespace YAF.Providers.Profile
 				}
 
 				// sync profile table structure with the FbDB...
-                DataTable structure = FbDB.Current.GetProfileStructure(ConnectionString);
+                DataTable structure = FbDB.Current.GetProfileStructure(ConnectionStringName);
 
 				// verify all the columns are there...
 				foreach ( FbSettingsPropertyColumn column in _settingsColumnsList )
@@ -186,7 +191,7 @@ namespace YAF.Providers.Profile
 					if ( !structure.Columns.Contains( column.Settings.Name ) )
 					{
 						// if not, create it...
-						FbDB.Current.AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size );
+						FbDB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size );
 					}
 				}
 
@@ -205,14 +210,14 @@ namespace YAF.Providers.Profile
 				// validiate all the properties and populate the internal settings collection
 				foreach ( SettingsPropertyValue value in collection )
 				{
-					FbDbType dbType;
+					DbType dbType;
 					int size;
 
 					// parse custom provider data...
 					GetDbTypeAndSizeFromString( value.Property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
 
 					// default the size to 256 if no size is specified
-					if ( dbType == FbDbType.VarChar && size == -1 )
+					if ( dbType == DbType.String && size == -1 )
 					{
 						size = 256;
 					}
@@ -220,7 +225,7 @@ namespace YAF.Providers.Profile
 				}
 
 				// sync profile table structure with the FbDB...
-                DataTable structure = FbDB.Current.GetProfileStructure(ConnectionString);
+                DataTable structure = FbDB.Current.GetProfileStructure(ConnectionStringName);
 
 				// verify all the columns are there...
 				foreach ( FbSettingsPropertyColumn column in _settingsColumnsList )
@@ -229,7 +234,7 @@ namespace YAF.Providers.Profile
 					if ( !structure.Columns.Contains( column.Settings.Name ) )
 					{
 						// if not, create it...
-                        FbDB.Current.AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                        FbDB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
 					}
 				}
 
@@ -238,10 +243,10 @@ namespace YAF.Providers.Profile
 			}
 		}
 
-		private bool GetDbTypeAndSizeFromString( string providerData, out FbDbType dbType, out int size )
+		private bool GetDbTypeAndSizeFromString( string providerData, out DbType dbType, out int size )
 		{
 			size = -1;
-			dbType = FbDbType.VarChar;
+			dbType = DbType.String;
 
 			if ( String.IsNullOrEmpty( providerData ) )
 			{
@@ -255,16 +260,16 @@ namespace YAF.Providers.Profile
 			string columnName = chunk [0];
             // vzrus: here we replace MS SQL data types
             if (chunk[1].IndexOf("varchar") >= 0 || chunk[1].IndexOf("nvarchar") >= 0)
-            { chunk[1] = "VarChar"; }
+            { chunk[1] = "String"; }
             if (chunk[1].IndexOf("int") >= 0)
-            { chunk[1] = "Integer"; }
-            if (chunk[1].IndexOf("DateTime") >= 0)
-            { chunk[1] = "TimeStamp"; }
+            { chunk[1] = "Int32"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0 || chunk[1].ToLowerInvariant().IndexOf("timestamp") >= 0)
+            { chunk[1] = "DateTime"; }
             if (chunk[1].IndexOf("bit") >= 0)
             { chunk[1] = "Boolean"; }
             
 			// get the datatype and ignore case...
-			dbType = ( FbDbType )Enum.Parse(typeof( FbDbType ), chunk [1], true );
+			dbType = ( DbType )Enum.Parse(typeof( DbType ), chunk [1], true );
 
 			if ( chunk.Length > 2 )
 			{
@@ -288,7 +293,7 @@ namespace YAF.Providers.Profile
 			// just clear the whole thing...
 			ClearUserProfileCache();
 
-            return FbDB.Current.DeleteInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate);
+            return FbDB.Current.DeleteInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate);
 		}
 
 		public override int DeleteProfiles( string [] usernames )
@@ -317,7 +322,7 @@ namespace YAF.Providers.Profile
 			}
 
 			// call the FbDB...
-            return FbDB.Current.DeleteProfiles(ConnectionString, this.ApplicationName, userNameBuilder.ToString());
+            return FbDB.Current.DeleteProfiles(ConnectionStringName, this.ApplicationName, userNameBuilder.ToString());
 		}
 
 		public override int DeleteProfiles( ProfileInfoCollection profiles )
@@ -370,7 +375,7 @@ namespace YAF.Providers.Profile
 				ExceptionReporter.ThrowArgument( "PROFILE", "NOANONYMOUS" );
 			}
 
-			return FbDB.Current.GetNumberInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate );
+			return FbDB.Current.GetNumberInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate );
 		}
 
 		private ProfileInfoCollection GetProfileAsCollection( ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, object userNameToMatch, object inactiveSinceDate, out int totalRecords )
@@ -394,7 +399,7 @@ namespace YAF.Providers.Profile
 			// create an instance for the profiles...
 			ProfileInfoCollection profiles = new ProfileInfoCollection();
 
-            DataTable allProfilesDT = FbDB.Current.GetProfiles(ConnectionString, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate); ;
+            DataTable allProfilesDT = FbDB.Current.GetProfiles(ConnectionStringName, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate); ;
 			
 
 			foreach ( DataRow profileRow in allProfilesDT.Rows )
@@ -454,7 +459,7 @@ namespace YAF.Providers.Profile
                     }
 
                     // get this profile from the DB				
-                    DataTable profileDT = FbDB.Current.GetProfiles(ConnectionString, this.ApplicationName, 0, 1, username, null);
+                    DataTable profileDT = FbDB.Current.GetProfiles(ConnectionStringName, this.ApplicationName, 0, 1, username, null);
 
                     if (profileDT.Rows.Count > 0)
                     {
@@ -501,7 +506,7 @@ namespace YAF.Providers.Profile
 
                     // retrieve encoded profile data from the database
 
-                    DataTable dt = FbDB.Current.GetProfiles(ConnectionString, this.ApplicationName, 0, 1, username, null);
+                    DataTable dt = FbDB.Current.GetProfiles(ConnectionStringName, this.ApplicationName, 0, 1, username, null);
 
                     if (dt.Rows.Count > 0)
                     {
@@ -551,11 +556,11 @@ namespace YAF.Providers.Profile
 			// load the data for the configuration
 			LoadFromPropertyValueCollection( collection );
 
-            object userID = FbDB.Current.GetProviderUserKey(ConnectionString, this.ApplicationName, username);
+            object userID = FbDB.Current.GetProviderUserKey(ConnectionStringName, this.ApplicationName, username);
 			if ( userID != null )
 			{
 				// start saving...
-                FbDB.Current.SetProfileProperties(ConnectionString, this.ApplicationName, userID, collection, _settingsColumnsList);
+                FbDB.Current.SetProfileProperties(ConnectionStringName, this.ApplicationName, userID, collection, _settingsColumnsList);
 				// erase from the cache
 				DeleteFromProfileCacheIfExists( username.ToLower() );
 			}
