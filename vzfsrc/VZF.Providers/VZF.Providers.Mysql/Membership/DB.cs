@@ -24,37 +24,16 @@
  * 
  */
 
-
 namespace YAF.Providers.Membership
 {
     using System;
     using System.Data;
     using System.Web.Security;
-
-    using MySql.Data.MySqlClient;
-
-    using VZF.Data.Mysql;
-
+    
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Core;
-
-    public class VzfMySqlMembershipDBConnManager : MySqlDbConnectionManager
-    {
-    
-        public override string ConnectionString
-        {
-            get
-            {
-                if (YafContext.Application[VzfMySqlMembershipProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[VzfMySqlMembershipProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
+    using VZF.Data.DAL;   
 
     public class MySQLDB
     {
@@ -66,278 +45,263 @@ namespace YAF.Providers.Membership
             }
         }
 
-
-
-        public void ChangePassword(string connectionString, string appName, string userName, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
+        public void ChangePassword(string connectionStringName, string appName, string userName, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_changepassword" ) ) )
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;               
-                cmd.Parameters.Add( "i_Password", MySqlDbType.VarChar ).Value = newPassword;
-                cmd.Parameters.Add( "i_PasswordSalt", MySqlDbType.VarChar ).Value = newSalt;
-                cmd.Parameters.Add( "i_PasswordFormat", MySqlDbType.VarChar ).Value = passwordFormat.ToString();
-                cmd.Parameters.Add( "i_PasswordAnswer", MySqlDbType.VarChar ).Value = newPasswordAnswer;
+            using (var sc = new SQLCommand(connectionStringName))
+            { 
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Password", newPassword));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordSalt", newSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordFormat", passwordFormat));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordAnswer", newPasswordAnswer));
 
-                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-            }
+                sc.CommandText.AppendObjectQuery("prov_changepassword", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }             
         }
 
-        public void ChangePasswordQuestionAndAnswer(string connectionString, string appName, string userName, string passwordQuestion, string passwordAnswer)
+        public void ChangePasswordQuestionAndAnswer(string connectionStringName, string appName, string userName, string passwordQuestion, string passwordAnswer)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_changepasswordquestionandanswer" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
-                cmd.Parameters.Add( "i_PasswordQuestion", MySqlDbType.VarChar ).Value = passwordQuestion;
-                cmd.Parameters.Add( "i_PasswordAnswer", MySqlDbType.VarChar ).Value = passwordAnswer;
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordQuestion", passwordQuestion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordAnswer", passwordAnswer));
+
+                sc.CommandText.AppendObjectQuery("prov_changepasswordquestionandanswer", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }     
         }
 
-        public void CreateUser(string connectionString, string appName, string userName, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
+        public void CreateUser(string connectionStringName, string appName, string userName, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_createuser" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Input Parameters
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
-                cmd.Parameters.Add( "i_Password", MySqlDbType.VarChar ).Value = password;
-                cmd.Parameters.Add( "i_PasswordSalt", MySqlDbType.VarChar ).Value = passwordSalt;
-                cmd.Parameters.Add( "i_PasswordFormat", MySqlDbType.VarChar ).Value = passwordFormat.ToString();
-                cmd.Parameters.Add( "i_Email", MySqlDbType.VarChar ).Value = email;
-                cmd.Parameters.Add( "i_PasswordQuestion", MySqlDbType.VarChar ).Value = passwordQuestion;
-                cmd.Parameters.Add( "i_PasswordAnswer", MySqlDbType.VarChar ).Value = passwordAnswer;
-                cmd.Parameters.Add( "i_IsApproved", MySqlDbType.Byte ).Value = isApproved;
-                // Input Output Parameters
-                var paramUserKey = new MySqlParameter( "i_UserKey", MySqlDbType.VarChar)
-                    {Direction = ParameterDirection.InputOutput, Value = providerUserKey};
-                cmd.Parameters.Add( paramUserKey );
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
 
-                //Execute
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-                //Retrieve Output Parameters
-                providerUserKey = paramUserKey.Value;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Password", password));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordSalt", passwordSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordFormat", passwordFormat.ToString()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordQuestion", passwordQuestion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordAnswer", passwordAnswer));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsApproved", isApproved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", providerUserKey, ParameterDirection.InputOutput));
+               // sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "I_UTCTIMESTAMP", DateTime.UtcNow));
 
-            }
+                sc.CommandText.AppendObjectQuery("prov_createuser", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+                providerUserKey = sc.Parameters["i_UserKey"].Value;
+            }     
         }
 
-        public void DeleteUser(string connectionString, string appName, string userName, bool deleteAllRelatedData)
+        public void DeleteUser(string connectionStringName, string appName, string userName, bool deleteAllRelatedData)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_deleteuser" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
-                cmd.Parameters.Add( "i_DeleteAllRelated", MySqlDbType.Byte ).Value = deleteAllRelatedData;
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteAllRelated", deleteAllRelatedData));
+
+                sc.CommandText.AppendObjectQuery("prov_deleteuser", connectionStringName);
+
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }  
         }
 
-        public DataTable FindUsersByEmail(string connectionString, string appName, string emailToMatch, int pageIndex, int pageSize)
+        public DataTable FindUsersByEmail(string connectionStringName, string appName, string emailToMatch, int pageIndex, int pageSize)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_findusersbyemail" ) ) )
+
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_EmailAddress", MySqlDbType.VarChar ).Value = emailToMatch;
-                cmd.Parameters.Add( "i_PageIndex", MySqlDbType.Int32 ).Value =  pageIndex;
-                cmd.Parameters.Add( "i_PageSize", MySqlDbType.Int32 ).Value = pageSize;
-                var trecords = new MySqlParameter( "i_TotalRecords", MySqlDbType.Int32 )
-                    {Direction = ParameterDirection.Output, Value = 0};
-                cmd.Parameters.Add( trecords );
-                return MySqlDbAccess.GetData( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_EmailAddress", emailToMatch));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TotalRecords", 0, ParameterDirection.Output));
+
+                sc.CommandText.AppendObjectQuery("prov_findusersbyemail", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }    
         }
 
-        public DataTable FindUsersByName(string connectionString, string appName, string usernameToMatch, int pageIndex, int pageSize)
+        public DataTable FindUsersByName(string connectionStringName, string appName, string usernameToMatch, int pageIndex, int pageSize)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_findusersbyname" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = usernameToMatch;
-                cmd.Parameters.Add( "i_PageIndex", MySqlDbType.Int32 ).Value = pageIndex;
-                cmd.Parameters.Add( "i_PageSize", MySqlDbType.Int32 ).Value = pageSize;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
 
-                var trecords = new MySqlParameter( "i_TotalRecords", MySqlDbType.Int32 );
-                trecords.Direction = ParameterDirection.Output;
-                trecords.Value = 0;
-                cmd.Parameters.Add( trecords );
-                return MySqlDbAccess.GetData( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", usernameToMatch));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex)); 
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TotalRecords", 0, ParameterDirection.Output));
+
+                sc.CommandText.AppendObjectQuery("prov_findusersbyname", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }     
         }
 
-        public DataTable GetAllUsers(string connectionString, string appName, int pageIndex, int pageSize)
+        public DataTable GetAllUsers(string connectionStringName, string appName, int pageIndex, int pageSize)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_getallusers" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_PageIndex", MySqlDbType.Int32 ).Value = pageIndex;
-                cmd.Parameters.Add( "i_PageSize", MySqlDbType.Int32 ).Value = pageSize;
-                var trecords = new MySqlParameter( "i_TotalRecords", MySqlDbType.Int32 );
-                trecords.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add( trecords );
-                return MySqlDbAccess.GetData( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));            
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TotalRecords", 0, ParameterDirection.Output));
+
+                sc.CommandText.AppendObjectQuery("prov_getallusers", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }    
         }
 
-        public  int GetNumberOfUsersOnline(string connectionString, string appName, int TimeWindow )
+        public int GetNumberOfUsersOnline(string connectionStringName, string appName, int TimeWindow)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_getnumberofusersonline" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_TimeWindow", MySqlDbType.Timestamp ).Value =  TimeWindow;
-                cmd.Parameters.Add( "i_CurrentTimeUtc", MySqlDbType.Timestamp ).Value = DateTime.UtcNow;
-                var p = new MySqlParameter( "i_ReturnValue", MySqlDbType.Int32 ) {Direction = ParameterDirection.ReturnValue};
-                cmd.Parameters.Add( p );
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-                return (int) cmd.Parameters ["i_ReturnValue"].Value ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TimeWindow", TimeWindow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_CurrentTimeUtc", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ReturnValue", ParameterDirection.ReturnValue));
+
+                sc.CommandText.AppendObjectQuery("prov_getnumberofusersonline", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+
+                return Convert.ToInt32(sc.Parameters["i_ReturnValue"].Value);
+            }  
         }
 
-        public DataRow GetUser(string connectionString, string appName, object providerUserKey, string userName, bool userIsOnline)
+        public DataRow GetUser(string connectionStringName, string appName, object providerUserKey, string userName, bool userIsOnline)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_getuser" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                
-               
-                if (providerUserKey != null)          
-                {                   
-                    providerUserKey = MySqlDbAccess.GuidConverter( new Guid(providerUserKey.ToString() ) );
-                }
 
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;               
-                cmd.Parameters.Add( "i_UserKey", MySqlDbType.String ).Value = providerUserKey;
-                cmd.Parameters.Add( "i_UserIsOnline", MySqlDbType.Byte ).Value = userIsOnline;
-                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
-                using ( var dt = MySqlDbAccess.GetData( cmd, connectionString)  )
+                if (providerUserKey != null)
                 {
-                    return dt.Rows.Count > 0 ? dt.Rows [0] : null;
+                    providerUserKey = MySqlHelpers.GuidConverter(new Guid(providerUserKey.ToString()));
                 }
-                
-            }
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", providerUserKey));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UserIsOnline", userIsOnline));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "I_UTCTIMESTAMP", DateTime.UtcNow));
 
+                sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+                using (var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                {                 
+                    return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+                }
+            }
         }
 
-        public DataTable GetUserPasswordInfo(string connectionString, string appName, string userName, bool updateUser)
+        public DataTable GetUserPasswordInfo(string connectionStringName, string appName, string userName, bool updateUser)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_getuser" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
-                cmd.Parameters.Add( "i_UserKey", MySqlDbType.String ).Value = DBNull.Value;
-                cmd.Parameters.Add( "i_UserIsOnline", MySqlDbType.Byte ).Value = updateUser;
-                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
-                return MySqlDbAccess.GetData( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", DBNull.Value));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UserIsOnline", updateUser));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "I_UTCTIMESTAMP", DateTime.UtcNow));
 
+                sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }  
         }
 
-        public DataTable GetUserNameByEmail(string connectionString, string appName, string email)
+        public DataTable GetUserNameByEmail(string connectionStringName, string appName, string email)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_getusernamebyemail" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_Email", MySqlDbType.VarChar ).Value = email ;
-                return MySqlDbAccess.GetData( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", email));
+
+                sc.CommandText.AppendObjectQuery("prov_getusernamebyemail", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }      
         }
 
-        public void ResetPassword(string connectionString, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
+        public void ResetPassword(string connectionStringName, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_resetpassword" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName;
-                cmd.Parameters.Add( "i_Password", MySqlDbType.VarChar ).Value = password ;
-                cmd.Parameters.Add( "i_PasswordSalt", MySqlDbType.VarChar ).Value = passwordSalt;
-                cmd.Parameters.Add( "i_PasswordFormat", MySqlDbType.VarChar ).Value = passwordFormat.ToString();
-                cmd.Parameters.Add( "i_MaxInvalidAttempts", MySqlDbType.Int32 ).Value = maxInvalidPasswordAttempts;
-                cmd.Parameters.Add( "i_PasswordAttemptWindow", MySqlDbType.Int32 ).Value = passwordAttemptWindow;
-                cmd.Parameters.Add( "i_CurrentTimeUtc", MySqlDbType.Timestamp ).Value = DateTime.UtcNow;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
 
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Password", password));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordSalt", passwordSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PasswordFormat", passwordFormat));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MaxInvalidAttempts", maxInvalidPasswordAttempts));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_passwordattemptwindow", passwordAttemptWindow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_CurrentTimeUtc", DateTime.UtcNow));
+
+                sc.CommandText.AppendObjectQuery("prov_resetpassword", connectionStringName);
+
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
-
         }
 
-        public void UnlockUser(string connectionString, string appName, string userName)
+        public void UnlockUser(string connectionStringName, string appName, string userName)
         {
-            using ( var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_unlockuser" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add( "i_ApplicationName",  MySqlDbType.VarChar ).Value= appName ;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_UserName", MySqlDbType.VarChar ).Value = userName ;
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+
+                sc.CommandText.AppendObjectQuery("prov_unlockuser", connectionStringName);
+
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            } 
         }
 
-        public int UpdateUser(string connectionString, object appName, MembershipUser user, bool requiresUniqueEmail)
+        public int UpdateUser(string connectionStringName, object appName, MembershipUser user, bool requiresUniqueEmail)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_updateuser")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
                 object providerUserKey = null;
                 if (user.ProviderUserKey != null)
                 {
-                    providerUserKey = MySqlDbAccess.GuidConverter(new Guid(user.ProviderUserKey.ToString())).ToString();
+                    providerUserKey = MySqlHelpers.GuidConverter(new Guid(user.ProviderUserKey.ToString())).ToString();
                 }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", providerUserKey));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", user.UserName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", user.Email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Comment", user.Comment));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsApproved", user.IsApproved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastLogin", user.LastLoginDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastActivity", user.LastActivityDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UniqueEmail", requiresUniqueEmail));
 
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add("i_UserKey", MySqlDbType.String).Value = providerUserKey;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = user.UserName;
-                cmd.Parameters.Add("i_Email", MySqlDbType.VarChar).Value = user.Email;
-                cmd.Parameters.Add("i_Comment", MySqlDbType.VarChar).Value = user.Comment;
-                cmd.Parameters.Add("i_IsApproved", MySqlDbType.Byte).Value = user.IsApproved;
-                cmd.Parameters.Add("i_LastLogin", MySqlDbType.Timestamp).Value = user.LastLoginDate;
-                cmd.Parameters.Add("i_LastActivity", MySqlDbType.Timestamp).Value = user.LastActivityDate.ToUniversalTime();
-                cmd.Parameters.Add("i_UniqueEmail", MySqlDbType.Byte).Value = requiresUniqueEmail;
+                sc.CommandText.AppendObjectQuery("prov_updateuser", connectionStringName);
 
-                return (int)MySqlDbAccess.ExecuteScalar(cmd, connectionString); // Execute Scalar
-
-            }
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }        
         }
         public void UpgradeMembership(int previousVersion, int newVersion)
         {
-            UpgradeMembership(VzfMySqlMembershipProvider.ConnStrAppKeyName, previousVersion, newVersion);
+            UpgradeMembership(VzfMySqlMembershipProvider.ConnectionStringName, previousVersion, newVersion);
         }
 
-        public void UpgradeMembership(string connectionString, int previousVersion, int newVersion)
+        public void UpgradeMembership(string connectionStringName, int previousVersion, int newVersion)
         {
-            using (var cmd = new MySqlCommand( MySqlDbAccess.GetObjectName( "prov_upgrade" ) ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                // Nonstandard args
-                cmd.Parameters.Add( "i_PreviousVersion", MySqlDbType.Int32 ).Value = previousVersion;
-                cmd.Parameters.Add( "i_NewVersion", MySqlDbType.Int32 ).Value = newVersion;
-                cmd.Parameters.Add("i_UTCTIMESTAMP", MySqlDbType.DateTime).Value = DateTime.UtcNow;
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PreviousVersion", previousVersion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_NewVersion", newVersion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
-                MySqlDbAccess.ExecuteNonQuery( cmd, connectionString) ;
-            }
+                sc.CommandText.AppendObjectQuery("prov_upgrade", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }     
 
         }
 

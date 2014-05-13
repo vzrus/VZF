@@ -410,7 +410,7 @@ namespace YAF.Pages.Admin
             {
                 this.DBSize.Text = "{0} MB".FormatWith(CommonDb.GetDbSize(PageContext.PageModuleID));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.DBSize.Text = this.GetText("ADMIN_ADMIN", "ERROR_DATABASESIZE");
             }

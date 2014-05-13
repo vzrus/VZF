@@ -168,8 +168,7 @@ namespace YAF.Providers.Profile
             // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
             using (var sc = new SQLCommand(connectionStringName))
             {
-                sc.CommandText.AppendQuery(@"SELECT FIRST 1 * FROM ");
-                sc.CommandText.AppendObjectQuery("P_profile", connectionStringName);
+                sc.CommandText.AppendQuery(String.Format("SELECT FIRST 1 * FROM {0}", ObjectName.GetVzfObjectName("P_profile", SqlDbAccess.GetProviderName(connectionStringName))));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
             }
         }
@@ -256,11 +255,7 @@ namespace YAF.Providers.Profile
 
             bool profileExists = false;
             using (var sc = new SQLCommand(connectionStringName))
-            {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "I_valueindex", index));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "I_stringdata", stringData));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "I_binarydata", binaryData));
-                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "current_utctimestamp", DateTime.Now));
+            {            
 
                 // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
 

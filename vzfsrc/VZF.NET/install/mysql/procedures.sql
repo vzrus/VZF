@@ -2177,10 +2177,10 @@ WHERE    (a.Flags & 24) = 16
 ORDER BY a.Posted DESC LIMIT 1;
 ELSE
 SELECT
-        0 AS Posts,
-        0 AS Topics,
-        1 AS Forums,	
-        1 AS LastPostInfoID,
+        {databaseName}.{objectQualifier}biginttoint(0) AS Posts,
+        {databaseName}.{objectQualifier}biginttoint(0) AS Topics,
+        {databaseName}.{objectQualifier}biginttoint(1) AS Forums,	
+        {databaseName}.{objectQualifier}biginttoint(1) AS LastPostInfoID,
         NULL AS LastPost,
         NULL AS LastUserID,
         NULL AS LastUser,
@@ -3704,7 +3704,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forum_moderatelist(i_BoardID IN
  DECLARE bf0 TINYINT(1) DEFAULT 0;
  DECLARE bf1 TINYINT(1) DEFAULT 1;
     SELECT
-        CAST(a.ForumID AS UNSIGNED) AS ForumID,
+        {databaseName}.{objectQualifier}biginttoint(a.ForumID) AS ForumID,
         f.Name AS ForumName, 
         a.GroupID AS ModeratorID, 
         b.Name AS ModeratorName,
@@ -3725,7 +3725,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}forum_moderatelist(i_BoardID IN
         (c.Flags & 64)<>0
     UNION ALL
     SELECT 
-        CAST(acc.ForumID AS UNSIGNED) AS ForumID, 
+        yafnet.yaf_biginttoint(acc.ForumID) AS ForumID, 
         f.Name AS ForumName, 		 
         usr.UserID AS ModeratorID, 
         usr.Name AS ModeratorName,
@@ -7798,7 +7798,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_active
     i_PageIndex INT, 	
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
-    i_FindLastRead TINYINT(1) 	
+    i_FindLastUnread TINYINT(1),
+	i_UTCTIMESTAMP DATETIME 	
 )	
 BEGIN
 
@@ -7923,11 +7924,11 @@ INTO @i_FirstSelectLastPosted,
         (case(',i_StyledNicks,')
             when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)  
             else ''''	 end ) AS LastUserStyle,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) AS LastForumAccess,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) AS  LastTopicAccess,
@@ -9876,61 +9877,184 @@ begin
   
    declare ici_user_totalrowsnumber int; 
    declare ici_firstselectrownum int;
-  
+   declare literals0 varchar(500) DEFAULT CONCAT('%',LOWER(IFNULL(I_Literals,'')),'%');
+   declare literals1 varchar(500) DEFAULT CONCAT(LOWER(IFNULL(I_Literals,'')),'%');
+   declare litaralsAll varchar(4) default '%'; 
+   declare ici_wildcard char(1) default '%' ;
+
 /*   declare ici_firstselectrankid int;
    declare ici_firstselectlastvisit datetime;
    declare ici_firstselectjoined datetime;
    declare ici_firstselectposts int;
-   declare ici_firstselectuserid int; */
-
-  
-  
-                
+   declare ici_firstselectuserid int; */            
 
     --	SET @user_totalrowsnumber = @@ROWCOUNT    
 
    SET I_PageIndex = I_PageIndex+1;   
    SET ici_firstselectrownum = (I_PageIndex - 1) * I_PageSize + 1; 
    SET ici_firstselectrownum = ici_firstselectrownum -1 ;
-      
+     SET  @ici_firstselectuserid = NULL; 
+     SET  @ici_firstselectlastvisit =NULL; 
+      SET @ici_firstselectjoined = NULL; 
+     SET  @ici_firstselectrankid = null; 
+     SET  @ici_firstselectposts	= NULL;
       -- fined first selectedrowid  
     /*  if (ici_firstselectrownum > 0)
       set rowcount ici_firstselectrownum
       else
       set rowcount	1 */
 
-    PREPARE stmt_ulm FROM 'select  a.Name AS ici_firstselectuserid,  
-              a.LastVisit AS ici_firstselectlastvisit, 
-              a.Joined AS ici_firstselectjoined, 
-              a.RankID as ici_firstselectrankid, 
-              a.NumPosts as ici_firstselectposts			
+    SET @stmt_ulm_str = (CONCAT('select  a.Name, a.LastVisit,a.Joined,a.RankID , a.NumPosts
+	           INTO @ici_firstselectuserid,  
+               @ici_firstselectlastvisit, 
+               @ici_firstselectjoined, 
+               @ici_firstselectrankid, 
+               @ici_firstselectposts			
       from {databaseName}.{objectQualifier}User a 
       join {databaseName}.{objectQualifier}Rank b 
       on b.RankID=a.RankID 
      where
-       a.BoardID = ?	   
+       a.BoardID = ',I_BoardID,'	   
        and
-        (? is null or (? = 0 and (a.Flags & 2)=0) or (? = 1 and (a.Flags & 2)=2)) and
-        (? is null or exists(select 1 from {databaseName}.{objectQualifier}UserGroup x where x.UserID=a.UserID 
-        and x.GroupID=?)) and
-        (? is null or a.RankID = ?) AND
-        IFNULL(a.Flags & 4,0) <> 4
-            AND     
+        (',I_Approved IS NULL,' or (',IFNULL(I_Approved,2),' = 0 and (a.Flags & 2)=0) or (',IFNULL(I_Approved,0),' = 1 and (a.Flags & 2)=2)) and
+        (',I_GroupID IS NULL,' or exists(select 1 from {databaseName}.{objectQualifier}UserGroup x where x.UserID=a.UserID 
+        and x.GroupID=',IFNULL(I_GroupID,0),')) and
+        (',IFNULL(I_RankID,0),' = 0 or a.RankID = ',IFNULL(I_RankID,0),') AND
+        (a.Flags & 4) <> 4
+               AND     
          LOWER(a.DisplayName) LIKE (CASE 
-            WHEN (? = 0 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (?) 
-            WHEN (? = 1 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN (?)
-            ELSE (?) END) 
-            
+            WHEN (',I_BeginsWith,' = 0 AND ',I_Literals IS NOT NULL ,') THEN (''',literals0,''')  
+            WHEN (',I_BeginsWith,' = 1 AND ',I_Literals IS NOT NULL ,') THEN (''',literals1,''')
+            ELSE (''%'') END)           
+       and       
+        (a.NumPosts >= (case 
+        when ',I_NumPostsCompare,' = 3 then  ',I_NumPosts,' end) 
+        OR a.NumPosts <= (case 
+        when ',I_NumPostsCompare,' = 2 then ',I_NumPosts,' end) OR
+        a.NumPosts = (case 
+        when ',I_NumPostsCompare,' = 1 then ',I_NumPosts,' end)) 
+     order by  	 
+        (case 
+        when ',I_SortName,' = 2 then a.Name end) DESC,
+        (case 
+        when ',I_SortName,' = 1 then a.Name end) ASC, 
+        (case 
+        when ',I_SortRank,' = 2 then a.RankID end) DESC,
+        (case 
+        when ',I_SortRank,' = 1 then a.RankID end) ASC,		
+        (case 
+        when ',I_SortJoined,' = 2 then a.Joined end) DESC,
+        (case 
+        when ',I_SortJoined,' = 1 then a.Joined end) ASC,
+        (case 
+        when ',I_SortLastVisit,' = 2 then a.LastVisit end) DESC,
+        (case 
+        when ',I_SortLastVisit,' = 1 then a.LastVisit end) ASC,
+        (case
+         when ',I_SortPosts,' = 2 then a.NumPosts end) DESC, 
+        (case
+         when ',I_SortPosts,' = 1 then a.NumPosts end) ASC  LIMIT 1 OFFSET ',ici_firstselectrownum,';'));          
+        PREPARE stmt_ulm FROM @stmt_ulm_str;
+		 EXECUTE stmt_ulm;
+		 DEALLOCATE PREPARE stmt_ulm; 
+
+		 if (CHAR_LENGTH(@ici_firstselectuserid) > 0) THEN
+  -- get total number of users in the db
+   select CAST(count(a.UserID) AS SIGNED) INTO ici_user_totalrowsnumber
+    from {databaseName}.{objectQualifier}User a  
+      join {databaseName}.{objectQualifier}Rank b 
+      on b.RankID=a.RankID 
+      where
+       a.BoardID = I_BoardID	   
        and
-       
+        (I_Approved is null or (I_Approved=0 and (a.Flags & 2)<>2) or (I_Approved=1 and (a.Flags & 2)=2)) and
+        (I_GroupID is null or exists(select 1 from {databaseName}.{objectQualifier}UserGroup x where x.UserID=a.UserID and x.GroupID=I_GroupID)) and
+        (I_RankID is null or a.RankID=I_RankID) AND
+        -- user is not guest
+        IFNULL(a.Flags & 4,0) <> 4
+            AND
+        LOWER(a.DisplayName) LIKE CASE 
+            WHEN (I_BeginsWith = 0 AND I_Literals IS NOT NULL AND CHAR_LENGTH(I_Literals) > 0) THEN CONCAT('%', LOWER(IFNULL(I_Literals,'')) , '%') 
+            WHEN (I_BeginsWith = 1 AND I_Literals IS NOT NULL AND CHAR_LENGTH(I_Literals) > 0) THEN CONCAT(LOWER(IFNULL(I_Literals,'')), '%')
+            ELSE '%' END  
+        and
+        (a.NumPosts >= (case 
+        when I_NumPostsCompare = 3 then  I_NumPosts end) 
+        OR a.NumPosts <= (case 
+        when I_NumPostsCompare = 2 then I_NumPosts end) OR
+        a.NumPosts = (case 
+        when I_NumPostsCompare = 1 then I_NumPosts end)); 
+		  PREPARE stlistmem FROM 
+          'select a.*,			
+                  a.Culture AS CultureUser,
+                  (select COUNT(1) from {databaseName}.{objectQualifier}UserGroup x 
+                  join {databaseName}.{objectQualifier}Group y 
+                  on y.GroupID=x.GroupID
+                  where x.UserID=a.UserID 
+                  and (y.Flags & 1)=1) AS IsAdmin,
+                 IFNULL(a.Flags & 1,0) AS IsHostAdmin,
+                 b.RankID,
+                 b.Name AS RankName,
+                 (case(?)
+                 when 1 then  a.UserStyle
+                 else '''' end) AS Style,
+                {databaseName}.{objectQualifier}biginttoint(?) as TotalCount
+                 from {databaseName}.{objectQualifier}User a 
+                 join {databaseName}.{objectQualifier}Rank b on b.RankID=a.RankID	
+      where 
+                  (a.Name >= (case 
+                                 when ? = 1 then ? end) OR a.Name <= (case 
+                                 when ? = 2 then ? end) OR
+                   a.Name >= (case 
+                                 when ? = 0 then '''' end)) 
+                 and
+        (a.Joined >= (case 
+        when ? = 1 then ? end) 
+        OR a.Joined <= (case 
+        when ? = 2 then ? end) OR
+        a.Joined >= (case 
+        when ? = 0 then 0 end)) and
+        (a.LastVisit >= (case 
+        when ? = 1 then  ? end) 
+        OR a.LastVisit <= (case 
+        when ? = 2 then ? end) OR
+        a.LastVisit >= (case 
+        when ? = 0 then 0 end))  and
         (a.NumPosts >= (case 
         when ? = 3 then  ? end) 
         OR a.NumPosts <= (case 
         when ? = 2 then ? end) OR
         a.NumPosts = (case 
-        when ? = 1 then ? end)) 
-     order by  	 
-        (case 
+        when ? = 1 then ? end))  and
+        /*
+        (a.NumPosts >= (case 
+        when @SortPosts = 1 then @ici_firstselectposts end) 
+        OR a.NumPosts <= (case 
+        when @SortPosts = 2 then @ici_firstselectposts end) OR
+        a.NumPosts >= (case 
+        when @SortPosts = 0 then 0 end))   and
+        (a.RankID >= (case 
+        when @SortRank = 1 then @ici_firstselectrankid end) 
+        OR a.RankID <= (case 
+        when @SortRank = 2 then @ici_firstselectrankid end) OR
+        a.RankID >= (case 
+        when @SortRank = 0 then 0 end)) and */
+    
+             a.BoardID = ? and
+            (? is null or (?=0 and (a.Flags & 2)<>2) or (?=1 and (a.Flags & 2)=2)) and
+            (? is null or exists(SELECT 1 FROM {databaseName}.{objectQualifier}UserGroup x 
+            where x.UserID=a.UserID and x.GroupID=?)) and
+            (? is null or a.RankID=?) AND
+            IFNULL(a.Flags & 4,0) <> 4
+            AND
+            LOWER(a.DisplayName) LIKE 
+            CASE 
+            WHEN (? = 0 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN CONCAT(''%'', LOWER(?), ''%'') 
+            WHEN (? = 1 AND ? IS NOT NULL AND CHAR_LENGTH(?) > 0) THEN CONCAT(LOWER(?), ''%'')
+            ELSE ''%'' 
+            END 
+    ORDER BY 	
+     (case 
         when ? = 2 then a.Name end) DESC,
         (case 
         when ? = 1 then a.Name end) ASC, 
@@ -9949,63 +10073,103 @@ begin
         (case
          when ? = 2 then a.NumPosts end) DESC, 
         (case
-         when ? = 1 then a.NumPosts end) ASC  LIMIT 1 OFFSET ?;';
+         when ? = 1 then a.NumPosts end) ASC LIMIT ?';
 
+         SET @PI_StyledNicks = I_StyledNicks;
+         SET @PI_SortName = I_SortName;
+         SET @pici_user_totalrowsnumber = ici_user_totalrowsnumber;
+         SET @pici_firstselectuserid = @ici_firstselectuserid;
+         SET @PI_SortJoined = I_SortJoined ;
+         SET @pici_firstselectjoined =  @ici_firstselectjoined;
+         SET @PI_SortLastVisit = I_SortLastVisit;
+         SET @pici_firstselectlastvisit = @ici_firstselectlastvisit; 
+         SET @PI_NumPostsCompare = I_NumPostsCompare;
+         SET @PI_NumPosts = I_NumPosts;
          SET @PI_BoardID = I_BoardID;
          SET @PI_Approved = I_Approved;
          SET @PI_GroupID = I_GroupID;
          SET @PI_RankID = I_RankID;
          SET @PI_BeginsWith = I_BeginsWith;
          SET @PI_Literals = I_Literals;
-         SET @PI_Literals0 = CONCAT('%',LOWER(IFNULL(I_Literals,'')),'%');
-         SET @PI_Literals1 = CONCAT(LOWER(IFNULL(I_Literals,'')),'%');
-         SET @PI_LiteralsALL ='%';
-         SET @PI_NumPostsCompare = I_NumPostsCompare;
-         SET @PI_NumPosts = I_NumPosts;
-         SET @PI_SortName = I_SortName;
-         SET @PI_SortRank = I_SortRank;
-         SET @PI_SortJoined = I_SortJoined;
-         SET @PI_SortLastVisit = I_SortLastVisit;
+         SET @PI_Literals = I_Literals;		
+         SET @PI_BeginsWith = I_BeginsWith;
+         SET @PI_Literals = I_Literals;
+         SET @PI_Literals = I_Literals;
+         SET @PI_Literals = I_Literals;
          SET @PI_SortPosts = I_SortPosts;
-         SET @Pici_firstselectrownum = ici_firstselectrownum;
+         SET @PI_SortRank = I_SortRank;
+         SET @PI_PageSize = I_PageSize;
+        
 
-         EXECUTE stmt_ulm USING
-         @PI_BoardID,		
-         @PI_Approved,
-         @PI_Approved,
-         @PI_Approved,
-         @PI_GroupID,
-         @PI_GroupID,
-         @PI_RankID,
-         @PI_RankID,
-         @PI_BeginsWith,
-         @PI_Literals,
-         @PI_Literals,
-         @PI_Literals0,
-         @PI_BeginsWith,
-         @PI_Literals,
-         @PI_Literals,
-         @PI_Literals1,	
-         @PI_LiteralsALL,
-         @PI_NumPostsCompare,
-         @PI_NumPosts,
-         @PI_NumPostsCompare,
-         @PI_NumPosts,
-         @PI_NumPostsCompare,
-         @PI_NumPosts,
-         @PI_SortName,
-         @PI_SortName,
-         @PI_SortRank,
-         @PI_SortRank,
-         @PI_SortJoined,
-         @PI_SortJoined,
-         @PI_SortLastVisit,
-         @PI_SortLastVisit,
-         @PI_SortPosts,
-         @PI_SortPosts, 
-         @Pici_firstselectrownum;
-             
-  DEALLOCATE PREPARE stmt_ulm;  
+ EXECUTE stlistmem USING 
+ @PI_StyledNicks, 
+ @pici_user_totalrowsnumber, 
+ -- where
+ @PI_SortName, 
+ @pici_firstselectuserid, 
+ @PI_SortName, 
+ @pici_firstselectuserid,
+ @PI_SortName,
+ @PI_SortJoined,
+ @pici_firstselectjoined,
+ @PI_SortJoined,
+ @pici_firstselectjoined,
+ @PI_SortJoined,
+ @PI_SortLastVisit,
+ @pici_firstselectlastvisit,
+ @PI_SortLastVisit,
+ @pici_firstselectlastvisit,
+ @PI_SortLastVisit,
+ @PI_NumPostsCompare,
+ @PI_NumPosts,
+ @PI_NumPostsCompare,
+ @PI_NumPosts,
+ @PI_NumPostsCompare,
+ @PI_NumPosts,
+ -- where boardid section 
+ @PI_BoardID,
+ @PI_Approved,
+ @PI_Approved,
+ @PI_Approved,
+
+ @PI_GroupID,
+ @PI_GroupID,
+ @PI_RankID,
+ @PI_RankID,
+ @PI_BeginsWith,
+ @PI_Literals,
+ @PI_Literals,
+ @PI_Literals,
+ @PI_BeginsWith,
+ @PI_Literals,
+ @PI_Literals,
+ @PI_Literals,
+ -- order by
+ @PI_SortName,
+ @PI_SortName,
+ @PI_SortRank,
+ @PI_SortRank,
+ @PI_SortJoined,
+ @PI_SortJoined,
+ @PI_SortLastVisit,
+ @PI_SortLastVisit,
+ @PI_SortPosts,
+ @PI_SortPosts,
+ -- limit
+ @PI_PageSize;
+ DEALLOCATE PREPARE stlistmem;
+ else
+ select a.*,			
+                 a.Culture AS CultureUser,
+                 0 AS IsAdmin,
+                 0 AS IsHostAdmin,
+                 1,
+                 '' AS RankName,
+                 '' AS Style,
+                 0 as TotalCount
+                 from {databaseName}.{objectQualifier}User a 
+      where a.UserID = -1;
+ end if;
 end;
 --GO
 
@@ -10306,7 +10470,7 @@ BEGIN
             -- {databaseName}.{objectQualifier}biginttoint(IFNULL(a.Flags & 4,0)) AS IsGuest,
             DATEDIFF(i_UTCTIMESTAMP,a.Joined)+1 AS NumDays,
             (SELECT COUNT(1) FROM {databaseName}.{objectQualifier}Message x WHERE (x.Flags & 24)=16) AS NumPostsForum,
-            SIGN((SELECT 1 FROM {databaseName}.{objectQualifier}User x 
+            SIGN((SELECT COUNT(1) FROM {databaseName}.{objectQualifier}User x 
                           WHERE x.UserID=a.UserID 
                             AND AvatarImage IS NOT NULL LIMIT 1)) AS HasAvatarImage, 
             {databaseName}.{objectQualifier}biginttoint(IFNULL(c.IsAdmin,0)) AS IsAdmin,
@@ -11582,7 +11746,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_latest
     i_PageUserID INT,
     i_StyledNicks TINYINT(1),
     i_ShowNoCountPosts TINYINT(1),
-    i_FindLastRead TINYINT(1),
+    i_FindLastUnread TINYINT(1),
 	i_UTCTIMESTAMP DATETIME
  )
  BEGIN
@@ -11612,11 +11776,11 @@ set @tlpreps = CONCAT('SELECT
         (case(',i_StyledNicks,')
               when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=t.LastUserID)  
             else null end) AS LastUserStyle,	
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=f.ForumID AND x.UserID = ',i_PageUserID,' LIMIT 1)
              else CAST(NULL AS DATETIME)	end) AS LastForumAccess,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=t.TopicID AND y.UserID = ',i_PageUserID,' LIMIT 1)
              else CAST(NULL AS DATETIME)	 end) AS  	LastTopicAccess    
@@ -11922,10 +12086,11 @@ BEGIN
         CREATE  PROCEDURE {databaseName}.{objectQualifier}db_size(
         i_DbScheme VARCHAR(128), i_DbName VARCHAR(128))
         BEGIN
+		SELECT DATABASE() INTO  i_DbScheme;
         SELECT 
         IFNULL((ROUND(((SUM(t.data_length)+ SUM(t.index_length))/1048576),2)),0)
         FROM INFORMATION_SCHEMA.TABLES t 
-        WHERE t.engine = 'InnoDB' AND t.TABLE_SCHEMA=i_DbName;
+        WHERE t.engine = 'InnoDB' AND t.TABLE_SCHEMA = i_DbScheme;
         END;
 --GO
 
@@ -12468,7 +12633,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_favorite_details
     i_PageIndex INT, 	
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
-    i_FindLastRead TINYINT(1) 
+    i_FindLastUnread TINYINT(1),
+	i_UTCTIMESTAMP DATETIME 	 
     )
 BEGIN
  DECLARE  ici_post_totalrowsnumber INT; 
@@ -12581,11 +12747,11 @@ INTO @i_FirstSelectLastPosted, @i_FirstSelectPosted
         (case(',i_StyledNicks,')
             when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)  
             else ''''	 end) AS LastUserStyle,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) as LastForumAccess,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) as LastTopicAccess,
@@ -13342,7 +13508,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topics_byuser
     i_PageIndex INT, 	
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
-    i_FindLastRead TINYINT(1)
+    i_FindLastUnread TINYINT(1),
+	i_UTCTIMESTAMP DATETIME 	
     )
 BEGIN
  DECLARE  ici_post_totalrowsnumber INT; 
@@ -13452,11 +13619,11 @@ INTO @i_FirstSelectLastPosted,@i_FirstSelectPosted
         (case(',i_StyledNicks,')
             when 1 then   (SELECT usr.UserStyle FROM  {databaseName}.{objectQualifier}User usr WHERE usr.UserID=c.LastUserID)   
             else ''''	 end) as LastUserStyle,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(x.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}ForumReadTracking x WHERE x.ForumID=d.ForumID AND x.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) as LastForumAccess,
-        (case(',i_FindLastRead,')
+        (case(',i_FindLastUnread,')
              when 1 then
                (SELECT  CAST(y.LastAccessDate AS DATETIME) FROM {databaseName}.{objectQualifier}TopicReadTracking y WHERE y.TopicID=c.TopicID AND y.UserID = ',i_PageUserID,' limit 1)
              else CAST(NULL AS DATETIME)	 end) as LastTopicAccess,	
@@ -13562,7 +13729,8 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}topic_unanswered
     i_PageIndex INT, 	
     i_PageSize INT,
     i_StyledNicks TINYINT(1),
-    i_FindLastRead TINYINT(1)
+    i_FindLastRead TINYINT(1),	
+	i_UTCTIMESTAMP DATETIME 	
     )
 BEGIN
 
@@ -14368,7 +14536,7 @@ END;
 CREATE PROCEDURE {databaseName}.{objectQualifier}user_listtodaysbirthdays(
     i_BoardID 	        INT,
 	i_StyledNicks       TINYINT(1),
-    i_CurrentYear	    DATETIME,
+    i_CurrentYear	    INT,
     i_CurrentUtc	    DATETIME,
 	i_CurrentUtc1	    DATETIME,
 	i_CurrentUtc2	    DATETIME
@@ -14384,7 +14552,7 @@ CREATE PROCEDURE {databaseName}.{objectQualifier}user_listtodaysbirthdays(
 		FROM {databaseName}.{objectQualifier}UserProfile up 
 		JOIN {databaseName}.{objectQualifier}User u ON u.UserID = up.UserID 
 		where u.BoardID = i_BoardID 
-		AND (DATE_ADD(up.Birthday,INTERVAL (YEAR(i_CurrentDate1) - YEAR(up.Birthday)) YEAR)  BETWEEN i_CurrentDate1 and i_CurrentDate2;             
+		AND (DATE_ADD(up.Birthday,INTERVAL (YEAR(i_CurrentUtc1) - YEAR(up.Birthday)) YEAR)  BETWEEN i_CurrentUtc1 and i_CurrentUtc2);             
 END;
 --GO
 

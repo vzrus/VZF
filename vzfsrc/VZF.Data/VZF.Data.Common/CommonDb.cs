@@ -738,8 +738,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID != null && AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
 
                 sc.CommandText.AppendObjectQuery("album_getstats", mid);                
                 var strow = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
@@ -763,7 +763,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", albumId.ToString() == "0" ? null : albumId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (albumId == null || albumId.ToString() == "0") ? null : albumId));
 
                 sc.CommandText.AppendObjectQuery("album_gettitle", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
@@ -853,7 +853,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", ImageID.ToString() == "0" ? null : ImageID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", (ImageID == null || ImageID.ToString() == "0") ? null : ImageID));
 
                 sc.CommandText.AppendObjectQuery("album_image_list", mid);
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -900,8 +900,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", (imageId == null || imageId.ToString() == "0") ? null : imageId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Caption", Caption));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", FileName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", Bytes));
@@ -932,8 +932,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID != null && AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
 
                 sc.CommandText.AppendObjectQuery("album_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -965,9 +965,9 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID.ToString() == "0" ? null : AlbumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserID.ToString() == "0" ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Title", string.IsNullOrEmpty(Title.ToString()) ? null : Title));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null  || AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Title", (Title == null || Title.ToString() == "") ? null : Title));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CoverImageID", CoverImageID));                
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
@@ -1383,7 +1383,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SearchRegEx", searchregex));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ReplaceRegEx", replaceregex));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Variables", variables));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UseModule", usemodule));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseModule", usemodule));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ModuleClass", moduleclass));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExecOrder", execorder ?? 1));
 
@@ -1628,7 +1628,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_LanguageFile", languageFile));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Culture", culture));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_AllowThreaded", allowThreaded));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_AllowThreaded", allowThreaded));
             
                 sc.CommandText.AppendObjectQuery("board_save", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
@@ -1683,6 +1683,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", true));
             
                 sc.CommandText.AppendObjectQuery("board_userstats", mid);
                 using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
@@ -1801,7 +1802,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "FromUserID", FromUserID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", FromUserID));
 
                 sc.CommandText.AppendObjectQuery("buddy_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -2951,7 +2952,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
               
                 sc.CommandText.AppendObjectQuery("group_eventlogaccesslist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -7436,7 +7437,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCrawler", isCrawler ?? false));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsMobileDevice", isMobileDevice ?? false));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DontTrack", donttrack ?? false));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
                 sc.CommandText.AppendObjectQuery("pageload", mid);
               /*  if (dt.Rows.Count > 0)
                 {
@@ -9441,8 +9442,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Version", version));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_VersionName", name));                
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Version", version));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_VersionName", name));                
 
                 sc.CommandText.AppendObjectQuery("system_updateversion", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -10483,7 +10484,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", topicID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Locked", locked));
 
                 sc.CommandText.AppendObjectQuery("topic_lock", mid);
@@ -10993,7 +10994,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_FromUserID", forumUserId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Points", points));
 
                 sc.CommandText.AppendObjectQuery("user_addpoints", mid);
@@ -12902,7 +12903,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Memeber", member));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_Member", member));
 
                 sc.CommandText.AppendObjectQuery("usergroup_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -13147,8 +13148,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbScheme"));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbName"));           
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbScheme", null));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbName", null));           
 
                 sc.CommandText.AppendObjectQuery("db_size", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
@@ -13283,43 +13284,7 @@ namespace VZF.Data.Common
             }
         }
 
-        #region ConnectionStringOptions
-
-        /// <summary>
-        /// The get provider assembly name.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static string GetProviderAssemblyName(int? mid)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.ProviderAssemblyName;
-                case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.ProviderAssemblyName;
-                case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.ProviderAssemblyName;
-                case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.ProviderAssemblyName;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.ProviderAssemblyName;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.ProviderAssemblyName;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.ProviderAssemblyName; 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
+        #region ConnectionStringOptions       
 
         /// <summary>
         /// The get password placeholder visible.

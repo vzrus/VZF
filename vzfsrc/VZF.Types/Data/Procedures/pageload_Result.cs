@@ -26,7 +26,9 @@ namespace VZF.Types.Data
             UserID = dr.Field<int>("UserID");
             ForumID = dr.Field<int>("ForumID");
             IsAdmin = dr.Field<bool>("IsAdmin");
+            IsGuest = dr.Field<bool>("IsGuest");
             IsForumModerator = dr.Field<bool>("IsForumModerator");
+            IsModerator = dr.Field<bool>("IsModerator");       
             LastActive = dr.Field<DateTime?>("LastActive");
             ReadAccess = dr.Field<bool>("ReadAccess");
             PostAccess = dr.Field<bool>("PostAccess");
@@ -40,8 +42,7 @@ namespace VZF.Types.Data
             ReplyAccess = dr.Field<bool>("ReplyAccess");
             UploadAccess = dr.Field<bool>("UploadAccess");
             DownloadAccess = dr.Field<bool>("DownloadAccess");
-            UserForumAccess = dr.Field<bool>("UserForumAccess");
-            IsGuest = dr.Field<bool>("IsGuest");
+            UserForumAccess = dr.Field<bool>("UserForumAccess");          
             IsCrawler = dr.Field<bool>("IsCrawler");
             IsMobileDevice = dr.Field<bool>("IsMobileDevice");
             CategoryID = dr.Field<int?>("CategoryID");
@@ -50,6 +51,7 @@ namespace VZF.Types.Data
             TopicID = dr.Field<int?>("TopicID");
             TopicName = dr.Field<string>("TopicName");
             ForumTheme = dr.Field<string>("ForumTheme");
+           // BoardID = dr.Field<int>("BoardID");
         }
 
         public int? ModuleID { get; set; }

@@ -196,7 +196,7 @@ namespace YAF.Providers.Membership
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", username));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORD", password));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORDSALT", passwordSalt));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORDFORMAT", passwordFormat));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORDFORMAT", passwordFormat.ToString()));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_EMAIL", email));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORDQUESTION", passwordQuestion));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_PASSWORDANSWER", passwordAnswer));

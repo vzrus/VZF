@@ -29,35 +29,10 @@ namespace YAF.Providers.Roles
     using System;
     using System.Data;
 
-    using MySql.Data.MySqlClient;
-
-    using VZF.Data.Mysql;
-
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Core;
-
-    /// <summary>
-    /// The vzf my sql roles db conn manager.
-    /// </summary>
-    public class VzfMySqlRolesDBConnManager : MySqlDbConnectionManager
-    {
-        /// <summary>
-        /// Gets the connection string.
-        /// </summary>
-        public override string ConnectionString
-        {
-            get
-            {
-                if (YafContext.Application[VzfMySqlRoleProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[VzfMySqlRoleProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
+    using VZF.Data.DAL;  
 
     /// <summary>
     /// The my sql db.
@@ -90,15 +65,16 @@ namespace YAF.Providers.Roles
         /// <param name="roleName">
         /// The role name.
         /// </param>
-        public void AddUserToRole(string connectionString, object appName, object userName, object roleName)
+        public void AddUserToRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (MySqlCommand cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_addusertorole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_addusertorole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -114,14 +90,15 @@ namespace YAF.Providers.Roles
         /// <param name="roleName">
         /// The role name.
         /// </param>
-        public void CreateRole(string connectionString, object appName, object roleName)
-        {
-            using (MySqlCommand cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_createrole")))
+        public void CreateRole(string connectionStringName, object appName, object roleName)
+        {           
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_createrole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -143,26 +120,26 @@ namespace YAF.Providers.Roles
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int DeleteRole(string connectionString, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
+        public int DeleteRole(string connectionStringName, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_deleterole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                cmd.Parameters.Add("i_DeleteOnlyIfRoleIsEmpty", MySqlDbType.Byte).Value = deleteOnlyIfRoleIsEmpty;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteOnlyIfRoleIsEmpty", deleteOnlyIfRoleIsEmpty));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ReturnValue", ParameterDirection.ReturnValue));
 
-                var p = new MySqlParameter("i_ReturnValue", MySqlDbType.Int32)
-                            {
-                                Direction =
-                                    ParameterDirection.ReturnValue
-                            };
-                cmd.Parameters.Add(p);
-
-                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-
-                return Convert.ToInt32(cmd.Parameters["i_ReturnValue"].Value);
-            }
+                sc.CommandText.AppendObjectQuery("prov_role_deleterole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+                if (sc.Parameters["i_ReturnValue"].Value == DBNull.Value)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return Convert.ToInt32(sc.Parameters["i_ReturnValue"].Value);
+                }
+            }        
         }
 
         /// <summary>
@@ -180,15 +157,16 @@ namespace YAF.Providers.Roles
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public DataTable FindUsersInRole(string connectionString, object appName, object roleName)
+        public DataTable FindUsersInRole(string connectionStringName, object appName, object roleName)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_findusersinrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                return MySqlDbAccess.GetData(cmd, connectionString);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_findusersinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }       
         }
 
         /// <summary>
@@ -206,15 +184,16 @@ namespace YAF.Providers.Roles
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public DataTable GetRoles(string connectionString, object appName, object userName)
+        public DataTable GetRoles(string connectionStringName, object appName, object userName)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_getroles")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName;
-                return MySqlDbAccess.GetData(cmd, connectionString);
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_getroles", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }            
         }
 
         /// <summary>
@@ -232,15 +211,15 @@ namespace YAF.Providers.Roles
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public object GetRoleExists(string connectionString, object appName, object roleName)
+        public object GetRoleExists(string connectionStringName, object appName, object roleName)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_exists")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
 
-                return MySqlDbAccess.ExecuteScalar(cmd, connectionString);
+                sc.CommandText.AppendObjectQuery("prov_role_exists", connectionStringName);
+                return sc.ExecuteScalar(CommandType.StoredProcedure, false);
             }
         }
 
@@ -262,15 +241,16 @@ namespace YAF.Providers.Roles
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public DataTable IsUserInRole(string connectionString, object appName, object userName, object roleName)
+        public DataTable IsUserInRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_isuserinrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                return MySqlDbAccess.GetData(cmd, connectionString);
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_isuserinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
             }
         }
 
@@ -289,15 +269,16 @@ namespace YAF.Providers.Roles
         /// <param name="roleName">
         /// The role name.
         /// </param>
-        public void RemoveUserFromRole(string connectionString, object appName, string userName, string roleName)
+        public void RemoveUserFromRole(string connectionStringName, object appName, string userName, string roleName)
         {
-            using (var cmd = new MySqlCommand(MySqlDbAccess.GetObjectName("prov_role_removeuserfromrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("i_ApplicationName", MySqlDbType.VarChar).Value = appName;
-                cmd.Parameters.Add("i_UserName", MySqlDbType.VarChar).Value = userName;
-                cmd.Parameters.Add("i_RoleName", MySqlDbType.VarChar).Value = roleName;
-                MySqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
+
+                sc.CommandText.AppendObjectQuery("prov_role_removeuserfromrole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
     }

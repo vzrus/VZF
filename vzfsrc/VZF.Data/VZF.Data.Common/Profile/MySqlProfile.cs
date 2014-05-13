@@ -108,24 +108,24 @@ namespace VZF.Data.Common
                 }
 
                 columnStr.Append(",LastUpdatedDate ");
-                valueStr.Append(",i_LastUpdatedDate");
-                setStr.Append(",LastUpdatedDate=i_LastUpdatedDate");
+                valueStr.Append(",@i_LastUpdatedDate");
+                setStr.Append(",LastUpdatedDate = @i_LastUpdatedDate");
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastUpdatedDate", DateTime.UtcNow));     
 
                 // MembershipUser mu = System.Web.Security.Membership.GetUser(userID);
                 columnStr.Append(",LastActivity ");
-                valueStr.Append(",i_LastActivity");
-                setStr.Append(",LastActivity=i_LastActivity");
+                valueStr.Append(",@i_LastActivity");
+                setStr.Append(",LastActivity=@i_LastActivity");
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastActivity", DateTime.UtcNow));   
 
                 columnStr.Append(",ApplicationName ");
-                valueStr.Append(",i_ApplicationName");
-                setStr.Append(",ApplicationName=i_ApplicationName");
+                valueStr.Append(",@i_ApplicationName");
+                setStr.Append(",ApplicationName=@i_ApplicationName");
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));  
 
                 columnStr.Append(",IsAnonymous ");
-                valueStr.Append(",i_IsAnonymous");
-                setStr.Append(",IsAnonymous=i_IsAnonymous");
+                valueStr.Append(",@i_IsAnonymous");
+                setStr.Append(",IsAnonymous=@i_IsAnonymous");
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAnonymous", false));  
 
                 columnStr.Append(",UserName ");
@@ -167,9 +167,9 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
             }
-        }
+        }        
 
         /// <summary>
         /// The add profile column.
@@ -192,14 +192,38 @@ namespace VZF.Data.Common
             // get column type...
             string type = columnType.ToString();
 
-            if (size > 0)
+            if (type.ToLower().Contains("datetime"))
+            { type = "DATETIME"; }
+            if (type.Contains("String"))
             {
-                type += "(" + size + ")";
+                if (size > 21844)
+                {
+                    type = "TEXT";
+                }
+                else
+                {
+                    type = "VARCHAR";
+                }
             }
 
-            if (type.IndexOf("Int32", System.StringComparison.Ordinal) >= 0)
+            if (type.Contains("Int32"))
+            { type = "INT"; }
+            if (type.Contains("Boolean"))
+            { type = "TINYINT"; }
+
+            if (size > 0)
             {
-                type = "INT";
+                type += "(" + size.ToString() + ")";
+            }
+
+            if (type.ToLowerInvariant().Contains("varchar") && ObjectName.DatabaseEncoding != null)
+            {
+                type += " CHARACTER SET " + ObjectName.DatabaseEncoding;
+
+                if (ObjectName.DatabaseCollation != null)
+                {
+                    type += " COLLATE " + ObjectName.DatabaseEncoding + "_" + ObjectName.DatabaseCollation;
+                }
             }
 
             string sql = "ALTER TABLE {0} ADD {1} {2}".FormatWith(
@@ -208,7 +232,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+                sc.ExecuteNonQuery(CommandType.Text, true);
             }
         }
 
@@ -248,7 +272,7 @@ namespace VZF.Data.Common
             // vzrus addon convert values from mssql types...
             if (chunk[1].IndexOf("varchar", System.StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "VarChar";
+                chunk[1] = "String";
             }
 
             if (chunk[1].IndexOf("int", System.StringComparison.Ordinal) >= 0)

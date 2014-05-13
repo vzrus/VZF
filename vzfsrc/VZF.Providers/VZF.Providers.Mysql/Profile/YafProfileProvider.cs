@@ -34,12 +34,12 @@ namespace YAF.Providers.Profile
     using System.Text;
     using System.Web.Profile;
 
-    using MySql.Data.MySqlClient;
-
     using YAF.Classes;
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
+    using VZF.Data.DAL;
+    using VZF.Data.Common;
 
     /// <summary>
     /// YAF Custom Profile Provider
@@ -55,7 +55,7 @@ namespace YAF.Providers.Profile
         private string _connStrName;        
         private bool _propertiesSetup = false;
         private object _propertyLock = new object();
-        private System.Collections.Generic.List<MySqlSettingsPropertyColumn> _settingsColumnsList = new System.Collections.Generic.List<MySqlSettingsPropertyColumn>();
+        private System.Collections.Generic.List<SettingsPropertyColumn> _settingsColumnsList = new System.Collections.Generic.List<SettingsPropertyColumn>();
     #endregion
     #region Properties
         private static string _connectionString;
@@ -89,6 +89,11 @@ namespace YAF.Providers.Profile
             {
                 _connectionString = value;
             }
+        }
+        public static string ConnectionStringName
+        {
+            get;
+            set;
         }
         /// <summary>
         /// The application name that is stored with each profile. 
@@ -165,13 +170,14 @@ namespace YAF.Providers.Profile
             {
                 this._appName = "YetAnotherForum";
             }
-
+          
             // is the connection string set?
             if (!string.IsNullOrEmpty(this._connStrName))
             {
                 string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
-                ConnectionString = connStr;
 
+                ConnectionString = connStr;
+                ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
                 // set the app variable...
                 if (YafContext.Application[ConnStrAppKeyName] == null)
                 {
@@ -240,7 +246,7 @@ namespace YAF.Providers.Profile
                     }
 
                     // get this profile from the MySQLDB				
-                    DataTable profileDT = MySQLDB.Current.GetProfiles(ConnectionString,this.ApplicationName, 0, 1, username, null);
+                    DataTable profileDT = MySQLDB.Current.GetProfiles(ConnectionStringName,this.ApplicationName, 0, 1, username, null);
 
                     if (profileDT.Rows.Count > 0)
                     {
@@ -275,7 +281,7 @@ namespace YAF.Providers.Profile
 
                     // retrieve encoded profile data from the database
 
-                    DataTable dt = MySQLDB.Current.GetProfiles(ConnectionString,this.ApplicationName, 0, 1, username, null);
+                    DataTable dt = MySQLDB.Current.GetProfiles(ConnectionStringName,this.ApplicationName, 0, 1, username, null);
 
                     if (dt.Rows.Count > 0)
                     {
@@ -360,12 +366,12 @@ namespace YAF.Providers.Profile
             // load the data for the configuration
             LoadFromPropertyValueCollection(collection);
 
-            object userID = MySQLDB.Current.GetProviderUserKey(ConnectionString,this.ApplicationName, username);
+            object userID = MySQLDB.Current.GetProviderUserKey(ConnectionStringName,this.ApplicationName, username);
             if (userID != null)
             {
 
                 // start saving...
-                MySQLDB.Current.SetProfileProperties(ConnectionString,this.ApplicationName, userID, collection, _settingsColumnsList);
+                MySQLDB.Current.SetProfileProperties(ConnectionStringName,this.ApplicationName, userID, collection, _settingsColumnsList);
                 // erase from the cache
                 DeleteFromProfileCacheIfExists(username.ToLower());
             }
@@ -401,7 +407,7 @@ namespace YAF.Providers.Profile
             }
 
             // call the MySQLDB...
-            return MySQLDB.Current.DeleteProfiles(ConnectionString,this.ApplicationName, userNameBuilder.ToString());
+            return MySQLDB.Current.DeleteProfiles(ConnectionStringName,this.ApplicationName, userNameBuilder.ToString());
         }
 
         public override int DeleteProfiles(ProfileInfoCollection profiles)
@@ -437,7 +443,7 @@ namespace YAF.Providers.Profile
             // just clear the whole thing...
             ClearUserProfileCache();
 
-            return MySQLDB.Current.DeleteInactiveProfiles(ConnectionString,this.ApplicationName, userInactiveSinceDate);
+            return MySQLDB.Current.DeleteInactiveProfiles(ConnectionStringName,this.ApplicationName, userInactiveSinceDate);
         }
 
         public override ProfileInfoCollection GetAllProfiles(ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, out int totalRecords)
@@ -467,7 +473,7 @@ namespace YAF.Providers.Profile
                 ExceptionReporter.ThrowArgument("PROFILE", "NOANONYMOUS");
             }
 
-            return MySQLDB.Current.GetNumberInactiveProfiles(ConnectionString,this.ApplicationName, userInactiveSinceDate);
+            return MySQLDB.Current.GetNumberInactiveProfiles(ConnectionStringName,this.ApplicationName, userInactiveSinceDate);
         }
         #endregion
 
@@ -521,7 +527,7 @@ namespace YAF.Providers.Profile
             // create an instance for the profiles...
             ProfileInfoCollection profiles = new ProfileInfoCollection();
 
-            DataTable allProfilesDT = MySQLDB.Current.GetProfiles(ConnectionString,this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
+            DataTable allProfilesDT = MySQLDB.Current.GetProfiles(ConnectionStringName,this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
             //DataTable profilesCountDT = allProfilesDS.Tables [1];
 
             foreach (DataRow profileRow in allProfilesDT.Rows)
@@ -553,31 +559,31 @@ namespace YAF.Providers.Profile
                 // validiate all the properties and populate the internal settings collection
                 foreach (SettingsProperty property in collection)
                 {
-                    MySqlDbType dbType;
+                    DbType dbType;
                     int size;
 
                     // parse custom provider data...
                     GetDbTypeAndSizeFromString(property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
                     // default the size to 256 if no size is specified
-                    if (dbType == MySqlDbType.VarChar && size == -1)
+                    if (dbType == DbType.String && size == -1)
                     {
                         size = 256;
                     }
-                    _settingsColumnsList.Add(new MySqlSettingsPropertyColumn(property, dbType, size));
+                    _settingsColumnsList.Add(new SettingsPropertyColumn(property, dbType, size));
                 }
 
                 // sync profile table structure with the MySQLDB...
-                DataTable structure = MySQLDB.Current.GetProfileStructure(ConnectionString);
+                DataTable structure = MySQLDB.Current.GetProfileStructure(ConnectionStringName);
 
                 // verify all the columns are there...
-                foreach (MySqlSettingsPropertyColumn column in _settingsColumnsList)
+                foreach (SettingsPropertyColumn column in _settingsColumnsList)
                 {
                     // see if this column exists
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        MySQLDB.Current.AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                        MySQLDB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
                     }
                 }
 
@@ -596,31 +602,31 @@ namespace YAF.Providers.Profile
                 // validiate all the properties and populate the internal settings collection
                 foreach (SettingsPropertyValue value in collection)
                 {
-                    MySqlDbType dbType;
+                    DbType dbType;
                     int size;
 
                     // parse custom provider data...
                     GetDbTypeAndSizeFromString(value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
                     // default the size to 256 if no size is specified
-                    if (dbType == MySqlDbType.VarChar && size == -1)
+                    if (dbType == DbType.String && size == -1)
                     {
                         size = 256;
                     }
-                    _settingsColumnsList.Add(new MySqlSettingsPropertyColumn(value.Property, dbType, size));
+                    _settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
                 }
 
                 // sync profile table structure with the MySQLDB...
-                DataTable structure = MySQLDB.Current.GetProfileStructure(ConnectionString);
+                DataTable structure = MySQLDB.Current.GetProfileStructure(ConnectionStringName);
 
                 // verify all the columns are there...
-                foreach (MySqlSettingsPropertyColumn column in _settingsColumnsList)
+                foreach (SettingsPropertyColumn column in _settingsColumnsList)
                 {
                     // see if this column exists
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        MySQLDB.Current.AddProfileColumn(ConnectionString,column.Settings.Name, column.DataType, column.Size);
+                        MySQLDB.Current.AddProfileColumn(ConnectionStringName,column.Settings.Name, column.DataType, column.Size);
                     }
                 }
 
@@ -629,10 +635,10 @@ namespace YAF.Providers.Profile
             }
         }
 
-        private bool GetDbTypeAndSizeFromString(string providerData, out MySqlDbType dbType, out int size)
+        private bool GetDbTypeAndSizeFromString(string providerData, out DbType dbType, out int size)
         {
             size = -1;
-            dbType = MySqlDbType.VarChar;
+            dbType = DbType.String;
 
             if (String.IsNullOrEmpty(providerData))
             {
@@ -646,14 +652,19 @@ namespace YAF.Providers.Profile
             string columnName = chunk[0];
             // vzrus: here we replace MS SQL data types
             if (chunk[1].IndexOf("varchar") >= 0)
-            { chunk[1] = "VarChar"; }
+            { chunk[1] = "String"; }
             if (chunk[1].IndexOf("int") >= 0)
             { chunk[1] = "Int32"; }
             if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
             { chunk[1] = "DateTime"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
+            {
+                chunk[1] = "Boolean";
+            }
+
 
             // get the datatype and ignore case...
-            dbType = (MySqlDbType)Enum.Parse(typeof(MySqlDbType), chunk[1], true);
+            dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
 
             if (chunk.Length > 2)
             {

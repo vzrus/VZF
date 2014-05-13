@@ -134,7 +134,7 @@ namespace VZF.Data.DAL
                     return "[{0}].[{1}{2}]".FormatWith(Config.DatabaseOwner, Config.DatabaseObjectQualifier, objectName);
                 case "Npgsql":
                     return string.Format("{0}.{1}{2}", DatabaseSchemaName, ObjectQualifier, objectName);
-                case "MySql.Data":
+                case "MySql.Data.MySqlClient":
                     return string.Format(
                         "`{0}`.`{1}{2}`",
                         DatabaseSchemaName,

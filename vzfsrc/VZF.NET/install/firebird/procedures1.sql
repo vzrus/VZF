@@ -2490,7 +2490,7 @@ begin
         end;
 --GO
 
-create procedure objQual_BOARD_USERSTATS(I_BOARDID INTEGER) 
+create procedure objQual_BOARD_USERSTATS(I_BOARDID INTEGER, I_STYLEDNICKS BOOL) 
 RETURNS 
 (
 "Members" INTEGER,

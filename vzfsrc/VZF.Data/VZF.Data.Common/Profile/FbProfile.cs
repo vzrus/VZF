@@ -280,6 +280,10 @@ namespace VZF.Data.Common
             {
                 chunk[1] = "DateTime";
             }
+            if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
+            {
+                chunk[1] = "Boolean";
+            }
 
             // get the datatype and ignore case...
             dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);

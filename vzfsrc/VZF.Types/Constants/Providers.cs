@@ -41,7 +41,7 @@ namespace VZF.Types.Constants
         /// <summary>
         /// The mysql.
         /// </summary>
-        public const string MySql = "MySql.Data";
+        public const string MySql = "MySql.Data.MySqlClient";
 
         /// <summary>
         /// The ms sql.

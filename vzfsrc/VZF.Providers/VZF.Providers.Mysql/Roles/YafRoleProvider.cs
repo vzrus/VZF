@@ -27,9 +27,8 @@ namespace YAF.Providers.Roles
     using System.Data;
     using System.Linq;
     using System.Web.Security;
-
+    using VZF.Data.DAL;
     using VZF.Utils;
-
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -84,6 +83,13 @@ namespace YAF.Providers.Roles
             _connectionString = value;
         }
     }
+
+    public static string ConnectionStringName
+    {
+        get;
+        set;
+    }
+
     /// <summary>
     /// Gets or sets ApplicationName.
     /// </summary>
@@ -160,7 +166,7 @@ namespace YAF.Providers.Roles
           // only add user if this role actually exists...
           if (roleName.IsSet() && allRoles.Contains(roleName))
           {
-              MySQLDB.Current.AddUserToRole(ConnectionString,this.ApplicationName, username, roleName);
+              MySQLDB.Current.AddUserToRole(ConnectionStringName,this.ApplicationName, username, roleName);
           }
         }
 
@@ -181,7 +187,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      MySQLDB.Current.CreateRole(ConnectionString,this.ApplicationName, roleName);
+      MySQLDB.Current.CreateRole(ConnectionStringName,this.ApplicationName, roleName);
     }
 
     /// <summary>
@@ -196,7 +202,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
     {
-        int returnValue = MySQLDB.Current.DeleteRole(ConnectionString, this.ApplicationName, roleName, throwOnPopulatedRole);
+        int returnValue = MySQLDB.Current.DeleteRole(ConnectionStringName, this.ApplicationName, roleName, throwOnPopulatedRole);
 
       this.ClearUserRoleCache();
 
@@ -224,7 +230,7 @@ namespace YAF.Providers.Roles
       }
 
       // Roles
-      DataTable users = MySQLDB.Current.FindUsersInRole(ConnectionString,this.ApplicationName, roleName);
+      DataTable users = MySQLDB.Current.FindUsersInRole(ConnectionStringName,this.ApplicationName, roleName);
       var usernames = new StringCollection();
       foreach (DataRow user in users.Rows)
       {
@@ -242,7 +248,7 @@ namespace YAF.Providers.Roles
     public override string[] GetAllRoles()
     {
       // get all roles...
-        DataTable roles = MySQLDB.Current.GetRoles(ConnectionString,this.ApplicationName, null);
+        DataTable roles = MySQLDB.Current.GetRoles(ConnectionStringName,this.ApplicationName, null);
 
       // make a string collection to store the role list...
       var roleNames = new StringCollection();
@@ -277,7 +283,7 @@ namespace YAF.Providers.Roles
       {
         roleNames = new StringCollection();
 
-        DataTable roles = MySQLDB.Current.GetRoles(ConnectionString,this.ApplicationName, username);
+        DataTable roles = MySQLDB.Current.GetRoles(ConnectionStringName,this.ApplicationName, username);
 
         foreach (DataRow dr in roles.Rows)
         {
@@ -312,7 +318,7 @@ namespace YAF.Providers.Roles
         ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
       }
 
-      DataTable users = MySQLDB.Current.FindUsersInRole(ConnectionString,this.ApplicationName, roleName);
+      DataTable users = MySQLDB.Current.FindUsersInRole(ConnectionStringName,this.ApplicationName, roleName);
 
       var userNames = new StringCollection();
 
@@ -356,8 +362,9 @@ namespace YAF.Providers.Roles
         {
           YafContext.Application[ConnStrAppKeyName] = connStr;
         }
+        ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
       }
-
+     
       base.Initialize(name, config);
 
       // application name
@@ -383,7 +390,7 @@ namespace YAF.Providers.Roles
     /// </returns>
     public override bool IsUserInRole(string username, string roleName)
     {
-        DataTable roles = MySQLDB.Current.IsUserInRole(ConnectionString, this.ApplicationName, username, roleName);
+        DataTable roles = MySQLDB.Current.IsUserInRole(ConnectionStringName, this.ApplicationName, username, roleName);
 
       return roles.Rows.Count > 0;
     }
@@ -405,7 +412,7 @@ namespace YAF.Providers.Roles
         // Loop through roles
         foreach (string roleName in roleNames)
         {
-            MySQLDB.Current.RemoveUserFromRole(ConnectionString, this.ApplicationName, username, roleName); // Remove role
+            MySQLDB.Current.RemoveUserFromRole(ConnectionStringName, this.ApplicationName, username, roleName); // Remove role
 
           // invalidate cache for this user...
           this.DeleteFromRoleCacheIfExists(username.ToLower());
@@ -425,7 +432,7 @@ namespace YAF.Providers.Roles
     public override bool RoleExists(string roleName)
     {
       // get this role...
-        object exists = MySQLDB.Current.GetRoleExists(ConnectionString,this.ApplicationName, roleName);
+        object exists = MySQLDB.Current.GetRoleExists(ConnectionStringName,this.ApplicationName, roleName);
 
       // if there are any rows then this role exists...
       if (Convert.ToInt32(exists) > 0)

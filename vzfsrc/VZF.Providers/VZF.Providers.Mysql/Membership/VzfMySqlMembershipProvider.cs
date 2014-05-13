@@ -29,9 +29,13 @@ namespace YAF.Providers.Membership
   using System.Text.RegularExpressions;
   using System.Web.Security;
 
-  using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
+  using YAF.Core; 
+  using YAF.Types.Interfaces; 
+  using YAF.Types.Constants;
+
   using VZF.Utils;
   using YAF.Providers.Utils;
+  using VZF.Data.DAL;
 
   /// <summary>
   /// The yaf membership provider.
@@ -172,6 +176,15 @@ namespace YAF.Providers.Membership
           this._appName = value;
         }
       }
+    }
+
+    /// <summary>
+    /// Gets the Connection String App Key Name.
+    /// </summary>
+    public static string ConnectionStringName
+    {
+        get;
+        set;
     }
 
     /// <summary>
@@ -494,7 +507,7 @@ namespace YAF.Providers.Membership
       }
 
       MySqlUserPasswordInfo currentPasswordInfo = MySqlUserPasswordInfo.CreateInstanceFromDB(
-        ConnectionString,
+        ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -536,7 +549,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Call SQL Password to Change
-      MySQLDB.Current.ChangePassword(ConnectionString,
+      MySQLDB.Current.ChangePassword(ConnectionStringName,
         this.ApplicationName, 
         username, 
         newEncPassword, 
@@ -578,7 +591,7 @@ namespace YAF.Providers.Membership
       }
 
       MySqlUserPasswordInfo currentPasswordInfo = MySqlUserPasswordInfo.CreateInstanceFromDB(
-          ConnectionString,
+          ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -601,7 +614,7 @@ namespace YAF.Providers.Membership
       {
         try
         {
-          MySQLDB.Current.ChangePasswordQuestionAndAnswer(ConnectionString,
+          MySQLDB.Current.ChangePasswordQuestionAndAnswer(ConnectionStringName,
             this.ApplicationName, username, newPasswordQuestion, newPasswordAnswer);
           return true;
         }
@@ -741,7 +754,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Process database user creation request
-      MySQLDB.Current.CreateUser(ConnectionString,
+      MySQLDB.Current.CreateUser(ConnectionStringName,
         this.ApplicationName, 
         username, 
         pass, 
@@ -781,7 +794,7 @@ namespace YAF.Providers.Membership
       // Process database user deletion request
       try
       {
-          MySQLDB.Current.DeleteUser(ConnectionString,this.ApplicationName, username, deleteAllRelatedData);
+          MySQLDB.Current.DeleteUser(ConnectionStringName,this.ApplicationName, username, deleteAllRelatedData);
 
           return true;
       }
@@ -827,7 +840,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in MySQLDB.Current.FindUsersByEmail(ConnectionString, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in MySQLDB.Current.FindUsersByEmail(ConnectionStringName, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -894,7 +907,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in MySQLDB.Current.FindUsersByName(ConnectionString, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in MySQLDB.Current.FindUsersByName(ConnectionStringName, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -934,7 +947,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in MySQLDB.Current.GetAllUsers(ConnectionString,this.ApplicationName, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in MySQLDB.Current.GetAllUsers(ConnectionStringName,this.ApplicationName, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -952,7 +965,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override int GetNumberOfUsersOnline()
     {
-        return MySQLDB.Current.GetNumberOfUsersOnline(ConnectionString,this.ApplicationName, Membership.UserIsOnlineTimeWindow);
+        return MySQLDB.Current.GetNumberOfUsersOnline(ConnectionStringName,this.ApplicationName, Membership.UserIsOnlineTimeWindow);
     }
 
     /// <summary>
@@ -981,7 +994,7 @@ namespace YAF.Providers.Membership
       }
 
       MySqlUserPasswordInfo currentPasswordInfo = MySqlUserPasswordInfo.CreateInstanceFromDB(
-        ConnectionString,
+        ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1024,7 +1037,7 @@ namespace YAF.Providers.Membership
         return null;
       }
 
-      DataRow dr = MySQLDB.Current.GetUser(ConnectionString,this.ApplicationName, null, username, userIsOnline);
+      DataRow dr = MySQLDB.Current.GetUser(ConnectionStringName,this.ApplicationName, null, username, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1048,7 +1061,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "USERKEYNULL");
       }
 
-      DataRow dr = MySQLDB.Current.GetUser(ConnectionString,this.ApplicationName, providerUserKey, null, userIsOnline);
+      DataRow dr = MySQLDB.Current.GetUser(ConnectionStringName,this.ApplicationName, providerUserKey, null, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1069,7 +1082,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "EMAILNULL");
       }
 
-      DataTable users = MySQLDB.Current.GetUserNameByEmail(ConnectionString,this.ApplicationName, email);
+      DataTable users = MySQLDB.Current.GetUserNameByEmail(ConnectionStringName,this.ApplicationName, email);
 
       if (this.RequiresUniqueEmail && users.Rows.Count > 1)
       {
@@ -1164,6 +1177,7 @@ namespace YAF.Providers.Membership
       {
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         ConnectionString = connStr;
+        ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {
@@ -1211,7 +1225,7 @@ namespace YAF.Providers.Membership
 
       // get an instance of the current password information class
       MySqlUserPasswordInfo currentPasswordInfo = MySqlUserPasswordInfo.CreateInstanceFromDB(
-        ConnectionString,
+        ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1258,7 +1272,7 @@ namespace YAF.Providers.Membership
           this.MSCompliant);
 
         // save to the database
-        MySQLDB.Current.ResetPassword(ConnectionString,
+        MySQLDB.Current.ResetPassword(ConnectionStringName,
           this.ApplicationName, 
           username, 
           newPasswordEnc, 
@@ -1293,7 +1307,7 @@ namespace YAF.Providers.Membership
 
       try
       {
-          MySQLDB.Current.UnlockUser(ConnectionString, this.ApplicationName, userName);
+          MySQLDB.Current.UnlockUser(ConnectionStringName, this.ApplicationName, userName);
         return true;
       }
       catch
@@ -1319,7 +1333,7 @@ namespace YAF.Providers.Membership
       }
 
       // Update User
-      int updateStatus = MySQLDB.Current.UpdateUser(ConnectionString, this.ApplicationName, user, this.RequiresUniqueEmail);
+      int updateStatus = MySQLDB.Current.UpdateUser(ConnectionStringName, this.ApplicationName, user, this.RequiresUniqueEmail);
 
       // Check update was not successful
       if (updateStatus != 0)
@@ -1353,7 +1367,7 @@ namespace YAF.Providers.Membership
     public override bool ValidateUser(string username, string password)
     {
       MySqlUserPasswordInfo currentUser = MySqlUserPasswordInfo.CreateInstanceFromDB(
-        ConnectionString,
+        ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 

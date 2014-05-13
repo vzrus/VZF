@@ -34,11 +34,10 @@ namespace YAF.Install
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-
     using VZF.Data.Common;
+    using VZF.Data.DAL;
     using VZF.Utils;
     using VZF.Utils.Helpers;
-
     using YAF.Classes;
     using YAF.Core;
     using YAF.Core.Tasks;
@@ -1407,7 +1406,7 @@ namespace YAF.Install
                         !this._config.WriteConnectionString(
                             Config.ConnectionStringName,
                             this.CurrentConnString,
-                            CommonDb.GetProviderAssemblyName(this.Session["InstallModuleID"].ToType<int?>())))
+                            SqlDbAccess.GetProviderName(SqlDbAccess.GetConnectionStringName(this.Session["InstallModuleID"].ToType<int?>(), string.Empty))))
                     {
                         // failure to write db Settings..
                         return UpdateDBFailureType.ConnectionStringWrite;

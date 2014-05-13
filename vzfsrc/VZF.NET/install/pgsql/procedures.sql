@@ -1920,7 +1920,7 @@ END;$BODY$
 -- DROP FUNCTION databaseSchema.objectQualifier_board_userstats(integer, boolean);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_userstats(
-                           i_boardid integer)
+                           i_boardid integer, i_stylednicks boolean)
                   RETURNS databaseSchema.objectQualifier_board_userstats_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_board_userstats_return_type;
