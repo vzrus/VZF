@@ -50,7 +50,7 @@ namespace VZF.Data.Common
             {
                 string table = ObjectName.GetVzfObjectName("UserProfile", mid);
                 StringBuilder sqlCommand = new StringBuilder("SELECT 1 FROM ").Append(table);
-                sqlCommand.Append(" WHERE UserID = :UserID AND ApplicationName = :ApplicationName");
+                sqlCommand.Append(" WHERE UserID = :i_UserID AND ApplicationName = :i_ApplicationName");
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
                 sc.CommandText.AppendQuery(sqlCommand.ToString());
@@ -71,7 +71,7 @@ namespace VZF.Data.Common
                         columnStr.Append(", ");
                         valueStr.Append(", ");
                         columnStr.Append(column.Settings.Name);
-                        string valueParam = ":Value" + count;
+                        string valueParam = ":i_Value" + count;
                         valueStr.Append(valueParam);
                         sc.Parameters.Add(sc.CreateParameter(column.DataType, valueParam, values[column.Settings.Name].PropertyValue)); 
                         if ((column.DataType != DbType.DateTime) || column.Settings.Name != "LastUpdatedDate"
@@ -103,18 +103,18 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastActivity", DateTime.UtcNow));   
 
                 columnStr.Append(",ApplicationName ");
-                valueStr.Append(",:ApplicationName");
-                setStr.Append(",ApplicationName=:ApplicationName");
+                valueStr.Append(",:i_ApplicationName");
+                setStr.Append(",ApplicationName=:i_ApplicationName");
                // sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));  
 
                 columnStr.Append(",IsAnonymous ");
-                valueStr.Append(",:IsAnonymous");
-                setStr.Append(",IsAnonymous=:IsAnonymous");
+                valueStr.Append(",:i_IsAnonymous");
+                setStr.Append(",IsAnonymous=:i_IsAnonymous");
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAnonymous", false));  
 
                 columnStr.Append(",UserName ");
-                valueStr.Append(",:UserName");
-                setStr.Append(",UserName=:UserName");
+                valueStr.Append(",:i_UserName");
+                setStr.Append(",UserName=:i_UserName");
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));  
 
                 // the user  exists. 
@@ -133,9 +133,9 @@ namespace VZF.Data.Common
                               .Append(valueStr.ToString())
                               .Append(")");
                 }
-
+                sc.CommandText.Clear();
                 sc.CommandText.AppendQuery(sqlCommand.ToString());
-                sc.ExecuteNonQuery();  
+                sc.ExecuteNonQuery(CommandType.Text, false);  
             }
         }
 
@@ -151,7 +151,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
             }
         }
 
@@ -173,30 +173,29 @@ namespace VZF.Data.Common
             // get column type..
             string type = columnType.ToString();
 
-            if (type.ToLower() == "timestamp")
-            { type = "TimeStamp"; }
-            if (type.Contains("DateTime"))
-            { type = "TIMESTAMP"; }
+            if (type.ToLower().Contains("datetime"))
+            { type = "timestamp"; }
             if (type.Contains("String"))
-            { type = "VARCHAR"; }
-            if (type.Contains("Boolean"))
-            { type = "SMALLINT"; }
+            {
+                if (size > 21844)
+                {
+                    type = "text";
+                }
+                else
+                {
+                    type = "varchar";
+                }
+            }
+
             if (type.Contains("Int32"))
-            { type = "INT"; }
+            { type = "integer"; }
+            if (type.Contains("Boolean"))
+            { type = "TINYINT"; }
 
             if (size > 0)
             {
                 type += "(" + size.ToString() + ")";
-            }
-            if (type.ToLowerInvariant().Contains("varchar") && ObjectName.DatabaseEncoding != null)
-            {
-                type += " CHARACTER SET " + ObjectName.DatabaseEncoding;
-
-                if (ObjectName.DatabaseCollation != null)
-                {
-                    type += " COLLATE " + ObjectName.DatabaseCollation;
-                }
-            }
+            }                     
 
             string sql = "ALTER TABLE {0} ADD {1} {2}".FormatWith(
                 ObjectName.GetVzfObjectName("UserProfile", mid), name, type);
@@ -204,7 +203,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+                sc.ExecuteNonQuery(CommandType.Text, false);
             }
         }
 
@@ -242,19 +241,19 @@ namespace VZF.Data.Common
             string columnName = chunk[0];
 
             // vzrus addon convert values from mssql types..
-            if (chunk[1].IndexOf("varchar", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            if (chunk[1].IndexOf("varchar", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Varchar";
+                chunk[1] = "String";
             }
 
-            if (chunk[1].IndexOf("int", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            if (chunk[1].IndexOf("int", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Integer";
+                chunk[1] = "Int32";
             }
 
-            if (chunk[1].IndexOf("DateTime", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            if (chunk[1].IndexOf("DateTime", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Timestamp";
+                chunk[1] = "DateTime";
             }
 
 

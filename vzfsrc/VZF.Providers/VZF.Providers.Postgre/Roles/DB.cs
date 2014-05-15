@@ -22,33 +22,13 @@
 namespace YAF.Providers.Roles
 {
     using System;
-    using System.Data;
-
-    using Npgsql;
-
-    using VZF.Data.Postgre;
+    using System.Data;    
 
     using YAF.Classes;
     using YAF.Core;
+    using VZF.Data.DAL;
 
-    /// <summary>
-    /// The yaf roles db conn manager.
-    /// </summary>
-    public static class YafRolesDBConnManager
-    {
-        public static string ConnectionString
-        {
-            get
-            {
-                if (YafContext.Application[PgRoleProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[PgRoleProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
+   
 
     /// <summary>
     /// The db.
@@ -62,17 +42,17 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public static void __AddUserToRole(string connectionString, object appName, object userName, object roleName)
+        public static void __AddUserToRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_addusertorole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
+                sc.CommandText.AppendObjectQuery("prov_role_addusertorole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -82,18 +62,17 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public static void __CreateRole(string connectionString, object appName, object roleName)
+        public static void __CreateRole(string connectionStringName, object appName, object roleName)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_createrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newroleguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
+                sc.CommandText.AppendObjectQuery("prov_role_createrole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
@@ -103,28 +82,27 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>Status as integer</returns>
-        public static int __DeleteRole(string connectionString, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
+        public static int __DeleteRole(string connectionStringName, object appName, object roleName, object deleteOnlyIfRoleIsEmpty)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_deleterole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_deleteonlyifroleisempty", NpgsqlTypes.NpgsqlDbType.Boolean)).Value = deleteOnlyIfRoleIsEmpty;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-               
-                var p = new NpgsqlParameter("i_returnvalue", NpgsqlTypes.NpgsqlDbType.Integer);
-                p.Direction = ParameterDirection.ReturnValue;
-                cmd.Parameters.Add(p);
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_deleteonlyifroleisempty", deleteOnlyIfRoleIsEmpty));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_returnvalue", null, ParameterDirection.ReturnValue));
 
-                PostgreDbAccess.ExecuteNonQuery(cmd, connectionString);
-                if (p.Value == DBNull.Value)
+                sc.CommandText.AppendObjectQuery("prov_role_deleterole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+                if (sc.Parameters["i_returnvalue"].Value == DBNull.Value)
                 {
                     return 0;
                 }
-
-                return Convert.ToInt32(cmd.Parameters["i_returnvalue"].Value);
-            }
+                else
+                {
+                    return Convert.ToInt32(sc.Parameters["i_ReturnValue"].Value);
+                }
+            }        
         }
 
         /// <summary>
@@ -133,18 +111,17 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>Datatable containing User Information</returns>
-        public static DataTable __FindUsersInRole(string connectionString, object appName, object roleName)
+        public static DataTable __FindUsersInRole(string connectionStringName, object appName, object roleName)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_findusersinrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                return PostgreDbAccess.GetData(cmd, connectionString);
-            }
+                sc.CommandText.AppendObjectQuery("prov_role_findusersinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }       
         }
 
         /// <summary>
@@ -153,17 +130,17 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleNames">Role Name</param>
         /// <returns>Database containing Role Information</returns>
-        public static DataTable __GetRoles(string connectionString, object appName, object username)
+        public static DataTable __GetRoles(string connectionStringName, object appName, object username)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_getroles")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", username));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("prov_role_getroles", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }            
         }
 
         /// <summary>
@@ -172,17 +149,16 @@ namespace YAF.Providers.Roles
         /// <param name="appName">Application Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>Database containing Role Information</returns>
-        public static object __GetRoleExists(string connectionString, object appName, object roleName)
+        public static object __GetRoleExists(string connectionStringName, object appName, object roleName)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_exists")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                return PostgreDbAccess.ExecuteScalar(cmd, connectionString);
+                sc.CommandText.AppendObjectQuery("prov_role_exists", connectionStringName);
+                return sc.ExecuteScalar(CommandType.StoredProcedure, false);
             }
         }
 
@@ -193,19 +169,20 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns>DataTable with user information</returns>
-        public static DataTable __IsUserInRole(string connectionString, object appName, object userName, object roleName)
+        public static DataTable __IsUserInRole(string connectionStringName, object appName, object userName, object roleName)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_isuserinrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                return PostgreDbAccess.GetData(cmd,connectionString );
+                sc.CommandText.AppendObjectQuery("prov_role_isuserinrole", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
             }
+
+           
         }
 
         /// <summary>
@@ -215,18 +192,17 @@ namespace YAF.Providers.Roles
         /// <param name="userName">User Name</param>
         /// <param name="roleName">Role Name</param>
         /// <returns></returns>
-        public static void __RemoveUserFromRole(string connectionString, object appName, string userName, string roleName)
+        public static void __RemoveUserFromRole(string connectionStringName, object appName, string userName, string roleName)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_role_removeuserfromrole")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_rolename", roleName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newroleguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_rolename", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = roleName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
+                sc.CommandText.AppendObjectQuery("prov_role_removeuserfromrole", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
     }

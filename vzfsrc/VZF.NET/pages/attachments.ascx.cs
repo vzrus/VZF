@@ -453,9 +453,11 @@ namespace YAF.Pages
         return;
       }
 
+      Stream instream = null;
+  
       if (this.Get<YafBoardSettings>().UseFileTable)
       {
-        CommonDb.attachment_save(PageContext.PageModuleID, messageId, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, file.PostedFile.InputStream);
+        instream = file.PostedFile.InputStream;        
       }
       else
       {
@@ -469,10 +471,10 @@ namespace YAF.Pages
               Directory.CreateDirectory(previousDirectory);
           }
 
-        file.PostedFile.SaveAs("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, messageId, filename));
-
-        CommonDb.attachment_save(PageContext.PageModuleID, messageId, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, null);
+        file.PostedFile.SaveAs("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, messageId, filename));     
       }
+
+      CommonDb.attachment_save(PageContext.PageModuleID, messageId, filename, file.PostedFile.ContentLength, file.PostedFile.ContentType, instream);
     }
 
     #endregion

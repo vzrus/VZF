@@ -93,7 +93,7 @@ namespace YAF.Core
         //  if (users.Any(x => x.IsGuest) && guestGroup.Any())
         //  {
         //    // add guest user to guest group...
-        //    DB.usergroup_save(users.First(), guestGroup.First().Field<int>("GroupID"), 1);
+        //    DB.usergroup_save(users.First(), guestGroup.First().Field<int>("GroupID"), true);
         //  }
         }*/
 

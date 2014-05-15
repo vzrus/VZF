@@ -1138,7 +1138,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", fileName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", bytes));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", contentType));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileData", fileData));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "i_FileData", fileData));
 
                 sc.CommandText.AppendObjectQuery("attachment_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -2736,8 +2736,8 @@ namespace VZF.Data.Common
         /// </param>
         public static void eventlog_create(int? mid, object userId, object source, object description)
         {
-            eventlog_create(mid, userId, (object)source.GetType().ToString(), description, (object)0);
-        }
+            eventlog_create(mid, userId, source, description, EventLogTypes.Debug);
+        }      
 
         /// <summary>
         /// The eventlog_create.
@@ -2757,26 +2757,35 @@ namespace VZF.Data.Common
         /// <param name="type">
         /// The type.
         /// </param>
-        public static void eventlog_create(int? mid, object userId, object source, object description, object type)
+        public static void eventlog_create(int? mid, object userId, object source, object description, EventLogTypes type)
         {
-            try
-            {                
+           try
+            {
+                source = source.GetType().ToString();
+            }
+            catch
+            {
+
+            } 
+
+           // try
+         //   {                
                 using (var sc = new SQLCommand(mid))
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Source", source.ToString()));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Source", source));
                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Description", description));
-                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Type", type));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Type", type.ToInt()));
                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                     sc.CommandText.AppendObjectQuery("eventlog_create", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
-                }         
-            }
-            catch
-            {
+               }         
+          //  }
+         //   catch
+        //    {
                 // Ignore any errors in this method
-            }    
+         //   }    
         }
 
         /// <summary>
@@ -3090,7 +3099,7 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable extension_list(int? mid, object boardId)
         {
-            return extension_list(mid, boardId, string.Empty);
+            return extension_list(mid, boardId, null);
         }
 
         /// <summary>
@@ -4169,87 +4178,90 @@ namespace VZF.Data.Common
                 {
                     var conn = sc.GetConnection();
                     using (var trans = conn.BeginTransaction())
+                    {
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
+                        sc.CommandText.AppendObjectQuery("category_list", mid);
+                        var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+                        dt.TableName = "Category";
+                        ds.Tables.Add(dt);
+
+                        sc.Parameters.Remove("i_CategoryID");
+                        sc.CommandText.Clear();
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", false));
+
+                        sc.CommandText.AppendObjectQuery("forum_moderatelist", mid);
+                        dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+                        dt.TableName = "ForumUnsorted";
+                        ds.Tables.Add(dt);
+                    }
+
+
+                    using (var dtForumListSorted = ds.Tables["ForumUnsorted"].Clone())
+                    {
+                        dtForumListSorted.TableName = "Forum";
+                        ds.Tables.Add(dtForumListSorted);
+                    }
+
+                    forum_list_sort_basic(
+                              ds.Tables["ForumUnsorted"],
+                              ds.Tables["Forum"],
+                              0,
+                              0);
+                    ds.Tables.Remove("ForumUnsorted");
+
+                    // vzrus: Remove here all forums with no reports. Would be better to do it in query...
+                    // Array to write categories numbers
+                    int[] categories = new int[ds.Tables["Forum"].Rows.Count];
+                    int cntr = 0;
+                    //We should make it before too as the colection was changed
+                    ds.Tables["Forum"].AcceptChanges();
+                    foreach (DataRow dr in ds.Tables["Forum"].Rows)
+                    {
+                        categories[cntr] = Convert.ToInt32(dr["CategoryID"]);
+                        if (Convert.ToInt32(dr["ReportedCount"]) == 0
+                            && Convert.ToInt32(dr["MessageCount"]) == 0)
                         {
-                            sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                            sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
-                            sc.CommandText.AppendObjectQuery("category_list", mid);
-                            var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                            dt.TableName = "Category";
-                            ds.Tables.Add(dt);
-
-                            sc.Parameters.Remove("i_CategoryID");
-                            sc.CommandText.Clear();
-                            sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                            sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", false));
-
-                            sc.CommandText.AppendObjectQuery("forum_moderatelist", mid);
-                            dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                            dt.TableName = "ForumUnsorted";
-                            ds.Tables.Add(dt);
-
-                            using (var dtForumListSorted =  ds.Tables["ForumUnsorted"].Clone())
-                            {
-                                dtForumListSorted.TableName = "Forum";
-                                ds.Tables.Add(dtForumListSorted);
-                            }
-
-                            forum_list_sort_basic(
-                                      ds.Tables["ForumUnsorted"],
-                                      ds.Tables["Forum"],
-                                      0,
-                                      0);
-                            ds.Tables.Remove("ForumUnsorted");
-
-                            // vzrus: Remove here all forums with no reports. Would be better to do it in query...
-                            // Array to write categories numbers
-                            int[] categories = new int[ds.Tables["Forum"].Rows.Count];
-                            int cntr = 0;
-                            //We should make it before too as the colection was changed
-                            ds.Tables["Forum"].AcceptChanges();
-                            foreach (DataRow dr in ds.Tables["Forum"].Rows)
-                            {
-                                categories[cntr] = Convert.ToInt32(dr["CategoryID"]);
-                                if (Convert.ToInt32(dr["ReportedCount"]) == 0
-                                    && Convert.ToInt32(dr["MessageCount"]) == 0)
-                                {
-                                    dr.Delete();
-                                    categories[cntr] = 0;
-                                }
-
-                                cntr++;
-                            }
-
-                            ds.Tables["Forum"].AcceptChanges();
-
-                            foreach (DataRow dr in ds.Tables["Category"].Rows)
-                            {
-                                bool deleteMe = true;
-                                foreach (int t in categories)
-                                {
-                                    // We check here if the Category is missing in the array where 
-                                    // we've written categories number for each forum
-                                    if (t == Convert.ToInt32(dr["CategoryID"]))
-                                    {
-                                        deleteMe = false;
-                                    }
-                                }
-
-                                if (deleteMe)
-                                {
-                                    dr.Delete();
-                                }
-                            }
-
-                            ds.Tables["Category"].AcceptChanges();
-
-                            ds.Relations.Add(
-                                "FK_Forum_Category",
-                                ds.Tables["Category"].Columns["CategoryID"],
-                                ds.Tables["Forum"].Columns["CategoryID"]);
-                            trans.Commit();
+                            dr.Delete();
+                            categories[cntr] = 0;
                         }
 
-                        return ds;                    
+                        cntr++;
+                    }
+
+                    ds.Tables["Forum"].AcceptChanges();
+
+                    foreach (DataRow dr in ds.Tables["Category"].Rows)
+                    {
+                        bool deleteMe = true;
+                        foreach (int t in categories)
+                        {
+                            // We check here if the Category is missing in the array where 
+                            // we've written categories number for each forum
+                            if (t == Convert.ToInt32(dr["CategoryID"]))
+                            {
+                                deleteMe = false;
+                            }
+                        }
+
+                        if (deleteMe)
+                        {
+                            dr.Delete();
+                        }
+                    }
+
+                    ds.Tables["Category"].AcceptChanges();
+
+                    ds.Relations.Add(
+                        "FK_Forum_Category",
+                        ds.Tables["Category"].Columns["CategoryID"],
+                        ds.Tables["Forum"].Columns["CategoryID"]);
+                    // TODO: missing transaction
+
+
+
+                    return ds;
                 }
             }
         }
@@ -5615,7 +5627,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Category", category));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Category", category));
 
                 sc.CommandText.AppendObjectQuery("medal_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -5633,7 +5645,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", null));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Category", null));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Category", null));
 
                 sc.CommandText.AppendObjectQuery("medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -5661,7 +5673,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", null));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Category", category));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Category", category));
 
                 sc.CommandText.AppendObjectQuery("medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -8467,6 +8479,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "I_BoardID", boardID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "I_TimeSinceLastLogin", timeSinceLastLogin));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "I_StyledNicks", styledNicks));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_utctimestamp", DateTime.UtcNow));
                
                 sc.CommandText.AppendObjectQuery("recent_users", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -9052,7 +9065,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "I_BoardId", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserName", userName));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Message", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Message", message));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_Date", DBNull.Value));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_IP", ip));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
@@ -9201,7 +9214,7 @@ namespace VZF.Data.Common
             {
                 if (replace == null)
                 {
-                    replace = 0;
+                    replace = false;
                 }
 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmileyID", smileyID));
@@ -10856,7 +10869,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
 
                 sc.CommandText.AppendObjectQuery("user_accessmasks", mid);
@@ -10883,7 +10896,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
 
                 sc.CommandText.AppendObjectQuery("user_accessmasksbyforum", mid);
@@ -10910,7 +10923,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (int)userId));
 
                 sc.CommandText.AppendObjectQuery("user_accessmasksbygroup", mid);
@@ -10940,7 +10953,7 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_BoardID", boardId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_DisplayNumber", displayNumber));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_StartDate", startDate));
 
@@ -11984,6 +11997,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("user_medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -12398,7 +12412,7 @@ namespace VZF.Data.Common
             object userId,
             object pmNotification,
             object autoWatchTopics,
-            object notificationType,
+            UserNotificationSetting notificationType,
             object dailyDigest)
         {
             using (var sc = new SQLCommand(mid))
@@ -12406,7 +12420,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PMNotification", pmNotification));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_AutoWatchTopics", autoWatchTopics));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NotificationType", notificationType));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NotificationType", notificationType.ToInt()));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DailyDigest", dailyDigest));
 
                 sc.CommandText.AppendObjectQuery("user_savenotification", mid);

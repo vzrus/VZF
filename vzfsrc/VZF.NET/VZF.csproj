@@ -4585,7 +4585,7 @@
     <Content Include="App_Browsers\w3cvalidator.browser" />
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
-    <Content Include="app.config" />
+    <Content Include="app_my.config" />
     <Content Include="app_ms.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
@@ -5185,14 +5185,14 @@
     <Content Include="themes\Yafmobile\tag-label.png" />
     <Content Include="themes\Yafmobile\tick.png" />
     <Content Include="themes\Yafmobile\users.png" />
-    <Content Include="web.config">
+    <Content Include="web_my.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="pages\app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web_pg.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />

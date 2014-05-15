@@ -74,7 +74,7 @@
                     case "other":
                      //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                 }
             }
         }
@@ -103,7 +103,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                 }
             }
         }
@@ -130,7 +130,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                 }
             }
         }
@@ -138,7 +138,7 @@
         /// <summary>
         /// Gets the schema name.
         /// </summary>
-        /// <exception cref="ApplicationException">
+        /// <exception cref="Exception">
         /// </exception>
         public static string SchemaName
         {
@@ -162,7 +162,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
                 }
             }
@@ -189,7 +189,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                         break;
 
                 }
@@ -247,7 +247,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                 }
             }
         }
@@ -274,7 +274,7 @@
                     case "other":
                     //   return PostgreDbAccess.IsolationLevel;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));
                 }
             }
         }
@@ -301,9 +301,7 @@
                     case "other":
                         return string.Empty;
                     default:
-                        throw new ApplicationException(string.Format("No config for Board or Object  '{0}' ", boardId));
-                        break;
-
+                        throw new Exception(string.Format("No config for Board or Object  '{0}' ", boardId));                     
                 }
             }
         }

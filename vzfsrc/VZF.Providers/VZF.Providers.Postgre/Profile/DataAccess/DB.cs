@@ -29,31 +29,10 @@ namespace YAF.Providers.Profile
     using System.IO;
     using System.Text;
     using System.Web.Security;
-
-    using Npgsql;
-
-    using NpgsqlTypes;
-
-    using VZF.Data.Postgre;
-
+    using VZF.Data.Common;
+    using VZF.Data.DAL;
     using YAF.Classes;
     using YAF.Core;
-
-    public static class YafProfileDBConnManager 
-    {
-        public static string ConnectionString
-        {
-            get
-            {
-                if (YafContext.Application[PgProfileProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[PgProfileProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
 
     public static class Db
     {
@@ -178,22 +157,21 @@ namespace YAF.Providers.Profile
             }
         }
 
-        public static DataTable __GetProfiles(string connectionString, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate)
+        public static DataTable __GetProfiles(string connectionStringName, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate)
          {
-             using (NpgsqlCommand cmd = PostgreDbAccess.GetCommand("prov_profile_getprofiles"))
+            using (var sc = new SQLCommand(connectionStringName))
              {
-                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_PageIndex", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_PageSize", NpgsqlTypes.NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_UserNameToMatch", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userNameToMatch;
-                cmd.Parameters.Add(new NpgsqlParameter("i_InactiveSinceDate", NpgsqlTypes.NpgsqlDbType.Timestamp)).Value = inactiveSinceDate;
+                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserNameToMatch", userNameToMatch));
+                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_InactiveSinceDate", inactiveSinceDate));
+                 sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                 sc.CommandText.AppendObjectQuery("prov_profile_getprofiles", connectionStringName);
 
-                var dt = PostgreDbAccess.GetData(cmd, connectionString);
-                return dt;
-            }
+                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);                
+             }
         }
 
         /// <summary>
@@ -205,37 +183,54 @@ namespace YAF.Providers.Profile
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable __GetProfileStructure(string connectionString)
+        public static DataTable __GetProfileStructure(string connectionStringName)
         {
-            string sql = string.Format(@"SELECT DISTINCT * FROM {0} LIMIT 1", PostgreDbAccess.GetObjectName(@"prov_profile"));
-
-            using (var cmd = new NpgsqlCommand(sql))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.Text;
-                return PostgreDbAccess.GetData(cmd, connectionString);
+                sc.CommandText.AppendQuery(String.Format("SELECT DISTINCT * FROM {0} LIMIT 1", ObjectName.GetVzfObjectNameFromConnectionString("prov_profile", connectionStringName)));
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
             }
         }
 
-       public static void __AddProfileColumn(string connectionString, string Name, NpgsqlDbType columnType, int size)
+        public static void __AddProfileColumn(string connectionStringName, string Name, DbType columnType, int size)
         {
             // get column type...
             string type = columnType.ToString();
 
+            if (type.ToLower().Contains("datetime"))
+            { type = "timestamp"; }
+            if (type.Contains("String"))
+            {
+                if (size > 21844)
+                {
+                    type = "text";
+                }
+                else
+                {
+                    type = "varchar";
+                }
+            }
+
+            if (type.Contains("Int32"))
+            { type = "integer"; }
+            if (type.Contains("Boolean"))
+            { type = "TINYINT"; }
+
             if ( size > 0 )
             {
                 type += "(" + size.ToString() + ")";
-            }
-           
-            string sql = string.Format( @"ALTER TABLE {0} ADD  {1}  {2} ", PostgreDbAccess.GetObjectName( "prov_profile" ), Name, type );
+            }          
+          
 
-            using (var cmd = new NpgsqlCommand(sql))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.Text;
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString);
-            }
-        } 
+                string sql = String.Format("ALTER TABLE {0} ADD  {1}  {2} ", ObjectName.GetVzfObjectNameFromConnectionString("prov_profile", connectionStringName), Name, type);
 
-        public static object __GetProviderUserKey(string connectionString, object appName, object username )
+                sc.ExecuteNonQuery(CommandType.Text, false);
+            }
+        }
+
+        public static object __GetProviderUserKey(string connectionStringName, object appName, object username)
         {
             if (Config.IsMojoPortal)
             {
@@ -243,7 +238,7 @@ namespace YAF.Providers.Profile
             }
 
             var row = Providers.Membership.Db.__GetUser(
-                connectionString, appName.ToString(), null, username.ToString(), false);
+                connectionStringName, appName.ToString(), null, username.ToString(), false);
 
             if (row != null)
             {
@@ -254,7 +249,7 @@ namespace YAF.Providers.Profile
         }
 
         public static void __SetProfileProperties(
-            string connectionString,
+            string connectionStringName,
             object appName,
             object userID,
             SettingsPropertyValueCollection values,
@@ -267,20 +262,19 @@ namespace YAF.Providers.Profile
                              { "ApplicationName", appName }
                          };
 
-            __SetPropertyValues(connectionString, sc, values, settingsColumnsList);
+            __SetPropertyValues(connectionStringName, sc, values, settingsColumnsList);
          }
 
-         public static  int __DeleteProfiles(string connectionString,  object appName, object userNames )
+        public static int __DeleteProfiles(string connectionStringName, object appName, object userNames)
         {
-            using ( NpgsqlCommand cmd = PostgreDbAccess.GetCommand( "prov_profile_deleteprofiles" ) )
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_UserNames", NpgsqlTypes.NpgsqlDbType.Varchar)).Value = userNames;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlTypes.NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName)); ;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserNames", userNames));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-
-                return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(cmd, connectionString));
+                sc.CommandText.AppendObjectQuery("prov_profile_deleteprofiles", connectionStringName);
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
             }
         }
 
@@ -299,35 +293,29 @@ namespace YAF.Providers.Profile
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static  int __DeleteInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
-        {
-            using ( NpgsqlCommand cmd = PostgreDbAccess.GetCommand( "prov_profile_deleteinactive" ) )
+        public static int __DeleteInactiveProfiles(string connectionStringName, object appName, object inactiveSinceDate)
+        {           
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlDbType.Varchar));
-                cmd.Parameters[0].Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_InactiveSinceDate", inactiveSinceDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_InactiveSinceDate", NpgsqlDbType.Timestamp));
-                cmd.Parameters[1].Value = inactiveSinceDate;
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-
-                return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(cmd, connectionString));
+                sc.CommandText.AppendObjectQuery("prov_profile_deleteinactive", connectionStringName);
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
             }
         }
 
-         public static int __GetNumberInactiveProfiles(string connectionString,  object appName, object inactiveSinceDate )
-        {
-            using ( NpgsqlCommand cmd = PostgreDbAccess.GetCommand( "prov_profile_getnumberinactiveprofiles" ) )
+        public static int __GetNumberInactiveProfiles(string connectionStringName, object appName, object inactiveSinceDate)
+        {            
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_InactiveSinceDate", inactiveSinceDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_ApplicationName", NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_InactiveSinceDate", NpgsqlDbType.Timestamp)).Value = inactiveSinceDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-
-                return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(cmd, connectionString));
+                sc.CommandText.AppendObjectQuery("prov_profile_getnumberinactiveprofiles", connectionStringName);
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
             }
         }
 
@@ -345,7 +333,7 @@ namespace YAF.Providers.Profile
         */
 
         public static void __SetPropertyValues(
-            string connectionString,
+            string connectionStringName,
             SettingsContext context,
             SettingsPropertyValueCollection collection,
             List<SettingsPropertyColumn> settingsColumnsList)
@@ -383,36 +371,43 @@ namespace YAF.Providers.Profile
              // either create a new user or fetch the existing user id
              Guid userId = SchemaManager.CreateOrFetchUserId(userid, isAuthenticated);
              bool profileExists = false;
-             using (var cmd1 = PostgreDbAccess.GetCommand(string.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", PostgreDbAccess.GetObjectName("prov_Profile"), userId), true))
+    
+             string table =
+                              ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName);
+             using (var sc1 = new SQLCommand(connectionStringName))
              {
-                 profileExists = Convert.ToBoolean(PostgreDbAccess.ExecuteScalar(cmd1,connectionString));
+
+                 // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
+                 sc1.CommandText.AppendQuery(String.Format("SELECT COUNT(1) FROM {0} WHERE userid ='{1}';", table, new Guid(userId.ToString())));
+
+                 profileExists = Convert.ToBoolean(sc1.ExecuteScalar(CommandType.Text, false));
+                 sc1.CommandText.Clear();
              }
 
              var mu = Membership.GetUser(userId);
 
              if (profileExists)
              {
-                 using (
-                     var cmd =
-                         PostgreDbAccess.GetCommand(
-                             string.Format(
-                                 @"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
-lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,username= :i_username WHERE userid = :i_userid and applicationid = :i_applicationid;",
-                                 PostgreDbAccess.GetObjectName("prov_profile")),
-                             true))
+                 using (var sc = new SQLCommand(connectionStringName))
                  {
-                     cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_stringData", NpgsqlDbType.Varchar)).Value = stringData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_binaryData", NpgsqlDbType.Bytea)).Value = binaryData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.Timestamp)).Value = mu.LastActivityDate;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid)).Value = (Guid)GetApplicationIdFromName(connectionString,appName);
-                     cmd.Parameters.Add(new NpgsqlParameter("i_isanonymous", NpgsqlDbType.Boolean)).Value = false;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = mu.UserName;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Uuid)).Value = userId;
 
-                     int res = PostgreDbAccess.ExecuteNonQueryInt(cmd,connectionString);
-                     if (res == 0)
+
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_valueindex", index));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_stringdata", stringData));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "I_binarydata", binaryData));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastupdateddate", DateTime.UtcNow));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastactivitydate", mu.LastActivityDate));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_applicationid", (Guid)GetApplicationIdFromName(connectionStringName,appName)));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isanonymous", false));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", mu.UserName));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userId", userId));
+                     sc.CommandText.AppendQuery(string.Format(
+                                 @"UPDATE {0} SET valueindex = :i_valueindex,stringdata= :i_stringData,binarydata= :i_binaryData,
+                                                  lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,
+                                                 username= :i_username WHERE userid = :i_userid and applicationid = :i_applicationid;",
+                                 table));
+                    int res =  sc.ExecuteNonQuery(CommandType.Text, false);
+                      if (res == 0)
                      {
                          // Error
                      }
@@ -420,64 +415,47 @@ lastupdateddate= :i_lastupdateddate,lastactivitydate= :i_lastactivitydate,userna
              }
              else
              {
-                 using (NpgsqlCommand cmd = PostgreDbAccess.GetCommand(
-                     string.Format(
-                         @"INSERT INTO {0}(
-userid,
-valueindex,
-stringdata,
-binarydata,
-lastupdateddate,
-lastactivitydate,
-applicationid,
-isanonymous,
-username)
-VALUES (
-:i_userid,
-:i_valueindex,
-:i_stringData,
-:i_binaryData,
-:i_lastupdateddate,
-:i_lastactivitydate,
-:i_applicationid,
-:i_isanonymous,
-:i_username) ;", PostgreDbAccess.GetObjectName("prov_profile")),
-                     true))
+                   using (var sc = new SQLCommand(connectionStringName))
                  {
-                     cmd.Parameters.Add(new NpgsqlParameter("i_userid", NpgsqlDbType.Uuid)).Value = userId;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_valueindex", NpgsqlDbType.Varchar)).Value = index;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_stringData", NpgsqlDbType.Varchar)).Value = stringData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_binaryData", NpgsqlDbType.Bytea)).Value = binaryData;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastupdateddate", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_lastactivitydate", NpgsqlDbType.Timestamp)).Value = mu.LastActivityDate;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid)).Value = GetApplicationIdFromName(connectionString,appName);
-                     cmd.Parameters.Add(new NpgsqlParameter("i_isanonymous", NpgsqlDbType.Boolean)).Value = false;
-                     cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = mu.UserName;
 
-                     int res = PostgreDbAccess.ExecuteNonQueryInt(cmd,connectionString);
-                     if (res == 0)
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userId", userId));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_valueindex", index));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_stringdata", stringData));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "I_binarydata", binaryData));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastupdateddate", DateTime.UtcNow));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastactivitydate", mu.LastActivityDate));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_applicationid", (Guid)GetApplicationIdFromName(connectionStringName,appName)));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isanonymous", false));
+                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", mu.UserName));                    
+                     sc.CommandText.AppendQuery(string.Format(@"INSERT INTO {0} 
+                                                                (userid,valueindex,stringdata,binarydata,lastupdateddate,lastactivitydate,
+                                                                applicationid,isanonymous,username)
+                                                                VALUES (:i_userid,:i_valueindex,:i_stringData,:i_binaryData,:i_lastupdateddate,
+                                                                        :i_lastactivitydate,:i_applicationid,:i_isanonymous,:i_username) ;",
+                                                                                                                                           table));
+                    int res =  sc.ExecuteNonQuery(CommandType.Text, false);
+                      if (res == 0)
                      {
-                         //Error
+                         // Error
                      }
-                 }
+                 }                
              }
          }
-       
-        private static object GetApplicationIdFromName(string connectionString, string appName )
-        {
-            using ( var cmd = PostgreDbAccess.GetCommand( "prov_createapplication" ) )
+
+        private static object GetApplicationIdFromName(string connectionStringName, string appName)
+        {          
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_applicationid", null, ParameterDirection.Output));
+                
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value =  Guid.NewGuid();;
-                var appId = new NpgsqlParameter("i_applicationid", NpgsqlDbType.Uuid);
-                appId.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(appId);
+                // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
 
-                return PostgreDbAccess.ExecuteScalar(cmd, connectionString);
-            }
-            
+                sc.CommandText.AppendObjectQuery("prov_createapplication", connectionStringName);
+                return sc.ExecuteScalar(CommandType.StoredProcedure, false);
+            }            
         }
     }
 }

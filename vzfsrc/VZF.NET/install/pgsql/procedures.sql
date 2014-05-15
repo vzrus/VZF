@@ -285,7 +285,7 @@ BEGIN
               a.createdbyusername,
               a.createdbyuserdisplayname
          FROM      databaseSchema.objectQualifier_accessmask a
-          WHERE    a.boardid = i_board  and
+          WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
             and (not i_isusermask or isusermask) 
             -- and (not i_isadminmask or isadminmask) 
@@ -308,7 +308,7 @@ BEGIN
               a.createdbyusername,
               a.createdbyuserdisplayname
         FROM      databaseSchema.objectQualifier_accessmask a
-         WHERE    a.boardid = i_board
+         WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
       LOOP
              RETURN NEXT _rec;
@@ -343,7 +343,7 @@ BEGIN
               a.isusermask,
               a.isadminmask
          FROM      databaseSchema.objectQualifier_accessmask a
-          WHERE    a.boardid = i_board  and
+          WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
             and (i_isadminmask or not a.isadminmask)
             and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
@@ -362,7 +362,7 @@ BEGIN
               a.isusermask,
               a.isadminmask
         FROM      databaseSchema.objectQualifier_accessmask a
-         WHERE    a.boardid = i_board
+         WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
             and (i_isadminmask or not a.isadminmask)
             and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
@@ -400,7 +400,7 @@ BEGIN
               a.isusermask,
               a.isadminmask
          FROM      databaseSchema.objectQualifier_accessmask a
-          WHERE    a.boardid = i_board  and
+          WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0		
             and (i_isadminmask or not a.isadminmask)
            ORDER BY a.sortorder
@@ -418,7 +418,7 @@ BEGIN
               a.isusermask,
               a.isadminmask
         FROM      databaseSchema.objectQualifier_accessmask a
-         WHERE    a.boardid = i_board
+         WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
             and (i_isadminmask or not a.isadminmask)
       LIMIT 1
@@ -451,7 +451,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_save
                            i_uploadaccess boolean, 
                            i_downloadaccess boolean,
                            i_userforumaccess boolean, 
-                           i_sortorder smallint,
+                           i_sortorder integer,
                            i_userid integer,
                            i_isusermask boolean,
                            i_isadminmask boolean,
@@ -1239,8 +1239,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_attachment_save
                            i_messageid integer, 
                            i_filename varchar, 
                            i_bytes integer, 
-                           i_contenttype 
-                           varchar, 
+                           i_contenttype varchar, 
                            i_filedata bytea
                            )
                   RETURNS void AS
@@ -1524,9 +1523,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_create
                            i_rolesappname varchar, 
                            i_username varchar, 
                            i_useremail varchar, 
-                           i_userkey uuid, 
-                           i_ishostadmin boolean, 
-                           i_newguid uuid,
+                           i_userkey varchar, 
+                           i_ishostadmin boolean,                           
                            i_roleprefix varchar,
                            i_utctimestamp timestamp
                            )
@@ -1534,7 +1532,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_board_create
 $BODY$DECLARE
              ici_boardid                integer;
              i_timezone                 integer;
-             i_forumemail			    varchar(50);
+             i_forumemail			    varchar(255);
              l_GroupIDAdmin			    integer;
              l_GroupIDGuest			    integer;
              l_GroupIDMember		    integer;
@@ -1693,7 +1691,7 @@ BEGIN
 
   -- User (ADMIN)
   INSERT INTO databaseSchema.objectQualifier_user(boardid,rankid,name,displayname,password,email,provideruserkey, joined,lastvisit,numposts,timezone,flags)
-  VALUES(ici_boardid,l_RankIDAdmin,i_username,i_username,'na',i_useremail,CAST(i_userkey AS VARCHAR(64)),i_utctimestamp,i_utctimestamp,0,i_timezone,l_UserFlags);
+  VALUES(ici_boardid,l_RankIDAdmin,i_username,i_username,'na',i_useremail,i_userkey,i_utctimestamp,i_utctimestamp,0,i_timezone,l_UserFlags);
   l_UserIDAdmin := (SELECT CURRVAL(pg_get_serial_sequence('databaseSchema.objectQualifier_user','userid')));	
 
  -- UserGroup
@@ -2841,7 +2839,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_extension_save(
                   RETURNS void AS
 $BODY$
 BEGIN
-    IF i_extensionid IS NULL OR i_extensionid = 0 THEN
+    IF i_extensionid IS NULL OR i_extensionid = 0 OR (not exists (select 1 from databaseSchema.objectQualifier_extension where boardid = i_boardid and extension like i_extension)) THEN		         
         INSERT INTO databaseSchema.objectQualifier_extension (boardid,extension) 
         VALUES(i_boardid,i_extension);
     ELSE
@@ -5347,7 +5345,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_medal_save(
                            i_message varchar, 
                            i_hide boolean, 
                            i_onlyribbon boolean, 
-                           i_sortorder smallint)
+                           i_sortorder integer)
                   RETURNS void AS
 $BODY$
 DECLARE
@@ -5444,7 +5442,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_save(
                            i_accessmaskid integer,
                            i_pmlimit integer,
                            i_style varchar(255),
-                           i_sortorder smallint,
+                           i_sortorder integer,
                            i_description varchar(128),
                            i_usrsigchars integer,
                            i_usrsigbbcodes	varchar(255),
@@ -6068,11 +6066,11 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_medal_save(
                            i_ribbonurl varchar, 
                            i_smallmedalurl varchar, 
                            i_smallribbonurl varchar, 
-                           i_smallmedalwidth smallint, 
-                           i_smallmedalheight smallint, 
-                           i_smallribbonwidth smallint, 
-                           i_smallribbonheight smallint, 
-                           i_sortorder smallint, 
+                           i_smallmedalwidth integer, 
+                           i_smallmedalheight integer, 
+                           i_smallribbonwidth integer, 
+                           i_smallribbonheight integer, 
+                           i_sortorder integer, 
                            i_flags integer)
                  RETURNS  integer AS
 $BODY$DECLARE
@@ -7236,8 +7234,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_message_update
                            i_editedby integer, 
                            i_ismoderatorchanged boolean, 
                            i_overrideapproval boolean, 
-                           i_originalmessage text,
-                           i_newguid uuid,
+                           i_originalmessage text,                           
 						   i_messagedescription varchar,
                            i_tags text,
                            i_utctimestamp timestamp )
@@ -7906,7 +7903,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pmessage_markread(
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pmessage_prune(
                            i_daysread integer, 
-                           i_daysunread integer)
+                           i_daysunread integer, 
+						   i_utctimestamp timestamp)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -8379,7 +8377,8 @@ BEGIN
                 COALESCE(a.userdisplayname,b.displayname) AS UserName,
                         b.signature,
                         c.topicid,
-                        d.forumid
+                        d.forumid,
+						1 as ReadAccess
         FROM     databaseSchema.objectQualifier_message a
                  JOIN databaseSchema.objectQualifier_user b
                    ON b.userid = a.userid
@@ -8805,7 +8804,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_rank_save(
                            i_rankimage varchar,
                            i_pmlimit integer,
                            i_style varchar(255),
-                           i_sortorder smallint,
+                           i_sortorder integer,
                            i_description varchar(128),
                            i_usrsigchars integer,
                            i_usrsigbbcodes	varchar(255),
@@ -9230,8 +9229,8 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_smiley_save(
                            i_code varchar, 
                            i_icon varchar, 
                            i_emoticon varchar, 
-                           i_sortorder smallint, 
-                           i_replace smallint)
+                           i_sortorder integer, 
+                           i_replace boolean)
                   RETURNS void AS
 $BODY$
 BEGIN
@@ -9240,11 +9239,11 @@ BEGIN
          SET code = i_code, 
          icon = i_icon, 
          emoticon = i_emoticon, 
-         sortorder = i_sortorder 
+         sortorder = i_sortorder
          WHERE smileyid = i_smileyid;
     
     ELSE
-        IF i_replace>0 THEN
+        IF i_replace THEN
             DELETE FROM databaseSchema.objectQualifier_smiley WHERE code=i_code; 
                 END IF;
  
@@ -9267,15 +9266,14 @@ END;$BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_system_initialize(
                            i_name varchar, 
-                           i_timezone integer, 
-                           i_languagefile varchar,  
+                           i_timezone integer,                         
                            i_culture varchar, 
+						   i_languagefile varchar,  
                            i_forumemail varchar, 
                            i_smtpserver varchar, 
                            i_user varchar, 
                            i_useremail varchar, 
-                           i_userkey uuid,
-                           i_newboardguid uuid,
+                           i_userkey varchar,                          
                            i_roleprefix varchar,
                            i_utctimestamp timestamp)
                   RETURNS void AS
@@ -9297,7 +9295,7 @@ BEGIN
     PERFORM databaseSchema.objectQualifier_registry_save('language', CAST(i_languagefile AS text),null);
  
     -- initalize new board
-    PERFORM databaseSchema.objectQualifier_board_create (i_name, i_languagefile, i_culture , ici_varnull,ici_varnull,i_user,i_useremail,i_userkey,true,i_newboardguid,i_roleprefix,i_utctimestamp  );
+    PERFORM databaseSchema.objectQualifier_board_create (i_name, i_languagefile, i_culture , ici_varnull,ici_varnull,i_user,i_useremail,i_userkey,true,i_roleprefix,i_utctimestamp  );
     RETURN;
  END;
 $BODY$
@@ -11556,7 +11554,7 @@ BEGIN
     UPDATE databaseSchema.objectQualifier_message SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID WHERE userid = i_userid;
     UPDATE databaseSchema.objectQualifier_topic SET username=ici_UserName,userdisplayname=ici_UserDisplayName,userid=ici_GuestUserID WHERE userid = i_userid;
     UPDATE databaseSchema.objectQualifier_topic SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
-    UPDATE databaseSchema.objectQualifier_forum SET lastusername=ici_UserName,userdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
+    UPDATE databaseSchema.objectQualifier_forum SET lastusername=ici_UserName,lastuserdisplayname=ici_UserDisplayName,lastuserid=ici_GuestUserID WHERE lastuserid = i_userid;
 
 	DELETE FROM databaseSchema.objectQualifier_activeaccess WHERE userid = i_userid;
     DELETE FROM databaseSchema.objectQualifier_active WHERE userid = i_userid;
@@ -12602,7 +12600,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_medal_save(
                            i_message varchar, 
                            i_hide boolean, 
                            i_onlyribbon boolean, 
-                           i_sortorder smallint, 
+                           i_sortorder integer, 
                            i_dateawarded timestamp,
                            i_utctimestamp timestamp)
                   RETURNS void AS
@@ -14275,9 +14273,9 @@ $BODY$
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_shoutbox_savemessage
-                           (i_userid        integer,
-                           i_username		varchar(255),
-                           i_boardid        integer,
+                           (i_boardid      integer,
+						   i_userid        integer,
+                           i_username		varchar(255),                         
                            i_message		text,
                            i_date			timestamp,
                            i_ip			    varchar(39),
@@ -14986,7 +14984,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_buddy_addrequest(
                            i_touserid integer,
 						   i_usedisplayname boolean,
 					       i_utctimestamp timestamp)
-                  RETURNS  SETOF databaseSchema.objectQualifier_buddy_addrequest_rt AS
+                  RETURNS  databaseSchema.objectQualifier_buddy_addrequest_rt AS
 $BODY$
 DECLARE 
                        i_approved boolean;
@@ -15353,10 +15351,10 @@ BEGIN
                                      ON ua.albumid = uai.albumid 
                                      WHERE  ua.userid = i_userid; */
                   
-               SELECT COALESCE(COUNT(ua.albumid), 0)  INTO _rec."albumnumber"
+               SELECT COALESCE(COUNT(ua.albumid), 0)  INTO _rec."AlbumNumber"
                                      FROM   databaseSchema.objectQualifier_useralbum ua                                    
                                      WHERE ua.userid = i_userid AND i_userid is not null and ua.albumid is not null;                            
-               SELECT COALESCE(COUNT(uai.imageid), 0) INTO _rec."imagenumber" 
+               SELECT COALESCE(COUNT(uai.imageid), 0) INTO _rec."ImageNumber" 
                                      FROM   databaseSchema.objectQualifier_useralbumimage uai
                                      WHERE  uai.albumid in (
                                             SELECT  ua.albumid
@@ -15365,12 +15363,12 @@ BEGIN
                                                                         
                 
          END IF;
-    IF  _rec."albumnumber" IS NULL THEN
+    IF  _rec."AlbumNumber" IS NULL THEN
     -- IF NOT FOUND THEN
-    _rec."albumnumber" = 0;
+    _rec."AlbumNumber" = 0;
     END IF;	
-    IF  _rec."imagenumber" IS NULL THEN
-    _rec."imagenumber" = 0;			
+    IF  _rec."ImageNumber" IS NULL THEN
+    _rec."ImageNumber" = 0;			
     END IF;	
     RETURN _rec;
     
@@ -16943,25 +16941,26 @@ END;$BODY$
  CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_user_listtodaysbirthdays(
     i_boardid 	        integer,
 	i_stylednicks       boolean,
-    i_currentyear	    timestamp,
+    i_currentyear	    integer,
     i_currentutc	    timestamp,
 	i_currentutc1	    timestamp,
 	i_currentutc2	    timestamp
  ) 
                     RETURNS SETOF databaseSchema.objectQualifier_user_listtodaysbirthdays_rt
+					AS
  $BODY$DECLARE
   _rec databaseSchema.objectQualifier_user_listtodaysbirthdays_rt%ROWTYPE;
  BEGIN
         FOR _rec IN  SELECT up.Birthday, 
-		          up.UserID
+		          up.UserID,
 				  u.TimeZone, 
 				  u.name as UserName,
 				  u.DisplayName AS UserDisplayName,
-				  (case(:i_stylednicks) when TRUE then  u.userstyle else '' end) AS Style 
+				  (case when (i_stylednicks) then u.userstyle else '' end) AS Style 
 				  FROM databaseSchema.objectQualifier_userprofile up 
 				  JOIN databaseSchema.objectQualifier_user
-                  u ON u.userid = up.userid where u.boardid = :i_boardid 
-				  AND (up.birthday + (:i_currentyear - extract(year  from up.birthday))*interval '1 year' between (:i_currentutc - interval '24 hours') and (:i_currentutc + interval '24 hours'))
+                  u ON u.userid = up.userid where u.boardid = i_boardid 
+				  AND (up.birthday + (i_currentyear - extract(year  from up.birthday))*interval '1 year' between (i_currentutc - interval '24 hours') and (i_currentutc + interval '24 hours'))
 				  LOOP
 RETURN NEXT _rec;
 END LOOP;
@@ -16976,7 +16975,7 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_db_size(
                   RETURNS integer AS
 $BODY$
 BEGIN
-RETURN (select pg_database_size(i_dbname)/1024/1024);
+RETURN (select cast(pg_database_size(current_database())/1024/1024 as integer));
 END;
 $BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER

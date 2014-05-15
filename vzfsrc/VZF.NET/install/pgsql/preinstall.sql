@@ -42,7 +42,7 @@ RETURN NULL;
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 --GO
-SELECT f_delfunc('databaseSchema','del');
+SELECT databaseSchema.f_delfunc('databaseSchema','del');
 --GO
 
 CREATE OR REPLACE FUNCTION databaseSchema.f_deltype(_schema text, _del text)
@@ -77,11 +77,8 @@ RETURN NULL;
 END;
 $BODY$ LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER COST 100
 --GO
-SELECT f_deltype('databaseSchema','del');
+SELECT databaseSchema.f_deltype('databaseSchema','del');
 --GO
-
-
-
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_int_to_bool_helper(reqvalue double precision)
   RETURNS boolean AS

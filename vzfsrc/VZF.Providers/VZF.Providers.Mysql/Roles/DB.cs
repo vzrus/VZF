@@ -127,7 +127,7 @@ namespace YAF.Providers.Roles
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RoleName", roleName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DeleteOnlyIfRoleIsEmpty", deleteOnlyIfRoleIsEmpty));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ReturnValue", ParameterDirection.ReturnValue));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ReturnValue", null, ParameterDirection.ReturnValue));
 
                 sc.CommandText.AppendObjectQuery("prov_role_deleterole", connectionStringName);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);

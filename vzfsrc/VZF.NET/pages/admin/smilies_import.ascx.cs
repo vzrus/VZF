@@ -222,7 +222,7 @@ namespace YAF.Pages.Admin
                 continue;
             }
 
-            CommonDb.smiley_save(PageContext.PageModuleID, null, this.PageContext.PageBoardID, lineSplit[2], lineSplit[0], lineSplit[1], sortOrder, 0);
+            CommonDb.smiley_save(PageContext.PageModuleID, null, this.PageContext.PageBoardID, lineSplit[2], lineSplit[0], lineSplit[1], sortOrder, false);
             sortOrder++;
         }
         while (true);

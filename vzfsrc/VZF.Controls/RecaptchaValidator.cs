@@ -185,7 +185,7 @@ namespace VZF.Controls
       }
       catch (WebException exception)
       {
-          CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, this, exception.Message, EventLogEntryType.Error);
+          CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, this, exception.Message, EventLogTypes.Error);
         return RecaptchaResponse.RecaptchaNotReachable;
       }
 

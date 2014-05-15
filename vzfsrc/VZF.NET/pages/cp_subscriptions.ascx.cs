@@ -199,8 +199,8 @@ namespace YAF.Pages
         // save the settings...
         CommonDb.user_savenotification(PageContext.PageModuleID, this.PageContext.PageUserID, 
             this.PMNotificationEnabled.Checked, 
-            autoWatchTopicsEnabled, 
-            this.rblNotificationType.SelectedValue, 
+            autoWatchTopicsEnabled,
+            this.rblNotificationType.SelectedValue.IsSet() ? this.rblNotificationType.SelectedValue.ToEnum<UserNotificationSetting>() : UserNotificationSetting.NoNotification, 
             this.DailyDigestEnabled.Checked);
 
         this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this.PageContext.PageUserID));

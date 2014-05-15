@@ -10674,7 +10674,7 @@ END;
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE PROCEDURE {databaseName}.{objectQualifier}user_medal_list(i_UserID INT,
-    i_MedalID INT)
+    i_MedalID INT, I_UTCTIMESTAMP DATETIME)
 BEGIN 
     SELECT 
         a.MedalID,
@@ -13377,7 +13377,7 @@ end;
 --GO
 
 
-CREATE PROCEDURE {databaseName}.{objectQualifier}recent_users(i_BoardID int,i_TimeSinceLastLogin int,i_StyledNicks TINYINT(1)) 
+CREATE PROCEDURE {databaseName}.{objectQualifier}recent_users(i_BoardID int,i_TimeSinceLastLogin int,i_StyledNicks TINYINT(1), i_UTCTIMESTAMP DATETIME) 
 begin  
     SELECT 
     usr.UserId,

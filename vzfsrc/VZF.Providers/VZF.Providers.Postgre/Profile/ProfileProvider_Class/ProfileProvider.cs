@@ -27,9 +27,7 @@ namespace YAF.Providers.Profile
     using System.Configuration;
     using System.Data;
     using System.Web.Profile;
-
-    using NpgsqlTypes;
-
+    using VZF.Data.Common;
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -99,6 +97,15 @@ namespace YAF.Providers.Profile
             {
                 _connectionString = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the Connection String App Key Name.
+        /// </summary>
+        public static string ConnectionStringName
+        {
+            get;
+            set;
         }
        
         #endregion
@@ -187,7 +194,7 @@ namespace YAF.Providers.Profile
             // validiate all the properties and populate the internal settings collection
             foreach (SettingsProperty property in collection)
             {
-                NpgsqlDbType dbType;
+                DbType dbType;
                 int size;
 
                 // parse custom provider data...
@@ -195,7 +202,7 @@ namespace YAF.Providers.Profile
 
                 // default the size to 256 if no size is specified
                 // default the size to 256 if no size is specified
-                if (dbType == NpgsqlDbType.Varchar && size == -1)
+                if (dbType == DbType.String && size == -1)
                 {
                     size = 256;
                 }
@@ -204,7 +211,7 @@ namespace YAF.Providers.Profile
             }
 
             // sync profile table structure with the db...
-            DataTable structure = Db.__GetProfileStructure(ConnectionString);
+            DataTable structure = Db.__GetProfileStructure(ConnectionStringName);
 
             // verify all the columns are there...
             foreach (SettingsPropertyColumn column in this._settingsColumnsList)
@@ -213,7 +220,7 @@ namespace YAF.Providers.Profile
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it...
-                    Db.__AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                    Db.__AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
                 }
             }
 
@@ -240,13 +247,13 @@ namespace YAF.Providers.Profile
             // validiate all the properties and populate the internal settings collection
             foreach (SettingsPropertyValue value in collection)
             {
-                NpgsqlDbType dbType;
+                DbType dbType;
                 int size;
 
                 // parse custom provider data...
                 this.GetDbTypeAndSizeFromString(value.Property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
 
-                if (dbType == NpgsqlDbType.Varchar && size == -1)
+                if (dbType == DbType.String && size == -1)
                 {
                     size = 256;
                 }
@@ -255,7 +262,7 @@ namespace YAF.Providers.Profile
             }
 
             // sync profile table structure with the db...
-            DataTable structure = Db.__GetProfileStructure(ConnectionString);
+            DataTable structure = Db.__GetProfileStructure(ConnectionStringName);
 
             // verify all the columns are there...
             foreach (SettingsPropertyColumn column in this._settingsColumnsList)
@@ -264,7 +271,7 @@ namespace YAF.Providers.Profile
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it...
-                    Db.__AddProfileColumn( ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                    Db.__AddProfileColumn( ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
                 }
             }
 
@@ -289,10 +296,10 @@ namespace YAF.Providers.Profile
         /// </returns>
         /// <exception cref="ArgumentException">
         /// </exception>
-        private bool GetDbTypeAndSizeFromString( string providerData, out NpgsqlDbType dbType, out int size )
+        private bool GetDbTypeAndSizeFromString( string providerData, out DbType dbType, out int size )
         {
             size = -1;
-            dbType = NpgsqlDbType.Varchar;
+            dbType = DbType.String;
 
             if (string.IsNullOrEmpty(providerData))
             {
@@ -308,21 +315,21 @@ namespace YAF.Providers.Profile
             // vzrus addon convert values from mssql types...
             if (chunk[1].IndexOf("varchar", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Varchar";
+                chunk[1] = "String";
             }
 
             if (chunk[1].IndexOf("int", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Integer";
+                chunk[1] = "Int32";
             }
 
             if (chunk[1].IndexOf("DateTime", StringComparison.Ordinal) >= 0)
             {
-                chunk[1] = "Timestamp";
+                chunk[1] = "DateTime";
             }
 
             // get the datatype and ignore case...
-            dbType = (NpgsqlDbType)Enum.Parse(typeof(NpgsqlDbType), chunk[1], true);
+            dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
 
             if (chunk.Length > 2)
             {
@@ -382,7 +389,7 @@ namespace YAF.Providers.Profile
 
             // create an instance for the profiles...
             var profiles = new ProfileInfoCollection();
-            DataTable allProfilesDt = Db.__GetProfiles(ConnectionString, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
+            DataTable allProfilesDt = Db.__GetProfiles(ConnectionStringName, this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
             
             // DataTable allProfilesDT = allProfilesDS.Tables [0];
             // DataTable profilesCountDT = allProfilesDS.Tables [1];

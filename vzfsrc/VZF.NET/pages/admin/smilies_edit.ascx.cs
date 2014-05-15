@@ -250,7 +250,7 @@ namespace YAF.Pages.Admin
         return;
       }
 
-      CommonDb.smiley_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("s"), this.PageContext.PageBoardID, code, icon, emotion, sortOrder, 0);
+      CommonDb.smiley_save(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("s"), this.PageContext.PageBoardID, code, icon, emotion, sortOrder, false);
 
       // invalidate the cache...
       this.Get<IDataCache>().Remove(Constants.Cache.Smilies);

@@ -40,10 +40,6 @@
     <AssemblyOriginatorKeyFile>vzf14.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Npgsql, Version=2.0.12.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\npgsql\Npgsql.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -69,9 +65,6 @@
     <Compile Include="Profile\ProfileProvider_Class\ProfileProviderOverridenMethods.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Profile\ProfileProvider_Class\ProfileProvider_Helpers\SettingsPropertyColumn.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Profile\ProfileProvider_Class\ProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,9 +87,9 @@
       <Project>{BCEFE9BE-7417-47FB-A0E8-75E0201E88E8}</Project>
       <Name>VZF.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Postgre\VZF.Data.Postgre.csproj">
-      <Project>{26FC1FB1-9DCB-4ED9-9F74-EF453646E97E}</Project>
-      <Name>VZF.Data.Postgre</Name>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.DAL\VZF.Data.DAL.csproj">
+      <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
+      <Name>VZF.Data.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
       <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>

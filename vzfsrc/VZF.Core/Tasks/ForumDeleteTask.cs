@@ -175,13 +175,13 @@ namespace YAF.Core.Tasks
                 {
                     CommonDb.forum_delete(YafContext.Current.PageModuleID, this.ForumId);
                     this.Logger.Info("Forum (ID: {0}) Delete Task Complete.".FormatWith(this.ForumId));
-                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Forum (ID: {0}) Delete Task Complete.".FormatWith(this.ForumId), 2);
+                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Forum (ID: {0}) Delete Task Complete.".FormatWith(this.ForumId), EventLogTypes.Information);
                 }
                 else
                 {
                     CommonDb.forum_move(YafContext.Current.PageModuleID, this.ForumId, this.ForumNewId);
 
-                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Forum (ID: {0}) Delete Task Complete, and Topics has been moved to Forum (ID: {1})".FormatWith(this.ForumId, this.ForumNewId), 2);
+                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, null, TaskName, "Forum (ID: {0}) Delete Task Complete, and Topics has been moved to Forum (ID: {1})".FormatWith(this.ForumId, this.ForumNewId), EventLogTypes.Information);
                 }
             }
             catch (Exception x)

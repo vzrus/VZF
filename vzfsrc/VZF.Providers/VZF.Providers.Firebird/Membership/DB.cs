@@ -373,7 +373,7 @@ namespace YAF.Providers.Membership
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_APPLICATIONNAME", appName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "I_TIMEWINDOW", TimeWindow));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_currenttimeutc", DateTime.UtcNow));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_returnvalue", ParameterDirection.ReturnValue));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_returnvalue", null, ParameterDirection.ReturnValue));
 
                 sc.CommandText.AppendObjectQuery("P_getnumberofusersonline", connectionStringName);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);

@@ -26,7 +26,7 @@ namespace YAF.Providers.Profile
             // just clear the whole thing...
             ClearUserProfileCache();
 
-            return Db.__DeleteInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate);
+            return Db.__DeleteInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate);
         }
 
         public override int DeleteProfiles(string[] usernames)
@@ -55,7 +55,7 @@ namespace YAF.Providers.Profile
             }
 
             // call the DB...
-            return Db.__DeleteProfiles(ConnectionString, this.ApplicationName, userNameBuilder.ToString());
+            return Db.__DeleteProfiles(ConnectionStringName, this.ApplicationName, userNameBuilder.ToString());
         }
 
         public override int DeleteProfiles(ProfileInfoCollection profiles)
@@ -105,7 +105,7 @@ namespace YAF.Providers.Profile
                 ExceptionReporter.ThrowArgument("PROFILE", "NOANONYMOUS");
             }
            
-            return Db.__GetNumberInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate);
+            return Db.__GetNumberInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate);
         }
         //
         // GetProfileInfoFromReader

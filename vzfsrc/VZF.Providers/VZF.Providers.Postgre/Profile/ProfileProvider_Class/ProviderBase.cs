@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using VZF.Data.DAL;
 using YAF.Core;
 using YAF.Providers.Utils;
 
@@ -49,6 +50,7 @@ namespace YAF.Providers.Profile
             {
                 string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
                 ConnectionString = connStr;
+                ConnectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
                 // set the app variable...
                 if (YafContext.Application[ConnStrAppKeyName] == null)
                 {

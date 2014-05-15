@@ -375,8 +375,8 @@ namespace YAF.Core
                 // problem -- log and move on...
                 CommonDb.eventlog_create(YafContext.Current.PageModuleID, userId,
                     "UpdateForumUser",
-                    "Null User Provider Key for UserName {0}. Please check your provider key settings for your ASP.NET membership provider.",
-                    user.UserName);
+                    "Null User Provider Key for UserName {0}. Please check your provider key settings for your ASP.NET membership provider.".FormatWith(user.UserName ?? user.UserName),
+                     EventLogTypes.Error);
 
                 return userId;
             }
@@ -414,7 +414,7 @@ namespace YAF.Core
                 groupTable.AsEnumerable().Where(row => !userRoles.Contains(row["Name"].ToString())))
             {
                 // remove since there is no longer an association in the membership...
-                CommonDb.usergroup_save(YafContext.Current.PageModuleID, userId, row["GroupID"], 0);
+                CommonDb.usergroup_save(YafContext.Current.PageModuleID, userId, row["GroupID"], false);
             }
 
             if (isNewUser && userId > 0)

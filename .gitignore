@@ -43,3 +43,4 @@ vzfsrc/VZF.NET/app_pg_remote.config
 vzfsrc/VZF.NET/app_offline1.htm
 *nestedsets.*
 vzfsrc/VZF.NET/mail*
+vzfsrc/VZF.NET/mail_local.config

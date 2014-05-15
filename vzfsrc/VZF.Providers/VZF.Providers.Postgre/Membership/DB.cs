@@ -44,331 +44,278 @@ namespace YAF.Providers.Membership
 {
     using System;
     using System.Data;
-    using System.Web.Security;
-
-    using Npgsql;
-
-    using NpgsqlTypes;
-
-    using VZF.Data.Postgre;
+    using System.Web.Security;    
 
     using YAF.Classes;
     using YAF.Core;
+    using VZF.Data.DAL;
 
-    /// <summary>
-    /// The pg membership db conn manager.
-    /// </summary>
-    public static class PgMembershipDBConnManager 
-    {
-        /// <summary>
-        /// Gets the connection string.
-        /// </summary>
-        public static string ConnectionString
-        {
-            get
-            {
-                if  (YafContext.Application[PgMembershipProvider.ConnStrAppKeyName] != null)
-                {
-                    return YafContext.Application[PgMembershipProvider.ConnStrAppKeyName] as string;
-                }
-
-                return Config.ConnectionString;
-            }
-        }
-    }
 
     /// <summary>
     /// The db.
     /// </summary>
     public static  class Db
-    {
-        public static void UpgradeMembership(int previousVersion, int newVersion)
-        {
-            UpgradeMembership(string.Empty, previousVersion, newVersion);
+    {   
+        public static void __ChangePassword(string connectionStringName, string appName, string userName, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
+        {           
+            using (var sc = new SQLCommand(connectionStringName))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_password", newPassword));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordsalt", newSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordformat", passwordFormat));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordanswer", newPasswordAnswer));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+
+                sc.CommandText.AppendObjectQuery("prov_changepassword", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }             
         }
 
-        public static void UpgradeMembership(string connectionString, int previousVersion, int newVersion)
+        public static void __ChangePasswordQuestionAndAnswer(string connectionStringName, string appName, string userName, string passwordQuestion, string passwordAnswer)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_upgrade")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                /*
-                cmd.CommandType = CommandType.StoredProcedure;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_previousversion", NpgsqlDbType.Integer)).Value = previousVersion;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newversion", NpgsqlDbType.Integer)).Value = newVersion;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordquestion", passwordQuestion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordanswer", passwordAnswer));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                PostgreDBAccess.ExecuteNonQuery(cmd,connectionString ); */
-            }
-
+                sc.CommandText.AppendObjectQuery("prov_changepasswordquestionandanswer", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }     
         }
 
-        public static void __ChangePassword(string connectionString, string appName, string username, string newPassword, string newSalt, int passwordFormat, string newPasswordAnswer)
-        {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_changepassword")))
+        public static void __CreateUser(string connectionStringName, string appName, string userName, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
+        {          
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
 
-                // Nonstandard args
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_password", password));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordsalt", passwordSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordformat", passwordFormat.ToString()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_email", email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordquestion", passwordQuestion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordanswer", passwordAnswer));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isapproved", isApproved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newuserkey", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_utctimestamp", DateTime.UtcNow));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_password", NpgsqlDbType.Varchar)).Value = newPassword;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordsalt", NpgsqlDbType.Varchar)).Value = newSalt;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordformat", NpgsqlDbType.Varchar)).Value = passwordFormat;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordanswer", NpgsqlDbType.Varchar)).Value = newPasswordAnswer;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userkey", providerUserKey, ParameterDirection.InputOutput));               
 
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("prov_createuser", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+                providerUserKey = sc.Parameters["i_userkey"].Value;
+            }     
         }
 
-        public static void __ChangePasswordQuestionAndAnswer(string connectionString, string appName, string username, string passwordQuestion, string passwordAnswer)
+        public static void __DeleteUser(string connectionStringName, string appName, string userName, bool deleteAllRelatedData)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_changepasswordquestionandanswer")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_deleteallrelated", deleteAllRelatedData));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordquestion", NpgsqlDbType.Varchar)).Value = passwordQuestion;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordanswer", NpgsqlDbType.Varchar)).Value = passwordAnswer;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.CommandText.AppendObjectQuery("prov_deleteuser", connectionStringName);
 
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-            }
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }  
         }
 
-        public static void __CreateUser(string connectionString, string appName, string username, string password, string passwordSalt, int passwordFormat, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
+        public static DataTable __FindUsersByEmail(string connectionStringName, string appName, string emailToMatch, int pageIndex, int pageSize)
         {
-            using (var cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_createuser")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Input Parameters
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_password", NpgsqlDbType.Varchar)).Value = password;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordsalt", NpgsqlDbType.Varchar)).Value = passwordSalt;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordformat", NpgsqlDbType.Varchar)).Value = passwordFormat;
-                cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordquestion", NpgsqlDbType.Varchar)).Value = passwordQuestion;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordanswer", NpgsqlDbType.Varchar)).Value = passwordAnswer;
-                cmd.Parameters.Add(new NpgsqlParameter("i_isapproved", NpgsqlDbType.Boolean)).Value = isApproved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_newuserkey", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-                // Input Output Parameters
-                var paramUserKey = new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)
-                    {Direction = ParameterDirection.InputOutput, Value = providerUserKey};
-                cmd.Parameters.Add(paramUserKey);
-                
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
 
-                //Execute
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-                //Retrieve Output Parameters
-                providerUserKey = paramUserKey.Value;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_emailaddress", emailToMatch));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pageindex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pagesize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-            }
+                sc.CommandText.AppendObjectQuery("prov_findusersbyemail", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }    
         }
 
-        public static void __DeleteUser(string connectionString, string appName, string username, bool deleteAllRelatedData)
+        public static DataTable __FindUsersByName(string connectionStringName, string appName, string usernameToMatch, int pageIndex, int pageSize)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_deleteuser")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_deleteallrelated", NpgsqlDbType.Boolean)).Value = deleteAllRelatedData;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", usernameToMatch));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pageindex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pagesize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+
+                sc.CommandText.AppendObjectQuery("prov_findusersbyname", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }    
         }
 
-        public static DataTable __FindUsersByEmail(string connectionString, string appName, string emailToMatch, int pageIndex, int pageSize)
-        {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_findusersbyemail")))
+        public static DataTable __GetAllUsers(string connectionStringName, string appName, int pageIndex, int pageSize)
+        {            
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+             
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pageindex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_pagesize", pageSize));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_emailaddress", NpgsqlDbType.Varchar)).Value = emailToMatch;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("prov_getallusers", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }    
         }
 
-        public static DataTable __FindUsersByName(string connectionString, string appName, string usernameToMatch, int pageIndex, int pageSize)
+        public static int __GetNumberOfUsersOnline(string connectionStringName, string appName, int TimeWindow)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_findusersbyname")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = usernameToMatch;
-                //TODO:fix overflow bug                
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                if (pageSize == int.MaxValue) { pageSize = 1; }
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_timewindow", TimeWindow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_currenttimeutc", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_returnvalue", null, ParameterDirection.ReturnValue));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.CommandText.AppendObjectQuery("prov_getnumberofusersonline", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
 
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
+                return Convert.ToInt32(sc.Parameters["i_returnvalue"].Value);
+            }  
         }
 
-        public static DataTable __GetAllUsers(string connectionString, string appName, int pageIndex, int pageSize)
+        public static DataRow __GetUser(string connectionStringName, string appName, object providerUserKey, string userName, bool userIsOnline)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getallusers")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_pageindex", NpgsqlDbType.Integer)).Value = pageIndex;
-                cmd.Parameters.Add(new NpgsqlParameter("i_pagesize", NpgsqlDbType.Integer)).Value = pageSize;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
-        }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userkey", providerUserKey));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_userisonline", userIsOnline));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_utctimestamp", DateTime.UtcNow));
 
-        public static int __GetNumberOfUsersOnline(string connectionString, string appName, int TimeWindow)
-        {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getnumberofusersonline")))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-
-                cmd.Parameters.Add(new NpgsqlParameter("i_timewindow", NpgsqlDbType.Integer)).Value = TimeWindow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_currenttimeutc", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                NpgsqlParameter p = new NpgsqlParameter("i_returnvalue", DbType.Int32);
-                p.Direction = ParameterDirection.ReturnValue;
-                cmd.Parameters.Add(p);
-
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-                return Convert.ToInt32(cmd.Parameters["i_returnvalue"].Value);
-            }
-        }
-
-        public static DataRow __GetUser(string connectionString, string appName, object providerUserKey, string userName, bool userIsOnline)
-        {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getuser")))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = providerUserKey;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userisonline", NpgsqlDbType.Boolean)).Value = userIsOnline;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-
-                using (DataTable dt = PostgreDbAccess.GetData(cmd,connectionString ))
+                sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+                using (var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
                 {
-                    if (dt.Rows.Count > 0)
-                    {
-
-                        return dt.Rows[0];
-                    }
-                    else
-                        return null;
+                    return dt.Rows.Count > 0 ? dt.Rows[0] : null;
                 }
             }
 
         }
 
-        public static DataTable __GetUserPasswordInfo(string connectionString, string appName, string username, bool updateUser)
+        public static DataTable __GetUserPasswordInfo(string connectionStringName, string appName, string userName, bool updateUser)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getuser")))
+           
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userkey", DBNull.Value));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_userisonline", updateUser));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_utctimestamp", DateTime.UtcNow));
 
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = username;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = DBNull.Value;
-                cmd.Parameters.Add(new NpgsqlParameter("i_userisonline", NpgsqlDbType.Boolean)).Value = updateUser;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                cmd.Parameters.Add(new NpgsqlParameter("i_utctimestamp", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            } 
 
         }
 
-        public static DataTable __GetUserNameByEmail(string connectionString, string appName, string email)
+        public static DataTable __GetUserNameByEmail(string connectionStringName, string appName, string email)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_getusernamebyemail")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = email;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_email", email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                return PostgreDbAccess.GetData(cmd,connectionString );
-            }
+                sc.CommandText.AppendObjectQuery("prov_getusernamebyemail", connectionStringName);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+            }      
         }
 
 
-        public static void __ResetPassword(string connectionString, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
+        public static void __ResetPassword(string connectionStringName, string appName, string userName, string password, string passwordSalt, int passwordFormat, int maxInvalidPasswordAttempts, int passwordAttemptWindow)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_resetpassword")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_password", NpgsqlDbType.Varchar)).Value = password;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordsalt", NpgsqlDbType.Varchar)).Value = passwordSalt;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordformat", NpgsqlDbType.Varchar)).Value = passwordFormat;
-                cmd.Parameters.Add(new NpgsqlParameter("i_maxinvalidattempts", NpgsqlDbType.Integer)).Value = maxInvalidPasswordAttempts;
-                cmd.Parameters.Add(new NpgsqlParameter("i_passwordattemptwindow", NpgsqlDbType.Integer)).Value = passwordAttemptWindow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_currenttimeutc", NpgsqlDbType.Timestamp)).Value = DateTime.UtcNow;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newroleguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
 
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
-            }
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_password", password));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordsalt", passwordSalt));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_passwordformat", passwordFormat));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_maxinvalidattempts", maxInvalidPasswordAttempts));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_passwordattemptwindow", passwordAttemptWindow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_currenttimeutc", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-        }
+                sc.CommandText.AppendObjectQuery("prov_resetpassword", connectionStringName);
 
-        public static void __UnlockUser(string connectionString, string appName, string userName)
-        {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_unlockuser")))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = userName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
-                PostgreDbAccess.ExecuteNonQuery(cmd,connectionString );
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
 
-        public static int __UpdateUser(string connectionString, object appName, MembershipUser user, bool requiresUniqueEmail)
+        public static void __UnlockUser(string connectionStringName, string appName, string userName)
         {
-            using (NpgsqlCommand cmd = new NpgsqlCommand(PostgreDbAccess.GetObjectName("prov_updateuser")))
+            using (var sc = new SQLCommand(connectionStringName))
             {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new NpgsqlParameter("i_applicationname", NpgsqlDbType.Varchar)).Value = appName;
-                // Nonstandard args
-                cmd.Parameters.Add(new NpgsqlParameter("i_userkey", NpgsqlDbType.Uuid)).Value = user.ProviderUserKey;
-                cmd.Parameters.Add(new NpgsqlParameter("i_username", NpgsqlDbType.Varchar)).Value = user.UserName;
-                cmd.Parameters.Add(new NpgsqlParameter("i_email", NpgsqlDbType.Varchar)).Value = user.Email;
-                cmd.Parameters.Add(new NpgsqlParameter("i_comment", NpgsqlDbType.Text)).Value = user.Comment;
-                cmd.Parameters.Add(new NpgsqlParameter("i_isapproved", NpgsqlDbType.Boolean)).Value = user.IsApproved;
-                cmd.Parameters.Add(new NpgsqlParameter("i_lastlogin", NpgsqlDbType.Timestamp)).Value = user.LastLoginDate;
-                cmd.Parameters.Add(new NpgsqlParameter("i_lastactivity", NpgsqlDbType.Timestamp)).Value = user.LastActivityDate.ToUniversalTime();
-                cmd.Parameters.Add(new NpgsqlParameter("i_uniqueemail", NpgsqlDbType.Boolean)).Value = requiresUniqueEmail;
-                cmd.Parameters.Add(new NpgsqlParameter("i_newguid", NpgsqlDbType.Uuid)).Value = Guid.NewGuid();
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", userName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
 
-                return Convert.ToInt32(PostgreDbAccess.ExecuteScalar(cmd, connectionString));
+                sc.CommandText.AppendObjectQuery("prov_unlockuser", connectionStringName);
+
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            } 
+        }
+
+        public static int __UpdateUser(string connectionStringName, object appName, MembershipUser user, bool requiresUniqueEmail)
+        {
+            using (var sc = new SQLCommand(connectionStringName))
+            {              
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_userkey", user.ProviderUserKey));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_username", user.UserName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_email", user.Email));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_comment", user.Comment));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_isapproved", user.IsApproved));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastlogin", user.LastLoginDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_lastactivity", user.LastActivityDate));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_uniqueemail", requiresUniqueEmail));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "i_newguid", Guid.NewGuid()));
+
+                sc.CommandText.AppendObjectQuery("prov_updateuser", connectionStringName);
+
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }        
+        }
+
+        public static void UpgradeMembership(string connectionStringName, int previousVersion, int newVersion)
+        {
+            using (var sc = new SQLCommand(connectionStringName))
+            {
+                //  sc.DataSource.ProviderName
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PreviousVersion", previousVersion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_NewVersion", newVersion));
+                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+
+                sc.CommandText.AppendObjectQuery("prov_upgrade", connectionStringName);
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
+
         }
 
 

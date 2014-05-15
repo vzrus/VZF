@@ -323,17 +323,18 @@ namespace VZF.Utils.Structures
 
         if (tail != null)
         {
-          object purgeKey = this.m_linkToKey[tail];
+          // purge key
+          object sender = this.m_linkToKey[tail];
 
-          if (purgeKey != null)
+          if (sender != null)
           {
             // Fire the event
             if (this.OnPurgedFromCache != null && this.OnPurgedFromCache.GetInvocationList().Length > 0)
             {
-              this.OnPurgedFromCache(purgeKey, tail.Item);
+              this.OnPurgedFromCache(sender, tail.Item);
             }
 
-            this.Remove(purgeKey);
+            this.Remove(sender);
           }
         }
       }

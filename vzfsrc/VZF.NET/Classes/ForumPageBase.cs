@@ -79,7 +79,7 @@ namespace YAF
         return;
       }
 
-      var error = this.Get<HttpServerUtilityBase>().GetLastError();
+      var error = this.Get<HttpServerUtilityBase>().GetLastError().Message;
       CommonDb.eventlog_create(PageContext.PageModuleID, (int?)YafContext.Current.PageUserID, this, error);
     }
 

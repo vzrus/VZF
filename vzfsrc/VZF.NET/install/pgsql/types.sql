@@ -933,7 +933,8 @@ CREATE TYPE databaseSchema.objectQualifier_post_alluser_type AS
 "UserDisplayName" varchar(128),
 "Signature" text,
 "TopicID" integer,
-"ForumID" integer
+"ForumID" integer,
+"ReadAccess" integer
 );
 --GO
 
@@ -2221,7 +2222,7 @@ CREATE TYPE databaseSchema.objectQualifier_buddy_list_return_type AS
 	"UserID" integer,
 	"BoardID" integer,
 	"Name" varchar(255),
-	"DisplayName" varchar(255)
+	"DisplayName" varchar(255),
 	"Joined" timestamp,
 	"NumPosts" integer,
 	"RankName" varchar(128),
@@ -2536,8 +2537,8 @@ CREATE TYPE databaseSchema.objectQualifier_user_listtodaysbirthdays_rt AS
 "Birthday" timestamp,
 "UserID" integer,
 "TimeZone" integer,
-"UserName" integer,
-"UserDisplayName" integer,
+"UserName" varchar(255),
+"UserDisplayName" varchar(255),
 "Style" varchar(255)
 );
 --GO
