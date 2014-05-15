@@ -273,7 +273,7 @@ namespace YAF.Core.Services
             catch (Exception x)
             {
                 // report exception to the forum's event log
-                CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, "SendPmNotification", x);
+                CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, x.Source, x.Message);
 
                 // tell user about failure
                 YafContext.Current.AddLoadMessage(

@@ -7838,8 +7838,8 @@ END;$BODY$
 -- DROP FUNCTION databaseSchema.objectQualifier_pmessage_list(integer, integer, integer);
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_pmessage_list(
-                           i_touserid integer,
-                           i_fromuserid integer,  
+                           i_fromuserid integer,
+                           i_touserid integer,                             
                            i_userpmessageid integer)
                   RETURNS SETOF databaseSchema.objectQualifier_pmessage_list_return_type AS
 $BODY$DECLARE
