@@ -32,7 +32,6 @@ Backup*/
 _ReSharper*/
 [Tt]est[Rr]esult*
 vzfsrc/VZF.NET/uploads/
-vzfsrc/VZF.NET/install/mssql
 vzfsrc/VZF.ImmigrationEnforcement/
 *.ncrunchsolution
 *.ncrunchproject
@@ -44,3 +43,5 @@ vzfsrc/VZF.NET/app_offline1.htm
 *nestedsets.*
 vzfsrc/VZF.NET/mail*
 vzfsrc/VZF.NET/mail_local.config
+vzfsrc/VZF.NET/App_Data/
+
