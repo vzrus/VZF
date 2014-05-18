@@ -991,6 +991,10 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Content Include="advanced.aspx" />
+    <Content Include="App_Data\vzf.mdf" />
+    <Content Include="App_Data\vzf_log.ldf">
+      <DependentUpon>vzf.mdf</DependentUpon>
+    </Content>
     <Content Include="app_fb.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4586,7 +4590,7 @@
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
     <Content Include="app_my.config" />
-    <Content Include="app_ms.config" />
+    <Content Include="app.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -5189,10 +5193,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="pages\app_my.config" />
-    <Content Include="app.config">
+    <Content Include="app_pg.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web.config">
+    <Content Include="web_pg.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -5922,7 +5926,7 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web_ms.config" />
+    <Content Include="web.config" />
     <Content Include="web_fb.config" />
   </ItemGroup>
   <ItemGroup>
@@ -5968,7 +5972,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
     <Folder Include="install\mssql\" />
     <Folder Include="uploads\avatars\" />

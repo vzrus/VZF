@@ -22,44 +22,17 @@ namespace YAF.Providers.Membership
 
   using System;
   using System.Data;
-  using System.Data.SqlClient;
   using System.Web.Security;
-
-  using VZF.Data.MsSql;
 
   using YAF.Classes;
   using YAF.Classes.Pattern;
   using YAF.Core; using YAF.Types.Interfaces; using YAF.Types.Constants;
   
   using YAF.Types;
+    using VZF.Data.DAL;
 
   #endregion
 
-  /// <summary>
-  /// The yaf membership db conn manager.
-  /// </summary>
-  public class MsSqlMembershipDbConnectionManager : MsSqlDbConnectionManager
-  {
-    #region Properties
-
-    /// <summary>
-    ///   Gets ConnectionString.
-    /// </summary>
-    public override string ConnectionString
-    {
-      get
-      {
-        if (YafContext.Application[YafMembershipProvider.ConnStrAppKeyName] != null)
-        {
-          return YafContext.Application[YafMembershipProvider.ConnStrAppKeyName] as string;
-        }
-
-        return Config.ConnectionString;
-      }
-    }
-
-    #endregion
-  }
 
   /// <summary>
   /// The db.
@@ -125,22 +98,21 @@ namespace YAF.Providers.Membership
     /// <param name="newPasswordAnswer">
     /// The new password answer.
     /// </param>
-    public void ChangePassword(string connectionString, [NotNull] string appName, [NotNull] string username, [NotNull] string newPassword, [NotNull] string newSalt, int passwordFormat, [NotNull] string newPasswordAnswer)
+    public void ChangePassword(string connectionStringName, [NotNull] string appName, [NotNull] string userName, [NotNull] string newPassword, [NotNull] string newSalt, int passwordFormat, [NotNull] string newPasswordAnswer)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_changepassword")))
-      {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+        using (var sc = new SQLCommand(connectionStringName))
+        {
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+            //  sc.DataSource.ProviderName
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Password", newPassword));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordSalt", newSalt));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordFormat", passwordFormat));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordAnswer", newPasswordAnswer));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Username", username);
-        cmd.Parameters.AddWithValue("@Password", newPassword);
-        cmd.Parameters.AddWithValue("@PasswordSalt", newSalt);
-        cmd.Parameters.AddWithValue("@PasswordFormat", passwordFormat);
-        cmd.Parameters.AddWithValue("@PasswordAnswer", newPasswordAnswer);
-
-        MsSqlDbAccess.ExecuteNonQuery(cmd,connectionString);
-      }
+            sc.CommandText.AppendObjectQuery("prov_changepassword", connectionStringName);
+            sc.ExecuteNonQuery(CommandType.StoredProcedure);
+        }
     }
 
     /// <summary>
@@ -158,19 +130,19 @@ namespace YAF.Providers.Membership
     /// <param name="passwordAnswer">
     /// The password answer.
     /// </param>
-    public void ChangePasswordQuestionAndAnswer(string connectionString, [NotNull] string appName, [NotNull] string username, [NotNull] string passwordQuestion, [NotNull] string passwordAnswer)
+    public void ChangePasswordQuestionAndAnswer(string connectionStringName, [NotNull] string appName, [NotNull] string userName, [NotNull] string passwordQuestion, [NotNull] string passwordAnswer)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_changepasswordquestionandanswer")))
-      {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+        using (var sc = new SQLCommand(connectionStringName))
+        {
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+            //  sc.DataSource.ProviderName
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Username", userName));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordQuestion", passwordQuestion));
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordAnswer", passwordAnswer));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Username", username);
-        cmd.Parameters.AddWithValue("@PasswordQuestion", passwordQuestion);
-        cmd.Parameters.AddWithValue("@PasswordAnswer", passwordAnswer);
-        MsSqlDbAccess.ExecuteNonQuery(cmd,connectionString);
-      }
+            sc.CommandText.AppendObjectQuery("prov_changepasswordquestionandanswer", connectionStringName);
+            sc.ExecuteNonQuery(CommandType.StoredProcedure);
+        }
     }
 
     /// <summary>
@@ -206,38 +178,31 @@ namespace YAF.Providers.Membership
     /// <param name="providerUserKey">
     /// The provider user key.
     /// </param>
-    public void CreateUser(string connectionString, [NotNull] string appName, [NotNull] string username, [NotNull] string password, [NotNull] string passwordSalt, 
+    public void CreateUser(string connectionStringName, [NotNull] string appName, [NotNull] string userName, [NotNull] string password, [NotNull] string passwordSalt, 
       int passwordFormat, [NotNull] string email, [NotNull] string passwordQuestion, [NotNull] string passwordAnswer, 
       bool isApproved, [NotNull] object providerUserKey)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_createuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
 
-        // Input Parameters
-        cmd.Parameters.AddWithValue("Username", username);
-        cmd.Parameters.AddWithValue("Password", password);
-        cmd.Parameters.AddWithValue("PasswordSalt", passwordSalt);
-        cmd.Parameters.AddWithValue("PasswordFormat", passwordFormat);
-        cmd.Parameters.AddWithValue("Email", email);
-        cmd.Parameters.AddWithValue("PasswordQuestion", passwordQuestion);
-        cmd.Parameters.AddWithValue("PasswordAnswer", passwordAnswer);
-        cmd.Parameters.AddWithValue("IsApproved", isApproved);
-        cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Username", userName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Password", password));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordSalt", passwordSalt));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordFormat", passwordFormat.ToString()));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Email", email));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordQuestion", passwordQuestion));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordAnswer", passwordAnswer));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@IsApproved", isApproved));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@UTCTIMESTAMP", DateTime.UtcNow));
 
-        // Input Output Parameters
-        var paramUserKey = new SqlParameter("UserKey", SqlDbType.UniqueIdentifier);
-        paramUserKey.Direction = ParameterDirection.InputOutput;
-        paramUserKey.Value = providerUserKey;
-        cmd.Parameters.Add(paramUserKey);
+          var paramUserKey = sc.CreateParameter(DbType.Guid, "@UserKey", providerUserKey, ParameterDirection.InputOutput);
+          sc.Parameters.Add(paramUserKey);
 
-        // Execute
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-
-        // Retrieve Output Parameters
-        providerUserKey = paramUserKey.Value;
-      }
+          sc.CommandText.AppendObjectQuery("prov_createuser", connectionStringName);
+          sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+          providerUserKey = paramUserKey.Value;
+      }     
     }
 
     /// <summary>
@@ -252,18 +217,18 @@ namespace YAF.Providers.Membership
     /// <param name="deleteAllRelatedData">
     /// The delete all related data.
     /// </param>
-    public void DeleteUser(string connectionString, [NotNull] string appName, [NotNull] string username, bool deleteAllRelatedData)
+    public void DeleteUser(string connectionStringName, [NotNull] string appName, [NotNull] string userName, bool deleteAllRelatedData)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_deleteuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@DeleteAllRelated", deleteAllRelatedData));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Username", username);
-        cmd.Parameters.AddWithValue("@DeleteAllRelated", deleteAllRelatedData);
-        MsSqlDbAccess.ExecuteNonQuery(cmd,connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_deleteuser", connectionStringName);
+
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
+      } 
     }
 
     /// <summary>
@@ -283,19 +248,19 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataTable FindUsersByEmail(string connectionString, [NotNull] string appName, [NotNull] string emailToMatch, int pageIndex, int pageSize)
+    public DataTable FindUsersByEmail(string connectionStringName, [NotNull] string appName, [NotNull] string emailToMatch, int pageIndex, int pageSize)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_findusersbyemail")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@EmailAddress", emailToMatch);
-        cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-        cmd.Parameters.AddWithValue("@PageSize", pageSize);
-        return MsSqlDbAccess.GetData(cmd,connectionString);
-      }
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@EmailAddress", emailToMatch));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageIndex", pageIndex));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageSize", pageSize));        
+
+          sc.CommandText.AppendObjectQuery("prov_findusersbyemail", connectionStringName);
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+      }    
     }
 
     /// <summary>
@@ -315,19 +280,19 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataTable FindUsersByName(string connectionString, [NotNull] string appName, [NotNull] string usernameToMatch, int pageIndex, int pageSize)
+    public DataTable FindUsersByName(string connectionStringName, [NotNull] string appName, [NotNull] string usernameToMatch, int pageIndex, int pageSize)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_findusersbyname")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Username", usernameToMatch);
-        cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-        cmd.Parameters.AddWithValue("@PageSize", pageSize);
-        return MsSqlDbAccess.GetData(cmd, connectionString);
-      }
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", usernameToMatch));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageIndex", pageIndex));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageSize", pageSize));         
+
+          sc.CommandText.AppendObjectQuery("prov_findusersbyname", connectionStringName);
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+      }     
     }
 
     /// <summary>
@@ -344,18 +309,17 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataTable GetAllUsers(string connectionString, [NotNull] string appName, int pageIndex, int pageSize)
+    public DataTable GetAllUsers(string connectionStringName, [NotNull] string appName, int pageIndex, int pageSize)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_getallusers")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageIndex", pageIndex));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageSize", pageSize));          
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-        cmd.Parameters.AddWithValue("@PageSize", pageSize);
-        return MsSqlDbAccess.GetData(cmd, connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_getallusers", connectionStringName);
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+      }    
     }
 
     /// <summary>
@@ -370,22 +334,20 @@ namespace YAF.Providers.Membership
     /// <returns>
     /// The get number of users online.
     /// </returns>
-    public int GetNumberOfUsersOnline(string connectionString, [NotNull] string appName, int timeWindow)
+    public int GetNumberOfUsersOnline(string connectionStringName, [NotNull] string appName, int timeWindow)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_getnumberofusersonline")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@TimeWindow", timeWindow));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@CurrentTimeUtc", DateTime.UtcNow));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@ReturnValue", null, ParameterDirection.ReturnValue));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@TimeWindow", timeWindow);
-        cmd.Parameters.AddWithValue("@CurrentTimeUtc", DateTime.UtcNow);
-        var p = new SqlParameter("ReturnValue", SqlDbType.Int);
-        p.Direction = ParameterDirection.ReturnValue;
-        cmd.Parameters.Add(p);
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-        return Convert.ToInt32(cmd.Parameters["ReturnValue"].Value);
-      }
+          sc.CommandText.AppendObjectQuery("prov_getnumberofusersonline", connectionStringName);
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
+
+          return Convert.ToInt32(sc.Parameters["@ReturnValue"].Value);
+      }  
     }
 
     /// <summary>
@@ -405,29 +367,23 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataRow GetUser(string connectionString, [NotNull] string appName, [NotNull] object providerUserKey, [NotNull] string userName, bool userIsOnline)
+    public DataRow GetUser(string connectionStringName, [NotNull] string appName, [NotNull] object providerUserKey, [NotNull] string userName, bool userIsOnline)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_getuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          var providerUserKeyNew = providerUserKey != null ? providerUserKey.ToString() : null;
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@UserName", userName);
-        cmd.Parameters.AddWithValue("@UserKey", providerUserKey);
-        cmd.Parameters.AddWithValue("@UserIsOnline", userIsOnline);
-        cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
-        using (DataTable dt = MsSqlDbAccess.GetData(cmd,connectionString))
-        {
-          if (dt.Rows.Count > 0)
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserKey", providerUserKeyNew));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@UserIsOnline", userIsOnline));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@UTCTIMESTAMP", DateTime.UtcNow));
+
+          sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+          using (var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
           {
-            return dt.Rows[0];
+              return dt.Rows.Count > 0 ? dt.Rows[0] : null;
           }
-          else
-          {
-            return null;
-          }
-        }
       }
     }
 
@@ -442,17 +398,16 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataTable GetUserNameByEmail(string connectionString, [NotNull] string appName, [NotNull] string email)
+    public DataTable GetUserNameByEmail(string connectionStringName, [NotNull] string appName, [NotNull] string email)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_getusernamebyemail")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Email", email));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Email", email);
-        return MsSqlDbAccess.GetData(cmd, connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_getusernamebyemail", connectionStringName);
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+      }      
     }
 
     /// <summary>
@@ -469,19 +424,18 @@ namespace YAF.Providers.Membership
     /// </param>
     /// <returns>
     /// </returns>
-    public DataTable GetUserPasswordInfo(string connectionString, [NotNull] string appName, [NotNull] string username, bool updateUser)
+    public DataTable GetUserPasswordInfo(string connectionStringName, [NotNull] string appName, [NotNull] string userName, bool updateUser)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_getuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName)); 
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@UserIsOnline", updateUser));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@UTCTIMESTAMP", DateTime.UtcNow));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@Username", username);
-        cmd.Parameters.AddWithValue("@UserIsOnline", updateUser);
-        cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
-        return MsSqlDbAccess.GetData(cmd, connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_getuser", connectionStringName);
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+      }  
     }
 
     /// <summary>
@@ -508,26 +462,26 @@ namespace YAF.Providers.Membership
     /// <param name="passwordAttemptWindow">
     /// The password attempt window.
     /// </param>
-    public void ResetPassword(string connectionString, [NotNull] string appName, [NotNull] string userName, [NotNull] string password, [NotNull] string passwordSalt, 
+    public void ResetPassword(string connectionStringName, [NotNull] string appName, [NotNull] string userName, [NotNull] string password, [NotNull] string passwordSalt, 
       int passwordFormat, 
       int maxInvalidPasswordAttempts, 
       int passwordAttemptWindow)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_resetpassword")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@UserName", userName);
-        cmd.Parameters.AddWithValue("@Password", password);
-        cmd.Parameters.AddWithValue("@PasswordSalt", passwordSalt);
-        cmd.Parameters.AddWithValue("@PasswordFormat", passwordFormat);
-        cmd.Parameters.AddWithValue("@MaxInvalidAttempts", maxInvalidPasswordAttempts);
-        cmd.Parameters.AddWithValue("@PasswordAttemptWindow", passwordAttemptWindow);
-        cmd.Parameters.AddWithValue("@CurrentTimeUtc", DateTime.UtcNow);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Password", password));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordSalt", passwordSalt));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PasswordFormat", passwordFormat));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@MaxInvalidAttempts", maxInvalidPasswordAttempts));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PasswordAttemptWindow", passwordAttemptWindow));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@CurrentTimeUtc", DateTime.UtcNow));
 
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
+          sc.CommandText.AppendObjectQuery("prov_resetpassword", connectionStringName);
+
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
       }
     }
 
@@ -540,17 +494,17 @@ namespace YAF.Providers.Membership
     /// <param name="userName">
     /// The user name.
     /// </param>
-    public void UnlockUser(string connectionString, [NotNull] string appName, [NotNull] string userName)
+    public void UnlockUser(string connectionStringName, [NotNull] string appName, [NotNull] string userName)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_unlockuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", userName));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@UserName", userName);
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_unlockuser", connectionStringName);
+
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
+      } 
     }
 
     /// <summary>
@@ -568,31 +522,27 @@ namespace YAF.Providers.Membership
     /// <returns>
     /// The update user.
     /// </returns>
-    public int UpdateUser(string connectionString, [NotNull] object appName, [NotNull] MembershipUser user, bool requiresUniqueEmail)
+    public int UpdateUser(string connectionStringName, [NotNull] object appName, [NotNull] MembershipUser user, bool requiresUniqueEmail)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_updateuser")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("ApplicationName", appName);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Guid, "@UserKey", user.ProviderUserKey));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserName", user.UserName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Email", user.Email));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@Comment", user.Comment));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@IsApproved", user.IsApproved));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@LastLogin", user.LastLoginDate));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@LastActivity", user.LastActivityDate));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "@UniqueEmail", requiresUniqueEmail));
+          var p = sc.CreateParameter(DbType.Boolean, "@ReturnValue", null, ParameterDirection.ReturnValue);       
+       
+          sc.Parameters.Add(p);
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("UserKey", user.ProviderUserKey);
-        cmd.Parameters.AddWithValue("UserName", user.UserName);
-        cmd.Parameters.AddWithValue("Email", user.Email);
-        cmd.Parameters.AddWithValue("Comment", user.Comment);
-        cmd.Parameters.AddWithValue("IsApproved", user.IsApproved);
-        cmd.Parameters.AddWithValue("LastLogin", user.LastLoginDate);
-        cmd.Parameters.AddWithValue("LastActivity", user.LastActivityDate.ToUniversalTime());
-        cmd.Parameters.AddWithValue("UniqueEmail", requiresUniqueEmail);
-
-        // Add Return Value
-        var p = new SqlParameter("ReturnValue", SqlDbType.Int);
-        p.Direction = ParameterDirection.ReturnValue;
-        cmd.Parameters.Add(p);
-
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString); // Execute Non SQL Query
-        return Convert.ToInt32(p.Value); // Return
-      }
+          sc.CommandText.AppendObjectQuery("prov_updateuser", connectionStringName);
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
+          return Convert.ToInt32(p.Value);
+      }        
     }
 
     /// <summary>
@@ -604,18 +554,18 @@ namespace YAF.Providers.Membership
     /// <param name="newVersion">
     /// The new version.
     /// </param>
-    public void UpgradeMembership(string connectionString, int previousVersion, int newVersion)
+    public void UpgradeMembership(string connectionStringName, int previousVersion, int newVersion)
     {
-      using (var cmd = new SqlCommand(MsSqlDbAccess.GetObjectName("prov_upgrade")))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
+          //  sc.DataSource.ProviderName
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@PreviousVersion", previousVersion));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@NewVersion", newVersion));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@UTCTIMESTAMP", DateTime.UtcNow));
 
-        // Nonstandard args
-        cmd.Parameters.AddWithValue("@PreviousVersion", previousVersion);
-        cmd.Parameters.AddWithValue("@NewVersion", newVersion);
-        cmd.Parameters.AddWithValue("@UTCTIMESTAMP", DateTime.UtcNow);
-        MsSqlDbAccess.ExecuteNonQuery(cmd, connectionString);
-      }
+          sc.CommandText.AppendObjectQuery("prov_upgrade", connectionStringName);
+          sc.ExecuteNonQuery(CommandType.StoredProcedure);
+      }     
     }
 
     #endregion

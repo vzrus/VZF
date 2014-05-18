@@ -224,7 +224,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
             using (var sc = new SQLCommand(connectionStringName))
             {
                 string sql = String.Format("ALTER TABLE {0} ADD `{1}` {2};", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), Name, type);
-
+                sc.CommandText.AppendQuery(sql);
                 sc.ExecuteNonQuery(CommandType.Text, false);
             }
         }

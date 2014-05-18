@@ -65,7 +65,7 @@ namespace VZF.Utilities
 
             return
                 @"Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(loadDatePicker);
-                  function loadDatePicker() {{	{3}(document).ready(function() {{ {3}('#{0}').datepicker({{showButtonPanel: true,changeMonth:true,changeYear:true,maxDate:'+0d',dateFormat:'{1}',}}); {2} }});}} "
+                  function loadDatePicker() {{	{3}(document).ready(function() {{ {3}('#{0}').datepicker({{showButtonPanel: true,changeMonth:true,changeYear:true,yearRange: '-100:+0',maxDate:'+0d',dateFormat:'{1}',}}); {2} }});}} "
                     .FormatWith(fieldId, dateFormat, cultureJs, Config.JQueryAlias);
         }
     }

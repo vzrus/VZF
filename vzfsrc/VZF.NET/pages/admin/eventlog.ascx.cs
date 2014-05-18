@@ -327,9 +327,8 @@ namespace YAF.Pages.Admin
             int nCurrentPageIndex = this.PagerTop.CurrentPageIndex;
             this.PagerTop.PageSize = baseSize;
 
-            var sinceDate = DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays);
-            var timeZone = this.PageContext.CurrentUserData.TimeZone ?? this.PageContext.TimeZoneUser;
-            var toDate = DateTime.UtcNow.AddMinutes(timeZone);
+            DateTime sinceDate = DateTime.UtcNow.AddDays(-this.Get<YafBoardSettings>().EventLogMaxDays);       
+            DateTime toDate = DateTime.UtcNow;
 
             var ci = CultureInfo.CreateSpecificCulture(this.GetCulture());
 
@@ -360,7 +359,8 @@ namespace YAF.Pages.Admin
                     DateTime.TryParse(this.ToDate.Text, ci, DateTimeStyles.None, out toDate);
                 }
             }
-
+           
+            //  sinceDate = sinceDate.AddMinutes((double)(this.PageContext.CurrentUserData.TimeZone ?? this.PageContext.TimeZoneUser)).ToUniversalTime();
             // list event for this board
             DataTable dt = CommonDb.eventlog_list(
                 this.PageContext.PageModuleID,
@@ -371,7 +371,7 @@ namespace YAF.Pages.Admin
                 nCurrentPageIndex,
                 baseSize,
                 sinceDate,
-                toDate,
+                toDate.AddDays(1).AddMinutes(-1),
                 this.Types.SelectedValue.Equals("-1") ? null : this.Types.SelectedValue);
 
             this.List.DataSource = dt;

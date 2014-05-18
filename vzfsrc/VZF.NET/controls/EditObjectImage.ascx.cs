@@ -121,7 +121,7 @@ namespace VZF.Controls
         protected void DeleteImage_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             this.DeleteFiles();
-            
+
             CommonDb.topic_imagesave(
                 PageContext.PageModuleID, this.PageContext.QueryIDs["ti"].ToType<int>(), null, null, null);
 
@@ -321,6 +321,7 @@ namespace VZF.Controls
                 {
                     long x = this.Get<YafBoardSettings>().TopicImageWidth;
                     long y = this.Get<YafBoardSettings>().TopicImageHeight;
+
                     if (img.Width > x || img.Height > y)
                     {
                         this.PageContext.AddLoadMessage(this.GetText("IMAGEADD", "WARN_IMG_TOOBIG").FormatWith(x, y));
@@ -336,6 +337,7 @@ namespace VZF.Controls
                             imgThumb = Image.FromStream(resized);
                         }
                     }
+
 
                     x = this.Get<YafBoardSettings>().ImageAttachmentResizeWidth;
                     y = this.Get<YafBoardSettings>().ImageAttachmentResizeHeight;
@@ -354,8 +356,11 @@ namespace VZF.Controls
                             imgLarge = Image.FromStream(resizedLarge);
                         }
                     }
+                    else
+                    {
+                        imgLarge = Image.FromStream(this.File.PostedFile.InputStream);
+                    }
                 }
-            
 
 
                 // here we save an uploaded image
@@ -363,10 +368,15 @@ namespace VZF.Controls
                 {
                     if (this.CheckValidFile(this.File))
                     {
-                        this.SaveAttachment(
-                            this.PageContext.QueryIDs["ti"].ToType<int>(),
-                            this.File,
-                            imgThumb ?? Image.FromStream(this.File.PostedFile.InputStream), imgLarge);
+                        var path = this.SaveAttachment(
+                              this.PageContext.QueryIDs["ti"].ToType<int>(),
+                              this.File.PostedFile.FileName);
+
+                        // save thumbnail
+                        (imgThumb ?? Image.FromStream(this.File.PostedFile.InputStream)).Save(path[0]);
+
+                        // save large image
+                        imgLarge.Save(path[1]);
                     }
 
                     CommonDb.topic_imagesave(
@@ -509,13 +519,13 @@ namespace VZF.Controls
                     {
                         rowSpan++;
                     }
-                    
-                        this.topicImageTD.RowSpan = rowSpan;
-                    
+
+                    this.topicImageTD.RowSpan = rowSpan;
+
                 }
             }
 
-            #endregion
+        #endregion
         }
 
         /// <summary>
@@ -527,10 +537,8 @@ namespace VZF.Controls
         /// <param name="file">
         /// The file.
         /// </param>
-        private void SaveAttachment([NotNull] object topicId, [NotNull] HtmlInputFile file, [CanBeNull] Image resized, [CanBeNull] Image lImage)
+        private string[] SaveAttachment([NotNull] object topicId, [NotNull] string filename)
         {
-            string filename = file.PostedFile.FileName;
-
             int pos = filename.LastIndexOfAny(new[] { '/', '\\' });
             if (pos >= 0)
             {
@@ -558,11 +566,9 @@ namespace VZF.Controls
                 Directory.CreateDirectory(previousDirectory);
             }
 
-            // save large image
-            resized.Save("{0}/{1}.thumb.{2}.yafupload".FormatWith(previousDirectory, topicId, filename));
-
             // save thumbnail
-            lImage.Save("{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, topicId, filename));
+            string[] dd = new string[] { "{0}/{1}.thumb.{2}.yafupload".FormatWith(previousDirectory, topicId, filename), "{0}/{1}.{2}.yafupload".FormatWith(previousDirectory, topicId, filename) };
+            return dd;
         }
 
         /// <summary>
@@ -602,7 +608,6 @@ namespace VZF.Controls
                 return false;
             }
 
-
             string extension = Path.GetExtension(filePath).ToLower();
 
             // remove the "period"
@@ -637,9 +642,6 @@ namespace VZF.Controls
                 this.PageContext.AddLoadMessage(this.GetTextFormatted("FILEERROR", extension));
                 return false;
             }
-
-
-
             return true;
         }
     }

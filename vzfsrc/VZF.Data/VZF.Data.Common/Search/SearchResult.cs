@@ -1107,10 +1107,31 @@ namespace VZF.Data.Common
           bool useFullText,
           bool searchDisplayName, bool includeChildren)
         {
+           
+
+            if (toSearchWhat == "*") toSearchWhat = string.Empty;
             string forumIDs = string.Empty;
-            if (toSearchWhat == "*")
+            string limitString = string.Empty;
+            string orderString = string.Empty;
+            string categoriesIds = string.Empty;        
+
+            if (categoryId.Any())
             {
-                toSearchWhat = string.Empty;
+                if (Config.LargeForumTree)
+                {
+                    DataTable dt = CommonDb.forum_categoryaccess_activeuser(mid, boardId, userId);
+                    foreach (DataRow c in dt.Rows)
+                    {
+                        foreach (int c1 in categoryId)
+                        {
+                            if (Convert.ToInt32(c["CategoryID"]) == c1)
+                            {
+                                categoriesIds = categoriesIds + "," + c1.ToString();
+                            }
+                        }
+                    }
+                    categoriesIds = categoriesIds.Trim(',');
+                }
             }
 
             if (forumIDToStartAt.Any())
@@ -1139,9 +1160,16 @@ namespace VZF.Data.Common
                         }
                     }
                     forumIDs = forumIDs.Trim(',');
+                   
                 }
             }
 
+            int[] ids = null;
+            if (forumIDs.IsSet())
+            {
+                ids = new[] { forumIDs.ToType<int>() };
+            }           
+           
             string searchSql = new SearchBuilder().BuildSearchSql(
               toSearchWhat,
               toSearchFromWho,
@@ -1152,7 +1180,7 @@ namespace VZF.Data.Common
               boardId,
               maxResults,
               useFullText,
-              new[] { forumIDs.ToType<int>() });
+              ids);
 
             using (var sc = new SQLCommand(mid))
             {

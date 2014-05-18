@@ -29,10 +29,9 @@ namespace YAF.Providers.Profile
     using System.Data;
     using System.Data.SqlClient;
     using System.Text;
-
-    using VZF.Data.MsSql;
+    using VZF.Data.Common;
+    using VZF.Data.DAL; 
     using VZF.Utils;
-
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Core;
@@ -40,32 +39,6 @@ namespace YAF.Providers.Profile
     using YAF.Types.Interfaces;
 
     #endregion
-
-  /// <summary>
-  /// The yaf profile db conn manager.
-  /// </summary>
-  public class MsSqlProfileDbConnectionManager : MsSqlDbConnectionManager
-  {
-    #region Properties
-
-    /// <summary>
-    ///   Gets ConnectionString.
-    /// </summary>
-    public override string ConnectionString
-    {
-      get
-      {
-        if (YafContext.Application[YafProfileProvider.ConnStrAppKeyName] != null)
-        {
-          return YafContext.Application[YafProfileProvider.ConnStrAppKeyName] as string;
-        }
-
-        return Config.ConnectionString;
-      }
-    }
-
-    #endregion
-  }
 
   /// <summary>
   /// The db.
@@ -122,24 +95,47 @@ namespace YAF.Providers.Profile
     /// <param name="size">
     /// The size.
     /// </param>
-    public void AddProfileColumn(string connectionString, [NotNull] string name, SqlDbType columnType, int size)
+    public void AddProfileColumn(string connectionStringName, [NotNull] string name, DbType columnType, int size)
     {
-      // get column type...
-      string type = columnType.ToString();
+        // get column type...
+        string type = columnType.ToString();
+        if (type.ToLower().Contains("datetime"))
+        { type = "DATETIME"; }
+        if (type.Contains("String"))
+        {
+            if (size > 21844)
+            {
+                type = "NVARCHAR";
+            }
+            else
+            {
+                type = "NVARCHAR";
+            }
+        }
 
-      if (size > 0)
-      {
-        type += "(" + size + ")";
-      }
+        if (type.Contains("Int32"))
+        { type = "INT"; }
+        if (type.Contains("Boolean"))
+        { type = "BIT"; }
 
-      string sql = "ALTER TABLE {0} ADD [{1}] {2} NULL".FormatWith(
-        MsSqlDbAccess.GetObjectName("prov_Profile"), name, type);
+        if (size > 21844)
+        {
+            type += "(MAX)";
+        }
+        else
+        {
+            if (size > 0)
+            {
+                type += "(" + size + ")";
+            }
+        }
 
-      using (var cmd = new SqlCommand(sql))
-      {
-        cmd.CommandType = CommandType.Text;
-        MsSqlDbAccess.ExecuteNonQuery(cmd,connectionString);
-      }
+        using (var sc = new SQLCommand(connectionStringName))
+        {
+            string sql = String.Format("ALTER TABLE {0} ADD [{1}] {2} NULL", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), name, type);
+            sc.CommandText.AppendQuery(sql);
+            sc.ExecuteNonQuery(CommandType.Text, false);
+        }
     }
 
     /// <summary>
@@ -154,14 +150,15 @@ namespace YAF.Providers.Profile
     /// <returns>
     /// The delete inactive profiles.
     /// </returns>
-    public int DeleteInactiveProfiles(string connectionString, [NotNull] object appName, [NotNull] object inactiveSinceDate)
-    {
-      using (SqlCommand cmd = MsSqlDbAccess.GetCommand("prov_profile_deleteinactive"))
+    public int DeleteInactiveProfiles(string connectionStringName, [NotNull] object appName, [NotNull] object inactiveSinceDate)
+    {    
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("ApplicationName", appName);
-        cmd.Parameters.AddWithValue("InactiveSinceDate", inactiveSinceDate);
-        return Convert.ToInt32(MsSqlDbAccess.ExecuteScalar(cmd,connectionString));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@InactiveSinceDate", inactiveSinceDate));
+
+          sc.CommandText.AppendObjectQuery("prov_profile_deleteinactive", connectionStringName);
+          return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
       }
     }
 
@@ -177,14 +174,15 @@ namespace YAF.Providers.Profile
     /// <returns>
     /// The delete profiles.
     /// </returns>
-    public int DeleteProfiles(string connectionString, [NotNull] object appName, [NotNull] object userNames)
+    public int DeleteProfiles(string connectionStringName, [NotNull] object appName, [NotNull] object userNames)
     {
-      using (SqlCommand cmd = MsSqlDbAccess.GetCommand("prov_profile_deleteprofiles"))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("ApplicationName", appName);
-        cmd.Parameters.AddWithValue("UserNames", userNames);
-        return Convert.ToInt32(MsSqlDbAccess.ExecuteScalar(cmd,connectionString));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName)); ;
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserNames", userNames));
+
+          sc.CommandText.AppendObjectQuery("prov_profile_deleteprofiles", connectionStringName);
+          return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
       }
     }
 
@@ -200,14 +198,15 @@ namespace YAF.Providers.Profile
     /// <returns>
     /// The get number inactive profiles.
     /// </returns>
-    public int GetNumberInactiveProfiles(string connectionString, [NotNull] object appName, [NotNull] object inactiveSinceDate)
+    public int GetNumberInactiveProfiles(string connectionStringName, [NotNull] object appName, [NotNull] object inactiveSinceDate)
     {
-      using (SqlCommand cmd = MsSqlDbAccess.GetCommand("prov_profile_getnumberinactiveprofiles"))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("ApplicationName", appName);
-        cmd.Parameters.AddWithValue("InactiveSinceDate", inactiveSinceDate);
-        return Convert.ToInt32(MsSqlDbAccess.ExecuteScalar(cmd,connectionString));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@InactiveSinceDate", inactiveSinceDate));
+
+          sc.CommandText.AppendObjectQuery("prov_profile_getnumberinactiveprofiles", connectionStringName);
+          return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure, false));
       }
     }
 
@@ -216,14 +215,13 @@ namespace YAF.Providers.Profile
     /// </summary>
     /// <returns>
     /// </returns>
-    public DataTable GetProfileStructure(string connectionString)
+    public DataTable GetProfileStructure(string connectionStringName)
     {
-      string sql = @"SELECT TOP 1 * FROM {0}".FormatWith(MsSqlDbAccess.GetObjectName("prov_Profile"));
-
-      using (var cmd = new SqlCommand(sql))
+    
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.Text;
-        return MsSqlDbAccess.GetData(cmd,connectionString);
+          sc.CommandText.AppendQuery(String.Format(@"SELECT TOP 1 * FROM {0}", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName)));
+          return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
       }
     }
 
@@ -247,17 +245,18 @@ namespace YAF.Providers.Profile
     /// </param>
     /// <returns>
     /// </returns>
-    public DataSet GetProfiles(string connectionString, [NotNull] object appName, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object userNameToMatch, [NotNull] object inactiveSinceDate)
+    public DataSet GetProfiles(string connectionStringName, [NotNull] object appName, [NotNull] object pageIndex, [NotNull] object pageSize, [NotNull] object userNameToMatch, [NotNull] object inactiveSinceDate)
     {
-      using (SqlCommand cmd = MsSqlDbAccess.GetCommand("prov_profile_getprofiles"))
+      using (var sc = new SQLCommand(connectionStringName))
       {
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("ApplicationName", appName);
-        cmd.Parameters.AddWithValue("PageIndex", pageIndex);
-        cmd.Parameters.AddWithValue("PageSize", pageSize);
-        cmd.Parameters.AddWithValue("UserNameToMatch", userNameToMatch);
-        cmd.Parameters.AddWithValue("InactiveSinceDate", inactiveSinceDate);
-        return MsSqlDbAccess.GetDataset(cmd,connectionString);
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageIndex", pageIndex));
+          sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@PageSize", pageSize));
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserNameToMatch", userNameToMatch));
+          sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@InactiveSinceDate", inactiveSinceDate));     
+
+          sc.CommandText.AppendObjectQuery("prov_profile_getprofiles", connectionStringName);
+          return sc.ExecuteDataSet(CommandType.StoredProcedure);
       }
     }
 
@@ -278,9 +277,46 @@ namespace YAF.Providers.Profile
     /// </returns>
     /// <exception cref="ArgumentException">
     /// </exception>
-    public static bool GetDbTypeAndSizeFromString(string providerData, out SqlDbType dbType, out int size)
+    public static bool GetDbTypeAndSizeFromString(string providerData, out DbType dbType, out int size)
     {
-        return DB.GetDbTypeAndSizeFromString(providerData, out dbType, out size);
+        size = -1;
+        dbType = DbType.String;
+
+        if (providerData.IsNotSet())
+        {
+            return false;
+        }
+
+        // split the data
+        string[] chunk = providerData.Split(new[] { ';' });
+
+        // first item is the column name...
+        string columnName = chunk[0];
+        // vzrus: here we replace MS SQL data types
+        if (chunk[1].ToLowerInvariant().IndexOf("varchar") >= 0 
+            || chunk[1].ToLowerInvariant().IndexOf("text") >= 0)
+        { chunk[1] = "String"; }
+        if (chunk[1].IndexOf("int") >= 0)
+        { chunk[1] = "Int32"; }
+        if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
+        { chunk[1] = "DateTime"; }
+        if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
+        {
+            chunk[1] = "Boolean";
+        }
+        // get the datatype and ignore case...
+        dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
+
+        if (chunk.Length > 2)
+        {
+            // handle size...
+            if (!Int32.TryParse(chunk[2], out size))
+            {
+                throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
+            }
+        }
+
+        return true;
     }
     /// <summary>
     /// The get provider user key.
@@ -294,9 +330,9 @@ namespace YAF.Providers.Profile
     /// <returns>
     /// The get provider user key.
     /// </returns>
-    public object GetProviderUserKey(string connectionString, [NotNull] object appName, [NotNull] object username)
+    public object GetProviderUserKey(string connectionStringName, [NotNull] object appName, [NotNull] object username)
     {
-        DataRow row = Membership.DB.Current.GetUser(connectionString, appName.ToString(), null, username.ToString(), false);
+        DataRow row = Membership.DB.Current.GetUser(connectionStringName, appName.ToString(), null, username.ToString(), false);
 
       if (row != null)
       {
@@ -321,15 +357,16 @@ namespace YAF.Providers.Profile
     /// <param name="settingsColumnsList">
     /// The settings columns list.
     /// </param>
-    public void SetProfileProperties(string connectionString, [NotNull] object appName, [NotNull] object userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList)
+    public void SetProfileProperties(string connectionStringName, [NotNull] object appName, [NotNull] object userID, [NotNull] SettingsPropertyValueCollection values, [NotNull] List<SettingsPropertyColumn> settingsColumnsList)
     {
-      using (var cmd = new SqlCommand())
-      {
-        string table = MsSqlDbAccess.GetObjectName("prov_Profile");
+        using (var sc = new SQLCommand(connectionStringName))
+        {
+            string table = ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName);  
 
         StringBuilder sqlCommand = new StringBuilder("IF EXISTS (SELECT 1 FROM ").Append(table);
         sqlCommand.Append(" WHERE UserId = @UserID) ");
-        cmd.Parameters.AddWithValue("@UserID", userID);
+
+        sc.Parameters.Add(sc.CreateParameter(DbType.String, "UserID", userID.ToString()));
 
         // Build up strings used in the query
         var columnStr = new StringBuilder();
@@ -347,9 +384,9 @@ namespace YAF.Providers.Profile
             columnStr.Append(column.Settings.Name);
             string valueParam = "@Value" + count;
             valueStr.Append(valueParam);
-            cmd.Parameters.AddWithValue(valueParam, values[column.Settings.Name].PropertyValue);
+            sc.Parameters.Add(sc.CreateParameter(column.DataType, valueParam, values[column.Settings.Name].PropertyValue));
 
-            if (column.DataType != SqlDbType.Timestamp)
+            if (column.DataType != DbType.DateTime)
             {
               if (count > 0)
               {
@@ -368,7 +405,7 @@ namespace YAF.Providers.Profile
         columnStr.Append(",LastUpdatedDate ");
         valueStr.Append(",@LastUpdatedDate");
         setStr.Append(",LastUpdatedDate=@LastUpdatedDate");
-        cmd.Parameters.AddWithValue("@LastUpdatedDate", DateTime.UtcNow);
+        sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@LastUpdatedDate", DateTime.UtcNow));   
 
         sqlCommand.Append("BEGIN UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString());
         sqlCommand.Append(" WHERE UserId = '").Append(userID.ToString()).Append("'");
@@ -377,10 +414,8 @@ namespace YAF.Providers.Profile
         sqlCommand.Append(") VALUES ('").Append(userID.ToString()).Append("'").Append(valueStr.ToString()).Append(
           ") END");
 
-        cmd.CommandText = sqlCommand.ToString();
-        cmd.CommandType = CommandType.Text;
-
-        MsSqlDbAccess.ExecuteNonQuery(cmd,connectionString);
+        sc.CommandText.AppendQuery(sqlCommand.ToString());
+        sc.ExecuteNonQuery(CommandType.Text, false);
       }
     }
 

@@ -147,13 +147,17 @@ namespace VZF.Utils.Helpers
         /// A resized image stream Stream. 
         /// </returns>
         public static Stream GetResizedImageStreamFromImage(Image img, long x, long y)
-        {
-            Stream resized = null;
-
+        {           
             // TODO : Save an Animated Gif
             var bitmap = GetResizedImageFromImage(img, x, y);
+            return GetImageStreamFromImage(bitmap);          
+        }
+
+        public static Stream GetImageStreamFromImage(Image img)
+        {
+            Stream resized = null;          
             resized = new MemoryStream();
-            bitmap.Save(resized, img.RawFormat);
+            img.Save(resized, img.RawFormat);
             return resized;
         }
 

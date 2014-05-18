@@ -282,7 +282,7 @@ namespace YAF.Pages
                     this.PageContext.PageModuleID,
                     this.PageContext.PageBoardID,
                     this.PageContext.PageUserID,
-                    0,
+                    null,
                     this.PagerTop.CurrentPageIndex,
                     this.PagerTop.PageSize,
                     selectedLetter,

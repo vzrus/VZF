@@ -651,10 +651,17 @@ namespace YAF.Providers.Profile
             // first item is the column name...
             string columnName = chunk[0];
             // vzrus: here we replace MS SQL data types
-            if (chunk[1].IndexOf("varchar") >= 0)
-            { chunk[1] = "String"; }
-            if (chunk[1].IndexOf("int") >= 0)
-            { chunk[1] = "Int32"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("varchar") >= 0 
+                || chunk[1].ToLowerInvariant().IndexOf("nvarchar") >= 0 
+                || chunk[1].ToLowerInvariant().IndexOf("text") >= 0)
+            { 
+                chunk[1] = "String"; 
+            }
+
+            if (chunk[1].ToLowerInvariant().IndexOf("int") >= 0)
+            { 
+                chunk[1] = "Int32"; 
+            }
             if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
             { chunk[1] = "DateTime"; }
             if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)

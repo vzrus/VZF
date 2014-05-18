@@ -27,6 +27,7 @@ namespace VZF.Data.Common.Search
     using YAF.Types;
     using YAF.Types.Constants;
     using VZF.Utils;
+    using YAF.Classes;
 
     #endregion
 
@@ -91,7 +92,8 @@ namespace VZF.Data.Common.Search
     {
       CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
       CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
-      CodeContracts.ArgumentNotNull(forumIds, "forumIds");
+      // CodeContracts.ArgumentNotNull(forumIds, "forumIds");
+    
 
       var builtStatements = new List<string>();
 
@@ -108,7 +110,7 @@ namespace VZF.Data.Common.Search
         "\r\nwhere x.ReadAccess<>0 AND x.UserID={0} AND c.IsApproved = 1 AND a.TopicMovedID IS NULL AND a.IsDeleted = 0 AND c.IsDeleted = 0"
           .FormatWith(userID);
 
-      if (forumIds.Any())
+      if (forumIds != null && forumIds.Any())
       {
         searchSql += " AND a.ForumID IN ({0})".FormatWith(forumIds.ToDelimitedString(","));
       }
@@ -144,9 +146,9 @@ namespace VZF.Data.Common.Search
       builtStatements.Add("ORDER BY c.Posted DESC");
 
       string builtSql = builtStatements.ToDelimitedString("\r\n");
-
+      builtSql = builtSql.Replace(@"{databaseOwner}", Config.DatabaseOwner).Replace(@"{objectQualifier}", Config.DatabaseObjectQualifier); 
       Debug.WriteLine("Build Sql: [{0}]".FormatWith(builtSql));
-
+    
       return builtSql;
     }
 

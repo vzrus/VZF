@@ -110,6 +110,15 @@ namespace YAF.Providers.Roles
             }
         }
 
+        /// <summary>
+        /// Gets the Connection String App Key Name.
+        /// </summary>
+        public static string ConnectionStringName
+        {
+            get;
+            set;
+        }
+
         private ConcurrentDictionary<string, StringCollection> _userRoleCache = null;
 
         /// <summary>
@@ -164,7 +173,7 @@ namespace YAF.Providers.Roles
                     // only add user if this role actually exists...
                     if (roleName.IsSet() && allRoles.Contains(roleName))
                     {
-                        DB.Current.AddUserToRole(ConnectionString, this.ApplicationName, username, roleName);
+                        DB.Current.AddUserToRole(ConnectionStringName, this.ApplicationName, username, roleName);
                     }
                 }
 
@@ -185,7 +194,7 @@ namespace YAF.Providers.Roles
                 ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
             }
 
-            DB.Current.CreateRole(ConnectionString, this.ApplicationName, roleName);
+            DB.Current.CreateRole(ConnectionStringName, this.ApplicationName, roleName);
         }
 
         /// <summary>
@@ -200,7 +209,7 @@ namespace YAF.Providers.Roles
         /// </returns>
         public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
         {
-            int returnValue = DB.Current.DeleteRole(ConnectionString, this.ApplicationName, roleName, throwOnPopulatedRole);
+            int returnValue = DB.Current.DeleteRole(ConnectionStringName, this.ApplicationName, roleName, throwOnPopulatedRole);
 
             this.ClearUserRoleCache();
 
@@ -228,7 +237,7 @@ namespace YAF.Providers.Roles
             }
 
             // Roles
-            DataTable users = DB.Current.FindUsersInRole(ConnectionString, this.ApplicationName, roleName);
+            DataTable users = DB.Current.FindUsersInRole(ConnectionStringName, this.ApplicationName, roleName);
             var usernames = new StringCollection();
             foreach (DataRow user in users.Rows)
             {
@@ -246,7 +255,7 @@ namespace YAF.Providers.Roles
         public override string[] GetAllRoles()
         {
             // get all roles...
-            DataTable roles = DB.Current.GetRoles(ConnectionString, this.ApplicationName, null);
+            DataTable roles = DB.Current.GetRoles(ConnectionStringName, this.ApplicationName, null);
 
             // make a string collection to store the role list...
             var roleNames = new StringCollection();
@@ -281,7 +290,7 @@ namespace YAF.Providers.Roles
             {
                 roleNames = new StringCollection();
 
-                DataTable roles = DB.Current.GetRoles(ConnectionString, this.ApplicationName, username);
+                DataTable roles = DB.Current.GetRoles(ConnectionStringName, this.ApplicationName, username);
 
                 foreach (DataRow dr in roles.Rows)
                 {
@@ -315,7 +324,7 @@ namespace YAF.Providers.Roles
                 ExceptionReporter.ThrowArgument("ROLES", "ROLENAMEBLANK");
             }
 
-            DataTable users = DB.Current.FindUsersInRole(ConnectionString,this.ApplicationName, roleName);
+            DataTable users = DB.Current.FindUsersInRole(ConnectionStringName,this.ApplicationName, roleName);
 
             var userNames = new StringCollection();
 
@@ -350,6 +359,7 @@ namespace YAF.Providers.Roles
             {
                 string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
                 _connectionString = connStr;
+                ConnectionStringName = VZF.Data.DAL.SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
                 // set the app variable...
                 if (YafContext.Application[ConnStrAppKeyName] == null)
                 {
@@ -386,7 +396,7 @@ namespace YAF.Providers.Roles
         /// </returns>
         public override bool IsUserInRole(string username, string roleName)
         {
-            DataTable roles = DB.Current.IsUserInRole(ConnectionString, this.ApplicationName, username, roleName);
+            DataTable roles = DB.Current.IsUserInRole(ConnectionStringName, this.ApplicationName, username, roleName);
 
             return roles.Rows.Count > 0;
         }
@@ -408,7 +418,7 @@ namespace YAF.Providers.Roles
                 // Loop through roles
                 foreach (string roleName in roleNames)
                 {
-                    DB.Current.RemoveUserFromRole(ConnectionString, this.ApplicationName, username, roleName); // Remove role
+                    DB.Current.RemoveUserFromRole(ConnectionStringName, this.ApplicationName, username, roleName); // Remove role
 
                     // invalidate cache for this user...
                     this.DeleteFromRoleCacheIfExists(username.ToLower());
@@ -428,7 +438,7 @@ namespace YAF.Providers.Roles
         public override bool RoleExists(string roleName)
         {
             // get this role...
-            object exists = DB.Current.GetRoleExists(ConnectionString, this.ApplicationName, roleName);
+            object exists = DB.Current.GetRoleExists(ConnectionStringName, this.ApplicationName, roleName);
 
             // if there are any rows then this role exists...
             if (Convert.ToInt32(exists) > 0)

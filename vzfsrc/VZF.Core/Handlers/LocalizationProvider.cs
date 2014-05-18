@@ -167,7 +167,7 @@ namespace YAF.Core
         catch (Exception ex)
         {
             CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, this, ex);
-          throw new ApplicationException("Error getting User Language." + Environment.NewLine + ex);
+            throw new ApplicationException("Error getting User Language." + Environment.NewLine + ex);
         }
 
 #else

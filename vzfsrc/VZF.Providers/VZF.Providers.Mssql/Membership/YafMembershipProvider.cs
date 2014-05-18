@@ -354,6 +354,15 @@ namespace YAF.Providers.Membership
         }
     }
 
+    /// <summary>
+    /// Gets the Connection String App Key Name.
+    /// </summary>
+    public static string ConnectionStringName
+    {
+        get;
+        set;
+    }
+
     #endregion
 
     #region Public Methods
@@ -499,7 +508,7 @@ namespace YAF.Providers.Membership
         return false;
       }
 
-      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -541,7 +550,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Call SQL Password to Change
-      DB.Current.ChangePassword(ConnectionString,
+      DB.Current.ChangePassword(ConnectionStringName,
         this.ApplicationName, 
         username, 
         newEncPassword, 
@@ -582,7 +591,7 @@ namespace YAF.Providers.Membership
         throw new ArgumentException("Username, Password, Password Question or Password Answer cannot be null");
       }
 
-      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -605,7 +614,7 @@ namespace YAF.Providers.Membership
       {
         try
         {
-          DB.Current.ChangePasswordQuestionAndAnswer(ConnectionString,
+          DB.Current.ChangePasswordQuestionAndAnswer(ConnectionStringName,
             this.ApplicationName, username, newPasswordQuestion, newPasswordAnswer);
           return true;
         }
@@ -745,7 +754,7 @@ namespace YAF.Providers.Membership
         this.MSCompliant);
 
       // Process database user creation request
-      DB.Current.CreateUser(ConnectionString,
+      DB.Current.CreateUser(ConnectionStringName,
         this.ApplicationName, 
         username, 
         pass, 
@@ -785,7 +794,7 @@ namespace YAF.Providers.Membership
       // Process database user deletion request
       try
       {
-          DB.Current.DeleteUser(ConnectionString, this.ApplicationName, username, deleteAllRelatedData);
+          DB.Current.DeleteUser(ConnectionStringName, this.ApplicationName, username, deleteAllRelatedData);
 
           return true;
       }
@@ -831,7 +840,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.FindUsersByEmail(ConnectionString, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in DB.Current.FindUsersByEmail(ConnectionStringName, this.ApplicationName, emailToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -898,7 +907,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.FindUsersByName(ConnectionString, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in DB.Current.FindUsersByName(ConnectionStringName, this.ApplicationName, usernameToMatch, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -938,7 +947,7 @@ namespace YAF.Providers.Membership
       }
 
       // Loop through all users
-      foreach (DataRow dr in DB.Current.GetAllUsers(ConnectionString, this.ApplicationName, pageIndex, pageSize).Rows)
+      foreach (DataRow dr in DB.Current.GetAllUsers(ConnectionStringName, this.ApplicationName, pageIndex, pageSize).Rows)
       {
         // Add new user to collection
         users.Add(this.UserFromDataRow(dr));
@@ -956,7 +965,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override int GetNumberOfUsersOnline()
     {
-      return DB.Current.GetNumberOfUsersOnline(ConnectionString, this.ApplicationName, Membership.UserIsOnlineTimeWindow);
+      return DB.Current.GetNumberOfUsersOnline(ConnectionStringName, this.ApplicationName, Membership.UserIsOnlineTimeWindow);
     }
 
     /// <summary>
@@ -984,7 +993,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgument("MEMBERSHIP", "USERNAMEPASSWORDNULL");
       }
 
-      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1027,7 +1036,7 @@ namespace YAF.Providers.Membership
         return null;
       }
 
-      DataRow dr = DB.Current.GetUser(ConnectionString, this.ApplicationName, null, username, userIsOnline);
+      DataRow dr = DB.Current.GetUser(ConnectionStringName, this.ApplicationName, null, username, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1051,7 +1060,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "USERKEYNULL");
       }
 
-      DataRow dr = DB.Current.GetUser(ConnectionString, this.ApplicationName, providerUserKey, null, userIsOnline);
+      DataRow dr = DB.Current.GetUser(ConnectionStringName, this.ApplicationName, providerUserKey, null, userIsOnline);
 
       return dr != null ? this.UserFromDataRow(dr) : null;
     }
@@ -1072,7 +1081,7 @@ namespace YAF.Providers.Membership
         ExceptionReporter.ThrowArgumentNull("MEMBERSHIP", "EMAILNULL");
       }
 
-      DataTable users = DB.Current.GetUserNameByEmail(ConnectionString, this.ApplicationName, email);
+      DataTable users = DB.Current.GetUserNameByEmail(ConnectionStringName, this.ApplicationName, email);
 
       if (this.RequiresUniqueEmail && users.Rows.Count > 1)
       {
@@ -1168,6 +1177,7 @@ namespace YAF.Providers.Membership
          
         string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
         _connectionString = connStr;
+        ConnectionStringName = VZF.Data.DAL.SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
         // set the app variable...
         if (YafContext.Application[ConnStrAppKeyName] == null)
         {
@@ -1214,7 +1224,7 @@ namespace YAF.Providers.Membership
       }
 
       // get an instance of the current password information class
-      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      UserPasswordInfo currentPasswordInfo = UserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1261,7 +1271,7 @@ namespace YAF.Providers.Membership
           this.MSCompliant);
 
         // save to the database
-        DB.Current.ResetPassword(ConnectionString,
+        DB.Current.ResetPassword(ConnectionStringName,
           this.ApplicationName, 
           username, 
           newPasswordEnc, 
@@ -1296,7 +1306,7 @@ namespace YAF.Providers.Membership
 
       try
       {
-        DB.Current.UnlockUser(ConnectionString, this.ApplicationName, userName);
+        DB.Current.UnlockUser(ConnectionStringName, this.ApplicationName, userName);
         return true;
       }
       catch
@@ -1322,7 +1332,7 @@ namespace YAF.Providers.Membership
       }
 
       // Update User
-      int updateStatus = DB.Current.UpdateUser(ConnectionString, this.ApplicationName, user, this.RequiresUniqueEmail);
+      int updateStatus = DB.Current.UpdateUser(ConnectionStringName, this.ApplicationName, user, this.RequiresUniqueEmail);
 
       // Check update was not successful
       if (updateStatus != 0)
@@ -1355,7 +1365,7 @@ namespace YAF.Providers.Membership
     /// </returns>
     public override bool ValidateUser(string username, string password)
     {
-      UserPasswordInfo currentUser = UserPasswordInfo.CreateInstanceFromDB(ConnectionString,
+      UserPasswordInfo currentUser = UserPasswordInfo.CreateInstanceFromDB(ConnectionStringName,
         this.ApplicationName, 
         username, 
         false, 
@@ -1381,7 +1391,7 @@ namespace YAF.Providers.Membership
     /// </param>
     public void UpgradeMembership(int previousVersion, int newVersion)
     {
-        DB.Current.UpgradeMembership(ConnectionString, previousVersion, newVersion);
+        DB.Current.UpgradeMembership(ConnectionStringName, previousVersion, newVersion);
     }
 
     #endregion

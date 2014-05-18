@@ -57,8 +57,8 @@ namespace VZF.Data.Common
                 string table = ObjectName.GetVzfObjectName("UserProfile", mid);
                 StringBuilder sqlCommand = new StringBuilder("IF EXISTS (SELECT 1 FROM ").Append(table);
                 sqlCommand.Append(" WHERE UserId = @UserID AND ApplicationName = @ApplicationName) ");
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appName));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName));
 
                 // Build up strings used in the query
                 var columnStr = new StringBuilder();
@@ -145,7 +145,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
             }
         }
 
@@ -165,10 +165,39 @@ namespace VZF.Data.Common
         {
             // get column type...
             string type = columnType.ToString();
+            if (type.ToLower().Contains("datetime"))
+            { 
+                type = "DATETIME"; 
+            }
 
-            if (size > 0)
+            // TODO: Add blob detection
+            if (type.Contains("String"))
             {
-                type += "(" + size + ")";
+                if (size > 21844)
+                {
+                    type = "NVARCHAR";
+                }
+                else
+                {
+                    type = "NVARCHAR";
+                }
+            }
+
+            if (type.Contains("Int32"))
+            { type = "INT"; }
+            if (type.Contains("Boolean"))
+            { type = "BIT"; }
+
+            if (size > 21844)
+            {
+                type += "(MAX)";
+            }
+            else
+            {
+                if (size > 0)
+                {
+                    type += "(" + size + ")";
+                }
             }
 
             string sql = "ALTER TABLE {0} ADD [{1}] {2} NULL".FormatWith(
@@ -177,7 +206,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.CommandText.AppendQuery(sql);
-                sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
+                sc.ExecuteNonQuery(CommandType.Text, true);
             }
         }
         /// <summary>
@@ -212,7 +241,17 @@ namespace VZF.Data.Common
 
             // first item is the column name...
             string columnName = chunk[0];
-
+            // vzrus: here we replace MS SQL data types
+            if (chunk[1].ToLowerInvariant().IndexOf("varchar") >= 0 || chunk[1].ToLowerInvariant().IndexOf("nvarchar") >= 0 || chunk[1].ToLowerInvariant().IndexOf("text") >= 0)
+            { chunk[1] = "String"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("int") >= 0)
+            { chunk[1] = "Int32"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
+            { chunk[1] = "DateTime"; }
+            if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
+            {
+                chunk[1] = "Boolean";
+            }
             // get the datatype and ignore case...
             dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
 

@@ -28,8 +28,7 @@ namespace YAF.Providers.Profile
     using System.Linq;
     using System.Text;
     using System.Web.Profile;
-    using VZF.Data.Common;
-    using VZF.Data.MsSql;
+    using VZF.Data.Common; 
     using VZF.Data.Utils;
     using VZF.Utils;
     using YAF.Core;
@@ -73,7 +72,7 @@ namespace YAF.Providers.Profile
         /// <summary>
         /// The _settings columns list.
         /// </summary>
-        private List<VZF.Data.MsSql.SettingsPropertyColumn> _settingsColumnsList = new List<VZF.Data.MsSql.SettingsPropertyColumn>();
+        private List<SettingsPropertyColumn> _settingsColumnsList = new List<SettingsPropertyColumn>();
 
         #endregion
 
@@ -118,6 +117,15 @@ namespace YAF.Providers.Profile
             {
                 _connectionString = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the Connection String App Key Name.
+        /// </summary>
+        public static string ConnectionStringName
+        {
+            get;
+            set;
         }
 
         private ConcurrentDictionary<string, SettingsPropertyValueCollection> _userProfileCache = null;
@@ -165,7 +173,7 @@ namespace YAF.Providers.Profile
             // just clear the whole thing...
             this.ClearUserProfileCache();
 
-            return DB.Current.DeleteInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate);
+            return DB.Current.DeleteInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate);
         }
 
         /// <summary>
@@ -197,7 +205,7 @@ namespace YAF.Providers.Profile
               });
 
             // call the DB...
-            return DB.Current.DeleteProfiles(ConnectionString, this.ApplicationName, userNameBuilder.ToString());
+            return DB.Current.DeleteProfiles(ConnectionStringName, this.ApplicationName, userNameBuilder.ToString());
         }
 
         /// <summary>
@@ -372,7 +380,7 @@ namespace YAF.Providers.Profile
                 ExceptionReporter.ThrowArgument("PROFILE", "NOANONYMOUS");
             }
 
-            return DB.Current.GetNumberInactiveProfiles(ConnectionString, this.ApplicationName, userInactiveSinceDate);
+            return DB.Current.GetNumberInactiveProfiles(ConnectionStringName, this.ApplicationName, userInactiveSinceDate);
         }
 
         /// <summary>
@@ -427,7 +435,7 @@ namespace YAF.Providers.Profile
                 }
 
                 // get this profile from the DB
-                DataSet profileDS = DB.Current.GetProfiles(ConnectionString, this.ApplicationName, 0, 1, username, null);
+                DataSet profileDS = DB.Current.GetProfiles(ConnectionStringName, this.ApplicationName, 0, 1, username, null);
                 DataTable profileDT = profileDS.Tables[0];
 
                 if (profileDT.Rows.Count > 0)
@@ -488,6 +496,7 @@ namespace YAF.Providers.Profile
             {
                 string connStr = ConfigurationManager.ConnectionStrings[this._connStrName].ConnectionString;
                 ConnectionString = connStr;
+                ConnectionStringName = VZF.Data.DAL.SqlDbAccess.GetConnectionStringNameFromConnectionString(connStr);
                 // set the app variable...
                 if (YafContext.Application[ConnStrAppKeyName] == null)
                 {
@@ -546,11 +555,11 @@ namespace YAF.Providers.Profile
             // load the data for the configuration
             this.LoadFromPropertyValueCollection(collection);
 
-            object userID = DB.Current.GetProviderUserKey(ConnectionString, this.ApplicationName, username);
+            object userID = DB.Current.GetProviderUserKey(ConnectionStringName, this.ApplicationName, username);
             if (userID != null)
             {
                 // start saving...
-                DB.Current.SetProfileProperties(ConnectionString, this.ApplicationName, userID, collection, this._settingsColumnsList);
+                DB.Current.SetProfileProperties(ConnectionStringName, this.ApplicationName, userID, collection, this._settingsColumnsList);
 
                 // erase from the cache
                 this.DeleteFromProfileCacheIfExists(username.ToLower());
@@ -579,32 +588,32 @@ namespace YAF.Providers.Profile
                     // validiate all the properties and populate the internal settings collection
                     foreach (SettingsProperty property in collection)
                     {
-                        SqlDbType dbType;
+                        DbType dbType;
                         int size;
 
                         // parse custom provider data...
                         DB.GetDbTypeAndSizeFromString(property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
                         // default the size to 256 if no size is specified
-                        if (dbType == SqlDbType.NVarChar && size == -1)
+                        if (dbType == DbType.String && size == -1)
                         {
                             size = 256;
                         }
 
-                        this._settingsColumnsList.Add(new VZF.Data.MsSql.SettingsPropertyColumn(property, dbType, size));
+                        this._settingsColumnsList.Add(new SettingsPropertyColumn(property, dbType, size));
                     }
 
                     // sync profile table structure with the db...
-                    DataTable structure = DB.Current.GetProfileStructure(ConnectionString);
+                    DataTable structure = DB.Current.GetProfileStructure(ConnectionStringName);
 
                     // verify all the columns are there...
-                    foreach (VZF.Data.MsSql.SettingsPropertyColumn column in this._settingsColumnsList)
+                    foreach (SettingsPropertyColumn column in this._settingsColumnsList)
                     {
                         // see if this column exists
                         if (!structure.Columns.Contains(column.Settings.Name))
                         {
                             // if not, create it...
-                            DB.Current.AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                            DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
                         }
                     }
 
@@ -630,7 +639,7 @@ namespace YAF.Providers.Profile
                 // validiate all the properties and populate the internal settings collection
                 foreach (SettingsPropertyValue value in collection)
                 {
-                    SqlDbType dbType;
+                    DbType dbType;
                     int size;
 
                     // parse custom provider data...
@@ -638,25 +647,25 @@ namespace YAF.Providers.Profile
                       value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
                     // default the size to 256 if no size is specified
-                    if (dbType == SqlDbType.NVarChar && size == -1)
+                    if (dbType == DbType.String && size == -1)
                     {
                         size = 256;
                     }
 
-                    this._settingsColumnsList.Add(new VZF.Data.MsSql.SettingsPropertyColumn(value.Property, dbType, size));
+                    this._settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
                 }
 
                 // sync profile table structure with the db...
-                DataTable structure = DB.Current.GetProfileStructure(ConnectionString);
+                DataTable structure = DB.Current.GetProfileStructure(ConnectionStringName);
 
                 // verify all the columns are there...
-                foreach (VZF.Data.MsSql.SettingsPropertyColumn column in this._settingsColumnsList)
+                foreach (SettingsPropertyColumn column in this._settingsColumnsList)
                 {
                     // see if this column exists
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        DB.Current.AddProfileColumn(ConnectionString, column.Settings.Name, column.DataType, column.Size);
+                        DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
                     }
                 }
 
@@ -748,7 +757,7 @@ namespace YAF.Providers.Profile
             }
 
             // get all the profiles...
-            DataSet allProfilesDS = DB.Current.GetProfiles(ConnectionString,
+            DataSet allProfilesDS = DB.Current.GetProfiles(ConnectionStringName,
               this.ApplicationName, pageIndex, pageSize, userNameToMatch, inactiveSinceDate);
 
             // create an instance for the profiles...

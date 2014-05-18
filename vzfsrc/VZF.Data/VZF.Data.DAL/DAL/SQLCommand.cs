@@ -590,19 +590,22 @@ namespace VZF.Data.DAL
         /// <returns>
         /// The <see cref="DataSet"/>.
         /// </returns>
-        public DataSet ExecuteDataSet()
+        public DataSet ExecuteDataSet(CommandType commandType)
         {
             var conn = this.GetConnection();
             try
             {
                 using (var cmd = conn.CreateCommand())
                 {
+                    cmd.CommandText = this._commandText.ToString();
+                    cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
+                    cmd.CommandType = commandType;
                     try
                     {
-                        cmd.CommandText = this._commandText.ToString();
-
-                        // cmd.CommandTimeout = 0;
-                        cmd.CommandType = CommandType.Text;
+                        foreach (var parameter in this.Parameters.Values)
+                        {
+                            cmd.Parameters.Add(parameter);
+                        }                       
                         using (var da = this._dataSource.Factory.CreateDataAdapter())
                         {
                             da.SelectCommand = cmd;

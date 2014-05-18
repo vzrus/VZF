@@ -339,10 +339,11 @@ namespace VZF.Controls
             if (this.BoardId <= 0)
             {
                 this.BoardId = this.PageContext.PageBoardID;
+                dt = CommonDb.forum_tags(
+                this.PageContext.PageModuleID, this.BoardId, this.PageContext.PageUserID, null, this.PageIndex, this.PageSize, string.Empty, false);
             }
 
-            dt = CommonDb.forum_tags(
-                this.PageContext.PageModuleID, this.BoardId, this.PageContext.PageUserID, 0, this.PageIndex, this.PageSize, string.Empty, false);
+            
             tag.InnerHtml = this.GetTagCloudHtml(dt);
         }
 
