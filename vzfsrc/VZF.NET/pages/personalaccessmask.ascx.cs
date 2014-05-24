@@ -109,9 +109,7 @@ namespace YAF.pages
                         ? this.PageContext.CurrentUserData.DisplayName
                         : this.PageContext.PageUserName,
                     this.GetText("PERSONALACCESSMASK", "TITLE"));
-
         }
-
 
         /// <summary>
         /// Get status of provider role vs YAF roles.

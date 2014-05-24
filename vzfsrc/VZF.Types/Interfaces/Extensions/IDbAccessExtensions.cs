@@ -31,22 +31,7 @@ namespace YAF.Types.Interfaces
   {
     #region Public Methods
 
-    /// <summary>
-    /// The execute non query.
-    /// </summary>
-    /// <param name="dbAccess">
-    /// The db access.
-    /// </param>
-    /// <param name="cmd">
-    /// The cmd.
-    /// </param>
-      public static void ExecuteNonQuery([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
-    {
-      CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
-      CodeContracts.ArgumentNotNull(cmd, "cmd");
-
-      dbAccess.ExecuteNonQuery(cmd, false,  connectionString);
-    }
+   
 
     /// <summary>
     /// The execute scalar.
@@ -67,67 +52,8 @@ namespace YAF.Types.Interfaces
 
       return dbAccess.ExecuteScalar(cmd, false, connectionString);
     }
+    
 
-    /// <summary>
-    /// The get data.
-    /// </summary>
-    /// <param name="dbAccess">
-    /// The db access.
-    /// </param>
-    /// <param name="cmd">
-    /// The cmd.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    public static DataTable GetData([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
-    {
-      CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
-      CodeContracts.ArgumentNotNull(cmd, "cmd");
-
-      return dbAccess.GetData(cmd, false,  connectionString);
-    }
-
-    /// <summary>
-    /// The get dataset.
-    /// </summary>
-    /// <param name="dbAccess">
-    /// The db access.
-    /// </param>
-    /// <param name="cmd">
-    /// The cmd.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    public static DataSet GetDataset([NotNull] this IDbAccess dbAccess, [NotNull] IDbCommand cmd, string connectionString)
-    {
-      CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
-      CodeContracts.ArgumentNotNull(cmd, "cmd");
-
-      return dbAccess.GetDataset(cmd, false,  connectionString);
-    }
-
-    /// <summary>
-    /// The get data.
-    /// </summary>
-    /// <param name="dbAccess">
-    /// The db access.
-    /// </param>
-    /// <param name="sql">
-    /// The sql.
-    /// </param>
-    /// <param name="unitOfWork"></param>
-    /// <returns>
-    /// </returns>
-    public static DataTable GetData([NotNull] this IDbAccessV2 dbAccess, [NotNull] string sql, [CanBeNull] IDbUnitOfWork unitOfWork = null)
-    {
-        CodeContracts.ArgumentNotNull(dbAccess, "dbAccess");
-        CodeContracts.ArgumentNotNull(sql, "sql");
-
-        using (var cmd = dbAccess.GetCommand(sql, false))
-        {
-            return dbAccess.GetData(cmd, unitOfWork);
-        }
-    }
 
     #endregion
   }

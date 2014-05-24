@@ -81,11 +81,6 @@ namespace YAF.Pages.Admin
         private const string pmessagePrefix = "pmsg-";
 
         /// <summary>
-        ///   The board object stats.
-        /// </summary>
-        private board_poststats_Result boardObjectStats = CommonDb.board_poststats(YafContext.Current.PageModuleID, YafContext.Current.PageBoardID, YafContext.Current.Get<YafBoardSettings>().UseStyledNicks, true);
-
-        /// <summary>
         ///   The random guid.
         /// </summary>
         private string randomGuid = Guid.NewGuid().ToString();
@@ -193,7 +188,11 @@ namespace YAF.Pages.Admin
 
             YafContext.Current.PageElements.RegisterJsBlock(
                 "TestDataTabsJs",
-                JavaScriptBlocks.JqueryUITabsLoadJs(this.TestDataTabs.ClientID, this.hidLastTab.ClientID, false));
+                JavaScriptBlocks.JqueryUITabsLoadJs(
+                    this.TestDataTabs.ClientID,
+                    this.hidLastTab.ClientID,
+                    this.hidLastTabId.ClientID,
+                    false));
 
             base.OnPreRender(e);
         }
@@ -256,7 +255,7 @@ namespace YAF.Pages.Admin
             this.ForumsStartMask.DataSource = CommonDb.accessmask_aforumlist(PageContext.PageModuleID, this.PageContext.PageBoardID, null, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: false);
             this.ForumsAdminMask.DataSource = this.ForumsStartMask.DataSource;
 
-            this.ForumsGroups.DataSource = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.ForumsGroups.DataSource = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000);
 
             // Board lists
             this.UsersBoardsList.DataSource = CommonDb.board_list(PageContext.PageModuleID, null);

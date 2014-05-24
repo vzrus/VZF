@@ -28,11 +28,14 @@
 namespace YAF.Providers.Profile
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Globalization;
     using System.IO;
     using System.Text;
+
+    using VZF.Data.MySql.Mappers;
 
     using YAF.Classes;
     using YAF.Classes.Pattern;
@@ -118,9 +121,9 @@ ref string index, ref string stringData, ref byte[] binaryData)
             indexData = profileRow["valueindex"].ToString();
             stringData = profileRow["stringData"].ToString();
             if (profileRow["binaryData"] != DBNull.Value)
+            {
                 binaryData = (byte[])profileRow["binaryData"];
-
-            if (indexData == null) return;
+            }
 
             string[] indexes = indexData.Split(':');
 
@@ -128,10 +131,13 @@ ref string index, ref string stringData, ref byte[] binaryData)
             {
                 string[] parts = index.Split('/');
                 SettingsPropertyValue value = values[parts[0]];
-                if (value == null) continue;
+                if (value == null)
+                {
+                    continue;
+                }
 
-                int pos = Int32.Parse(parts[2], CultureInfo.InvariantCulture);
-                int len = Int32.Parse(parts[3], CultureInfo.InvariantCulture);
+                int pos = int.Parse(parts[2], CultureInfo.InvariantCulture);
+                int len = int.Parse(parts[3], CultureInfo.InvariantCulture);
                 if (len == -1)
                 {
                     value.PropertyValue = null;
@@ -139,7 +145,9 @@ ref string index, ref string stringData, ref byte[] binaryData)
                     value.Deserialized = true;
                 }
                 else if (parts[1].Equals("0"))
+                {
                     value.SerializedValue = stringData.Substring(pos, len);
+                }
                 else
                 {
                     byte[] buf = new byte[len];
@@ -177,39 +185,14 @@ ref string index, ref string stringData, ref byte[] binaryData)
         {
             using (var sc = new SQLCommand(connectionStringName))
             {
-                sc.CommandText.AppendQuery(String.Format("SELECT * FROM {0} LIMIT 1", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName)));
+                sc.CommandText.AppendQuery(string.Format("SELECT * FROM {0} LIMIT 1", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName)));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
             }
         }
 
-        public void AddProfileColumn(string connectionStringName, string Name, DbType columnType, int size)
+        public void AddProfileColumn(string connectionStringName, string name, string type, int size)
         {
-            // get column type...
-            string type = columnType.ToString();
-
-            if (type.ToLower().Contains("datetime"))
-            { type = "DATETIME"; }
-            if (type.Contains("String"))
-            {
-                if (size > 21844)
-                {
-                    type = "TEXT";
-                }
-                else
-                {
-                    type = "VARCHAR";
-                }
-            }
-
-            if (type.Contains("Int32"))
-            { type = "INT"; }
-            if (type.Contains("Boolean"))
-            { type = "TINYINT"; }
-
-            if (size > 0)
-            {
-                type += "(" + size.ToString() + ")";
-            }
+            DataTypeMappers.typeToDbValueMap(name, type, size);
 
             if (type.ToLowerInvariant().Contains("varchar") && ObjectName.DatabaseEncoding != null)
             {
@@ -223,7 +206,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
 
             using (var sc = new SQLCommand(connectionStringName))
             {
-                string sql = String.Format("ALTER TABLE {0} ADD `{1}` {2};", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), Name, type);
+                string sql = string.Format("ALTER TABLE {0} ADD `{1}` {2};", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), name, type);
                 sc.CommandText.AppendQuery(sql);
                 sc.ExecuteNonQuery(CommandType.Text, false);
             }
@@ -241,7 +224,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
             return null;
         }
 
-        public void SetProfilePropertiesOld(string connectionStringName, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<SettingsPropertyColumn> settingsColumnsList)
+        public void SetProfilePropertiesOld(string connectionStringName, object appName, object userID, SettingsPropertyValueCollection values, List<SettingsPropertyColumn> settingsColumnsList)
         {
             using (var sc = new SQLCommand(connectionStringName))
             {
@@ -252,7 +235,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
                 {                    
 
                     // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
-                    sc1.CommandText.AppendQuery(String.Format("SELECT COUNT(1) FROM {0} WHERE UserID =UNHEX(REPLACE('{1}','-',''));", table, MySqlHelpers.GuidConverter(new Guid(userID.ToString())).ToString()));
+                    sc1.CommandText.AppendQuery(string.Format("SELECT COUNT(1) FROM {0} WHERE UserID =UNHEX(REPLACE('{1}','-',''));", table, MySqlHelpers.GuidConverter(new Guid(userID.ToString())).ToString()));
 
                     profileExists = Convert.ToBoolean(sc1.ExecuteScalar(CommandType.Text, false));
                 }
@@ -315,7 +298,7 @@ ref string index, ref string stringData, ref byte[] binaryData)
             }
         }
 
-        public void SetProfileProperties(string connectionStringName, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<SettingsPropertyColumn> settingsColumnsList)
+        public void SetProfileProperties(string connectionStringName, object appName, object userID, SettingsPropertyValueCollection values, List<SettingsPropertyColumn> settingsColumnsList)
         {
             if (YAF.Classes.Config.GetConfigValueAsBool("YAF.OldProfileProvider", true))
                 SetProfilePropertiesOld(connectionStringName, appName, userID, values, settingsColumnsList);
@@ -327,11 +310,11 @@ ref string index, ref string stringData, ref byte[] binaryData)
 
             bool isAuthenticated = true;
 
-            if (String.IsNullOrEmpty(userID.ToString())) return;
+            if (string.IsNullOrEmpty(userID.ToString())) return;
             if (values.Count < 1) return;
 
-            string index = String.Empty;
-            string stringData = String.Empty;
+            string index = string.Empty;
+            string stringData = string.Empty;
             byte[] binaryData = null;
 
             if (PackProfileData(values, isAuthenticated, ref index, ref stringData, ref binaryData) < 1) return;

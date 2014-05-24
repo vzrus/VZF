@@ -29,6 +29,7 @@ namespace YAF.Core
   /// <summary>
   /// The cant load theme exception.
   /// </summary>
+ [Serializable]
   public class CantLoadThemeException : Exception
   {
     #region Constructors and Destructors

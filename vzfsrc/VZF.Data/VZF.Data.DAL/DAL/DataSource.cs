@@ -130,6 +130,17 @@ namespace VZF.Data.DAL
         /// <param name="name">
         /// The name.
         /// </param>
+        public DataSource(string connectionString, string providerName)
+        {
+            this.Initialize(connectionString, providerName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSource"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
         /// <param name="connectionString">
         /// The connection string.
         /// </param>
@@ -537,6 +548,11 @@ namespace VZF.Data.DAL
                 this._information = new DataSourceInformation(
                     conn.GetSchema(DbMetaDataCollectionNames.DataSourceInformation));
             }
+        }
+
+        private void Initialize(string connectionString, string providerName)
+        {
+            this.Initialize("Direct connection without connection name", connectionString, providerName);
         }
 
         /// <summary>

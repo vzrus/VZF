@@ -66,6 +66,10 @@ IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{datab
 DROP FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
 GO
 
+IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}table_strfromdelimitedstr]') and type in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [{databaseOwner}].[{objectQualifier}table_strfromdelimitedstr]
+GO
+
 IF  exists(select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}topic_gettags_str]') and type in (N'FN', N'IF', N'TF'))
 DROP FUNCTION [{databaseOwner}].[{objectQualifier}topic_gettags_str]
 GO
@@ -441,31 +445,13 @@ END
 GO
 
 -- Gets the Thanks info which will be formatted and then placed in "dvThanksInfo" Div Tag in displaypost.ascx.
-#IFSRVVER>8#create function [{databaseOwner}].[{objectQualifier}message_getthanksinfo]
+create function [{databaseOwner}].[{objectQualifier}message_getthanksinfo]
 (
 @MessageID INT,
 @ShowThanksDate bit
 ) returns NVARCHAR(MAX)
 BEGIN
 	DECLARE @Output NVARCHAR(MAX)
-		SELECT @Output = COALESCE(@Output+',', '') + CAST(i.ThanksFromUserID AS varchar) + 
-	CASE @ShowThanksDate WHEN 1 THEN ',' + CAST (i.ThanksDate AS varchar)  ELSE '' end
-			FROM	[{databaseOwner}].[{objectQualifier}Thanks] i
-			WHERE	i.MessageID = @MessageID	ORDER BY i.ThanksDate
-	-- Add the last comma if @Output has data.
-	IF @Output <> ''
-		SELECT @Output = @Output + ','
-	RETURN @Output
-END
-GO
-
-#IFSRVVER=8#create function [{databaseOwner}].[{objectQualifier}message_getthanksinfo]
-(
-@MessageID INT,
-@ShowThanksDate bit
-) returns VARCHAR(8000)
-BEGIN
-	DECLARE @Output VARCHAR(8000)
 		SELECT @Output = COALESCE(@Output+',', '') + CAST(i.ThanksFromUserID AS varchar) + 
 	CASE @ShowThanksDate WHEN 1 THEN ',' + CAST (i.ThanksDate AS varchar)  ELSE '' end
 			FROM	[{databaseOwner}].[{objectQualifier}Thanks] i
@@ -550,7 +536,6 @@ CREATE FUNCTION [{databaseOwner}].[{objectQualifier}table_intfromdelimitedstr]
 	RETURN
 	END
 GO
-
 
 CREATE FUNCTION [{databaseOwner}].[{objectQualifier}topic_gettags_str] 
 	(@TopicID int)

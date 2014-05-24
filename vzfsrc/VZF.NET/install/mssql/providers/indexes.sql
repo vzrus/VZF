@@ -30,6 +30,6 @@ if not exists(select top 1 1 from sys.indexes  where name=N'IX_{objectQualifier}
  CREATE  INDEX [IX_{objectQualifier}prov_RoleMembership_UserID] ON [{databaseOwner}].[{objectQualifier}prov_RoleMembership]([UserID])
 go
 
-if not exists (select top 1 1 from  sys.indexes  where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_RoleMembership]') and name='PK_{objectQualifier}prov_RoleMembership')
+if not exists (select top 1 1 from  sys.indexes  where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_RoleMembership]') and name=N'PK_{objectQualifier}prov_RoleMembership')
 	alter table [{databaseOwner}].[{objectQualifier}prov_RoleMembership] with nocheck add constraint [PK_{objectQualifier}prov_RoleMembership] primary key clustered(RoleID,UserID)   
 go

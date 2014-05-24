@@ -42,7 +42,7 @@ namespace VZF.Utilities
             get
             {
                 return
-                    @"Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(loadTimeAgo);
+                  @"Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(loadTimeAgo);
             function loadTimeAgo() {{	
             {2}.timeago.settings.refreshMillis = {1};			      	
             {0}

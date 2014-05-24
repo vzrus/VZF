@@ -121,6 +121,7 @@ namespace VZF.Data.DAL
 
             return true;
         }
+       
 
         /// <summary>
         /// The get connection data.
@@ -198,6 +199,15 @@ namespace VZF.Data.DAL
             return connectionStringName;
         }
 
+        /// <summary>
+        /// The get connection string name from connection string.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetConnectionStringNameFromConnectionString(string connectionString)
         {
            foreach (ConnectionStringSettings constr in  ConfigurationManager.ConnectionStrings)
@@ -341,6 +351,36 @@ namespace VZF.Data.DAL
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
             return dataEngine;
+        }
+
+        /// <summary>
+        /// The get provider name from connection string.
+        /// </summary>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetProviderNameFromConnectionString(string connectionString)
+        {
+            string defaultName = string.Empty;
+          
+            foreach (ConnectionStringSettings cs in ConfigurationManager.ConnectionStrings)
+            {
+                if (defaultName.IsNotSet())
+                {
+                    defaultName = cs.ProviderName;
+                }
+
+                if (cs.ConnectionString == connectionString)
+                {
+                    defaultName = cs.ProviderName;
+                    break;
+                }
+            }
+
+            return defaultName;
         }
     }
 }

@@ -48,10 +48,15 @@ namespace VZF.Utilities
         /// <returns>
         /// The jquery ui tabs load js.
         /// </returns>
-        public static string JqueryUITabsLoadJs([NotNull] string tabId, [NotNull] string hiddenId, bool hightTransition)
+        public static string JqueryUITabsLoadJs(
+            [NotNull] string tabId,
+            [NotNull] string hiddenId,
+            [NotNull] string hiddenTabId,
+            bool hightTransition)
         {
-            return JqueryUITabsLoadJs(tabId, hiddenId, null, null, hightTransition, false);
+            return JqueryUITabsLoadJs(tabId, hiddenId, hiddenTabId, string.Empty, hightTransition, true);
         }
+
 
         /// <summary>
         /// Gets JqueryUITabsLoadJs.
@@ -85,27 +90,26 @@ namespace VZF.Utilities
             bool hightTransition,
             bool addSelectedFunction)
         {
-            string heightTransitionJs = hightTransition ? ", show:{height:'toggle'}, hide:{height:'toggle'}" : string.Empty;
+            string heightTransitionJs = hightTransition ? ", fx:{height:'toggle'}" : string.Empty;
 
             string selectFunctionJs = addSelectedFunction
-                                            ? ", beforeActivate: function(event, ui) {{ {0}('#{1}').val(ui.newTab.index());{0}('#{2}').val(ui.newPanel.selector.replace('#', ''));{3} }}"
-                                            .FormatWith(Config.JQueryAlias, hiddenId, hiddenTabId, postbackJs)
+                                          ? ", beforeActivate: function(event, ui) {{ {0}('#{1}').val(ui.newTab.index());{0}('#{2}').val(ui.newPanel.selector.replace('#', ''));{3} }}"
+                                                .FormatWith(Config.JQueryAlias, hiddenId, hiddenTabId, postbackJs)
                                           : string.Empty;
 
-            return
-                @"{3}(document).ready(function() {{
-                    {3}('#{0}').tabs(
+            return @"{3}(document).ready(function() {{
+					{3}('#{0}').tabs(
                     {{
-            activate: function() {{
-                var sel = {3}('#{0}').tabs('option', 'active'); 
+            show: function() {{
+                var sel = {3}('#{0}').tabs('option', 'active');
+
                 {3}('#{1}').val(sel);
             }},
-            active: {3}('#{1}').val() 
+            active: {3}('#{1}').val()
             {2}
             {4}
         }});
-                    }});"
-                    .FormatWith(tabId, hiddenId, heightTransitionJs, Config.JQueryAlias, selectFunctionJs);
+                    }});".FormatWith(tabId, hiddenId, heightTransitionJs, Config.JQueryAlias, selectFunctionJs);
         }
     }
 }

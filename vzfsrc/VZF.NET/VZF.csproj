@@ -111,9 +111,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=2.6.3.862, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\Autofac.dll</HintPath>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CookComputing.XmlRpcV2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -214,6 +214,7 @@
     <Compile Include="Classes\Utilities\JavaScriptBlocks\HoverCardLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\JqueryUITabsLoadJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\LoadGotoAnchor.cs" />
+    <Compile Include="Classes\Utilities\JavaScriptBlocks\LoadSpinnerWidget.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\LoginCallSuccessJS.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\MultiQuoteButtonJs.cs" />
     <Compile Include="Classes\Utilities\JavaScriptBlocks\MultiQuoteCallbackSuccessJS.cs" />
@@ -999,7 +1000,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="auth.aspx" />
-    <Content Include="Bin\Autofac.Configuration.dll" />
     <Content Include="Bin\Autofac.dll" />
     <Content Include="Bin\CookComputing.XmlRpcV2.dll" />
     <Content Include="Bin\FarsiLibrary.dll" />
@@ -3068,12 +3068,28 @@
     <Content Include="install\firebird\ukeys.sql" />
     <Content Include="install\firebird\views.sql" />
     <Content Include="install\firebird\views_drop.sql" />
+    <Content Include="install\mssql\constraints.sql" />
+    <Content Include="install\mssql\forum_ns.sql" />
+    <Content Include="install\mssql\fulltext.sql" />
+    <Content Include="install\mssql\functions.sql" />
+    <Content Include="install\mssql\indexes.sql" />
+    <Content Include="install\mssql\postinstall.sql" />
+    <Content Include="install\mssql\preinstall.sql" />
+    <Content Include="install\mssql\procedures.sql" />
+    <Content Include="install\mssql\providers\indexes.sql" />
+    <Content Include="install\mssql\providers\procedures.sql" />
+    <Content Include="install\mssql\providers\tables.sql" />
+    <Content Include="install\mssql\tables.sql" />
+    <Content Include="install\mssql\triggers.sql" />
+    <Content Include="install\mssql\views.sql" />
     <Content Include="install\mysql\constraints.sql" />
     <Content Include="install\mysql\custom.sql" />
     <Content Include="install\mysql\fkeys.sql" />
     <Content Include="install\mysql\functions.sql" />
     <Content Include="install\mysql\indexes.sql" />
     <Content Include="install\mysql\pkeys.sql" />
+    <Content Include="install\mysql\postinstall.sql" />
+    <Content Include="install\mysql\preinstall.sql" />
     <Content Include="install\mysql\procedures.sql" />
     <Content Include="install\mysql\providers\indexes.sql" />
     <Content Include="install\mysql\providers\pkeys.sql" />
@@ -3114,7 +3130,9 @@
     <Content Include="languages\admin\english.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="languages\arabic.xml" />
+    <Content Include="languages\arabic.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="languages\estonian.xml" />
     <Content Include="languages\help\english.xml">
       <SubType>Designer</SubType>
@@ -4590,7 +4608,7 @@
     <Content Include="Bin\Mono.Security.Protocol.Tls.license" />
     <Content Include="Bin\policy.2.0.Npgsql.config" />
     <Content Include="app_my.config" />
-    <Content Include="app.config" />
+    <Content Include="app_ms.config" />
     <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
       <SubType>Designer</SubType>
     </None>
@@ -5193,10 +5211,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="pages\app_my.config" />
-    <Content Include="app_pg.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="web_pg.config">
+    <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="editors\ckeditor\plugins\scayt\LICENSE.md" />
@@ -5204,6 +5222,8 @@
     <Content Include="editors\ckeditor\plugins\wsc\LICENSE.md" />
     <Content Include="editors\ckeditor\plugins\wsc\README.md" />
     <Content Include="editors\tiny_mce\themes\advanced\img\Thumbs.db" />
+    <Content Include="install\mssql\procedures.sql.orig.orig" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\localfolder.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -5926,7 +5946,9 @@
     <None Include="Web References\RegisterV2\RegisterV2.wsdl" />
     <Content Include="webconfigs\recommended-NET-web_mssql.config" />
     <Content Include="webconfigs\v191-upgrade-web_mssql.config" />
-    <Content Include="web.config" />
+    <Content Include="web_ms.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="web_fb.config" />
   </ItemGroup>
   <ItemGroup>
@@ -5973,7 +5995,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="editors\tiny_mce\plugins\autosave\images\" />
-    <Folder Include="install\mssql\" />
     <Folder Include="uploads\avatars\" />
     <Folder Include="uploads\topics\" />
   </ItemGroup>

@@ -256,6 +256,9 @@ GO
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}category_listread]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}category_listread]
 GO
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}category_pfaccesslist]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseOwner}].[{objectQualifier}category_pfaccesslist]
+GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}category_save]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}category_save]
@@ -327,6 +330,10 @@ GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_delete]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}forum_delete]
+GO
+
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_byuserlist]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseOwner}].[{objectQualifier}forum_byuserlist]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}forum_list]') and type in (N'P', N'PC'))
@@ -415,6 +422,10 @@ GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}group_eventlogaccesslist]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}group_eventlogaccesslist]
+GO
+
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}group_byuserlist]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseOwner}].[{objectQualifier}group_byuserlist]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}group_list]') and type in (N'P', N'PC'))
@@ -617,6 +628,10 @@ IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{data
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}poll_remove]
 GO
 
+IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}poll_save]') and type in (N'P', N'PC'))
+DROP PROCEDURE [{databaseOwner}].[{objectQualifier}poll_save]
+GO
+
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}pollgroup_attach]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}pollgroup_attach]
 GO
@@ -627,10 +642,6 @@ GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}pollgroup_remove]') and type in (N'P', N'PC'))
 DROP PROCEDURE [{databaseOwner}].[{objectQualifier}pollgroup_remove]
-GO
-
-IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}poll_save]') and type in (N'P', N'PC'))
-DROP PROCEDURE [{databaseOwner}].[{objectQualifier}poll_save]
 GO
 
 IF  exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}poll_stats]') and type in (N'P', N'PC'))
@@ -1414,7 +1425,7 @@ END
 GO
 
 CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}db_size] 
-    @DbScheme varchar(255), @DbName varchar(255)
+    @DbScheme nvarchar(255), @DbName nvarchar(255)
 AS
 BEGIN
 SELECT (SUM(cast(reserved_page_count as integer))*8192)/1024000 FROM sys.dm_db_partition_stats;
@@ -1644,20 +1655,47 @@ begin
 end
 GO
 
-create procedure [{databaseOwner}].[{objectQualifier}accessmask_list](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit) as
+create procedure [{databaseOwner}].[{objectQualifier}accessmask_list](@BoardID int,@AccessMaskID int=null,@ExcludeFlags int = 0, @PageUserID INT, @IsUserMask bit, @IsAdminMask  bit, @PageIndex int, @PageSize int) as
 begin
+declare @TotalRows int;
+declare @FirstSelectRowNumber int;
+declare @LastSelectRowNumber int;
         if @AccessMaskID is null
-        select 
-            a.* 
-        from 
+		begin       set @PageIndex = @PageIndex + 1;
+           set @FirstSelectRowNumber = 0;
+           set @LastSelectRowNumber = 0;
+           set @TotalRows = 0;
+           
+           select @TotalRows = count(1) from   
             [{databaseOwner}].[{objectQualifier}AccessMask] a 
-        where
+          where
             a.BoardID = @BoardID and
             (a.Flags & @ExcludeFlags) = 0   and (@IsUserMask = 0 or a.IsUserMask = 1)
             -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
+            and (@PageUserID is null  or CreatedByUserID = @PageUserID);
+           select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1;
+           select @LastSelectRowNumber = (@PageIndex - 1) * @PageSize + @PageSize;
+
+		    with GroupIds as
+           (
+             select ROW_NUMBER() over (order by SortOrder) as RowNum, AccessMaskID
+            from 
+            [{databaseOwner}].[{objectQualifier}AccessMask]   where
+            BoardID = @BoardID and
+            (Flags & @ExcludeFlags) = 0   and (@IsUserMask = 0 or IsUserMask = 1)
+            -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
             and (@PageUserID is null  or CreatedByUserID = @PageUserID)
-        order by 
-            a.SortOrder
+           )
+           select
+            a.*,
+            @TotalRows as TotalRows
+            from
+            GroupIds c
+            inner join  [{databaseOwner}].[{objectQualifier}AccessMask] a 	
+            on c.AccessMaskID = a.AccessMaskID	
+            where c.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
+            order by c.RowNum asc;   
+	end
     else
         select 
             a.* 
@@ -1667,7 +1705,7 @@ begin
             a.BoardID = @BoardID and
             a.AccessMaskID = @AccessMaskID
         order by 
-            a.SortOrder
+            a.SortOrder;
 end
 GO
 
@@ -1712,7 +1750,8 @@ begin
             (a.Flags & @ExcludeFlags) = 0 
 			and (@IsAdminMask = 1 or a.IsAdminMask = 0)
             and ((@IsUserMask = 1 and a.CreatedByUserID = @PageUserID) or a.IsUserMask = 0)	
-        order by 
+        order by
+		    a.IsUserMask, 
             a.SortOrder
     else
         select 
@@ -1725,6 +1764,7 @@ begin
 			and (@IsAdminMask = 1 or a.IsAdminMask = 0)
             and ((@IsUserMask = 1 and a.CreatedByUserID = @PageUserID) or a.IsUserMask = 0)
         order by 
+		    a.IsUserMask, 
             a.SortOrder
 end
 GO
@@ -2168,9 +2208,7 @@ end
 GO
 
 create procedure [{databaseOwner}].[{objectQualifier}attachment_list](@MessageID int=null,@AttachmentID int=null,@BoardID int=null,@PageIndex int = null, @PageSize int = 0) as begin
-declare @TotalRows int
-declare @FirstSelectRowNumber int
-declare @FirstSelectRowID int		
+
    if @MessageID is not null
         select 
             a.*,
@@ -2200,46 +2238,32 @@ declare @FirstSelectRowID int
     else
     begin
 
-               set nocount on
-           set @PageIndex = @PageIndex + 1
-           set @FirstSelectRowNumber = 0
-           set @FirstSelectRowID = 0
-           set @TotalRows = 0
+
+declare @TotalRows int
+declare @FirstSelectRowNumber int
+declare @LastSelectRowNumber int
+           set @PageIndex = @PageIndex + 1;
+           set @FirstSelectRowNumber = 0;
+           set @LastSelectRowNumber = 0;
+           set @TotalRows = 0;
            
            select @TotalRows = count(1) from [{databaseOwner}].[{objectQualifier}Attachment] a
-            inner join [{databaseOwner}].[{objectQualifier}Message] b on b.MessageID = a.MessageID
-            inner join [{databaseOwner}].[{objectQualifier}Topic] c on c.TopicID = b.TopicID
-            inner join [{databaseOwner}].[{objectQualifier}Forum] d on d.ForumID = c.ForumID
-            inner join [{databaseOwner}].[{objectQualifier}Category] e on e.CategoryID = d.CategoryID			
+           inner join [{databaseOwner}].[{objectQualifier}Message] b on b.MessageID = a.MessageID
+           inner join [{databaseOwner}].[{objectQualifier}Topic] c on c.TopicID = b.TopicID
+           inner join [{databaseOwner}].[{objectQualifier}Forum] d on d.ForumID = c.ForumID
+           inner join [{databaseOwner}].[{objectQualifier}Category] e on e.CategoryID = d.CategoryID			
         where
-            e.BoardID = @BoardID
-           select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1
-           
-           if (@FirstSelectRowNumber <= @TotalRows)
-           begin
-           -- find first selectedrowid 
-           set rowcount @FirstSelectRowNumber
-           end
-           else
-           begin  
-           set rowcount 1
-           end
-      -- find first row id for a current page 
-      select @FirstSelectRowID = AttachmentID 
-     from 
-            [{databaseOwner}].[{objectQualifier}Attachment] a
-            inner join [{databaseOwner}].[{objectQualifier}Message] b on b.MessageID = a.MessageID
-            inner join [{databaseOwner}].[{objectQualifier}Topic] c on c.TopicID = b.TopicID
-            inner join [{databaseOwner}].[{objectQualifier}Forum] d on d.ForumID = c.ForumID
-            inner join [{databaseOwner}].[{objectQualifier}Category] e on e.CategoryID = d.CategoryID			
-        where
-            e.BoardID = @BoardID
-        order by
-            a.AttachmentID
+            e.BoardID = @BoardID;
 
-      -- display page 
-      set rowcount @PageSize
-     select 
+           select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1;
+           select @LastSelectRowNumber = (@PageIndex - 1) * @PageSize + @PageSize;
+           
+           with AttachmentIps as
+           (
+             select ROW_NUMBER() over (order by  AttachmentID) as RowNum,  AttachmentID
+             from   [{databaseOwner}].[{objectQualifier}Attachment] 
+           )
+           select			
             a.*,
             BoardID		= @BoardID,
             Posted		= b.Posted,
@@ -2249,17 +2273,16 @@ declare @FirstSelectRowID int
             TopicName	= c.Topic,
             TotalRows  = @TotalRows
         from 
-            [{databaseOwner}].[{objectQualifier}Attachment] a
+		    AttachmentIps ips 
+			inner join [{databaseOwner}].[{objectQualifier}Attachment] a on a.AttachmentID = ips.AttachmentID
             inner join [{databaseOwner}].[{objectQualifier}Message] b on b.MessageID = a.MessageID
             inner join [{databaseOwner}].[{objectQualifier}Topic] c on c.TopicID = b.TopicID
             inner join [{databaseOwner}].[{objectQualifier}Forum] d on d.ForumID = c.ForumID
             inner join [{databaseOwner}].[{objectQualifier}Category] e on e.CategoryID = d.CategoryID			
         where
-            a.AttachmentID >= @FirstSelectRowID  and e.BoardID = @BoardID
-        order by
-            a.AttachmentID
-   set nocount off
-
+            e.BoardID = @BoardID      
+            and ips.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
+            order by ips.RowNum asc       
         
     end
 end
@@ -2358,6 +2381,7 @@ begin
     declare	@CategoryID				int
     declare	@ForumID				int
     declare @UserFlags				int
+
 	
     -- Board
     INSERT INTO [{databaseOwner}].[{objectQualifier}Board](Name, AllowThreaded, MembershipAppName, RolesAppName ) values(@BoardName,0, @MembershipAppName, @RolesAppName)
@@ -2398,11 +2422,20 @@ begin
     VALUES(@BoardID,'No Access',0,0)
 
     -- Group
-    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) values(@BoardID, ISNULL(@RolePrefix,'') + 'Administrators',1,2147483647,'default!font-size: 8pt; color: red/yafpro!font-size: 8pt; color:blue',0,256,'URL,IMG,SPOILER,QUOTE',10,120)
+    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,Style,SortOrder,
+	UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden) 
+	values(@BoardID, ISNULL(@RolePrefix,'') + 'Administrators',1,2147483647,'default!font-size: 8pt; color: red/yafpro!font-size: 8pt; color:blue',0,256,
+	'URL,IMG,SPOILER,QUOTE',10,120,0,0)
     set @GroupIDAdmin = SCOPE_IDENTITY()
-    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) values(@BoardID,'Guests',2,0,'default!font-size: 8pt; font-style: italic; font-weight: bold; color: #0c7333/yafpro!font-size: 8pt; color: #6e1987',1,0,null,0,0)
+    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,Style,SortOrder,
+	UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden) 
+	values(@BoardID,'Guests',2,0,'default!font-size: 8pt; font-style: italic; font-weight: bold; color: #0c7333/yafpro!font-size: 8pt; color: #6e1987',1,0,
+	null,0,0,0,0)
     SET @GroupIDGuest = SCOPE_IDENTITY()
-    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) values(@BoardID,ISNULL(@RolePrefix,'') + 'Registered',4,100,1,128,'URL,IMG,SPOILER,QUOTE',5,30)
+    INSERT INTO [{databaseOwner}].[{objectQualifier}Group](BoardID,Name,Flags,PMLimit,SortOrder,
+	UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden) 
+	values(@BoardID,ISNULL(@RolePrefix,'') + 'Registered',4,100,1,128,'URL,IMG,SPOILER,QUOTE',5,30,0,0)
+
     SET @GroupIDMember = SCOPE_IDENTITY()	
     
     -- User (GUEST)
@@ -2418,6 +2451,13 @@ begin
     VALUES(@BoardID,@RankIDAdmin,@UserName,@UserName,'na',@UserEmail,@UserKey,@UTCTIMESTAMP ,@UTCTIMESTAMP ,0,@TimeZone,@UserFlags)
     SET @UserIDAdmin = SCOPE_IDENTITY()
 
+	-- update all groups that they were created by admin
+	update [{databaseOwner}].[{objectQualifier}Group]
+	set    CreatedByUserID = @UserIDAdmin,
+           CreatedByUserName = @UserName,
+           CreatedByUserDisplayName = @UserName,
+           CreatedDate = @UTCTIMESTAMP;
+    
     -- UserGroup
     INSERT INTO [{databaseOwner}].[{objectQualifier}UserGroup](UserID,GroupID) VALUES(@UserIDAdmin,@GroupIDAdmin)
     INSERT INTO [{databaseOwner}].[{objectQualifier}UserGroup](UserID,GroupID) VALUES(@UserIDGuest,@GroupIDGuest)
@@ -2696,6 +2736,20 @@ begin
 end
 GO
 
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}category_pfaccesslist](@BoardID INT, @CategoryID INT) 
+as
+BEGIN
+    IF @CategoryID IS NULL 
+        SELECT c.*,
+        IsNULL((SELECT top 1 SIGN(f.ForumID) FROM [{databaseOwner}].[{objectQualifier}Forum] f where f.CategoryID = c.CategoryID and f.CanHavePersForums = 1 ),0) AS HasForumsForPersForums
+        FROM [{databaseOwner}].[{objectQualifier}Category] c WHERE c.BoardID = @BoardID ORDER BY c.SortOrder;
+    ELSE
+        SELECT c.*,
+        IsNULL((SELECT top 1 SIGN(f.ForumID) FROM [{databaseOwner}].[{objectQualifier}Forum] f where f.CategoryID = c.CategoryID and f.CanHavePersForums  = 1 ),0)  AS HasForumsForPersForums
+        FROM [{databaseOwner}].[{objectQualifier}Category] c WHERE c.BoardID = @BoardID AND c.CategoryID = @CategoryID;       
+END
+GO
+
 CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}category_save]
 (
     @BoardID    INT,
@@ -2712,6 +2766,7 @@ BEGIN
         UPDATE [{databaseOwner}].[{objectQualifier}Category]
         SET    Name = @Name,
                CategoryImage = @CategoryImage,
+			   CanHavePersForums = @CanHavePersForums,
                SortOrder = @SortOrder
         WHERE  CategoryID = @CategoryID
         SELECT CategoryID = @CategoryID
@@ -2722,10 +2777,12 @@ BEGIN
                    (BoardID,
                     [Name],
                     [CategoryImage],
+					[CanHavePersForums],
                     SortOrder)
         VALUES     (@BoardID,
                     @Name,
                     @CategoryImage,
+					@CanHavePersForums,
                     @SortOrder)
         SELECT CategoryID = Scope_identity()
     END
@@ -3109,7 +3166,27 @@ begin
     --END ABOT CHANGED 09.04.2004
     delete from [{databaseOwner}].[{objectQualifier}Forum] where ForumID = @ForumID
 end
+GO
 
+create procedure [{databaseOwner}].[{objectQualifier}forum_byuserlist](@BoardID INT,@ForumID INT, @UserID INT, @IsUserForum bit) 
+as
+BEGIN
+        IF @ForumID = 0  SET @ForumID = NULL; 
+        IF @ForumID IS NULL 
+                      SELECT a.* FROM [{databaseOwner}].[{objectQualifier}Forum] a 
+                                  JOIN [{databaseOwner}].[{objectQualifier}Category] b 
+                                     ON b.CategoryID=a.CategoryID                                  
+                                        WHERE b.BoardID=@BoardID and a.IsUserForum = @IsUserForum
+                                        and (@UserID IS NULL OR a.CreatedByUserID = @UserID)
+                                          ORDER BY a.SortOrder;
+        ELSE
+        SELECT a.* FROM [{databaseOwner}].[{objectQualifier}Forum] a 
+                   JOIN [{databaseOwner}].[{objectQualifier}Category] b 
+                    ON b.CategoryID=a.CategoryID 
+                     WHERE b.BoardID=@BoardID 
+                      AND a.ForumID = @ForumID;
+       
+END
 GO
 
 create procedure [{databaseOwner}].[{objectQualifier}forum_list](@BoardID int,@ForumID int=null, @UserID int, @IsUserForum bit) as
@@ -3605,12 +3682,13 @@ begin
             ImageURL = @ImageURL,
             Styles = @Styles,
             Flags = @Flags,
-            IsUserForum = @IsUserForum
+            IsUserForum = @IsUserForum,
+            CanHavePersForums = @CanHavePersForums
         where ForumID=@ForumID
     end
     else begin    
-        insert into [{databaseOwner}].[{objectQualifier}Forum](ParentID,Name,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,Flags,ImageURL,Styles,IsUserForum, CreatedByUserID,CreatedByUserName, CreatedByUserDisplayName, CreatedDate)
-        values(@ParentID,@Name,@Description,@SortOrder,@CategoryID,0,0,@RemoteURL,@ThemeURL,@Flags,@ImageURL,@Styles,@IsUserForum,@UserID,(SELECT TOP 1 Name FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID),(SELECT TOP 1 DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID),@UTCTIMESTAMP)
+        insert into [{databaseOwner}].[{objectQualifier}Forum](ParentID,Name,Description,SortOrder,CategoryID,NumTopics,NumPosts,RemoteURL,ThemeURL,Flags,ImageURL,Styles,IsUserForum, CanHavePersForums, CreatedByUserID,CreatedByUserName, CreatedByUserDisplayName, CreatedDate)
+        values(@ParentID,@Name,@Description,@SortOrder,@CategoryID,0,0,@RemoteURL,@ThemeURL,@Flags,@ImageURL,@Styles,@IsUserForum,@CanHavePersForums,@UserID,(SELECT TOP 1 Name FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID),(SELECT TOP 1 DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID),@UTCTIMESTAMP)
         select @ForumID = SCOPE_IDENTITY()
 
         insert into [{databaseOwner}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID) 
@@ -3740,12 +3818,60 @@ begin
 end
 GO
 
-create procedure [{databaseOwner}].[{objectQualifier}group_list](@BoardID int,@GroupID int=null) as
+create procedure [{databaseOwner}].[{objectQualifier}group_byuserlist](
+        @BoardID INT,
+        @GroupID INT,
+        @UserID INT,
+        @IsUserGroup bit)
+as
 begin
-        if @GroupID is null
-        select * from [{databaseOwner}].[{objectQualifier}Group] where BoardID=@BoardID order by SortOrder 
+       IF @GroupID IS NULL 
+        SELECT *
+        FROM   [{databaseOwner}].[{objectQualifier}Group]
+        WHERE  BoardID = @BoardID and CreatedByUserID = @UserID  order by SortOrder;
+        ELSE
+        SELECT TOP 1 *
+        FROM   [{databaseOwner}].[{objectQualifier}Group]
+        WHERE  BoardID = @BoardID and CreatedByUserID = @UserID 
+        AND GroupID = @GroupID;       
+end
+GO
+
+create procedure [{databaseOwner}].[{objectQualifier}group_list](@BoardID int,@GroupID int=null,@PageIndex int, @PageSize int) as
+begin
+declare @TotalRows int;
+declare @FirstSelectRowNumber int;
+declare @LastSelectRowNumber int;
+   if @GroupID is null
+   begin       
+           set @PageIndex = @PageIndex + 1;
+           set @FirstSelectRowNumber = 0;
+           set @LastSelectRowNumber = 0;
+           set @TotalRows = 0;
+           
+           select @TotalRows = count(1) from [{databaseOwner}].[{objectQualifier}Group] where BoardID=@BoardID;
+           select @FirstSelectRowNumber = (@PageIndex - 1) * @PageSize + 1;
+           select @LastSelectRowNumber = (@PageIndex - 1) * @PageSize + @PageSize;
+           
+           with GroupIds as
+           (
+             select ROW_NUMBER() over (order by SortOrder) as RowNum, GroupID
+             from [{databaseOwner}].[{objectQualifier}Group] where BoardID=@BoardID
+           )
+           select
+            a.*,
+            @TotalRows as TotalRows
+            from
+            GroupIds c
+            inner join  [{databaseOwner}].[{objectQualifier}Group] a	
+            on c.GroupID = a.GroupID	
+            where c.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
+            order by c.RowNum asc;
+  end       
     else
-        select * from [{databaseOwner}].[{objectQualifier}Group] where BoardID=@BoardID and GroupID=@GroupID
+  begin
+        select top 1 * from [{databaseOwner}].[{objectQualifier}Group] where BoardID=@BoardID and GroupID=@GroupID;
+  end
 end
 GO
 
@@ -3813,6 +3939,16 @@ begin
     if @IsStart<>0 set @Flags = @Flags | 4
     if @IsModerator<>0 set @Flags = @Flags | 8
 
+	IF @UserID IS NOT NULL
+    BEGIN	
+    SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID
+    END
+    -- guests should not create forums
+    ELSE
+    BEGIN 
+    SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where BoardID = @BoardID and (Flags & 4) = 4  ORDER BY Joined DESC
+    END
+
     if @GroupID>0 begin
         update [{databaseOwner}].[{objectQualifier}Group] set
             Name = @Name,
@@ -3834,8 +3970,18 @@ begin
         where GroupID = @GroupID
     end
     else begin
-        insert into [{databaseOwner}].[{objectQualifier}Group](Name,BoardID,Flags,PMLimit,Style, SortOrder,Description,UsrSigChars,UsrSigBBCodes,UsrSigHTMLTags,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden,UsrPersonalMasks,UsrPersonalGroups,UsrPersonalForums)
-        values(@Name,@BoardID,@Flags,@PMLimit,@Style,@SortOrder,@Description,@UsrSigChars,@UsrSigBBCodes,@UsrSigHTMLTags,@UsrAlbums,@UsrAlbumImages,@IsUserGroup,@IsHidden,@PersonalAccessMasksNumber,@PersonalGroupsNumber,@PersonalForumsNumber);
+        insert into [{databaseOwner}].[{objectQualifier}Group]
+		(Name,BoardID,Flags,PMLimit,Style, SortOrder,Description,UsrSigChars,UsrSigBBCodes,UsrSigHTMLTags,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden,UsrPersonalMasks,UsrPersonalGroups,UsrPersonalForums,
+                        CreatedByUserID,
+						CreatedByUserName,
+                        CreatedByUserDisplayName,
+                        CreatedDate)
+        values
+		(@Name,@BoardID,@Flags,@PMLimit,@Style,@SortOrder,@Description,@UsrSigChars,@UsrSigBBCodes,@UsrSigHTMLTags,@UsrAlbums,@UsrAlbumImages,@IsUserGroup,@IsHidden,@PersonalAccessMasksNumber,@PersonalGroupsNumber,@PersonalForumsNumber, 
+		                @UserID,
+                        @UserName,
+                        @UserDisplayName,
+						@UTCTIMESTAMP);
         set @GroupID = SCOPE_IDENTITY()
         insert into [{databaseOwner}].[{objectQualifier}ForumAccess](GroupID,ForumID,AccessMaskID)
         select @GroupID,a.ForumID,@AccessMaskID from [{databaseOwner}].[{objectQualifier}Forum] a join [{databaseOwner}].[{objectQualifier}Category] b on b.CategoryID=a.CategoryID where b.BoardID=@BoardID
@@ -3843,15 +3989,7 @@ begin
     -- group styles override rank styles	
     EXEC [{databaseOwner}].[{objectQualifier}user_savestyle] @GroupID,null
     
-         IF @UserID IS NOT NULL
-    BEGIN	
-    SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where UserID = @UserID
-    END
-    -- guests should not create forums
-    ELSE
-    BEGIN 
-    SELECT TOP 1 @UserName = Name,  @UserDisplayName = DisplayName FROM [{databaseOwner}].[{objectQualifier}User] where BoardID = @BoardID and (Flags & 4) = 4  ORDER BY Joined DESC
-    END
+         
     if exists (select top 1 1 from [{databaseOwner}].[{objectQualifier}GroupHistory] where GroupID = @GroupID and ChangedDate = @UTCTIMESTAMP)
     begin
     update [{databaseOwner}].[{objectQualifier}GroupHistory] set 
@@ -8703,12 +8841,15 @@ begin
         BoardID=@BoardID and
         Name=@UserName
 
-    if @@ROWCOUNT<1
-    begin
-        exec [{databaseOwner}].[{objectQualifier}user_save] null,@BoardID,@UserName,@UserName,@Email,@TimeZone,null,null,null,null,null, 1, null, null, null, 0, 0,@UTCTIMESTAMP 
-        
+    if @UserID is null
+    begin   
+        exec [{databaseOwner}].[{objectQualifier}user_save] null,@BoardID,@UserName,@UserName,@Email,@TimeZone,
+		                                                    null,null,null,null,null,null,1,0,null,null,null,null,
+															null,20,20,@UTCTIMESTAMP   
+
         -- The next one is not safe, but this procedure is only used for testing
-        select @UserID = @@IDENTITY
+        -- select @UserID = @@IDENTITY
+		SELECT top 1  @UserID = UserID FROM [{databaseOwner}].[{objectQualifier}User] order by UserID desc;
     end
 
     select UserID=@UserID
@@ -8808,7 +8949,7 @@ AS
 begin
     
     declare @RankID int
-    declare @Flags int	
+    declare @Flags int = 0	
     declare @OldDisplayName nvarchar(255)		
         
     if @DSTUser is null SET @DSTUser = 0
@@ -8818,6 +8959,7 @@ begin
     if @OverrideDefaultTheme is null SET @OverrideDefaultTheme=0
     if @UseSingleSignOn is null SET @UseSingleSignOn=0
 
+	-- i.e. nntp user or like
     if @UserID is null or @UserID<1 begin
         
         if @Approved<>0 set @Flags = @Flags | 2	
@@ -10276,6 +10418,77 @@ as begin
 end
 GO
 
+create proc [{databaseOwner}].[{objectQualifier}poll_save]    
+    @TopicID int = null,
+    @ForumID int= null,
+	@CategoryID int = null,
+	@PollGroupList nvarchar(max),
+	@QuestionList nvarchar(max), 
+	@ChoiceList nvarchar(max),
+	@UTCTIMESTAMP datetime
+as 
+begin
+declare @PollID int;
+ -- Check if the group already exists
+
+              /*  if (@TopicId is not null)
+                select @PollGroupID = PollID  from [{databaseOwner}].[{objectQualifier}Topic] WHERE TopicID = @TopicID;               
+                else if (@ForumID is not null)                
+				select @PollGroupID = PollGroupID  from [{databaseOwner}].[{objectQualifier}Forum] WHERE ForumID = @ForumID;                
+                else if (@CategoryID is not null)
+                select @PollGroupID = PollGroupID  from [{databaseOwner}].[{objectQualifier}Category]
+				WHERE CategoryID = @CategoryID;
+				else
+				begin
+				INSERT INTO [{databaseOwner}].[{objectQualifier}PollGroupCluster](UserID,Flags ) VALUES(@UserID, @Flags); 
+				SET @NewPollGroupID = SCOPE_IDENTITY(); 
+				end
+
+				-- poll group is saved or checked by the moment, checking if poll exist and if not save it, 
+				-- if poll exists that means that a choice was previously saved
+
+				select top 1 @PollID = PollID from [{databaseOwner}].[{objectQualifier}Poll] where Question = @Question and PollGroupID = (CASE WHEN  @NewPollGroupID IS NULL THEN @PollGroupID ELSE @NewPollGroupID END);
+				if @PollID is null
+				begin				
+				if (@QuestionByTime = 1)  
+				begin              
+				INSERT INTO [{databaseOwner}].[{objectQualifier}Poll](Question,Closes, UserID,PollGroupID,ObjectPath,MimeType,Flags)
+					VALUES (@Question,@Closes,@UserID, (CASE WHEN  @NewPollGroupID IS NULL THEN @PollGroupID ELSE @NewPollGroupID END), @QuestionObjectPath,@QuestionMimeType,@PollFlags);					                
+                end
+				else 
+				begin              
+				 INSERT INTO [{databaseOwner}].[{objectQualifier}Poll](Question,UserID, PollGroupID, ObjectPath, MimeType,Flags)
+					VALUES (@Question,@UserID, (CASE WHEN  @NewPollGroupID IS NULL THEN @PollGroupID ELSE @NewPollGroupID END), @QuestionObjectPath,@QuestionMimeType,@PollFlags);
+                  SET @PollID = SCOPE_IDENTITY(); 				
+				end		
+				end	
+
+				-- we are inserting choice now 	                      
+				INSERT INTO [{databaseOwner}].[{objectQualifier}Choice](PollID,Choice,Votes,ObjectPath,MimeType)
+					VALUES (@PollID,@Choice{0},@Votes{0},@ChoiceObjectPath{0}, @ChoiceMimeType{0});
+
+               -- we don't update if no new group is created 
+                IF  @PollGroupID IS NULL 
+				BEGIN 
+
+                -- fill a pollgroup field - double work if a poll exists 
+                if (@TopicId is not null)
+                    UPDATE [{databaseOwner}].[{objectQualifier}Topic] SET PollID = @NewPollGroupID WHERE TopicID = @TopicID; 
+				-- fill a pollgroup field in Forum Table if the call comes from a forum's topic list 
+                else if (@ForumID is not null)                 
+                    UPDATE [{databaseOwner}].[{objectQualifier}Forum] SET PollGroupID= @NewPollGroupID WHERE ForumID= @ForumID; 
+                -- fill a pollgroup field in Category Table if the call comes from a category's topic list 
+                else if (@CategoryID is not null)              
+                    UPDATE [{databaseOwner}].[{objectQualifier}Category] SET PollGroupID= @NewPollGroupID WHERE CategoryID= @CategoryID;                 
+
+                -- fill a pollgroup field in Board Table if the call comes from the main page poll 
+                END;  
+
+                -- the functionality is primitive for other databases compliance.It will cause save calls for each choice. 
+				*/
+end
+GO
+
 /* User Ignore Procedures */
 
 CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}user_addignoreduser]
@@ -10353,11 +10566,11 @@ declare @LastSelectRowNumber int
            
            with MessageIds as
            (
-             select ROW_NUMBER() over (order by sh.[Date]) as RowNum, sh.[ShoutBoxMessageID]
+             select ROW_NUMBER() over (order by [Date]) as RowNum, [ShoutBoxMessageID]
 			 from
-             [{databaseOwner}].[{objectQualifier}ShoutboxMessage] sh
+             [{databaseOwner}].[{objectQualifier}ShoutboxMessage] 
              WHERE 
-             sh.BoardId = @BoardID
+             BoardId = @BoardID
            )
            select
             sh.[ShoutBoxMessageID],
@@ -10375,8 +10588,8 @@ declare @LastSelectRowNumber int
             inner join  [{databaseOwner}].[{objectQualifier}ShoutboxMessage] sh
 			on mi.[ShoutBoxMessageID] = sh.[ShoutBoxMessageID]
             JOIN [{databaseOwner}].[{objectQualifier}User] usr on usr.UserID = sh.UserID
-            where c.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
-            order by c.RowNum asc  
+            where mi.RowNum between (@FirstSelectRowNumber) and (@LastSelectRowNumber)
+            order by mi.RowNum asc  
 end
 GO
 
@@ -11246,7 +11459,7 @@ begin
      end
 GO
 
-#IFSRVVER>8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] (@MessageIDs varchar(max))
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] (@MessageIDs varchar(max))
 AS 
     BEGIN
     -- vzrus says: the server version > 2000 ntext works too slowly with substring in the 2005 
@@ -11281,50 +11494,6 @@ AS
             FROM @ParsedMessageIDs a
             INNER JOIN [{databaseOwner}].[{objectQualifier}Message] d ON (d.MessageID = a.MessageID)
     END
-GO
-
-#IFSRVVER=8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] 
-    @MessageIDs ntext
-AS
-BEGIN
-DECLARE @ParsedMessageIDs TABLE
-      (
-            MessageID int
-      )
-    DECLARE @MessageIDsChunk VARCHAR(8000), @MessageID varchar(11), @Pos INT, @Itr INT, @trimindex int
-    SET @Itr = 0
-    SET @MessageIDsChunk  = SUBSTRING( @MessageIDs, @Itr, @Itr + 8000 )
-    WHILE LEN(@MessageIDsChunk) > 0
-    BEGIN
-            SET @trimindex = CHARINDEX(',',REVERSE( @MessageIDsChunk ), 1 );
-            SET @MessageIDsChunk = SUBSTRING(@MessageIDsChunk,0, 8000-@trimindex)
-            SET @Itr = @Itr - @trimindex
-            SET @MessageIDsChunk = LTRIM(RTRIM(@MessageIDsChunk))+ ','
-            SET @Pos = CHARINDEX(',', @MessageIDsChunk, 1)
-            IF REPLACE(@MessageIDsChunk, ',', '') <> ''
-            BEGIN
-                  WHILE @Pos > 0
-                  BEGIN
-                        SET @MessageID = LTRIM(RTRIM(LEFT(@MessageIDsChunk, @Pos - 1)))
-                        IF @MessageID <> ''
-                        BEGIN
-                              INSERT INTO @ParsedMessageIDs (MessageID) VALUES (CAST(@MessageID AS int)) --Use Appropriate conversion
-                        END
-                        SET @MessageIDsChunk = RIGHT(@MessageIDsChunk, LEN(@MessageIDsChunk) - @Pos)
-                        SET @Pos = CHARINDEX(',', @MessageIDsChunk, 1)
-                  END
-                    -- to be sure that last value is inserted
-                    IF (LEN(@MessageIDsChunk) > 0)
-                           INSERT INTO @ParsedMessageIDs (MessageID) VALUES (CAST(@MessageIDsChunk AS int))  
-            END      
-            SET @Itr = @Itr + 8000;
-            SET @MessageIDsChunk  = SUBSTRING( @MessageIDs, @Itr, @Itr + 8000 )
-      END
-      
-        SELECT a.MessageID, d.Message
-            FROM @ParsedMessageIDs a
-            INNER JOIN [{databaseOwner}].[{objectQualifier}Message] d ON (d.MessageID = a.MessageID)
-END
 GO
 
 CREATE procedure [{databaseOwner}].[{objectQualifier}user_thankfromcount]
@@ -11846,7 +12015,7 @@ end
 GO
 
 
-#IFSRVVER>8#create procedure [{databaseOwner}].[{objectQualifier}db_handle_computedcolumns]( @SetOnDisk bit )  
+create procedure [{databaseOwner}].[{objectQualifier}db_handle_computedcolumns]( @SetOnDisk bit )  
 as
 begin
     declare @tmpC nvarchar(255)
@@ -12163,7 +12332,7 @@ GO
 
 CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}topic_imagesave](
     @TopicID 	        INT,
-    @ImageURL	        VARCHAR(255),
+    @ImageURL	        NVARCHAR(255),
     @Stream		    VARBINARY(MAX),
     @TopicImageType	VARCHAR(128)
  ) 

@@ -422,6 +422,38 @@ namespace YAF.Classes
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Allow personal forums direct in Categories.
+        /// </summary>
+        public bool AllowPersonalForumsInCategories
+        {
+            get
+            {
+                return this._regBoard.GetValue("AllowPersonalForumsInCategories", true);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("AllowPersonalForumsInCategories", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Allow personal forums as subforums.
+        /// </summary>
+        public bool AllowPersonalForumsAsSubForums
+        {
+            get
+            {
+                return this._regBoard.GetValue("AllowPersonalForumsAsSubForums", true);
+            }
+
+            set
+            {
+                this._regBoard.SetValue("AllowPersonalForumsAsSubForums", value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets ShowTopicsDefault.
         /// </summary>
         public int ShowTopicsDefault
@@ -1816,6 +1848,44 @@ namespace YAF.Classes
             set
             {
                 this._reg.SetValue("ShoutboxShowMessageCount", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default state of the ShoutBox.
+        /// </summary>
+        /// <value>
+        /// The default state of the ShoutBox.
+        /// </value>
+        public int ShoutboxDefaultState
+        {
+            get
+            {
+                return this._reg.GetValue("ShoutboxDefaultState", (int)CollapsiblePanelState.Collapsed);
+            }
+
+            set
+            {
+                this._reg.SetValue("ShoutboxDefaultState", value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the ShoutBox view permissions.
+        /// </summary>
+        /// <value>
+        /// The ShoutBox view permissions.
+        /// </value>
+        public int ShoutboxViewPermissions
+        {
+            get
+            {
+                return this._reg.GetValue("ShoutboxViewPermission", (int)ViewPermissions.RegisteredUsers);
+            }
+
+            set
+            {
+                this._reg.SetValue("ShoutboxViewPermission", value);
             }
         }
 

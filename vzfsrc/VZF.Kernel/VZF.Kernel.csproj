@@ -42,7 +42,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Web" />
@@ -52,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentModule.cs" />
     <Compile Include="DsProtocols.cs" />
     <Compile Include="Dynatree.cs" />
     <Compile Include="DsAccountManagement.cs" />

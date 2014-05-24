@@ -151,7 +151,7 @@ namespace YAF.Pages
             }
 
             // A new group case
-            if (PageContext.PersonalGroupsNumber >= PageContext.UsrPersonalGroups && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("gr") == null)
+            if (PageContext.PersonalGroupsNumber >= PageContext.UsrPersonalGroups && this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i") == null)
             {
                 YafBuildLink.AccessDenied();
             }

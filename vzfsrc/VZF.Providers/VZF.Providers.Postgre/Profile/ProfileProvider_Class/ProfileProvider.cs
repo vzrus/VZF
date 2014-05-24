@@ -28,6 +28,8 @@ namespace YAF.Providers.Profile
     using System.Data;
     using System.Web.Profile;
     using VZF.Data.Common;
+    using VZF.Data.Postgre.Mappers;
+
     using YAF.Core;
     using YAF.Providers.Utils;
     using YAF.Types.Interfaces;
@@ -220,7 +222,7 @@ namespace YAF.Providers.Profile
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it...
-                    Db.__AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
+                    Db.__AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType.ToString(), column.Size);
                 }
             }
 
@@ -251,6 +253,7 @@ namespace YAF.Providers.Profile
                 int size;
 
                 // parse custom provider data...
+
                 this.GetDbTypeAndSizeFromString(value.Property.Attributes ["CustomProviderData"].ToString(), out dbType, out size );
 
                 if (dbType == DbType.String && size == -1)
@@ -271,7 +274,7 @@ namespace YAF.Providers.Profile
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
                     // if not, create it...
-                    Db.__AddProfileColumn( ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
+                    Db.__AddProfileColumn( ConnectionStringName, column.Settings.Name, column.DataType.ToString(), column.Size);
                 }
             }
 
@@ -310,26 +313,10 @@ namespace YAF.Providers.Profile
             string[] chunk = providerData.Split(new[] { ';' });
         
             // first item is the column name...
-            string columnName = chunk[0];
-
-            // vzrus addon convert values from mssql types...
-            if (chunk[1].IndexOf("varchar", StringComparison.Ordinal) >= 0)
-            {
-                chunk[1] = "String";
-            }
-
-            if (chunk[1].IndexOf("int", StringComparison.Ordinal) >= 0)
-            {
-                chunk[1] = "Int32";
-            }
-
-            if (chunk[1].IndexOf("DateTime", StringComparison.Ordinal) >= 0)
-            {
-                chunk[1] = "DateTime";
-            }
-
+            string paramName = DataTypeMappers.FromDbValueMap(chunk[1]);
+           
             // get the datatype and ignore case...
-            dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
+            dbType = (DbType)Enum.Parse(typeof(DbType), paramName, true);
 
             if (chunk.Length > 2)
             {

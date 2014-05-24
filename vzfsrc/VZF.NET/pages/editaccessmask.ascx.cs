@@ -113,13 +113,13 @@ namespace YAF.pages
                 }
 
                 DataTable dt = CommonDb.accessmask_list(
-                    PageContext.PageModuleID,
-                    PageContext.PageBoardID,
+                    this.PageContext.PageModuleID,
+                    this.PageContext.PageBoardID,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("i").ToType<int>(),
                     0,
                     this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("u").ToType<int>(),
                     true,
-                    false);
+                    false, 0, 1000000);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                 }
@@ -197,7 +197,8 @@ namespace YAF.pages
             CommonDb.activeaccess_reset(PageContext.PageModuleID);
 
             // number of current masks changed
-            this.Get<IDataCache>().Remove(Constants.Cache.ActiveUserLazyData);
+            // Clearing cache with old permissions data...
+            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(string.Empty)));
 
             // clear cache
             this.Get<IDataCache>().Remove(Constants.Cache.ForumModerators);
@@ -217,7 +218,7 @@ namespace YAF.pages
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false))
+                    var dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: true, isAdminMask: false, pageIndex: 0, pageSize: 1000000))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

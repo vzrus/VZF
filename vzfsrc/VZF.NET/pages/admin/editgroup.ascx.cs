@@ -70,6 +70,7 @@ namespace YAF.Pages.Admin
 
                 // list all access masks as data source
                 c.DataSource = this.AccessMasksList;
+
                 // set value and text field names
                 c.DataValueField = "AccessMaskID";
                 c.DataTextField = "Name";
@@ -154,7 +155,7 @@ namespace YAF.Pages.Admin
 
             // get data about edited role
             using (
-                DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i")))
+                DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, this.Request.QueryString.GetFirstOrDefault("i"), 0, 1000000))
             {
                 // get it as row
                 DataRow row = dt.Rows[0];
@@ -302,7 +303,7 @@ namespace YAF.Pages.Admin
             if (roleID != 0)
             {
                 // get the current role name in the DB
-                using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, YafContext.Current.PageBoardID, roleID))
+                using (DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, YafContext.Current.PageBoardID, roleID, 0, 1000000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {
@@ -430,7 +431,7 @@ namespace YAF.Pages.Admin
             {
                 this.AccessList.DataSource = CommonDb.forumaccess_group(PageContext.PageModuleID, this.Request.QueryString.GetFirstOrDefault("i"), PageContext.PageUserID, false);
             }
-            this.AccessMasksList = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true);
+            this.AccessMasksList = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000);
             // bind data to controls
             this.DataBind();
         }

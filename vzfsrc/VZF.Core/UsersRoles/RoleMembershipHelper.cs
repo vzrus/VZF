@@ -254,7 +254,7 @@ namespace YAF.Core
         /// <param name="userName">Name of the user.</param>
         public static void SetupUserRoles(int pageBoardID, [NotNull] string userName)
         {
-            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
+            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, 0, 1000000))
             {
                 foreach (string roleName in from DataRow row in dt.Rows
                                             let roleFlags = new GroupFlags(row["Flags"])
@@ -298,7 +298,7 @@ namespace YAF.Core
         public static void SyncRoles(int pageModuleID,int pageBoardID)
         {
             // get all the groups in YAF DB and create them if they do not exist as a role in membership
-            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value))
+            using (DataTable dt = CommonDb.group_list(YafContext.Current.PageModuleID, pageBoardID, DBNull.Value, 0, 1000000))
             {
                 foreach (var name in from DataRow row in dt.Rows let name = (string)row["Name"] let roleFlags = new GroupFlags(row["Flags"]) where name.IsSet() && !roleFlags.IsGuest && !RoleExists(name) select name)
                 {

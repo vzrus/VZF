@@ -34,6 +34,8 @@ namespace YAF.Providers.Profile
     using System.Text;
     using System.Web.Profile;
 
+    using VZF.Data.MySql.Mappers;
+
     using YAF.Classes;
     using YAF.Core;
     using YAF.Providers.Utils;
@@ -583,7 +585,7 @@ namespace YAF.Providers.Profile
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        MySQLDB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
+                        MySQLDB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType.ToString(), column.Size);
                     }
                 }
 
@@ -606,35 +608,53 @@ namespace YAF.Providers.Profile
                     int size;
 
                     // parse custom provider data...
-                    GetDbTypeAndSizeFromString(value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
+                    this.GetDbTypeAndSizeFromString(value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
 
                     // default the size to 256 if no size is specified
                     if (dbType == DbType.String && size == -1)
                     {
                         size = 256;
                     }
-                    _settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
+
+                   this._settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
                 }
 
                 // sync profile table structure with the MySQLDB...
                 DataTable structure = MySQLDB.Current.GetProfileStructure(ConnectionStringName);
 
                 // verify all the columns are there...
-                foreach (SettingsPropertyColumn column in _settingsColumnsList)
+                foreach (SettingsPropertyColumn column in this._settingsColumnsList)
                 {
                     // see if this column exists
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        MySQLDB.Current.AddProfileColumn(ConnectionStringName,column.Settings.Name, column.DataType, column.Size);
+                        MySQLDB.Current.AddProfileColumn(ConnectionStringName,column.Settings.Name, column.DataType.ToString(), column.Size);
                     }
                 }
 
                 // it's setup now...
-                _propertiesSetup = true;
+                this._propertiesSetup = true;
             }
         }
 
+        /// <summary>
+        /// The get db type and size from string.
+        /// </summary>
+        /// <param name="providerData">
+        /// The provider data.
+        /// </param>
+        /// <param name="dbType">
+        /// The db type.
+        /// </param>
+        /// <param name="size">
+        /// The size.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// </exception>
         private bool GetDbTypeAndSizeFromString(string providerData, out DbType dbType, out int size)
         {
             size = -1;
@@ -650,28 +670,12 @@ namespace YAF.Providers.Profile
 
             // first item is the column name...
             string columnName = chunk[0];
-            // vzrus: here we replace MS SQL data types
-            if (chunk[1].ToLowerInvariant().IndexOf("varchar") >= 0 
-                || chunk[1].ToLowerInvariant().IndexOf("nvarchar") >= 0 
-                || chunk[1].ToLowerInvariant().IndexOf("text") >= 0)
-            { 
-                chunk[1] = "String"; 
-            }
+            string paramName = DataTypeMappers.FromDbValueMap(chunk[1]);
 
-            if (chunk[1].ToLowerInvariant().IndexOf("int") >= 0)
-            { 
-                chunk[1] = "Int32"; 
-            }
-            if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
-            { chunk[1] = "DateTime"; }
-            if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
-            {
-                chunk[1] = "Boolean";
-            }
 
 
             // get the datatype and ignore case...
-            dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
+            dbType = (DbType)Enum.Parse(typeof(DbType), paramName, true);
 
             if (chunk.Length > 2)
             {
@@ -684,9 +688,7 @@ namespace YAF.Providers.Profile
 
             return true;
         }
-
     }	
-    
 }
 
 

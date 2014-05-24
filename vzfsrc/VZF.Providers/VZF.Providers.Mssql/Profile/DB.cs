@@ -26,12 +26,14 @@ namespace YAF.Providers.Profile
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using System.Data;
-    using System.Data.SqlClient;
+    using System.Data;   
     using System.Text;
+
     using VZF.Data.Common;
-    using VZF.Data.DAL; 
+    using VZF.Data.DAL;
+    using VZF.Data.MsSql.Mappers;
     using VZF.Utils;
+
     using YAF.Classes;
     using YAF.Classes.Pattern;
     using YAF.Core;
@@ -86,6 +88,9 @@ namespace YAF.Providers.Profile
     /// <summary>
     /// The add profile column.
     /// </summary>
+    /// <param name="connectionStringName">
+    /// The connection String Name.
+    /// </param>
     /// <param name="name">
     /// The name.
     /// </param>
@@ -95,44 +100,13 @@ namespace YAF.Providers.Profile
     /// <param name="size">
     /// The size.
     /// </param>
-    public void AddProfileColumn(string connectionStringName, [NotNull] string name, DbType columnType, int size)
+    public void AddProfileColumn(string connectionStringName, [NotNull] string name, string type, int size)
     {
-        // get column type...
-        string type = columnType.ToString();
-        if (type.ToLower().Contains("datetime"))
-        { type = "DATETIME"; }
-        if (type.Contains("String"))
-        {
-            if (size > 21844)
-            {
-                type = "NVARCHAR";
-            }
-            else
-            {
-                type = "NVARCHAR";
-            }
-        }
-
-        if (type.Contains("Int32"))
-        { type = "INT"; }
-        if (type.Contains("Boolean"))
-        { type = "BIT"; }
-
-        if (size > 21844)
-        {
-            type += "(MAX)";
-        }
-        else
-        {
-            if (size > 0)
-            {
-                type += "(" + size + ")";
-            }
-        }
+         type = DataTypeMappers.typeToDbValueMap(name, type, size);
 
         using (var sc = new SQLCommand(connectionStringName))
         {
-            string sql = String.Format("ALTER TABLE {0} ADD [{1}] {2} NULL", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), name, type);
+            string sql = string.Format("ALTER TABLE {0} ADD [{1}] {2} NULL", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName), name, type);
             sc.CommandText.AppendQuery(sql);
             sc.ExecuteNonQuery(CommandType.Text, false);
         }
@@ -178,7 +152,7 @@ namespace YAF.Providers.Profile
     {
       using (var sc = new SQLCommand(connectionStringName))
       {
-          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName)); ;
+          sc.Parameters.Add(sc.CreateParameter(DbType.String, "@ApplicationName", appName)); 
           sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserNames", userNames));
 
           sc.CommandText.AppendObjectQuery("prov_profile_deleteprofiles", connectionStringName);
@@ -220,7 +194,7 @@ namespace YAF.Providers.Profile
     
       using (var sc = new SQLCommand(connectionStringName))
       {
-          sc.CommandText.AppendQuery(String.Format(@"SELECT TOP 1 * FROM {0}", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName)));
+          sc.CommandText.AppendQuery(string.Format(@"SELECT TOP 1 * FROM {0}", ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName)));
           return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
       }
     }
@@ -291,26 +265,15 @@ namespace YAF.Providers.Profile
         string[] chunk = providerData.Split(new[] { ';' });
 
         // first item is the column name...
-        string columnName = chunk[0];
-        // vzrus: here we replace MS SQL data types
-        if (chunk[1].ToLowerInvariant().IndexOf("varchar") >= 0 
-            || chunk[1].ToLowerInvariant().IndexOf("text") >= 0)
-        { chunk[1] = "String"; }
-        if (chunk[1].IndexOf("int") >= 0)
-        { chunk[1] = "Int32"; }
-        if (chunk[1].ToLowerInvariant().IndexOf("datetime") >= 0)
-        { chunk[1] = "DateTime"; }
-        if (chunk[1].ToLowerInvariant().IndexOf("bit") >= 0)
-        {
-            chunk[1] = "Boolean";
-        }
+        string paramName = DataTypeMappers.FromDbValueMap(chunk[1]);       
+    
         // get the datatype and ignore case...
-        dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
+        dbType = (DbType)Enum.Parse(typeof(DbType), paramName, true);
 
         if (chunk.Length > 2)
         {
             // handle size...
-            if (!Int32.TryParse(chunk[2], out size))
+            if (!int.TryParse(chunk[2], out size))
             {
                 throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
             }
@@ -318,6 +281,7 @@ namespace YAF.Providers.Profile
 
         return true;
     }
+
     /// <summary>
     /// The get provider user key.
     /// </summary>
@@ -361,62 +325,58 @@ namespace YAF.Providers.Profile
     {
         using (var sc = new SQLCommand(connectionStringName))
         {
-            string table = ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName);  
+            // Build up strings used in the query
+            var columnStr = new StringBuilder();
+            var valueStr = new StringBuilder();
+            var setStr = new StringBuilder();
 
-        StringBuilder sqlCommand = new StringBuilder("IF EXISTS (SELECT 1 FROM ").Append(table);
-        sqlCommand.Append(" WHERE UserId = @UserID) ");
-
-        sc.Parameters.Add(sc.CreateParameter(DbType.String, "UserID", userID.ToString()));
-
-        // Build up strings used in the query
-        var columnStr = new StringBuilder();
-        var valueStr = new StringBuilder();
-        var setStr = new StringBuilder();
-        int count = 0;
-
-        foreach (SettingsPropertyColumn column in settingsColumnsList)
-        {
-          // only write if it's dirty
-          if (values[column.Settings.Name].IsDirty)
-          {
-            columnStr.Append(", ");
-            valueStr.Append(", ");
-            columnStr.Append(column.Settings.Name);
-            string valueParam = "@Value" + count;
-            valueStr.Append(valueParam);
-            sc.Parameters.Add(sc.CreateParameter(column.DataType, valueParam, values[column.Settings.Name].PropertyValue));
-
-            if (column.DataType != DbType.DateTime)
+            settingsColumnsList.ForEach((column) =>
             {
-              if (count > 0)
-              {
-                setStr.Append(",");
-              }
+                if (values[column.Settings.Name].IsDirty)
+                {                   
 
-              setStr.Append(column.Settings.Name);
-              setStr.Append("=");
-              setStr.Append(valueParam);
-            }
+                    var nameParam = values[column.Settings.Name].Name;
+                    var valParam = values[column.Settings.Name].PropertyValue;                   
 
-            count++;
-          }
+                    nameParam = "@" + nameParam;
+                  
+                    sc.Parameters.Add(sc.CreateParameter(column.DataType, nameParam, valParam));
+                    
+                    valueStr.Append(nameParam);
+                    valueStr.Append(",");
+
+                    columnStr.Append(column.Settings.Name);
+                    columnStr.Append(",");                    
+
+                    setStr.Append(column.Settings.Name);
+                    setStr.Append("=");
+                    setStr.Append(nameParam);
+                    setStr.Append(",");
+                }
+            });
+
+            columnStr.Append("LastUpdatedDate ");
+            valueStr.Append("@LastUpdatedDate");
+            setStr.Append("LastUpdatedDate=@LastUpdatedDate");
+            sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@LastUpdatedDate", DateTime.UtcNow));
+
+            sc.Parameters.Add(sc.CreateParameter(DbType.String, "@UserID", userID));
+
+            string table = ObjectName.GetVzfObjectNameFromConnectionString("prov_Profile", connectionStringName);
+
+            StringBuilder sqlCommand = new StringBuilder("IF EXISTS (SELECT top 1 1 FROM ").Append(table);
+            sqlCommand.Append(" WHERE UserID = @UserID) ");
+
+            sqlCommand.Append("BEGIN UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString().Trim(','));
+            sqlCommand.Append(" WHERE UserID = @UserID");
+
+            sqlCommand.Append(" END ELSE BEGIN INSERT ").Append(table).Append(" (UserID,").Append(columnStr.ToString().Trim(','));
+            sqlCommand.Append(") VALUES (@UserID,").Append(valueStr.ToString().Trim(',')).Append(
+              ") END");
+
+            sc.CommandText.AppendQuery(sqlCommand.ToString());
+            sc.ExecuteNonQuery(CommandType.Text, false);
         }
-
-        columnStr.Append(",LastUpdatedDate ");
-        valueStr.Append(",@LastUpdatedDate");
-        setStr.Append(",LastUpdatedDate=@LastUpdatedDate");
-        sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "@LastUpdatedDate", DateTime.UtcNow));   
-
-        sqlCommand.Append("BEGIN UPDATE ").Append(table).Append(" SET ").Append(setStr.ToString());
-        sqlCommand.Append(" WHERE UserId = '").Append(userID.ToString()).Append("'");
-
-        sqlCommand.Append(" END ELSE BEGIN INSERT ").Append(table).Append(" (UserId").Append(columnStr.ToString());
-        sqlCommand.Append(") VALUES ('").Append(userID.ToString()).Append("'").Append(valueStr.ToString()).Append(
-          ") END");
-
-        sc.CommandText.AppendQuery(sqlCommand.ToString());
-        sc.ExecuteNonQuery(CommandType.Text, false);
-      }
     }
 
     #endregion

@@ -39,7 +39,7 @@ CREATE TABLE [{databaseOwner}].[{objectQualifier}Thanks](
 	[ThanksDate] [smalldatetime] NOT NULL
 	constraint [PK_{objectQualifier}Thanks] primary key(ThanksID)
 	)
-go
+GO
 
 /* YAF Buddy Table */
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}Buddy]') and type in (N'U'))
@@ -51,7 +51,7 @@ CREATE TABLE [{databaseOwner}].[{objectQualifier}Buddy](
 	[Requested] [datetime] NOT NULL
 	constraint [PK_{objectQualifier}Buddy] primary key(ID)
 	)
-go
+GO
 
 /* YAF FavoriteTopic Table */
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}FavoriteTopic]') and type in (N'U'))
@@ -103,7 +103,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		[Platform]		nvarchar (50) NULL,
 		Flags           int NULL
 	)
-go
+GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}ActiveAccess]') and type in (N'U'))
 	create table [{databaseOwner}].[{objectQualifier}ActiveAccess](		
@@ -128,14 +128,14 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		DownloadAccess		bit NOT NULL,
 		UserForumAccess     bit NOT NULL		
 	)
-go
+GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}AdminPageUserAccess]') and type in (N'U'))
 	create table [{databaseOwner}].[{objectQualifier}AdminPageUserAccess](
 		UserID		    int NOT NULL,		
 		PageName		nvarchar (128) NOT NULL
 	)
-go
+GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}EventLogGroupAccess]') and type in (N'U'))
 	create table [{databaseOwner}].[{objectQualifier}EventLogGroupAccess](
@@ -144,7 +144,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		EventTypeName	nvarchar (128) NOT NULL,
 		DeleteAccess    bit NOT NULL constraint [DF_{objectQualifier}EventLogGroupAccess_DeleteAccess] default (0)
 	)
-go
+GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}BannedIP]') and type in (N'U'))
 	create table [{databaseOwner}].[{objectQualifier}BannedIP](
@@ -155,7 +155,7 @@ if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 		Reason          nvarchar (128) NULL,
 		UserID			int null
 	)
-go
+GO
 
 if not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}Category]') and type in (N'U'))
 	create table [{databaseOwner}].[{objectQualifier}Category](
@@ -941,7 +941,7 @@ GO
 
 if exists(select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}User]') and name=N'Signature' and system_type_id <> 99)
 	alter table [{databaseOwner}].[{objectQualifier}User] alter column Signature ntext null
-go
+GO
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}User]') and name=N'Flags')
 begin
@@ -1101,7 +1101,7 @@ GO
 
 if exists(select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}User]') and name=N'IP' and precision < 39)
 	alter table [{databaseOwner}].[{objectQualifier}User] alter column [IP] varchar(39) null
-go
+GO
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}User]') and name=N'Name' and precision < 255)
 begin
@@ -1880,7 +1880,7 @@ GO
 -- the dependency should be dropped first
 if exists (select top 1 1 from  sys.objects where name=N'IX_{objectQualifier}MessageHistory' and parent_object_id=object_id(N'[{databaseOwner}].[{objectQualifier}MessageHistory]'))
 	alter table [{databaseOwner}].[{objectQualifier}MessageHistory] drop constraint [IX_{objectQualifier}MessageHistory] 
-go
+GO
 if exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}MessageHistory]') and name=N'Edited' and is_nullable=1)
 begin		
 		grant update on [{databaseOwner}].[{objectQualifier}MessageHistory] to public
@@ -2090,7 +2090,7 @@ GO
 -- should drop it else error
 if exists(select top 1 1 from sys.objects where name=N'FK_{objectQualifier}Topic_{objectQualifier}Poll' and parent_object_id=object_id(N'[{databaseOwner}].[{objectQualifier}Topic]') and type in (N'F'))
 	alter table [{databaseOwner}].[{objectQualifier}Topic] drop constraint [FK_{objectQualifier}Topic_{objectQualifier}Poll] 
-go 
+GO 
 
 if not exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}Poll]') and name=N'Flags')
 begin
@@ -2223,7 +2223,7 @@ GO
 -- drop the old contrained just in case
 if exists (select top 1 1 from  sys.indexes where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}ActiveAccess]') and name=N'IX_{objectQualifier}ActiveAccess')
 	alter table [{databaseOwner}].[{objectQualifier}ActiveAccess] drop constraint [IX_{objectQualifier}ActiveAccess]
-go
+GO
 
 if exists(select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}ActiveAccess]') and name=N'ForumID' and is_nullable=1)
 	alter table [{databaseOwner}].[{objectQualifier}ActiveAccess] alter column ForumID int not null
@@ -2393,11 +2393,11 @@ GO
 
 if exists(select top 1 1 from sys.objects where name=N'PK_{objectQualifier}ForumReadTracking')
 	alter table [{databaseOwner}].[{objectQualifier}ForumReadTracking] drop constraint [PK_{objectQualifier}ForumReadTracking] 
-go 
+GO 
 
 if exists(select top 1 1 from sys.objects where name=N'PK_{objectQualifier}TopicReadTracking')
 	alter table [{databaseOwner}].[{objectQualifier}TopicReadTracking] drop constraint [PK_{objectQualifier}TopicReadTracking] 
-go 
+GO 
 
 if exists (select top 1 1 from sys.columns where object_id = object_id(N'[{databaseOwner}].[{objectQualifier}ForumReadTracking]') and name=N'TrackingID')
 begin

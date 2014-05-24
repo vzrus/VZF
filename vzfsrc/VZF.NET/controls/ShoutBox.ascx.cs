@@ -23,15 +23,13 @@ namespace VZF.Controls
     using System.Web.UI;
 
     using VZF.Data.Common;
+    using VZF.Utils;
 
     using YAF.Classes;
-    
     using YAF.Core;
     using YAF.Types;
     using YAF.Types.Constants;
-    
     using YAF.Types.Interfaces;
-    using VZF.Utils;
 
     #endregion
 
@@ -105,6 +103,7 @@ namespace VZF.Controls
         /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
         protected override void OnPreRender([NotNull] EventArgs e)
         {
+            this.CollapsibleImageShoutBox.DefaultState = (CollapsiblePanelState)this.Get<YafBoardSettings>().ShoutboxDefaultState;
             base.OnPreRender(e);
         }
 
@@ -115,16 +114,19 @@ namespace VZF.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            if (this.PageContext.User != null)
+            if (!this.Get<YafBoardSettings>().ShowShoutbox
+                                         && !this.Get<IPermissions>()
+                                                .Check(this.Get<YafBoardSettings>().ShoutboxViewPermissions))
             {
-                // phShoutText.Visible = true;
-                this.shoutBoxPanel.Visible = true;
+                return;
+            }
 
                 if (this.PageContext.IsAdmin)
                 {
                     this.btnClear.Visible = true;
                 }
-            }
+                this.shoutBoxPanel.Visible = true;
+            
 
             YafContext.Current.PageElements.RegisterJsResourceInclude("yafPageMethodjs", "js/jquery.pagemethod.js");
 
@@ -154,7 +156,8 @@ namespace VZF.Controls
 
             if (username != null && this.messageTextBox.Text != string.Empty)
             {
-                CommonDb.shoutbox_savemessage(PageContext.PageModuleID,
+                CommonDb.shoutbox_savemessage(
+                    PageContext.PageModuleID,
                     this.PageContext.PageBoardID,
                     this.messageTextBox.Text,
                     username,

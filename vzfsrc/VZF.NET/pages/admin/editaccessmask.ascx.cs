@@ -184,7 +184,7 @@ namespace YAF.Pages.Admin
             {
                 // load access mask
                 using (
-                    var dt = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true))
+                    var dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: this.Request.QueryString.GetFirstOrDefault("i"), excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000))
                 {
                     // we need just one
                     DataRow row = dt.Rows[0];

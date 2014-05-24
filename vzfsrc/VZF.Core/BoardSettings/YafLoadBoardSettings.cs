@@ -151,12 +151,12 @@ namespace YAF.Core
     #endregion
   }
 
+  [Serializable]
   public class EmptyBoardSettingException : Exception
   {
     public EmptyBoardSettingException(string message)
       : base(message)
     {
-      
     }
   }
 }

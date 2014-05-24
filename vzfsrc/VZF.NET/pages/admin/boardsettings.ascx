@@ -77,6 +77,24 @@
                 <asp:CheckBox ID="AllowThemedLogo" runat="server"></asp:CheckBox>
             </td>
         </tr>
+         <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel5" runat="server" LocalizedTag="PERSONALFORUMSINCATEGORIES"
+                    LocalizedPage="ADMIN_BOARDSETTINGS" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="PersonalForumsInCategories" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
+         <tr>
+            <td class="postheader">
+                <VZF:HelpLabel ID="HelpLabel6" runat="server" LocalizedTag="PERSONALFORUMSASSUBFORUMS"
+                    LocalizedPage="ADMIN_BOARDSETTINGS" />
+            </td>
+            <td class="post">
+                <asp:CheckBox ID="PersonalForumsAsSubForums" runat="server"></asp:CheckBox>
+            </td>
+        </tr>
         <tr>
             <td class="postheader">
                 <VZF:HelpLabel ID="LocalizedLabel8" runat="server" LocalizedTag="BOARD_JQ_THEME"

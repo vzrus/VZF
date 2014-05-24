@@ -24,9 +24,11 @@ namespace VZF.Data.MsSql.Search
     using System.Diagnostics;
     using System.Linq;
 
+    using VZF.Utils;
+
+    using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Constants;
-    using VZF.Utils;
 
     #endregion
 
@@ -44,6 +46,9 @@ namespace VZF.Data.MsSql.Search
     /// <summary>
     /// The build search sql.
     /// </summary>
+    /// <param name="mid">
+    /// The mid.
+    /// </param>
     /// <param name="toSearchWhat">
     /// The to search what.
     /// </param>
@@ -71,13 +76,17 @@ namespace VZF.Data.MsSql.Search
     /// <param name="useFullText">
     /// The use full text.
     /// </param>
-    /// <param name="forumIds">
-    /// The forum ids.
+    /// <param name="ids">
+    /// The ids.
+    /// </param>
+    /// <param name="forumIdToStartAt">
+    /// The forum Id To Start At.
     /// </param>
     /// <returns>
     /// The build search sql.
     /// </returns>
     public string BuildSearchSql(
+      int? mid,
       [NotNull] string toSearchWhat, 
       [NotNull] string toSearchFromWho, 
       SearchWhatFlags searchFromWhoMethod, 
@@ -87,12 +96,12 @@ namespace VZF.Data.MsSql.Search
       int boardId, 
       int maxResults, 
       bool useFullText, 
-      [NotNull] IEnumerable<int> forumIds)
+      string ids,
+      [NotNull] IEnumerable<int> forumIdToStartAt)
     {
       CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
       CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
-      CodeContracts.ArgumentNotNull(forumIds, "forumIds");
-
+      
       var builtStatements = new List<string>();
 
       if (maxResults > 0)
@@ -108,9 +117,9 @@ namespace VZF.Data.MsSql.Search
         "\r\nwhere x.ReadAccess<>0 AND x.UserID={0} AND c.IsApproved = 1 AND a.TopicMovedID IS NULL AND a.IsDeleted = 0 AND c.IsDeleted = 0"
           .FormatWith(userID);
 
-      if (forumIds.Any())
+      if (ids.IsSet())
       {
-        searchSql += " AND a.ForumID IN ({0})".FormatWith(forumIds.ToDelimitedString(","));
+        searchSql += " AND a.ForumID IN ({0})".FormatWith(ids);
       }
 
       if (toSearchFromWho.IsSet())
@@ -144,10 +153,9 @@ namespace VZF.Data.MsSql.Search
       builtStatements.Add("ORDER BY c.Posted DESC");
 
       string builtSql = builtStatements.ToDelimitedString("\r\n");
-
+      builtSql = builtSql.Replace(@"{databaseOwner}", Config.DatabaseOwner).Replace(@"{objectQualifier}", Config.DatabaseObjectQualifier); 
       Debug.WriteLine("Build Sql: [{0}]".FormatWith(builtSql));
-
-      return builtSql;
+      return builtSql; 
     }
 
     #endregion
@@ -183,7 +191,7 @@ namespace VZF.Data.MsSql.Search
       var conditions = new List<SearchCondition>();
       string conditionSql = string.Empty;
 
-      SearchConditionType conditionType = SearchConditionType.AND;
+      var conditionType = SearchConditionType.AND;
 
       if (searchWhatMethod == SearchWhatFlags.AnyWords)
       {
@@ -252,7 +260,7 @@ namespace VZF.Data.MsSql.Search
       var conditions = new List<SearchCondition>();
       string conditionSql = string.Empty;
 
-      SearchConditionType conditionType = SearchConditionType.AND;
+      var conditionType = SearchConditionType.AND;
 
       if (searchFromWhoMethod == SearchWhatFlags.AnyWords)
       {

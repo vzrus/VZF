@@ -73,9 +73,9 @@
       <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
       <Name>VZF.Data.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
-      <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
-      <Name>VZF.Data.Utils</Name>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Firebird\VZF.Data.Firebird.csproj">
+      <Project>{8BA564F6-EDCC-4A07-9CDC-125ABCA8160E}</Project>
+      <Name>VZF.Data.Firebird</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VZF.Types\VZF.Types.csproj">
       <Project>{60FC8775-E129-48E0-B5BA-FE9136F9331F}</Project>

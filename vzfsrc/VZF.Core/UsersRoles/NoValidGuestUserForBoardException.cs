@@ -27,6 +27,7 @@ namespace YAF.Core
   /// <summary>
   /// The no valid guest user for board exception.
   /// </summary>
+  [Serializable]
   public class NoValidGuestUserForBoardException : Exception
   {
     #region Constructors and Destructors

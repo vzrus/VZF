@@ -54,7 +54,8 @@ CREATE TYPE databaseSchema.objectQualifier_accessmask_list_return_type AS
 "IsAdminMask" boolean,
 "CreatedByUserID" integer,
 "CreatedByUserName" varchar,
-"CreatedByUserDisplayName" varchar
+"CreatedByUserDisplayName" varchar,
+"TotalRows" integer
 );
 --GO
 
@@ -591,11 +592,15 @@ CREATE TYPE databaseSchema.objectQualifier_group_list_return_type AS
 "UsrSigHTMLTags"  varchar(255),
 "UsrAlbums" integer,
 "UsrAlbumImages" integer,
+"IsAdminGroup" boolean,
 "IsUserGroup" boolean,
-"CreatedByUserID" integer,
 "UsrPersonalMasks" integer,
 "UsrPersonalGroups" integer,
-"UsrPersonalForums" integer
+"UsrPersonalForums" integer,
+"CreatedByUserID" integer,
+"CreatedByUserName" varchar(255),
+"CreatedByUserDisplayName" varchar(255),
+"TotalRows" integer
 );
 --GO
 

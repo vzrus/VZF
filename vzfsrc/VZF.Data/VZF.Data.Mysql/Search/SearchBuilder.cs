@@ -16,285 +16,417 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-namespace VZF.Data.Mysql.Search
+namespace VZF.Data.MySql.Search
 {
-  #region Using
+    using VZF.Data.DAL;
+
+    #region Using
 
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
 
     using YAF.Types;
+    using YAF.Utils;
     using YAF.Types.Constants;
+
     using VZF.Utils;
 
-    #endregion
-
-  #region Enums
-
-  #endregion
-
-  /// <summary>
-  /// The search builder.
-  /// </summary>
-  public class SearchBuilder
-  {
-    #region Public Methods
-
-    /// <summary>
-    /// The build search sql.
-    /// </summary>
-    /// <param name="toSearchWhat">
-    /// The to search what.
-    /// </param>
-    /// <param name="toSearchFromWho">
-    /// The to search from who.
-    /// </param>
-    /// <param name="searchFromWhoMethod">
-    /// The search from who method.
-    /// </param>
-    /// <param name="searchWhatMethod">
-    /// The search what method.
-    /// </param>
-    /// <param name="userID">
-    /// The user id.
-    /// </param>
-    /// <param name="searchDisplayName">
-    /// The search display name.
-    /// </param>
-    /// <param name="boardId">
-    /// The board id.
-    /// </param>
-    /// <param name="maxResults">
-    /// The max results.
-    /// </param>
-    /// <param name="useFullText">
-    /// The use full text.
-    /// </param>
-    /// <param name="forumIds">
-    /// The forum ids.
-    /// </param>
-    /// <returns>
-    /// The build search sql.
-    /// </returns>
-    public string BuildSearchSql(
-      [NotNull] string toSearchWhat, 
-      [NotNull] string toSearchFromWho, 
-      SearchWhatFlags searchFromWhoMethod, 
-      SearchWhatFlags searchWhatMethod, 
-      int userID, 
-      bool searchDisplayName, 
-      int boardId, 
-      int maxResults, 
-      bool useFullText, 
-      [NotNull] IEnumerable<int> forumIds)
-    {
-      CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
-      CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
-      CodeContracts.ArgumentNotNull(forumIds, "forumIds");
-
-      var builtStatements = new List<string>();
-
-      if (maxResults > 0)
-      {
-        builtStatements.Add("SET ROWCOUNT {0};".FormatWith(maxResults));
-      }
-
-      string searchSql =
-        "SELECT a.ForumID, a.TopicID, a.Topic, b.UserID, IsNull(c.Username, b.Name) as Name, c.MessageID, c.Posted, [Message] = '', c.Flags ";
-      searchSql +=
-        "\r\nfrom {databaseOwner}.{objectQualifier}topic a left join {databaseOwner}.{objectQualifier}message c on a.TopicID = c.TopicID left join {databaseOwner}.{objectQualifier}user b on c.UserID = b.UserID join {databaseOwner}.{objectQualifier}vaccess x on x.ForumID=a.ForumID ";
-      searchSql +=
-        "\r\nwhere x.ReadAccess<>0 AND x.UserID={0} AND c.IsApproved = 1 AND a.TopicMovedID IS NULL AND a.IsDeleted = 0 AND c.IsDeleted = 0"
-          .FormatWith(userID);
-
-      if (forumIds.Any())
-      {
-        searchSql += " AND a.ForumID IN ({0})".FormatWith(forumIds.ToDelimitedString(","));
-      }
-
-      if (toSearchFromWho.IsSet())
-      {
-        searchSql +=
-          "\r\nAND ({0})".FormatWith(
-            this.BuildWhoConditions(toSearchFromWho, searchFromWhoMethod, searchDisplayName).BuildSql(true));
-      }
-
-      if (toSearchWhat.IsSet())
-      {
-        builtStatements.Add(searchSql);
-
-        builtStatements.Add(
-          "AND ({0})".FormatWith(
-            this.BuildWhatConditions(toSearchWhat, searchWhatMethod, "c.Message", useFullText).BuildSql(true)));
-
-        builtStatements.Add("UNION");
-
-        builtStatements.Add(searchSql);
-
-        builtStatements.Add(
-          "AND ({0})".FormatWith(
-            this.BuildWhatConditions(toSearchWhat, searchWhatMethod, "a.Topic", useFullText).BuildSql(true)));
-      }
-      else
-      {
-        builtStatements.Add(searchSql);
-      }
-
-      builtStatements.Add("ORDER BY c.Posted DESC");
-
-      string builtSql = builtStatements.ToDelimitedString("\r\n");
-
-      Debug.WriteLine("Build Sql: [{0}]".FormatWith(builtSql));
-
-      return builtSql;
-    }
+    using YAF.Classes;
 
     #endregion
 
-    #region Methods
+    #region Enums
+
+    #endregion
 
     /// <summary>
-    /// The build search who conditions.
+    /// The search builder.
     /// </summary>
-    /// <param name="toSearchWhat">
-    /// The to Search What.
-    /// </param>
-    /// <param name="searchWhatMethod">
-    /// The search What Method.
-    /// </param>
-    /// <param name="dbField">
-    /// The db Field.
-    /// </param>
-    /// <param name="useFullText">
-    /// The use Full Text.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    [NotNull]
-    protected IEnumerable<SearchCondition> BuildWhatConditions(
-      [NotNull] string toSearchWhat, SearchWhatFlags searchWhatMethod, [NotNull] string dbField, bool useFullText)
+    public class SearchBuilder
     {
-      CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
-      CodeContracts.ArgumentNotNull(dbField, "dbField");
+        #region Public Methods
 
-      toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
+        /// <summary>
+        /// The build search sql.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="toSearchWhat">
+        /// The to search what.
+        /// </param>
+        /// <param name="toSearchFromWho">
+        /// The to search from who.
+        /// </param>
+        /// <param name="searchFromWhoMethod">
+        /// The search from who method.
+        /// </param>
+        /// <param name="searchWhatMethod">
+        /// The search what method.
+        /// </param>
+        /// <param name="pageUserId">
+        /// The page User Id.
+        /// </param>
+        /// <param name="searchDisplayName">
+        /// The search display name.
+        /// </param>
+        /// <param name="boardId">
+        /// The board id.
+        /// </param>
+        /// <param name="maxResults">
+        /// The max results.
+        /// </param>
+        /// <param name="useFullText">
+        /// The use full text.
+        /// </param>
+        /// <param name="ids">
+        /// The ids.
+        /// </param>
+        /// <param name="forumIdToStartAt">
+        /// The forum Id To Start At.
+        /// </param>
+        /// <returns>
+        /// The build search sql.
+        /// </returns>
+        public string BuildSearchSql(
+            int? mid,
+            [NotNull] string toSearchWhat,
+            [NotNull] string toSearchFromWho,
+            SearchWhatFlags searchFromWhoMethod,
+            SearchWhatFlags searchWhatMethod,
+            int pageUserId,
+            bool searchDisplayName,
+            int boardId,
+            int maxResults,
+            bool useFullText,
+            string ids,
+            [NotNull] IEnumerable<int> forumIdToStartAt)
+        {
+            CodeContracts.ArgumentNotNull(toSearchWhat, "toSearchWhat");
+            CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
 
-      var conditions = new List<SearchCondition>();
-      string conditionSql = string.Empty;
+            string limitString = string.Empty;
+            string orderString = string.Empty;
 
-      SearchConditionType conditionType = SearchConditionType.AND;
+            // fix quotes for SQL insertion...
+            toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
+            toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
 
-      if (searchWhatMethod == SearchWhatFlags.AnyWords)
-      {
-        conditionType = SearchConditionType.OR;
-      }
+            bool bFirst = true;
 
-      var wordList = new List<string> { toSearchWhat };
-
-      if (searchWhatMethod == SearchWhatFlags.AllWords || searchWhatMethod == SearchWhatFlags.AnyWords)
-      {
-        wordList =
-          toSearchWhat.Replace(@"""", string.Empty).Split(' ').Where(x => x.IsSet()).Select(x => x.Trim()).ToList();
-      }
-
-      if (useFullText)
-      {
-        var list = new List<SearchCondition>();
-
-        list.AddRange(
-          wordList.Select(
-            word => new SearchCondition { Condition = @"""{0}""".FormatWith(word), ConditionType = conditionType }));
-
-        conditions.Add(
-          new SearchCondition
+            // if ( ToSearch.Length == 0 )
+            //	return new DataTable();
+            if (toSearchWhat == "*")
             {
-              Condition = "CONTAINS ({1}, N' {0} ')".FormatWith(list.BuildSql(false), dbField), 
-              ConditionType = conditionType
-            });
-      }
-      else
-      {
-        conditions.AddRange(
-          wordList.Select(
-            word =>
-            new SearchCondition
-              {
-                 Condition = "{1} LIKE N'%{0}%'".FormatWith(word, dbField), ConditionType = conditionType 
-              }));
-      }
+                toSearchWhat = string.Empty;
+            }
+            string forumIDs = ids;
 
-      return conditions;
-    }
+            // fix quotes for SQL insertion...
+            toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
+            toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
 
-    /// <summary>
-    /// The build search who conditions.
-    /// </summary>
-    /// <param name="toSearchFromWho">
-    /// The to search from who.
-    /// </param>
-    /// <param name="searchFromWhoMethod">
-    /// The search from who method.
-    /// </param>
-    /// <param name="searchDisplayName">
-    /// The search display name.
-    /// </param>
-    /// <returns>
-    /// </returns>
-    [NotNull]
-    protected IEnumerable<SearchCondition> BuildWhoConditions(
-      [NotNull] string toSearchFromWho, SearchWhatFlags searchFromWhoMethod, bool searchDisplayName)
-    {
-      CodeContracts.ArgumentNotNull(toSearchFromWho, "toSearchFromWho");
+            string searchSql = (maxResults == 0) ? "SELECT" : "SELECT DISTINCTROW ";
 
-      toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
+            searchSql +=
+                " a.ForumID, a.TopicID, a.Topic, b.UserID, IFNULL(c.Username, b.Name) as Name, c.MessageID, c.Posted, '' AS Message, c.Flags";
+            searchSql += " from " + ObjectName.GetVzfObjectName("Topic", mid) + " a left join "
+                         + ObjectName.GetVzfObjectName("Message", mid) + " c on a.TopicID = c.TopicID left join "
+                         + ObjectName.GetVzfObjectName("User", mid) + " b on c.UserID = b.UserID join "
+                         + ObjectName.GetVzfObjectName("vaccess", mid) + " x ON x.ForumID=a.ForumID ";
+            searchSql += string.Format(@"WHERE x.ReadAccess<>0 AND x.UserID={0} ", pageUserId);
 
-      var conditions = new List<SearchCondition>();
-      string conditionSql = string.Empty;
+            searchSql +=
+                " and IFNULL(CAST(SIGN(c.Flags & 16) AS SIGNED),0) = 1 AND a.TopicMovedID IS NULL AND IFNULL(CAST(SIGN(a.Flags & 8) AS SIGNED),0) = 0 AND IFNULL(CAST(SIGN(c.Flags & 8) AS SIGNED),0) = 0 ";
+            orderString += " ORDER BY a.ForumID ";
+            limitString += " LIMIT @i_Limit ";
+            string[] words;
 
-      SearchConditionType conditionType = SearchConditionType.AND;
+            if (!string.IsNullOrEmpty(toSearchFromWho))
+            {
+                searchSql += "AND (";
 
-      if (searchFromWhoMethod == SearchWhatFlags.AnyWords)
-      {
-        conditionType = SearchConditionType.OR;
-      }
+                // generate user search sql...
+                int userId;
+                switch (searchFromWhoMethod)
+                {
+                    case SearchWhatFlags.AllWords:
+                        words = toSearchFromWho.Split(' ');
+                        foreach (string word in words)
+                        {
+                            if (!bFirst)
+                            {
+                                searchSql += " AND ";
+                            }
+                            else
+                            {
+                                bFirst = false;
+                            }
 
-      var wordList = new List<string> { toSearchFromWho };
+                            if (int.TryParse(word, out userId))
+                            {
+                                searchSql +=
+                                    string.Format(
+                                        " ((c.Username IS NULL AND b.Name LIKE CONVERT('{0}' USING {1})) OR (c.Username LIKE CONVERT('{0}' USING {1})))",
+                                        word,
+                                        !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                            ? Config.DatabaseEncoding
+                                            : "utf8");
+                            }
+                            else
+                            {
+                                if (searchDisplayName)
+                                {
+                                    searchSql +=
+                                        string.Format(
+                                            " ((c.Username IS NULL AND b.DisplayName LIKE CONVERT('{0}' USING {1})) OR (c.Username LIKE CONVERT('{0}' USING {1})))",
+                                            word,
+                                            !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                                ? Config.DatabaseEncoding
+                                                : "utf8");
+                                }
+                                else
+                                {
+                                    searchSql +=
+                                        string.Format(
+                                            " ((c.Username IS NULL AND b.Name LIKE CONVERT('{0}' USING {1})) OR (c.Username LIKE CONVERT('{0}' USING {1})))",
+                                            word,
+                                            !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                                ? Config.DatabaseEncoding
+                                                : "utf8");
+                                }
+                            }
+                        }
+                        break;
+                    case SearchWhatFlags.AnyWords:
+                        words = toSearchFromWho.Split(' ');
+                        foreach (string word in words)
+                        {
+                            if (!bFirst)
+                            {
+                                searchSql += " OR ";
+                            }
+                            else
+                            {
+                                bFirst = false;
+                            }
 
-      if (searchFromWhoMethod == SearchWhatFlags.AllWords || searchFromWhoMethod == SearchWhatFlags.AnyWords)
-      {
-        wordList =
-          toSearchFromWho.Replace(@"""", string.Empty).Split(' ').Where(x => x.IsSet()).Select(x => x.Trim()).ToList();
-      }
+                            if (int.TryParse(word, out userId))
+                            {
+                                searchSql += string.Format(" (c.UserID IN ({0}))", userId);
+                            }
+                            else
+                            {
+                                if (searchDisplayName)
+                                {
+                                    searchSql +=
+                                        string.Format(
+                                            " ((c.Username IS NULL AND b.DisplayName LIKE CONVERT('{0}' USING {1})) OR (c.Username LIKE CONVERT('{0}' USING {1})))",
+                                            word,
+                                            !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                                ? Config.DatabaseEncoding
+                                                : "utf8");
+                                }
+                                else
+                                {
+                                    searchSql +=
+                                        string.Format(
+                                            " ((c.Username IS NULL AND b.Name LIKE CONVERT('{0}' USING {1})) OR (c.Username LIKE CONVERT('{0}' USING {1})))",
+                                            word,
+                                            !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                                ? Config.DatabaseEncoding
+                                                : "utf8");
+                                }
+                            }
+                        }
 
-      foreach (string word in wordList)
-      {
-        int userId;
+                        break;
+                    case SearchWhatFlags.ExactMatch:
+                        if (int.TryParse(toSearchFromWho, out userId))
+                        {
+                            searchSql += string.Format(" (c.UserID IN ({0}))", userId);
+                        }
+                        else
+                        {
+                            if (searchDisplayName)
+                            {
+                                searchSql +=
+                                    string.Format(
+                                        " ((c.Username IS NULL AND b.DisplayName = CONVERT('{0}' USING {1})) OR (c.Username = CONVERT('{0}' USING {1})))",
+                                        toSearchFromWho,
+                                        !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                            ? Config.DatabaseEncoding
+                                            : "utf8");
+                            }
+                            else
+                            {
+                                searchSql +=
+                                    string.Format(
+                                        " ((c.Username IS NULL AND b.Name = CONVERT('{0}' USING {1})) OR (c.Username = CONVERT('{0}' USING {1})))",
+                                        toSearchFromWho,
+                                        !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                            ? Config.DatabaseEncoding
+                                            : "utf8");
+                            }
+                        }
 
-        if (int.TryParse(word, out userId))
-        {
-          conditionSql = "c.UserID IN ({0})".FormatWith(userId);
+                        break;
+                }
+
+                searchSql += ") ";
+            }
+
+
+            if (!string.IsNullOrEmpty(toSearchWhat))
+            {
+                searchSql += "AND (";
+                bFirst = true;
+
+                // generate message and topic search sql...
+                switch (searchWhatMethod)
+                {
+                    case SearchWhatFlags.AllWords:
+                        words = toSearchWhat.Split(' ');
+                        if (useFullText)
+                        {
+                            string ftInner = string.Empty;
+
+                            // make the inner FULLTEXT search
+                            foreach (string word in words)
+                            {
+                                if (!bFirst)
+                                {
+                                    ftInner += " AND ";
+                                }
+                                else
+                                {
+                                    bFirst = false;
+                                }
+
+                                ftInner += string.Format(@"""{0}""", word);
+                            }
+
+                            // make final string...
+                            searchSql +=
+                                string.Format(
+                                    "( CONTAINS (c.Message, CONVERT(' {0} ' USING {1}) OR CONTAINS (a.Topic, CONVERT(' {0} ' USING {1})) )",
+                                    ftInner,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                        }
+                        else
+                        {
+                            foreach (string word in words)
+                            {
+                                if (!bFirst) searchSql += " AND ";
+                                else bFirst = false;
+                                searchSql +=
+                                    string.Format(
+                                        "(c.Message like CONVERT('%{0}%' USING {1}) OR a.Topic LIKE CONVERT('%{0}%' USING {1}))",
+                                        word,
+                                        !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                            ? Config.DatabaseEncoding
+                                            : "utf8");
+                            }
+                        }
+
+                        break;
+                    case SearchWhatFlags.AnyWords:
+                        words = toSearchWhat.Split(' ');
+
+                        if (useFullText)
+                        {
+                            string ftInner = string.Empty;
+
+                            // make the inner FULLTEXT search
+                            foreach (string word in words)
+                            {
+                                if (!bFirst)
+                                {
+                                    ftInner += " OR ";
+                                }
+                                else
+                                {
+                                    bFirst = false;
+                                }
+
+                                ftInner += string.Format(@"""{0}""", word);
+                            }
+
+                            // make final string...
+                            searchSql +=
+                                string.Format(
+                                    "( CONTAINS (c.Message, CONVERT(' {0} ' USING {1})) OR CONTAINS (a.Topic, CONVERT(' {0} ' USING {1})) )",
+                                    ftInner,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                        }
+                        else
+                        {
+                            foreach (string word in words)
+                            {
+                                if (!bFirst) searchSql += " OR ";
+                                else bFirst = false;
+                                searchSql +=
+                                    string.Format(
+                                        "c.Message LIKE CONVERT('%{0}%' USING {1}) OR a.Topic LIKE CONVERT('%{0}%' USING {1})",
+                                        word,
+                                        !string.IsNullOrEmpty(Config.DatabaseEncoding)
+                                            ? Config.DatabaseEncoding
+                                            : "utf8");
+                            }
+                        }
+
+                        break;
+                    case SearchWhatFlags.ExactMatch:
+                        if (useFullText)
+                        {
+                            searchSql +=
+                                string.Format(
+                                    "( CONTAINS (c.Message, CONVERT(' \"{0}\" ' USING {1})) OR CONTAINS (a.Topic, CONVERT(' \"{0}\" ' USING {1}) )",
+                                    toSearchWhat,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                        }
+                        else
+                        {
+                            searchSql +=
+                                string.Format(
+                                    "c.Message LIKE CONVERT('%{0}%' USING {1}) OR a.Topic LIKE CONVERT('%{0}%' USING {1}) ",
+                                    toSearchWhat,
+                                    !string.IsNullOrEmpty(Config.DatabaseEncoding) ? Config.DatabaseEncoding : "utf8");
+                        }
+
+                        break;
+                }
+
+                searchSql += ") ";
+            }
+
+            // Ederon : 6/16/2007 - forum IDs start above 0, if forum id is 0, there is no forum filtering
+            if (forumIdToStartAt.Any())
+            {
+                searchSql += string.Format("AND a.ForumID IN ( SELECT {0})", forumIDs);
+            }
+
+            if (orderString != string.Empty)
+            {
+                orderString += ", ";
+            }
+
+            if (!orderString.Contains("ORDER BY"))
+            {
+                searchSql += " ORDER BY ";
+            }
+
+            searchSql += orderString + "c.Posted DESC ";
+
+            if (!orderString.Contains("LIMIT"))
+            {
+                searchSql += limitString;
+            }
+
+            return searchSql;
         }
-        else
-        {
-          if (searchFromWhoMethod == SearchWhatFlags.ExactMatch)
-          {
-            conditionSql = "(c.Username IS NULL AND b.{1} = N'{0}') OR (c.Username = N'{0}')".FormatWith(
-              word, searchDisplayName ? "DisplayName" : "Name");
-          }
-          else
-          {
-            conditionSql = "(c.Username IS NULL AND b.{1} LIKE N'%{0}%') OR (c.Username LIKE N'%{0}%')".FormatWith(
-              word, searchDisplayName ? "DisplayName" : "Name");
-          }
-        }
 
-        conditions.Add(new SearchCondition { Condition = conditionSql, ConditionType = conditionType });
-      }
-
-      return conditions;
+        #endregion
     }
-
-    #endregion
-  }
 }

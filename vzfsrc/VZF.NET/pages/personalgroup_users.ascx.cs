@@ -173,7 +173,7 @@ namespace YAF.Pages
 
                     using (
                         DataTable dt = CommonDb.group_list(
-                            PageContext.PageModuleID, this.PageContext.PageBoardID, roleThisId))
+                            this.PageContext.PageModuleID, this.PageContext.PageBoardID, roleThisId, 0, 1000000))
                     {
                         foreach (DataRow row in dt.Rows)
                         {
@@ -388,7 +388,7 @@ namespace YAF.Pages
             this.Joined.Text = this.GetText("joined");
             this.Posts.Text = this.GetText("posts");
 
-            using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000))
             {
                 // add empty item for no filtering
                 DataRow newRow = dt.NewRow();

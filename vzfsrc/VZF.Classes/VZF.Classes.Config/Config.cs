@@ -23,7 +23,6 @@ namespace YAF.Classes
     #region Using
 
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -37,7 +36,7 @@ namespace YAF.Classes
     /// <summary>
     ///     Static class that access the app settings in the web.config file
     /// </summary>
-    public static class Config
+    public static class Config 
     {
         #region Public Properties
 
@@ -290,7 +289,23 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsString("YAF.DatabaseCollation");
+                return GetConfigValueAsString("YAF.DatabaseCollation") ?? string.Empty;
+            }
+        }
+
+        public static string DatabaseGranteeName
+        {
+            get
+            {
+                return GetConfigValueAsString("YAF.DatabaseGranteeName") ?? string.Empty;
+            }
+        }
+
+        public static string DatabaseHostName
+        {
+            get
+            {
+                return GetConfigValueAsString("YAF.DatabaseHostName");
             }
         }
 
@@ -313,7 +328,30 @@ namespace YAF.Classes
         {
             get
             {
-                return GetConfigValueAsString("YAF.DatabaseObjectQualifier") ?? "yaf_";
+                // Change case here if required
+                if (DatabaseObjectCase == "upper")
+                {
+                    return GetConfigValueAsString("YAF.DatabaseObjectQualifier").ToUpperInvariant();
+                }
+
+                if (DatabaseObjectCase == "lower")
+                {
+                    return GetConfigValueAsString("YAF.DatabaseObjectQualifier").ToLowerInvariant();
+                }
+
+                return GetConfigValueAsString("YAF.DatabaseObjectQualifier");
+            }
+        }
+
+        /// <summary>
+        ///     Gets DatabaseObjectQualifier.
+        /// </summary>
+        [NotNull]
+        public static string DatabaseObjectCase
+        {
+            get
+            {
+                return GetConfigValueAsString("YAF.DatabaseObjectCase");
             }
         }
 

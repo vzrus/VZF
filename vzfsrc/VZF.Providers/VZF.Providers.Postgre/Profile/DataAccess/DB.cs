@@ -31,6 +31,8 @@ namespace YAF.Providers.Profile
     using System.Web.Security;
     using VZF.Data.Common;
     using VZF.Data.DAL;
+    using VZF.Data.Postgre.Mappers;
+
     using YAF.Classes;
     using YAF.Core;
 
@@ -192,39 +194,15 @@ namespace YAF.Providers.Profile
             }
         }
 
-        public static void __AddProfileColumn(string connectionStringName, string Name, DbType columnType, int size)
+        public static void __AddProfileColumn(string connectionStringName, string name, string type, int size)
         {
             // get column type...
-            string type = columnType.ToString();
-
-            if (type.ToLower().Contains("datetime"))
-            { type = "timestamp"; }
-            if (type.Contains("String"))
-            {
-                if (size > 21844)
-                {
-                    type = "text";
-                }
-                else
-                {
-                    type = "varchar";
-                }
-            }
-
-            if (type.Contains("Int32"))
-            { type = "integer"; }
-            if (type.Contains("Boolean"))
-            { type = "TINYINT"; }
-
-            if ( size > 0 )
-            {
-                type += "(" + size.ToString() + ")";
-            }          
+            type = DataTypeMappers.typeToDbValueMap(name, type, size);
           
 
             using (var sc = new SQLCommand(connectionStringName))
             {
-                string sql = String.Format("ALTER TABLE {0} ADD  {1}  {2} ", ObjectName.GetVzfObjectNameFromConnectionString("prov_profile", connectionStringName), Name, type);
+                string sql = String.Format("ALTER TABLE {0} ADD  {1}  {2} ", ObjectName.GetVzfObjectNameFromConnectionString("prov_profile", connectionStringName), name, type);
 
                 sc.ExecuteNonQuery(CommandType.Text, false);
             }

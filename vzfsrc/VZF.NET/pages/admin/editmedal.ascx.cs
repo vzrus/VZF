@@ -819,7 +819,7 @@ namespace YAF.Pages.Admin
                     this.SelectImage(this.SmallRibbonImage, this.SmallRibbonPreview, row["SmallRibbonURL"]);
                 }
 
-                using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+                using (DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000))
                 {
                     this.AvailableGroupList.DataSource = dt;
                     this.AvailableGroupList.DataTextField = "Name";

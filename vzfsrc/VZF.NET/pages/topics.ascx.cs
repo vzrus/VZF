@@ -30,6 +30,7 @@ namespace YAF.Pages
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
 
     using YAF.Classes;
     
@@ -337,9 +338,9 @@ namespace YAF.Pages
                 this.PageContext.PageUserID,
                 this.PageContext.PageCategoryID,
                 this.PageContext.PageForumID);
-            if (ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Rows.Count > 0)
+            if (ds.Tables[ObjectName.GetVzfObjectName("Forum", YafContext.Current.PageModuleID)].Rows.Count > 0)
             {
-                this.ForumList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Rows;
+                this.ForumList.DataSource = ds.Tables[ObjectName.GetVzfObjectName("Forum", YafContext.Current.PageModuleID)].Rows;
                 this.SubForums.Visible = true;
             }
 

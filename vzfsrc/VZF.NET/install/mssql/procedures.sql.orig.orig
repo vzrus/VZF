@@ -1304,7 +1304,7 @@ BEGIN
 END
 GO
 
-#IFSRVVER>8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_getallthanks] 
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_getallthanks] 
 	@MessageIDs varchar(max)
 AS
 BEGIN
@@ -1344,7 +1344,7 @@ END
 END
 GO
 
-#IFSRVVER=8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_getallthanks] 
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_getallthanks] 
 	@MessageIDs ntext
 AS
 BEGIN
@@ -16017,7 +16017,7 @@ begin
 >>>>>>> other
 GO
 
-#IFSRVVER>8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] (@MessageIDs varchar(max))
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] (@MessageIDs varchar(max))
 AS 
 	BEGIN
 	-- vzrus says: the server version > 2000 ntext works too slowly with substring in the 2005 
@@ -16054,7 +16054,7 @@ AS
 	END
 GO
 
-#IFSRVVER=8#CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] 
+CREATE PROCEDURE [{databaseOwner}].[{objectQualifier}message_gettextbyids] 
 	@MessageIDs ntext
 AS
 BEGIN
@@ -17002,7 +17002,7 @@ end
 GO
 
 
-#IFSRVVER>8#create procedure [{databaseOwner}].[{objectQualifier}db_handle_computedcolumns]( @SetOnDisk bit )  
+create procedure [{databaseOwner}].[{objectQualifier}db_handle_computedcolumns]( @SetOnDisk bit )  
 as
 begin
 	declare @tmpC nvarchar(255)

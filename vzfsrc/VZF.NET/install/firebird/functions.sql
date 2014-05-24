@@ -24,18 +24,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-CREATE OR ALTER PROCEDURE  objQual_forum_posts(I_FORUMID integer) 
+CREATE OR ALTER PROCEDURE  {objectQualifier}forum_posts(I_FORUMID integer) 
 returns (I_NumPosts integer) as
 DECLARE VARIABLE I_tmp integer;
 DECLARE VARIABLE I_tmpInter integer;
-DECLARE C CURSOR FOR (select FORUMID from objQual_FORUM
+DECLARE C CURSOR FOR (select FORUMID from {objectQualifier}FORUM
 		where PARENTID = :I_FORUMID);
 begin
 	
-	select NUMPOSTS from objQual_FORUM where FORUMID=:I_FORUMID INTO :I_NumPosts;
+	select NUMPOSTS from {objectQualifier}FORUM where FORUMID=:I_FORUMID INTO :I_NumPosts;
 
 
-	if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID))  THEN
+	if (exists(select 1 from {objectQualifier}FORUM where PARENTID=:I_FORUMID))  THEN
 
 	BEGIN
 		OPEN C;
@@ -45,9 +45,9 @@ begin
 	FETCH C INTO :I_tmp;    
 	IF(ROW_COUNT = 0)THEN
 	  LEAVE;
-	  EXECUTE PROCEDURE objQual_forum_posts :I_tmp 
+	  EXECUTE PROCEDURE {objectQualifier}forum_posts :I_tmp 
 	  RETURNING_VALUES :I_tmpInter; 
-	 -- I_NumPosts=I_NumPosts+objQual_forum_posts(:I_tmp);  
+	 -- I_NumPosts=I_NumPosts+{objectQualifier}forum_posts(:I_tmp);  
 	 I_NumPosts=I_NumPosts+I_tmpInter;
   END
   CLOSE C;
@@ -56,16 +56,16 @@ begin
 end;
 --GO
 
-CREATE OR ALTER PROCEDURE  objQual_FORUM_TOPICS(I_FORUMID integer)
+CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_TOPICS(I_FORUMID integer)
  returns (I_NumTopics integer) as
 	DECLARE VARIABLE I_tmp integer;
 	DECLARE VARIABLE I_tmpInter integer;
 		DECLARE ct cursor for
-		(select FORUMID from objQual_FORUM
+		(select FORUMID from {objectQualifier}FORUM
 		where PARENTID = :I_FORUMID);
 begin
-	select NUMTOPICS from objQual_FORUM where FORUMID=:I_FORUMID INTO :I_NumTopics;
-	if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID))  THEN
+	select NUMTOPICS from {objectQualifier}FORUM where FORUMID=:I_FORUMID INTO :I_NumTopics;
+	if (exists(select 1 from {objectQualifier}FORUM where PARENTID=:I_FORUMID))  THEN
 
 	begin	
 		
@@ -76,9 +76,9 @@ begin
 	FETCH ct INTO :I_tmp;    
 	IF(ROW_COUNT = 0) THEN
 	  LEAVE;
-	  EXECUTE PROCEDURE objQual_FORUM_TOPICS :I_tmp 
+	  EXECUTE PROCEDURE {objectQualifier}FORUM_TOPICS :I_tmp 
 	  RETURNING_VALUES :I_tmpInter; 
-	  -- I_NumTopics=I_NumTopics+objQual_FORUM_TOPICS(:I_tmp);
+	  -- I_NumTopics=I_NumTopics+{objectQualifier}FORUM_TOPICS(:I_tmp);
 	 I_NumTopics=I_NumTopics+I_tmpInter;  
   END		
 	close ct;		
@@ -88,7 +88,7 @@ end;
 --GO
 
 
-CREATE PROCEDURE  objQual_FORUM_LASTPOSTED 
+CREATE PROCEDURE  {objectQualifier}FORUM_LASTPOSTED 
 
 (	
 	I_FORUMID integer,
@@ -117,8 +117,8 @@ BEGIN
 			a.LASTTOPICID,
 			a.LASTPOSTED
 		FROM
-			objQual_FORUM a
-			JOIN objQual_ACTIVEACCESS x 
+			{objectQualifier}FORUM a
+			JOIN {objectQualifier}ACTIVEACCESS x 
 			ON a.FORUMID=x.FORUMID
 		WHERE
 			(a.FORUMID=:I_FORUMID and
@@ -131,7 +131,7 @@ BEGIN
 	
 
 	-- look for newer topic/message in subforums
-	if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID)) THEN
+	if (exists(select 1 from {objectQualifier}FORUM where PARENTID=:I_FORUMID)) THEN
   BEGIN
   -- cycle through subforums
   FOR
@@ -140,8 +140,8 @@ BEGIN
 				a.LASTTOPICID,
 				a.LASTPOSTED
 			FROM
-				objQual_FORUM a
-				JOIN objQual_ACTIVEACCESS x ON a.FORUMID=x.FORUMID
+				{objectQualifier}FORUM a
+				JOIN {objectQualifier}ACTIVEACCESS x ON a.FORUMID=x.FORUMID
 			WHERE
 				a.PARENTID=:I_FORUMID and
 				(
@@ -153,7 +153,7 @@ BEGIN
 		DO
 		BEGIN   
 	 -- get last topic/message info for subforum		
-			EXECUTE PROCEDURE objQual_FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_POSTED
+			EXECUTE PROCEDURE {objectQualifier}FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_POSTED
 				RETURNING_VALUES
 				:I_TOPICID,
 				:I_Posted;
@@ -183,7 +183,7 @@ SUSPEND;
 END;
 --GO
 
-CREATE OR ALTER PROCEDURE  objQual_FORUM_LASTTOPIC 
+CREATE OR ALTER PROCEDURE  {objectQualifier}FORUM_LASTTOPIC 
 
 (	
 	I_FORUMID integer,
@@ -204,8 +204,8 @@ BEGIN
 			a.LASTTOPICID,
 			a.LASTPOSTED
 		FROM
-			objQual_FORUM a
-			JOIN objQual_ACTIVEACCESS x ON a.FORUMID=x.FORUMID
+			{objectQualifier}FORUM a
+			JOIN {objectQualifier}ACTIVEACCESS x ON a.FORUMID=x.FORUMID
 		WHERE
 			a.FORUMID=:I_FORUMID and
 			(
@@ -217,7 +217,7 @@ BEGIN
 
 
 	-- look for newer topic/message in subforums
-	if (exists(select FIRST 1 1 from objQual_FORUM 
+	if (exists(select FIRST 1 1 from {objectQualifier}FORUM 
 	where PARENTID=:I_FORUMID)) THEN
 	BEGIN			
 		FOR
@@ -226,8 +226,8 @@ BEGIN
 				a.LASTTOPICID,
 				a.LASTPOSTED
 			FROM
-				objQual_FORUM a
-				JOIN objQual_ACTIVEACCESS x ON a.FORUMID=x.FORUMID
+				{objectQualifier}FORUM a
+				JOIN {objectQualifier}ACTIVEACCESS x ON a.FORUMID=x.FORUMID
 			WHERE
 				a.PARENTID=:I_FORUMID and
 				(
@@ -239,7 +239,7 @@ BEGIN
   BEGIN
   -- cycle through subforums
 	  -- get last topic/message info for subforum		
-		EXECUTE PROCEDURE objQual_FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_Posted
+		EXECUTE PROCEDURE {objectQualifier}FORUM_LASTPOSTED :L_SUBFORUMID, :I_USERID, :I_TOPICID, :I_Posted
 		RETURNING_VALUES :I_TOPICID,:I_Posted;
 
 			-- if subforum has newer topic/message, make it last for parent forum
@@ -267,7 +267,7 @@ END;
 
 
 
-CREATE OR ALTER PROCEDURE  objQual_MEDAL_GETRIBBONSETTINGS
+CREATE OR ALTER PROCEDURE  {objectQualifier}MEDAL_GETRIBBONSETTINGS
 (
 	I_RIBBONURL VARCHAR(250),
 	I_FLAGS integer,
@@ -284,7 +284,7 @@ BEGIN
 END;
 --GO
 
-CREATE OR ALTER PROCEDURE  objQual_MEDAL_GETSORTORDER
+CREATE OR ALTER PROCEDURE  {objectQualifier}MEDAL_GETSORTORDER
 (
 	I_SORTORDER SMALLINT,
 	I_DEFAULTSORTORDER SMALLINT,
@@ -303,7 +303,7 @@ BEGIN
 END;
 --GO
 
-CREATE OR ALTER PROCEDURE  objQual_MEDAL_HIDE
+CREATE OR ALTER PROCEDURE  {objectQualifier}MEDAL_HIDE
 (
 	I_HIDE BOOL,
 	I_FLAGS integer
@@ -320,7 +320,7 @@ BEGIN
 END;
 --GO
 
-CREATE OR ALTER PROCEDURE  objQual_GET_USERSTYLE
+CREATE OR ALTER PROCEDURE  {objectQualifier}GET_USERSTYLE
 (	
 	I_USERID integer
 )
@@ -330,16 +330,16 @@ DECLARE VARIABLE ICI_STYLE varchar(255);
 BEGIN
 
 
-	 SELECT FIRST 1 c.STYLE FROM objQual_USER a 
-						JOIN objQual_USERGROUP b
+	 SELECT FIRST 1 c.STYLE FROM {objectQualifier}USER a 
+						JOIN {objectQualifier}USERGROUP b
 						  ON a.USERID = b.USERID
-							JOIN objQual_GROUP c                         
+							JOIN {objectQualifier}GROUP c                         
 							  ON b.GroupID = c.GroupID 
 							  WHERE a.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.SORTORDER ASC
 							  INTO :ICI_STYLE;
 	   if ( ICI_STYLE is null OR CHAR_LENGTH(ICI_STYLE) < 4 ) THEN               
-							  SELECT FIRST 1 c.STYLE FROM objQual_RANK c 
-								JOIN objQual_USER d
+							  SELECT FIRST 1 c.STYLE FROM {objectQualifier}RANK c 
+								JOIN {objectQualifier}USER d
 								  ON c.RANKID = d.RANKID 
 								  WHERE d.USERID = :I_USERID AND CHAR_LENGTH(c.STYLE) > 3 ORDER BY c.RANKID DESC
 								  INTO :ICI_STYLE;                
@@ -350,7 +350,7 @@ END;
 --GO
 
 -- Gets the Thanks info which will be formatted and then placed in "dvThanksInfo" Div Tag in displaypost.ascx.
-CREATE OR ALTER PROCEDURE   objQual_MESSAGE_GETTHANKSINFO
+CREATE OR ALTER PROCEDURE   {objectQualifier}MESSAGE_GETTHANKSINFO
 (
 I_MESSAGEID  INT,
 I_SHOWTHANKSDATE SMALLINT
@@ -364,7 +364,7 @@ BEGIN
 	(SELECT COALESCE((:OUT_VALUE || ','), '') FROM RDB$DATABASE),	      
 	(CAST(i.THANKSFROMUSERID AS varchar(4000))), 
 	(CASE :I_SHOWTHANKSDATE  WHEN 1 THEN (',' || CAST(i.THANKSDATE AS VARCHAR(4000)))  ELSE '' END)
-			FROM	objQual_THANKS i
+			FROM	{objectQualifier}THANKS i
 			WHERE	i.MESSAGEID = :I_MESSAGEID  ORDER BY i.THANKSDATE
 INTO :TMP_VALUE1, :TMP_VALUE2, :TMP_VALUE3;
 OUT_VALUE =:TMP_VALUE1 || :TMP_VALUE2 || :TMP_VALUE3;
@@ -381,7 +381,7 @@ END;
 
 
 
-CREATE OR ALTER PROCEDURE   objQual_FORUM_SAVE_PARENTSCHECKER(I_FORUMID INTEGER, I_PARENTID INTEGER)
+CREATE OR ALTER PROCEDURE   {objectQualifier}FORUM_SAVE_PARENTSCHECKER(I_FORUMID INTEGER, I_PARENTID INTEGER)
 RETURNS (O_DEPENDENCY INTEGER) 
 as
 DECLARE VARIABLE ICI_HASCHILDREN INTEGER DEFAULT 0;
@@ -390,7 +390,7 @@ DECLARE VARIABLE ICI_PRNTMP INTEGER;
 begin
 O_DEPENDENCY = 0;
 -- Checks if the forum is already referenced as a parent    
-	select FORUMID from objQual_FORUM where PARENTID = :I_FORUMID AND FORUMID = :I_PARENTID
+	select FORUMID from {objectQualifier}FORUM where PARENTID = :I_FORUMID AND FORUMID = :I_PARENTID
 	into :O_DEPENDENCY;
 	if (:O_DEPENDENCY > 0) then 
 	BEGIN
@@ -400,17 +400,17 @@ O_DEPENDENCY = 0;
 	  ELSE
 	  BEGIN   
 
-	if (exists(select 1 from objQual_FORUM where PARENTID=:I_FORUMID)) THEN
+	if (exists(select 1 from {objectQualifier}FORUM where PARENTID=:I_FORUMID)) THEN
 		begin        
 		for
-		select FORUMID,PARENTID from objQual_FORUM
+		select FORUMID,PARENTID from {objectQualifier}FORUM
 		where PARENTID = :I_FORUMID        
 		INTO :ICI_FRMTMP, :ICI_PRNTMP
 		 DO
 		 BEGIN     
 		if (:ICI_FRMTMP > 0 AND :ICI_FRMTMP IS NOT NULL) THEN
 		 begin 
-				EXECUTE PROCEDURE objQual_FORUM_SAVE_PARENTSCHECKER :ICI_FRMTMP, :I_PARENTID
+				EXECUTE PROCEDURE {objectQualifier}FORUM_SAVE_PARENTSCHECKER :ICI_FRMTMP, :I_PARENTID
 				RETURNING_VALUES :ICI_HASCHILDREN;  
 		   
 		   if  (:ICI_PRNTMP = :I_PARENTID) THEN
@@ -430,7 +430,7 @@ O_DEPENDENCY = 0;
 end;
 --GO
 
-CREATE  OR ALTER PROCEDURE objQual_REGISTRY_VALUE (
+CREATE  OR ALTER PROCEDURE {objectQualifier}REGISTRY_VALUE (
 	I_NAME VARCHAR(64)
 	,I_BOARDID INTEGER
 	)
@@ -440,18 +440,18 @@ AS
 BEGIN
 	
 
-	IF (:I_BOARDID IS NOT NULL AND EXISTS(SELECT 1 FROM objQual_REGISTRY WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID)) THEN
+	IF (:I_BOARDID IS NOT NULL AND EXISTS(SELECT 1 FROM {objectQualifier}REGISTRY WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID)) THEN
 	BEGIN
 	   
 			SELECT "VALUE"
-			FROM objQual_REGISTRY
+			FROM {objectQualifier}REGISTRY
 			WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID = :I_BOARDID
 			INTO :ICI_RETURNVALUE;
 	END
 	ELSE
 	BEGIN       
 			SELECT "VALUE"
-			FROM objQual_REGISTRY
+			FROM {objectQualifier}REGISTRY
 			WHERE LOWER("NAME") = LOWER(:I_NAME) AND BOARDID IS NULL INTO :ICI_RETURNVALUE;
 	END
 
@@ -460,7 +460,7 @@ END;
 --GO
 
 
-create procedure  objQual_TOPIC_TAGSAVE(I_TOPICID INTEGER, I_TAGIDS VARCHAR(1024))
+create procedure  {objectQualifier}TOPIC_TAGSAVE(I_TOPICID INTEGER, I_TAGIDS VARCHAR(1024))
 as
 declare variable LASTPOS integer;
 declare variable NEXTPOS integer;
@@ -468,7 +468,7 @@ declare variable TEMPSTR varchar(4096);
 declare variable THISID integer;
 begin
 
-DELETE FROM objQual_TOPICTAGS WHERE TOPICID = :I_TOPICID;
+DELETE FROM {objectQualifier}TOPICTAGS WHERE TOPICID = :I_TOPICID;
   I_TAGIDS = :I_TAGIDS || ',';
   LASTPOS = 1;
   NEXTPOS = POSITION(',', :I_TAGIDS, LASTPOS);
@@ -476,32 +476,32 @@ DELETE FROM objQual_TOPICTAGS WHERE TOPICID = :I_TOPICID;
   begin
 	TEMPSTR = SUBSTRING(:I_TAGIDS from :LASTPOS for :NEXTPOS - :LASTPOS);
 
-	UPDATE OR INSERT INTO  objQual_TAGS(TAG)
+	UPDATE OR INSERT INTO  {objectQualifier}TAGS(TAG)
 	VALUES (:TEMPSTR) 
 	MATCHING (TAG)
 	RETURNING TAGID INTO :THISID;	
 	
-	IF (NOT EXISTS(SELECT FIRST 1 1 FROM objQual_TOPICTAGS where TAGID = :THISID and TOPICID =  :I_TOPICID)) THEN
+	IF (NOT EXISTS(SELECT FIRST 1 1 FROM {objectQualifier}TOPICTAGS where TAGID = :THISID and TOPICID =  :I_TOPICID)) THEN
 	BEGIN
-	INSERT INTO  objQual_TOPICTAGS(TAGID,TOPICID)
+	INSERT INTO  {objectQualifier}TOPICTAGS(TAGID,TOPICID)
 	VALUES (:THISID,:I_TOPICID);	
 	END	
-	UPDATE objQual_TAGS SET TAGCOUNT = (SELECT COUNT(TAGID) FROM objQual_TOPICTAGS WHERE  TAGID = :THISID) WHERE  TAGID = :THISID;
+	UPDATE {objectQualifier}TAGS SET TAGCOUNT = (SELECT COUNT(TAGID) FROM {objectQualifier}TOPICTAGS WHERE  TAGID = :THISID) WHERE  TAGID = :THISID;
 	LASTPOS = :NEXTPOS + 1;
 	NEXTPOS = POSITION(',', :I_TAGIDS, LASTPOS);
   end
   suspend;
 end;
 --GO
-CREATE PROCEDURE  objQual_TOPIC_GETTAGS_STR(I_TOPICID INTEGER)
+CREATE PROCEDURE  {objectQualifier}TOPIC_GETTAGS_STR(I_TOPICID INTEGER)
 RETURNS ("TAGS" varchar(4000))
 AS
 DECLARE ICI_TAGSSTRING varchar(4000) DEFAULT '';
 BEGIN
 FOR	
    SELECT tg.TAG 
-   FROM objQual_TAGS tg 
-   JOIN objQual_TOPICTAGS tt ON tt.TAGID = tg.TAGID 
+   FROM {objectQualifier}TAGS tg 
+   JOIN {objectQualifier}TOPICTAGS tt ON tt.TAGID = tg.TAGID 
    WHERE tt.TOPICID = :I_TOPICID INTO :"TAGS" 
 DO
 BEGIN

@@ -136,7 +136,7 @@ namespace VZF.Controls
 
         // get role name
         string roleName = string.Empty;
-        using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, roleID))
+        using (DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, roleID, 0, 1000000))
         {
           foreach (DataRow row in dt.Rows)
           {

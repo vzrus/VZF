@@ -71,6 +71,10 @@ namespace VZF.Data.DAL
         /// </summary>
         private bool _inTransaction;
 
+        /// <summary>
+        /// The _isolation level.
+        /// </summary>
+        private IsolationLevel _isolationLevel = IsolationLevel.ReadUncommitted;
 
         /// <summary>
         /// The _data source.
@@ -106,6 +110,20 @@ namespace VZF.Data.DAL
         public SQLCommand(string connectionName)
         {
             this.Initialize(connectionName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQLCommand"/> class.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="providerName">
+        /// The provider name.
+        /// </param>
+        public SQLCommand(string connectionStringName, string providerName)
+        {
+            this.Initialize(connectionStringName, providerName);
         }
 
         /// <summary>
@@ -232,6 +250,26 @@ namespace VZF.Data.DAL
         /// <summary>
         /// The initialize.
         /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="providerName">
+        /// The provider name.
+        /// </param>
+        public void Initialize(string connectionStringName, string providerName)
+        {
+            DataSource dataSource;
+            lock (_syncObject)
+            {
+                dataSource = this.GetDataSource(connectionStringName, providerName);
+            }
+
+            this._dataSource = dataSource;
+        }
+
+        /// <summary>
+        /// The initialize.
+        /// </summary>
         /// <param name="mid">
         /// The mid.
         /// </param>
@@ -265,6 +303,25 @@ namespace VZF.Data.DAL
 
             dataSource = new DataSource(connectionName);
             _dataSourceDictionary.Add(connectionName, dataSource);
+
+            return dataSource;
+        }
+
+        /// <summary>
+        /// The get data source.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="providerName">
+        /// The provider name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataSource"/>.
+        /// </returns>
+        private DataSource GetDataSource(string connectionStringName, string providerName)
+        {
+            var dataSource = new DataSource(connectionStringName, providerName);
 
             return dataSource;
         }
@@ -319,6 +376,7 @@ namespace VZF.Data.DAL
             {
                 using (var cmd = conn.CreateCommand())
                 {
+                    var qc = new QueryCounter(cmd.CommandText);
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
                     cmd.CommandTimeout = commandTimeOut ?? cmd.CommandTimeout;
@@ -329,11 +387,13 @@ namespace VZF.Data.DAL
                             cmd.Parameters.Add(parameter);
                         }
 
+                        Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                         return cmd.ExecuteReader(commandBehavior);
                     }
                     finally
                     {
                         cmd.Parameters.Clear();
+                        qc.Dispose();
                     }
                 }
             }
@@ -399,10 +459,12 @@ namespace VZF.Data.DAL
             {
                 using (var cmd = conn.CreateCommand())
                 {
-                    Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
+                 
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
+                   
                     cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
+                    var qc = new QueryCounter(cmd.CommandText);
                     try
                     {
                         foreach (var parameter in this.Parameters.Values)
@@ -410,6 +472,7 @@ namespace VZF.Data.DAL
                             cmd.Parameters.Add(parameter);
                         }
 
+                        Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                         if (inTransaction)
                         {
                             using (var transaction = conn.BeginTransaction(IsolationLevel.ReadUncommitted))
@@ -428,6 +491,7 @@ namespace VZF.Data.DAL
                     finally
                     {
                         cmd.Parameters.Clear();
+                        qc.Dispose();
                     }
                 }
             }
@@ -528,7 +592,7 @@ namespace VZF.Data.DAL
         /// </returns>
         public int ExecuteNonQuery(CommandType commandType, bool isTransaction)
         {
-            return ExecuteNonQuery(commandType, false, IsolationLevel.ReadUncommitted);
+            return this.ExecuteNonQuery(commandType, isTransaction, this._isolationLevel);
         }
 
         /// <summary>
@@ -552,9 +616,11 @@ namespace VZF.Data.DAL
 
             using (var cmd = conn.CreateCommand())
             {
+                Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                 cmd.CommandText = this._commandText.ToString();
                 cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
                 cmd.CommandType = commandType;
+                var qc = new QueryCounter(cmd.CommandText);
                 try
                 {
                     foreach (var parameter in this.Parameters.Values)
@@ -580,6 +646,7 @@ namespace VZF.Data.DAL
                 finally
                 {
                     cmd.Parameters.Clear();
+                    qc.Dispose();
                 }
             }
         }
@@ -600,12 +667,15 @@ namespace VZF.Data.DAL
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
                     cmd.CommandType = commandType;
+                    var qc = new QueryCounter(cmd.CommandText);
                     try
                     {
                         foreach (var parameter in this.Parameters.Values)
                         {
                             cmd.Parameters.Add(parameter);
-                        }                       
+                        }
+
+                        Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
                         using (var da = this._dataSource.Factory.CreateDataAdapter())
                         {
                             da.SelectCommand = cmd;
@@ -617,6 +687,7 @@ namespace VZF.Data.DAL
                     finally
                     {
                         cmd.Parameters.Clear();
+                        qc.Dispose();
                     }
                 }
             }
@@ -650,7 +721,7 @@ namespace VZF.Data.DAL
                 commandBehavior,
                 commandType,
                 inTransaction,
-                IsolationLevel.ReadUncommitted);
+                this._isolationLevel);
         }
 
         /// <summary>
@@ -665,34 +736,38 @@ namespace VZF.Data.DAL
         /// <param name="inTransaction">
         /// The in transaction.
         /// </param>
+        /// <param name="isolationLevel">
+        /// The isolation level.
+        /// </param>
         /// <returns>
         /// The <see cref="DataTable"/>.
         /// </returns>
-        public DataTable ExecuteDataTableFromReader(CommandBehavior commandBehavior, CommandType commandType, bool inTransaction, IsolationLevel isolationLevel)
+        public DataTable ExecuteDataTableFromReader(
+            CommandBehavior commandBehavior,
+            CommandType commandType,
+            bool inTransaction,
+            IsolationLevel isolationLevel)
         {
-            var conn = this.GetConnection();
+            IDbConnection conn = this.GetConnection();
             var dt = new DataTable();
             try
             {
                 using (var cmd = conn.CreateCommand())
-                {                 
+                {
                     cmd.CommandText = this._commandText.ToString();
                     cmd.CommandType = commandType;
                     cmd.CommandTimeout = Config.SqlCommandTimeout.ToType<int>();
+
                     foreach (var parameter in this.Parameters.Values)
                     {
                         cmd.Parameters.Add(parameter);
                     }
 
                     var qc = new QueryCounter(cmd.CommandText);
-                    IDataReader reader;
                     try
                     {
-                        cmd.CommandText = this._commandText.ToString();
-
-                        cmd.CommandType = commandType;
                         Trace.WriteLine(cmd.ToDebugString(), "DbAccess");
-
+                        IDataReader reader;
                         if (inTransaction)
                         {
                             using (var transaction = conn.BeginTransaction(isolationLevel))
@@ -717,9 +792,8 @@ namespace VZF.Data.DAL
                                     }
                                 }
 
-                    
-                                    reader.Close();
-                              
+                                reader.Close();
+
                                 transaction.Commit();
 
                                 dt.AcceptChanges();
@@ -729,9 +803,9 @@ namespace VZF.Data.DAL
                         }
                         else
                         {
-                            cmd.Transaction = _transaction;
+                            cmd.Transaction = this._transaction;
                             reader = cmd.ExecuteReader();
-                        
+
                             // Retrieve column schema into our DataTable.                        
                             dt = this.GetTableColumns(dt, reader);
 
@@ -739,7 +813,7 @@ namespace VZF.Data.DAL
                             {
                                 while (reader.Read())
                                 {
-                                    DataRow dr = dt.NewRow();
+                                    var dr = dt.NewRow();
 
                                     foreach (DataColumn column in dt.Columns)
                                     {
@@ -750,9 +824,8 @@ namespace VZF.Data.DAL
                                 }
                             }
 
-                    
-                                reader.Close();
-                         
+                            reader.Close();
+
                             dt.AcceptChanges();
 
                             return dt;
@@ -760,7 +833,6 @@ namespace VZF.Data.DAL
                     }
                     finally
                     {
-                     
                         cmd.Parameters.Clear();
                         qc.Dispose();
                     }
@@ -813,6 +885,7 @@ namespace VZF.Data.DAL
             DataTable schemaTable = reader.GetSchemaTable();
 
             bool convertFromUInt64ToInt32 = true;
+          
             foreach (DataRow myField in schemaTable.Rows)
             {
                 string ts = myField["DataType"].ToString();
@@ -872,7 +945,6 @@ namespace VZF.Data.DAL
         {
             this._transaction = this._connection.BeginTransaction();
             this._inTransaction = true;
-            
         }
 
         /// <summary>
@@ -951,10 +1023,11 @@ namespace VZF.Data.DAL
             // for ms sql data layer parameters don't begin with i_.
             if (this._dataSource.ProviderName.Equals(Providers.MsSql))
             {
-                name = name.Replace("i_", string.Empty);
+                name = System.Text.RegularExpressions.Regex.Replace(name, "^i_", string.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
             }
 
             p.ParameterName = name;
+
             if (value == null)
             {
                 value = DBNull.Value;
@@ -1100,7 +1173,6 @@ namespace VZF.Data.DAL
         {
             return this._dataSource.GetNewConnection();
         }
-        
     }
 }
 

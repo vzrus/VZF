@@ -221,7 +221,7 @@ namespace YAF.Core.Services
                 else
                 {
                     // add dummy table.
-                    moderator = new DataTable(CommonSqlDbAccess.GetObjectName("Moderator"));
+                    moderator = new DataTable(ObjectName.GetVzfObjectName("Moderator", YafContext.Current.PageModuleID));
                     moderator.Columns.AddRange(
                         new[]
                             {
@@ -247,7 +247,7 @@ namespace YAF.Core.Services
                     () =>
                         {
                             var catDt = CommonDb.category_list(YafContext.Current.PageModuleID, boardID, null);
-                            catDt.TableName = CommonSqlDbAccess.GetObjectName("Category");
+                            catDt.TableName = ObjectName.GetVzfObjectName("Category", YafContext.Current.PageModuleID);
                             return catDt;
                         },
                     TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardCategoriesCacheTimeout));
@@ -255,7 +255,7 @@ namespace YAF.Core.Services
                 // add it to this dataset
                 ds.Tables.Add(category.Copy());
 
-                DataTable categoryTable = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+                DataTable categoryTable = ds.Tables[ObjectName.GetVzfObjectName("Category", YafContext.Current.PageModuleID)];
 
                 if (categoryID.HasValue)
                 {
@@ -281,18 +281,18 @@ namespace YAF.Core.Services
                     true,
                     false,
                     null);
-                forum.TableName = CommonSqlDbAccess.GetObjectName("Forum");
+                forum.TableName = ObjectName.GetVzfObjectName("Forum", YafContext.Current.PageModuleID);
                 ds.Tables.Add(forum.Copy());
 
                 ds.Relations.Add(
                     "FK_Forum_Category",
                     categoryTable.Columns["CategoryID"],
-                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["CategoryID"],
+                    ds.Tables[ObjectName.GetVzfObjectName("Forum", YafContext.Current.PageModuleID)].Columns["CategoryID"],
                     false);
                 ds.Relations.Add(
                     "FK_Moderator_Forum",
-                    ds.Tables[CommonSqlDbAccess.GetObjectName("Forum")].Columns["ForumID"],
-                    ds.Tables[CommonSqlDbAccess.GetObjectName("Moderator")].Columns["ForumID"],
+                    ds.Tables[ObjectName.GetVzfObjectName("Forum", YafContext.Current.PageModuleID)].Columns["ForumID"],
+                    ds.Tables[ObjectName.GetVzfObjectName("Moderator", YafContext.Current.PageModuleID)].Columns["ForumID"],
                     false);
 
                 bool deletedCategory = false;
@@ -496,7 +496,7 @@ namespace YAF.Core.Services
                     {
                         DataTable moderator = CommonDb.forum_moderators(
                             YafContext.Current.PageModuleID, this.Get<YafBoardSettings>().UseStyledNicks);
-                        moderator.TableName = CommonSqlDbAccess.GetObjectName("Moderator");
+                        moderator.TableName = ObjectName.GetVzfObjectName("Moderator", YafContext.Current.PageModuleID);
                         return moderator;
                     },
                 TimeSpan.FromMinutes(this.Get<YafBoardSettings>().BoardModeratorsCacheTimeout));

@@ -551,11 +551,7 @@ namespace VZF.Controls
                                                  ci.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
                 }
 
-                this.Birthday.ToolTip = this.GetText("COMMON", "CAL_JQ_TT");
-          
-              // this.Birthday.Visible = false;
-              // this.BirthdayLabel.Visible = false;
-
+            this.Birthday.ToolTip = this.GetText("COMMON", "CAL_JQ_TT");
             this.DisplayName.Text = this.UserData.DisplayName;
             this.City.Text = this.UserData.Profile.City;
             this.Location.Text = this.UserData.Profile.Location;
@@ -815,7 +811,7 @@ namespace VZF.Controls
             
             // Sync to User Profile Mirror table while it's dirty
             SettingsPropertyValueCollection settingsPropertyValueCollection = userProfile.PropertyValues;
-            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), this._currentUserId, userProfile.UserName, settingsPropertyValueCollection);
+            CommonDb.SetPropertyValues(PageContext.PageModuleID, PageContext.PageBoardID, UserMembershipHelper.ApplicationName(), "UserProfile", this._currentUserId, userProfile.UserName, settingsPropertyValueCollection);
            
             userProfile.Save();
         }

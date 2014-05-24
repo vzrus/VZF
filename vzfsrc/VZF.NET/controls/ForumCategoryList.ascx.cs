@@ -25,6 +25,7 @@ namespace VZF.Controls
     using System.Web.UI.WebControls;
 
     using VZF.Data.Common;
+    using VZF.Data.DAL;
 
     using YAF.Classes;
 
@@ -126,7 +127,7 @@ namespace VZF.Controls
                                  null);
             /* this.CategoryList.FindControlRecursiveAs<HtmlTableCell>("Td1").Visible = PageContext.BoardSettings.ShowModeratorList &&
                               PageContext.BoardSettings.ShowModeratorListAsColumn; */
-            this.CategoryList.DataSource = ds.Tables[CommonSqlDbAccess.GetObjectName("Category")];
+            this.CategoryList.DataSource = ds.Tables[ObjectName.GetVzfObjectName("Category", YafContext.Current.PageModuleID)];
             this.CategoryList.DataBind();
         }
 

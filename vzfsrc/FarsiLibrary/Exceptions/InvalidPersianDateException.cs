@@ -23,6 +23,7 @@ namespace FarsiLibrary.Exceptions
 {
     using System;
 
+    [Serializable]
     public class InvalidPersianDateException : Exception
     {
         public InvalidPersianDateException() : base(string.Empty)

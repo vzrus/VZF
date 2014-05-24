@@ -31,6 +31,15 @@ namespace YAF.Pages.Admin {
         protected global::VZF.Controls.AdminMenu AdminMenu;
         
         /// <summary>
+        /// PagerTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.Pager PagerTop;
+        
+        /// <summary>
         /// RoleListNet control.
         /// </summary>
         /// <remarks>
@@ -56,6 +65,15 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button NewGroup;
+        
+        /// <summary>
+        /// PagerBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.Pager PagerBottom;
         
         /// <summary>
         /// SmartScroller1 control.

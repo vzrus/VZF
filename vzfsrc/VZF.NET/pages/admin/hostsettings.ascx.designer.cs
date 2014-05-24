@@ -1264,24 +1264,6 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox ShowQuickAnswer;
         
         /// <summary>
-        /// HelpLabel114 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::VZF.Controls.HelpLabel HelpLabel114;
-        
-        /// <summary>
-        /// EnableDNACalendar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox EnableDNACalendar;
-        
-        /// <summary>
         /// HelpLabel105 control.
         /// </summary>
         /// <remarks>
@@ -3190,6 +3172,42 @@ namespace YAF.Pages.Admin {
         protected global::System.Web.UI.WebControls.CheckBox ShowShoutbox;
         
         /// <summary>
+        /// HelpLabel114 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel114;
+        
+        /// <summary>
+        /// ShoutboxViewPermissions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ShoutboxViewPermissions;
+        
+        /// <summary>
+        /// HelpLabel236 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::VZF.Controls.HelpLabel HelpLabel236;
+        
+        /// <summary>
+        /// ShoutboxDefaultState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ShoutboxDefaultState;
+        
+        /// <summary>
         /// HelpLabel166 control.
         /// </summary>
         /// <remarks>
@@ -4799,6 +4817,15 @@ namespace YAF.Pages.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidLastTab;
+        
+        /// <summary>
+        /// hidLastTabId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidLastTabId;
         
         /// <summary>
         /// SmartScroller1 control.

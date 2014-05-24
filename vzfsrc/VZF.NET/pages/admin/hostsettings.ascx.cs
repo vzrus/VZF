@@ -148,7 +148,13 @@ namespace YAF.Pages.Admin
 
             YafContext.Current.PageElements.RegisterJsBlock(
                 "yafTabsJs",
-                JavaScriptBlocks.JqueryUITabsLoadJs(this.HostSettingsTabs.ClientID, this.hidLastTab.ClientID, false));
+            JavaScriptBlocks.JqueryUITabsLoadJs(
+                    this.HostSettingsTabs.ClientID,
+                    this.hidLastTab.ClientID,
+                    this.hidLastTabId.ClientID,
+                    false));
+
+           // YafContext.Current.PageElements.RegisterJsBlock("spinnerJs", JavaScriptBlocks.LoadSpinnerWidget());
 
             base.OnPreRender(e);
         }
@@ -344,7 +350,7 @@ namespace YAF.Pages.Admin
                     this.PostsFeedAccess, this.AllowCreateTopicsSameName, this.PostLatestFeedAccess, this.ForumFeedAccess, this.TopicsFeedAccess,
                     this.ActiveTopicFeedAccess, this.FavoriteTopicFeedAccess, this.ReportPostPermissions, this.ProfileViewPermissions,
                     this.MembersListViewPermissions, this.ActiveUsersViewPermissions, this.ExternalSearchPermissions, this.SearchPermissions,
-                    this.ShowHelpTo, this.ShowTeamTo, this.ShowRetweetMessageTo, this.ShowShareTopicTo
+                    this.ShowHelpTo, this.ShowTeamTo, this.ShowRetweetMessageTo, this.ShowShareTopicTo, this.ShoutboxViewPermissions
                 };
 
             foreach (var ddl in dropDownLists)
@@ -367,6 +373,9 @@ namespace YAF.Pages.Admin
 
             this.MessageNotificationSystem.Items.Add(new ListItem(this.GetText("ADMIN_HOSTSETTINGS", "MODAL_DIALOG"), "0"));
             this.MessageNotificationSystem.Items.Add(new ListItem(this.GetText("ADMIN_HOSTSETTINGS", "NOTIFICATION_BAR"), "1"));
+
+            this.ShoutboxDefaultState.Items.Add(new ListItem(this.GetText("ADMIN_HOSTSETTINGS", "EXPANDED"), "0"));
+            this.ShoutboxDefaultState.Items.Add(new ListItem(this.GetText("ADMIN_HOSTSETTINGS", "COLLAPSED"), "1"));
         }
 
         /// <summary>

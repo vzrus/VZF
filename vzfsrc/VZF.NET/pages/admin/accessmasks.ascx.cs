@@ -29,7 +29,7 @@ namespace YAF.Pages.Admin
   using VZF.Controls;
   using VZF.Data.Common;
 
-  
+  using YAF.Classes;
   using YAF.Core;
   using YAF.Core.Services;
   using YAF.Types;
@@ -184,8 +184,6 @@ namespace YAF.Pages.Admin
             return;
         }
 
-       
-
         // create links
         this.CreatePageLinks();
 
@@ -200,9 +198,30 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      // list all access masks for this boeard
-        this.List.DataSource = CommonDb.accessmask_list(mid: PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true);
-      this.DataBind();
+        this.PagerTop.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
+
+       // list all access masks for this boeard
+        var dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: this.PageContext.PageBoardID, accessMaskID: null, excludeFlags: 0, pageUserID: null, isUserMask: false, isAdminMask: true, pageIndex: this.PagerTop.CurrentPageIndex, pageSize: this.PagerTop.PageSize);
+        this.List.DataSource = dt;
+        this.PagerTop.Count = dt != null && dt.Rows.Count > 0
+                                      ? Convert.ToInt32(dt.Rows[0]["TotalRows"])
+                                      : 0;
+        this.DataBind();
+    }
+
+    /// <summary>
+    /// The pager top_ page change.
+    /// </summary>
+    /// <param name="sender">
+    /// The sender.
+    /// </param>
+    /// <param name="e">
+    /// The e.
+    /// </param>
+    protected void PagerTop_PageChange([NotNull] object sender, [NotNull] EventArgs e)
+    {
+        // rebind
+        this.BindData();
     }
 
     #endregion

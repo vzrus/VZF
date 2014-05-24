@@ -264,14 +264,30 @@ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_accessmask_list
                            i_excludeflags integer,
                            i_pageuserid integer,
                            i_isusermask boolean,
-                           i_isadminmask boolean
+                           i_isadminmask boolean,
+						   i_pageindex integer,
+						   i_pagesize integer
                            )
                   RETURNS SETOF databaseSchema.objectQualifier_accessmask_list_return_type AS
 $BODY$
 DECLARE
        _rec databaseSchema.objectQualifier_accessmask_list_return_type%ROWTYPE;
+	   ici_totalrows int = 0;
+	   ici_firstselectrownumber int = 0;
 BEGIN
  IF i_accessmaskid IS NULL THEN
+
+        i_pageindex := i_pageindex + 1;
+         
+        select count(1) into ici_totalrows 
+        FROM      databaseSchema.objectQualifier_accessmask a
+          WHERE    a.boardid = i_boardid  and
+            (a.flags & i_excludeflags) = 0
+            and (not i_isusermask or isusermask) 
+            -- and (not i_isadminmask or isadminmask) 
+            and (i_pageuserid is null or createdbyuserid = i_pageuserid);         
+            
+        ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize;  
      FOR _rec IN
         SELECT
               a.accessmaskid,
@@ -283,14 +299,15 @@ BEGIN
               a.isadminmask,
               a.createdbyuserid,
               a.createdbyusername,
-              a.createdbyuserdisplayname
-         FROM      databaseSchema.objectQualifier_accessmask a
+              a.createdbyuserdisplayname, 
+			  ici_totalrows as TotalRows      
+          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
             and (not i_isusermask or isusermask) 
             -- and (not i_isadminmask or isadminmask) 
             and (i_pageuserid is null or createdbyuserid = i_pageuserid) 
-           ORDER BY a.sortorder
+           ORDER BY a.sortorder OFFSET ici_firstselectrownumber LIMIT i_pagesize
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -306,7 +323,8 @@ BEGIN
               a.isadminmask,
               a.createdbyuserid,
               a.createdbyusername,
-              a.createdbyuserdisplayname
+              a.createdbyuserdisplayname,
+			  ici_totalrows as TotalRows
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
@@ -341,13 +359,17 @@ BEGIN
               a.flags,
               a.sortorder,
               a.isusermask,
-              a.isadminmask
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0
             and (i_isadminmask or not a.isadminmask)
             and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
-            ORDER BY a.isusermask desc,a.sortorder
+            ORDER BY a.isusermask, a.sortorder
        LOOP
              RETURN NEXT _rec;
        END LOOP;
@@ -360,12 +382,16 @@ BEGIN
               a.flags,
               a.sortorder,
               a.isusermask,
-              a.isadminmask
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
             and (i_isadminmask or not a.isadminmask)
-            and ((i_isusermask and a.createdbyuserid = i_pageuserid) or not a.isusermask)
+            and ((i_isusermask and a.createdbyuserid = i_pageuserid)  or not a.isusermask)
             LIMIT 1
       LOOP
              RETURN NEXT _rec;
@@ -398,7 +424,11 @@ BEGIN
               a.flags,
               a.sortorder,
               a.isusermask,
-              a.isadminmask
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
          FROM      databaseSchema.objectQualifier_accessmask a
           WHERE    a.boardid = i_boardid  and
             (a.flags & i_excludeflags) = 0		
@@ -416,7 +446,11 @@ BEGIN
               a.flags,
               a.sortorder,
               a.isusermask,
-              a.isadminmask
+              a.isadminmask,
+              a.createdbyuserid,
+              a.createdbyusername,
+              a.createdbyuserdisplayname,
+			  0 as TotalRows
         FROM      databaseSchema.objectQualifier_accessmask a
          WHERE    a.boardid = i_boardid
           AND a.accessmaskid = i_accessmaskid
@@ -5128,15 +5162,27 @@ $BODY$
 
 CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_group_list(
                            i_boardid integer, 
-                           i_groupid integer)
+                           i_groupid integer,
+						   i_pageindex integer,
+						   i_pagesize integer)
                   RETURNS SETOF databaseSchema.objectQualifier_group_list_return_type AS
 $BODY$DECLARE
              _rec databaseSchema.objectQualifier_group_list_return_type%ROWTYPE;
+			 ici_totalrows int = 0;
+			 ici_firstselectrownumber int = 0;
 BEGIN
 
         IF i_groupid IS NULL THEN
-        FOR _rec IN
-        SELECT 
+		i_pageindex := i_pageindex + 1;
+         
+        select count(1) into ici_totalrows 
+        FROM  databaseSchema.objectQualifier_group
+        WHERE boardid = i_boardid;
+            
+        ici_firstselectrownumber := (i_pageindex - 1) * i_pagesize;     
+
+  FOR _rec in
+       SELECT 
              groupid,
              boardid,
              name,
@@ -5150,16 +5196,20 @@ BEGIN
              usrsightmltags,
              usralbums,
              usralbumimages,
-             isusergroup,
-             createdbyuserid,
+			 isadmingroup,
+             isusergroup,            
              usrpersonalmasks,
              usrpersonalgroups,
-             usrpersonalforums
+             usrpersonalforums,
+			 createdbyuserid,
+			 createdbyusername,
+			 createdbyuserdisplayname, 
+			 ici_totalrows as TotalRows
         FROM   databaseSchema.objectQualifier_group
-        WHERE  boardid = i_boardid
-         LOOP
-    RETURN NEXT _rec;
-END LOOP;
+        WHERE boardid = i_boardid order by sortorder OFFSET ici_firstselectrownumber LIMIT i_pagesize
+  LOOP
+      RETURN NEXT _rec;
+  END LOOP;    
         ELSE
         FOR _rec IN
         SELECT 
@@ -5176,11 +5226,15 @@ END LOOP;
              usrsightmltags,
              usralbums,
              usralbumimages,
-             isusergroup,
-             createdbyuserid,
+			 isadmingroup,
+             isusergroup,            
              usrpersonalmasks,
              usrpersonalgroups,
-             usrpersonalforums
+             usrpersonalforums,
+			 createdbyuserid,
+			 createdbyusername,
+			 createdbyuserdisplayname, 
+			 ici_totalrows as TotalRows
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid
         AND groupid = i_groupid LIMIT 1
@@ -5208,7 +5262,7 @@ BEGIN
         IF i_groupid IS NULL THEN
         FOR _rec IN
         SELECT 
-             groupid,
+              groupid,
              boardid,
              name,
              flags,
@@ -5221,11 +5275,14 @@ BEGIN
              usrsightmltags,
              usralbums,
              usralbumimages,
-             isusergroup,
-             createdbyuserid,
+			 isadmingroup,
+             isusergroup,            
              usrpersonalmasks,
              usrpersonalgroups,
-             usrpersonalforums
+             usrpersonalforums,
+			 createdbyuserid,
+			 createdbyusername,
+			 createdbyuserdisplayname
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
          LOOP
@@ -5234,7 +5291,7 @@ END LOOP;
         ELSE
         FOR _rec IN
         SELECT 
-             groupid,
+              groupid,
              boardid,
              name,
              flags,
@@ -5247,11 +5304,14 @@ END LOOP;
              usrsightmltags,
              usralbums,
              usralbumimages,
-             isusergroup,
-             createdbyuserid,
+			 isadmingroup,
+             isusergroup,            
              usrpersonalmasks,
              usrpersonalgroups,
-             usrpersonalforums
+             usrpersonalforums,
+			 createdbyuserid,
+			 createdbyusername,
+			 createdbyuserdisplayname
         FROM   databaseSchema.objectQualifier_group
         WHERE  boardid = i_boardid and createdbyuserid = i_userid
         AND groupid = i_groupid LIMIT 1
@@ -16990,5 +17050,26 @@ begin
 END$BODY$
   LANGUAGE 'plpgsql' STABLE SECURITY DEFINER STRICT
   COST 100; 
+--GO
+
+ CREATE OR REPLACE FUNCTION databaseSchema.objectQualifier_poll_save(
+    i_topicid 	        integer,
+	i_forumid           integer,
+	i_categoryid        integer,
+    i_pollgrouplist	    text,
+    i_questionlist	    text,
+	i_choicelist	    text,
+	i_utctimestamp    timestamp
+ ) 
+                    RETURNS void
+					AS
+ $BODY$DECLARE
+  ici_dummy int = 1;
+BEGIN
+ici_dummy = 2;
+END;
+$BODY$
+  LANGUAGE 'plpgsql' VOLATILE SECURITY DEFINER 
+  COST 100;
 --GO
 

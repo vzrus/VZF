@@ -1227,9 +1227,7 @@ BEGIN
 
      IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyusername')) THEN
          ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createdbyusername  varchar(255);
-     END IF;
-
-     
+     END IF;     
    
 
      IF (NOT column_exists('databaseSchema.objectQualifier_group','createdbyuserdisplayname')) THEN
@@ -1238,6 +1236,10 @@ BEGIN
 
   IF (NOT column_exists('databaseSchema.objectQualifier_group','createddate')) THEN
          ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN createddate  timestamp;
+     END IF;
+
+	 IF (NOT column_exists('databaseSchema.objectQualifier_group','isadmingroup')) THEN
+         ALTER TABLE databaseSchema.objectQualifier_group ADD COLUMN isadmingroup  boolean  DEFAULT false NOT NULL ;
      END IF;
 
      IF (NOT column_exists('databaseSchema.objectQualifier_group','isusergroup')) THEN

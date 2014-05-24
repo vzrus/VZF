@@ -310,9 +310,9 @@ namespace YAF.Pages
                 string roleName = string.Empty;
                 using (
                     DataTable dt = CommonDb.group_list(
-                        PageContext.PageModuleID,
+                        this.PageContext.PageModuleID,
                         this.PageContext.PageBoardID,
-                        this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("gr").ToType<int>()))
+                        this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("gr").ToType<int>(), 0, 1000000))
                 {
                     foreach (DataRow row in dt.Rows)
                     {

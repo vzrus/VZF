@@ -289,11 +289,17 @@ namespace YAF.Pages.Admin
         /// </summary>
         private void BindData()
         {
-            // list roles of this board
-            DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+            this.PagerTop.PageSize = this.Get<YafBoardSettings>().MemberListPageSize;
+            
+            // list groups of this board
+            var dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, this.PagerTop.CurrentPageIndex, this.PagerTop.PageSize);
 
-            // set repeater datasource
+            // set repeater data source
             this.RoleListYaf.DataSource = dt;
+
+            this.PagerTop.Count = dt != null && dt.Rows.Count > 0
+                                     ? Convert.ToInt32(dt.Rows[0]["TotalRows"])
+                                     : 0;
 
             // clear cached list of roles
             this._availableRoles.Clear();
@@ -323,6 +329,21 @@ namespace YAF.Pages.Admin
 
             // bind data to controls
             this.DataBind();
+        }
+
+        /// <summary>
+        /// The pager top_ page change.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        protected void PagerTop_PageChange([NotNull] object sender, [NotNull] EventArgs e)
+        {
+            // rebind
+            this.BindData();
         }
 
         #endregion

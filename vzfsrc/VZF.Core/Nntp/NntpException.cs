@@ -24,6 +24,7 @@ namespace YAF.Core.Nntp
   /// <summary>
   /// The nntp exception.
   /// </summary>
+  [Serializable] 
   public class NntpException : Exception
   {
     /// <summary>

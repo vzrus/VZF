@@ -91,7 +91,13 @@ namespace YAF.Pages
       YafContext.Current.PageElements.RegisterJQueryUI();
 
       YafContext.Current.PageElements.RegisterJsBlock(
-        "yafPmTabsJs", JavaScriptBlocks.JqueryUITabsLoadJs(this.PmTabs.ClientID, this.hidLastTab.ClientID, false));
+                "yafPmTabsJs",
+                JavaScriptBlocks.JqueryUITabsLoadJs(
+                    this.PmTabs.ClientID,
+                    this.hidLastTab.ClientID,
+                    this.hidLastTabId.ClientID,
+                    false));
+
 
       base.OnPreRender(e);
     }

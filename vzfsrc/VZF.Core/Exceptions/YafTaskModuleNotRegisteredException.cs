@@ -29,6 +29,7 @@ namespace YAF.Core
   /// <summary>
   /// The yaf task module not registered exception.
   /// </summary>
+  [Serializable]
   public class YafTaskModuleNotRegisteredException : Exception
   {
     #region Constructors and Destructors

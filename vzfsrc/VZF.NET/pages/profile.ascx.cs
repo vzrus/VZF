@@ -24,6 +24,7 @@ namespace YAF.Pages
 
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.Security;
@@ -177,7 +178,13 @@ namespace YAF.Pages
 
             YafContext.Current.PageElements.RegisterJsBlock(
                 "ProfileTabsJs",
-                JavaScriptBlocks.JqueryUITabsLoadJs(this.ProfileTabs.ClientID, this.hidLastTab.ClientID, true));
+                JavaScriptBlocks.JqueryUITabsLoadJs(
+                    this.ProfileTabs.ClientID,
+                    this.hidLastTab.ClientID,
+                    this.hidLastTabId.ClientID,
+                    string.Empty,
+                    false,
+                    true));
 
             // Setup Syntax Highlight JS
             YafContext.Current.PageElements.RegisterJsResourceInclude(
@@ -759,11 +766,11 @@ namespace YAF.Pages
 
             this.ThanksFrom.Text =
                 CommonDb.user_getthanks_from(
-                    PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString();
+                    PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID).ToString(CultureInfo.InvariantCulture);
             int[] thanksToArray = CommonDb.user_getthanks_to(
                 PageContext.PageModuleID, userData.DBRow["userID"], this.PageContext.PageUserID);
-            this.ThanksToTimes.Text = thanksToArray[0].ToString();
-            this.ThanksToPosts.Text = thanksToArray[1].ToString();
+            this.ThanksToTimes.Text = thanksToArray[0].ToString(CultureInfo.InvariantCulture);
+            this.ThanksToPosts.Text = thanksToArray[1].ToString(CultureInfo.InvariantCulture);
             this.ReputationReceived.Text = YafReputation.GenerateReputationBar(userData.Points.Value, userData.UserID);
             this.OnlineStatusImage1.UserID = userID;
             this.OnlineStatusImage1.Visible = this.Get<YafBoardSettings>().ShowUserOnlineStatus;

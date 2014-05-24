@@ -132,13 +132,13 @@ namespace VZF.Utils.Helpers
     /// </returns>
     public string GetConfigValueAsString(string keyName)
     {
-      if (TrustLevel == AspNetHostingPermissionLevel.High)
+      if (this.TrustLevel == AspNetHostingPermissionLevel.High)
       {
         foreach (string key in AppSettingsFull.Settings.AllKeys)
         {
           if (key.Equals(keyName, StringComparison.CurrentCultureIgnoreCase))
           {
-            return AppSettingsFull.Settings[key].Value;
+            return this.AppSettingsFull.Settings[key].Value;
           }
         }
       }
@@ -148,7 +148,7 @@ namespace VZF.Utils.Helpers
         {
           if (key.Equals(keyName, StringComparison.CurrentCultureIgnoreCase))
           {
-            return AppSettings[key];
+            return this.AppSettings[key];
           }
         }
       }

@@ -125,7 +125,7 @@ namespace YAF.Pages.Admin
     /// </summary>
     private void BindData()
     {
-      this.ToList.DataSource = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null);
+      this.ToList.DataSource = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000);
       this.DataBind();
 
       var item = new ListItem(this.GetText("ADMIN_MAIL", "ALL_USERS"), "0");

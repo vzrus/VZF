@@ -302,7 +302,7 @@ namespace YAF.Pages.Admin
             this.LoadingImage.ImageUrl = YafForumInfo.GetURLToResource("images/loader.gif");
 
             // get list of user groups for filtering
-            using (DataTable dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (DataTable dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000))
             {
                 // add empty item for no filtering
                 DataRow newRow = dt.NewRow();

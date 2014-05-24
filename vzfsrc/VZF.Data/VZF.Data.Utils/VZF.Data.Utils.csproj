@@ -55,10 +55,6 @@
     <None Include="vzf14.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VZF.Classes\VZF.Classes.Config\VZF.Classes.Config.csproj">
-      <Project>{753c328a-21a5-4e20-969a-6bcc36019f77}</Project>
-      <Name>VZF.Classes.Config</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Utils\VZF.Utils.csproj">
       <Project>{F80E0025-E57E-4BB5-89F2-CFBCAC1AFCF4}</Project>
       <Name>VZF.Utils</Name>

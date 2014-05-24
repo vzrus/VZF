@@ -4022,6 +4022,10 @@ Visit {forumname} at {forumlink}
       <Resource tag="BOARD_SETUP">Board Setup</Resource>
       <Resource tag="BOARD_NAME">Board Name:</Resource>
       <Resource tag="BOARD_NAME_HELP">The name of the board.</Resource>
+      <Resource tag="PERSONALFORUMSINCATEGORIES">Personal forums in categories:</Resource>
+      <Resource tag="PERSONALFORUMSINCATEGORIES_HELP">Users can create personal forums(blogs) right in category.</Resource>
+      <Resource tag="PERSONALFORUMSASSUBFORUMS">Personal forums as subforums:</Resource>
+      <Resource tag="PERSONALFORUMSASSUBFORUMS_HELP">Users can create personal forums(blogs) as subforums.</Resource>
       <Resource tag="BOARD_THREADED">Allow Threaded:</Resource>
       <Resource tag="BOARD_THREADED_HELP">Allow threaded view for posts.</Resource>
       <Resource tag="BOARD_THEME">Theme:</Resource>
@@ -5283,6 +5287,12 @@ Visit {forumname} at {forumlink}
      <Resource tag="HOVERCARD_DELAY_HELP">The Delay before opening the Hover Card when a user hovers over a user name.</Resource>
      <Resource tag="TOPICFEED_COUNT">Max. Topics on the Forum Feed:</Resource>
      <Resource tag="TOPICFEED_COUNT_HELP">The maximum Amount of Topics to show on the Atom/Rss Feed.</Resource>
+     <Resource tag="EXPANDED">Expanded</Resource>
+     <Resource tag="COLLAPSED">Collapsed</Resource>
+     <Resource tag="VIEWSHOUTBOX_PERMISSION">Shout Box View Permission:</Resource>
+     <Resource tag="VIEWSHOUTBOX_PERMISSION_HELP">View Permission for the Shout Box to allow for all Users (Including Guests) or only registered users.</Resource>
+     <Resource tag="SHOUTBOX_DEFAULTSTATE">Shout Box Default State:</Resource>
+     <Resource tag="SHOUTBOX_DEFAULTSTATE_HELP">The Default State for the Shout Box if it should be collapsed or expanded (Note: the State is saved as cookie, if you change the value you need to delete the cookie to see the changes).</Resource>
    </page>
     <page name="ADMIN_TEST_DATA">
      <Resource tag="TITLE">Create Test Data (DEBUG Only)</Resource>

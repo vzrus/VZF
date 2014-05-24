@@ -8,15 +8,24 @@ using VZF.Data.DAL;
 
 namespace VzfDalHelper
 {
+    using System.Configuration;
+    using System.Web.Configuration;
+
     public class DalHelper
     {
         string mySqlConnectionString = "";
         string fbConnectionString = "";
         string msSqlConnectionString = "";
         string pgSqlConnectionString = "";
+        
+       // "FirebirdSql.Data.FirebirdClient""MySql.Data.MySqlClient""System.Data.SqlClient"
         public DataTable CheckInputParameters()
-        {             
-            using (var sc = new SQLCommand(mySqlConnectionString))
+        {
+            int i = 0;
+           foreach (ConnectionStringSettings constr in  WebConfigurationManager.ConnectionStrings)
+           {
+              
+             using (var sc = new SQLCommand(constr.ConnectionString, constr.ProviderName))
             {
               /*  sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
@@ -28,6 +37,11 @@ namespace VzfDalHelper
                 sc.CommandText.AppendObjectQuery("accessmask_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true); */
             }
+             
+               i++;
+           }
+        
+            
             return null;
         }
     }

@@ -31,17 +31,19 @@ namespace VZF.Data.Common
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
 
-    using VZF.Utils;
     using VZF.Data.DAL;
     using VZF.Types.Data;
     using VZF.Types.Objects;
+    using VZF.Utils;
     using VZF.Utils.Helpers;
 
     using YAF.Classes;
     using YAF.Types;
     using YAF.Types.Constants;
-    using YAF.Types.Objects;  
+    using YAF.Types.Objects;
 
     /// <summary>
     /// The common DB.
@@ -77,26 +79,28 @@ namespace VZF.Data.Common
         /// The accessmask_list.
         /// </summary>
         /// <param name="mid">
-        /// The mid.
+        ///     The mid.
         /// </param>
         /// <param name="boardId">
-        /// The board id.
+        ///     The board id.
         /// </param>
         /// <param name="accessMaskID">
-        /// The access mask id.
+        ///     The access mask id.
         /// </param>
         /// <param name="excludeFlags">
-        /// The exclude flags.
+        ///     The exclude flags.
         /// </param>
         /// <param name="pageUserID">
-        /// The page user id.
+        ///     The page user id.
         /// </param>
         /// <param name="isUserMask">
-        /// The is user mask.
+        ///     The is user mask.
         /// </param>
         /// <param name="isAdminMask">
-        /// The is admin mask.
+        ///     The is admin mask.
         /// </param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns>
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
@@ -107,17 +111,21 @@ namespace VZF.Data.Common
             object excludeFlags,
             object pageUserID,
             bool isUserMask,
-            bool isAdminMask)
+            bool isAdminMask,
+            int pageIndex,
+            int pageSize)
         {
             using (var sc = new SQLCommand(mid))
-            { 
+            {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExcludeFlags", excludeFlags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserMask", isUserMask));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsAdminMask", isAdminMask));
-                               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
+
                 sc.CommandText.AppendObjectQuery("accessmask_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
@@ -452,7 +460,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
-                
+
                 sc.CommandText.AppendObjectQuery("active_listforum", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
@@ -479,7 +487,7 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
-              
+
                 sc.CommandText.AppendObjectQuery("active_listtopic", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
@@ -615,7 +623,9 @@ namespace VZF.Data.Common
         /// Returns a <see cref="T:System.Data.DataTable"/> with list of pages access for admins. 
         /// </returns>
         public static DataTable admin_pageaccesslist(
-            int? mid, [CanBeNull] object boardId, [NotNull] object useStyledNicks)
+            int? mid,
+            [CanBeNull] object boardId,
+            [NotNull] object useStyledNicks)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -647,11 +657,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                int UserIdResult;
-                int.TryParse(userId.ToString(), out UserIdResult);
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserIdResult));
+                int userIdResult;
+                int.TryParse(userId.ToString(), out userIdResult);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userIdResult));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
-                
+
                 sc.CommandText.AppendObjectQuery("adminpageaccess_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
@@ -673,9 +683,9 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                int UserIdResult;
-                int.TryParse(userId.ToString(), out UserIdResult);
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserIdResult));
+                int userIdResult;
+                int.TryParse(userId.ToString(), out userIdResult);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userIdResult));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
 
                 sc.CommandText.AppendObjectQuery("adminpageaccess_delete", mid);
@@ -699,9 +709,9 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                int UserIdResult;
-                int.TryParse(userId.ToString(), out UserIdResult);
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", UserIdResult));
+                int userIdResult;
+                int.TryParse(userId.ToString(), out userIdResult);
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userIdResult));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_PageName", pageName));
 
                 sc.CommandText.AppendObjectQuery("adminpageaccess_save", mid);
@@ -748,11 +758,20 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_UserID",
+                        (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_AlbumID",
+                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
 
-                sc.CommandText.AppendObjectQuery("album_getstats", mid);                
-                var strow = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
+                sc.CommandText.AppendObjectQuery("album_getstats", mid);
+                var strow =
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
                 return new[] { Convert.ToInt32(strow["AlbumNumber"]), Convert.ToInt32(strow["ImageNumber"]) };
             }
         }
@@ -773,7 +792,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (albumId == null || albumId.ToString() == "0") ? null : albumId));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_AlbumID",
+                        (albumId == null || albumId.ToString() == "0") ? null : albumId));
 
                 sc.CommandText.AppendObjectQuery("album_gettitle", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
@@ -813,7 +836,8 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
+                sc.Parameters.Add(
+                    sc.CreateParameter(DbType.Int32, "i_ImageID", imageId.ToString() == "0" ? null : imageId));
 
                 sc.CommandText.AppendObjectQuery("album_image_download", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
@@ -863,21 +887,28 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", AlbumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", (ImageID == null || ImageID.ToString() == "0") ? null : ImageID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_ImageID",
+                        (ImageID == null || ImageID.ToString() == "0") ? null : ImageID));
 
                 sc.CommandText.AppendObjectQuery("album_image_list", mid);
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count <= 0)
                 {
-                    if (dt.Rows[0]["ImageID"] == DBNull.Value)
-                    {
-                        dt.Rows.RemoveAt(0);
-                        dt.AcceptChanges();
-                    }
+                    return dt;
                 }
 
+                if (dt.Rows[0]["ImageID"] != DBNull.Value)
+                {
+                    return dt;
+                }
+
+                dt.Rows.RemoveAt(0);
+                dt.AcceptChanges();
+
                 return dt;
-                
             }
         }
 
@@ -906,21 +937,35 @@ namespace VZF.Data.Common
         /// The content type.
         /// </param>
         public static void album_image_save(
-            int? mid, object imageId, object AlbumID, object Caption, object FileName, object Bytes, object ContentType)
+            int? mid,
+            object imageId,
+            object AlbumID,
+            object Caption,
+            object FileName,
+            object Bytes,
+            object ContentType)
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ImageID", (imageId == null || imageId.ToString() == "0") ? null : imageId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_ImageID",
+                        (imageId == null || imageId.ToString() == "0") ? null : imageId));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_AlbumID",
+                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Caption", Caption));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_FileName", FileName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Bytes", Bytes));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ContentType", ContentType));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
-                              
+
                 sc.CommandText.AppendObjectQuery("album_image_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -942,8 +987,16 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_UserID",
+                        (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_AlbumID",
+                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
 
                 sc.CommandText.AppendObjectQuery("album_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
@@ -975,15 +1028,27 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AlbumID", (AlbumID == null  || AlbumID.ToString() == "0") ? null : AlbumID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", (UserID == null || UserID.ToString() == "0") ? null : UserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Title", (Title == null || Title.ToString() == "") ? null : Title));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CoverImageID", CoverImageID));                
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_AlbumID",
+                        (AlbumID == null || AlbumID.ToString() == "0") ? null : AlbumID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.Int32,
+                        "i_UserID",
+                        (UserID == null || UserID.ToString() == "0") ? null : UserID));
+                sc.Parameters.Add(
+                    sc.CreateParameter(
+                        DbType.String,
+                        "i_Title",
+                        (Title == null || Title.ToString() == string.Empty) ? null : Title));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CoverImageID", CoverImageID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("album_save", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }            
+            }
         }
 
         /// <summary>
@@ -1012,31 +1077,38 @@ namespace VZF.Data.Common
 
 
                     sc.CommandText.AppendObjectQuery("attachment_list", mid);
-                    var tbAttachments = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-                    
+                    var tbAttachments = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true);
+
                     var uploadDir =
                         HostingEnvironmentUtil.MapPath(
-                            String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
-                    
+                            string.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+
                     foreach (DataRow row in tbAttachments.Rows)
                     {
                         try
                         {
-                            string fileName = String.Format(
-                                "{0}/{1}.{2}.yafupload", uploadDir, row["MessageID"], row["FileName"]);
+                            string fileName = string.Format(
+                                "{0}/{1}.{2}.yafupload",
+                                uploadDir,
+                                row["MessageID"],
+                                row["FileName"]);
                             if (File.Exists(fileName))
                             {
                                 File.Delete(fileName);
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
-                            eventlog_create(mid, null, "attachment_delete", ex, EventLogTypes.Error);
                             // error deleting that file.. 
+                            eventlog_create(mid, null, "attachment_delete", ex, EventLogTypes.Error);
+
                         }
                     }
                 }
-            } 
+            }
 
             using (var sc = new SQLCommand(mid))
             {
@@ -1044,7 +1116,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("attachment_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -1093,10 +1165,16 @@ namespace VZF.Data.Common
         /// Returns a <see cref="T:System.Data.DataTable"/> with an attachments list.
         /// </returns>
         public static DataTable attachment_list(
-            int? mid, object messageID, object attachmentID, object boardId, object pageIndex, object pageSize)
+            int? mid,
+            object messageID,
+            object attachmentID,
+            object boardId,
+            object pageIndex,
+            object pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
+                // string dd = sc.DataSource.WrapObjectName("attachment_list");
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AttachmentID", attachmentID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
@@ -1130,7 +1208,12 @@ namespace VZF.Data.Common
         /// The bytes stream for the attachment.
         /// </param>
         public static void attachment_save(
-            int? mid, object messageID, object fileName, object bytes, object contentType, Stream stream)
+            int? mid,
+            object messageID,
+            object fileName,
+            object bytes,
+            object contentType,
+            Stream stream)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -1150,7 +1233,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("attachment_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -1170,7 +1253,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("bannedip_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }           
+            }
         }
 
         /// <summary>
@@ -1195,18 +1278,22 @@ namespace VZF.Data.Common
         /// Returns a <see cref="T:System.Data.DataTable"/> with a banned ip list.
         /// </returns>
         public static DataTable bannedip_list(
-            int? mid, object boardId, object ID, [CanBeNull] object pageIndex, [CanBeNull] object pageSize)
+            int? mid,
+            object boardId,
+            object ID,
+            [CanBeNull] object pageIndex,
+            [CanBeNull] object pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", ID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", ID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
 
                 sc.CommandText.AppendObjectQuery("bannedip_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -1243,7 +1330,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("bannedip_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }       
+            }
         }
 
         /// <summary>
@@ -1259,11 +1346,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeId));             
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeId));
 
                 sc.CommandText.AppendObjectQuery("bbcode_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -1287,10 +1374,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BBCodeID", bbcodeID));
-           
+
                 sc.CommandText.AppendObjectQuery("bbcode_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -1306,7 +1393,7 @@ namespace VZF.Data.Common
         /// The bbcode id.
         /// </param>
         /// <returns>
-        /// The <see cref="{IEnumerable}"/> of BBCode list.
+        /// The <see cref="IEnumerable"/> of BBCode list.
         /// </returns>
         public static IEnumerable<TypedBBCode> BBCodeList(int? mid, int boardId, int? bbcodeID)
         {
@@ -1468,7 +1555,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("board_create", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }           
+            }
         }
 
         /// <summary>
@@ -1508,10 +1595,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-               
+
                 sc.CommandText.AppendObjectQuery("board_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -1533,7 +1620,10 @@ namespace VZF.Data.Common
         /// The <see cref="board_poststats_Result"/> with post statistics for a board.
         /// </returns>
         public static board_poststats_Result board_poststats(
-            int? mid, int? boardId, bool useStyledNicks, bool showNoCountPosts)
+            int? mid,
+            int? boardId,
+            bool useStyledNicks,
+            bool showNoCountPosts)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -1546,10 +1636,8 @@ namespace VZF.Data.Common
                 var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                 if (dt.Rows.Count > 0)
                 {
-                    return dt.Rows[0].Table.AsEnumerable()
-                           .Select(r => new board_poststats_Result(r))
-                           .ToList()[0]; 
-                }              
+                    return dt.Rows[0].Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];
+                }
             }
 
             // TODO:  get defaults - rewrite it on sql level to not call twice
@@ -1564,12 +1652,11 @@ namespace VZF.Data.Common
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                 if (dt.Rows.Count > 0)
                 {
-                    return dt.Rows[0].Table.AsEnumerable()
-                           .Select(r => new board_poststats_Result(r))
-                           .ToList()[0]; 
+                    return dt.Rows[0].Table.AsEnumerable().Select(r => new board_poststats_Result(r)).ToList()[0];
                 }
+
                 return null;
-            }          
+            }
         }
 
         /// <summary>
@@ -1628,7 +1715,12 @@ namespace VZF.Data.Common
         /// The <see cref="int"/> id of a saved board.
         /// </returns>
         public static int board_save(
-            int? mid, object boardId, object languageFile, object culture, object name, object allowThreaded)
+            int? mid,
+            object boardId,
+            object languageFile,
+            object culture,
+            object name,
+            object allowThreaded)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -1637,10 +1729,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_LanguageFile", languageFile));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Culture", culture));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_AllowThreaded", allowThreaded));
-            
+
                 sc.CommandText.AppendObjectQuery("board_save", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }    
+            }
         }
 
         /// <summary>
@@ -1660,14 +1752,12 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-             
+
                 sc.CommandText.AppendObjectQuery("board_stats", mid);
                 DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
                 if (dt.Rows.Count > 0)
                 {
-                    return dt.Rows[0].Table.AsEnumerable()
-                           .Select(r => new board_stats_Result(r))
-                           .ToList()[0];
+                    return dt.Rows[0].Table.AsEnumerable().Select(r => new board_stats_Result(r)).ToList()[0];
                 }
 
                 return null;
@@ -1692,13 +1782,14 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", true));
-            
+
                 sc.CommandText.AppendObjectQuery("board_userstats", mid);
-                using (var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                using (
+                    var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
                 {
                     return dt.Rows[0];
-                }                 
-            }          
+                }
+            }
         }
 
         /// <summary>
@@ -1724,13 +1815,14 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ToUserID", ToUserID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_UseDisplayName", true));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
-                             
+
                 sc.CommandText.AppendObjectQuery("buddy_addrequest", mid);
-                using (var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                using (
+                    var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
                 {
                     return new[] { dt.Rows[0]["i_paramOutput"].ToString(), dt.Rows[0]["i_approved"].ToString() };
                 }
-            }          
+            }
         }
 
         /// <summary>
@@ -1909,7 +2001,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
                 sc.CommandText.AppendObjectQuery("category_pfaccesslist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -1931,7 +2023,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable category_getadjacentforum(
-            int? mid, object boardId, object categoryID, object userId, bool isAfter)
+            int? mid,
+            object boardId,
+            object categoryID,
+            object userId,
+            bool isAfter)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -1942,7 +2038,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("category_getadjacentforum", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -1970,10 +2066,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryID));
-            
+
                 sc.CommandText.AppendObjectQuery("category_listread", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }      
+            }
         }
 
         /// <summary>
@@ -2009,7 +2105,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("category_simplelist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -2053,10 +2149,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortOrder", sortOrder));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_CategoryImage", categoryImage));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canHavePersForums));
-                
+
                 sc.CommandText.AppendObjectQuery("category_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -2076,10 +2172,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Email", email));
-            
+
                 sc.CommandText.AppendObjectQuery("checkemail_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -2108,7 +2204,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("checkemail_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -2131,7 +2227,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("checkemail_update", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -2168,7 +2264,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("choice_add", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -2185,10 +2281,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
-               
+
                 sc.CommandText.AppendObjectQuery("choice_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }                      
+            }
         }
 
         /// <summary>
@@ -2220,7 +2316,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("choice_update", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -2245,10 +2341,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ChoiceID", choiceID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_RemoteIP", remoteIP));
-                
+
                 sc.CommandText.AppendObjectQuery("choice_vote", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -2264,26 +2360,47 @@ namespace VZF.Data.Common
         /// </exception>
         public static string db_getstats_new(int? mid)
         {
+            string sql;
             string dataEngine;
             string connectionString;
             string namePattern = string.Empty;
+            string message;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_getstats_new(connectionString);
+                    sql = VZF.Data.MsSql.Db.db_getstats(out message);
+                    break;
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_getstats_new(connectionString);
+                    sql = VZF.Data.Postgre.Db.db_getstats(out message);
+                    break;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_getstats_new(connectionString);
+                    sql = VZF.Data.Mysql.Db.db_getstats(out message);
+                    break;
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_getstats_new(connectionString);
+                    sql = VZF.Data.Firebird.Db.db_getstats(out message);
+                    break;
                     // case SqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_getstats_new(connectionString); break;
                     // case SqlDbAccess.Db2: return VZF.Data.Db2.Db.db_getstats_new(connectionString); break;
                     // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_getstats_new(connectionString); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            try
+            {
+                using (var sc = new SQLCommand(mid))
+                {
+
+                    sc.CommandText.AppendQuery(sql);
+                    sc.ExecuteNonQuery(CommandType.Text, false);
+                    return "Reindexing complited.";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + "\r\n" + ex.StackTrace;
             }
         }
 
@@ -2329,69 +2446,6 @@ namespace VZF.Data.Common
         /// <param name="mid">
         /// The mid.
         /// </param>
-        /// <param name="dbRecoveryMode">
-        /// The db recovery mode.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static string db_recovery_mode_warning(int? mid, string dbRecoveryMode)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_recovery_mode_warning();
-                case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_recovery_mode_warning();
-                case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_recovery_mode_warning();
-                case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_recovery_mode_warning();
-                    // case SqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case SqlDbAccess.Db2: return VZF.Data.Db2.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
-
-        /*  public static string db_getstats_warning()
-      {
-          string dataEngine;
-          string connectionString;
-          int? mid = 0;  string namePattern = string.Empty;
-          SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-          switch (dataEngine)
-          {
-              case SqlDbAccess.MsSql: return  MsSql.Db.db_getstats_warning(); break;
-              case SqlDbAccess.Npgsql: return Postgre.Db.db_getstats_warning(); ; break;
-              case SqlDbAccess.MySql: return MySqlDb.Db.db_getstats_warning(); break;
-              case SqlDbAccess.Firebird: return FirebirdDb.Db.db_getstats_warning(); break;
-              // case SqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_getstats_warning(); break;
-              // case SqlDbAccess.Db2: return db2_db_getstats_warning(); break;
-              // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_getstats_warning(); break;
-              default:
-                  throw new ArgumentOutOfRangeException(dataEngine);
-                  break;
-
-          }
-
-      } */
-
-        /// <summary>
-        /// The db_recovery_mode_warning.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
@@ -2420,23 +2474,27 @@ namespace VZF.Data.Common
             string connectionString;
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string result = "Disabled";
 
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    VZF.Data.MsSql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    break;
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    VZF.Data.Postgre.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    break;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    VZF.Data.Mysql.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    break;
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
-                    // case SqlDbAccess.Oracle: return  VZF.Data.Oracle.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case SqlDbAccess.Db2: return VZF.Data.Db2.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
-                    // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_recovery_mode(connectionString, DBName, dbRecoveryMode); break;
+                    VZF.Data.Firebird.Db.db_recovery_mode_new(connectionString, dbRecoveryMode);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
+
+            return result;
         }
 
         /// <summary>
@@ -2456,22 +2514,43 @@ namespace VZF.Data.Common
             string connectionString;
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
+            string sql;
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_reindex_new(connectionString);
+                    sql = VZF.Data.MsSql.Db.db_reindex_new();
+                    break;
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_reindex_new(connectionString);
+                    sql = VZF.Data.Postgre.Db.db_reindex_new();
+                    break;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_reindex_new(connectionString);
+                    sql = VZF.Data.Mysql.Db.db_reindex_new();
+                    break;
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_reindex_new(connectionString);
-                    // case SqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_reindex_new(connectionString); break;
-                    // case SqlDbAccess.Db2: return VZF.Data.Db2.Db.db_reindex_new(connectionString); break;
-                    // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_reindex_new(connectionString); break;
+                    sql = VZF.Data.Firebird.Db.db_reindex_new();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!sql.IsSet())
+            {
+                return "Operation is not supported";
+            }
+
+            try
+            {
+                using (var sc = new SQLCommand(mid))
+                {
+                    sc.CommandText.AppendQuery(sql);
+
+                    sc.ExecuteNonQuery(CommandType.Text, false);
+                    return "Database is reindexed succesfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + "\r\n" + ex.StackTrace;
             }
         }
 
@@ -2530,26 +2609,21 @@ namespace VZF.Data.Common
         /// </exception>
         public static string db_runsql_new(int? mid, string sql, bool useTransaction)
         {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
+            try
             {
-                case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_runsql_new(connectionString, sql, useTransaction);
-                case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_runsql_new(connectionString, sql, useTransaction);
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.db_runsql_new(connectionString, sql,  useTransaction);
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.db_runsql_new(connectionString, sql,  useTransaction);
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.db_runsql_new(connectionString, sql, useTransaction); 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                sql = sql.Trim().Replace("{databaseOwner}", Config.DatabaseOwner);
+                sql = sql.Trim().Replace("{databaseName}", Config.DatabaseSchemaName);
+                sql = sql.Replace("{objectQualifier}", Config.DatabaseObjectQualifier);
+
+                using (var command = new SQLCommand(mid))
+                {
+                    command.CommandText.AppendQuery(sql);
+                    return InnerRunSqlExecuteReader(command, useTransaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
 
@@ -2570,22 +2644,44 @@ namespace VZF.Data.Common
             string connectionString;
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
+            string result;
+            string message = null;
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.db_shrink_new(connectionString);
+                    result = VZF.Data.MsSql.Db.db_shrink_new(out message).FormatWith("databaseNameHere");
+                    break;
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_shrink_new(connectionString);
+                    result = VZF.Data.Postgre.Db.db_shrink_new(out message);
+                    break;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.db_shrink_new(connectionString);
+                    result = string.Empty;
+                    break;
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.db_shrink_new(connectionString);
-                    // case SqlDbAccess.Oracle: return VZF.Data.Oracle.Db.db_shrink(connectionString); 
-                    // case SqlDbAccess.Db2: return VZF.Data.Db2.Db.db_shrink(connectionString); 
-                    // case SqlDbAccess.Other: return VZF.Data.Other.Db.db_shrink(connectionString); 
+                    result = string.Empty;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!result.IsSet())
+            {
+                return "The operation is not supported";
+            }
+
+            try
+            {
+                using (var sc = new SQLCommand(mid))
+                {
+                    sc.CommandText.AppendQuery(result);
+
+                    sc.ExecuteNonQuery(CommandType.Text, false);
+                    return message;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + "\r\n" + ex.StackTrace;
             }
         }
 
@@ -2612,19 +2708,15 @@ namespace VZF.Data.Common
                 case SqlDbAccess.MsSql:
                     return VZF.Data.MsSql.Db.db_shrink_warning();
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.db_shrink_warning(connectionString);
+                    return VZF.Data.Postgre.Db.db_shrink_warning();
                 case SqlDbAccess.MySql:
                     return VZF.Data.Mysql.Db.db_shrink_warning();
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.db_shrink_warning();
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.db_shrink_warning(connectionString);
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.db_shrink_warning(connectionStringe);
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.db_shrink_warning(connectionString); 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
-
 
         /// <summary>
         /// The ds_forumadmin.
@@ -2648,81 +2740,103 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                using (var ds = new DataSet())                
+                using (var ds = new DataSet())
                 {
-                    var conn = sc.GetConnection(); 
-                    sc.BeginTransaction();
-                    using (var trans = sc.Transaction)
-                    {                       
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
-                        
-                        sc.CommandText.AppendObjectQuery("category_list", mid);
-                        var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                        dt.TableName = ObjectName.GetVzfObjectName("Category", mid);
-                        ds.Tables.Add(dt);
-                     
-                        sc.Parameters.Clear();
+                    // var conn = sc.GetConnection(); 
+                    //  sc.BeginTransaction();
+                    //   using (var trans = sc.Transaction)
+                    //  {                       
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
 
-                        sc.CommandText.Clear();
+                    sc.CommandText.AppendObjectQuery("category_list", mid);
+                    var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                    dt.TableName = ObjectName.GetVzfObjectName("Category", mid);
+                    ds.Tables.Add(dt);
 
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", DBNull.Value));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", pageUserID));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", isUserForum));
+                    sc.Parameters.Clear();
 
-                        sc.CommandText.AppendObjectQuery("forum_list", mid);
-                        dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                        dt.TableName = ObjectName.GetVzfObjectName("ForumUnsorted", mid); 
-                        ds.Tables.Add(dt);
-                        // TODO: missing transaction
-                        if (trans != null)
-                        trans.Commit();  
+                    sc.CommandText.Clear();
 
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", DBNull.Value));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", pageUserID));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", isUserForum));
+
+                    sc.CommandText.AppendObjectQuery("forum_list", mid);
+                    dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+                    dt.TableName = ObjectName.GetVzfObjectName("ForumUnsorted", mid);
+                    ds.Tables.Add(dt);
+
+                    // TODO: missing transaction
+                    // if (trans != null)
+                    // trans.Commit();  
+
+                    // }
+
+                    using (var dtForumListSorted = ds.Tables[ObjectName.GetVzfObjectName("ForumUnsorted", mid)].Clone())
+                    {
+                        dtForumListSorted.TableName = ObjectName.GetVzfObjectName("Forum", mid);
+                        ds.Tables.Add(dtForumListSorted);
                     }
 
-                        using (var dtForumListSorted =
-                                ds.Tables[ObjectName.GetVzfObjectName("ForumUnsorted", mid)].Clone())
-                        {
-                            dtForumListSorted.TableName = ObjectName.GetVzfObjectName("Forum", mid); 
-                            ds.Tables.Add(dtForumListSorted);
-                        }
+                    forum_list_sort_basic(
+                        ds.Tables[ObjectName.GetVzfObjectName("ForumUnsorted", mid)],
+                        ds.Tables[ObjectName.GetVzfObjectName("Forum", mid)],
+                        0,
+                        0);
+                    ds.Tables.Remove(ObjectName.GetVzfObjectName("ForumUnsorted", mid));
+                    ds.Relations.Add(
+                        "FK_Forum_Category",
+                        ds.Tables[ObjectName.GetVzfObjectName("Category", mid)].Columns["CategoryID"],
+                        ds.Tables[ObjectName.GetVzfObjectName("Forum", mid)].Columns["CategoryID"]);
 
-                        forum_list_sort_basic(
-                             ds.Tables[ObjectName.GetVzfObjectName("ForumUnsorted", mid)],
-                             ds.Tables[ObjectName.GetVzfObjectName("Forum", mid)],
-                             0,
-                             0);
-                        ds.Tables.Remove(ObjectName.GetVzfObjectName("ForumUnsorted", mid));
-                        ds.Relations.Add(
-                            "FK_Forum_Category",
-                            ds.Tables[ObjectName.GetVzfObjectName("Category", mid)].Columns["CategoryID"],
-                            ds.Tables[ObjectName.GetVzfObjectName("Forum", mid)].Columns["CategoryID"]);
-
-                        return ds;                    
+                    return ds;
                 }
-            }        
+            }
         }
 
-        public static void forum_list_sort_basic(DataTable listsource, DataTable list, int parentid, int currentLvl)
+        /// <summary>
+        /// The forum_list_sort_basic.
+        /// </summary>
+        /// <param name="listsource">
+        /// The listsource.
+        /// </param>
+        /// <param name="list">
+        /// The list.
+        /// </param>
+        /// <param name="parentid">
+        /// The parentid.
+        /// </param>
+        /// <param name="currentLevel">
+        /// The current lvl.
+        /// </param>
+        public static void forum_list_sort_basic(DataTable listsource, DataTable list, int parentid, int currentLevel)
         {
             for (var i = 0; i < listsource.Rows.Count; i++)
             {
                 DataRow row = listsource.Rows[i];
-                if ((row["ParentID"]) == DBNull.Value) row["ParentID"] = 0;
+                if (row["ParentID"] == DBNull.Value)
+                {
+                    row["ParentID"] = 0;
+                }
 
                 if ((int)row["ParentID"] != parentid)
                 {
                     continue;
                 }
 
-                string sIndent = string.Empty;
-                int iIndent = Convert.ToInt32(currentLvl);
+                string indentString = string.Empty;
+                int indentInt = Convert.ToInt32(currentLevel);
 
-                for (var j = 0; j < iIndent; j++) sIndent += "--";
-                row["Name"] = string.Format(" -{0} {1}", sIndent, row["Name"]);
+                for (var j = 0; j < indentInt; j++)
+                {
+                    indentString += "--";
+                }
+
+                row["Name"] = string.Format(" -{0} {1}", indentString, row["Name"]);
                 list.Rows.Add(row.ItemArray);
-                forum_list_sort_basic(listsource, list, (int)row["ForumID"], currentLvl + 1);
+                forum_list_sort_basic(listsource, list, (int)row["ForumID"], currentLevel + 1);
             }
         }
 
@@ -2744,7 +2858,7 @@ namespace VZF.Data.Common
         public static void eventlog_create(int? mid, object userId, object source, object description)
         {
             eventlog_create(mid, userId, source, description, EventLogTypes.Debug);
-        }      
+        }
 
         /// <summary>
         /// The eventlog_create.
@@ -2764,24 +2878,35 @@ namespace VZF.Data.Common
         /// <param name="type">
         /// The type.
         /// </param>
-        public static void eventlog_create(int? mid, object userId, object source, object description, EventLogTypes type)
+        public static void eventlog_create(
+            int? mid,
+            object userId,
+            object source,
+            object description,
+            EventLogTypes type)
         {
-           try
+            try
             {
                 source = source.GetType().ToString();
             }
             catch
             {
-
             }
 
-           if (description is Exception)
-           {
-               var ex = (Exception)description;
-               description = ex.Message + "/r/n" + ex.Source + "/r/n/" + ex.StackTrace;
-           }
-               
-          using (var sc = new SQLCommand(mid))
+            if (description is Exception)
+            {
+                var ex = (Exception)description;
+                description = ex.Message + "\r\n" + ex.Source + "/r/n/" + ex.StackTrace;
+            }
+
+            // TODO: Implement the object existance as it throws errors during install
+            if (GetIsForumInstalled(mid))
+            {
+#if !DEBUG
+                try{
+#endif
+
+                using (var sc = new SQLCommand(mid))
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Source", source));
@@ -2791,7 +2916,15 @@ namespace VZF.Data.Common
 
                     sc.CommandText.AppendObjectQuery("eventlog_create", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
-               } 
+                }
+#if !DEBUG
+                }
+                catch(Exception e)
+                {
+                  throw;
+                }
+#endif
+            }
         }
 
         /// <summary>
@@ -2830,7 +2963,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("eventlog_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -2854,7 +2987,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("eventlog_deletebyuser", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }             
+            }
         }
 
         /// <summary>
@@ -2920,7 +3053,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("eventlog_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -2939,16 +3072,18 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>       
         public static DataTable eventloggroupaccess_list(
-            int? mid, [NotNull] object groupID, [NotNull] object eventTypeId)
+            int? mid,
+            [NotNull] object groupID,
+            [NotNull] object eventTypeId)
         {
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_EventTypeID", eventTypeId));
-                
+
                 sc.CommandText.AppendObjectQuery("eventloggroupaccess_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -2968,10 +3103,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-              
+
                 sc.CommandText.AppendObjectQuery("group_eventlogaccesslist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -3008,7 +3143,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("eventloggroupaccess_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }   
+            }
         }
 
         /// <summary>
@@ -3027,7 +3162,10 @@ namespace VZF.Data.Common
         /// The event type name.
         /// </param>
         public static void eventloggroupaccess_delete(
-            int? mid, [NotNull] object groupId, [NotNull] object eventTypeId, [NotNull] object eventTypeName)
+            int? mid,
+            [NotNull] object groupId,
+            [NotNull] object eventTypeId,
+            [NotNull] object eventTypeName)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -3037,7 +3175,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("eventloggroupaccess_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -3059,7 +3197,7 @@ namespace VZF.Data.Common
 
                     sc.CommandText.AppendObjectQuery("extension_delete", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
-                }             
+                }
 
             }
             catch
@@ -3085,10 +3223,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ExtensionID", extensionId));
-                
+
                 sc.CommandText.AppendObjectQuery("extension_edit", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -3132,7 +3270,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("extension_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -3160,7 +3298,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("extension_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -3185,7 +3323,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable forum_byuserlist(
-            int? mid, object boardId, object forumId, object userId, object isUserForum)
+            int? mid,
+            object boardId,
+            object forumId,
+            object userId,
+            object isUserForum)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -3223,7 +3365,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_categoryaccess_activeuser", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }             
+            }
         }
 
         /// <summary>
@@ -3252,7 +3394,7 @@ namespace VZF.Data.Common
                 }
 
                 return true;
-            }           
+            }
         }
 
         /// <summary>
@@ -3272,14 +3414,14 @@ namespace VZF.Data.Common
         /// </returns>        
         public static bool forum_move(int? mid, [NotNull] object forumOldID, [NotNull] object forumNewID)
         {
-            using (var sc = new SQLCommand(mid))             
+            using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumOldID));
 
                 sc.CommandText.AppendObjectQuery("forum_listSubForums", mid);
 
                 // if a forum already exists.
-                if(!(sc.ExecuteScalar(CommandType.StoredProcedure) is DBNull))
+                if (!(sc.ExecuteScalar(CommandType.StoredProcedure) is DBNull))
                 {
                     return false;
                 }
@@ -3291,9 +3433,9 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumNewID", forumNewID));
                 sc.CommandText.AppendObjectQuery("forum_move", mid);
 
-                //TODO: command timeout should be very large here
-                sc.ExecuteNonQuery(CommandType.StoredProcedure);    
-          
+                // TODO: command timeout should be very large here
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+
                 if (Config.LargeForumTree)
                 {
                     forum_ns_recreate(mid);
@@ -3329,7 +3471,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -3381,7 +3523,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_listall", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -3392,7 +3534,10 @@ namespace VZF.Data.Common
         /// <param name="categoryID">The category ID. </param>
         /// <returns>DataTable with list</returns>
         public static DataTable forum_listall_fromCat(
-            int? mid, object boardId, object categoryID, bool allowUserForumsOnly)
+            int? mid,
+            object boardId,
+            object categoryID,
+            bool allowUserForumsOnly)
         {
             return forum_listall_fromCat(mid, boardId, categoryID, true, allowUserForumsOnly);
         }
@@ -3419,21 +3564,38 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>        
         public static DataTable forum_listall_fromCat(
-            int? mid, object boardId, object categoryID, bool emptyFirstRow, bool allowUserForumsOnly)
+            int? mid,
+            object boardId,
+            object categoryID,
+            bool emptyFirstRow,
+            bool allowUserForumsOnly)
         {
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", Convert.ToInt32(categoryID.ToString())));
+                sc.Parameters.Add(
+                    sc.CreateParameter(DbType.Int32, "i_CategoryID", Convert.ToInt32(categoryID.ToString())));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_AllowUserForumsOnly", allowUserForumsOnly));
 
                 sc.CommandText.AppendObjectQuery("forum_listall_fromCat", mid);
-              
-                using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+
+                using (
+                    DataTable dt = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true))
                 {
-                    return forum_sort_list(mid, dt, 0, Convert.ToInt32(categoryID.ToString()), 0, null, emptyFirstRow, true);
+                    return forum_sort_list(
+                        mid,
+                        dt,
+                        0,
+                        Convert.ToInt32(categoryID.ToString()),
+                        0,
+                        null,
+                        emptyFirstRow,
+                        true);
                 }
-            }   
+            }
         }
 
         /// <summary>
@@ -3526,7 +3688,13 @@ namespace VZF.Data.Common
             }
 
             forum_sort_list_recursive(
-                mid, dv.ToTable(), listDestination, parentId, categoryId, startingIndent, returnAll);
+                mid,
+                dv.ToTable(),
+                listDestination,
+                parentId,
+                categoryId,
+                startingIndent,
+                returnAll);
 
             return listDestination;
         }
@@ -3551,7 +3719,7 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable forum_listall_sorted(int? mid, object boardId, object userId, int[] forumidExclusions)
         {
-            return forum_listall_sorted(mid, boardId, userId, null, false, new int[] {0}, false);
+            return forum_listall_sorted(mid, boardId, userId, null, false, new int[] { 0 }, false);
         }
 
         /// <summary>
@@ -3571,7 +3739,9 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable forum_listall_sorted(int? mid, object boardId, object userId)
         {
-            return !Config.LargeForumTree ? forum_listall_sorted(mid, boardId, userId, null, false, new int[] {0}, false) : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
+            return !Config.LargeForumTree
+                       ? forum_listall_sorted(mid, boardId, userId, null, false, new int[] { 0 }, false)
+                       : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
         }
 
         /// <summary>
@@ -3594,7 +3764,9 @@ namespace VZF.Data.Common
         /// </returns>
         public static DataTable forum_listall_sorted_all(int? mid, object boardId, object userId, bool returnAll)
         {
-            return !Config.LargeForumTree ? forum_listall_sorted(mid, boardId, userId, null, false, new int[] {0}, returnAll) : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
+            return !Config.LargeForumTree
+                       ? forum_listall_sorted(mid, boardId, userId, null, false, new int[] { 0 }, returnAll)
+                       : forum_ns_getchildren_activeuser(mid, (int)boardId, 0, 0, (int)userId, false, false, "-");
         }
 
         /// <summary>
@@ -3649,7 +3821,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_ns_getchildren_activeuser", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -3662,7 +3834,7 @@ namespace VZF.Data.Common
                 sc.CommandText.AppendObjectQuery("forum_ns_recreate", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
-           
+
         }
 
         /// <summary>
@@ -3711,7 +3883,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_ns_getchildren", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -3776,7 +3948,14 @@ namespace VZF.Data.Common
                 }
 
                 return forum_sort_list(
-                    mid, dataTable, baseForumId, baseCategoryId, 0, forumidExclusions, emptyFirstRow, returnAll);
+                    mid,
+                    dataTable,
+                    baseForumId,
+                    baseCategoryId,
+                    0,
+                    forumidExclusions,
+                    emptyFirstRow,
+                    returnAll);
             }
         }
 
@@ -3799,7 +3978,11 @@ namespace VZF.Data.Common
         /// The current lvl.
         /// </param>
         public static void forum_list_sort_basic(
-            int? mid, DataTable listsource, DataTable list, int parentid, int currentLvl)
+            int? mid,
+            DataTable listsource,
+            DataTable list,
+            int parentid,
+            int currentLvl)
         {
             for (var i = 0; i < listsource.Rows.Count; i++)
             {
@@ -3902,7 +4085,13 @@ namespace VZF.Data.Common
 
                 // recurse through the list...
                 forum_sort_list_recursive(
-                    mid, listSource, listDestination, (int)row["ForumID"], categoryID, currentIndent + 1, returnAll);
+                    mid,
+                    listSource,
+                    listDestination,
+                    (int)row["ForumID"],
+                    categoryID,
+                    currentIndent + 1,
+                    returnAll);
             }
         }
 
@@ -3963,7 +4152,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_tags", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }               
+            }
         }
 
         /// <summary>
@@ -3987,10 +4176,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-              
+
                 sc.CommandText.AppendObjectQuery("forum_listallMyModerated", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -4012,10 +4201,10 @@ namespace VZF.Data.Common
                 using (var sc = new SQLCommand(mid))
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
-                   
+
                     sc.CommandText.AppendObjectQuery("forum_listpath", mid);
                     return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-                }  
+                }
             }
 
             using (var sc = new SQLCommand(mid))
@@ -4184,32 +4373,32 @@ namespace VZF.Data.Common
             {
                 using (var ds = new DataSet())
                 {
-                    var conn = sc.GetConnection();
-                    sc.BeginTransaction();
-                    using (var trans = sc.Transaction)
-                    {
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
-                        sc.CommandText.AppendObjectQuery("category_list", mid);
-                        var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                        dt.TableName = "Category";
-                        ds.Tables.Add(dt);
+                    //  var conn = sc.GetConnection();
+                    //  sc.BeginTransaction();
+                    //  using (var trans = sc.Transaction)
+                    //  {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", DBNull.Value));
+                    sc.CommandText.AppendObjectQuery("category_list", mid);
+                    var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                    dt.TableName = "Category";
+                    ds.Tables.Add(dt);
 
-                        sc.Parameters.Clear();
-                        sc.CommandText.Clear();
+                    sc.Parameters.Clear();
+                    sc.CommandText.Clear();
 
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", false));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", false));
 
-                        sc.CommandText.AppendObjectQuery("forum_moderatelist", mid);
-                        dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
-                        dt.TableName = "ForumUnsorted";
-                        ds.Tables.Add(dt);
-                        // TODO: missing transaction
-                        if (trans != null)
-                            trans.Commit();  
-                    }
+                    sc.CommandText.AppendObjectQuery("forum_moderatelist", mid);
+                    dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false);
+                    dt.TableName = "ForumUnsorted";
+                    ds.Tables.Add(dt);
+                    // TODO: missing transaction
+                    //  if (trans != null)
+                    //     trans.Commit();  
+                    //  }
 
                     using (var dtForumListSorted = ds.Tables["ForumUnsorted"].Clone())
                     {
@@ -4217,25 +4406,20 @@ namespace VZF.Data.Common
                         ds.Tables.Add(dtForumListSorted);
                     }
 
-                    forum_list_sort_basic(
-                              ds.Tables["ForumUnsorted"],
-                              ds.Tables["Forum"],
-                              0,
-                              0);
+                    forum_list_sort_basic(ds.Tables["ForumUnsorted"], ds.Tables["Forum"], 0, 0);
                     ds.Tables.Remove("ForumUnsorted");
 
                     // vzrus: Remove here all forums with no reports. Would be better to do it in query...
                     // Array to write categories numbers
                     var categories = new int[ds.Tables["Forum"].Rows.Count];
                     int cntr = 0;
-                   
+
                     //We should make it before too as the colection was changed
                     ds.Tables["Forum"].AcceptChanges();
                     foreach (DataRow dr in ds.Tables["Forum"].Rows)
                     {
                         categories[cntr] = Convert.ToInt32(dr["CategoryID"]);
-                        if (Convert.ToInt32(dr["ReportedCount"]) == 0
-                            && Convert.ToInt32(dr["MessageCount"]) == 0)
+                        if (Convert.ToInt32(dr["ReportedCount"]) == 0 && Convert.ToInt32(dr["MessageCount"]) == 0)
                         {
                             dr.Delete();
                             categories[cntr] = 0;
@@ -4271,7 +4455,7 @@ namespace VZF.Data.Common
                         "FK_Forum_Category",
                         ds.Tables["Category"].Columns["CategoryID"],
                         ds.Tables["Forum"].Columns["CategoryID"]);
-                    
+
                     return ds;
                 }
             }
@@ -4292,12 +4476,12 @@ namespace VZF.Data.Common
         public static DataTable forum_moderators(int? mid, bool useStyledNicks)
         {
             using (var sc = new SQLCommand(mid))
-            {          
+            {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
 
                 sc.CommandText.AppendObjectQuery("forum_moderators", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -4321,7 +4505,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forum_resync", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -4441,11 +4625,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserForum", isUserForum));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canhavepersforums));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_CanHavePersForums", canhavepersforums));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("forum_save", mid);
-                
+
                 object resultop = sc.ExecuteScalar(CommandType.StoredProcedure);
 
                 if (resultop == DBNull.Value)
@@ -4479,12 +4663,12 @@ namespace VZF.Data.Common
         public static int forum_save_parentschecker(int? mid, object forumID, object parentID)
         {
             using (var sc = new SQLCommand(mid))
-            {             
+            {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ParentID", parentID));
                 sc.CommandText.AppendObjectQuery("forum_save_prntchck", mid);
-                return  Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }            
+                return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
+            }
         }
 
         /// <summary>
@@ -4516,11 +4700,11 @@ namespace VZF.Data.Common
                 }
 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_StartID", startID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", limit));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", limit));
 
                 sc.CommandText.AppendObjectQuery("forum_simplelist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -4551,19 +4735,27 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forumaccess_group", mid);
                 return userforumaccess_sort_list(
-                  mid, sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true), 0, 0, 0);               
-            }    
+                    mid,
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true),
+                    0,
+                    0,
+                    0);
+            }
         }
 
         private static DataTable userforumaccess_sort_list(
-    [NotNull] int? mid, DataTable listSource, int parentID, int categoryID, int startingIndent)
+            [NotNull] int? mid,
+            DataTable listSource,
+            int parentID,
+            int categoryID,
+            int startingIndent)
         {
 
             var listDestination = new DataTable();
 
             listDestination.Columns.Add("ForumID", typeof(String));
             listDestination.Columns.Add("ForumName", typeof(String));
-          
+
             //it is used in two different procedures with different tables, 
             //so, we must add correct columns
             if (listSource.Columns.IndexOf("AccessMaskName") >= 0) listDestination.Columns.Add("AccessMaskName", typeof(String));
@@ -4576,7 +4768,12 @@ namespace VZF.Data.Common
 
             DataView dv = listSource.DefaultView;
             userforumaccess_sort_list_recursive(
-                mid, dv.ToTable(), listDestination, parentID, categoryID, startingIndent);
+                mid,
+                dv.ToTable(),
+                listDestination,
+                parentID,
+                categoryID,
+                startingIndent);
             return listDestination;
         }
 
@@ -4628,7 +4825,7 @@ namespace VZF.Data.Common
                 }
             }
         }
-        
+
 
         /// <summary>
         /// The forumaccess_personalgroup.
@@ -4649,7 +4846,10 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable forumaccess_personalgroup(
-            int? mid, object groupID, object userId, bool includeUserForums)
+            int? mid,
+            object groupID,
+            object userId,
+            bool includeUserForums)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -4659,7 +4859,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forumaccess_personalgroup", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -4690,7 +4890,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forumaccess_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -4718,7 +4918,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("forumaccess_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /// <summary>
@@ -4740,7 +4940,10 @@ namespace VZF.Data.Common
         /// The <see cref="{IEnumerable}"/>.
         /// </returns>
         public static IEnumerable<TypedForumListAll> ForumListAll(
-            int? mid, int boardId, int userId, bool includeNoAccess)
+            int? mid,
+            int boardId,
+            int userId,
+            bool includeNoAccess)
         {
             return forum_listall(mid, boardId, userId, 0, false).AsEnumerable().Select(r => new TypedForumListAll(r));
         }
@@ -4761,8 +4964,7 @@ namespace VZF.Data.Common
         /// The forum list all.
         /// </returns>
         [NotNull]
-        public static IEnumerable<TypedForumListAll> ForumListAll(
-            int? mid, int boardId, int userId, int startForumId)
+        public static IEnumerable<TypedForumListAll> ForumListAll(int? mid, int boardId, int userId, int startForumId)
         {
             var allForums = ForumListAll(mid, boardId, userId, 0);
 
@@ -4814,7 +5016,12 @@ namespace VZF.Data.Common
         /// <returns>
         /// The <see cref="IEnumerable<TypedForumListAll>"/>.
         /// </returns>
-        public static IEnumerable<TypedForumListAll> ForumListAll([NotNull] int? mid, int boardId, int userId, List<int> startForumId, bool includeNoAccess)
+        public static IEnumerable<TypedForumListAll> ForumListAll(
+            [NotNull] int? mid,
+            int boardId,
+            int userId,
+            List<int> startForumId,
+            bool includeNoAccess)
         {
             var allForums = ForumListAll(mid, boardId, userId);
 
@@ -4928,7 +5135,8 @@ namespace VZF.Data.Common
                     // needs upgrading..
                     redirect =
                         "install/default.aspx?upgrade={0}&md={1}".FormatWith(
-                            registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0, mid ?? 1);
+                            registry.Rows.Count != 0 ? Convert.ToInt32(registry.Rows[0]["Value"]) : 0,
+                            mid ?? 1);
                 }
             }
             catch (Exception ex)
@@ -4937,7 +5145,7 @@ namespace VZF.Data.Common
                 redirect = "install/";
             }
 
-            return redirect;      
+            return redirect;
         }
 
         /// <summary>
@@ -4961,7 +5169,7 @@ namespace VZF.Data.Common
         /// <param name="categoryId">
         /// The category id.
         /// </param>
-        /// <param name="forumIDToStartAt">
+        /// <param name="forumIdToStartAt">
         /// The forum id to start at.
         /// </param>
         /// <param name="userId">
@@ -4994,7 +5202,7 @@ namespace VZF.Data.Common
             SearchWhatFlags searchFromWhoMethod,
             SearchWhatFlags searchWhatMethod,
             List<int> categoryId,
-            List<int> forumIDToStartAt,
+            List<int> forumIdToStartAt,
             int userId,
             int boardId,
             int maxResults,
@@ -5007,74 +5215,217 @@ namespace VZF.Data.Common
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
+            // New access
+            /*  if (toSearchWhat == "*")
+              {
+                  toSearchWhat = string.Empty;
+              }
+
+              IEnumerable<int> forumIds = new List<int>();
+
+              if (forumIdToStartAt != 0)
+              {
+                  forumIds = ForumListAll(boardId, userID, forumIdToStartAt).Select(f => f.ForumID ?? 0).Distinct();
+              }
+
+              string searchSql = new SearchBuilder().BuildSearchSql(toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, userID, searchDisplayName, boardId, maxResults, useFullText, forumIds);
+
+              using (SqlCommand cmd = PostgreDbAccess.GetCommand(searchSql, true))
+              {
+                  return PostgreDbAccess.Current.GetData(cmd);
+              } */
+
+            if (toSearchWhat == "*")
+            {
+                toSearchWhat = string.Empty;
+            }
+
+            string forumIDs = string.Empty;
+            string categoriesIds = string.Empty;
+
+            if (categoryId.Any())
+            {
+                if (Config.LargeForumTree)
+                {
+                    DataTable dt = CommonDb.forum_categoryaccess_activeuser(mid, boardId, userId);
+                    foreach (DataRow c in dt.Rows)
+                    {
+                        foreach (int c1 in categoryId)
+                        {
+                            if (Convert.ToInt32(c["CategoryID"]) == c1)
+                            {
+                                categoriesIds = categoriesIds + "," + c1;
+                            }
+                        }
+                    }
+
+                    categoriesIds = categoriesIds.Trim(',');
+                }
+            }
+
+            if (forumIdToStartAt.Any())
+            {
+                if (!Config.LargeForumTree)
+                {
+                    DataTable dt = CommonDb.forum_listall_sorted(mid, boardId, userId, forumIdToStartAt.ToArray<int>());
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        forumIDs = forumIDs + Convert.ToInt32(dr["ForumID"]) + ",";
+                    }
+
+                    forumIDs = forumIDs.Substring(0, forumIDs.Length - 1);
+                }
+                else
+                {
+                    foreach (int frms in forumIdToStartAt)
+                    {
+                        var d1 = CommonDb.forum_ns_getchildren_activeuser(
+                            mid,
+                            boardId,
+                            0,
+                            frms,
+                            userId,
+                            false,
+                            false,
+                            "-");
+
+                        foreach (DataRow r in d1.Rows)
+                        {
+                            forumIDs += "," + r["ForumID"];
+                        }
+
+                        // Parent forum only.
+                        if (!includeChildren)
+                        {
+                            break;
+                        }
+                    }
+
+                    forumIDs = forumIDs.Trim(',');
+                }
+            }
+
+            // fix quotes for SQL insertion...
+            toSearchWhat = toSearchWhat.Replace("'", "''").Trim();
+            toSearchFromWho = toSearchFromWho.Replace("'", "''").Trim();
+            string sql;
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return SearchResult.GetMsSearchResult(
+                    sql = new VZF.Data.MsSql.Search.SearchBuilder().BuildSearchSql(
                         mid,
                         toSearchWhat,
                         toSearchFromWho,
                         searchFromWhoMethod,
                         searchWhatMethod,
-                        categoryId,
-                        forumIDToStartAt,
                         userId,
+                        searchDisplayName,
                         boardId,
                         maxResults,
                         useFullText,
-                        searchDisplayName,
-                        includeChildren);
+                        forumIDs,
+                        forumIdToStartAt);
+                    break;
                 case SqlDbAccess.Npgsql:
-                    return SearchResult.GetPgSearchResult(
+                    sql = new VZF.Data.Postgre.Search.SearchBuilder().BuildSearchSql(
                         mid,
                         toSearchWhat,
                         toSearchFromWho,
                         searchFromWhoMethod,
                         searchWhatMethod,
-                        categoryId,
-                        forumIDToStartAt,
                         userId,
+                        searchDisplayName,
                         boardId,
                         maxResults,
                         useFullText,
-                        searchDisplayName,
-                        includeChildren);
+                        categoriesIds,
+                        forumIDs,
+                        forumIdToStartAt);
+                    break;
                 case SqlDbAccess.MySql:
-                    return SearchResult.GetMySearchResult(
+                    sql = new VZF.Data.MySql.Search.SearchBuilder().BuildSearchSql(
                         mid,
                         toSearchWhat,
                         toSearchFromWho,
                         searchFromWhoMethod,
                         searchWhatMethod,
-                        categoryId,
-                        forumIDToStartAt,
                         userId,
+                        searchDisplayName,
                         boardId,
                         maxResults,
                         useFullText,
-                        searchDisplayName,
-                        includeChildren);
+                        forumIDs,
+                        forumIdToStartAt);
+                    break;
                 case SqlDbAccess.Firebird:
-                    return SearchResult.GetFbSearchResult(
+                    sql = new VZF.Data.Firebird.Search.SearchBuilder().BuildSearchSql(
                         mid,
                         toSearchWhat,
                         toSearchFromWho,
                         searchFromWhoMethod,
                         searchWhatMethod,
-                        categoryId,
-                        forumIDToStartAt,
                         userId,
+                        searchDisplayName,
                         boardId,
                         maxResults,
                         useFullText,
-                        searchDisplayName,
-                        includeChildren);
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIDToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                        forumIDs,
+                        forumIdToStartAt);
+                    break;
+                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIdToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIdToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
+                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.GetSearchResult(connectionString, toSearchWhat, toSearchFromWho, searchFromWhoMethod, searchWhatMethod, categoryId, forumIdToStartAt, userId, boardId, maxResults, useFullText, searchDisplayName, includeChildren);
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
+            DataTable dt_result;
+            using (var sc = new SQLCommand(mid))
+            {
+                if (dataEngine == SqlDbAccess.MySql)
+                {
+                    sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@i_Limit", maxResults.ToString()));
+                }
+
+                sc.CommandText.AppendQuery(sql);
+                dt_result = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
+            }
+
+            if (dataEngine == SqlDbAccess.MySql)
+            {
+                string old_uid = null;
+                string old_fid = null;
+                foreach (DataRow dr in dt_result.Rows)
+                {
+                    if (old_uid == dr["UserID"].ToString() || old_fid == dr["ForumID"].ToString())
+                    {
+                        continue;
+                    }
+
+                    using (var sc = new SQLCommand(mid))
+                    {
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@i_UserID", dr["UserID"]));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "@i_ForumID", dr["ForumID"]));
+                        sc.CommandText.AppendQuery(
+                            string.Format(
+                                "SELECT {0}(@i_UserID,@i_ForumID);",
+                                ObjectName.GetVzfObjectName("vaccess_s_readaccess_combo", mid)));
+
+                        if (Convert.ToInt32(sc.ExecuteScalar(CommandType.Text)) == 0)
+                        {
+                            dr.Delete();
+                        }
+
+                    }
+
+                    old_uid = dr["UserID"].ToString();
+                    old_fid = dr["ForumID"].ToString();
+                }
+
+                dt_result.AcceptChanges();
+            }
+
+            return dt_result;
         }
 
         /// <summary>
@@ -5109,19 +5460,27 @@ namespace VZF.Data.Common
         /// <param name="groupID">
         /// The group id.
         /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
         /// <returns>
-        /// The <see cref="T:System.Data.DataTable"/>.
+        /// The <see cref="DataTable"/>.
         /// </returns>
-        public static DataTable group_list(int? mid, object boardId, object groupID)
+        public static DataTable group_list(int? mid, object boardId, object groupID, int pageIndex, int pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupID));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupID));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageIndex", pageIndex));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageSize", pageSize));
 
                 sc.CommandText.AppendObjectQuery("group_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -5146,7 +5505,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>      
         public static DataTable group_byuserlist(
-            int? mid, object boardId, object groupID, object userId, object isUserGroup)
+            int? mid,
+            object boardId,
+            object groupID,
+            object userId,
+            object isUserGroup)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -5157,7 +5520,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("group_byuserlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -5181,7 +5544,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("group_medal_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -5204,11 +5567,11 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_GroupID", groupID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));          
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));
 
                 sc.CommandText.AppendObjectQuery("group_medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -5236,7 +5599,13 @@ namespace VZF.Data.Common
         /// The sort order.
         /// </param>
         public static void group_medal_save(
-            int? mid, object groupID, object medalID, object message, object hide, object onlyRibbon, object sortOrder)
+            int? mid,
+            object groupID,
+            object medalID,
+            object message,
+            object hide,
+            object onlyRibbon,
+            object sortOrder)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -5249,7 +5618,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("group_medal_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -5276,7 +5645,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("group_member", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -5295,11 +5664,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));            
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
 
                 sc.CommandText.AppendObjectQuery("group_rank_style", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }      
+            }
         }
 
         /// <summary>
@@ -5428,14 +5797,15 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UsrAlbumImages", usrAlbumImages));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsUserGroup", isUserGroup));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PersonalAccessMasksNumber", personalAccessMasksNumber));
+                sc.Parameters.Add(
+                    sc.CreateParameter(DbType.Int32, "i_PersonalAccessMasksNumber", personalAccessMasksNumber));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PersonalGroupsNumber", personalGroupsNumber));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PersonalForumsNumber", personalForumsNumber));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("group_save", mid);
                 return Convert.ToInt64(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }      
+            }
         }
 
         /// <summary>
@@ -5488,7 +5858,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("mail_create", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -5541,7 +5911,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("mail_createwatch", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -5561,7 +5931,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("mail_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /// <summary>
@@ -5578,7 +5948,7 @@ namespace VZF.Data.Common
         /// </returns>  
         public static IEnumerable<TypedMailList> MailList(int? mid, long processId)
         {
-           //TODO: postgre only
+            //TODO: postgre only
             /* using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ProcessID", processId));
@@ -5587,15 +5957,17 @@ namespace VZF.Data.Common
                 sc.CommandText.AppendObjectQuery("mail_listupdate", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }  */
-      
+
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ProcessID", processId)); 
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ProcessID", processId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("mail_list", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).SelectTypedList(x => new TypedMailList(x));
-            }       
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .SelectTypedList(x => new TypedMailList(x));
+            }
         }
 
         /// <summary>
@@ -5644,7 +6016,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("medal_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -5662,7 +6034,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -5690,7 +6062,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -5708,12 +6080,12 @@ namespace VZF.Data.Common
         public static DataTable medal_listusers(int? mid, object medalID)
         {
             using (var sc = new SQLCommand(mid))
-            {   
+            {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MedalID", medalID));
-      
+
                 sc.CommandText.AppendObjectQuery("medal_listusers", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }             
+            }
         }
 
         /// <summary>
@@ -5741,7 +6113,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("medal_resort", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -5847,7 +6219,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SmallMedalURL", smallMedalURL));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SmallRibbonURL", smallRibbonURL));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmallMedalWidth", smallMedalWidth));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmallMedalHeight", smallMedalHeight ));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmallMedalHeight", smallMedalHeight));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmallRibbonWidth", smallRibbonWidth));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmallRibbonHeight", smallRibbonHeight));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortOrder", sortOrderOut));
@@ -5855,7 +6227,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("medal_save", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }           
+            }
         }
 
         /// <summary>
@@ -5887,7 +6259,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_AddThanks", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
-            }          
+            }
         }
 
         /// <summary>
@@ -5903,11 +6275,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));       
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
 
                 sc.CommandText.AppendObjectQuery("message_approve", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -5976,15 +6348,15 @@ namespace VZF.Data.Common
             bool eraseMessage)
         {
             message_deleteRecursively(
-              mid,
-              messageID,
-              isModeratorChanged,
-              deleteReason,
-              isDeleteAction,
-              DeleteLinked,
-              false,
-              eraseMessage);
-         
+                mid,
+                messageID,
+                isModeratorChanged,
+                deleteReason,
+                isDeleteAction,
+                DeleteLinked,
+                false,
+                eraseMessage);
+
         }
 
         /// <summary>
@@ -6011,15 +6383,18 @@ namespace VZF.Data.Common
         /// <param name="eraseMessages">
         /// The erase messages.
         /// </param>
-        private static void message_deleteRecursively([NotNull] int? mid, [NotNull] object messageID,
-                                                      bool isModeratorChanged, [NotNull] string deleteReason,
-                                                      int isDeleteAction,
-                                                      bool deleteLinked,
-                                                      bool isLinked,
-                                                      bool eraseMessages)
+        private static void message_deleteRecursively(
+            [NotNull] int? mid,
+            [NotNull] object messageID,
+            bool isModeratorChanged,
+            [NotNull] string deleteReason,
+            int isDeleteAction,
+            bool deleteLinked,
+            bool isLinked,
+            bool eraseMessages)
         {
             bool useFileTable = GetBooleanRegistryValue(mid, "UseFileTable");
-       
+
 
             if (deleteLinked)
             {
@@ -6029,13 +6404,23 @@ namespace VZF.Data.Common
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "MessageID", messageID));
 
                     sc.CommandText.AppendObjectQuery("message_getReplies", mid);
-                    DataTable tbReplies = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                    DataTable tbReplies = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true);
                     foreach (DataRow row in tbReplies.Rows)
                     {
-                        message_deleteRecursively(mid,
-                          row["MessageID"], isModeratorChanged, deleteReason, isDeleteAction, deleteLinked, true, eraseMessages);
+                        message_deleteRecursively(
+                            mid,
+                            row["MessageID"],
+                            isModeratorChanged,
+                            deleteReason,
+                            isDeleteAction,
+                            deleteLinked,
+                            true,
+                            eraseMessages);
                     }
-                }         
+                }
             }
 
             // If the files are actually saved in the Hard Drive
@@ -6046,14 +6431,22 @@ namespace VZF.Data.Common
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "MessageID", messageID));
 
                     sc.CommandText.AppendObjectQuery("attachment_list", mid);
-                    DataTable tbAttachments = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-                    string uploadDir =                   
-                    HostingEnvironmentUtil.MapPath(String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
+                    DataTable tbAttachments = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true);
+                    string uploadDir =
+                        HostingEnvironmentUtil.MapPath(
+                            String.Concat(BaseUrlBuilder.ServerFileRoot, YafBoardFolders.Current.Uploads));
                     foreach (DataRow row in tbAttachments.Rows)
                     {
                         try
                         {
-                            string fileName = String.Format("{0}/{1}.{2}.yafupload", uploadDir, messageID, row["FileName"]);
+                            string fileName = String.Format(
+                                "{0}/{1}.{2}.yafupload",
+                                uploadDir,
+                                messageID,
+                                row["FileName"]);
                             if (File.Exists(fileName))
                             {
                                 File.Delete(fileName);
@@ -6064,9 +6457,9 @@ namespace VZF.Data.Common
                             // error deleting that file... 
                         }
                     }
-                }  
+                }
             }
-          
+
             if (eraseMessages)
             {
                 using (var sc = new SQLCommand(mid))
@@ -6076,10 +6469,10 @@ namespace VZF.Data.Common
 
                     sc.CommandText.AppendObjectQuery("message_delete", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
-                }     
+                }
             }
             else
-            {      
+            {
                 using (var sc = new SQLCommand(mid))
                 {
                     sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
@@ -6089,9 +6482,9 @@ namespace VZF.Data.Common
 
                     sc.CommandText.AppendObjectQuery("message_deleteundelete", mid);
                     sc.ExecuteNonQuery(CommandType.StoredProcedure);
-                }        
+                }
             }
-        }        
+        }
 
         /// <summary>
         /// The message_findunread.
@@ -6118,7 +6511,12 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable message_findunread(
-            int? mid, object topicID, object messageId, object lastRead, object showDeleted, object authorUserID)
+            int? mid,
+            object topicID,
+            object messageId,
+            object lastRead,
+            object showDeleted,
+            object authorUserID)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -6130,7 +6528,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_findunread", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -6159,10 +6557,13 @@ namespace VZF.Data.Common
 
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));            
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
 
                 sc.CommandText.AppendObjectQuery("message_reply_list", mid);
-                DataTable dtr = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                DataTable dtr = sc.ExecuteDataTableFromReader(
+                    CommandBehavior.Default,
+                    CommandType.StoredProcedure,
+                    true);
 
                 for (int i = 0; i < dtr.Rows.Count; i++)
                 {
@@ -6181,17 +6582,23 @@ namespace VZF.Data.Common
                 }
 
                 return list;
-            }           
+            }
         }
 
         private static void message_getRepliesList_populate(
-           [NotNull] int? mid, DataTable listsource, DataTable list, int messageID)
+            [NotNull] int? mid,
+            DataTable listsource,
+            DataTable list,
+            int messageID)
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));     
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                 sc.CommandText.AppendObjectQuery("message_reply_list", mid);
-                DataTable dtr = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
+                DataTable dtr = sc.ExecuteDataTableFromReader(
+                    CommandBehavior.Default,
+                    CommandType.StoredProcedure,
+                    true);
 
                 for (int i = 0; i < dtr.Rows.Count; i++)
                 {
@@ -6208,7 +6615,7 @@ namespace VZF.Data.Common
                     list.Rows.Add(newRow);
                     message_getRepliesList_populate(mid, dtr, list, (int)row["MessageId"]);
                 }
-            }  
+            }
         }
 
         /// <summary>
@@ -6231,7 +6638,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_gettextbyids", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }      
+            }
         }
 
         /// <summary>
@@ -6250,11 +6657,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageId));                
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageId));
 
                 sc.CommandText.AppendObjectQuery("message_getthanks", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -6277,7 +6684,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_listreported", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -6321,7 +6728,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_listreporters", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -6348,7 +6755,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_move", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -6401,7 +6808,11 @@ namespace VZF.Data.Common
         /// The report text.
         /// </param>
         public static void message_report(
-            int? mid, object messageID, object userId, object reportedDateTime, object reportText)
+            int? mid,
+            object messageID,
+            object userId,
+            object reportedDateTime,
+            object reportText)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -6413,7 +6824,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_report", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -6430,10 +6841,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
-              
+
                 sc.CommandText.AppendObjectQuery("message_reportcopyover", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -6462,7 +6873,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_reportresolve", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }           
+            }
         }
 
         /// <summary>
@@ -6539,7 +6950,7 @@ namespace VZF.Data.Common
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
                 messageId = Convert.ToInt64(mesid.Value);
                 return true;
-            }           
+            }
         }
 
         /// <summary>
@@ -6598,7 +7009,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_simplelist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -6621,7 +7032,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("message_thanksnumber", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }     
+            }
         }
 
         /// <summary>
@@ -6641,10 +7052,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
-              
+
                 sc.CommandText.AppendObjectQuery("message_unapproved", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -6726,15 +7137,15 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Reason", reasonOfEdit));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_EditedBy", editedBy));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsModeratorChanged", isModeratorChanged));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_OverrideApproval", overrideApproval));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_OverrideApproval", overrideApproval));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_OriginalMessage", origMessage));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MessageDescription", messageDescription));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Tags", tags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("message_update", mid);
-                sc.ExecuteNonQuery(CommandType.StoredProcedure);             
-            }            
+                sc.ExecuteNonQuery(CommandType.StoredProcedure);
+            }
         }
 
         /// <summary>
@@ -6756,8 +7167,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_MessageIDs", messageIdsSeparatedWithColon));
 
                 sc.CommandText.AppendObjectQuery("message_getallthanks", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable().Select(t => new TypedAllThanks(t)); 
-            }       
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .AsEnumerable()
+                        .Select(t => new TypedAllThanks(t));
+            }
         }
 
         /// <summary>
@@ -6784,7 +7198,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("messagehistory_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -6803,11 +7217,14 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
 
                 sc.CommandText.AppendObjectQuery("message_list", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable().Select(t => new TypedMessageList(t)); 
-            }   
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .AsEnumerable()
+                        .Select(t => new TypedMessageList(t));
+            }
         }
 
         /// <summary>
@@ -6826,11 +7243,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
 
                 sc.CommandText.AppendObjectQuery("moderators_team_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -6855,7 +7272,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("readtopic_addorupdate", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /* public static void ReadTopic_delete([NotNull] object trackingID)
@@ -6907,7 +7324,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_lastread", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToType<DateTime?>();
-            }   
+            }
         }
 
         /// <summary>
@@ -6934,7 +7351,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("readtopic_lastread", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToType<DateTime?>();
-            }    
+            }
         }
 
         /// <summary>
@@ -6959,7 +7376,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("readforum_addorupdate", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /* public static void ReadForum_delete([NotNull] object trackingID)
@@ -7011,7 +7428,7 @@ namespace VZF.Data.Common
                 return tableLastRead != null && tableLastRead != DBNull.Value
                            ? (DateTime)tableLastRead
                            : DateTimeHelper.SqlDbMinTime();
-            }     
+            }
         }
 
         /// <summary>
@@ -7027,11 +7444,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NntpForumID", nntpForumID));             
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NntpForumID", nntpForumID));
 
                 sc.CommandText.AppendObjectQuery("nntpforum_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }           
+            }
         }
 
         /// <summary>
@@ -7056,7 +7473,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable nntpforum_list(
-            int? mid, object boardId, object minutes, object nntpForumID, object active)
+            int? mid,
+            object boardId,
+            object minutes,
+            object nntpForumID,
+            object active)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -7068,7 +7489,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("nntpforum_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -7116,7 +7537,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("nntpforum_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -7140,12 +7561,12 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NntpForumID", nntpForumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_LastMessageNo", lastMessageNo));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));          
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("nntpforum_update", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -7170,9 +7591,16 @@ namespace VZF.Data.Common
         /// The <see cref="IEnumerable"/>.
         /// </returns>
         public static IEnumerable<TypedNntpForum> NntpForumList(
-            int? mid, int boardId, int? minutes, int? nntpForumID, bool? active)
+            int? mid,
+            int boardId,
+            int? minutes,
+            int? nntpForumID,
+            bool? active)
         {
-            return nntpforum_list(mid, boardId, minutes, nntpForumID, active).AsEnumerable().Select(r => new TypedNntpForum(r));           
+            return
+                nntpforum_list(mid, boardId, minutes, nntpForumID, active)
+                    .AsEnumerable()
+                    .Select(r => new TypedNntpForum(r));
         }
 
         /// <summary>
@@ -7187,12 +7615,12 @@ namespace VZF.Data.Common
         public static void nntpserver_delete(int? mid, object nntpServerID)
         {
             using (var sc = new SQLCommand(mid))
-            {               
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NntpServerID", nntpServerID));            
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NntpServerID", nntpServerID));
 
                 sc.CommandText.AppendObjectQuery("nntpserver_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -7219,7 +7647,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("nntpserver_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -7271,7 +7699,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("nntpserver_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -7290,11 +7718,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Thread", thread));             
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Thread", thread));
 
                 sc.CommandText.AppendObjectQuery("nntptopic_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -7357,7 +7785,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("nntptopic_savemessage", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -7432,51 +7860,56 @@ namespace VZF.Data.Common
             object isMobileDevice,
             object donttrack)
         {
-             int nTries = 0;
+            int nTries = 0;
             while (true)
             {
                 try
                 {
-            using (var sc = new SQLCommand(mid))
-            {
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SessionID", sessionId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                // TODO: look why guid here generated not in db Firebird only
-                if (userKey != null && userKey.ToString().Length > 0)
-                {                  
-                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", new Guid(userKey.ToString()).ToString()));
-                }
-                else
-                {                   
-                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", DBNull.Value));
-                }
-                
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_IP", ip));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Location", location));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ForumPage", forumPage));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Browser", browser));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Platform", platform));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCrawler", isCrawler ?? false));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsMobileDevice", isMobileDevice ?? false));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DontTrack", donttrack ?? false));
-                sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
-                sc.CommandText.AppendObjectQuery("pageload", mid);
-              /*  if (dt.Rows.Count > 0)
-                {
-                    return dt.Rows[0];
-                }
-                else
-                {
-                    return null;
-                } */
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable()
-                               .Select(r => new pageload_Result(r))
-                               .ToList()[0]; ;
-            }
+                    using (var sc = new SQLCommand(mid))
+                    {
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_SessionID", sessionId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
+                        // TODO: look why guid here generated not in db Firebird only
+                        if (userKey != null && userKey.ToString().Length > 0)
+                        {
+                            sc.Parameters.Add(
+                                sc.CreateParameter(DbType.String, "i_UserKey", new Guid(userKey.ToString()).ToString()));
+                        }
+                        else
+                        {
+                            sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UserKey", DBNull.Value));
+                        }
+
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_IP", ip));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Location", location));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ForumPage", forumPage));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Browser", browser));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Platform", platform));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_CategoryID", categoryId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageId));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_IsCrawler", isCrawler ?? false));
+                        sc.Parameters.Add(
+                            sc.CreateParameter(DbType.Boolean, "i_IsMobileDevice", isMobileDevice ?? false));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DontTrack", donttrack ?? false));
+                        sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                        sc.CommandText.AppendObjectQuery("pageload", mid);
+                        /*  if (dt.Rows.Count > 0)
+                          {
+                              return dt.Rows[0];
+                          }
+                          else
+                          {
+                              return null;
+                          } */
+                        return
+                            sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                                .AsEnumerable()
+                                .Select(r => new pageload_Result(r))
+                                .ToList()[0];
+                        ;
+                    }
                 }
                 catch (ArgumentOutOfRangeException xx)
                 {
@@ -7487,21 +7920,22 @@ namespace VZF.Data.Common
                     else
                         throw new ArgumentOutOfRangeException(
                             string.Format(
-                                "Number of DataTable columns from DataReader cannot be null. Trys -{0}", nTries),
+                                "Number of DataTable columns from DataReader cannot be null. Trys -{0}",
+                                nTries),
                             xx);
                 }
                 catch (Exception x)
                 {
-                   // if (x.Number == 1213 && nTries < 3)
-                   // {
-                        /// Transaction (Process ID XXX) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
-                  //  }
-                  //  else
+                    // if (x.Number == 1213 && nTries < 3)
+                    // {
+                    /// Transaction (Process ID XXX) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
+                    //  }
+                    //  else
                     //    throw new ApplicationException(
-                     //       string.Format("Sql Exception with error number {0} (Tries={1})", x.Number, nTries), x);
+                    //       string.Format("Sql Exception with error number {0} (Tries={1})", x.Number, nTries), x);
                 }
                 ++nTries;
-            }      
+            }
         }
 
         /// <summary>
@@ -7521,7 +7955,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pmessage_archive", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -7559,7 +7993,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pmessage_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -7577,7 +8011,7 @@ namespace VZF.Data.Common
             {
                 sc.CommandText.AppendObjectQuery("pmessage_info", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -7624,7 +8058,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserPMessageID", userPMessageID));
                 sc.CommandText.AppendObjectQuery("pmessage_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -7640,11 +8074,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserPMessageID", userPMessageID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserPMessageID", userPMessageID));
 
                 sc.CommandText.AppendObjectQuery("pmessage_markread", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -7669,7 +8103,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pmessage_prune", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }             
+            }
         }
 
         /// <summary>
@@ -7697,7 +8131,13 @@ namespace VZF.Data.Common
         /// The reply to.
         /// </param>      
         public static void pmessage_save(
-            int? mid, object fromUserID, object toUserID, object subject, object body, object Flags, object replyTo)
+            int? mid,
+            object fromUserID,
+            object toUserID,
+            object subject,
+            object body,
+            object Flags,
+            object replyTo)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -7711,7 +8151,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pmessage_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -7736,7 +8176,12 @@ namespace VZF.Data.Common
         /// The remove everywhere.
         /// </param>
         public static void poll_remove(
-            int? mid, object pollGroupID, object pollID, object boardId, bool removeCompletely, bool removeEverywhere)
+            int? mid,
+            object pollGroupID,
+            object pollID,
+            object boardId,
+            bool removeCompletely,
+            bool removeEverywhere)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -7748,7 +8193,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("poll_remove", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -7773,13 +8218,13 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.poll_save(connectionString, pollList);
+                    return VZF.Data.MsSql.Db.poll_save_mssql(mid, pollList);
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.poll_save(connectionString, pollList);
+                    return VZF.Data.Postgre.Db.poll_save_pgsql(mid, pollList);
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.poll_save(connectionString, pollList);
+                    return VZF.Data.Mysql.Db.poll_save_mysql(mid, pollList);
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.poll_save(connectionString, pollList);
+                    return VZF.Data.Firebird.Db.poll_save_firebird(mid, pollList);
                     // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.poll_save(connectionString, pollList);
                     // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.poll_save(connectionString, pollList);
                     // case SqlDbAccess.Other:  return VZF.Data.Other.Db.poll_save(connectionString, pollList); 
@@ -7830,7 +8275,7 @@ namespace VZF.Data.Common
                 }
                 dt_ret.AcceptChanges();
                 return dt_ret;
-            }       
+            }
         }
 
         /// <summary>
@@ -7858,7 +8303,12 @@ namespace VZF.Data.Common
         /// The <see cref="int"/>.
         /// </returns>
         public static int pollgroup_attach(
-            int? mid, int? pollGroupId, int? topicId, int? forumId, int? categoryId, int? boardId)
+            int? mid,
+            int? pollGroupId,
+            int? topicId,
+            int? forumId,
+            int? categoryId,
+            int? boardId)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -7870,7 +8320,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pollgroup_attach", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }     
+            }
         }
 
         /// <summary>
@@ -7922,7 +8372,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pollgroup_remove", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -7942,10 +8392,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PollGroupID", pollGroupId));
-               
+
                 sc.CommandText.AppendObjectQuery("pollgroup_stats", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -8012,7 +8462,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("poll_update", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -8043,7 +8493,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pollgroup_votecheck", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -8073,8 +8523,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
 
                 sc.CommandText.AppendObjectQuery("pollgroup_list", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable().Select(r => new TypedPollGroup(r)); 
-            }     
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .AsEnumerable()
+                        .Select(r => new TypedPollGroup(r));
+            }
         }
 
         /// <summary>
@@ -8105,7 +8558,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("pollvote_check", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }      
+            }
         }
 
         /// <summary>
@@ -8130,7 +8583,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable post_alluser(
-            int? mid, object boardid, object userid, object pageUserID, object topCount)
+            int? mid,
+            object boardid,
+            object userid,
+            object pageUserID,
+            object topCount)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -8140,19 +8597,22 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NumberOfMessages", topCount));
 
                 sc.CommandText.AppendObjectQuery("post_alluser", mid);
-                DataTable dt1 = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-                   foreach (DataRow dr in dt1.Rows)
-                {                
+                DataTable dt1 = sc.ExecuteDataTableFromReader(
+                    CommandBehavior.Default,
+                    CommandType.StoredProcedure,
+                    true);
+                foreach (DataRow dr in dt1.Rows)
+                {
                     if (dr["ReadAccess"].ToString() == "0")
                     {
                         dr.Delete();
-                    }       
+                    }
 
                 }
                 dt1.AcceptChanges();
-            
-            return dt1;
-            }  
+
+                return dt1;
+            }
         }
 
         /// <summary>
@@ -8253,7 +8713,7 @@ namespace VZF.Data.Common
 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", currentUserID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AuthorUserID", authoruserId));                
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AuthorUserID", authoruserId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int16, "i_UpdateViewCount", updateViewCount));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowDeleted", showDeleted));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
@@ -8267,7 +8727,7 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortPosted", sortPosted));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortEdited", sortEdited));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortPosition", sortPosition));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowThanks", showThanks));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowThanks", showThanks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessagePosition", messagePosition));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_LastRead", lastRead));
@@ -8275,7 +8735,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("post_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -8294,12 +8754,12 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));              
-               // sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
+                // sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("post_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -8315,11 +8775,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));
 
                 sc.CommandText.AppendObjectQuery("rank_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -8342,11 +8802,14 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));             
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));
 
                 sc.CommandText.AppendObjectQuery("rank_list", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable().Select(r => new rank_list_Result(r));
-            }    
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .AsEnumerable()
+                        .Select(r => new rank_list_Result(r));
+            }
         }
 
         public static DataTable rank_list(int? mid, object boardId)
@@ -8465,7 +8928,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("rank_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -8494,10 +8957,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TimeSinceLastLogin", timeSinceLastLogin));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", styledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_utctimestamp", DateTime.UtcNow));
-               
+
                 sc.CommandText.AppendObjectQuery("recent_users", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -8552,10 +9015,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Name", name));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-               
+
                 sc.CommandText.AppendObjectQuery("registry_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -8572,7 +9035,6 @@ namespace VZF.Data.Common
         /// </param>
         public static void registry_save(int? mid, object name, object value)
         {
-
             registry_save(mid, name, value, DBNull.Value);
         }
 
@@ -8601,7 +9063,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("registry_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -8617,11 +9079,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", id));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", id));
 
                 sc.CommandText.AppendObjectQuery("replace_words_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -8643,13 +9105,12 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-               
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", id));      
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ID", id));
 
                 sc.CommandText.AppendObjectQuery("replace_words_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -8681,7 +9142,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("replace_words_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -8718,7 +9179,6 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NumPosts", numOfPostsToRetrieve));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_PageUserID", pageUserId));
@@ -8774,11 +9234,11 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Start", topicStart));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", topicCount));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", topicCount));
 
                 sc.CommandText.AppendObjectQuery("rsstopic_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -8811,6 +9271,7 @@ namespace VZF.Data.Common
             int? mid,
             int boardId,
             string appname,
+            string tableName,
             int userId,
             string userName,
             SettingsPropertyValueCollection collection,
@@ -8841,44 +9302,192 @@ namespace VZF.Data.Common
             }
 
             // load the data for the configuration
-            List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(mid, collection);
-            
+            List<SettingsPropertyColumn> spc = LoadFromPropertyValueCollection(mid, collection, tableName);
+
             // Save properties to database.
-            if (spc != null && spc.Count > 0 && userName.IsSet())
+            if (spc == null || spc.Count <= 0 || !userName.IsSet())
             {
-                // start saving...             
-                switch (dataEngine)
-                {
-                    case SqlDbAccess.MsSql:
-                        MsProfile.SetProfileProperties(mid, boardId, appname, userId, userName, collection, spc, dirtyOnly);
-                        break;
-                    case SqlDbAccess.Npgsql:
-                        PgProfile.SetProfileProperties(mid, boardId, appname, userId, userName, collection, spc, dirtyOnly);
-                        break;
-                    case SqlDbAccess.MySql:
-                        MySqlProfile.SetProfileProperties(mid, boardId, appname, userId, userName, collection, spc, dirtyOnly);
-                        break;
-                    case SqlDbAccess.Firebird:
-                        FbProfile.SetProfileProperties(mid, boardId, appname, userId, userName, collection, spc, dirtyOnly);
-                        break;
-                    // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case SqlDbAccess.Other:   VZF.Data.Other.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    default:
-                        throw new ArgumentOutOfRangeException(dataEngine);
-                }
-            }      
+                return;
+            }
+
+            if (userName.IsNotSet())
+            {
+                return;
+            }
+
+            // check if profile exits to select insert or update
+            bool profileExists;
+            string profileExistsSql;
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    profileExistsSql = MsProfile.ProfileExists();
+                    break;
+                case SqlDbAccess.Npgsql:
+                    profileExistsSql = PgProfile.ProfileExists();
+                    break;
+                case SqlDbAccess.MySql:
+                    profileExistsSql = MySqlProfile.ProfileExists();
+                    break;
+                case SqlDbAccess.Firebird:
+                    profileExistsSql = FbProfile.ProfileExists();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ApplicationName", appname));
+
+                sc.CommandText.AppendQuery(profileExistsSql.FormatWith(ObjectName.GetVzfObjectName(tableName, mid)));
+
+                profileExists = Convert.ToInt32(sc.ExecuteScalar(CommandType.Text, true)) > 0;
+            }
+
+            // create data for saving profile properties
+            string sql = string.Empty;
+
+            var paramData = new List<Tuple<DbType, string, object>>();
+            // Build up strings used in the query
+            var columnStr = new StringBuilder();
+            var valueStr = new StringBuilder();
+            var setStr = new StringBuilder();
+
+            spc.ForEach(
+                (column) =>
+                    {
+                        if (collection[column.Settings.Name].IsDirty)
+                        {
+
+                            var nameParam = collection[column.Settings.Name].Name;
+                            var valParam = collection[column.Settings.Name].PropertyValue;
+
+                            nameParam = "@i_" + nameParam;
+
+                            paramData.Add(new Tuple<DbType, string, object>(column.DataType, nameParam, valParam));
+
+                            valueStr.Append(nameParam);
+                            valueStr.Append(",");
+
+                            columnStr.Append(column.Settings.Name);
+                            columnStr.Append(",");
+
+                            setStr.Append(column.Settings.Name);
+                            setStr.Append("=");
+                            setStr.Append(nameParam);
+                            setStr.Append(",");
+                        }
+                    });
+
+            // first predefined parameter without separator
+            columnStr.Append("LastUpdatedDate ");
+            valueStr.Append("@i_LastUpdatedDate");
+            setStr.Append("LastUpdatedDate=@i_LastUpdatedDate");
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.DateTime, "@i_LastUpdatedDate", DateTime.UtcNow));
+
+            columnStr.Append(",LastActivity ");
+            valueStr.Append(",@i_LastActivity");
+            setStr.Append(",LastActivity=@i_LastActivity");
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.DateTime, "@i_LastActivity", DateTime.UtcNow));
+
+            columnStr.Append(",ApplicationName ");
+            valueStr.Append(",@i_ApplicationName");
+            setStr.Append(",ApplicationName=@i_ApplicationName");
+
+            columnStr.Append(",IsAnonymous ");
+            valueStr.Append(",@i_IsAnonymous");
+            setStr.Append(",IsAnonymous=@i_IsAnonymous");
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.Boolean, "@i_IsAnonymous", false));
+
+            columnStr.Append(",UserName ");
+            valueStr.Append(",@i_UserName");
+            setStr.Append(",UserName=@i_UserName");
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.String, "@i_UserName", userName));
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.Int32, "@i_UserID", userId));
+
+            paramData.Add(new Tuple<DbType, string, object>(DbType.String, "@i_ApplicationName", appname));
+
+            // start saving...             
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    sql = MsProfile.SetProfileProperties(
+                        setStr.ToString(),
+                        columnStr.ToString(),
+                        valueStr.ToString(),
+                        profileExists);
+                    break;
+                case SqlDbAccess.Npgsql:
+                    sql = PgProfile.SetProfileProperties(
+                        setStr.ToString(),
+                        columnStr.ToString(),
+                        valueStr.ToString(),
+                        profileExists);
+                    break;
+                case SqlDbAccess.MySql:
+                    sql = MySqlProfile.SetProfileProperties(
+                        setStr.ToString(),
+                        columnStr.ToString(),
+                        valueStr.ToString(),
+                        profileExists);
+                    break;
+                case SqlDbAccess.Firebird:
+                    sql = FbProfile.SetProfileProperties(
+                        setStr.ToString(),
+                        columnStr.ToString(),
+                        valueStr.ToString(),
+                        profileExists);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            using (var sc = new SQLCommand(mid))
+            {
+                // add parameters in a loop
+                paramData.ForEach(
+                    (parameter) => sc.Parameters.Add(sc.CreateParameter(parameter.Item1, parameter.Item2, parameter.Item3)));
+
+                sc.CommandText.AppendQuery(sql.FormatWith(ObjectName.GetVzfObjectName(tableName, mid)));
+                sc.ExecuteNonQuery(CommandType.Text, true);
+            }
         }
 
+        /// <summary>
+        /// The load from property value collection.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
         public static List<SettingsPropertyColumn> LoadFromPropertyValueCollection(
-           [NotNull] int? mid, SettingsPropertyValueCollection collection)
+            [NotNull] int? mid,
+            SettingsPropertyValueCollection collection,
+            string tableName)
         {
-            List<SettingsPropertyColumn> settingsColumnsList = new List<SettingsPropertyColumn>();
+            var settingsColumnsList = new List<SettingsPropertyColumn>();
+
             // clear it out just in case something is still in there...
             string dataEngine;
             string connectionString;
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
             // validiate all the properties and populate the internal settings collection
             foreach (SettingsPropertyValue value in collection)
             {
@@ -8889,109 +9498,142 @@ namespace VZF.Data.Common
                     continue;
                 }
 
-                DbType dbType;
-                int size;
+                int size = -1;
 
-              
-               
+                // split the data
+                string[] chunk = tempProperty.ToString().Split(new[] { ';' });
+
                 // parse custom provider data...
                 switch (dataEngine)
                 {
                     case SqlDbAccess.MsSql:
-                        MsProfile.GetDbTypeAndSizeFromString(
-                    value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
+                        chunk = MsProfile.GetDbTypeAndSizeFromString(chunk);
                         break;
                     case SqlDbAccess.Npgsql:
-                        PgProfile.GetDbTypeAndSizeFromString(
-                    value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
+                        chunk = PgProfile.GetDbTypeAndSizeFromString(chunk);
                         break;
                     case SqlDbAccess.MySql:
-                        MySqlProfile.GetDbTypeAndSizeFromString(
-                    value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
+                        chunk = MySqlProfile.GetDbTypeAndSizeFromString(chunk);
                         break;
                     case SqlDbAccess.Firebird:
-                        FbProfile.GetDbTypeAndSizeFromString(
-                    value.Property.Attributes["CustomProviderData"].ToString(), out dbType, out size);
+                        chunk = FbProfile.GetDbTypeAndSizeFromString(chunk);
                         break;
-                    // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                    // case SqlDbAccess.Other:   VZF.Data.Other.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                     default:
                         throw new ArgumentOutOfRangeException(dataEngine);
                 }
-               
-               
+
+                // get the datatype and ignore case...
+                DbType dbType = (DbType)Enum.Parse(typeof(DbType), chunk[1], true);
+
+                if (chunk.Length > 2)
+                {
+                    // handle size...
+                    if (!int.TryParse(chunk[2], out size))
+                    {
+                        throw new ArgumentException("Unable to parse as integer: " + chunk[2]);
+                    }
+                }
+
 
                 // default the size to 256 if no size is specified
                 if (dbType == DbType.String && size == -1)
                 {
                     size = 256;
                 }
-                settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
-            }          
 
-             // sync profile table structure with the FbDB...
+                settingsColumnsList.Add(new SettingsPropertyColumn(value.Property, dbType, size));
+            }
+
+            string sql;
             DataTable structure;
 
-            // parse custom provider data...
+            // getting current profile table colimns...
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    structure = MsProfile.GetProfileStructure(mid);
+                    sql = MsProfile.GetProfileStructure();
                     break;
                 case SqlDbAccess.Npgsql:
-                    structure = PgProfile.GetProfileStructure(mid);
+                    sql = PgProfile.GetProfileStructure();
                     break;
                 case SqlDbAccess.MySql:
-                    structure = MySqlProfile.GetProfileStructure(mid);
+                    sql = MySqlProfile.GetProfileStructure();
                     break;
                 case SqlDbAccess.Firebird:
-                    structure = FbProfile.GetProfileStructure(mid);
+                    sql = FbProfile.GetProfileStructure();
                     break;
-                // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                // case SqlDbAccess.Other:   VZF.Data.Other.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
 
-           
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery(sql.FormatWith(ObjectName.GetVzfObjectName(tableName, mid)));
+                structure = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
+            }
+
+            string sqlAddColumn = string.Empty;
+
             // verify all the columns are there...
             foreach (SettingsPropertyColumn column in settingsColumnsList)
             {
-                // see if this column exists
+                // see if this column exists and add it if required
                 if (!structure.Columns.Contains(column.Settings.Name))
                 {
+                    string dataTypeName = column.DataType.ToString();
+
                     // if not, create it...
                     // parse custom provider data...
                     switch (dataEngine)
                     {
                         case SqlDbAccess.MsSql:
-                            MsProfile.AddProfileColumn(mid, column.Settings.Name, column.DataType, column.Size);
+                            sqlAddColumn = MsProfile.AddProfileColumn(
+                                column.Settings.Name,
+                                dataTypeName,
+                                column.Size,
+                                ObjectName.GetVzfObjectName(tableName, mid));
                             break;
                         case SqlDbAccess.Npgsql:
-                            PgProfile.AddProfileColumn(mid, column.Settings.Name, column.DataType, column.Size);
+                            sqlAddColumn = PgProfile.AddProfileColumn(
+                                column.Settings.Name,
+                                dataTypeName,
+                                column.Size,
+                                ObjectName.GetVzfObjectName(tableName, mid));
                             break;
                         case SqlDbAccess.MySql:
-                            MySqlProfile.AddProfileColumn(mid, column.Settings.Name, column.DataType, column.Size);
+                            sqlAddColumn = MySqlProfile.AddProfileColumn(
+                                column.Settings.Name,
+                                dataTypeName,
+                                column.Size,
+                                ObjectName.GetVzfObjectName(tableName, mid));
                             break;
                         case SqlDbAccess.Firebird:
-                            FbProfile.AddProfileColumn(mid, column.Settings.Name, column.DataType, column.Size);
+                            sqlAddColumn = FbProfile.AddProfileColumn(
+                                column.Settings.Name,
+                                dataTypeName,
+                                column.Size,
+                                ObjectName.GetVzfObjectName(tableName, mid));
                             break;
-                        // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                        // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
-                        // case SqlDbAccess.Other:   VZF.Data.Other.Db.SetPropertyValues(connectionString, boardId,  appname,  userId,  collection, dirtyOnly); break;
                         default:
                             throw new ArgumentOutOfRangeException(dataEngine);
-                    }                    
+                    }
+
+                    if (sqlAddColumn.IsNotSet())
+                    {
+                        continue;
+                    }
+
+                    using (var sc = new SQLCommand(mid))
+                    {
+                        sc.CommandText.AppendQuery(sqlAddColumn);
+                        sc.ExecuteNonQuery(CommandType.Text, true);
+                    }
                 }
             }
 
             return settingsColumnsList;
         }
 
-       
-        
         /// <summary>
         /// The shoutbox_clearmessages.
         /// </summary>
@@ -9013,7 +9655,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("shoutbox_clearmessages", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }    
+            }
         }
 
         /// <summary>
@@ -9044,7 +9686,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("shoutbox_getmessages", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -9072,7 +9714,12 @@ namespace VZF.Data.Common
         /// The <see cref="bool"/>.
         /// </returns>   
         public static bool shoutbox_savemessage(
-            int? mid, int boardId, string message, string userName, int userID, object ip)
+            int? mid,
+            int boardId,
+            string message,
+            string userName,
+            int userID,
+            object ip)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -9086,7 +9733,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("shoutbox_savemessage", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }       
+            }
         }
 
         /// <summary>
@@ -9102,11 +9749,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmileyID", smileyID));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmileyID", smileyID));
 
                 sc.CommandText.AppendObjectQuery("smiley_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -9129,11 +9776,11 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardId", boardId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmileyID", smileyID));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SmileyID", smileyID));
 
                 sc.CommandText.AppendObjectQuery("smiley_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -9152,11 +9799,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardId", boardId));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardId", boardId));
 
                 sc.CommandText.AppendObjectQuery("smiley_listunique", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -9184,7 +9831,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("smiley_resort", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -9241,7 +9888,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("smiley_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -9261,7 +9908,7 @@ namespace VZF.Data.Common
         /// </returns>  
         public static IEnumerable<TypedSmileyList> SmileyList(int? mid, int boardId, int? smileyID)
         {
-           return smiley_list(mid, boardId, smileyID).AsEnumerable().Select(r => new TypedSmileyList(r));          
+            return smiley_list(mid, boardId, smileyID).AsEnumerable().Select(r => new TypedSmileyList(r));
         }
 
         /// <summary>
@@ -9340,7 +9987,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("system_initialize", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -9361,30 +10008,31 @@ namespace VZF.Data.Common
         /// <exception cref="ArgumentOutOfRangeException">
         /// </exception>
         public static void system_initialize_executescripts(
-            int? mid, string script, string scriptFile, bool useTransactions)
+            int? mid,
+            string script,
+            string scriptFile,
+            bool useTransactions)
         {
             string dataEngine;
             string connectionString;
             string namePattern = string.Empty;
             SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
 
+            CreateDatabase(mid, false);
+            string delimiter;
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.system_initialize_executescripts(
-                        connectionString, script, scriptFile, useTransactions);
+                    delimiter = VZF.Data.MsSql.Db.SqlScriptsDelimiterRegexPattern;
                     break;
                 case SqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.system_initialize_executescripts(
-                        connectionString, script, scriptFile, useTransactions);
+                    delimiter = VZF.Data.Postgre.Db.SqlScriptsDelimiterRegexPattern;
                     break;
                 case SqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.system_initialize_executescripts(
-                        connectionString, script, scriptFile, useTransactions);
+                    delimiter = VZF.Data.Mysql.Db.SqlScriptsDelimiterRegexPattern;
                     break;
                 case SqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.system_initialize_executescripts(
-                        connectionString, script, scriptFile, useTransactions);
+                    delimiter = VZF.Data.Firebird.Db.SqlScriptsDelimiterRegexPattern;
                     break;
                     // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions);break;
                     // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.system_initialize_executescripts(connectionString, script, scriptFile, useTransactions); break;
@@ -9392,45 +10040,173 @@ namespace VZF.Data.Common
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
-        }
 
-        /// <summary>
-        /// The system_initialize_fixaccess.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <param name="bGrant">
-        /// The b grant.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static void system_initialize_fixaccess(int? mid, bool bGrant)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            var options =
+                SqlDbAccess.GetConnectionString(mid, string.Empty)
+                    .Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .ToDictionary(s => s.Split('=')[0].ToLowerInvariant(), s => s.Split('=')[1].ToLowerInvariant());
 
-            switch (dataEngine)
+            // Replace database name
+            var dbv = options.FirstOrDefault(p => p.Key.Equals("datasource") || p.Key.Equals("database")).Value;
+
+            // This is in Mysql only 
+            if (dbv != null && dbv != Config.DatabaseSchemaName)
             {
-                case SqlDbAccess.MsSql:
-                    VZF.Data.MsSql.Db.system_initialize_fixaccess(connectionString, bGrant);
-                    break;
-                case SqlDbAccess.Npgsql:
-                    VZF.Data.Postgre.Db.system_initialize_fixaccess(connectionString, bGrant);
-                    break;
-                case SqlDbAccess.MySql:
-                    VZF.Data.Mysql.Db.system_initialize_fixaccess(connectionString, bGrant);
-                    break;
-                case SqlDbAccess.Firebird:
-                    VZF.Data.Firebird.Db.system_initialize_fixaccess(connectionString, bGrant);
-                    break;
-                    // case SqlDbAccess.Oracle:   VZF.Data.Oracle.Db.system_initialize_fixaccess(connectionString, bGrant);break;
-                    // case SqlDbAccess.Db2:   VZF.Data.Db2.Db.system_initialize_fixaccess(connectionString, bGrant); break;
-                    // case SqlDbAccess.Other:   VZF.Data.Other.Db.system_initialize_fixaccess(connectionString, bGrant); break;
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
+                script = Regex.Replace(script, "({databaseName})", dbv, RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                script = Regex.Replace(script, "({databaseName})", Config.DatabaseSchemaName, RegexOptions.IgnoreCase);
+            }
+
+            // used in postgre scripts
+            if (Config.DatabaseSchemaName.IsSet())
+            {
+                script = Regex.Replace(script, "(databaseSchema)", Config.DatabaseSchemaName, RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                script = Regex.Replace(script, "(databaseSchema)", "public", RegexOptions.IgnoreCase);
+            }
+
+            // used in postgre scripts should be changed later
+            if (Config.DatabaseObjectQualifier.IsSet())
+            {
+                script = Regex.Replace(script, "(objectQualifier_)", Config.DatabaseObjectQualifier, RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                script = Regex.Replace(script, "(objectQualifier_)", "vzf_", RegexOptions.IgnoreCase);
+            }
+
+            // used in postgre scripts
+            if (Config.WithOIDs.IsSet())
+            {
+                script = Regex.Replace(script, "(withOIDs)", Config.WithOIDs, RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                script = Regex.Replace(script, "(withOIDs)", "false", RegexOptions.IgnoreCase);
+            }    
+
+            // Detect charset used in mysql
+            var chrset = options.FirstOrDefault(p => p.Key.Equals("charset") || p.Key.Equals("character set")).Value;
+            if (chrset != null)
+            {
+                // TODO: some things here are not used
+                string dbcharset = null;
+                string dbcollation = null;
+
+                // Verify if it's valid  
+                dbcharset = CommonDb.db_checkvalidcharset(mid, chrset);
+
+                if (Config.DatabaseCollation.Contains(dbcharset))
+                {
+                    dbcollation = Config.DatabaseCollation;
+                }
+
+                if (string.IsNullOrEmpty(dbcollation))
+                {
+                    // can be empty string!!!
+                    dbcollation = CommonDb.db_defaultcollation(mid, dbcharset);
+                }
+
+
+                // No entry for encoding in connection string or app.config
+                if (string.IsNullOrEmpty(dbcollation))
+                {
+                    dbcollation = CommonDb.db_getfirstcollation(mid);
+                }
+
+                if (string.IsNullOrEmpty(dbcharset))
+                {
+                    dbcharset = CommonDb.db_getfirstcharset(mid);
+                }
+
+                script = Regex.Replace(script, "({databaseEncoding}_{databaseCollation})", dbcollation, RegexOptions.IgnoreCase);
+                script = Regex.Replace(script, "({databaseEncoding})", dbcharset, RegexOptions.IgnoreCase);
+            }
+            // eof charset for my sql
+
+            script = Regex.Replace(script, "{databaseOwner}", Config.DatabaseOwner, RegexOptions.IgnoreCase);
+            script = Regex.Replace(script, "{objectQualifier}", Config.DatabaseObjectQualifier, RegexOptions.IgnoreCase);           
+
+            // apply grantee name
+            script = script.Replace(
+                "grantName",
+                !string.IsNullOrEmpty(Config.DatabaseGranteeName) ? Config.DatabaseGranteeName.ToUpper() : "PUBLIC");
+
+            // apply host name
+            script = script.Replace("hostName", Config.DatabaseHostName);
+
+            var statements = Regex.Split(script, delimiter, RegexOptions.IgnoreCase).ToList();
+
+            // Here comes add SET ARITHABORT ON for MSSQL amd Linq class
+            // statements.Insert(0, "SET ARITHABORT ON");
+            using (var cmd = new SQLCommand(mid))
+            {
+                // use transactions...
+                if (useTransactions)
+                {
+                    foreach (var sql in statements.Select(sql0 => sql0.Trim()))
+                    {
+                        try
+                        {
+                            if (sql.ToLower().IndexOf("setuser", StringComparison.Ordinal) >= 0)
+                            {
+                                continue;
+                            }
+
+                            if (sql.Length <= 0)
+                            {
+                                continue;
+                            }
+
+                            cmd.CommandText.Clear().AppendQuery(sql.Trim());
+                            cmd.ExecuteNonQuery(CommandType.Text, true);
+                        }
+                        catch (Exception x)
+                        {
+                            throw new Exception(
+                                string.Format(
+                                    "FILE:\n{0}\n\nERROR:\n{2}\n\nSTATEMENT:\n{1}",
+                                    scriptFile,
+                                    sql,
+                                    x.Message));
+                        }
+                    }
+                }
+                else
+                {
+                    // don't use transactions
+                    foreach (string sql in statements.Select(sql0 => sql0.Trim()))
+                    {
+                        try
+                        {
+                            if (sql.ToLower().IndexOf("setuser", System.StringComparison.Ordinal) >= 0)
+                            {
+                                continue;
+                            }
+
+                            if (sql.Length <= 0)
+                            {
+                                continue;
+                            }
+
+                            cmd.CommandText.Clear().AppendQuery(sql.Trim());
+                            cmd.ExecuteNonQuery(CommandType.Text, false);
+                        }
+                        catch (Exception x)
+                        {
+                            throw new Exception(
+                                string.Format(
+                                    "FILE:\n{0}\n\nERROR:\n{2}\n\nSTATEMENT:\n{1}",
+                                    scriptFile,
+                                    sql,
+                                    x.Message));
+                        }
+                    }
+                }
             }
         }
 
@@ -9446,11 +10222,11 @@ namespace VZF.Data.Common
         public static DataTable system_list(int? mid)
         {
             using (var sc = new SQLCommand(mid))
-            {              
+            {
 
                 sc.CommandText.AppendObjectQuery("system_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -9470,11 +10246,46 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Version", version));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_VersionName", name));                
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_VersionName", name));
 
                 sc.CommandText.AppendObjectQuery("system_updateversion", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
+        }
+
+        /// <summary>
+        /// The test connection.
+        /// </summary>
+        /// <param name="exceptionMessage">
+        /// The exception message.
+        /// </param>
+        /// <param name="connectionString">
+        /// The connection string.
+        /// </param>
+        /// <param name="providerName">
+        /// The provider name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public static bool TestConnection(
+            [NotNull] out string exceptionMessage,
+            string connectionString,
+            string providerName)
+        {
+            exceptionMessage = null;
+
+            using (var sc = new SQLCommand(connectionString, providerName))
+            {
+                if (sc.DataSource != null)
+                {
+                    return true;
+                }
+
+                exceptionMessage = "Unable to connect to the Database.";
+
+                return false;
+            }
         }
 
         /// <summary>
@@ -9540,7 +10351,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_active", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -9562,7 +10373,10 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable topic_announcements(
-            int? mid, object boardId, object numOfPostsToRetrieve, object pageUserId)
+            int? mid,
+            object boardId,
+            object numOfPostsToRetrieve,
+            object pageUserId)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -9572,7 +10386,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_announcements", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -9638,7 +10452,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_unanswered", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -9704,7 +10518,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_unread", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -9770,7 +10584,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("Topics_ByUser", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -9790,7 +10604,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("TopicStatus_Delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -9813,7 +10627,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("TopicStatus_Edit", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }              
+            }
         }
 
         /// <summary>
@@ -9836,7 +10650,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("TopicStatus_List", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }             
+            }
         }
 
         /// <summary>
@@ -9873,7 +10687,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("TopicStatus_Save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -9900,12 +10714,12 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_MessageID", messageID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumId));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Subject", newTopicSubj));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Subject", newTopicSubj));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("topic_create_by_message", mid);
                 return Convert.ToInt64(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }    
+            }
         }
 
         /// <summary>
@@ -9922,6 +10736,15 @@ namespace VZF.Data.Common
             topic_delete(mid, topicID, false);
         }
 
+        /// <summary>
+        /// The topic_delete attachments.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
         private static void topic_deleteAttachments([NotNull] int? mid, object topicID)
         {
             using (var sc = new SQLCommand(mid))
@@ -9929,22 +10752,34 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
 
                 sc.CommandText.AppendObjectQuery("topic_listmessages", mid);
-               using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
-               {
-                   foreach (DataRow row in dt.Rows)
+                using (
+                    DataTable dt = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true))
+                {
+                    foreach (DataRow row in dt.Rows)
                     {
-                        message_deleteRecursively(
-                            mid, row["MessageID"], true, string.Empty, 0, true, false, true);
+                        message_deleteRecursively(mid, row["MessageID"], true, string.Empty, 0, true, false, true);
                     }
-               }
-            }     
+                }
+            }
         }
 
+        /// <summary>
+        /// The topic_deleteimages.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="topicID">
+        /// The topic id.
+        /// </param>
         private static void topic_deleteimages([NotNull] int? mid, int topicID)
         {
             string uploadDir =
                 HostingEnvironmentUtil.MapPath(
-                    String.Concat(
+                    string.Concat(
                         BaseUrlBuilder.ServerFileRoot,
                         YafBoardFolders.Current.Uploads,
                         "/",
@@ -10007,11 +10842,11 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_EraseTopic", eraseTopic));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UpdateLastPost", true));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_UpdateLastPost", true));
 
                 sc.CommandText.AppendObjectQuery("topic_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -10032,10 +10867,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
-            
+
                 sc.CommandText.AppendObjectQuery("topic_favorite_add", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /// <summary>
@@ -10101,7 +10936,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_favorite_details", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -10121,10 +10956,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
-               
+
                 sc.CommandText.AppendObjectQuery("topic_favorite_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }              
+            }
         }
 
         /// <summary>
@@ -10148,7 +10983,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_favorite_remove", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -10172,7 +11007,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_findduplicate", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            } 
+            }
         }
 
         /// <summary>
@@ -10195,7 +11030,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_findnext", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -10218,7 +11053,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_findprev", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -10245,7 +11080,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));
 
                 sc.CommandText.AppendObjectQuery("topic_info", mid);
-                using (DataTable dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true))
+                using (
+                    DataTable dt = sc.ExecuteDataTableFromReader(
+                        CommandBehavior.Default,
+                        CommandType.StoredProcedure,
+                        true))
                 {
                     if (dt.Rows.Count > 0)
                     {
@@ -10255,8 +11094,8 @@ namespace VZF.Data.Common
                     {
                         return null;
                     }
-                }              
-            }    
+                }
+            }
         }
 
         /// <summary>
@@ -10278,7 +11117,11 @@ namespace VZF.Data.Common
         /// The avatar image type.
         /// </param>
         public static void topic_imagesave(
-            int? mid, object topicID, object imageUrl, Stream stream, object topicImageType)
+            int? mid,
+            object topicID,
+            object imageUrl,
+            Stream stream,
+            object topicImageType)
         {
 
             using (var sc = new SQLCommand(mid))
@@ -10288,18 +11131,17 @@ namespace VZF.Data.Common
                 {
                     data = new byte[stream.Length];
                     stream.Seek(0, System.IO.SeekOrigin.Begin);
-                    stream
-                        .Read(data, 0, (int)stream.Length);
+                    stream.Read(data, 0, (int)stream.Length);
                 }
 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_TopicID", topicID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ImageUrl", imageUrl));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Binary, "i_Stream", data));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_TopicImageType", topicImageType));
-                
+
                 sc.CommandText.AppendObjectQuery("topic_imagesave", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }     
+            }
         }
 
         /// <summary>
@@ -10350,7 +11192,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_latest", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -10416,12 +11258,12 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_StyledNicks", useStyledNicks));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowMoved", showMoved));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_FindLastRead", findLastRead));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));  
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_GetTags", getTags));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("topic_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -10492,7 +11334,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("announcements_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }             
+            }
         }
 
         /// <summary>
@@ -10516,7 +11358,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_lock", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -10549,7 +11391,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_move", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -10585,11 +11427,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Days", days));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PermDelete", permDelete));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_PermDelete", permDelete));
 
                 sc.CommandText.AppendObjectQuery("topic_prune", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }        
+            }
         }
 
         /// <summary>
@@ -10636,6 +11478,9 @@ namespace VZF.Data.Common
         /// </param>
         /// <param name="flags">
         /// The flags.
+        /// </param>
+        /// <param name="messageDescription">
+        /// The message description.
         /// </param>
         /// <param name="messageID">
         /// The message id.
@@ -10685,10 +11530,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
 
                 sc.CommandText.AppendObjectQuery("topic_save", mid);
-                var dt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false).Rows[0];
+                var dt =
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, false).Rows[0];
                 messageID = Convert.ToInt32(dt["MessageID"]);
                 return Convert.ToInt64(dt["TopicID"]);
-            }   
+            }
         }
 
         /// <summary>
@@ -10720,11 +11566,11 @@ namespace VZF.Data.Common
                 }
 
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_StartID", StartID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", Limit));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Limit", Limit));
 
                 sc.CommandText.AppendObjectQuery("topic_simplelist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }          
+            }
         }
 
         /// <summary>
@@ -10755,7 +11601,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_tags", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -10789,7 +11635,14 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable topic_bytags(
-            int? mid, int boardId, int forumId, object pageUserId, string tags, object date, int pageIndex, int pageSize)
+            int? mid,
+            int boardId,
+            int forumId,
+            object pageUserId,
+            string tags,
+            object date,
+            int pageIndex,
+            int pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -10803,7 +11656,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_bytags", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -10827,7 +11680,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("topic_updatetopic", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -10841,9 +11694,8 @@ namespace VZF.Data.Common
         /// </param>        
         public static void unencode_all_topics_subjects(int? mid, Func<string, string> decodeTopicFunc)
         {
-           var topics =
-               topic_simplelist(mid, 0, 99999999).AsEnumerable().Select(r => new TypedTopicSimpleList(r))
-                  .ToList();
+            var topics =
+                topic_simplelist(mid, 0, 99999999).AsEnumerable().Select(r => new TypedTopicSimpleList(r)).ToList();
 
             foreach (var topic in topics.Where(t => t.TopicID.HasValue && t.Topic.IsSet()))
             {
@@ -10861,7 +11713,7 @@ namespace VZF.Data.Common
                 {
                     // soft-fail...
                 }
-            }         
+            }
         }
 
         /// <summary>
@@ -10888,7 +11740,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_accessmasks", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -10915,7 +11767,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_accessmasksbyforum", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -10942,7 +11794,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_accessmasksbygroup", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -10973,7 +11825,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_activity_rank", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -10994,10 +11846,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_IgnoredUserId", ignoredUserId));
-             
+
                 sc.CommandText.AppendObjectQuery("user_addignoreduser", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }       
+            }
         }
 
         /// <summary>
@@ -11026,7 +11878,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_addpoints", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -11074,11 +11926,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_DisplayName", displayName));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Email", @email));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_Flags", flags));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_RankID", rankID));
 
                 sc.CommandText.AppendObjectQuery("user_adminsave", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -11094,11 +11946,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));             
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
                 sc.CommandText.AppendObjectQuery("user_approve", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }      
+            }
         }
 
         /// <summary>
@@ -11118,7 +11970,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_approveall", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -11175,7 +12027,7 @@ namespace VZF.Data.Common
             }
             catch (Exception x)
             {
-                eventlog_create(null, "user_aspnet in VZF.Classes.Data.DB.cs", x, EventLogTypes.Error);
+                eventlog_create(mid, null, x.Source, x.StackTrace, EventLogTypes.Error);
                 return 0;
             }
         }
@@ -11196,11 +12048,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
                 sc.CommandText.AppendObjectQuery("user_avatarimage", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         /// <summary>
@@ -11231,7 +12083,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_changepassword", mid);
                 return Convert.ToBoolean(sc.ExecuteNonQuery(CommandType.StoredProcedure, true));
-            }   
+            }
         }
 
         /// <summary>
@@ -11251,7 +12103,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -11271,7 +12123,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_deleteavatar", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -11296,7 +12148,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_deleteold", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -11323,7 +12175,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_emails", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -11350,7 +12202,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_get", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }     
+            }
         }
 
         /// <summary>
@@ -11373,11 +12225,11 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardID));
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
 
                 sc.CommandText.AppendObjectQuery("user_getalbumsdata", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }     
+            }
         }
 
         /// <summary>
@@ -11396,11 +12248,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));              
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
                 sc.CommandText.AppendObjectQuery("user_getpoints", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }    
+            }
         }
 
         /// <summary>
@@ -11423,7 +12275,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_getsignature", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToString();
-            }    
+            }
         }
 
         /// <summary>
@@ -11450,7 +12302,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_getsignaturedata", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -11477,7 +12329,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_getthanks_from", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }    
+            }
         }
 
         /// <summary>
@@ -11517,11 +12369,11 @@ namespace VZF.Data.Common
                 else
                 {
                     thanksToNumber = Convert.ToInt32(thton.Value);
-                    thanksToPostsNumber = Convert.ToInt32(thtop.Value);                   
+                    thanksToPostsNumber = Convert.ToInt32(thtop.Value);
                 }
 
                 return new int[] { thanksToNumber, thanksToPostsNumber };
-            }       
+            }
         }
 
         /// <summary>
@@ -11540,11 +12392,11 @@ namespace VZF.Data.Common
         {
             using (var sc = new SQLCommand(mid))
             {
-                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));               
+                sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
 
                 sc.CommandText.AppendObjectQuery("user_guest", mid);
                 return sc.ExecuteScalar(CommandType.StoredProcedure).ToType<int?>();
-            }    
+            }
         }
 
         /// <summary>
@@ -11562,7 +12414,7 @@ namespace VZF.Data.Common
         public static DataTable user_ignoredlist(int? mid, object userId)
         {
             using (var sc = new SQLCommand(mid))
-            {              
+            {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
 
                 sc.CommandText.AppendObjectQuery("user_ignoredlist", mid);
@@ -11594,7 +12446,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_isuserignored", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }   
+            }
         }
 
         /// <summary>
@@ -11641,19 +12493,22 @@ namespace VZF.Data.Common
             while (true)
             {
                 try
-                {  
+                {
                     using (var sc = new SQLCommand(mid))
                     {
                         sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userID));
                         sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardID));
                         sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowPendingMails", showPendingMails));
-                        sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowPendingBuddies", showPendingBuddies));
+                        sc.Parameters.Add(
+                            sc.CreateParameter(DbType.Boolean, "i_ShowPendingBuddies", showPendingBuddies));
                         sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowUnreadPMs", showUnreadPMs));
                         sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowUserAlbums", showUserAlbums));
                         sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_ShowUserStyle", styledNicks));
 
                         sc.CommandText.AppendObjectQuery("user_lazydata", mid);
-                        return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).Rows[0];
+                        return
+                            sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                                .Rows[0];
                     }
                 }
                 catch (ArgumentOutOfRangeException xx)
@@ -11665,21 +12520,22 @@ namespace VZF.Data.Common
                     else
                         throw new ArgumentOutOfRangeException(
                             string.Format(
-                                "Number of DataTable columns from DataReader cannot be null. Trys -{0}", nTries),
+                                "Number of DataTable columns from DataReader cannot be null. Trys -{0}",
+                                nTries),
                             xx);
                 }
-               /* catch (Exception x)
-                {
-                   if (x.Number == 1213 && nTries < 3)
-                    {
-                        /// Transaction (Process ID XXX) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
-                    }
-                    else
-                        throw new ApplicationException(
-                            string.Format("Sql Exception with error number {0} (Tries={1})", x.Number, nTries), x);
-                } */
+                /* catch (Exception x)
+                 {
+                    if (x.Number == 1213 && nTries < 3)
+                     {
+                         /// Transaction (Process ID XXX) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
+                     }
+                     else
+                         throw new ApplicationException(
+                             string.Format("Sql Exception with error number {0} (Tries={1})", x.Number, nTries), x);
+                 } */
                 ++nTries;
-            }        
+            }
         }
 
         /// <summary>
@@ -11763,7 +12619,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -11824,7 +12680,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_pagedlist", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }       
+            }
         }
 
         /// <summary>
@@ -11847,7 +12703,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_listmedals", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }        
+            }
         }
 
         /// <summary>
@@ -11939,7 +12795,7 @@ namespace VZF.Data.Common
             object numPostCompare)
         {
             using (var sc = new SQLCommand(mid))
-            {         
+            {
                 if (literals.Equals(char.MinValue.ToString()))
                 {
                     literals = null;
@@ -11963,10 +12819,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_SortLastVisit", sortLastVisit ?? 0));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NumPosts", numPosts ?? 0));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_NumPostsCompare", numPostCompare ?? 0));
-              
+
                 sc.CommandText.AppendObjectQuery("user_listmembers", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            } 
+            }
         }
 
         /// <summary>
@@ -11990,7 +12846,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_medal_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure, true);
-            }      
+            }
         }
 
         /// <summary>
@@ -12018,7 +12874,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_medal_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }   
+            }
         }
 
         /// <summary>
@@ -12071,7 +12927,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_medal_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /// <summary>
@@ -12099,7 +12955,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_migrate", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }         
+            }
         }
 
         /// <summary>
@@ -12135,7 +12991,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_nntp", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }  
+            }
         }
 
         /// <summary>
@@ -12155,12 +13011,12 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-               
+
                 sc.CommandText.AppendObjectQuery("user_pmcount", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
-        
+
         /// <summary>
         /// The user_removeignoreduser.
         /// </summary>
@@ -12211,7 +13067,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_removepoints", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }   
+            }
         }
 
         /// <summary>
@@ -12238,7 +13094,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_RepliedTopic", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure)) > 0;
-            }          
+            }
         }
 
         /// <summary>
@@ -12358,7 +13214,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }    
+            }
         }
 
         /// <summary>
@@ -12380,7 +13236,11 @@ namespace VZF.Data.Common
         /// The avatar image type.
         /// </param>   
         public static void user_saveavatar(
-            int? mid, object userId, object avatar, Stream stream, object avatarImageType)
+            int? mid,
+            object userId,
+            object avatar,
+            Stream stream,
+            object avatarImageType)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -12400,7 +13260,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_saveavatar", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -12442,9 +13302,9 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_savenotification", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }              
+            }
         }
-        
+
         /// <summary>
         /// The user_savesignature.
         /// </summary>
@@ -12463,11 +13323,11 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Signature", signature));
-                
+
                 sc.CommandText.AppendObjectQuery("user_savesignature", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
-        }          
+        }
 
         /// <summary>
         /// The user_setnotdirty.
@@ -12491,7 +13351,7 @@ namespace VZF.Data.Common
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
             }
         }
-        
+
         /// <summary>
         /// The user_setpoints.
         /// </summary>
@@ -12513,7 +13373,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_setpoints", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -12538,10 +13398,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_BoardID", boardId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_ProviderUserKey", providerUserKey));
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_Role", role));
-              
+
                 sc.CommandText.AppendObjectQuery("user_setrole", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -12598,10 +13458,10 @@ namespace VZF.Data.Common
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_Suspend", suspend));
-                
+
                 sc.CommandText.AppendObjectQuery("user_suspend", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }          
+            }
         }
 
         /// <summary>
@@ -12620,7 +13480,10 @@ namespace VZF.Data.Common
         /// The is twitter user.
         /// </param>
         public static void user_update_single_sign_on_status(
-            int? mid, [NotNull] object userId, [NotNull] object isFacebookUser, [NotNull] object isTwitterUser)
+            int? mid,
+            [NotNull] object userId,
+            [NotNull] object isFacebookUser,
+            [NotNull] object isTwitterUser)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -12630,7 +13493,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_update_ssn_status", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -12657,7 +13520,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_ThankedMessage", mid);
                 return Convert.ToBoolean(sc.ExecuteScalar(CommandType.StoredProcedure));
-            } 
+            }
         }
 
         /// <summary>
@@ -12677,10 +13540,10 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-              
+
                 sc.CommandText.AppendObjectQuery("user_ThankFromCount", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }  
+            }
         }
 
         /// <summary>
@@ -12705,7 +13568,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>        
         public static DataTable user_viewthanksfrom(
-            int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+            int? mid,
+            object UserID,
+            object pageUserId,
+            int pageIndex,
+            int pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -12716,7 +13583,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_viewthanksfrom", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -12741,7 +13608,11 @@ namespace VZF.Data.Common
         /// The <see cref="T:System.Data.DataTable"/>.
         /// </returns>
         public static DataTable user_viewthanksto(
-            int? mid, object UserID, object pageUserId, int pageIndex, int pageSize)
+            int? mid,
+            object UserID,
+            object pageUserId,
+            int pageIndex,
+            int pageSize)
         {
             using (var sc = new SQLCommand(mid))
             {
@@ -12752,7 +13623,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("user_viewthanksto", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }  
+            }
         }
 
         /// <summary>
@@ -12806,8 +13677,11 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Boolean, "i_DailyDigest", dailyDigest));
 
                 sc.CommandText.AppendObjectQuery("user_find", mid);
-                return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true).AsEnumerable().Select(u => new TypedUserFind(u)); 
-            }          
+                return
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true)
+                        .AsEnumerable()
+                        .Select(u => new TypedUserFind(u));
+            }
         }
 
         /// <summary>
@@ -12831,7 +13705,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("userforum_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }  
+            }
         }
 
         /// <summary>
@@ -12858,7 +13732,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("userforum_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -12884,10 +13758,10 @@ namespace VZF.Data.Common
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_ForumID", forumID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_AccessMaskID", accessMaskID));
                 sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "i_UTCTIMESTAMP", DateTime.UtcNow));
-                
+
                 sc.CommandText.AppendObjectQuery("userforum_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }             
+            }
         }
 
         /// <summary>
@@ -12907,7 +13781,7 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.Int32, "i_UserID", userId));
-                
+
                 sc.CommandText.AppendObjectQuery("usergroup_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
             }
@@ -12938,7 +13812,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("usergroup_save", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }        
+            }
         }
 
         /// <summary>
@@ -12969,9 +13843,18 @@ namespace VZF.Data.Common
         /// The <see cref="IEnumerable"/>.
         /// </returns>   
         public static IEnumerable<TypedUserList> UserList(
-            int? mid, int boardId, int? userId, bool? approved, int? groupID, int? rankID, bool? useStyledNicks)
+            int? mid,
+            int boardId,
+            int? userId,
+            bool? approved,
+            int? groupID,
+            int? rankID,
+            bool? useStyledNicks)
         {
-          return  user_list(mid, boardId, userId, approved, groupID, rankID, useStyledNicks).AsEnumerable().Select(x => new TypedUserList(x));
+            return
+                user_list(mid, boardId, userId, approved, groupID, rankID, useStyledNicks)
+                    .AsEnumerable()
+                    .Select(x => new TypedUserList(x));
         }
 
         /// <summary>
@@ -13023,7 +13906,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchforum_check", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }           
+            }
         }
 
         /// <summary>
@@ -13043,7 +13926,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchforum_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }            
+            }
         }
 
         /// <summary>
@@ -13066,7 +13949,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchforum_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }    
+            }
         }
 
         /// <summary>
@@ -13091,7 +13974,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchtopic_add", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            }   
+            }
         }
 
         /// <summary>
@@ -13118,7 +14001,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchtopic_check", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }         
+            }
         }
 
         /// <summary>
@@ -13138,7 +14021,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchtopic_delete", mid);
                 sc.ExecuteNonQuery(CommandType.StoredProcedure);
-            } 
+            }
         }
 
         /// <summary>
@@ -13161,7 +14044,7 @@ namespace VZF.Data.Common
 
                 sc.CommandText.AppendObjectQuery("watchtopic_list", mid);
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.StoredProcedure, true);
-            }            
+            }
         }
 
         // Properties
@@ -13180,11 +14063,11 @@ namespace VZF.Data.Common
             using (var sc = new SQLCommand(mid))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbScheme", null));
-                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbName", null));           
+                sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_DbName", null));
 
                 sc.CommandText.AppendObjectQuery("db_size", mid);
                 return Convert.ToInt32(sc.ExecuteScalar(CommandType.StoredProcedure));
-            }            
+            }
         }
 
         /// <summary>
@@ -13209,7 +14092,7 @@ namespace VZF.Data.Common
             catch
             {
                 return false;
-            }            
+            }
         }
 
         /// <summary>
@@ -13315,43 +14198,8 @@ namespace VZF.Data.Common
             }
         }
 
-        #region ConnectionStringOptions       
+        #region ConnectionStringOptions
 
-        /// <summary>
-        /// The get password placeholder visible.
-        /// </summary>
-        /// <param name="mid">
-        /// The mid.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// </exception>
-        public static bool GetPasswordPlaceholderVisible(int? mid)
-        {
-            string dataEngine;
-            string connectionString;
-            string namePattern = string.Empty;
-            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
-
-            switch (dataEngine)
-            {
-                case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.Db.PasswordPlaceholderVisible;
-                case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.Db.PasswordPlaceholderVisible;
-                case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.Db.PasswordPlaceholderVisible;
-                case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.Db.PasswordPlaceholderVisible;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PasswordPlaceholderVisible;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.PasswordPlaceholderVisible;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.PasswordPlaceholderVisible; 
-                default:
-                    throw new ArgumentOutOfRangeException(dataEngine);
-            }
-        }
 
         /// <summary>
         /// The connection parameters.
@@ -13374,22 +14222,52 @@ namespace VZF.Data.Common
             switch (dataEngine)
             {
                 case SqlDbAccess.MsSql:
-                    return VZF.Data.MsSql.MsSqlDbAccess.ConnectionParameters;
+                    return VZF.Data.MsSql.Db.ConnectionParameters;
                 case SqlDbAccess.Npgsql:
-                    return VZF.Data.Postgre.PostgreDbAccess.ConnectionParameters;
+                    return VZF.Data.Postgre.Db.ConnectionParameters;
                 case SqlDbAccess.MySql:
-                    return VZF.Data.Mysql.MySqlDbAccess.ConnectionParameters;
+                    return VZF.Data.Mysql.Db.ConnectionParameters;
                 case SqlDbAccess.Firebird:
-                    return VZF.Data.Firebird.FbDbAccess.ConnectionParameters;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.Parameter19_Value;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.Parameter19_Value;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.Parameter19_Value; 
+                    return VZF.Data.Firebird.Db.ConnectionParameters;
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// The create database.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static string CreateDatabase(int? mid, bool embeded)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    return VZF.Data.MsSql.Database.CreateDatabase(mid, embeded);
+                case SqlDbAccess.Npgsql:
+                    return VZF.Data.Postgre.Database.CreateDatabase(mid, embeded);
+                case SqlDbAccess.MySql:
+                    return VZF.Data.Mysql.Database.CreateDatabase(mid, embeded);
+                case SqlDbAccess.Firebird:
+                    return VZF.Data.Firebird.Database.CreateDatabase(mid, embeded);
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+        }
 
         /// <summary>
         /// The get script list.
@@ -13456,9 +14334,6 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.PanelGetStats;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelGetStats;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelGetStats;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelGetStats;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.PanelGetStats; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13492,9 +14367,6 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.PanelRecoveryMode;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelRecoveryMode;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelRecoveryMode;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelRecoveryMode;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.PanelRecoveryMode; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13528,9 +14400,6 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.PanelReindex;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelReindex;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelReindex;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelReindex;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.PanelReindex; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13565,9 +14434,6 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.PanelShrink;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.PanelShrink;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.PanelShrink;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.PanelShrink;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.PanelShrink; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
@@ -13602,15 +14468,24 @@ namespace VZF.Data.Common
                     return VZF.Data.Mysql.Db.btnReindexVisible;
                 case SqlDbAccess.Firebird:
                     return VZF.Data.Firebird.Db.btnReindexVisible;
-                    // case SqlDbAccess.Oracle:  return VZF.Data.Oracle.Db.btnReindexVisible;
-                    // case SqlDbAccess.Db2:  return VZF.Data.Db2.Db.btnReindexVisible;
-                    // case SqlDbAccess.Other:  return VZF.Data.Other.Db.btnReindexVisible; 
                 default:
                     throw new ArgumentOutOfRangeException(dataEngine);
             }
         }
 
-        private static bool GetBooleanRegistryValue(int? mid , string name)
+        /// <summary>
+        /// The get boolean registry value.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool GetBooleanRegistryValue(int? mid, string name)
         {
             using (DataTable dt = registry_list(mid, name))
             {
@@ -13624,6 +14499,360 @@ namespace VZF.Data.Common
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// The inner run sql execute reader.
+        /// </summary>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        /// <param name="useTransaction">
+        /// The use transaction.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string InnerRunSqlExecuteReader([NotNull] SQLCommand command, bool useTransaction)
+        {
+            System.Data.Common.DbDataReader reader = null;
+            var results = new StringBuilder();
+            string messageRunSql = string.Empty;
+            try
+            {
+                try
+                {
+                    /*  if (useTransaction)
+                      {
+                          command.BeginTransaction();
+                      } */
+                    reader = command.ExecuteReader();
+
+                    if (reader != null)
+                    {
+                        if (reader.HasRows)
+                        {
+                            int rowIndex = 1;
+                            var columnNames =
+                                reader.GetSchemaTable()
+                                    .Rows.Cast<DataRow>()
+                                    .Select(r => r["ColumnName"].ToString())
+                                    .ToList();
+
+                            results.Append("RowNumber");
+
+                            columnNames.ForEach(
+                                n =>
+                                    {
+                                        results.Append(",");
+                                        results.Append(n);
+                                    });
+
+                            results.AppendLine();
+
+                            while (reader.Read())
+                            {
+                                results.AppendFormat(@"""{0}""", rowIndex++);
+
+                                // dump all columns...
+                                foreach (var col in columnNames)
+                                {
+                                    results.AppendFormat(@",""{0}""", reader[col].ToString().Replace("\"", "\"\""));
+                                }
+
+                                results.AppendLine();
+                            }
+                        }
+                        else if (reader.RecordsAffected > 0)
+                        {
+                            results.AppendFormat("{0} Record(s) Affected", reader.RecordsAffected);
+                            results.AppendLine();
+                        }
+                        else
+                        {
+                            if (messageRunSql.IsSet())
+                            {
+                                results.AppendLine(messageRunSql);
+                                results.AppendLine();
+                            }
+
+                            results.AppendLine("No Results Returned.");
+                        }
+
+                        reader.Close();
+
+                        if (command.Transaction != null)
+                        {
+                            command.Transaction.Commit();
+                        }
+                    }
+                }
+                finally
+                {
+                    if (command.Transaction != null)
+                    {
+                        command.Transaction.Rollback();
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+
+                results.AppendLine();
+                results.AppendFormat("SQL ERROR: {0}", x);
+            }
+
+            return results.ToString();
+        }
+
+        /// <summary>
+        /// The db_defaultcollation.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="dbcharset">
+        /// The dbcharset.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static string db_defaultcollation(int? mid, string dbcharset)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string sql;
+            string charsetColumn;
+            string collationColumn;
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    sql = VZF.Data.MsSql.Db.db_collations_data(out charsetColumn, out collationColumn);
+                    break;
+                case SqlDbAccess.Npgsql:
+                    sql = VZF.Data.Postgre.Db.db_collations_data(out charsetColumn, out collationColumn);
+                    break;
+                case SqlDbAccess.MySql:
+                    sql = VZF.Data.Mysql.Db.db_collations_data(out charsetColumn, out collationColumn);
+                    break;
+                case SqlDbAccess.Firebird:
+                    sql = VZF.Data.Firebird.Db.db_collations_data(out charsetColumn, out collationColumn);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!sql.IsSet())
+            {
+                return string.Empty;
+            }
+
+            string dbcollation = string.Empty;
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery(sql);
+                DataTable dtt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
+
+                if (dtt.Rows.Count <= 0)
+                {
+                    return dbcollation;
+                }
+
+                foreach (DataRow dr in dtt.Rows)
+                {
+                    if (dr[charsetColumn].ToString() == dbcharset)
+                    {
+                        dbcollation = dr[collationColumn].ToString();
+                    }
+                }
+
+                return dbcollation;
+            }
+        }
+
+        /// <summary>
+        /// The db_checkvalidcharset.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <param name="dbcharset">
+        /// The dbcharset.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static string db_checkvalidcharset(int? mid, string dbcharset)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string sql;
+            string charsetColumn;
+            string value;
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    sql = VZF.Data.MsSql.Db.db_checkvalidcharset(out charsetColumn, out value);
+                    break;
+                case SqlDbAccess.Npgsql:
+                    sql = VZF.Data.Postgre.Db.db_checkvalidcharset(out charsetColumn, out value);
+                    break;
+                case SqlDbAccess.MySql:
+                    sql = VZF.Data.Mysql.Db.db_checkvalidcharset(out charsetColumn, out value);
+                    break;
+                case SqlDbAccess.Firebird:
+                    sql = VZF.Data.Firebird.Db.db_checkvalidcharset(out charsetColumn, out value);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!sql.IsSet())
+            {
+                return string.Empty;
+            }
+
+            string dbcollation = string.Empty;
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery(sql);
+                DataTable dtt = sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true);
+
+                if (dtt.Rows.Count <= 0)
+                {
+                    return dbcollation;
+                }
+
+                foreach (DataRow dr in dtt.Rows)
+                {
+                    if (dr[charsetColumn].ToString() == dbcharset)
+                    {
+                        dbcollation = dr[value].ToString();
+                    }
+                }
+
+                return dbcollation;
+            }
+        }
+
+        /// <summary>
+        /// The db_getfirstcharset.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static string db_getfirstcharset(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string sql;
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    sql = VZF.Data.MsSql.Db.db_getfirstcharset();
+                    break;
+                case SqlDbAccess.Npgsql:
+                    sql = VZF.Data.Postgre.Db.db_getfirstcharset();
+                    break;
+                case SqlDbAccess.MySql:
+                    sql = VZF.Data.Mysql.Db.db_getfirstcharset();
+                    break;
+                case SqlDbAccess.Firebird:
+                    sql = VZF.Data.Firebird.Db.db_getfirstcharset();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!sql.IsSet())
+            {
+                return string.Empty;
+            }
+
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery(sql);
+                string dbcharset =
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true).Rows[0]["Value"]
+                        .ToString();
+
+                return dbcharset;
+            }
+        }
+
+        /// <summary>
+        /// The db_getfirstcollation.
+        /// </summary>
+        /// <param name="mid">
+        /// The mid.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// </exception>
+        public static string db_getfirstcollation(int? mid)
+        {
+            string dataEngine;
+            string connectionString;
+            string namePattern = string.Empty;
+            SqlDbAccess.GetConnectionData(mid, namePattern, out dataEngine, out connectionString);
+            string sql;
+
+            switch (dataEngine)
+            {
+                case SqlDbAccess.MsSql:
+                    sql = VZF.Data.MsSql.Db.db_getfirstcollation();
+                    break;
+                case SqlDbAccess.Npgsql:
+                    sql = VZF.Data.Postgre.Db.db_getfirstcollation();
+                    break;
+                case SqlDbAccess.MySql:
+                    sql = VZF.Data.Mysql.Db.db_getfirstcollation();
+                    break;
+                case SqlDbAccess.Firebird:
+                    sql = VZF.Data.Firebird.Db.db_getfirstcollation();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(dataEngine);
+            }
+
+            if (!sql.IsSet())
+            {
+                return string.Empty;
+            }
+
+            using (var sc = new SQLCommand(mid))
+            {
+                sc.CommandText.AppendQuery(sql);
+                string dbcollation =
+                    sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, true).Rows[0]["Value"]
+                        .ToString();
+
+                return dbcollation;
+            }
         }
     }
 }

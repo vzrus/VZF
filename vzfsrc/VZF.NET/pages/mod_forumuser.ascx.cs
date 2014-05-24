@@ -102,7 +102,7 @@ namespace YAF.Pages
                 const int flags = (int)AccessFlags.Flags.ModeratorAccess;
 
                 // non-admins cannot assign moderation access masks
-                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true);
+                dt = CommonDb.accessmask_list(mid: this.PageContext.PageModuleID, boardId: null, accessMaskID: flags, excludeFlags: 0, pageUserID: this.PageContext.PageUserID, isUserMask: false, isAdminMask: true, pageIndex: 0, pageSize: 1000000);
             }
             else
             {

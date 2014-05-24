@@ -920,9 +920,9 @@ namespace YAF.Install
         /// <returns>
         /// The test database connection.
         /// </returns>
-        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)
+        private static bool TestDatabaseConnection([NotNull] out string exceptionMessage, string connectionString)        
         {
-            return CommonSqlDbAccess.TestConnection(out exceptionMessage, connectionString);
+            return CommonDb.TestConnection(out exceptionMessage, connectionString, VZF.Data.DAL.SqlDbAccess.GetProviderNameFromConnectionString(connectionString));
         }
 
         /// <summary>
@@ -1220,50 +1220,20 @@ namespace YAF.Install
 
                 this.lbConnections.Items.Add(connectionString.Name);
             }
+
             string con = string.Empty;
+
             foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
-                switch (connectionString.ProviderName)
-                {
-                    case "System.Data.SqlClient":
-                        con = "yafnet_my";
-                        break;
-                    case "Npgsql":
-                        con = "yafnet_pg";
-                        break;
-                    case "MySql.Data.MySqlClient":
-                        con = "yafnet_my";
-                        break;
-                    case "FirebirdSql.Data.FirebirdClient":
-                        con = "yafnet_fb";
-                        break;
-                        // case "oracle":  con = "yafnet_or";
-                        // break;
-                        // case "db2":  con = "yafnet_db2";
-                        //  break;
-                        // case "other": con = "yafnet_oth";
-                        // break;
-                    default:
-                        throw new ApplicationException("No return type");
-                }
-            }
-            ListItem item = this.lbConnections.Items.FindByText("con");
+                this.lbConnections.Items.Add(connectionString.Name);
+            }          
+
+            ListItem item = this.lbConnections.Items.FindByText("vzfnet_ms");
 
             if (item != null)
             {
                 item.Selected = true;
             }
-        }
-
-        /// <summary>
-        /// The fix access.
-        /// </summary>
-        /// <param name="bGrant">
-        /// The b grant.
-        /// </param>
-        private void FixAccess(bool bGrant)
-        {
-            CommonDb.system_initialize_fixaccess(this.Session["InstallModuleID"].ToType<int?>(), bGrant);
         }
 
         /// <summary>
@@ -1431,15 +1401,14 @@ namespace YAF.Install
         private bool UpgradeDatabase(bool fullText)
         {
             {
-                // try
-                this.FixAccess(false);
+               
 
                 foreach (string script in CommonDb.GetScriptList(this.Session["InstallModuleID"].ToType<int?>()))
                 {
                     this.ExecuteScript(script, true);
                 }
 
-                this.FixAccess(true);
+               
 
                 int prevVersion = CommonDb.GetDBVersion(this.Session["InstallModuleID"].ToType<int?>());
 

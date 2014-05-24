@@ -72,6 +72,10 @@
       <Project>{5e5da63a-5059-4439-a51c-504c825fdad1}</Project>
       <Name>VZF.Data.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VZF.Data\VZF.Data.Mysql\VZF.Data.Mysql.csproj">
+      <Project>{41c7a2fc-480d-4f44-9d04-fd318be5b306}</Project>
+      <Name>VZF.Data.Mysql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VZF.Data\VZF.Data.Utils\VZF.Data.Utils.csproj">
       <Project>{3e9be2c0-4ad7-4e58-a58a-24107cd5a7e9}</Project>
       <Name>VZF.Data.Utils</Name>

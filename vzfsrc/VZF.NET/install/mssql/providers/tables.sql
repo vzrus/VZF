@@ -70,7 +70,7 @@ IF not exists (select top 1 1 from sys.objects where object_id = object_id(N'[{d
 	)
 GO
 
-if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Membership]') and name='UserID' and system_type_id=36)
+if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Membership]') and name=N'UserID' and system_type_id=36)
 begin
 	if exists(select 1 from sys.indexes where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Membership]') and is_primary_key = 1)
 	begin
@@ -86,7 +86,7 @@ begin
 end
 GO
 
-if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and name='UserID' and system_type_id=36)
+if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and name=N'UserID' and system_type_id=36)
 begin
 	if exists(select 1 from sys.indexes where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_Profile]') and is_primary_key = 1)
 	begin
@@ -102,7 +102,7 @@ begin
 end
 GO
 
-if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_RoleMembership]') and name='UserID' and system_type_id=36)
+if exists(select 1 from sys.columns where object_id = object_id('[{databaseOwner}].[{objectQualifier}prov_RoleMembership]') and name=N'UserID' and system_type_id=36)
 begin
 	-- drop the provider user key index if it exists...
 	if exists(select 1 from sys.indexes where name=N'IX_{objectQualifier}prov_RoleMembership_UserID' and object_id = object_id(N'[{databaseOwner}].[{objectQualifier}prov_RoleMembership]'))

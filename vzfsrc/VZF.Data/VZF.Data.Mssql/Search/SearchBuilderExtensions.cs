@@ -20,8 +20,10 @@ namespace VZF.Data.MsSql.Search
 {
     using System.Collections.Generic;
     using System.Text;
-    using YAF.Types;
+
     using VZF.Utils;
+
+    using YAF.Types;
 
     /// <summary>
   /// The search builder extensions.

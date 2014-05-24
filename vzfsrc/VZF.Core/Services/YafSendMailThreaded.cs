@@ -132,7 +132,8 @@ namespace YAF.Core.Services
                                 }
                                 else
                                 {
-                                    this.Logger.Warn("SendMailThread Failed for the 2nd time:", ex.ToString());
+                                   // this.Logger.Warn("SendMailThread Failed for the 2nd time:", ex.ToString());
+                                    CommonDb.eventlog_create(YafContext.Current.PageModuleID, YafContext.Current.PageUserID, "SendMailThread Failed for the 2nd time: " + ex.Source, ex.StackTrace);
                                 }
                             }
                             else

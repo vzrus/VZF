@@ -613,7 +613,7 @@ namespace YAF.Providers.Profile
                         if (!structure.Columns.Contains(column.Settings.Name))
                         {
                             // if not, create it...
-                            DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
+                            DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType.ToString(), column.Size);
                         }
                     }
 
@@ -665,7 +665,7 @@ namespace YAF.Providers.Profile
                     if (!structure.Columns.Contains(column.Settings.Name))
                     {
                         // if not, create it...
-                        DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType, column.Size);
+                        DB.Current.AddProfileColumn(ConnectionStringName, column.Settings.Name, column.DataType.ToString(), column.Size);
                     }
                 }
 
@@ -703,7 +703,7 @@ namespace YAF.Providers.Profile
         /// The name.
         /// </param>
         /// <returns>
-        /// The generate cache key.
+        /// The generated cache key.
         /// </returns>
         private string GenerateCacheKey(string name)
         {

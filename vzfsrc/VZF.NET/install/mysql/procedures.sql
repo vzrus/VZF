@@ -1971,17 +1971,23 @@ MODIFIES SQL DATA
    
  
      /*Group*/
-    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) 
-    values(l_BoardID, CONCAT(COALESCE(i_RolePrefix,''), 'Administrators'),1, 2147483647,'default!font-size: 8pt; color: red/flatearth!font-size: 8pt; color:blue',0,256,'URL,IMG,SPOILER,QUOTE',10,120);
+    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden,
+	UsrPersonalForums,UsrPersonalGroups,UsrPersonalMasks) 
+    values(l_BoardID, CONCAT(COALESCE(i_RolePrefix,''), 'Administrators'),1, 2147483647,'default!font-size: 8pt; color: red/flatearth!font-size: 8pt; color:blue',0,256,'URL,IMG,SPOILER,QUOTE',10,120,0,0,
+	0,0,0);
     set l_GroupIDAdmin = LAST_INSERT_ID();
-    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) 
-    values(l_BoardID,'Guests',2,0,'',1,0,null,0,0);
+    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden,
+	UsrPersonalForums,UsrPersonalGroups,UsrPersonalMasks) 
+    values(l_BoardID,'Guests',2,0,'',1,0,null,0,0,0,0,
+	0,0,0);
     SET l_GroupIDGuest = LAST_INSERT_ID();
-    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages) 
-    values(l_BoardID, CONCAT(COALESCE(i_RolePrefix,''),'Registered'),4,30,'',2,128,'URL,IMG,SPOILER,QUOTE',5,30);
+    INSERT INTO {databaseName}.{objectQualifier}Group(BoardID,`Name`,Flags,PMLimit,Style,SortOrder,UsrSigChars,UsrSigBBCodes,UsrAlbums,UsrAlbumImages,IsUserGroup,IsHidden,
+	UsrPersonalForums,UsrPersonalGroups,UsrPersonalMasks) 
+    values(l_BoardID, CONCAT(COALESCE(i_RolePrefix,''),'Registered'),4,30,'',2,128,'URL,IMG,SPOILER,QUOTE',5,30,0,0,
+	0,0,0);
     SET l_GroupIDMember = LAST_INSERT_ID();	
     
-     /*User (GUEST)*/
+    -- User (GUEST)
     INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password,Joined,LastVisit,NumPosts,TimeZone,Email,Flags)
     VALUES(l_BoardID,l_RankIDGuest,'Guest','Guest','na', i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,l_TimeZone,l_ForumEmail,6);
     SET l_UserIDGuest = LAST_INSERT_ID();	
@@ -1989,16 +1995,23 @@ MODIFIES SQL DATA
     SET l_UserFlags = 2;
     IF i_IsHostAdmin<>0 THEN SET l_UserFlags = 3; END IF;
 
-  /*User (ADMIN)*/
-  INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password, Email,ProviderUserKey, Joined,LastVisit,NumPosts,TimeZone,Flags,Points)
-  VALUES(l_BoardID,l_RankIDAdmin,i_UserName,i_UserName,'na',i_UserEmail,i_UserKey,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,l_TimeZone,l_UserFlags,1);
-  SET l_UserIDAdmin = LAST_INSERT_ID();
+    -- User (ADMIN)
+	INSERT INTO {databaseName}.{objectQualifier}User(BoardID,RankID,`Name`,`DisplayName`,Password, Email,ProviderUserKey, Joined,LastVisit,NumPosts,TimeZone,Flags,Points)
+    VALUES(l_BoardID,l_RankIDAdmin,i_UserName,i_UserName,'na',i_UserEmail,i_UserKey,i_UTCTIMESTAMP,i_UTCTIMESTAMP,0,l_TimeZone,l_UserFlags,1);
+    SET l_UserIDAdmin = LAST_INSERT_ID();
 
-  /*UserGroup*/
+	-- update all groups that they were created by admin
+	update {databaseName}.{objectQualifier}Group
+	set    CreatedByUserID = l_UserIDAdmin,
+           CreatedByUserName = i_UserName,
+           CreatedByUserDisplayName = i_UserName,
+           CreatedDate = i_UTCTIMESTAMP;
+
+  -- UserGroup
   INSERT INTO {databaseName}.{objectQualifier}UserGroup(UserID,GroupID) VALUES(l_UserIDAdmin,l_GroupIDAdmin);
   INSERT INTO {databaseName}.{objectQualifier}UserGroup(UserID,GroupID) VALUES(l_UserIDGuest,l_GroupIDGuest);
 
-  /*Category*/
+  -- Category
   INSERT INTO {databaseName}.{objectQualifier}Category(BoardID,`Name`,SortOrder) VALUES(l_BoardID,'Test Category',1);
   set l_CategoryID = LAST_INSERT_ID();
 
@@ -4304,15 +4317,32 @@ BEGIN
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
         CREATE  PROCEDURE {databaseName}.{objectQualifier}group_list(
         i_BoardID INT,
-        i_GroupID INT)
+        i_GroupID INT,
+		i_PageIndex int,
+		i_PageSize int)
         BEGIN
-
-        IF i_GroupID IS NULL THEN
-        SELECT *
-        FROM   {databaseName}.{objectQualifier}Group
-        WHERE  BoardID = i_BoardID  order by SortOrder;
-        ELSE
-        SELECT *
+		  declare ici_TotalRows int ;
+          declare ici_FirstSelectRowNumber int ;
+          declare ici_FirstSelectRowID int;	  
+ IF i_GroupID IS NULL THEN
+        set i_PageIndex = i_PageIndex + 1;  
+        select  count(1) into  ici_TotalRows FROM   {databaseName}.{objectQualifier}Group
+                       WHERE  BoardID = i_BoardID;
+    
+       select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
+       
+       set @biplpr = CONCAT('select
+        b.*,
+        {databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+        FROM   {databaseName}.{objectQualifier}Group b
+        WHERE  b.BoardID = ',i_BoardID,'
+        order by b.SortOrder  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+        PREPARE stmt_els FROM @biplpr;
+        EXECUTE stmt_els;
+        DEALLOCATE PREPARE stmt_els;
+   ELSE
+        SELECT *,
+		{databaseName}.{objectQualifier}biginttoint(0) AS TotalRows
         FROM   {databaseName}.{objectQualifier}Group
         WHERE  BoardID = i_BoardID
         AND GroupID = i_GroupID LIMIT 1;
@@ -4517,6 +4547,7 @@ END;
                  UsrAlbums = i_UsrAlbums,
                  UsrAlbumImages = i_UsrAlbumImages,
                  IsUserGroup =  i_IsUserGroup,
+				 IsHidden = i_IsHidden,
                  UsrPersonalMasks = i_PersonalAccessMasksNumber,
                  UsrPersonalGroups = i_PersonalGroupsNumber,
                  UsrPersonalForums = i_PersonalForumsNumber				
@@ -4536,13 +4567,15 @@ END;
                         UsrAlbums,
                         UsrAlbumImages,
                         IsUserGroup,
+						IsHidden,
                         CreatedByUserID,
                         CreatedByUserName,
                         CreatedByUserDisplayName,
                         CreatedDate,
                         UsrPersonalMasks,
                         UsrPersonalGroups,
-                        UsrPersonalForums)
+                        UsrPersonalForums 
+						)
             VALUES     (i_Name,
                         i_BoardID,
                         iciFlags,
@@ -4556,13 +4589,15 @@ END;
                         i_UsrAlbums,
                         i_UsrAlbumImages,
                         i_IsUserGroup,
+						i_IsHidden,
                         i_UserID,
                         ici_UserName,
                         ici_UserDisplayName,
                         i_UTCTIMESTAMP,
                         i_PersonalAccessMasksNumber,
                         i_PersonalGroupsNumber,
-                        i_PersonalForumsNumber);
+                        i_PersonalForumsNumber
+						);
             SET i_GroupID = LAST_INSERT_ID();
             INSERT INTO {databaseName}.{objectQualifier}ForumAccess
                        (GroupID,
@@ -10766,7 +10801,7 @@ SELECT
         
  IF icic_cntr < 1 OR icic_cntr IS NULL THEN 		
 
-        CALL {databaseName}.{objectQualifier}user_save(null,i_BoardID,i_UserName,i_UserName,i_Email,i_TimeZone,null,null,null,null, null, 1, null, null, null,i_UTCTIMESTAMP,0,10,10); 		
+        CALL {databaseName}.{objectQualifier}user_save(null,i_BoardID,i_UserName,i_UserName,i_Email,i_TimeZone,null,null,null,null, null, 1, null, null, null,0,10,10,i_UTCTIMESTAMP); 		
         SELECT MAX(UserID) INTO icic_UserID FROM {databaseName}.{objectQualifier}User;
 END IF;		
     SELECT icic_UserID AS UserID;		
@@ -11537,19 +11572,39 @@ END;
 
 /* STORED PROCEDURE CREATED BY VZ-TEAM */
 CREATE  PROCEDURE {databaseName}.{objectQualifier}accessmask_list(
-i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1))
+i_BoardID  INT, i_AccessMaskID INT, i_ExcludeFlags INT, i_PageUserID INT, i_IsUserMask TINYINT(1), i_IsAdminMask  TINYINT(1), i_PageIndex int, i_PageSize int)
 BEGIN
-IF i_AccessMaskID IS NULL THEN
-SELECT   a.*
-FROM     {databaseName}.{objectQualifier}AccessMask a
-WHERE    a.BoardID = i_BoardID and
-            (a.Flags & i_ExcludeFlags) = 0
+	 declare ici_TotalRows int default 0;
+     declare ici_FirstSelectRowNumber int default 0;
+ IF i_AccessMaskID IS NULL THEN
+        if i_ExcludeFlags IS NULL THEN
+		SET i_ExcludeFlags = 0;
+		END IF;
+        set i_PageIndex = i_PageIndex + 1;  
+        select  count(1) into  ici_TotalRows FROM    {databaseName}.{objectQualifier}AccessMask a
+              WHERE    a.BoardID = i_BoardID and
+              (a.Flags & i_ExcludeFlags) = 0
                 and (i_IsUserMask = 0 or a.IsUserMask = 1)
             -- and (i_IsAdminMask = 0 or IsAdminMask = 1)
-            and (i_PageUserID is null  or CreatedByUserID = i_PageUserID)
-ORDER BY a.SortOrder;
+            and (i_PageUserID is null  or CreatedByUserID = i_PageUserID);
+    
+       select  (i_PageIndex - 1) * i_PageSize into ici_FirstSelectRowNumber;
+       
+       set @biplpr = CONCAT('select
+        a.*,
+		{databaseName}.{objectQualifier}biginttoint(',ici_TotalRows,') AS TotalRows
+        FROM     {databaseName}.{objectQualifier}AccessMask a  		
+        WHERE  a.BoardID = ',i_BoardID,' and
+            (a.Flags & ',i_ExcludeFlags,') = 0
+                and (',i_IsUserMask,' = 0 or a.IsUserMask = 1)            
+            and (',IFNULL(i_PageUserID,0) ,' = 0 or a.CreatedByUserID = ',IFNULL(i_PageUserID,0),')
+        order by a.SortOrder  LIMIT ',ici_FirstSelectRowNumber,',',i_PageSize,'');
+        PREPARE stmt_els FROM @biplpr;
+        EXECUTE stmt_els;
+        DEALLOCATE PREPARE stmt_els;
 ELSE
-SELECT   a.*
+SELECT   a.*,
+         {databaseName}.{objectQualifier}biginttobool(0) as TotalRows 
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
 AND a.AccessMaskID = i_AccessMaskID LIMIT 1;
@@ -11566,14 +11621,14 @@ FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID and
             (a.Flags & i_ExcludeFlags) = 0
             and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0)					
-ORDER BY a.IsUserMask desc,a.SortOrder;
+            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) and a.IsUserMask = 0) 				
+ORDER BY a.SortOrder;
 ELSE
 SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
 AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)
-            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) or a.IsUserMask = 0);
+            and ((i_IsUserMask = 1 and a.CreatedByUserID = i_PageUserID) and a.IsUserMask = 0) LIMIT 1;
 END IF;
 END;
 --GO
@@ -11594,7 +11649,7 @@ SELECT   a.*
 FROM     {databaseName}.{objectQualifier}AccessMask a
 WHERE    a.BoardID = i_BoardID
 AND a.AccessMaskID = i_AccessMaskID and (i_IsAdminMask = 1 or a.IsAdminMask = 0)	
-and (i_IsUserMask = 1 or a.IsUserMask = 0);
+and (i_IsUserMask = 1 or a.IsUserMask = 0) LIMIT 1;
 END IF;
 END;
 --GO

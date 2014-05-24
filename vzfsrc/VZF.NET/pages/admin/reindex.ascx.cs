@@ -177,7 +177,7 @@ namespace YAF.Pages.Admin
         try
         {
             this.txtIndexStatistics.Text = CommonDb.db_shrink_warning(PageContext.PageModuleID) + @"\r\n\{0}\r\n\".FormatWith(CommonDb.db_shrink_new(PageContext.PageModuleID));
-            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(CommonDb.GetDbSize(PageContext.PageModuleID)) ;
+            this.txtIndexStatistics.Text = this.GetText("ADMIN_REINDEX", "INDEX_SHRINK").FormatWith(CommonDb.GetDbSize(PageContext.PageModuleID));
         }
         catch (Exception error)
         {

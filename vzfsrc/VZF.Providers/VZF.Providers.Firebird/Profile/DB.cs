@@ -20,21 +20,27 @@
 namespace YAF.Providers.Profile
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
-    
-    using YAF.Classes;
-    using YAF.Classes.Pattern;
-    using YAF.Core;
-    using VZF.Data.DAL;   
 
+    using VZF.Data.DAL;
+    using VZF.Data.Firebird.Mappers;
+
+    using YAF.Classes.Pattern;
+
+    /// <summary>
+    /// The fb db.
+    /// </summary>
     public class FbDB
     {
-        // private FbDbAccess FbDbAccess = new FbDbAccess();
-
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
         public static FbDB Current
         {
             get
@@ -43,27 +49,43 @@ namespace YAF.Providers.Profile
             }
         }
 
-        public FbDB()
+        /// <summary>
+        /// The encode profile data.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection.
+        /// </param>
+        /// <param name="isAuthenticated">
+        /// The is authenticated.
+        /// </param>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <param name="stringData">
+        /// The string data.
+        /// </param>
+        /// <param name="binaryData">
+        /// The binary data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        private static int EncodeProfileData(
+            SettingsPropertyValueCollection collection,
+            bool isAuthenticated,
+            ref string index,
+            ref string stringData,
+            ref byte[] binaryData)
         {
-            // FbDbAccess.SetConnectionManagerAdapter<VzfFirebirdDBConnManager>();
-        }
-
-        static private int EncodeProfileData(SettingsPropertyValueCollection collection, bool isAuthenticated,
-           ref string index, ref string stringData, ref byte[] binaryData)
-        {
-            bool itemsToSave = false;
+            bool itemsToSave = collection.Cast<SettingsPropertyValue>().Where(value => value.IsDirty)
+                .Any(value => !value.Property.Attributes["AllowAnonymous"].Equals(false) || isAuthenticated);
 
             // first we need to determine if there are any items that need saving
             // this is an optimization
-            foreach (SettingsPropertyValue value in collection)
+            if (!itemsToSave)
             {
-                if (!value.IsDirty) continue;
-                if (value.Property.Attributes["AllowAnonymous"].Equals(false) &&
-                    !isAuthenticated) continue;
-                itemsToSave = true;
-                break;
+                return 0;
             }
-            if (!itemsToSave) return 0;
 
             var indexBuilder = new StringBuilder();
             var stringDataBuilder = new StringBuilder();
@@ -75,38 +97,56 @@ namespace YAF.Providers.Profile
             {
                 // if the value has not been written to and is still using the default value
                 // no need to save it
-                if (value.UsingDefaultValue && !value.IsDirty) continue;
+                if (value.UsingDefaultValue && !value.IsDirty)
+                {
+                    continue;
+                }
 
                 // we don't save properties that require the user to be authenticated when the
                 // current user is not authenticated.
-                if (value.Property.Attributes["AllowAnonymous"].Equals(false) &&
-                    !isAuthenticated) continue;
+                if (value.Property.Attributes["AllowAnonymous"].Equals(false) && !isAuthenticated)
+                {
+                    continue;
+                }
 
                 count++;
                 object propValue = value.SerializedValue;
-                if ((value.Deserialized && value.PropertyValue == null) ||
-                    value.SerializedValue == null)
+                if ((value.Deserialized && value.PropertyValue == null) || value.SerializedValue == null)
+                {
                     indexBuilder.AppendFormat("{0}//0/-1:", value.Name);
+                }
                 else if (propValue is string)
                 {
-                    indexBuilder.AppendFormat("{0}/0/{1}/{2}:", value.Name,
-                        stringDataBuilder.Length, (propValue as string).Length);
+                    indexBuilder.AppendFormat(
+                        "{0}/0/{1}/{2}:",
+                        value.Name,
+                        stringDataBuilder.Length,
+                        (propValue as string).Length);
                     stringDataBuilder.Append(propValue);
                 }
                 else
                 {
                     var binaryValue = (byte[])propValue;
-                    indexBuilder.AppendFormat("{0}/1/{1}/{2}:", value.Name,
-                        binaryBuilder.Position, binaryValue.Length);
+                    indexBuilder.AppendFormat("{0}/1/{1}/{2}:", value.Name, binaryBuilder.Position, binaryValue.Length);
                     binaryBuilder.Write(binaryValue, 0, binaryValue.Length);
                 }
             }
+
             index = indexBuilder.ToString();
             stringData = stringDataBuilder.ToString();
             binaryData = binaryBuilder.ToArray();
             return count;
         }
 
+        /// <summary>
+        /// The decode profile data.
+        /// </summary>
+        /// <param name="profileRow">
+        /// The profile row.
+        /// </param>
+        /// <param name="values">
+        /// The values.
+        /// </param>
         public static void DecodeProfileData(DataRow profileRow, SettingsPropertyValueCollection values)
         {
             byte[] binaryData = null;
@@ -115,40 +155,68 @@ namespace YAF.Providers.Profile
             indexData = profileRow["valueindex"].ToString();
             stringData = profileRow["stringData"].ToString();
             if (profileRow["binaryData"] != DBNull.Value)
+            {
                 binaryData = (byte[])profileRow["binaryData"];
-
-            // if (indexData == null) return;
-
+            }
+            
             string[] indexes = indexData.Split(':');
 
             foreach (string index in indexes)
             {
                 string[] parts = index.Split('/');
                 SettingsPropertyValue value = values[parts[0]];
-                if (value == null) continue;
+                if (value == null)
+                {
+                    continue;
+                }
 
-                int pos = Int32.Parse(parts[2], CultureInfo.InvariantCulture);
-                int len = Int32.Parse(parts[3], CultureInfo.InvariantCulture);
+                int pos = int.Parse(parts[2], CultureInfo.InvariantCulture);
+                int len = int.Parse(parts[3], CultureInfo.InvariantCulture);
                 if (len == -1)
                 {
                     value.PropertyValue = null;
                     value.IsDirty = false;
                     value.Deserialized = true;
                 }
-                else if (parts[1].Equals("0"))
+                else if (parts[1].Equals("0")) 
+                {
                     value.SerializedValue = stringData.Substring(pos, len);
+                }
                 else
                 {
-                    byte[] buf = new byte[len];
+                    var buf = new byte[len];
                     Buffer.BlockCopy(binaryData, pos, buf, 0, len);
                     value.SerializedValue = buf;
                 }
             }
         }
 
+        /// <summary>
+        /// The get profiles.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <param name="userNameToMatch">
+        /// The user name to match.
+        /// </param>
+        /// <param name="inactiveSinceDate">
+        /// The inactive since date.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public DataTable GetProfiles(string connectionStringName, object appName, object pageIndex, object pageSize, object userNameToMatch, object inactiveSinceDate)
         {
-            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
             using (var sc = new SQLCommand(connectionStringName))
             {
                 sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName));
@@ -163,69 +231,68 @@ namespace YAF.Providers.Profile
             }
         }
 
+        /// <summary>
+        /// The get profile structure.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <returns>
+        /// The <see cref="DataTable"/>.
+        /// </returns>
         public DataTable GetProfileStructure(string connectionStringName)
         {
-            // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
             using (var sc = new SQLCommand(connectionStringName))
             {
-                sc.CommandText.AppendQuery(String.Format("SELECT FIRST 1 * FROM {0}", ObjectName.GetVzfObjectName("P_profile", SqlDbAccess.GetProviderName(connectionStringName))));
+                sc.CommandText.AppendQuery(string.Format("SELECT FIRST 1 * FROM {0}", ObjectName.GetVzfObjectName("P_profile", SqlDbAccess.GetProviderName(connectionStringName))));
                 return sc.ExecuteDataTableFromReader(CommandBehavior.Default, CommandType.Text, false);
             }
         }
 
-        public void AddProfileColumn(string connectionStringName, string Name, DbType columnType, int size)
+        /// <summary>
+        /// The add profile column.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="Name">
+        /// The name.
+        /// </param>
+        /// <param name="columnType">
+        /// The column type.
+        /// </param>
+        /// <param name="size">
+        /// The size.
+        /// </param>
+        public void AddProfileColumn(string connectionStringName, string Name, string columnType, int size)
         {
-            // get column type...
-            string type = columnType.ToString();
-            // FbDbType.SmallInt
-            // FbDbType.TimeStamp
-            //  FbDbType.VarChar
-            //  FbDbType.Integer  
+            string type = DataTypeMappers.typeToDbValueMap(Name, columnType, size);
             
-            if (type.ToLower() == "timestamp")
-            { type = "TimeStamp"; }
-            if (type.Contains("DateTime"))
-            { type = "TIMESTAMP"; }
-            if (type.Contains("String"))
-            {
-                if (size > 256)
-                {
-                    type = "BLOB SUB_TYPE 1";
-                }
-                else
-                {
-                    type = "VARCHAR";
-                }
-            }
-            if (type.Contains("Boolean"))
-            { type = "SMALLINT"; }
-            if (type.Contains("Int32"))
-            { type = "INT"; }
-
-            if (size > 0 && size <= 256)
-            {
-                type += "(" + size.ToString() + ")";
-            }
-            if (type.ToLowerInvariant().Contains("varchar") && ObjectName.DatabaseEncoding != null)
-            {
-                type += " CHARACTER SET " + ObjectName.DatabaseEncoding;
-
-                if (ObjectName.DatabaseCollation != null)
-                {
-                    type += " COLLATE " + ObjectName.DatabaseCollation;
-                }
-            }
-
             using (var sc = new SQLCommand(connectionStringName))
             {
                 sc.CommandText.AppendQuery(@"ALTER TABLE ");
                 sc.CommandText.AppendObjectQuery("P_profile", connectionStringName);
-                sc.CommandText.AppendQuery(String.Format(@" ADD {0}  {1};", Name, type));
+                sc.CommandText.AppendQuery(string.Format(@" ADD {0}  {1};", Name, type));
 
                 sc.ExecuteNonQuery(CommandType.Text, false);
             }
         }
 
+        /// <summary>
+        /// The get provider user key.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/>.
+        /// </returns>
         public object GetProviderUserKey(string connectionStringName, object appName, object username)
         {         
             DataRow row = YAF.Providers.Membership.FbDB.Current.GetUser(connectionStringName, appName.ToString(), null, username.ToString(), false);
@@ -238,28 +305,54 @@ namespace YAF.Providers.Profile
             return null;
         }
 
-        public void SetProfileProperties(string connectionStringName, object appName, object userID, System.Configuration.SettingsPropertyValueCollection values, System.Collections.Generic.List<FbSettingsPropertyColumn> settingsColumnsList)
+        /// <summary>
+        /// The set profile properties.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="userID">
+        /// The user id.
+        /// </param>
+        /// <param name="values">
+        /// The values.
+        /// </param>
+        /// <param name="settingsColumnsList">
+        /// The settings columns list.
+        /// </param>
+        public void SetProfileProperties(string connectionStringName, object appName, object userID, SettingsPropertyValueCollection values, List<FbSettingsPropertyColumn> settingsColumnsList)
         {
             // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
             // EOF 'apply new profile properties'
-            if (String.IsNullOrEmpty(userID.ToString())) return;
-            if (values.Count <= 0) return;
+            if (string.IsNullOrEmpty(userID.ToString()))
+            {
+                return;
+            }
 
-            string index = String.Empty;
-            string stringData = String.Empty;
+            if (values.Count <= 0)
+            {
+                return;
+            }
+
+            string index = string.Empty;
+            string stringData = string.Empty;
             byte[] binaryData = null;
             bool isAuthenticated = true;
 
             int count = EncodeProfileData(values, isAuthenticated, ref index, ref stringData, ref binaryData);
-            if (count < 1) return;
+            if (count < 1)
+            {
+                return;
+            }
 
             bool profileExists = false;
             using (var sc = new SQLCommand(connectionStringName))
-            {            
-
+            { 
                 // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
-
-                sc.CommandText.AppendQuery(String.Format(@"SELECT COUNT(1) FROM {0} WHERE USERID =CHAR_TO_UUID('{1}');", ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName), userID));
+                sc.CommandText.AppendQuery(string.Format(@"SELECT COUNT(1) FROM {0} WHERE USERID =CHAR_TO_UUID('{1}');", ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName), userID));
                 profileExists = Convert.ToBoolean(sc.ExecuteScalar(CommandType.Text, false));
             }
         
@@ -278,9 +371,12 @@ namespace YAF.Providers.Profile
                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "current_utctimestamp", DateTime.Now));
 
                     // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
-
-                    sc.CommandText.AppendQuery(String.Format(@"UPDATE {0} SET valueindex = ?,stringdata=?,binarydata=?,LASTUPDATEDDATE=? 
-                            WHERE USERID =CHAR_TO_UUID('{1}');", ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName), userID));
+                    sc.CommandText.AppendQuery(
+                        string.Format(
+                            @"UPDATE {0} SET valueindex = ?,stringdata=?,binarydata=?,LASTUPDATEDDATE=? 
+                            WHERE USERID =CHAR_TO_UUID('{1}');",
+                            ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName),
+                            userID));
                     sc.ExecuteNonQuery(CommandType.Text, false);
                 }
             }
@@ -295,25 +391,42 @@ namespace YAF.Providers.Profile
                     sc.Parameters.Add(sc.CreateParameter(DbType.DateTime, "current_utctimestamp", DateTime.Now));
 
                     // cmd.Parameters.Add(new FbParameter("@I_USERID", FbDbType.VarChar)).Value = userID;
-
-                    sc.CommandText.AppendQuery(String.Format(@"INSERT INTO {0}(USERID,valueindex,stringdata,binarydata,LASTUPDATEDDATE) 
-                       VALUES(CHAR_TO_UUID(@I_USERID), @I_valueindex, @I_stringdata, @I_binarydata,@current_utctimestamp);", ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName)));
+                    sc.CommandText.AppendQuery(
+                        string.Format(
+                            @"INSERT INTO {0}(USERID,valueindex,stringdata,binarydata,LASTUPDATEDDATE) 
+                       VALUES(CHAR_TO_UUID(@I_USERID), @I_valueindex, @I_stringdata, @I_binarydata,@current_utctimestamp);",
+                            ObjectName.GetVzfObjectNameFromConnectionString("P_profile", connectionStringName)));
                     sc.ExecuteNonQuery(CommandType.Text, false);
                 }
             }
         }
 
+        /// <summary>
+        /// The delete profiles.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="userNames">
+        /// The user names.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public int DeleteProfiles(string connectionStringName, object appName, object userNames)
         {
             // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
             int deleted = 0;
-            char[] sep = new char[1] { ',' };
+            char[] sep = new[] { ',' };
             string[] userNamesArr = userNames.ToString().Split(sep[0]);
             for (int i = 0; i <= userNamesArr.Length; i++)
             {
                 using (var sc = new SQLCommand(connectionStringName))
                 {
-                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName)); ;
+                    sc.Parameters.Add(sc.CreateParameter(DbType.String, "i_applicationname", appName)); 
                     sc.Parameters.Add(sc.CreateParameter(DbType.String, "I_USERNAME", userNamesArr[i]));
 
                     sc.CommandText.AppendObjectQuery("P_profile_deleteprofile", connectionStringName);
@@ -324,6 +437,21 @@ namespace YAF.Providers.Profile
             return deleted;
         }
 
+        /// <summary>
+        /// The delete inactive profiles.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="inactiveSinceDate">
+        /// The inactive since date.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public int DeleteInactiveProfiles(string connectionStringName, object appName, object inactiveSinceDate)
         {
             // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);
@@ -337,6 +465,21 @@ namespace YAF.Providers.Profile
             }
         }
 
+        /// <summary>
+        /// The get number inactive profiles.
+        /// </summary>
+        /// <param name="connectionStringName">
+        /// The connection string name.
+        /// </param>
+        /// <param name="appName">
+        /// The app name.
+        /// </param>
+        /// <param name="inactiveSinceDate">
+        /// The inactive since date.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public int GetNumberInactiveProfiles(string connectionStringName, object appName, object inactiveSinceDate)
         {
              // connectionStringName = SqlDbAccess.GetConnectionStringNameFromConnectionString(connectionStringName);

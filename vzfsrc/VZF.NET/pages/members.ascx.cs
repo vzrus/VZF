@@ -248,7 +248,7 @@ namespace YAF.Pages
             this.Posts.Text = this.GetText("posts");
             this.LastVisitLB.Text = this.GetText("members", "lastvisit");
 
-            using (var dt = CommonDb.group_list(PageContext.PageModuleID, this.PageContext.PageBoardID, null))
+            using (var dt = CommonDb.group_list(this.PageContext.PageModuleID, this.PageContext.PageBoardID, null, 0, 1000000))
             {
                 var dtt = dt.Clone();
                 foreach (DataRow row in dt.Rows)

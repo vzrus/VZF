@@ -4,6 +4,7 @@
 <%@ Import Namespace="VZF.Utils.Helpers" %>
 <VZF:PageLinks runat="server" ID="PageLinks" />
 <VZF:AdminMenu runat="server">
+     <VZF:Pager ID="PagerTop" runat="server" OnPageChange="PagerTop_PageChange" />
     <table class="content" cellspacing="1" cellpadding="0" width="100%">
         <tr>
             <td class="header1" colspan="13">
@@ -78,5 +79,6 @@
             </td>
         </tr>
     </table>
+     <VZF:Pager ID="PagerBottom" runat="server" LinkedPager="PagerTop" />
 </VZF:AdminMenu>
 <VZF:SmartScroller ID="SmartScroller1" runat="server" />

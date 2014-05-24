@@ -259,7 +259,7 @@ namespace YAF.pages
                         sortOrder = 1;
                     }
 
-                    this.SortOrder.Text = sortOrder.ToString();
+                    this.SortOrder.Text = sortOrder.ToString(CultureInfo.InvariantCulture);
 
                     return;
                 }
@@ -564,9 +564,11 @@ namespace YAF.pages
                 themeUrl = this.ThemeList.SelectedValue;
             }
 
-            var newForumId = CommonDb.forum_save(PageContext.PageModuleID, forumId,
-              this.CategoryList.SelectedValue,
-              parentID,
+            var newForumId = CommonDb.forum_save(
+                PageContext.PageModuleID,
+                forumId,
+                this.CategoryList.SelectedValue,
+                parentID,
               this.Name.Text.Trim(),
               this.Description.Text.Trim().IsSet() ? this.Description.Text.Trim() : null,
               sortOrder,
@@ -597,9 +599,11 @@ namespace YAF.pages
                     CommonDb.forumaccess_save(PageContext.PageModuleID, newForumId, groupId, item.FindControlAs<DropDownList>("AccessmaskID").SelectedValue);
                 }
             }
-
+            
+            // Clearing cache with old permissions data...
             this.ClearCaches();
 
+            this.Get<IDataCache>().Remove(k => k.StartsWith(Constants.Cache.ActiveUserLazyData.FormatWith(string.Empty)));
             if (forumId.HasValue)
             {
                 YafBuildLink.Redirect(ForumPages.personalforum, "fa={0}&u={1}".FormatWith(forumId, this.PageContext.PageUserID));

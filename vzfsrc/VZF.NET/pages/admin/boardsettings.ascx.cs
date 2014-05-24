@@ -258,6 +258,8 @@ namespace YAF.Pages.Admin
             this.Get<YafBoardSettings>().EmailModeratorsOnModeratedPost = this.EmailModeratorsOnModeratedPost.Checked;
             this.Get<YafBoardSettings>().EmailModeratorsOnReportedPost = this.EmailModeratorsOnReportedPost.Checked;
             this.Get<YafBoardSettings>().AllowDigestEmail = this.AllowDigestEmail.Checked;
+            this.Get<YafBoardSettings>().AllowPersonalForumsAsSubForums = this.PersonalForumsAsSubForums.Checked;
+            this.Get<YafBoardSettings>().AllowPersonalForumsInCategories = this.PersonalForumsInCategories.Checked;
             this.Get<YafBoardSettings>().DefaultSendDigestEmail = this.DefaultSendDigestEmail.Checked;
             this.Get<YafBoardSettings>().DefaultNotificationSetting =
                 this.DefaultNotificationSetting.SelectedValue.ToEnum<UserNotificationSetting>();
